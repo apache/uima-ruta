@@ -49,7 +49,9 @@ public class RutaAnnotationMatcher implements RutaMatcher {
     Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comparator);
     MatchContext context = new MatchContext(parent);
     AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
-    annotations.add(annotation);
+    if(annotation != null) {
+      annotations.add(annotation);
+    }
     return annotations;
   }
 

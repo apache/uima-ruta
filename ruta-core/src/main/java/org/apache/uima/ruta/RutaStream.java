@@ -969,7 +969,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         }
       } else {
         Type t = ate.getType(context, this);
-        assignAnnotationByTypeInWindow(annotation, feature, context, t);
+        if(t != null) {
+          assignAnnotationByTypeInWindow(annotation, feature, context, t);
+        }
       }
     } else if (value instanceof IAnnotationExpression && !feature.getRange().isPrimitive()) {
       IAnnotationExpression ae = (IAnnotationExpression) value;
@@ -1033,4 +1035,18 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       }
     }
   }
+
+  public AnnotationFS getSingleAnnotationByTypeInContext(Type type, MatchContext context) {
+    List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), type);
+    if(inWindow != null&& !inWindow.isEmpty()) {
+      return inWindow.get(0);
+    }
+    return null;
+  }
+  
+  public List<AnnotationFS> getAnnotationsByTypeInContext(Type type, MatchContext context) {
+    List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), type);
+    return inWindow;
+  }
+  
 }

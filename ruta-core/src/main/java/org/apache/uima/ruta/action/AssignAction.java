@@ -20,10 +20,12 @@
 package org.apache.uima.ruta.action;
 
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -64,6 +66,9 @@ public class AssignAction extends AbstractRutaAction {
       environment.setVariableValue(var, v);
     } else if (clazz.equals(String.class) && expression instanceof IStringExpression) {
       String v = ((IStringExpression) expression).getStringValue(context, stream);
+      environment.setVariableValue(var, v);
+    } else if (clazz.equals(AnnotationFS.class) && expression instanceof IAnnotationExpression) {
+      AnnotationFS v = ((IAnnotationExpression) expression).getAnnotation(context, stream);
       environment.setVariableValue(var, v);
     }
   }

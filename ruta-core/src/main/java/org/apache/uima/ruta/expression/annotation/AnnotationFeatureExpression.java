@@ -22,8 +22,6 @@ package org.apache.uima.ruta.expression.annotation;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.uima.cas.Feature;
-import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
@@ -47,16 +45,12 @@ public class AnnotationFeatureExpression extends AbstractAnnotationExpression {
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
     Type type = fe.getTypeExpr(context, stream).getType(context, stream);
-    Feature feature = fe.getFeature(context, stream);
     List<AnnotationFS> list = getTargetAnnotation(annotation, type, stream);
     Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
             false);
     if (!featureAnnotations.isEmpty()) {
       AnnotationFS next = featureAnnotations.iterator().next();
-      FeatureStructure featureValue = next.getFeatureValue(feature);
-      if(featureValue instanceof AnnotationFS) {
-        return (AnnotationFS) featureValue;
-      }
+        return next;
     }
     return null;
   }

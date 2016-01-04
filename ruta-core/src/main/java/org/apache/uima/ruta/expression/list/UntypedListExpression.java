@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -50,6 +51,8 @@ public class UntypedListExpression extends ListExpression<Object> {
         result.add(((INumberExpression) each).getDoubleValue(context, stream));
       } else if (each instanceof ITypeExpression) {
         result.add(((ITypeExpression) each).getType(context, stream));
+      } else if (each instanceof IAnnotationExpression) {
+        result.add(((IAnnotationExpression) each).getAnnotation(context, stream));
       } else if (each instanceof ListExpression) {
         result.add(((ListExpression<?>) each).getList(context, stream));
       } else if (each instanceof IStringExpression) {

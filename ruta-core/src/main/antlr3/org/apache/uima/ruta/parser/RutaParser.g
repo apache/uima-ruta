@@ -864,7 +864,8 @@ String label = null;
 	(l = Identifier {label = l.getText();} COLON)?
 	start = STARTANCHOR? (
 	rea = ruleElementAnnotation[container]{re = rea;}
-	|re1 = ruleElementType[container] {re = re1;}
+	| 
+	re1 = ruleElementType[container] {re = re1;}
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
 	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
@@ -966,8 +967,7 @@ ruleElementType [RuleElementContainer container] returns [RutaRuleElement re = n
 
 ruleElementAnnotation [RuleElementContainer container] returns [RutaRuleElement re = null]
     :
-    
-    (annotationAddressExpression)=>aExpr = annotationAddressExpression 
+    (annotationExpression2)=>aExpr = annotationExpression2 
      {re = factory.createRuleElement(aExpr, null, null, null, container, $blockDeclaration::env);} 
     q = quantifierPart? 
         (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
@@ -1930,9 +1930,9 @@ actionAssign returns [AbstractRutaAction action = null]
     :
     name = ASSIGN LPAREN
     (
-    {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPE")}? 
-        nv = Identifier COMMA e1 = typeExpression 
-        {action = ActionFactory.createAssignAction(nv, e1,$blockDeclaration::env);}
+    {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "ANNOTATION")||isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPE")}? 
+        nv = Identifier COMMA ea = annotationOrTypeExpression 
+        {action = ActionFactory.createAssignAction(nv, ea,$blockDeclaration::env);}
     |
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "BOOLEAN")}? 
         nv = Identifier COMMA e2 = booleanExpression 
@@ -2215,7 +2215,17 @@ annotationExpression returns [IRutaExpression expr = null]
 	aae = annotationAddressExpression {expr = aae;}
 	|
 	ale = annotationLabelExpression {expr = ale;}
-	
+	;
+
+annotationExpression2 returns [IRutaExpression expr = null]
+	:
+	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")	}? 
+	id = Identifier {expr = ExpressionFactory.createAnnotationVariableExpression(id);} 
+	|
+	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")	}? 
+	id = Identifier {expr = ExpressionFactory.createAnnotationListVariableExpression(id);} 
+	|
+	aae = annotationAddressExpression {expr = aae;}
 	;
 
 annotationAddressExpression returns [IAnnotationExpression expr = null]
