@@ -655,6 +655,24 @@ FeatureAssignment -> "(" StringExpression "=" Expression
 	      The projet ruta-core-ext contains the implementation for the analysis engine and the project
 	      ruta-ep-core-ext contains the integration in the UIMA Ruta Workbench.
 	    </para>
+	    
+	    <section id="ugr.tools.ruta.language.extensions.core-ext.documentblock">
+      <title>DOCUMENTBLOCK</title>
+      <para>
+        This additional block construct applies the contained statements/rules on 
+        the complete document independent of previous windows and restictions. 
+        It resets the matching context, but otherwise behaves like a normal BLOCK.
+      </para>
+      <programlisting><![CDATA[BLOCK(ex) NUM{}{
+  DOCUMENTBLOCK W{}{
+    // do something with the words
+  }
+}]]></programlisting>
+      <para>
+        The example contains two blocks. The first block iterates over all numbers (NUM). 
+        The second block resets the match context and matches on all words (W), for every previously matched number.
+      </para>
+      </section>
 	    <section id="ugr.tools.ruta.language.extensions.core-ext.onlyfirst">
 	    <title>ONLYFIRST</title>
       <para>
