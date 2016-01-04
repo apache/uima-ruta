@@ -19,18 +19,30 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.AnnotationImpl;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.junit.Test;
 
 public class AnnotationAddressExpressionTest {
 
   @Test
-  public void test() {
+  public void testMatching() {
     String document = "Some text.";
 
     CAS cas = null;
@@ -66,4 +78,64 @@ public class AnnotationAddressExpressionTest {
 
   }
 
+  @Test
+  public void testFeatureAssignment() {
+    String document = "Some text.";
+
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    String typeName = "Struct";
+    typeMap.put(typeName, "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put(typeName, list);
+    String fn = "a";
+    list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
+    
+    
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    Type t1 = RutaTestUtils.getTestType(cas, 1);
+    AnnotationFS a1 = cas.createAnnotation(t1, 5, 9);
+    cas.addFsToIndexes(a1);
+    int ref = 0;
+    if (a1 instanceof AnnotationImpl) {
+      AnnotationImpl aImpl = (AnnotationImpl) a1;
+      ref = aImpl.getAddress();
+    }
+
+    String script = "";
+    script += "CREATE(Struct, \"a\" = $"+ref+");";
+    try {
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    Type t = null;
+    AnnotationIndex<AnnotationFS> ai = null;
+    FSIterator<AnnotationFS> iterator = null;
+
+    t = cas.getTypeSystem().getType(typeName);
+    Feature f1 = t.getFeatureByBaseName(fn);
+    ai = cas.getAnnotationIndex(t);
+
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    AnnotationFS next = iterator.next();
+    assertEquals("Some text.", next.getCoveredText());
+    AnnotationFS a = (AnnotationFS) next.getFeatureValue(f1);
+    assertNotNull("Feature value is null!", a);
+    assertEquals("text", a.getCoveredText());
+
+    if (cas != null) {
+      cas.release();
+    }
+
+  }
+  
 }

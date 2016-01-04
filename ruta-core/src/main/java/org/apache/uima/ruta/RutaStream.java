@@ -48,6 +48,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
@@ -969,6 +970,19 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       } else {
         Type t = ate.getType(context, this);
         assignAnnotationByTypeInWindow(annotation, feature, context, t);
+      }
+    } else if (value instanceof IAnnotationExpression && !feature.getRange().isPrimitive()) {
+      IAnnotationExpression ae = (IAnnotationExpression) value;
+      AnnotationFS a = ae.getAnnotation(context, this);
+      if (a != null) {
+        // TODO support annotation list expressions
+        if (feature.getRange().isArray()) {
+          List<AnnotationFS> c = new ArrayList<AnnotationFS>();
+          c.add(a);
+          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), c));
+        } else {
+          annotation.setFeatureValue(feature, a);
+        }
       }
     } else if (value instanceof ITypeExpression && !feature.getRange().isPrimitive()) {
       ITypeExpression typeExpr = (ITypeExpression) value;
