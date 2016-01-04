@@ -23,29 +23,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class SimpleTypeListExpression extends TypeListExpression {
 
-  private List<TypeExpression> list;
+  private List<ITypeExpression> list;
 
-  public SimpleTypeListExpression(List<TypeExpression> list) {
+  public SimpleTypeListExpression(List<ITypeExpression> list) {
     super();
     this.list = list;
   }
 
   @Override
-  public List<Type> getList(RutaBlock parent, RutaStream stream) {
+  public List<Type> getList(MatchContext context, RutaStream stream) {
     List<Type> result = new ArrayList<Type>();
-    for (TypeExpression each : list) {
-      result.add(each.getType(parent));
+    for (ITypeExpression each : list) {
+      result.add(each.getType(context, stream));
     }
     return result;
   }
 
-  public List<TypeExpression> getList() {
+  public List<ITypeExpression> getList() {
     return list;
   }
 }

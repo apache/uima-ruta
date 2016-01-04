@@ -29,7 +29,8 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementMatch;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -40,18 +41,20 @@ public class UnmarkAllAction extends TypeSensitiveAction {
 
   private final TypeListExpression list;
 
-  public UnmarkAllAction(TypeExpression type, TypeListExpression list) {
+  public UnmarkAllAction(ITypeExpression type, TypeListExpression list) {
     super(type);
     this.list = list;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<Type> retainList = new ArrayList<Type>();
     if (list != null) {
-      retainList = list.getList(element.getParent(), stream);
+      retainList = list.getList(context, stream);
     }
-    Type t = type.getType(element.getParent());
+    Type t = type.getType(context, stream);
     TypeSystem typeSystem = stream.getCas().getTypeSystem();
     List<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
     List<List<RuleElementMatch>> matchInfo = match.getMatchInfo(element);

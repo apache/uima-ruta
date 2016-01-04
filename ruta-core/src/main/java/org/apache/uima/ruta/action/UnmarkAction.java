@@ -28,7 +28,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -40,26 +41,28 @@ public class UnmarkAction extends TypeSensitiveAction {
 
   private IBooleanExpression allAnchor;
 
-  public UnmarkAction(TypeExpression type, List<INumberExpression> list, IBooleanExpression b) {
+  public UnmarkAction(ITypeExpression type, List<INumberExpression> list, IBooleanExpression b) {
     super(type);
     this.list = list;
     this.allAnchor = b;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    Type t = type.getType(element.getParent());
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
+    Type t = type.getType(context, stream);
     boolean allAtAnchor = false;
     if (allAnchor != null) {
-      allAtAnchor = allAnchor.getBooleanValue(element.getParent(), match, element, stream);
+      allAtAnchor = allAnchor.getBooleanValue(context, stream);
     }
-    List<Integer> indexList = getIndexList(element, list, stream);
+    List<Integer> indexList = getIndexList(context, list, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS annotationFS : matchedAnnotations) {
       Type matchedType = annotationFS.getType();
       boolean subsumes = stream.getCas().getTypeSystem().subsumes(t, matchedType);
-      if(subsumes && !allAtAnchor) {
+      if (subsumes && !allAtAnchor) {
         stream.removeAnnotation(annotationFS, matchedType);
       } else {
         RutaBasic beginAnchor = stream.getBeginAnchor(annotationFS.getBegin());
@@ -72,7 +75,7 @@ public class UnmarkAction extends TypeSensitiveAction {
           }
         }
       }
-      
+
     }
 
   }
@@ -85,8 +88,9 @@ public class UnmarkAction extends TypeSensitiveAction {
     return allAnchor;
   }
 
-  protected List<Integer> getIndexList(RuleElement element, List<INumberExpression> list,
+  protected List<Integer> getIndexList(MatchContext context, List<INumberExpression> list,
           RutaStream stream) {
+    RuleElement element = context.getElement();
     List<Integer> indexList = new ArrayList<Integer>();
     if (list == null || list.isEmpty()) {
       int self = element.getContainer().getRuleElements().indexOf(element) + 1;
@@ -96,7 +100,7 @@ public class UnmarkAction extends TypeSensitiveAction {
     int last = Integer.MAX_VALUE - 1;
     for (INumberExpression each : list) {
       // not allowed for feature matches
-      int value = each.getIntegerValue(element.getParent(), null, stream);
+      int value = each.getIntegerValue(context, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);
       }

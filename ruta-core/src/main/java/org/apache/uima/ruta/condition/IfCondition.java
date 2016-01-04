@@ -19,11 +19,10 @@
 
 package org.apache.uima.ruta.condition;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class IfCondition extends AbstractRutaCondition {
@@ -36,10 +35,8 @@ public class IfCondition extends AbstractRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    return new EvaluatedCondition(this, expression.getBooleanValue(element.getParent(), annotation,
-            stream));
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    return new EvaluatedCondition(this, expression.getBooleanValue(context, stream));
   }
 
   public IBooleanExpression getExpression() {

@@ -26,14 +26,14 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class BeforeCondition extends TypeSentiveCondition {
 
-  public BeforeCondition(TypeExpression type) {
+  public BeforeCondition(ITypeExpression type) {
     super(type);
   }
 
@@ -42,15 +42,15 @@ public class BeforeCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
     if (!isWorkingOnList()) {
-      Type t = type.getType(element.getParent());
+      Type t = type.getType(context, stream);
       boolean result = check(annotation, stream, t);
       return new EvaluatedCondition(this, result);
     } else {
       boolean result = false;
-      List<Type> types = getList().getList(element.getParent(), stream);
+      List<Type> types = getList().getList(context, stream);
       for (Type t : types) {
         result |= check(annotation, stream, t);
         if (result == true) {

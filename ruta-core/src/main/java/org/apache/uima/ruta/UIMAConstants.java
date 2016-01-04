@@ -36,11 +36,11 @@ public class UIMAConstants {
   public static final String TYPE_DOUBLE = "uima.cas.Double";
 
   public static final String TYPE_STRING = "uima.cas.String";
-  
+
   public static final String TYPE_DOCUMENT = "uima.tcas.DocumentAnnotation";
-  
+
   public static final String FEATURE_COVERED_TEXT = "coveredText";
-  
+
   public static final String FEATURE_COVERED_TEXT_SHORT = "ct";
 
 }

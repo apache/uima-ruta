@@ -26,7 +26,6 @@ import java.util.Map;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
@@ -34,8 +33,9 @@ import org.apache.uima.ruta.expression.list.UntypedListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -70,28 +70,29 @@ public class TrieAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     Map<String, Object> typeMap = new HashMap<String, Object>();
-    RutaBlock parent = element.getParent();
+    element.getParent();
     for (IStringExpression eachKey : map.keySet()) {
-      String stringValue = eachKey.getStringValue(parent, match, element, stream);
+      String stringValue = eachKey.getStringValue(context, stream);
       IRutaExpression expression = map.get(eachKey);
-      if (expression instanceof TypeExpression) {
-        Type typeValue = ((TypeExpression) expression).getType(parent);
+      if (expression instanceof ITypeExpression) {
+        Type typeValue = ((ITypeExpression) expression).getType(context, stream);
         typeMap.put(stringValue, typeValue);
       } else if (expression instanceof UntypedListExpression) {
-        List<Object> innerList = ((UntypedListExpression) expression).getList(parent, stream);
+        List<Object> innerList = ((UntypedListExpression) expression).getList(context, stream);
         typeMap.put(stringValue, innerList);
       }
     }
-    boolean ignoreCaseValue = ignoreCase.getBooleanValue(parent, match, element, stream);
-    int ignoreLengthValue = ignoreLength.getIntegerValue(parent, match, element, stream);
-    boolean editValue = edit.getBooleanValue(parent, match, element, stream);
-    double distanceValue = distance.getDoubleValue(parent, match, element, stream);
-    String ignoreCharValue = ignoreChar.getStringValue(parent, match, element, stream);
+    boolean ignoreCaseValue = ignoreCase.getBooleanValue(context, stream);
+    int ignoreLengthValue = ignoreLength.getIntegerValue(context, stream);
+    boolean editValue = edit.getBooleanValue(context, stream);
+    double distanceValue = distance.getDoubleValue(context, stream);
+    String ignoreCharValue = ignoreChar.getStringValue(context, stream);
 
-    RutaWordList wl = list.getList(parent);
+    RutaWordList wl = list.getList(context);
     if (wl != null) {
       Collection<AnnotationFS> found = wl.find(stream, typeMap, ignoreCaseValue, ignoreLengthValue,
               editValue, distanceValue, ignoreCharValue);

@@ -22,11 +22,10 @@ package org.apache.uima.ruta.condition;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MOfNCondition extends ComposedRutaCondition {
@@ -43,21 +42,20 @@ public class MOfNCondition extends ComposedRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     int result = 0;
     List<EvaluatedCondition> evals = new ArrayList<EvaluatedCondition>();
     for (AbstractRutaCondition each : conditions) {
       crowd.beginVisit(each, null);
-      EvaluatedCondition eval = each.eval(annotation, element, stream, crowd);
+      EvaluatedCondition eval = each.eval(context, stream, crowd);
       crowd.endVisit(each, null);
       evals.add(eval);
       if (eval.isValue()) {
         result++;
       }
     }
-    boolean value = result >= min.getIntegerValue(element.getParent(), annotation, stream)
-            && result <= max.getIntegerValue(element.getParent(), annotation, stream);
+    boolean value = result >= min.getIntegerValue(context, stream)
+            && result <= max.getIntegerValue(context, stream);
     return new EvaluatedCondition(this, value, evals);
   }
 

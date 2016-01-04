@@ -30,6 +30,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -53,10 +54,13 @@ public class GetListAction extends AbstractRutaAction {
     this.opExpr = op;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
-    String op = opExpr.getStringValue(parent, match, element, stream);
+    String op = opExpr.getStringValue(context, stream);
     List<Type> list = new ArrayList<Type>();
 
     int indexOf = element.getContainer().getRuleElements().indexOf(element);
@@ -71,7 +75,7 @@ public class GetListAction extends AbstractRutaAction {
         Collection<?>[] beginMap = beginAnchor.getBeginMap();
         Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
         for (Collection<?> set : beginMap) {
-          if(set != null) {
+          if (set != null) {
             aset.addAll((Collection<? extends AnnotationFS>) set);
           }
         }
@@ -80,11 +84,11 @@ public class GetListAction extends AbstractRutaAction {
         }
       } else if (TYPES_AT_END.equals(op)) {
         RutaBasic endAnchor = stream.getEndAnchor(matched.getEnd());
-//        Collection<Set<AnnotationFS>> values = endAnchor.getEndMap().values();
+        // Collection<Set<AnnotationFS>> values = endAnchor.getEndMap().values();
         Collection<?>[] endMap = endAnchor.getEndMap();
         Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
         for (Collection<?> set : endMap) {
-          if(set != null) {
+          if (set != null) {
             aset.addAll((Collection<? extends AnnotationFS>) set);
           }
         }

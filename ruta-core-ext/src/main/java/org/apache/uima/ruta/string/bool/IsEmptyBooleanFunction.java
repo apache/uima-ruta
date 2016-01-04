@@ -19,11 +19,10 @@
 
 package org.apache.uima.ruta.string.bool;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.BooleanFunctionExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class IsEmptyBooleanFunction extends BooleanFunctionExpression {
 
@@ -38,13 +37,13 @@ public class IsEmptyBooleanFunction extends BooleanFunctionExpression {
   }
 
   @Override
-  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return text.getStringValue(parent, annotation, stream).isEmpty();
+  public boolean getBooleanValue(MatchContext context, RutaStream stream) {
+    return text.getStringValue(context, stream).isEmpty();
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    Boolean isEmpty = text.getStringValue(parent, annotation, stream).isEmpty();
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    Boolean isEmpty = text.getStringValue(context, stream).isEmpty();
     return isEmpty.toString();
   }
 }

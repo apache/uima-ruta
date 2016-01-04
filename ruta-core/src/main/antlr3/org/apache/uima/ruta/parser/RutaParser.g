@@ -71,6 +71,7 @@ import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
@@ -82,7 +83,7 @@ import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.StringFunctionFactory;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
 import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
@@ -398,6 +399,9 @@ public void setExternalFactory(RutaExternalFactory factory) {
       	private boolean isTypeFunctionExtension(String name) {
       	  return external.getTypeFunctionExtensions().keySet().contains(name);
       	}
+      	private boolean isAnnotationFunctionExtension(String name) {
+      	  return external.getAnnotationFunctionExtensions().keySet().contains(name);
+      	}
       	private boolean isBlockExtension(String name) {
       	  return external.getBlockExtensions().keySet().contains(name);
       	}
@@ -544,6 +548,18 @@ List<String> vars = new ArrayList<String>();
 	type = TYPELIST 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
 	name = Identifier (ASSIGN_EQUAL tl = typeListExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(tl != null){setValue($blockDeclaration::env, name.getText(), tl);}} 
+	
+	|
+	type = ANNOTATION 
+	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
+	name = Identifier (ASSIGN_EQUAL a = annotationExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(a != null){setValue($blockDeclaration::env, name.getText(), a);}} 
+	|
+	type = ANNOTATIONLIST
+	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
+	name = Identifier (ASSIGN_EQUAL al = annotationExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(al != null){setValue($blockDeclaration::env, name.getText(), al);}} 
+	
+	
+	
 	//|
 	//stmt1 = conditionDeclaration {stmt = stmt1;}
 	//|
@@ -747,7 +763,7 @@ options {
 }
 @init{
 	//RegExpRule rer = null;
-	Map<TypeExpression, IRutaExpression> map = new HashMap<TypeExpression, IRutaExpression>();
+	Map<ITypeExpression, IRutaExpression> map = new HashMap<ITypeExpression, IRutaExpression>();
 }
 	: 
 
@@ -771,8 +787,8 @@ options {
 
 regexpRule returns [RegExpRule stmt = null]
 @init{
-	Map<TypeExpression, INumberExpression> map = new HashMap<TypeExpression, INumberExpression>();
-	Map<TypeExpression, Map<IStringExpression, IRutaExpression>> fa = new HashMap<TypeExpression, Map<IStringExpression, IRutaExpression>>();
+	Map<ITypeExpression, INumberExpression> map = new HashMap<ITypeExpression, INumberExpression>();
+	Map<ITypeExpression, Map<IStringExpression, IRutaExpression>> fa = new HashMap<ITypeExpression, Map<IStringExpression, IRutaExpression>>();
 	Map<IStringExpression, IRutaExpression> fmap = null;
 }
 	:
@@ -847,7 +863,8 @@ String label = null;
 	:
 	(l = Identifier {label = l.getText();} COLON)?
 	start = STARTANCHOR? (
-	re1 = ruleElementType[container] {re = re1;}
+	rea = ruleElementAnnotation[container]{re = rea;}
+	|re1 = ruleElementType[container] {re = re1;}
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
 	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
@@ -932,6 +949,26 @@ ruleElementType [RuleElementContainer container] returns [RutaRuleElement re = n
     
     (typeMatchExpression)=>typeExpr = typeMatchExpression 
      {re = factory.createRuleElement(typeExpr, null, null, null, container, $blockDeclaration::env);} 
+    q = quantifierPart? 
+        (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
+   {
+	if(q != null) {
+		re.setQuantifier(q);
+	}
+	if(c!= null) {
+		re.setConditions(c);
+	}
+	if(a != null) {
+		re.setActions(a);
+	}
+	}
+    ;
+
+ruleElementAnnotation [RuleElementContainer container] returns [RutaRuleElement re = null]
+    :
+    
+    (annotationAddressExpression)=>aExpr = annotationAddressExpression 
+     {re = factory.createRuleElement(aExpr, null, null, null, container, $blockDeclaration::env);} 
     q = quantifierPart? 
         (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
    {
@@ -1101,7 +1138,7 @@ typeListExpression returns [TypeListExpression expr = null]
 
 simpleTypeListExpression returns [TypeListExpression expr = null]
 @init{
-	List<TypeExpression> list = new ArrayList<TypeExpression>();
+	List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }	:
 	LCURLY (e = simpleTypeExpression {list.add(e);} (COMMA e = simpleTypeExpression {list.add(e);})*)?  RCURLY
 	{expr = ExpressionFactory.createTypeListExpression(list);}
@@ -1114,19 +1151,19 @@ typeMatchExpression returns [IRutaExpression expr = null]
 options {
 	backtrack = true;
 }
-	:
-	(typeFunction)=> tf = typeFunction {expr = tf;}
+	:	
+	(featureMatchExpression)=> fme = featureMatchExpression {expr = fme;}
 	|
-	(matchReference)=> mr = matchReference {expr = mr;}
+	(typeExpression)=> te = typeExpression {expr = te;}
 	;
 
 matchReference returns [MatchReference mr = null]
 	:
-	ref = dottedId ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
-	{mr = ExpressionFactory.createMatchReference(ref, comp, arg);}
+	ref = dottedId 
+	{mr = ExpressionFactory.createMatchReference(ref);}
 	;
 
-typeExpression returns [TypeExpression type = null]
+typeExpression returns [ITypeExpression type = null]
 options {
 	backtrack = true;
 }
@@ -1137,13 +1174,13 @@ options {
 	
 
 // not checked
-typeFunction returns [TypeExpression expr = null]
+typeFunction returns [ITypeExpression expr = null]
 	:
 	(e = externalTypeFunction)=> e = externalTypeFunction {expr = e;}
 	;
 
 // not checked
-externalTypeFunction returns [TypeExpression expr = null]
+externalTypeFunction returns [ITypeExpression expr = null]
 	:
 	{isTypeFunctionExtension(input.LT(1).getText())}? 
 	id = Identifier LPAREN
@@ -1153,7 +1190,7 @@ externalTypeFunction returns [TypeExpression expr = null]
 	}
 	;
 
-simpleTypeExpression returns [TypeExpression type = null]
+simpleTypeExpression returns [ITypeExpression type = null]
 	:
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "TYPE")}? var = Identifier 
 	{type = ExpressionFactory.createReferenceTypeExpression(var);}
@@ -1162,33 +1199,45 @@ simpleTypeExpression returns [TypeExpression type = null]
 	{type = ExpressionFactory.createSimpleTypeExpression(at, $blockDeclaration::env);}
 	;
 
+
+matchExpression returns [FeatureExpression feat = null]
+	:
+	match = dottedId
+	{MatchReference mr = ExpressionFactory.createMatchReference(match);}
+	;
+
 featureExpression returns [FeatureExpression feat = null]
 @init{
 List<Token> fs = new ArrayList<Token>();
-TypeExpression te = null;
+ITypeExpression te = null;
 }
 	:
 	match = dottedId2 
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match, null, null);
+	MatchReference mr = ExpressionFactory.createMatchReference(match);
 	feat = ExpressionFactory.createFeatureExpression(mr, $blockDeclaration::env);
 	}
 	;
 
-featureMatchExpression returns [FeatureMatchExpression fme = null]
+featureMatchExpression returns [FeatureExpression fme = null]
 	:
 	match = dottedId2 ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match, comp, arg);
-	fme = ExpressionFactory.createFeatureMatchExpression(mr, $blockDeclaration::env);}
+	MatchReference mr = ExpressionFactory.createMatchReference(match);
+	if(comp != null) {
+	fme = ExpressionFactory.createFeatureMatchExpression(mr, comp, arg, $blockDeclaration::env);
+	} else {
+	fme = ExpressionFactory.createFeatureExpression(mr, $blockDeclaration::env);
+	}
+	}
 	;
 
 featureMatchExpression2 returns [FeatureMatchExpression fme = null]
 	:
 	match = dottedId2 (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match, comp, arg);
-	fme = ExpressionFactory.createFeatureMatchExpression(mr, $blockDeclaration::env);}
+	MatchReference mr = ExpressionFactory.createMatchReference(match);
+	fme = ExpressionFactory.createFeatureMatchExpression(mr, comp, arg, $blockDeclaration::env);}
 	;
 
 
@@ -1196,8 +1245,8 @@ featureAssignmentExpression returns [FeatureMatchExpression fme = null]
 	:
 	match = dottedId2 op = ASSIGN_EQUAL arg = argument
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match, op, arg);
-	fme = ExpressionFactory.createFeatureMatchExpression(mr, $blockDeclaration::env);
+	MatchReference mr = ExpressionFactory.createMatchReference(match);
+	fme = ExpressionFactory.createFeatureMatchExpression(mr, op, arg, $blockDeclaration::env);
 	}
 	;
 	
@@ -1219,15 +1268,15 @@ listVariable returns [Token var = null]
 	;
 
 
-//typeExpressionOr returns [TypeExpression type = null]
-//@init {List<TypeExpression> exprs = new ArrayList<TypeExpression>();}
+//typeExpressionOr returns [ITypeExpression type = null]
+//@init {List<ITypeExpression> exprs = new ArrayList<ITypeExpression>();}
 //	:
 //	LBRACK e = typeExpressionAnd{exprs.add(e);} ( COMMA e = typeExpressionAnd{exprs.add(e);} )* RBRACK
 //	{type = ExpressionFactory.createOrTypeExpression(exprs);}
 //	;
 
-//typeExpressionAnd returns [TypeExpression type = null]
-//@init {List<TypeExpression> exprs = new ArrayList<TypeExpression>();}
+//typeExpressionAnd returns [ITypeExpression type = null]
+//@init {List<ITypeExpression> exprs = new ArrayList<ITypeExpression>();}
 //	:
 //	LBRACK e = simpleTypeExpression{exprs.add(e);} ( SEMI e = simpleTypeExpression{exprs.add(e);} )* RBRACK
 //	{type = ExpressionFactory.createAndTypeExpression(exprs);}
@@ -1831,7 +1880,7 @@ actionReplace returns [AbstractRutaAction action = null]
 
 actionRetainType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :   
     RETAINTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)?
@@ -1842,7 +1891,7 @@ List<TypeExpression> list = new ArrayList<TypeExpression>();
 
 actionFilterType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :   
     FILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)?
@@ -1939,7 +1988,7 @@ actionGreedyAnchoring returns [AbstractRutaAction action = null]
 
 actionTrim returns [AbstractRutaAction action = null]
 @init {
-  List<TypeExpression> types = new ArrayList<TypeExpression>();
+  List<ITypeExpression> types = new ArrayList<ITypeExpression>();
 }
     :
     name = TRIM LPAREN 
@@ -2084,7 +2133,7 @@ actionClear returns [AbstractRutaAction action = null]
 
 actionAddRetainType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     ADDRETAINTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
@@ -2093,7 +2142,7 @@ List<TypeExpression> list = new ArrayList<TypeExpression>();
 
 actionRemoveRetainType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     REMOVERETAINTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
@@ -2102,7 +2151,7 @@ List<TypeExpression> list = new ArrayList<TypeExpression>();
 
 actionAddFilterType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     ADDFILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
@@ -2111,7 +2160,7 @@ List<TypeExpression> list = new ArrayList<TypeExpression>();
 
 actionRemoveFilterType returns [AbstractRutaAction action = null]
 @init {
-List<TypeExpression> list = new ArrayList<TypeExpression>();
+List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     REMOVEFILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
@@ -2134,8 +2183,8 @@ options {
 	| a4 = stringExpression {expr = a4;}
 	| (listExpression)=> l = listExpression {expr = l;}
 	| a5 = nullExpression {expr = a5;}
-	//| a6 = annotationExpression {expr = a6;}
-	| a1 = typeExpression {expr = a1;}
+	| a6 = annotationOrTypeExpression {expr = a6;}
+	//| a1 = typeExpression {expr = a1;}
 	
 	//(a2 = booleanExpression)=> a2 = booleanExpression {expr = a2;}
 	//| (a3 = numberExpression)=> a3 = numberExpression {expr = a3;}
@@ -2143,16 +2192,56 @@ options {
 	//| (a1 = typeExpression)=> a1 = typeExpression {expr = a1;}
 	;
 
+annotationOrTypeExpression returns [IRutaExpression expr = null]
+	:
+	aae = annotationAddressExpression {expr = aae;}
+	|
+	tf = typeFunction {expr = tf;}
+	|
+	af = annotationFunction {expr = af;}	
+	|
+	ref = dottedId
+	{expr = ExpressionFactory.createGenericExpression(ref);}
+	;
 
-//annotationExpression returns [IRutaExpression expr = null]
-	//:
-	//ale = annotationLabelExpression {expr = ale}
-	//;
+annotationExpression returns [IRutaExpression expr = null]
+	:
+	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")	}? 
+	id = Identifier {expr = ExpressionFactory.createAnnotationVariableExpression(id);} 
+	|
+	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")	}? 
+	id = Identifier {expr = ExpressionFactory.createAnnotationListVariableExpression(id);} 
+	|
+	aae = annotationAddressExpression {expr = aae;}
+	|
+	ale = annotationLabelExpression {expr = ale;}
 	
-//annotationLabelExpression returns [IRutaExpression expr = null]
-	//:
-	//label = Identifier {expr = ExpressionFactory.createRuleElementLabelExpression();}
-	//;
+	;
+
+annotationAddressExpression returns [IAnnotationExpression expr = null]
+	:
+	ADDRESS_PREFIX address = DecimalLiteral {expr = ExpressionFactory.createAnnotationAddressExpression(address);}
+	;
+	
+annotationLabelExpression returns [IRutaExpression expr = null]
+	:
+	label = Identifier {expr = ExpressionFactory.createAnnotationLabelExpression(label);}
+	;
+
+annotationFunction returns [IAnnotationExpression expr = null]
+	:
+	(e = externalAnnotationFunction)=> e = externalAnnotationFunction {expr = e;}
+	;
+
+externalAnnotationFunction returns [IAnnotationExpression expr = null]
+	:
+	{isAnnotationFunctionExtension(input.LT(1).getText())}? 
+	id = Identifier LPAREN
+	args = varArgumentList?	RPAREN
+	{
+		expr = external.createExternalAnnotationFunction(id, args);
+	}
+	;
 
 nullExpression returns [IRutaExpression expr = null]
 	:
@@ -2232,6 +2321,7 @@ annotationType returns [Token ref = null]
 	did = dottedId {ref = did;}
 	)
 	;
+	
 
 wordListExpression returns [WordListExpression expr = null]
 @init  {

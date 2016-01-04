@@ -28,8 +28,9 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -41,7 +42,7 @@ public class PositionCondition extends TypeSentiveCondition {
 
   private final IBooleanExpression relative;
 
-  public PositionCondition(TypeExpression type, INumberExpression position,
+  public PositionCondition(ITypeExpression type, INumberExpression position,
           IBooleanExpression relative) {
     super(type);
     this.position = position;
@@ -49,9 +50,10 @@ public class PositionCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    Type t = type.getType(element.getParent());
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
+    RuleElement element = context.getElement();
+    Type t = type.getType(context, stream);
 
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
     RutaBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
@@ -60,8 +62,7 @@ public class PositionCondition extends TypeSentiveCondition {
       return new EvaluatedCondition(this, false);
     }
 
-    boolean relatively = relative == null ? true : relative.getBooleanValue(element.getParent(),
-            annotation, stream);
+    boolean relatively = relative == null ? true : relative.getBooleanValue(context, stream);
 
     FSIterator<AnnotationFS> iterator = stream.getCas().getAnnotationIndex(t).iterator(beginAnchor);
     if (!iterator.isValid()) {
@@ -92,7 +93,7 @@ public class PositionCondition extends TypeSentiveCondition {
     if (window == null) {
       return new EvaluatedCondition(this, false);
     }
-    int integerValue = position.getIntegerValue(element.getParent(), annotation, stream);
+    int integerValue = position.getIntegerValue(context, stream);
     if (relatively) {
       int counter = 0;
       List<RutaBasic> inWindow = stream.getBasicsInWindow(window);

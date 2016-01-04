@@ -17,37 +17,52 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.bool;
+package org.apache.uima.ruta.expression.type;
 
-import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
-public class ReferenceBooleanExpression extends AbstractBooleanExpression {
+public class TypeVariableExpression extends AbstractTypeExpression {
 
   private final String var;
 
-  public ReferenceBooleanExpression(String var) {
+  public TypeVariableExpression(String varString) {
     super();
-    this.var = var;
+    this.var = varString;
   }
 
   @Override
-  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    Boolean variableValue = parent.getEnvironment().getVariableValue(var, Boolean.class);
-    if (variableValue == null) {
-      return false;
-    }
-    return variableValue;
+  public String toString() {
+    return getVar();
   }
 
   public String getVar() {
     return var;
   }
 
+  /**
+   * Returns the actual type of the TypeExpression
+   * 
+   * @return annotation type
+   * @throws IllegalArgumentException
+   *           if the type cannot be resolved.
+   */
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return getBooleanValue(parent, annotation, stream) ? "true" : "false";
+  public Type getType(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
+    Type type = parent.getEnvironment().getVariableValue(var, Type.class);
+    if (type == null) {
+      throw new IllegalArgumentException("Not able to resolve type variable: " + var);
+    }
+    return type;
+  }
+
+  @Override
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    Type type = getType(context, stream);
+    return type != null ? type.getName() : "null";
   }
 
 }

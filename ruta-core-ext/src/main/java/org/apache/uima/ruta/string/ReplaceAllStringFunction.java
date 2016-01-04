@@ -19,11 +19,10 @@
 
 package org.apache.uima.ruta.string;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.StringFunctionExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class ReplaceAllStringFunction extends StringFunctionExpression {
 
@@ -43,9 +42,9 @@ public class ReplaceAllStringFunction extends StringFunctionExpression {
     return text;
   }
 
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return text.getStringValue(parent, annotation, stream).replaceAll(
-            searchTerm.getStringValue(parent, annotation, stream),
-            replacement.getStringValue(parent, annotation, stream));
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return text.getStringValue(context, stream).replaceAll(
+            searchTerm.getStringValue(context, stream),
+            replacement.getStringValue(context, stream));
   }
 }

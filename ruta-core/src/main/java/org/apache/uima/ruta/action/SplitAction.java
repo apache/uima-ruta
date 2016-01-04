@@ -28,11 +28,11 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -41,7 +41,7 @@ import org.apache.uima.util.CasCopier;
 
 public class SplitAction extends AbstractRutaAction {
 
-  private TypeExpression splitOnType;
+  private ITypeExpression splitOnType;
 
   private IBooleanExpression complete;
 
@@ -49,7 +49,7 @@ public class SplitAction extends AbstractRutaAction {
 
   private IBooleanExpression appendToEnd;
 
-  public SplitAction(TypeExpression splitOnType, IBooleanExpression complete,
+  public SplitAction(ITypeExpression splitOnType, IBooleanExpression complete,
           IBooleanExpression appendToBegin, IBooleanExpression appendToEnd) {
     super();
     this.splitOnType = splitOnType;
@@ -59,13 +59,15 @@ public class SplitAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
-    RutaBlock parent = element.getParent();
-    Type typeToSplit = splitOnType.getType(parent);
-    boolean splitOnCompleteAnnotation = complete.getBooleanValue(parent, match, element, stream);
-    boolean addToBegin = appendToBegin.getBooleanValue(parent, match, element, stream);
-    boolean addToEnd = appendToEnd.getBooleanValue(parent, match, element, stream);
+    element.getParent();
+    Type typeToSplit = splitOnType.getType(context, stream);
+    boolean splitOnCompleteAnnotation = complete.getBooleanValue(context, stream);
+    boolean addToBegin = appendToBegin.getBooleanValue(context, stream);
+    boolean addToEnd = appendToEnd.getBooleanValue(context, stream);
     for (AnnotationFS annotation : matchedAnnotationsOf) {
       splitAnnotation(annotation, typeToSplit, splitOnCompleteAnnotation, addToBegin, addToEnd,
               match, stream);
@@ -165,11 +167,11 @@ public class SplitAction extends AbstractRutaAction {
 
   private boolean trimInvisible(Annotation annotation, RutaStream stream) {
     List<RutaBasic> basics = new ArrayList<>(stream.getAllBasicsInWindow(annotation));
-    
+
     int min = annotation.getEnd();
     int max = annotation.getBegin();
 
-    if(min <= max) {
+    if (min <= max) {
       return false;
     }
 

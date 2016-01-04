@@ -60,7 +60,6 @@ public class ViewWriter extends JCasMultiplier_ImplBase {
   @ConfigurationParameter(name = PARAM_OUTPUT, mandatory = false, defaultValue = "")
   private String output;
 
-  
   /**
    * The name of the view that should be stored in a file. The default value is "_InitialView".
    */
@@ -68,19 +67,15 @@ public class ViewWriter extends JCasMultiplier_ImplBase {
 
   @ConfigurationParameter(name = PARAM_INPUT_VIEW, mandatory = false, defaultValue = "_InitialView")
   private String inputView;
-  
 
   /**
-   * The name, which should be used, to store the view in the file. The default value is "_InitialView".
+   * The name, which should be used, to store the view in the file. The default value is
+   * "_InitialView".
    */
   public static final String PARAM_OUTPUT_VIEW = "outputView";
 
   @ConfigurationParameter(name = PARAM_OUTPUT_VIEW, mandatory = false, defaultValue = "_InitialView")
   private String outputView;
-  
-
-
-
 
   private CAS outView;
 

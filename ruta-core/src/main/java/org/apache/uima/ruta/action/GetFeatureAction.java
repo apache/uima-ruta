@@ -30,6 +30,7 @@ import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.rule.RutaRuleElement;
@@ -48,7 +49,9 @@ public class GetFeatureAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<Type> types = new ArrayList<Type>();
     RutaBlock parent = element.getParent();
     if (element instanceof RutaRuleElement) {
@@ -58,7 +61,7 @@ public class GetFeatureAction extends AbstractRutaAction {
       return;
 
     for (Type type : types) {
-      String stringValue = featureStringExpression.getStringValue(parent, match, element, stream);
+      String stringValue = featureStringExpression.getStringValue(context, stream);
       Feature featureByBaseName = type.getFeatureByBaseName(stringValue);
       RutaEnvironment environment = parent.getEnvironment();
       List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);

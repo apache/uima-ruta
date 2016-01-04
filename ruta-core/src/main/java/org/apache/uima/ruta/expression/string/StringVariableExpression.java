@@ -17,51 +17,30 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.type;
+package org.apache.uima.ruta.expression.string;
 
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
-public class ReferenceTypeExpression extends TypeExpression {
+public class StringVariableExpression extends LiteralStringExpression {
 
   private final String var;
 
-  public ReferenceTypeExpression(String varString) {
+  public StringVariableExpression(String var) {
     super();
-    this.var = varString;
+    this.var = var;
   }
 
   @Override
-  public String toString() {
-    return getVar();
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
+    String variableValue = parent.getEnvironment().getVariableValue(getVar(), String.class);
+    return variableValue;
   }
 
   public String getVar() {
     return var;
-  }
-
-  /**
-   * Returns the actual type of the TypeExpression
-   * 
-   * @param parent - the block of the element 
-   * @return annotation type
-   * @throws IllegalArgumentException if the type cannot be resolved.
-   */
-  @Override
-  public Type getType(RutaBlock parent) {
-    Type type = parent.getEnvironment().getVariableValue(var, Type.class);
-    if(type == null) {
-      throw new IllegalArgumentException("Not able to resolve type variable: " + var);
-    }
-    return type;
-  }
-
-  @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    Type type = getType(parent);
-    return type != null ? type.getName() : "null";
   }
 
 }

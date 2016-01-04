@@ -28,7 +28,7 @@ import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class InListCondition extends TerminalRutaCondition {
@@ -52,20 +52,20 @@ public class InListCondition extends TerminalRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
     String text = annotation.getCoveredText();
-    if(arg != null) {
-      text = arg.getStringValue(element.getParent(), annotation, stream);
+    if (arg != null) {
+      text = arg.getStringValue(context, stream);
     }
-    if(text == null) {
+    if (text == null) {
       return new EvaluatedCondition(this, false);
     }
     if (stringList == null) {
-      RutaWordList wordList = listExpr.getList(element.getParent());
+      RutaWordList wordList = listExpr.getList(context);
       return new EvaluatedCondition(this, wordList.contains(text, false, 0, null, 0, true));
     }
-    List<String> sList = stringList.getList(element.getParent(), stream);
+    List<String> sList = stringList.getList(context, stream);
     boolean contains = sList.contains(text);
     return new EvaluatedCondition(this, contains);
   }

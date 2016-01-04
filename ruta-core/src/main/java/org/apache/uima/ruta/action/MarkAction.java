@@ -26,7 +26,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaAnnotation;
@@ -38,15 +39,17 @@ public class MarkAction extends AbstractMarkAction {
 
   protected final List<INumberExpression> list;
 
-  public MarkAction(TypeExpression type, INumberExpression scoreValue, List<INumberExpression> list) {
+  public MarkAction(ITypeExpression type, INumberExpression scoreValue, List<INumberExpression> list) {
     super(type);
     this.score = scoreValue;
     this.list = list;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    List<Integer> indexList = getIndexList(element, list, stream);
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
+    List<Integer> indexList = getIndexList(context, list, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
@@ -54,22 +57,22 @@ public class MarkAction extends AbstractMarkAction {
         return;
       }
       if (score == null) {
-        createAnnotation(matchedAnnotation, element, stream, match);
+        createAnnotation(matchedAnnotation, context, stream);
       } else {
-        double deltaScore = score.getDoubleValue(element.getParent(), match, element, stream);
-        updateHeuristicAnnotation(match, element, stream, matchedAnnotation, deltaScore);
+        double deltaScore = score.getDoubleValue(context, stream);
+        updateHeuristicAnnotation(context, stream, matchedAnnotation, deltaScore);
       }
     }
 
   }
 
-  protected void updateHeuristicAnnotation(RuleMatch match, RuleElement element, RutaStream stream,
+  protected void updateHeuristicAnnotation(MatchContext context, RutaStream stream,
           AnnotationFS matchedAnnotation, double deltaScore) {
     Type heuristicType = stream.getJCas().getCasType(RutaAnnotation.type);
     RutaAnnotation heuristicAnnotation = (RutaAnnotation) stream.getCas().createAnnotation(
             heuristicType, matchedAnnotation.getBegin(), matchedAnnotation.getEnd());
     Annotation newAnnotation = (Annotation) stream.getCas().createAnnotation(
-            type.getType(element.getParent()), heuristicAnnotation.getBegin(),
+            type.getType(context, stream), heuristicAnnotation.getBegin(),
             heuristicAnnotation.getEnd());
     heuristicAnnotation.setScore(deltaScore);
     heuristicAnnotation.setAnnotation(newAnnotation);
@@ -79,7 +82,7 @@ public class MarkAction extends AbstractMarkAction {
     if (annotationsInWindow.isEmpty()) {
       heuristicAnnotation.addToIndexes();
       newAnnotation.addToIndexes();
-      stream.addAnnotation(newAnnotation, match);
+      stream.addAnnotation(newAnnotation, context.getRuleMatch());
     } else {
       RutaAnnotation tma = stream.getCorrectTMA(annotationsInWindow, heuristicAnnotation);
       if (tma != null) {
@@ -90,7 +93,7 @@ public class MarkAction extends AbstractMarkAction {
       } else {
         heuristicAnnotation.addToIndexes();
         newAnnotation.addToIndexes();
-        stream.addAnnotation(newAnnotation, match);
+        stream.addAnnotation(newAnnotation, context.getRuleMatch());
       }
     }
 

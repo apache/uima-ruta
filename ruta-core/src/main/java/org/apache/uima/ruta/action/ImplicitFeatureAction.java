@@ -31,21 +31,13 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
-import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
-import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
-import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
-import org.apache.uima.ruta.utils.UIMAUtils;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ImplicitFeatureAction extends AbstractRutaAction {
@@ -60,9 +52,11 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    TypeExpression typeExpr = expr.getTypeExpr(element.getParent());
-    Type type = typeExpr.getType(element.getParent());
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
+    ITypeExpression typeExpr = expr.getTypeExpr(context, stream);
+    Type type = typeExpr.getType(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comp);
     for (AnnotationFS annotation : matchedAnnotations) {
@@ -72,95 +66,21 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
       stream.getCas().removeFsFromIndexes(each);
     }
     Collection<AnnotationFS> featureAnnotations = expr.getFeatureAnnotations(annotations, stream,
-            element.getParent(), false);
+            context, false);
     if (featureAnnotations.isEmpty()) {
       // null value in feature, but we require the host
       featureAnnotations = annotations;
     }
-    Feature feature = expr.getFeature(element.getParent());
+    Feature feature = expr.getFeature(context, stream);
     IRutaExpression arg = expr.getArg();
     for (AnnotationFS each : featureAnnotations) {
-      setFeatureValue(each, feature, arg, element, stream);
+      stream.assignFeatureValue(each, feature, arg, context);
     }
     for (AnnotationFS each : annotations) {
       stream.getCas().addFsToIndexes(each);
     }
   }
 
-  private void setFeatureValue(AnnotationFS a, Feature feature, IRutaExpression argExpr,
-          RuleElement element, RutaStream stream) {
-    if (feature == null) {
-      throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
-    }
-    String range = feature.getRange().getName();
-    if (range.equals(UIMAConstants.TYPE_STRING)) {
-      if (argExpr instanceof IStringExpression) {
-        IStringExpression stringExpr = (IStringExpression) argExpr;
-        String string = stringExpr.getStringValue(element.getParent(), a, stream);
-        a.setStringValue(feature, string);
-      }
-    } else if (argExpr instanceof INumberExpression
-            && (range.equals(UIMAConstants.TYPE_INTEGER) || range.equals(UIMAConstants.TYPE_LONG)
-                    || range.equals(UIMAConstants.TYPE_SHORT) || range
-                      .equals(UIMAConstants.TYPE_BYTE))) {
-      INumberExpression numberExpr = (INumberExpression) argExpr;
-      int v = numberExpr.getIntegerValue(element.getParent(), a, stream);
-      a.setIntValue(feature, v);
-    } else if (argExpr instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_DOUBLE))) {
-      INumberExpression numberExpr = (INumberExpression) argExpr;
-      double v = numberExpr.getDoubleValue(element.getParent(), a, stream);
-      a.setDoubleValue(feature, v);
-    } else if (argExpr instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_FLOAT))) {
-      INumberExpression numberExpr = (INumberExpression) argExpr;
-      float v = numberExpr.getFloatValue(element.getParent(), a, stream);
-      a.setFloatValue(feature, v);
-    } else if (argExpr instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
-      IBooleanExpression booleanExpr = (IBooleanExpression) argExpr;
-      boolean v = booleanExpr.getBooleanValue(element.getParent(), a, stream);
-      a.setBooleanValue(feature, v);
-    } else if (argExpr instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
-      IBooleanExpression booleanExpr = (IBooleanExpression) argExpr;
-      boolean v = booleanExpr.getBooleanValue(element.getParent(), a, stream);
-      a.setBooleanValue(feature, v);
-    } else if (argExpr instanceof ITypeExpression && !feature.getRange().isPrimitive()) {
-      ITypeExpression typeExpr = (ITypeExpression) argExpr;
-      Type t = typeExpr.getType(element.getParent());
-      List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(a, t);
-      if (feature.getRange().isArray()) {
-        a.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
-      } else {
-        if (inWindow != null && !inWindow.isEmpty()) {
-          AnnotationFS annotation = inWindow.get(0);
-          a.setFeatureValue(feature, annotation);
-        } else {
-          a.setFeatureValue(feature, null);
-        }
-      }
-    } else if (argExpr instanceof GenericFeatureExpression && !feature.getRange().isPrimitive()) {
-      FeatureExpression fe = ((GenericFeatureExpression) argExpr).getFeatureExpression();
-      TypeExpression typeExpr = fe.getTypeExpr(element.getParent());
-      Type t = typeExpr.getType(element.getParent());
-      List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(a, t);
-      if (fe instanceof SimpleFeatureExpression) {
-        SimpleFeatureExpression sfe = (SimpleFeatureExpression) fe;
-        List<AnnotationFS> featureAnnotations = new ArrayList<>(sfe.getFeatureAnnotations(inWindow,
-                stream, element.getParent(), false));
-        if (feature.getRange().isArray()) {
-          a.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), featureAnnotations));
-        } else if (!featureAnnotations.isEmpty()) {
-          AnnotationFS annotation = featureAnnotations.get(0);
-          a.setFeatureValue(feature, annotation);
-        }
-      } else {
-        if (feature.getRange().isArray()) {
-          a.setFeatureValue(feature, UIMAUtils.toFSArray(stream.getJCas(), inWindow));
-        } else {
-          AnnotationFS annotation = inWindow.get(0);
-          a.setFeatureValue(feature, annotation);
-        }
-      }
-    }
-  }
 
   private List<AnnotationFS> getAnnotations(AnnotationFS annotation, Type type,
           FeatureMatchExpression fme, RutaStream stream) {

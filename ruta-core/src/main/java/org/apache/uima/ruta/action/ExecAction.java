@@ -39,8 +39,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 import org.apache.uima.util.XMLInputSource;
 
@@ -61,19 +60,19 @@ public class ExecAction extends CallAction {
   }
 
   @Override
-  protected void callScript(RutaBlock block, RuleMatch match, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd) {
+  protected void callScript(RutaBlock block, MatchContext context, RutaStream stream,
+          InferenceCrowd crowd) {
     ScriptApply apply = block.apply(stream, crowd);
-    match.addDelegateApply(this, apply);
+    context.getRuleMatch().addDelegateApply(this, apply);
   }
 
   @Override
-  protected void callEngine(RuleMatch match, InferenceCrowd crowd, AnalysisEngine targetEngine,
-          RuleElement element, RutaStream stream) throws ResourceInitializationException,
+  protected void callEngine(MatchContext context, InferenceCrowd crowd,
+          AnalysisEngine targetEngine, RutaStream stream) throws ResourceInitializationException,
           AnalysisEngineProcessException {
     CAS cas = stream.getCas();
     if (view != null) {
-      String viewName = view.getStringValue(element.getParent(), match, element, stream);
+      String viewName = view.getStringValue(context, stream);
       if (!viewName.equals(CAS.NAME_DEFAULT_SOFA)) {
         cas = cas.getView(viewName);
         AnalysisEngineMetaData metaData = targetEngine.getAnalysisEngineMetaData();
@@ -93,7 +92,7 @@ public class ExecAction extends CallAction {
     targetEngine.process(cas);
 
     if (typeList != null && view == null) {
-      List<Type> list = typeList.getList(element.getParent(), stream);
+      List<Type> list = typeList.getList(context, stream);
       for (Type type : list) {
         AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(type);
         Collection<AnnotationFS> toUpdate = new LinkedList<AnnotationFS>();
@@ -104,12 +103,11 @@ public class ExecAction extends CallAction {
           stream.removeAnnotation(each);
         }
         for (AnnotationFS each : toUpdate) {
-          stream.addAnnotation(each, true, match);
+          stream.addAnnotation(each, true, context.getRuleMatch());
         }
       }
     }
-    
-    
+
   }
 
   public TypeListExpression getTypeList() {

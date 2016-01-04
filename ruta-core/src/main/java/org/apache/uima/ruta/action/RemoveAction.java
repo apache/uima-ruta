@@ -29,9 +29,9 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RemoveAction extends AbstractRutaAction {
@@ -56,24 +56,25 @@ public class RemoveAction extends AbstractRutaAction {
 
   @SuppressWarnings({ "rawtypes" })
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
     List list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Object> toRemove = new ArrayList<Object>();
     for (Object entry : list) {
-      Object value1 = getValue(entry, parent, stream, match, element);
+      Object value1 = getValue(entry, context, stream);
       for (IRutaExpression arg : elements) {
         if (arg instanceof ListExpression) {
           ListExpression l = (ListExpression) arg;
-          List list2 = l.getList(parent, stream);
+          List list2 = l.getList(context, stream);
           for (Object object : list2) {
-            Object value2 = getValue(object, parent, stream, match, element);
+            Object value2 = getValue(object, context, stream);
             if (value1.equals(value2)) {
               toRemove.add(entry);
             }
           }
         } else {
-          Object value2 = getValue(arg, parent, stream, match, element);
+          Object value2 = getValue(arg, context, stream);
           if (value1.equals(value2)) {
             toRemove.add(entry);
           }
@@ -86,15 +87,15 @@ public class RemoveAction extends AbstractRutaAction {
     parent.getEnvironment().setVariableValue(var, list);
   }
 
-  private Object getValue(Object obj, RutaBlock parent, RutaStream stream, RuleMatch match, RuleElement element) {
+  private Object getValue(Object obj, MatchContext context, RutaStream stream) {
     if (obj instanceof INumberExpression) {
-      return ((INumberExpression) obj).getDoubleValue(parent, match, element, stream);
+      return ((INumberExpression) obj).getDoubleValue(context, stream);
     } else if (obj instanceof IBooleanExpression) {
-      return ((IBooleanExpression) obj).getBooleanValue(parent, match, element, stream);
-    } else if (obj instanceof TypeExpression) {
-      return ((TypeExpression) obj).getType(parent);
+      return ((IBooleanExpression) obj).getBooleanValue(context, stream);
+    } else if (obj instanceof ITypeExpression) {
+      return ((ITypeExpression) obj).getType(context, stream);
     } else if (obj instanceof IStringExpression) {
-      return ((IStringExpression) obj).getStringValue(parent, match, element, stream);
+      return ((IStringExpression) obj).getStringValue(context, stream);
     }
     return null;
   }

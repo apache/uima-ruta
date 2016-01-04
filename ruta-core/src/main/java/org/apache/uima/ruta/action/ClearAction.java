@@ -20,8 +20,8 @@
 package org.apache.uima.ruta.action;
 
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ClearAction extends AbstractRutaAction {
@@ -34,7 +34,8 @@ public class ClearAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleElement element = context.getElement();
     element.getParent().getEnvironment().setVariableValue(list, null);
   }
 

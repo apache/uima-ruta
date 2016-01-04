@@ -19,11 +19,10 @@
 
 package org.apache.uima.ruta.condition;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public abstract class AbstractRutaCondition extends RutaElement {
@@ -32,8 +31,8 @@ public abstract class AbstractRutaCondition extends RutaElement {
     super();
   }
 
-  public abstract EvaluatedCondition eval(AnnotationFS annotation, RuleElement element,
-          RutaStream stream, InferenceCrowd crowd);
+  public abstract EvaluatedCondition eval(MatchContext context, RutaStream stream,
+          InferenceCrowd crowd);
 
   @Override
   public String toString() {

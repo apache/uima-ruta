@@ -59,8 +59,8 @@ public class Ruta {
     File scriptFile = File.createTempFile("Ruta", RutaEngine.SCRIPT_FILE_EXTENSION);
     scriptFile.deleteOnExit();
     FileUtils.saveString2File(script, scriptFile);
-    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
-            .getAbsolutePath() });
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile
+            .getParentFile().getAbsolutePath() });
     String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
     ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
     if (parameters != null) {
@@ -135,8 +135,8 @@ public class Ruta {
             .parseResourceSpecifier(in);
     AnalysisEngineMetaData metaData = aed.getAnalysisEngineMetaData();
     ConfigurationParameterSettings settings = metaData.getConfigurationParameterSettings();
-    settings.setParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
-            .getAbsolutePath() });
+    settings.setParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile
+            .getParentFile().getAbsolutePath() });
     String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
     settings.setParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
     if (tsds != null) {

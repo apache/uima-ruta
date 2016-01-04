@@ -27,21 +27,21 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 
 public abstract class AbstractMarkAction extends TypeSensitiveAction {
 
-  public AbstractMarkAction(TypeExpression type) {
+  public AbstractMarkAction(ITypeExpression type) {
     super(type);
   }
 
-  protected Annotation createAnnotation(AnnotationFS matchedAnnotation, RuleElement element,
-          RutaStream stream, RuleMatch match) {
-    Type t = type.getType(element.getParent());
-    AnnotationFS newAnnotationFS = stream.getCas().createAnnotation(t,
-            matchedAnnotation.getBegin(), matchedAnnotation.getEnd());
+  protected Annotation createAnnotation(AnnotationFS annotation, MatchContext context,
+          RutaStream stream) {
+    Type t = type.getType(context, stream);
+    AnnotationFS newAnnotationFS = stream.getCas().createAnnotation(t, annotation.getBegin(),
+            annotation.getEnd());
     Annotation newAnnotation = null;
     if (newAnnotationFS instanceof Annotation) {
       newAnnotation = (Annotation) newAnnotationFS;
@@ -49,7 +49,7 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
     } else {
       return null;
     }
-    stream.addAnnotation(newAnnotation, match);
+    stream.addAnnotation(newAnnotation, context.getRuleMatch());
     return newAnnotation;
   }
 
@@ -58,8 +58,9 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
     return super.toString() + "," + type.getClass().getSimpleName();
   }
 
-  protected List<Integer> getIndexList(RuleElement element, List<INumberExpression> list,
+  protected List<Integer> getIndexList(MatchContext context, List<INumberExpression> list,
           RutaStream stream) {
+    RuleElement element = context.getElement();
     List<Integer> indexList = new ArrayList<Integer>();
     if (list == null || list.isEmpty()) {
       int self = element.getContainer().getRuleElements().indexOf(element) + 1;
@@ -69,7 +70,7 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
     int last = Integer.MAX_VALUE - 1;
     for (INumberExpression each : list) {
       // no feature matches allowed
-      int value = each.getIntegerValue(element.getParent(), null, stream);
+      int value = each.getIntegerValue(context, stream);
       for (int i = Math.min(value, last + 1); i < value; i++) {
         indexList.add(i);
       }

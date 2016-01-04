@@ -28,8 +28,9 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -42,7 +43,7 @@ public class ContextCountCondition extends TypeSentiveCondition {
 
   private final String var;
 
-  public ContextCountCondition(TypeExpression type, INumberExpression min, INumberExpression max,
+  public ContextCountCondition(ITypeExpression type, INumberExpression min, INumberExpression max,
           String var) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(Integer.MIN_VALUE) : min;
@@ -51,9 +52,11 @@ public class ContextCountCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    Type contextType = type.getType(element.getParent());
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
+    RuleElement element = context.getElement();
+
+    Type contextType = type.getType(context, stream);
     stream.moveToFirst();
     List<AnnotationFS> visibleContexts = new ArrayList<AnnotationFS>();
     while (stream.isValid()) {
@@ -94,8 +97,8 @@ public class ContextCountCondition extends TypeSentiveCondition {
       if (var != null) {
         element.getParent().getEnvironment().setVariableValue(var, index);
       }
-      boolean value = index >= min.getIntegerValue(element.getParent(), annotation, stream)
-              && index <= max.getIntegerValue(element.getParent(), annotation, stream);
+      boolean value = index >= min.getIntegerValue(context, stream)
+              && index <= max.getIntegerValue(context, stream);
       result |= value;
       if (result) {
         break;

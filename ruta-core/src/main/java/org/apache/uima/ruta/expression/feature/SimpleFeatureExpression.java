@@ -29,26 +29,26 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.NullExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class SimpleFeatureExpression extends FeatureExpression {
 
   private MatchReference mr;
 
-  private TypeExpression typeExpr;
+  private ITypeExpression typeExpr;
 
   private List<String> features;
 
   protected AnnotationComparator comparator = new AnnotationComparator();
 
-  public SimpleFeatureExpression(TypeExpression te, List<String> featureReferences) {
+  public SimpleFeatureExpression(ITypeExpression te, List<String> featureReferences) {
     super();
     this.typeExpr = te;
     this.features = featureReferences;
@@ -60,8 +60,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
   }
 
   @Override
-  public Feature getFeature(RutaBlock parent) {
-    List<Feature> features = getFeatures(parent);
+  public Feature getFeature(MatchContext context, RutaStream stream) {
+    List<Feature> features = getFeatures(context, stream);
     if (features != null && !features.isEmpty()) {
       return features.get(features.size() - 1);
     } else {
@@ -70,17 +70,17 @@ public class SimpleFeatureExpression extends FeatureExpression {
   }
 
   @Override
-  public List<Feature> getFeatures(RutaBlock parent) {
+  public List<Feature> getFeatures(MatchContext context, RutaStream stream) {
     if (mr != null) {
-      typeExpr = mr.getTypeExpression(parent);
-      FeatureExpression featureExpression = mr.getFeatureExpression(parent);
+      typeExpr = mr.getTypeExpression(context, stream);
+      FeatureExpression featureExpression = mr.getFeatureExpression(context, stream);
       if (featureExpression == null) {
         return null;
       }
-      features = featureExpression.getFeatureStringList(parent);
+      features = featureExpression.getFeatureStringList(context, stream);
     }
     List<Feature> result = new ArrayList<Feature>();
-    Type type = typeExpr.getType(parent);
+    Type type = typeExpr.getType(context, stream);
     Feature feature = null;
     for (String each : features) {
       if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT)) {
@@ -102,20 +102,20 @@ public class SimpleFeatureExpression extends FeatureExpression {
     return result;
   }
 
-  public TypeExpression getTypeExpr(RutaBlock parent) {
+  public ITypeExpression getTypeExpr(MatchContext context, RutaStream stream) {
     if (mr != null) {
-      return mr.getTypeExpression(parent);
+      return mr.getTypeExpression(context, stream);
     }
     return typeExpr;
   }
 
-  public void setTypeExpr(TypeExpression typeExpr) {
+  public void setTypeExpr(ITypeExpression typeExpr) {
     this.typeExpr = typeExpr;
   }
 
-  public List<String> getFeatureStringList(RutaBlock parent) {
+  public List<String> getFeatureStringList(MatchContext context, RutaStream stream) {
     if (mr != null) {
-      features = mr.getFeatureExpression(parent).getFeatureStringList(parent);
+      features = mr.getFeatureExpression(context, stream).getFeatureStringList(context, stream);
     }
     return features;
   }
@@ -125,37 +125,40 @@ public class SimpleFeatureExpression extends FeatureExpression {
   }
 
   public Collection<AnnotationFS> getFeatureAnnotations(Collection<AnnotationFS> annotations,
-          RutaStream stream, RutaBlock parent, boolean checkOnFeatureValue) {
+          RutaStream stream, MatchContext context, boolean checkOnFeatureValue) {
     Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
-    List<Feature> features = getFeatures(parent);
+    List<Feature> features = getFeatures(context, stream);
+
     for (AnnotationFS eachBase : annotations) {
       AnnotationFS afs = eachBase;
-      for (Feature feature : features) {
-        if (afs == null) {
-          break;
-        }
-        if (feature == null || feature.getRange().isPrimitive()) {
-          // feature == null -> this is the coveredText "feature"
-          if (this instanceof FeatureMatchExpression) {
-            FeatureMatchExpression fme = (FeatureMatchExpression) this;
-            if (checkOnFeatureValue) {
-              if (fme.checkFeatureValue(afs, feature, stream, parent)) {
+      if (features != null) {
+        for (Feature feature : features) {
+          if (afs == null) {
+            break;
+          }
+          if (feature == null || feature.getRange().isPrimitive()) {
+            // feature == null -> this is the coveredText "feature"
+            if (this instanceof FeatureMatchExpression) {
+              FeatureMatchExpression fme = (FeatureMatchExpression) this;
+              if (checkOnFeatureValue) {
+                if (fme.checkFeatureValue(afs, context, feature, stream)) {
+                  result.add(afs);
+                }
+              } else {
                 result.add(afs);
               }
+              break;
             } else {
               result.add(afs);
             }
-            break;
           } else {
-            result.add(afs);
-          }
-        } else {
-          FeatureStructure value = afs.getFeatureValue(feature);
-          if (value instanceof AnnotationFS) {
-            afs = (AnnotationFS) value;
-          } else if (value != null) {
-            throw new IllegalArgumentException(value.getType()
-                    + " is not supported in a feature match expression (" + mr.getMatch() + ").");
+            FeatureStructure value = afs.getFeatureValue(feature);
+            if (value instanceof AnnotationFS) {
+              afs = (AnnotationFS) value;
+            } else if (value != null) {
+              throw new IllegalArgumentException(value.getType()
+                      + " is not supported in a feature match expression (" + mr.getMatch() + ").");
+            }
           }
         }
       }
@@ -176,6 +179,10 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
   public MatchReference getMatchReference() {
     return mr;
+  }
+
+  public String toString() {
+    return mr.getMatch();
   }
 
 }

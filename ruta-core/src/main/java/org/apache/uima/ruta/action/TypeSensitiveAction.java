@@ -19,18 +19,18 @@
 
 package org.apache.uima.ruta.action;
 
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 
 public abstract class TypeSensitiveAction extends AbstractRutaAction {
 
-  public TypeSensitiveAction(TypeExpression type) {
+  protected ITypeExpression type;
+
+  public TypeSensitiveAction(ITypeExpression type) {
     super();
     this.type = type;
   }
 
-  protected TypeExpression type;
-
-  public TypeExpression getType() {
+  public ITypeExpression getType() {
     return type;
   }
 

@@ -29,11 +29,12 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.MatchReference;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
 import org.apache.uima.ruta.rule.ConjunctRulesRuleElement;
@@ -41,6 +42,7 @@ import org.apache.uima.ruta.rule.RegExpRule;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementContainer;
 import org.apache.uima.ruta.rule.RuleElementIsolator;
+import org.apache.uima.ruta.rule.RutaAnnotationMatcher;
 import org.apache.uima.ruta.rule.RutaLiteralMatcher;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
@@ -102,8 +104,8 @@ public class RutaScriptFactory {
     RutaScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace);
     List<RuleElement> ruleElements = new ArrayList<RuleElement>();
     RuleElementIsolator container = new RuleElementIsolator();
-    ruleElements.add(createRuleElement(new MatchReference("uima.tcas.DocumentAnnotation", null,
-            null), null, null, null, container, result));
+    ruleElements.add(createRuleElement(new SimpleTypeExpression("uima.tcas.DocumentAnnotation"), null,
+            null, null, container, result));
     RutaRule createRule = createRule(ruleElements, result);
     container.setContainer(createRule);
 
@@ -121,13 +123,14 @@ public class RutaScriptFactory {
   public RutaStatement createImplicitRule(List<AbstractRutaAction> actions, RutaBlock parent) {
     List<RuleElement> elements = new ArrayList<RuleElement>();
     IRutaExpression documentExpression = new SimpleTypeExpression("Document");
-    RutaRuleElement element = createRuleElement(documentExpression, null, null, actions, null, parent);
+    RutaRuleElement element = createRuleElement(documentExpression, null, null, actions, null,
+            parent);
     elements.add(element);
     RutaRule rule = createRule(elements, parent);
     element.setContainer(rule.getRoot());
     return rule;
   }
-  
+
   public RutaRule createRule(List<RuleElement> elements, RutaBlock parent) {
     return new RutaRule(elements, parent, idCounter++);
   }
@@ -136,14 +139,16 @@ public class RutaScriptFactory {
           RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
           List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
     RutaMatcher matcher = null;
-    if (expression instanceof MatchReference) {
-      matcher = new RutaTypeMatcher((MatchReference) expression);
-    } else if (expression instanceof TypeExpression) {
-      // e.g., for functions
-      MatchReference matchReference = new MatchReference((TypeExpression) expression);
-      matcher = new RutaTypeMatcher(matchReference);
+    if (expression instanceof ITypeExpression) {
+      matcher = new RutaTypeMatcher((ITypeExpression) expression);
+    } else if (expression instanceof FeatureExpression) {
+      matcher = new RutaTypeMatcher((FeatureExpression) expression);
+    } else if (expression instanceof IAnnotationExpression) {
+      matcher = new RutaAnnotationMatcher((IAnnotationExpression) expression);
     } else if (expression instanceof IStringExpression) {
       matcher = new RutaLiteralMatcher((IStringExpression) expression);
+    } else {
+      throw new RuntimeException(expression.getClass().getSimpleName() + " is not a valid expression for a matching condition.");
     }
     return new RutaRuleElement(matcher, quantifier, conditions, actions, container, parent);
   }
@@ -262,6 +267,5 @@ public class RutaScriptFactory {
   public void setContext(UimaContext context) {
     this.context = context;
   }
-
 
 }

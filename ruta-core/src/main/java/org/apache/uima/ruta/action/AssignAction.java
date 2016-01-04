@@ -27,9 +27,9 @@ import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class AssignAction extends AbstractRutaAction {
@@ -45,24 +45,25 @@ public class AssignAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
     RutaEnvironment environment = parent.getEnvironment();
     Class<?> clazz = environment.getVariableType(var);
     if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
-      double v = ((INumberExpression) expression).getDoubleValue(parent, match, element, stream);
+      double v = ((INumberExpression) expression).getDoubleValue(context, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
-      int v = ((INumberExpression) expression).getIntegerValue(parent, match, element, stream);
+      int v = ((INumberExpression) expression).getIntegerValue(context, stream);
       environment.setVariableValue(var, v);
-    } else if (clazz.equals(Type.class) && expression instanceof TypeExpression) {
-      Type v = ((TypeExpression) expression).getType(parent);
+    } else if (clazz.equals(Type.class) && expression instanceof ITypeExpression) {
+      Type v = ((ITypeExpression) expression).getType(context, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Boolean.class) && expression instanceof IBooleanExpression) {
-      boolean v = ((IBooleanExpression) expression).getBooleanValue(parent, match, element, stream);
+      boolean v = ((IBooleanExpression) expression).getBooleanValue(context, stream);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(String.class) && expression instanceof IStringExpression) {
-      String v = ((IStringExpression) expression).getStringValue(parent, match, element, stream);
+      String v = ((IStringExpression) expression).getStringValue(context, stream);
       environment.setVariableValue(var, v);
     }
   }

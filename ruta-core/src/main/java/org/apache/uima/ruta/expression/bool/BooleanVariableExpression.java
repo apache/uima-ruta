@@ -17,29 +17,38 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.string;
+package org.apache.uima.ruta.expression.bool;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
-public class ReferenceStringExpression extends LiteralStringExpression {
+public class BooleanVariableExpression extends AbstractBooleanExpression {
 
   private final String var;
 
-  public ReferenceStringExpression(String var) {
+  public BooleanVariableExpression(String var) {
     super();
     this.var = var;
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    String variableValue = parent.getEnvironment().getVariableValue(getVar(), String.class);
+  public boolean getBooleanValue(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
+    Boolean variableValue = parent.getEnvironment().getVariableValue(var, Boolean.class);
+    if (variableValue == null) {
+      return false;
+    }
     return variableValue;
   }
 
   public String getVar() {
     return var;
+  }
+
+  @Override
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return getBooleanValue(context, stream) ? "true" : "false";
   }
 
 }

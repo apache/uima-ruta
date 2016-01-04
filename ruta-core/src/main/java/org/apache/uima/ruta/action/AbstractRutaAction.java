@@ -19,10 +19,14 @@
 
 package org.apache.uima.ruta.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public abstract class AbstractRutaAction extends RutaElement {
@@ -31,12 +35,31 @@ public abstract class AbstractRutaAction extends RutaElement {
     super();
   }
 
-  public abstract void execute(RuleMatch match, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd);
+  public abstract void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd);
 
   @Override
   public String toString() {
     return getClass().getSimpleName();
   }
 
+  protected List<Integer> getIndexList(List<INumberExpression> indexes, MatchContext context, RutaStream stream) {
+    RuleElement element = context.getElement();
+    List<Integer> indexList = new ArrayList<Integer>();
+    if (indexes == null || indexes.isEmpty()) {
+      int self = element.getContainer().getRuleElements().indexOf(element) + 1;
+      indexList.add(self);
+      return indexList;
+    }
+    int last = Integer.MAX_VALUE - 1;
+    for (INumberExpression each : indexes) {
+      // no feature matches allowed
+      int value = each.getIntegerValue(context, stream);
+      for (int i = Math.min(value, last + 1); i < value; i++) {
+        indexList.add(i);
+      }
+      indexList.add(value);
+    }
+    return indexList;
+  }
+  
 }

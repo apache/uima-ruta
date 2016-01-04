@@ -21,9 +21,8 @@ package org.apache.uima.ruta.expression.number;
 
 import java.util.List;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class ComposedNumberExpression extends AbstractNumberExpression {
 
@@ -37,44 +36,44 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
     this.ops = ops;
   }
 
-  public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public double getDoubleValue(MatchContext context, RutaStream stream) {
     INumberExpression numberExpression = getExpressions().get(0);
     if (numberExpression == null) {
       return 0;
     }
-    double result = numberExpression.getDoubleValue(parent, annotation, stream);
+    double result = numberExpression.getDoubleValue(context, stream);
     for (int i = 0; i < getOperators().size(); i++) {
       double second = 0;
       if (getExpressions().size() > i + 1) {
-        second = getExpressions().get(i + 1).getDoubleValue(parent, annotation, stream);
+        second = getExpressions().get(i + 1).getDoubleValue(context, stream);
       }
       result = calculate(result, second, getOperators().get(i));
     }
     return result;
   }
 
-  public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  public float getFloatValue(MatchContext context, RutaStream stream) {
     INumberExpression numberExpression = getExpressions().get(0);
     if (numberExpression == null) {
       return 0;
     }
-    float result = numberExpression.getFloatValue(parent, annotation, stream);
+    float result = numberExpression.getFloatValue(context, stream);
     for (int i = 0; i < getOperators().size(); i++) {
       float second = 0;
       if (getExpressions().size() > i + 1) {
-        second = getExpressions().get(i + 1).getFloatValue(parent, annotation, stream);
+        second = getExpressions().get(i + 1).getFloatValue(context, stream);
       }
       result = calculate(result, second, getOperators().get(i));
     }
     return result;
   }
 
-  public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    int result = getExpressions().get(0).getIntegerValue(parent, annotation, stream);
+  public int getIntegerValue(MatchContext context, RutaStream stream) {
+    int result = getExpressions().get(0).getIntegerValue(context, stream);
     for (int i = 0; i < getOperators().size(); i++) {
       int second = 0;
       if (getExpressions().size() > i + 1) {
-        second = getExpressions().get(i + 1).getIntegerValue(parent, annotation, stream);
+        second = getExpressions().get(i + 1).getIntegerValue(context, stream);
       }
       result = calculate(result, second, getOperators().get(i));
     }
@@ -82,8 +81,8 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return "" + getDoubleValue(parent, annotation, stream);
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return "" + getDoubleValue(context, stream);
   }
 
   public List<INumberExpression> getExpressions() {

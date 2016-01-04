@@ -25,25 +25,27 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
-public class ReferenceTypeListExpression extends TypeListExpression {
+public class TypeListVariableExpression extends TypeListExpression {
 
   private String var;
 
-  public ReferenceTypeListExpression(String var) {
+  public TypeListVariableExpression(String var) {
     super();
     this.var = var;
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Type> getList(RutaBlock parent, RutaStream stream) {
+  public List<Type> getList(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
     List<Type> result = new ArrayList<Type>();
     for (Object each : list) {
-      if (each instanceof TypeExpression) {
-        result.add(((TypeExpression) each).getType(parent));
+      if (each instanceof ITypeExpression) {
+        result.add(((ITypeExpression) each).getType(context, stream));
       } else if (each instanceof Type) {
         result.add((Type) each);
       }

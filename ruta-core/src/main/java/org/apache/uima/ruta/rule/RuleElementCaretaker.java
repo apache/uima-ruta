@@ -47,7 +47,7 @@ public class RuleElementCaretaker implements RuleElementContainer {
     if (indexOf > 0) {
       RuleElement ruleElement = container.getRuleElements().get(indexOf - 1);
       return ruleElement;
-    } else if(indexOf == -1) {
+    } else if (indexOf == -1) {
       return container.getRuleElements().get(container.getRuleElements().size() - 1);
     }
     return null;
@@ -59,9 +59,9 @@ public class RuleElementCaretaker implements RuleElementContainer {
 
   public RuleElement getAnchoringRuleElement(RutaStream stream) {
     List<RuleElement> ruleElements = container.getRuleElements();
-    if (ruleElements.size() == 1 
-            //|| containsLiteralMatcher(ruleElements)
-            ) {
+    if (ruleElements.size() == 1
+    // || containsLiteralMatcher(ruleElements)
+    ) {
       return ruleElements.get(0);
     }
     for (RuleElement ruleElement : ruleElements) {
@@ -76,11 +76,11 @@ public class RuleElementCaretaker implements RuleElementContainer {
       int i = 1;
       for (RuleElement each : ruleElements) {
         long estimate = each.estimateAnchors(stream);
-        if(estimate == 0) {
+        if (estimate == 0) {
           return each;
         }
         double factor = stream.getIndexPenalty();
-        if(factor != 0) {
+        if (factor != 0) {
           estimate = (long) (Math.log(estimate) * (i * factor));
         }
         if (estimate < min) {
@@ -94,7 +94,6 @@ public class RuleElementCaretaker implements RuleElementContainer {
     return ruleElements.get(0);
 
   }
-
 
   public RuleElement getFirstElement() {
     List<RuleElement> ruleElements = container.getRuleElements();

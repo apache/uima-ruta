@@ -29,16 +29,17 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
-import org.apache.uima.ruta.expression.MatchReference;
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleElementMatch;
+import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
-import org.apache.uima.ruta.rule.RuleElementMatch;
-import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
 import org.apache.uima.ruta.rule.RutaTypeMatcher;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -234,20 +235,21 @@ public class Automaton {
             .getConditions().size());
     // boolean base = matcher.match(annotation, stream, getParent());
     boolean base = true;
+    MatchContext context = new MatchContext(annotation, element, ruleMatch, true);
     RutaMatcher matcher = ((RutaRuleElement) element).getMatcher();
     if (matcher instanceof RutaTypeMatcher) {
       RutaTypeMatcher rtm = (RutaTypeMatcher) matcher;
-      MatchReference mr = (MatchReference) rtm.getExpression();
-      FeatureExpression featureExpression = mr.getFeatureExpression(element.getParent());
-      if (featureExpression != null) {
+      IRutaExpression expression = rtm.getExpression();
+      if (expression instanceof FeatureExpression) {
         base = matcher.match(annotation, stream, element.getParent());
       }
     }
+    
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (base) {
       for (AbstractRutaCondition condition : element.getConditions()) {
         crowd.beginVisit(condition, null);
-        EvaluatedCondition eval = condition.eval(annotation, element, stream, crowd);
+        EvaluatedCondition eval = condition.eval(context, stream, crowd);
         crowd.endVisit(condition, null);
         evaluatedConditions.add(eval);
       }

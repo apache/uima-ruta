@@ -19,39 +19,21 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
-import java.util.List;
-
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
-public abstract class AbstractAnnotationExpression implements IAnnotationExpression {
-  
-  public AnnotationFS getAnnotation(RutaBlock parent, RuleMatch match, RuleElement element,
-          RutaStream stream) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
-    // TODO: do we need to select the correct annotation?
-    AnnotationFS annotation = null;
-    if (!matchedAnnotationsOf.isEmpty()) {
-      annotation = matchedAnnotationsOf.get(0);
+public abstract class AbstractAnnotationExpression extends RutaExpression implements IAnnotationExpression {
+
+  @Override
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    AnnotationFS annotation = getAnnotation(context, stream);
+    if(annotation != null) {
+      return annotation.getCoveredText();
+    } else {
+      return "null";
     }
-    return getAnnotation(parent, annotation, stream);
   }
-
-  public abstract AnnotationFS getAnnotation(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
   
-  public List<AnnotationFS> getAnnotations(RutaBlock parent, RuleMatch match, RuleElement element,
-          RutaStream stream) {
-    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
-    // TODO: do we need to select the correct annotation?
-    AnnotationFS annotation = null;
-    if (!matchedAnnotationsOf.isEmpty()) {
-      annotation = matchedAnnotationsOf.get(0);
-    }
-    return getAnnotations(parent, annotation, stream);
-  }
-
-  public abstract List<AnnotationFS> getAnnotations(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
 }

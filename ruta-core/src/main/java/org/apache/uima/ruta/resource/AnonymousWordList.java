@@ -23,10 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.type.RutaBasic;
 
 public class AnonymousWordList implements RutaWordList {
@@ -63,8 +61,8 @@ public class AnonymousWordList implements RutaWordList {
     return result;
   }
 
-  public List<AnnotationFS> find(RutaStream stream, Map<String, Object> typeMap, boolean ignoreCase,
-          int ignoreLength, boolean edit, double distance, String ignoreToken) {
+  public List<AnnotationFS> find(RutaStream stream, Map<String, Object> typeMap,
+          boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken) {
     return new ArrayList<AnnotationFS>();
   }
 

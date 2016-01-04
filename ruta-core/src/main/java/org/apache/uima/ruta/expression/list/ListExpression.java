@@ -21,18 +21,17 @@ package org.apache.uima.ruta.expression.list;
 
 import java.util.List;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public abstract class ListExpression<T> extends AbstractStringExpression {
 
-  public abstract List<T> getList(RutaBlock parent, RutaStream stream);
+  public abstract List<T> getList(MatchContext context, RutaStream stream);
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return getList(parent, stream).toString();
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return getList(context, stream).toString();
   }
 
 }

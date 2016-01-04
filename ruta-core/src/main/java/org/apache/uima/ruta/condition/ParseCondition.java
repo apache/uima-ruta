@@ -28,6 +28,7 @@ import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -36,12 +37,12 @@ public class ParseCondition extends AbstractRutaCondition {
   private final String var;
 
   private IStringExpression localeExpr;
-  
+
   public ParseCondition(String var) {
     super();
     this.var = var;
   }
-  
+
   public ParseCondition(String var, IStringExpression localeExpr) {
     super();
     this.var = var;
@@ -49,20 +50,21 @@ public class ParseCondition extends AbstractRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
+    RuleElement element = context.getElement();
     String text = annotation.getCoveredText();
     RutaEnvironment env = element.getParent().getEnvironment();
     Class<?> type = env.getVariableType(var);
     NumberFormat nf = null;
     String locale = annotation.getCAS().getDocumentLanguage();
-    if(localeExpr != null) {
-      locale = localeExpr.getStringValue(element.getParent(), annotation, stream);
+    if (localeExpr != null) {
+      locale = localeExpr.getStringValue(context, stream);
     }
-    if(locale == null) {
+    if (locale == null) {
       locale = "x-unspecified";
     }
-    nf = NumberFormat.getInstance(Locale.forLanguageTag(locale));     
+    nf = NumberFormat.getInstance(Locale.forLanguageTag(locale));
     try {
       if (Integer.class.equals(type)) {
         Number parse = nf.parse(text);

@@ -46,11 +46,13 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
     ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch, stream);
     boolean allMatched = true;
     for (RuleElement each : elements) {
-      List<RuleMatch> startMatch = each.startMatch(ruleMatch, null, composedMatch, each, stream, crowd);
-      boolean oneMatched = false;;
+      List<RuleMatch> startMatch = each.startMatch(ruleMatch, null, composedMatch, each, stream,
+              crowd);
+      boolean oneMatched = false;
+      ;
       for (RuleMatch eachRuleMatch : startMatch) {
         boolean matched = eachRuleMatch.matched();
-        if(matched) {
+        if (matched) {
           oneMatched = true;
           break;
         }
@@ -58,7 +60,7 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
       allMatched &= oneMatched;
       result.addAll(startMatch);
     }
-    
+
     for (RuleMatch each : result) {
       if (!each.isApplied()) {
         ruleApply.add(each);

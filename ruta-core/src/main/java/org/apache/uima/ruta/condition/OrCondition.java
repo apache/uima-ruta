@@ -22,10 +22,9 @@ package org.apache.uima.ruta.condition;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class OrCondition extends ComposedRutaCondition {
@@ -34,13 +33,12 @@ public class OrCondition extends ComposedRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS currentSymbol, RuleElement element,
-          RutaStream symbolStream, InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream symbolStream, InferenceCrowd crowd) {
     boolean result = false;
     List<EvaluatedCondition> evals = new ArrayList<EvaluatedCondition>();
     for (AbstractRutaCondition each : conditions) {
       crowd.beginVisit(each, null);
-      EvaluatedCondition eval = each.eval(currentSymbol, element, symbolStream, crowd);
+      EvaluatedCondition eval = each.eval(context, symbolStream, crowd);
       crowd.endVisit(each, null);
       result |= eval.isValue();
       evals.add(eval);

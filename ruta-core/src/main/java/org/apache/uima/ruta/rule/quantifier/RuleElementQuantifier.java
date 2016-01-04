@@ -22,23 +22,20 @@ package org.apache.uima.ruta.rule.quantifier;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElementMatch;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public interface RuleElementQuantifier {
 
-  List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, RutaBlock parent,
+  List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, MatchContext context,
           RutaStream stream, InferenceCrowd crowd);
 
-  boolean continueMatch(boolean after, AnnotationFS annotation, RuleElement ruleElement,
-          RuleMatch extendedMatch, ComposedRuleElementMatch containerMatch, RutaStream stream,
-          InferenceCrowd crowd);
+  boolean continueMatch(boolean after, MatchContext context, AnnotationFS annotation,
+          ComposedRuleElementMatch containerMatch, RutaStream stream, InferenceCrowd crowd);
 
-  boolean isOptional(RutaBlock parent, RutaStream stream);
+  boolean isOptional(MatchContext context, RutaStream stream);
 
 }

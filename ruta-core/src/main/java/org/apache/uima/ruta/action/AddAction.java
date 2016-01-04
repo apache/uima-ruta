@@ -30,9 +30,9 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class AddAction extends AbstractRutaAction {
@@ -57,7 +57,8 @@ public class AddAction extends AbstractRutaAction {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
     RutaEnvironment environment = parent.getEnvironment();
     List list = environment.getVariableValue(var, List.class);
@@ -66,17 +67,17 @@ public class AddAction extends AbstractRutaAction {
     for (IRutaExpression each : elements) {
       if (each instanceof ListExpression) {
         ListExpression l = (ListExpression) each;
-        list.addAll(l.getList(parent, stream));
+        list.addAll(l.getList(context, stream));
       } else if (vgtype.equals(Boolean.class) && each instanceof IBooleanExpression) {
-        list.add(((IBooleanExpression) each).getBooleanValue(parent, match, element, stream));
+        list.add(((IBooleanExpression) each).getBooleanValue(context, stream));
       } else if (vgtype.equals(Integer.class) && each instanceof INumberExpression) {
-        list.add(((INumberExpression) each).getIntegerValue(parent, match, element, stream));
+        list.add(((INumberExpression) each).getIntegerValue(context, stream));
       } else if (vgtype.equals(Double.class) && each instanceof INumberExpression) {
-        list.add(((INumberExpression) each).getDoubleValue(parent, match, element, stream));
-      } else if (vgtype.equals(Type.class) && each instanceof TypeExpression) {
-        list.add(((TypeExpression) each).getType(parent));
+        list.add(((INumberExpression) each).getDoubleValue(context, stream));
+      } else if (vgtype.equals(Type.class) && each instanceof ITypeExpression) {
+        list.add(((ITypeExpression) each).getType(context, stream));
       } else if (vgtype.equals(String.class) && each instanceof IStringExpression) {
-        list.add(((IStringExpression) each).getStringValue(parent, match, element, stream));
+        list.add(((IStringExpression) each).getStringValue(context, stream));
       }
     }
   }

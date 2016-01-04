@@ -29,8 +29,9 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -38,14 +39,16 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ShiftAction extends MarkAction {
 
-  public ShiftAction(TypeExpression type, List<INumberExpression> list) {
+  public ShiftAction(ITypeExpression type, List<INumberExpression> list) {
     super(type, null, list);
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    Type targetType = type.getType(element.getParent());
-    List<Integer> indexList = getIndexList(element, list, stream);
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
+    Type targetType = type.getType(context, stream);
+    List<Integer> indexList = getIndexList(context, list, stream);
     List<AnnotationFS> destinationAnnotationSpans = match.getMatchedAnnotations(indexList,
             element.getContainer());
     List<AnnotationFS> annotationsMatchedByRuleElementofAction = match

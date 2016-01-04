@@ -49,7 +49,7 @@ public interface RuleElement {
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd);
 
-  List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, RutaBlock parent,
+  List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, MatchContext context,
           RutaStream stream);
 
   Collection<AnnotationFS> getAnchors(RutaStream symbolStream);
@@ -79,11 +79,11 @@ public interface RuleElement {
   boolean isStartAnchor();
 
   void setInlinedActionRules(List<RutaStatement> innerRules);
-  
+
   void setInlinedConditionRules(List<RutaStatement> innerRules);
 
   void setLabel(String label);
-  
+
   String getLabel();
 
 }

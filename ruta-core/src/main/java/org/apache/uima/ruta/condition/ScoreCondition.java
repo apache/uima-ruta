@@ -28,6 +28,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaAnnotation;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -47,8 +48,9 @@ public class ScoreCondition extends TerminalRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
+    RuleElement element = context.getElement();
     Type heuristicType = stream.getJCas().getCasType(RutaAnnotation.type);
     List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation,
             heuristicType);
@@ -63,8 +65,8 @@ public class ScoreCondition extends TerminalRutaCondition {
     if (var != null) {
       element.getParent().getEnvironment().setVariableValue(var, score);
     }
-    boolean value = score >= min.getDoubleValue(element.getParent(), annotation, stream)
-            && score <= max.getDoubleValue(element.getParent(), annotation, stream);
+    boolean value = score >= min.getDoubleValue(context, stream)
+            && score <= max.getDoubleValue(context, stream);
     return new EvaluatedCondition(this, value);
   }
 

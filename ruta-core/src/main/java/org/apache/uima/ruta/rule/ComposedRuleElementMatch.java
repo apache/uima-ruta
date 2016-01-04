@@ -90,7 +90,8 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
     for (Entry<RuleElement, List<RuleElementMatch>> entry : entrySet) {
       RuleElement element = entry.getKey();
       List<RuleElementMatch> value = entry.getValue();
-      allDone &= (element.getQuantifier().isOptional(element.getParent(), stream) || value != null);
+      MatchContext context = new MatchContext(element, null, true);
+      allDone &= (element.getQuantifier().isOptional(context, stream) || value != null);
       if (value != null && !value.isEmpty() && included) {
         for (RuleElementMatch ruleElementMatch : value) {
           allDone &= ruleElementMatch.matched();
@@ -198,7 +199,7 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
         if (value != null) {
           List<RuleElementMatch> newValue = new ArrayList<RuleElementMatch>();
           newValue.addAll(value);
-          if(!newValue.isEmpty()) {
+          if (!newValue.isEmpty()) {
             // there was no match
             newValue.set(newValue.size() - 1, extendedContainerMatch);
           }

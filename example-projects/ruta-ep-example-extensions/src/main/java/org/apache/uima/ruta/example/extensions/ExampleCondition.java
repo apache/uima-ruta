@@ -27,7 +27,9 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ExampleCondition extends AbstractRutaCondition {
@@ -43,11 +45,12 @@ public class ExampleCondition extends AbstractRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
+    RuleElement element = context.getElement();
     String coveredText = annotation.getCoveredText();
-    String dateValue = dateExpr.getStringValue(element.getParent(), annotation, stream);
-    String formatValue = formatExpr.getStringValue(element.getParent(), annotation, stream);
+    String dateValue = dateExpr.getStringValue(context, stream);
+    String formatValue = formatExpr.getStringValue(context, stream);
     SimpleDateFormat dateFormat = new SimpleDateFormat(formatValue);
     boolean result = false;
     try {

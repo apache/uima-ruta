@@ -19,25 +19,16 @@
 
 package org.apache.uima.ruta.expression.number;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public interface INumberExpression extends IStringExpression {
 
-  int getIntegerValue(RutaBlock parent, RuleMatch match, RuleElement element, RutaStream stream);
+  int getIntegerValue(MatchContext context, RutaStream stream);
 
-  double getDoubleValue(RutaBlock parent, RuleMatch match, RuleElement element, RutaStream stream);
+  double getDoubleValue(MatchContext context, RutaStream stream);
 
-  float getFloatValue(RutaBlock parent, RuleMatch match, RuleElement element, RutaStream stream);
-
-  int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
-
-  double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
-
-  float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream);
+  float getFloatValue(MatchContext context, RutaStream stream);
 
 }

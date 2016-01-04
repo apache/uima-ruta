@@ -23,25 +23,28 @@ import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ImplicitMarkAction extends AbstractMarkAction {
 
-  public ImplicitMarkAction(TypeExpression te) {
+  public ImplicitMarkAction(ITypeExpression te) {
     super(te);
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       if (matchedAnnotation == null) {
         return;
       }
-      createAnnotation(matchedAnnotation, element, stream, match);
+      createAnnotation(matchedAnnotation, context, stream);
     }
 
   }

@@ -24,28 +24,30 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.string.AbstractStringExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
-public class ReferenceStringListExpression extends StringListExpression {
+public class BooleanListVariableExpression extends BooleanListExpression {
 
   private String var;
 
-  public ReferenceStringListExpression(String var) {
+  public BooleanListVariableExpression(String var) {
     super();
     this.var = var;
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<String> getList(RutaBlock parent, RutaStream stream) {
+  public List<Boolean> getList(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
-    List<String> result = new ArrayList<String>();
+    List<Boolean> result = new ArrayList<Boolean>();
     for (Object each : list) {
-      if (each instanceof AbstractStringExpression) {
-     // TODO support arrays
-        result.add(((AbstractStringExpression) each).getStringValue(parent, null, stream));
-      } else if (each instanceof String) {
-        result.add((String) each);
+      if (each instanceof IBooleanExpression) {
+        // TODO support arrays
+        result.add(((IBooleanExpression) each).getBooleanValue(context, stream));
+      } else if (each instanceof Boolean) {
+        result.add((Boolean) each);
       }
     }
     return result;
@@ -54,4 +56,5 @@ public class ReferenceStringListExpression extends StringListExpression {
   public String getVar() {
     return var;
   }
+
 }

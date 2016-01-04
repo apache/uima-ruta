@@ -21,10 +21,10 @@ package org.apache.uima.ruta.extensions;
 
 public class RutaParseException extends Exception {
 
-	public RutaParseException(String message) {
-		super(message);
-	}
+  public RutaParseException(String message) {
+    super(message);
+  }
 
-	private static final long serialVersionUID = -2728650696200821469L;
+  private static final long serialVersionUID = -2728650696200821469L;
 
 }

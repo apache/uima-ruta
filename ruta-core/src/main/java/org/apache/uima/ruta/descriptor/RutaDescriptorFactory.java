@@ -48,7 +48,7 @@ import org.apache.uima.util.InvalidXMLException;
 
 public class RutaDescriptorFactory {
 
-//  public static final String ANONYMOUS = "Anonymous";
+  // public static final String ANONYMOUS = "Anonymous";
 
   private URL defaultTypeSystem;
 
@@ -176,7 +176,7 @@ public class RutaDescriptorFactory {
 
   private ResourceManager getResourceManager(RutaBuildOptions options) {
     ResourceManager rm = null;
-    if(options.getClassLoader() != null) {
+    if (options.getClassLoader() != null) {
       rm = new ResourceManager_impl(options.getClassLoader());
     } else {
       rm = UIMAFramework.newDefaultResourceManager();
@@ -191,7 +191,7 @@ public class RutaDescriptorFactory {
       try {
         Class<?> forName = null;
         if (options.getClassLoader() != null) {
-        	forName = options.getClassLoader().loadClass(each);
+          forName = options.getClassLoader().loadClass(each);
         } else {
           forName = Class.forName(each);
         }

@@ -364,6 +364,10 @@ STRINGLIST
 	:	'STRINGLIST';	
 TYPELIST:	'TYPELIST';
 
+ANNOTATION 
+	:	 'ANNOTATION';
+ANNOTATIONLIST
+	:	'ANNOTATIONLIST';
 
 
 EXP 	:	'EXP';
@@ -376,6 +380,10 @@ XOR	: 	'XOR';
 TRUE 	:	'true';
 FALSE 	:	'false';
 NULL : 'null';
+
+
+ADDRESS_PREFIX 
+	:	 '$';
 
 STARTANCHOR 
 	:	 '@';
@@ -444,7 +452,7 @@ Identifier
 
 fragment
 Letter
-    :  '\u0024' |
+    :  
        '\u0041'..'\u005a' |
        '\u005f' |
        '\u0061'..'\u007a' |

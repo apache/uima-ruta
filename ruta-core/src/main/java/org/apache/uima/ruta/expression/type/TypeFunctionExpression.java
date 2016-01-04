@@ -19,6 +19,6 @@
 
 package org.apache.uima.ruta.expression.type;
 
-public abstract class TypeFunctionExpression extends TypeExpression {
+public abstract class TypeFunctionExpression extends AbstractTypeExpression {
 
 }

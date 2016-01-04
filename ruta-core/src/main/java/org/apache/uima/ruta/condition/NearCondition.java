@@ -27,9 +27,9 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -43,7 +43,7 @@ public class NearCondition extends TypeSentiveCondition {
 
   private final IBooleanExpression filtered;
 
-  public NearCondition(TypeExpression type, INumberExpression min, INumberExpression max,
+  public NearCondition(ITypeExpression type, INumberExpression min, INumberExpression max,
           IBooleanExpression forward, IBooleanExpression filtered) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(1) : min;
@@ -53,14 +53,14 @@ public class NearCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    int maxValue = max.getIntegerValue(element.getParent(), annotation, stream);
-    int minValue = min.getIntegerValue(element.getParent(), annotation, stream);
-    boolean forwardValue = forward.getBooleanValue(element.getParent(), annotation, stream);
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
+    int maxValue = max.getIntegerValue(context, stream);
+    int minValue = min.getIntegerValue(context, stream);
+    boolean forwardValue = forward.getBooleanValue(context, stream);
 
-    FSIterator<AnnotationFS> it = filtered.getBooleanValue(element.getParent(), annotation, stream) ? stream
-            : stream.getUnfilteredBasicIterator();
+    FSIterator<AnnotationFS> it = filtered.getBooleanValue(context, stream) ? stream : stream
+            .getUnfilteredBasicIterator();
     AnnotationFS pointer = null;
     if (forwardValue) {
       pointer = stream.getEndAnchor(annotation.getEnd());
@@ -74,7 +74,7 @@ public class NearCondition extends TypeSentiveCondition {
         FeatureStructure featureStructure = it.get();
         if (featureStructure instanceof RutaBasic) {
           RutaBasic each = (RutaBasic) featureStructure;
-          if (each.isPartOf(type.getType(element.getParent()))) {
+          if (each.isPartOf(type.getType(context, stream))) {
             return new EvaluatedCondition(this, true);
           }
         }

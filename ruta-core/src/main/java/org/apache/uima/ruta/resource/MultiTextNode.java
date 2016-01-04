@@ -49,7 +49,7 @@ public class MultiTextNode {
   private Set<String> types;
 
   private boolean isWordEnd = false;
-  
+
   private static final int DEFAUL_INITIAL_CAPACITY = 5;
 
   /** Default constructor uses a space as value. */
@@ -102,7 +102,6 @@ public class MultiTextNode {
     return children.put(n.getValue(), n);
   }
 
-  
   /**
    * Returns the child, when you follow the c-edge, if exists. Returns null otherwise.
    * 

@@ -41,6 +41,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceManager;
@@ -68,6 +69,7 @@ import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.apache.uima.ruta.resource.RutaTable;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.resource.TreeWordList;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.util.InvalidXMLException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -168,6 +170,7 @@ public class RutaEnvironment {
     variableTypes = new HashMap<String, Class<?>>();
     variableGenericTypes = new HashMap<String, Class<?>>();
     availableTypes = new HashMap<String, Class<?>>();
+    availableTypes.put("ANNOTATION", AnnotationFS.class);
     availableTypes.put("INT", Integer.class);
     availableTypes.put("STRING", String.class);
     availableTypes.put("DOUBLE", Double.class);
@@ -178,6 +181,7 @@ public class RutaEnvironment {
     availableTypes.put("ACTION", AbstractRutaAction.class);
     availableTypes.put("WORDLIST", RutaWordList.class);
     availableTypes.put("WORDTABLE", RutaTable.class);
+    availableTypes.put("ANNOTATIONLIST", List.class);
     availableTypes.put("BOOLEANLIST", List.class);
     availableTypes.put("INTLIST", List.class);
     availableTypes.put("DOUBLELIST", List.class);
@@ -185,6 +189,7 @@ public class RutaEnvironment {
     availableTypes.put("STRINGLIST", List.class);
     availableTypes.put("TYPELIST", List.class);
     availableListTypes = new HashMap<String, Class<?>>();
+    availableListTypes.put("ANNOTATIONLIST", AnnotationFS.class);
     availableListTypes.put("BOOLEANLIST", Boolean.class);
     availableListTypes.put("INTLIST", Integer.class);
     availableListTypes.put("DOUBLELIST", Double.class);
@@ -571,8 +576,7 @@ public class RutaEnvironment {
     UimaContext context = owner.getContext();
     Boolean dictRemoveWS = false;
     if (context != null) {
-      dictRemoveWS = (Boolean) context
-              .getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
+      dictRemoveWS = (Boolean) context.getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
       if (dictRemoveWS == null) {
         dictRemoveWS = false;
       }
@@ -750,13 +754,14 @@ public class RutaEnvironment {
       return type.cast(cas.getAnnotationType());
     }
     if (result != null) {
-      if(RutaWordList.class.isAssignableFrom(type) && result instanceof WordListExpression) {
+      MatchContext context = new MatchContext(owner);
+      if (RutaWordList.class.isAssignableFrom(type) && result instanceof WordListExpression) {
         WordListExpression wle = (WordListExpression) result;
-        RutaWordList list = wle.getList(owner);
+        RutaWordList list = wle.getList(context);
         return type.cast(list);
-      } else if(RutaTable.class.isAssignableFrom(type) && result instanceof WordTableExpression) {
+      } else if (RutaTable.class.isAssignableFrom(type) && result instanceof WordTableExpression) {
         WordTableExpression wte = (WordTableExpression) result;
-        RutaTable table = wte.getTable(owner);
+        RutaTable table = wte.getTable(context);
         return type.cast(table);
       } else {
         return type.cast(result);
@@ -774,24 +779,25 @@ public class RutaEnvironment {
   @SuppressWarnings("rawtypes")
   public Object getLiteralValue(String var, Object value) {
     if (ownsVariable(var)) {
+      MatchContext context = new MatchContext(owner);
       Class<?> clazz = variableTypes.get(var);
       if (value instanceof INumberExpression) {
         INumberExpression ne = (INumberExpression) value;
         if (clazz.equals(Integer.class)) {
-          return ne.getIntegerValue(owner, null, null);
+          return ne.getIntegerValue(context, null);
         } else if (clazz.equals(Double.class)) {
-          return ne.getDoubleValue(owner, null, null);
+          return ne.getDoubleValue(context, null);
         } else if (clazz.equals(Float.class)) {
-          return ne.getFloatValue(owner, null, null);
+          return ne.getFloatValue(context, null);
         } else if (clazz.equals(String.class)) {
-          return ne.getStringValue(owner, null, null);
+          return ne.getStringValue(context, null);
         }
       } else if (clazz.equals(String.class) && value instanceof IStringExpression) {
         IStringExpression se = (IStringExpression) value;
-        return se.getStringValue(owner, null, null);
+        return se.getStringValue(context, null);
       } else if (clazz.equals(Boolean.class) && value instanceof IBooleanExpression) {
         IBooleanExpression be = (IBooleanExpression) value;
-        return be.getBooleanValue(owner, null, null);
+        return be.getBooleanValue(context, null);
       }
       if (clazz.equals(RutaWordList.class) && value instanceof LiteralWordListExpression) {
         return value;

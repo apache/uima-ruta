@@ -22,23 +22,23 @@ package org.apache.uima.ruta.condition;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class LastCondition extends TypeSentiveCondition {
 
-  public LastCondition(TypeExpression type) {
+  public LastCondition(ITypeExpression type) {
     super(type);
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
     RutaBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
-    Type t = type.getType(element.getParent());
+    Type t = type.getType(context, stream);
     boolean result = endAnchor.beginsWith(t) && endAnchor.endsWith(t);
     return new EvaluatedCondition(this, result);
   }

@@ -25,10 +25,10 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -38,18 +38,20 @@ public class TrimAction extends AbstractRutaAction {
 
   private TypeListExpression typeList;
 
-  private List<TypeExpression> types;
+  private List<ITypeExpression> types;
 
-  public TrimAction(List<TypeExpression> types, TypeListExpression typeList) {
+  public TrimAction(List<ITypeExpression> types, TypeListExpression typeList) {
     super();
     this.types = types;
     this.typeList = typeList;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
-    List<Type> typesToTrim = getTypes(element.getParent(), stream);
+    List<Type> typesToTrim = getTypes(context, stream);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       trimAnnotation(annotationFS, typesToTrim, match, stream);
     }
@@ -108,14 +110,14 @@ public class TrimAction extends AbstractRutaAction {
     return false;
   }
 
-  private List<Type> getTypes(RutaBlock parent, RutaStream stream) {
+  private List<Type> getTypes(MatchContext context, RutaStream stream) {
     List<Type> result = new ArrayList<Type>();
     if (types != null) {
-      for (TypeExpression each : types) {
-        result.add(each.getType(parent));
+      for (ITypeExpression each : types) {
+        result.add(each.getType(context, stream));
       }
     } else if (typeList != null) {
-      result = typeList.getList(parent, stream);
+      result = typeList.getList(context, stream);
     }
     return result;
   }
@@ -124,7 +126,7 @@ public class TrimAction extends AbstractRutaAction {
     return typeList;
   }
 
-  public List<TypeExpression> getTypes() {
+  public List<ITypeExpression> getTypes() {
     return types;
   }
 

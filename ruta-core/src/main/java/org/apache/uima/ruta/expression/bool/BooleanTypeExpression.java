@@ -20,20 +20,19 @@
 package org.apache.uima.ruta.expression.bool;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class BooleanTypeExpression extends AbstractBooleanExpression {
 
-  private final TypeExpression e1;
+  private final ITypeExpression e1;
 
   private final String op;
 
-  private final TypeExpression e2;
+  private final ITypeExpression e2;
 
-  public BooleanTypeExpression(TypeExpression e1, String op, TypeExpression e2) {
+  public BooleanTypeExpression(ITypeExpression e1, String op, ITypeExpression e2) {
     super();
     this.e1 = e1;
     this.op = op;
@@ -41,10 +40,10 @@ public class BooleanTypeExpression extends AbstractBooleanExpression {
   }
 
   @Override
-  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    Type type1 = getFristExpression().getType(parent);
+  public boolean getBooleanValue(MatchContext context, RutaStream stream) {
+    Type type1 = getFristExpression().getType(context, stream);
     String first = type1.getName();
-    Type type2 = getSecondExpression().getType(parent);
+    Type type2 = getSecondExpression().getType(context, stream);
     String second = type2.getName();
     return eval(first, getOperator(), second);
   }
@@ -58,7 +57,7 @@ public class BooleanTypeExpression extends AbstractBooleanExpression {
     return false;
   }
 
-  public TypeExpression getFristExpression() {
+  public ITypeExpression getFristExpression() {
     return e1;
   }
 
@@ -66,14 +65,13 @@ public class BooleanTypeExpression extends AbstractBooleanExpression {
     return op;
   }
 
-  public TypeExpression getSecondExpression() {
+  public ITypeExpression getSecondExpression() {
     return e2;
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return e1.getStringValue(parent, annotation, stream) + " " + op + " "
-            + e2.getStringValue(parent, annotation, stream);
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return e1.getStringValue(context, stream) + " " + op + " " + e2.getStringValue(context, stream);
   }
 
 }

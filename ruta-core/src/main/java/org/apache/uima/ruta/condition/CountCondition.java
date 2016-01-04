@@ -35,8 +35,9 @@ import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -48,20 +49,22 @@ public class CountCondition extends TypeSentiveCondition {
 
   private final String var;
 
+  @SuppressWarnings("rawtypes")
   private ListExpression list;
 
   private IRutaExpression arg;
 
-  public CountCondition(TypeExpression type, INumberExpression min, INumberExpression max, String var) {
+  public CountCondition(ITypeExpression type, INumberExpression min, INumberExpression max,
+          String var) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(Integer.MIN_VALUE) : min;
     this.max = max == null ? new SimpleNumberExpression(Integer.MAX_VALUE) : max;
     this.var = var;
   }
 
-  public CountCondition(ListExpression list, IRutaExpression a, INumberExpression min,
+  public CountCondition(@SuppressWarnings("rawtypes") ListExpression list, IRutaExpression a, INumberExpression min,
           INumberExpression max, String var) {
-    super((TypeExpression) null);
+    super((ITypeExpression) null);
     this.list = list;
     this.arg = a;
     this.min = min == null ? new SimpleNumberExpression(Integer.MIN_VALUE) : min;
@@ -70,49 +73,51 @@ public class CountCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
+    RuleElement element = context.getElement();
+
     if (arg == null) {
       List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation,
-              type.getType(element.getParent()));
+              type.getType(context, stream));
       int count = annotationsInWindow.size();
       if (var != null) {
         element.getParent().getEnvironment().setVariableValue(var, count);
       }
-      boolean value = count >= min.getIntegerValue(element.getParent(), annotation, stream)
-              && count <= max.getIntegerValue(element.getParent(), annotation, stream);
+      boolean value = count >= min.getIntegerValue(context, stream)
+              && count <= max.getIntegerValue(context, stream);
       return new EvaluatedCondition(this, value);
     } else {
       int count = 0;
       if (arg instanceof IBooleanExpression && list instanceof BooleanListExpression) {
         IBooleanExpression e = (IBooleanExpression) arg;
         BooleanListExpression le = (BooleanListExpression) list;
-        boolean v = e.getBooleanValue(element.getParent(), annotation, stream);
-        List<Boolean> l = new ArrayList<Boolean>(le.getList(element.getParent(), stream));
+        boolean v = e.getBooleanValue(context, stream);
+        List<Boolean> l = new ArrayList<Boolean>(le.getList(context, stream));
         while (l.remove(v)) {
           count++;
         }
       } else if (arg instanceof INumberExpression && list instanceof NumberListExpression) {
         INumberExpression e = (INumberExpression) arg;
         NumberListExpression le = (NumberListExpression) list;
-        Number v = e.getDoubleValue(element.getParent(), annotation, stream);
-        List<Number> l = new ArrayList<Number>(le.getList(element.getParent(), stream));
+        Number v = e.getDoubleValue(context, stream);
+        List<Number> l = new ArrayList<Number>(le.getList(context, stream));
         while (l.remove(v)) {
           count++;
         }
       } else if (arg instanceof IStringExpression && list instanceof StringListExpression) {
         IStringExpression e = (IStringExpression) arg;
         StringListExpression le = (StringListExpression) list;
-        String v = e.getStringValue(element.getParent(), annotation, stream);
-        List<String> l = new ArrayList<String>(le.getList(element.getParent(), stream));
+        String v = e.getStringValue(context, stream);
+        List<String> l = new ArrayList<String>(le.getList(context, stream));
         while (l.remove(v)) {
           count++;
         }
-      } else if (arg instanceof TypeExpression && list instanceof TypeListExpression) {
-        TypeExpression e = (TypeExpression) arg;
+      } else if (arg instanceof ITypeExpression && list instanceof TypeListExpression) {
+        ITypeExpression e = (ITypeExpression) arg;
         TypeListExpression le = (TypeListExpression) list;
-        Type v = e.getType(element.getParent());
-        List<Type> l = new ArrayList<Type>(le.getList(element.getParent(), stream));
+        Type v = e.getType(context, stream);
+        List<Type> l = new ArrayList<Type>(le.getList(context, stream));
         while (l.remove(v)) {
           count++;
         }
@@ -120,8 +125,8 @@ public class CountCondition extends TypeSentiveCondition {
       if (var != null) {
         element.getParent().getEnvironment().setVariableValue(var, count);
       }
-      boolean value = count >= min.getIntegerValue(element.getParent(), annotation, stream)
-              && count <= max.getIntegerValue(element.getParent(), annotation, stream);
+      boolean value = count >= min.getIntegerValue(context, stream)
+              && count <= max.getIntegerValue(context, stream);
       return new EvaluatedCondition(this, value);
     }
   }
@@ -138,6 +143,7 @@ public class CountCondition extends TypeSentiveCondition {
     return var;
   }
 
+  @SuppressWarnings("rawtypes")
   public ListExpression getArgList() {
     return list;
   }

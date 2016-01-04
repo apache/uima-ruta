@@ -320,11 +320,11 @@ public class RutaDescriptorBuilder {
           URISyntaxException {
     build(desc, typeSystemOutput, engineOutput, options, scriptPaths, enginePaths, null);
   }
-  
+
   public void build(RutaDescriptorInformation desc, String typeSystemOutput, String engineOutput,
-          RutaBuildOptions options, String[] scriptPaths, String[] enginePaths, String[] resourcePaths)
-          throws SAXException, InvalidXMLException, IOException, ResourceInitializationException,
-          URISyntaxException {
+          RutaBuildOptions options, String[] scriptPaths, String[] enginePaths,
+          String[] resourcePaths) throws SAXException, InvalidXMLException, IOException,
+          ResourceInitializationException, URISyntaxException {
 
     TypeSystemDescription typeSystemDescription = createTypeSystemDescription(desc,
             typeSystemOutput, options, enginePaths);
@@ -424,7 +424,7 @@ public class RutaDescriptorBuilder {
 
     AnalysisEngineDescription analysisEngineDescription = UIMAFramework.getXMLParser()
             .parseAnalysisEngineDescription(new XMLInputSource(defaultAnalysisEngine));
-    if(import_impl != null) {
+    if (import_impl != null) {
       aets.setImports(new Import[] { import_impl });
     }
     analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(aets);

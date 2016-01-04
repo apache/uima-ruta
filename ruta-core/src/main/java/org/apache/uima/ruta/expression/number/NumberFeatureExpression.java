@@ -25,10 +25,10 @@ import java.util.List;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class NumberFeatureExpression extends AbstractNumberExpression {
 
@@ -39,28 +39,29 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
     this.fe = fe;
   }
 
-  public int getIntegerValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    Number v = getNumberValue(parent, annotation, stream);
+  public int getIntegerValue(MatchContext context, RutaStream stream) {
+    Number v = getNumberValue(context, stream);
     return v == null ? 0 : v.intValue();
   }
 
-  public double getDoubleValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    Number v = getNumberValue(parent, annotation, stream);
+  public double getDoubleValue(MatchContext context, RutaStream stream) {
+    Number v = getNumberValue(context, stream);
     return v == null ? 0 : v.doubleValue();
   }
 
-  public float getFloatValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    Number v = getNumberValue(parent, annotation, stream);
+  public float getFloatValue(MatchContext context, RutaStream stream) {
+    Number v = getNumberValue(context, stream);
     return v == null ? 0 : v.floatValue();
   }
 
-  private Number getNumberValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
+  private Number getNumberValue(MatchContext context, RutaStream stream) {
+    AnnotationFS annotation = context.getAnnotation();
     Number result = null;
-    Type type = fe.getTypeExpr(parent).getType(parent);
-    Feature feature = fe.getFeature(parent);
+    Type type = fe.getTypeExpr(context, stream).getType(context, stream);
+    Feature feature = fe.getFeature(context, stream);
     Type range = feature.getRange();
     List<AnnotationFS> list = getTargetAnnotation(annotation, type, stream);
-    Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, parent,
+    Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
             false);
     if (!featureAnnotations.isEmpty()) {
       AnnotationFS next = featureAnnotations.iterator().next();
@@ -82,8 +83,8 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return "" + getNumberValue(parent, annotation, stream);
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return "" + getNumberValue(context, stream);
   }
 
   public FeatureExpression getFe() {

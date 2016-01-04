@@ -20,11 +20,10 @@
 package org.apache.uima.ruta.example.extensions;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.expression.type.TypeFunctionExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class ExampleTypeFunction extends TypeFunctionExpression {
 
@@ -39,13 +38,13 @@ public class ExampleTypeFunction extends TypeFunctionExpression {
     return expr;
   }
 
-  public Type getType(RutaBlock parent) {
-    String stringValue = expr.getStringValue(parent, null, null);
-    return parent.getEnvironment().getType(stringValue);
+  public Type getType(MatchContext context, RutaStream stream) {
+    String stringValue = expr.getStringValue(context, null);
+    return context.getParent().getEnvironment().getType(stringValue);
   }
 
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return expr.getStringValue(parent, annotation, stream);
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return expr.getStringValue(context, stream);
   }
 
 }

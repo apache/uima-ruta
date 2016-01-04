@@ -19,14 +19,15 @@
 
 package org.apache.uima.ruta.condition;
 
-import java.util.Iterator;
-
-import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -37,7 +38,7 @@ public class TotalCountCondition extends TypeSentiveCondition {
 
   private final String var;
 
-  public TotalCountCondition(TypeExpression type, INumberExpression min, INumberExpression max,
+  public TotalCountCondition(ITypeExpression type, INumberExpression min, INumberExpression max,
           String var) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(Integer.MIN_VALUE) : min;
@@ -46,20 +47,17 @@ public class TotalCountCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleElement element = context.getElement();
     int count = 0;
-    Iterator<?> it = stream.getJCas().getAnnotationIndex(type.getType(element.getParent()))
-            .iterator();
-    while (it.hasNext()) {
-      it.next();
-      count++;
-    }
+    Type t = type.getType(context, stream);
+    AnnotationIndex<Annotation> annotationIndex = stream.getJCas().getAnnotationIndex(t);
+    count = annotationIndex.size();
     if (var != null) {
       element.getParent().getEnvironment().setVariableValue(var, count);
     }
-    boolean value = count >= min.getIntegerValue(element.getParent(), annotation, stream)
-            && count <= max.getIntegerValue(element.getParent(), annotation, stream);
+    boolean value = count >= min.getIntegerValue(context, stream)
+            && count <= max.getIntegerValue(context, stream);
     return new EvaluatedCondition(this, value);
   }
 

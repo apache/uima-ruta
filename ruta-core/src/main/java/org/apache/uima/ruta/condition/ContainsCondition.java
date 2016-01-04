@@ -36,9 +36,9 @@ import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -52,9 +52,10 @@ public class ContainsCondition extends TypeSentiveCondition {
 
   private IRutaExpression arg;
 
+  @SuppressWarnings("rawtypes")
   private ListExpression argList;
 
-  public ContainsCondition(TypeExpression type, INumberExpression min, INumberExpression max,
+  public ContainsCondition(ITypeExpression type, INumberExpression min, INumberExpression max,
           IBooleanExpression percent) {
     super(type);
     this.min = min == null ? new SimpleNumberExpression(Integer.valueOf(1)) : min;
@@ -62,9 +63,10 @@ public class ContainsCondition extends TypeSentiveCondition {
     this.percent = percent == null ? new SimpleBooleanExpression(false) : percent;
   }
 
+  @SuppressWarnings("rawtypes")
   public ContainsCondition(ListExpression list, IRutaExpression a, INumberExpression min,
           INumberExpression max, IBooleanExpression percent) {
-    super((TypeExpression) null);
+    super((ITypeExpression) null);
     this.min = min == null ? new SimpleNumberExpression(Integer.valueOf(1)) : min;
     this.max = max == null ? new SimpleNumberExpression(Integer.MAX_VALUE) : max;
     this.percent = percent == null ? new SimpleBooleanExpression(false) : percent;
@@ -73,8 +75,9 @@ public class ContainsCondition extends TypeSentiveCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
+
     int basicCount = 0;
     int anchorCount = 0;
     int totalCount = 0;
@@ -84,7 +87,7 @@ public class ContainsCondition extends TypeSentiveCondition {
         List<RutaBasic> annotations = stream.getBasicsInWindow(annotation);
         for (RutaBasic each : annotations) {
           totalCount++;
-          Type t = type.getType(element.getParent());
+          Type t = type.getType(context, stream);
           if (each.beginsWith(t) || stream.getCas().getTypeSystem().subsumes(t, each.getType())) {
             anchorCount += each.getBeginAnchors(t).size();
             basicCount++;
@@ -94,53 +97,53 @@ public class ContainsCondition extends TypeSentiveCondition {
         }
       }
     } else {
-      totalCount = argList.getList(element.getParent(), stream).size();
+      totalCount = argList.getList(context, stream).size();
       if (arg instanceof IBooleanExpression && argList instanceof BooleanListExpression) {
         IBooleanExpression e = (IBooleanExpression) arg;
         BooleanListExpression le = (BooleanListExpression) argList;
-        boolean v = e.getBooleanValue(element.getParent(), annotation, stream);
-        List<Boolean> l = new ArrayList<Boolean>(le.getList(element.getParent(), stream));
+        boolean v = e.getBooleanValue(context, stream);
+        List<Boolean> l = new ArrayList<Boolean>(le.getList(context, stream));
         while (l.remove(v)) {
           basicCount++;
         }
       } else if (arg instanceof INumberExpression && argList instanceof NumberListExpression) {
         INumberExpression e = (INumberExpression) arg;
         NumberListExpression le = (NumberListExpression) argList;
-        Number v = e.getDoubleValue(element.getParent(), annotation, stream);
-        List<Number> l = new ArrayList<Number>(le.getList(element.getParent(), stream));
+        Number v = e.getDoubleValue(context, stream);
+        List<Number> l = new ArrayList<Number>(le.getList(context, stream));
         while (l.remove(v)) {
           basicCount++;
         }
       } else if (arg instanceof IStringExpression && argList instanceof StringListExpression) {
         IStringExpression e = (IStringExpression) arg;
         StringListExpression le = (StringListExpression) argList;
-        String v = e.getStringValue(element.getParent(), annotation, stream);
-        List<String> l = new ArrayList<String>(le.getList(element.getParent(), stream));
+        String v = e.getStringValue(context, stream);
+        List<String> l = new ArrayList<String>(le.getList(context, stream));
         while (l.remove(v)) {
           basicCount++;
         }
-      } else if (arg instanceof TypeExpression && argList instanceof TypeListExpression) {
-        TypeExpression e = (TypeExpression) arg;
+      } else if (arg instanceof ITypeExpression && argList instanceof TypeListExpression) {
+        ITypeExpression e = (ITypeExpression) arg;
         TypeListExpression le = (TypeListExpression) argList;
-        Type v = e.getType(element.getParent());
-        List<Type> l = new ArrayList<Type>(le.getList(element.getParent(), stream));
+        Type v = e.getType(context, stream);
+        List<Type> l = new ArrayList<Type>(le.getList(context, stream));
         while (l.remove(v)) {
           basicCount++;
         }
       }
       anchorCount = basicCount;
     }
-    if (percent.getBooleanValue(element.getParent(), annotation, stream)) {
+    if (percent.getBooleanValue(context, stream)) {
       double percentValue = 0;
       if (totalCount != 0) {
         percentValue = (((double) basicCount) / ((double) totalCount)) * 100;
       }
-      boolean value = percentValue >= min.getDoubleValue(element.getParent(), annotation, stream)
-              && percentValue <= max.getDoubleValue(element.getParent(), annotation, stream);
+      boolean value = percentValue >= min.getDoubleValue(context, stream)
+              && percentValue <= max.getDoubleValue(context, stream);
       return new EvaluatedCondition(this, value);
     } else {
-      boolean value = anchorCount >= min.getIntegerValue(element.getParent(), annotation, stream)
-              && anchorCount <= max.getIntegerValue(element.getParent(), annotation, stream);
+      boolean value = anchorCount >= min.getIntegerValue(context, stream)
+              && anchorCount <= max.getIntegerValue(context, stream);
       return new EvaluatedCondition(this, value);
     }
   }
@@ -161,6 +164,7 @@ public class ContainsCondition extends TypeSentiveCondition {
     return arg;
   }
 
+  @SuppressWarnings("rawtypes")
   public ListExpression getArgList() {
     return argList;
   }

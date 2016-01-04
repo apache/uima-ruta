@@ -252,7 +252,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
     } else if (matcher instanceof RutaLiteralMatcher) {
       RutaLiteralMatcher lm = (RutaLiteralMatcher) matcher;
       IStringExpression expression = lm.getExpression();
-      String stringValue = expression.getStringValue(parent, annotation, stream);
+      MatchContext context = new MatchContext(this, null, after);
+      String stringValue = expression.getStringValue(context, stream);
       AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
       int delta = documentAnnotation.getBegin();
       String document = documentAnnotation.getCoveredText();
@@ -298,7 +299,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       if (c instanceof ComposedRuleElement) {
         ComposedRuleElement cre = (ComposedRuleElement) c;
 
-        if (nextElement.getQuantifier().isOptional(parent, stream)) {
+        MatchContext context = new MatchContext(this, null, after);
+        if (nextElement.getQuantifier().isOptional(context, stream)) {
           // optional did not match -> match complete window/document
           // TODO refactor
 
@@ -418,10 +420,10 @@ public class WildCardRuleElement extends AbstractRuleElement {
           } else {
             // HOTFIX caused by type priorities
             result.moveToLast();
-            if(result.isValid()) {
+            if (result.isValid()) {
               // HOTFIX avoid pointer to current annotation
               AnnotationFS current = result.get();
-              if(current.getEnd() >= annotation.getBegin()) {
+              if (current.getEnd() >= annotation.getBegin()) {
                 result.moveToPrevious();
               }
             }
@@ -468,10 +470,10 @@ public class WildCardRuleElement extends AbstractRuleElement {
           } else {
             // TODO due to type priorities: RutaBasic is last -> moveTo will not work
             result.moveToLast();
-            if(result.isValid()) {
+            if (result.isValid()) {
               // HOTFIX avoid pointer to current annotation
               AnnotationFS current = result.get();
-              if(current.getEnd() >= annotation.getBegin()) {
+              if (current.getEnd() >= annotation.getBegin()) {
                 result.moveToPrevious();
               }
             }
@@ -494,7 +496,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     RutaLiteralMatcher matcher = (RutaLiteralMatcher) nextElement.getMatcher();
     IStringExpression expression = matcher.getExpression();
-    String stringValue = expression.getStringValue(parent, null, stream);
+    MatchContext context = new MatchContext(this, ruleMatch, true);
+    String stringValue = expression.getStringValue(context, stream);
     AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
     int delta = documentAnnotation.getBegin();
     String document = documentAnnotation.getCoveredText();
@@ -629,11 +632,14 @@ public class WildCardRuleElement extends AbstractRuleElement {
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
             conditions.size());
     boolean base = true;
+
+    MatchContext context = new MatchContext(annotation, this, ruleMatch, true);
+
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {
         crowd.beginVisit(condition, null);
-        EvaluatedCondition eval = condition.eval(annotation, this, stream, crowd);
+        EvaluatedCondition eval = condition.eval(context, stream, crowd);
         crowd.endVisit(condition, null);
         evaluatedConditions.add(eval);
       }

@@ -21,15 +21,14 @@ package org.apache.uima.ruta.action;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaColoring;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -41,9 +40,9 @@ public class ColorAction extends AbstractRutaAction {
 
   private IBooleanExpression selected;
 
-  private TypeExpression type;
+  private ITypeExpression type;
 
-  public ColorAction(TypeExpression type, IStringExpression bgcolor, IStringExpression fgcolor,
+  public ColorAction(ITypeExpression type, IStringExpression bgcolor, IStringExpression fgcolor,
           IBooleanExpression selected) {
     super();
     this.type = type;
@@ -53,17 +52,18 @@ public class ColorAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleElement element = context.getElement();
     Type casType = stream.getJCas().getCasType(RutaColoring.type);
     FeatureStructure newAnnotationFS = stream.getCas().createFS(casType);
     RutaColoring coloring = null;
     if (newAnnotationFS instanceof RutaColoring) {
       coloring = (RutaColoring) newAnnotationFS;
-      RutaBlock parent = element.getParent();
-      coloring.setBgColor(bgcolor.getStringValue(parent, match, element, stream));
-      coloring.setFgColor(fgcolor.getStringValue(parent, match, element, stream));
-      coloring.setSelected(selected.getBooleanValue(parent, match, element, stream));
-      coloring.setTargetType(type.getType(parent).getName());
+      element.getParent();
+      coloring.setBgColor(bgcolor.getStringValue(context, stream));
+      coloring.setFgColor(fgcolor.getStringValue(context, stream));
+      coloring.setSelected(selected.getBooleanValue(context, stream));
+      coloring.setTargetType(type.getType(context, stream).getName());
       coloring.addToIndexes();
     }
   }
@@ -80,7 +80,7 @@ public class ColorAction extends AbstractRutaAction {
     return selected;
   }
 
-  public TypeExpression getType() {
+  public ITypeExpression getType() {
     return type;
   }
 

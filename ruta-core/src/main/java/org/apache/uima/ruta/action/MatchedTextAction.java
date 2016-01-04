@@ -19,12 +19,12 @@
 
 package org.apache.uima.ruta.action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -42,8 +42,10 @@ public class MatchedTextAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    List<Integer> indexList = getIndexList(match, element, stream);
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
+    List<Integer> indexList = getIndexList(list, context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
@@ -60,22 +62,4 @@ public class MatchedTextAction extends AbstractRutaAction {
     return list;
   }
 
-  protected List<Integer> getIndexList(RuleMatch match, RuleElement element, RutaStream stream) {
-    List<Integer> indexList = new ArrayList<Integer>();
-    if (list == null || list.isEmpty()) {
-      int self = element.getContainer().getRuleElements().indexOf(element) + 1;
-      indexList.add(self);
-      return indexList;
-    }
-    int last = Integer.MAX_VALUE - 1;
-    for (INumberExpression each : list) {
-      // not allowed for feature matches
-      int value = each.getIntegerValue(element.getParent(), null, stream);
-      for (int i = Math.min(value, last + 1); i < value; i++) {
-        indexList.add(i);
-      }
-      indexList.add(value);
-    }
-    return indexList;
-  }
 }

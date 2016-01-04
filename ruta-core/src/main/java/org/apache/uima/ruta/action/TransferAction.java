@@ -27,7 +27,8 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementMatch;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -35,15 +36,17 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class TransferAction extends TypeSensitiveAction {
 
-  public TransferAction(TypeExpression type) {
+  public TransferAction(ITypeExpression type) {
     super(type);
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<List<RuleElementMatch>> list = match.getMatchInfo(element);
     CAS cas = stream.getCas();
-    Type t = type.getType(element.getParent());
+    Type t = type.getType(context, stream);
     for (List<RuleElementMatch> eachList : list) {
       for (RuleElementMatch each : eachList) {
         List<AnnotationFS> matched = each.getTextsMatched();

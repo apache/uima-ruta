@@ -31,11 +31,9 @@ import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.MatchReference;
-import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
 import org.apache.uima.ruta.rule.ConjunctRulesRuleElement;
@@ -138,19 +136,17 @@ public class ScriptVerbalizer {
       RutaMatcher matcher = tmre.getMatcher();
       // action-only rule
       if (matcher instanceof RutaTypeMatcher) {
-        RutaExpression expression = ((RutaTypeMatcher) matcher).getExpression();
-        if (expression instanceof MatchReference) {
-          MatchReference mr = (MatchReference) expression;
-          if (mr.getMatch() == null) {
-            Iterator<AbstractRutaAction> ait = actions.iterator();
-            while (ait.hasNext()) {
-              AbstractRutaAction each = ait.next();
-              result.append(verbalizer.verbalize(each));
-              if (ait.hasNext()) {
-                result.append(",");
-              }
+        IRutaExpression expression = ((RutaTypeMatcher) matcher).getExpression();
+        if(expression != null) {
+          result.append(verbalizer.verbalize(expression));
+        } else {
+          Iterator<AbstractRutaAction> ait = actions.iterator();
+          while (ait.hasNext()) {
+            AbstractRutaAction each = ait.next();
+            result.append(verbalizer.verbalize(each));
+            if (ait.hasNext()) {
+              result.append(",");
             }
-            return result.toString();
           }
         }
       }
@@ -298,10 +294,10 @@ public class ScriptVerbalizer {
     sb.append(regexp);
     sb.append(THEN);
 
-    Iterator<Entry<TypeExpression, INumberExpression>> iterator = rule.getTypeMap().entrySet()
+    Iterator<Entry<ITypeExpression, INumberExpression>> iterator = rule.getTypeMap().entrySet()
             .iterator();
     while (iterator.hasNext()) {
-      Entry<TypeExpression, INumberExpression> next = iterator.next();
+      Entry<ITypeExpression, INumberExpression> next = iterator.next();
       String type = verbalizer.verbalize(next.getKey());
       INumberExpression value = next.getValue();
       if (value != null) {
@@ -310,7 +306,7 @@ public class ScriptVerbalizer {
       } else {
         sb.append(type);
       }
-      Map<TypeExpression, Map<IStringExpression, IRutaExpression>> featureAssignments = rule
+      Map<ITypeExpression, Map<IStringExpression, IRutaExpression>> featureAssignments = rule
               .getFeatureAssignments();
       if (featureAssignments != null) {
         Map<IStringExpression, IRutaExpression> map = featureAssignments.get(next.getKey());

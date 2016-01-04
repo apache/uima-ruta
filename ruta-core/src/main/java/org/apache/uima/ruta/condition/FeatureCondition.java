@@ -20,15 +20,13 @@
 package org.apache.uima.ruta.condition;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
-import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class FeatureCondition extends AbstractRutaCondition {
@@ -43,20 +41,16 @@ public class FeatureCondition extends AbstractRutaCondition {
     this.argExpr = argExpr;
   }
 
-
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    RutaBlock parent = element.getParent();
-    String typeWithFeature = annotation.getType().getName()+"."+featureStringExpression.getStringValue(parent, annotation, stream);
-    MatchReference mf = new MatchReference(typeWithFeature, "==", argExpr);
-    FeatureExpression featureExpression = mf.getFeatureExpression(parent);
-    if(featureExpression instanceof FeatureMatchExpression) {
-      FeatureMatchExpression fme = (FeatureMatchExpression) featureExpression;
-      boolean checkFeatureValue = fme.checkFeatureValue(annotation, stream, parent);
-      return new EvaluatedCondition(this, checkFeatureValue);
-    }
-    return new EvaluatedCondition(this, false);
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS annotation = context.getAnnotation();
+
+    String typeWithFeature = annotation.getType().getName() + "."
+            + featureStringExpression.getStringValue(context, stream);
+    MatchReference mf = new MatchReference(typeWithFeature);
+    FeatureMatchExpression fme = new FeatureMatchExpression(mf, "==", argExpr, context.getParent());
+    boolean checkFeatureValue = fme.checkFeatureValue(annotation, context, stream);
+    return new EvaluatedCondition(this, checkFeatureValue);
   }
 
   public IStringExpression getFeatureStringExpression() {
@@ -66,6 +60,5 @@ public class FeatureCondition extends AbstractRutaCondition {
   public IRutaExpression getArgExpr() {
     return argExpr;
   }
-
 
 }

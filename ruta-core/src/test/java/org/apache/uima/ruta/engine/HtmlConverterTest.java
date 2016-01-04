@@ -125,7 +125,6 @@ public class HtmlConverterTest {
     CAS modifiedView = cas.getView(outputViewName);
     String text = modifiedView.getDocumentText();
 
-    String inputText = cas.getDocumentText();
     String expectedText = "start of body\nnormal normal bold\nend of body 3&#8364;&#160;&auml;&ouml;&uuml;";
     AnnotationFS documentAnnotation = modifiedView.getDocumentAnnotation();
     assertEquals(String.format("begin of annotation is %d, %d expected.",
@@ -163,7 +162,6 @@ public class HtmlConverterTest {
     CAS modifiedView = cas.getView(outputViewName);
     String text = modifiedView.getDocumentText();
 
-    String inputText = cas.getDocumentText();
     String expectedText = "start of body\nnormal\u00A0normal bold\nend of body 3\u20AC\u00A0äöü";
     AnnotationFS documentAnnotation = modifiedView.getDocumentAnnotation();
     assertEquals(String.format("begin of annotation is %d, %d expected.",
@@ -472,9 +470,9 @@ public class HtmlConverterTest {
     // _____________________________ BB _________________________ BB ___________
     //
     CAS modifiedView = cas.getView(outputViewName);
-    String modifiedText = modifiedView.getDocumentText();
-    int modLength = modifiedText.length();
-    int modLengthCodepoints = modifiedText.codePointCount(0, modLength);
+//    String modifiedText = modifiedView.getDocumentText();
+//    int modLength = modifiedText.length();
+//    int modLengthCodepoints = modifiedText.codePointCount(0, modLength);
     AnnotationIndex<AnnotationFS> ai = modifiedView.getAnnotationIndex(boldType);
     FSIterator<AnnotationFS> iterator = ai.iterator();
     assertEquals(true, iterator.hasNext());

@@ -24,11 +24,11 @@ import java.util.Map;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -37,22 +37,24 @@ public class FillAction extends AbstractStructureAction {
 
   private Map<IStringExpression, IRutaExpression> features;
 
-  private TypeExpression structureType;
+  private ITypeExpression structureType;
 
-  public FillAction(TypeExpression structureType, Map<IStringExpression, IRutaExpression> features) {
+  public FillAction(ITypeExpression structureType, Map<IStringExpression, IRutaExpression> features) {
     super();
     this.structureType = structureType;
     this.features = features;
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       if (matchedAnnotation == null) {
         return;
       }
-      Type type = getStructureType().getType(element.getParent());
+      Type type = getStructureType().getType(context, stream);
       List<AnnotationFS> list = stream.getAnnotationsInWindow(matchedAnnotation, type);
       if (list.isEmpty()) {
         list = stream.getOverappingAnnotations(matchedAnnotation, type);
@@ -72,7 +74,8 @@ public class FillAction extends AbstractStructureAction {
       if (!list.isEmpty()) {
         AnnotationFS annotationFS = list.get(0);
         stream.getCas().removeFsFromIndexes(annotationFS);
-        fillFeatures((Annotation) annotationFS, features, matchedAnnotation, element, stream);
+        context.setAnnotation(matchedAnnotation);
+        stream.assignFeatureValues(annotationFS, features, context);
         stream.getCas().addFsToIndexes(annotationFS);
       }
     }
@@ -83,7 +86,7 @@ public class FillAction extends AbstractStructureAction {
     return features;
   }
 
-  public TypeExpression getStructureType() {
+  public ITypeExpression getStructureType() {
     return structureType;
   }
 

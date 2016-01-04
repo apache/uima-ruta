@@ -22,9 +22,9 @@ package org.apache.uima.ruta.expression.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class SimpleNumberListExpression extends NumberListExpression {
 
@@ -36,11 +36,11 @@ public class SimpleNumberListExpression extends NumberListExpression {
   }
 
   @Override
-  public List<Number> getList(RutaBlock parent, RutaStream stream) {
+  public List<Number> getList(MatchContext context, RutaStream stream) {
     List<Number> result = new ArrayList<Number>();
     for (INumberExpression each : list) {
-   // TODO support arrays
-      result.add(each.getDoubleValue(parent, null, stream));
+      // TODO support arrays
+      result.add(each.getDoubleValue(context, stream));
     }
     return result;
   }

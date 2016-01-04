@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.NoSuchElementException;
@@ -36,6 +37,7 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.ConstraintFactory;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FSMatchConstraint;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.FSIteratorImplBase;
@@ -44,10 +46,21 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.expression.AnnotationTypeExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
+import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.type.RutaAnnotation;
 import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.utils.UIMAUtils;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
@@ -154,7 +167,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
     final List<AnnotationFS> allAnnotations = new LinkedList<AnnotationFS>();
     for (AnnotationFS a : annotationIndex) {
-      if(a.getBegin() != a.getEnd()) {
+      if (a.getBegin() != a.getEnd()) {
         allAnnotations.add(a);
       }
     }
@@ -178,12 +191,12 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
             break;
           }
           Integer second = anchors.first();
-          if(first < second) {
-          RutaBasic newTMB = new RutaBasic(getJCas(), first, second);
-          newTMB.setLowMemoryProfile(lowMemoryProfile);
-          beginAnchors.put(first, newTMB);
-          endAnchors.put(second, newTMB);
-          cas.addFsToIndexes(newTMB);
+          if (first < second) {
+            RutaBasic newTMB = new RutaBasic(getJCas(), first, second);
+            newTMB.setLowMemoryProfile(lowMemoryProfile);
+            beginAnchors.put(first, newTMB);
+            endAnchors.put(second, newTMB);
+            cas.addFsToIndexes(newTMB);
           }
         }
       }
@@ -300,7 +313,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         toSplit = ceiling;
       }
       int newEnd = toSplit.getEnd();
-      if(newEnd == anchor) {
+      if (newEnd == anchor) {
         return false;
       }
       cas.removeFsFromIndexes(toSplit);
@@ -330,7 +343,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public void removeAnnotation(AnnotationFS annotation, Type type) {
-    if(type.getName().equals(UIMAConstants.TYPE_DOCUMENT)) {
+    if (type.getName().equals(UIMAConstants.TYPE_DOCUMENT)) {
       // do not remove DocumentAnnotation
       return;
     }
@@ -341,11 +354,11 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     Type parent = type;
     RutaBasic beginAnchor = getBeginAnchor(annotation.getBegin());
     RutaBasic endAnchor = getEndAnchor(annotation.getEnd());
-    if(beginAnchor != null) {
-    	beginAnchor.removeBegin(annotation, parent);
+    if (beginAnchor != null) {
+      beginAnchor.removeBegin(annotation, parent);
     }
-    if(endAnchor != null) {
-    	endAnchor.removeEnd(annotation, parent);
+    if (endAnchor != null) {
+      endAnchor.removeEnd(annotation, parent);
     }
     if (!(annotation instanceof RutaBasic)) {
       cas.removeFsFromIndexes(annotation);
@@ -369,13 +382,14 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
             filter.getCurrentFilterTypes(), filter.getCurrentRetainTypes(), windowAnnotation,
             windowType, cas);
 
-//    NavigableMap<Integer, RutaBasic> newBeginAnchors = beginAnchors.subMap(
-//            windowAnnotation.getBegin(), true, windowAnnotation.getEnd(), false);
-//    NavigableMap<Integer, RutaBasic> newEndAnchors = endAnchors.subMap(windowAnnotation.getBegin(),
-//            false, windowAnnotation.getEnd(), true);
+    // NavigableMap<Integer, RutaBasic> newBeginAnchors = beginAnchors.subMap(
+    // windowAnnotation.getBegin(), true, windowAnnotation.getEnd(), false);
+    // NavigableMap<Integer, RutaBasic> newEndAnchors =
+    // endAnchors.subMap(windowAnnotation.getBegin(),
+    // false, windowAnnotation.getEnd(), true);
 
-    RutaStream stream = new RutaStream(cas, basicType, beginAnchors, endAnchors,
-            filterManager, lowMemoryProfile, simpleGreedyForComposed, crowd);
+    RutaStream stream = new RutaStream(cas, basicType, beginAnchors, endAnchors, filterManager,
+            lowMemoryProfile, simpleGreedyForComposed, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
     stream.setGreedyRule(greedyRule);
@@ -403,7 +417,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     try {
       currentIt.moveTo(fs);
     } catch (Exception e) {
-//      e.printStackTrace();
+      // e.printStackTrace();
     }
   }
 
@@ -468,7 +482,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     try {
       return cas.getJCas();
     } catch (CASException e) {
-//      e.printStackTrace();
+      // e.printStackTrace();
     }
     return null;
   }
@@ -523,7 +537,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public List<AnnotationFS> getAnnotationsInWindow(AnnotationFS windowAnnotation, Type type) {
-    if(type == null) return null;
+    if (type == null)
+      return null;
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     List<AnnotationFS> inWindow = getAnnotationsInWindow2(windowAnnotation, type);
     result = inWindow;
@@ -561,7 +576,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (isVisible(pointer) || !isValid()) {
         moveToPrevious();
       }
-      if(!isValid()) {
+      if (!isValid()) {
         moveToLast();
       }
       if (isValid()) {
@@ -790,26 +805,26 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   public boolean isOnlyOnce() {
     return onlyOnce;
   }
-  
+
   public void setOnlyOnce(Boolean onlyOnce) {
     this.onlyOnce = onlyOnce;
   }
-  
-  
+
   public boolean isVisible(AnnotationFS annotationFS) {
     return isVisible(annotationFS, false);
   }
-  
+
   public boolean isVisible(AnnotationFS annotationFS, boolean ignoreWindow) {
     if (annotationFS == null) {
       return false;
     }
-    if(annotationFS.getBegin() >= annotationFS.getEnd()) {
+    if (annotationFS.getBegin() >= annotationFS.getEnd()) {
       return false;
     }
-    
+
     AnnotationFS windowAnnotation = filter.getWindowAnnotation();
-    if (!ignoreWindow && windowAnnotation != null
+    if (!ignoreWindow
+            && windowAnnotation != null
             && (annotationFS.getBegin() < windowAnnotation.getBegin() || annotationFS.getEnd() > windowAnnotation
                     .getEnd())) {
       return false;
@@ -884,13 +899,124 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     StringBuilder result = new StringBuilder();
     List<RutaBasic> basicsInWindow = getBasicsInWindow(annotationFS);
     for (RutaBasic each : basicsInWindow) {
-      if(isVisible(each)) {
+      if (isVisible(each)) {
         result.append(each.getCoveredText());
       }
     }
     return result.toString();
   }
 
+  public void assignFeatureValues(AnnotationFS annotation,
+          Map<IStringExpression, IRutaExpression> map, MatchContext context) {
+    Type type = annotation.getType();
+    Set<Entry<IStringExpression, IRutaExpression>> entrySet = map.entrySet();
+    for (Entry<IStringExpression, IRutaExpression> entry : entrySet) {
+      IStringExpression key = entry.getKey();
+      IRutaExpression value = entry.getValue();
+      String featureName = key.getStringValue(context, this);
+      Feature feature = type.getFeatureByBaseName(featureName);
+      assignFeatureValue(annotation, feature, value, context);
+    }
+  }
 
+  public void assignFeatureValue(AnnotationFS annotation, Feature feature, IRutaExpression value,
+          MatchContext context) {
+    if (feature == null) {
+      throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
+    }
+    String range = feature.getRange().getName();
+    if (range.equals(UIMAConstants.TYPE_STRING)) {
+      if (value instanceof IStringExpression) {
+        IStringExpression stringExpr = (IStringExpression) value;
+        String string = stringExpr.getStringValue(context, this);
+        annotation.setStringValue(feature, string);
+      }
+    } else if (value instanceof INumberExpression
+            && (range.equals(UIMAConstants.TYPE_INTEGER) || range.equals(UIMAConstants.TYPE_LONG)
+                    || range.equals(UIMAConstants.TYPE_SHORT) || range
+                      .equals(UIMAConstants.TYPE_BYTE))) {
+      INumberExpression numberExpr = (INumberExpression) value;
+      int v = numberExpr.getIntegerValue(context, this);
+      annotation.setIntValue(feature, v);
+    } else if (value instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_DOUBLE))) {
+      INumberExpression numberExpr = (INumberExpression) value;
+      double v = numberExpr.getDoubleValue(context, this);
+      annotation.setDoubleValue(feature, v);
+    } else if (value instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_FLOAT))) {
+      INumberExpression numberExpr = (INumberExpression) value;
+      float v = numberExpr.getFloatValue(context, this);
+      annotation.setFloatValue(feature, v);
+    } else if (value instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
+      IBooleanExpression booleanExpr = (IBooleanExpression) value;
+      boolean v = booleanExpr.getBooleanValue(context, this);
+      annotation.setBooleanValue(feature, v);
+    } else if (value instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
+      IBooleanExpression booleanExpr = (IBooleanExpression) value;
+      boolean v = booleanExpr.getBooleanValue(context, this);
+      annotation.setBooleanValue(feature, v);
+    } else if (value instanceof AnnotationTypeExpression && !feature.getRange().isPrimitive()) {
+      AnnotationTypeExpression ate = (AnnotationTypeExpression) value;
+      AnnotationFS a = ate.getAnnotation(context, this);
+      if (a != null) {
+        // TODO support annotation list expressions
+        if (feature.getRange().isArray()) {
+          List<AnnotationFS> c = new ArrayList<AnnotationFS>();
+          c.add(a);
+          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), c));
+        } else {
+          annotation.setFeatureValue(feature, a);
+        }
+      } else {
+        Type t = ate.getType(context, this);
+        assignAnnotationByTypeInWindow(annotation, feature, context, t);
+      }
+    } else if (value instanceof ITypeExpression && !feature.getRange().isPrimitive()) {
+      ITypeExpression typeExpr = (ITypeExpression) value;
+      Type t = typeExpr.getType(context, this);
+      assignAnnotationByTypeInWindow(annotation, feature, context, t);
+    } else if (value instanceof GenericFeatureExpression && !feature.getRange().isPrimitive()) {
+      FeatureExpression fe = ((GenericFeatureExpression) value).getFeatureExpression();
+      ITypeExpression typeExpr = fe.getTypeExpr(context, this);
+      Type t = typeExpr.getType(context, this);
+      List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), t);
+      if (fe instanceof SimpleFeatureExpression) {
+        SimpleFeatureExpression sfe = (SimpleFeatureExpression) fe;
+        List<AnnotationFS> featureAnnotations = inWindow;
+        if (fe.getFeatures(context, this) != null) {
+          featureAnnotations = new ArrayList<AnnotationFS>(sfe.getFeatureAnnotations(inWindow,
+                  this, context, false));
+        }
+        if (feature.getRange().isArray()) {
+          annotation.setFeatureValue(feature,
+                  UIMAUtils.toFSArray(this.getJCas(), featureAnnotations));
+        } else if (!featureAnnotations.isEmpty()) {
+          AnnotationFS a = featureAnnotations.get(0);
+          annotation.setFeatureValue(feature, a);
+        }
+      } else {
+        if (feature.getRange().isArray()) {
+          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), inWindow));
+        } else {
+          AnnotationFS a = inWindow.get(0);
+          annotation.setFeatureValue(feature, a);
+        }
+      }
+    }
+  }
 
+  private void assignAnnotationByTypeInWindow(AnnotationFS annotation, Feature feature,
+          MatchContext context, Type type) {
+
+    List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), type);
+    if (feature.getRange().isArray()) {
+      annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), inWindow));
+    } else {
+      if (inWindow != null && !inWindow.isEmpty()) {
+        AnnotationFS a = inWindow.get(0);
+        annotation.setFeatureValue(feature, a);
+      } else {
+        annotation.setFeatureValue(feature, null);
+      }
+    }
+  }
 }

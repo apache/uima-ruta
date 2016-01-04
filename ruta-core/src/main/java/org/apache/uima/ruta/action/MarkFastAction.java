@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
@@ -31,9 +30,10 @@ import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.resource.TreeWordList;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -50,7 +50,7 @@ public class MarkFastAction extends AbstractMarkAction {
 
   private IBooleanExpression ignoreWS;
 
-  public MarkFastAction(TypeExpression type, WordListExpression list, IBooleanExpression ignore,
+  public MarkFastAction(ITypeExpression type, WordListExpression list, IBooleanExpression ignore,
           INumberExpression ignoreLength, IBooleanExpression ignoreWS) {
     super(type);
     this.list = list;
@@ -60,7 +60,7 @@ public class MarkFastAction extends AbstractMarkAction {
     this.ignoreWS = ignoreWS == null ? new SimpleBooleanExpression(true) : ignoreWS;
   }
 
-  public MarkFastAction(TypeExpression type, StringListExpression list, IBooleanExpression ignore,
+  public MarkFastAction(ITypeExpression type, StringListExpression list, IBooleanExpression ignore,
           INumberExpression ignoreLength, IBooleanExpression ignoreWS) {
     super(type);
     this.stringList = list;
@@ -71,24 +71,26 @@ public class MarkFastAction extends AbstractMarkAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
       RutaWordList wl = null;
-      RutaBlock parent = element.getParent();
+      element.getParent();
       if (list != null) {
-        wl = list.getList(parent);
+        wl = list.getList(context);
       } else if (stringList != null) {
-        wl = new TreeWordList(stringList.getList(parent, stream), false);
+        wl = new TreeWordList(stringList.getList(context, stream), false);
       }
       if (wl instanceof TreeWordList) {
         Collection<AnnotationFS> found = wl.find(windowStream,
-                ignore.getBooleanValue(parent, match, element, stream),
-                ignoreLength.getIntegerValue(parent, match, element, stream), null, 0,
-                ignoreWS.getBooleanValue(parent, match, element, stream));
+                ignore.getBooleanValue(context, stream),
+                ignoreLength.getIntegerValue(context, stream), null, 0,
+                ignoreWS.getBooleanValue(context, stream));
         for (AnnotationFS annotation : found) {
-          createAnnotation(annotation, element, windowStream, match);
+          createAnnotation(annotation, context, windowStream);
         }
       }
     }

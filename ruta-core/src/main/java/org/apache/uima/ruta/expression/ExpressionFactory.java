@@ -24,11 +24,16 @@ import java.util.List;
 
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.expression.annotation.AnnotationAddressExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationFeatureExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
+import org.apache.uima.ruta.expression.bool.BooleanVariableExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.bool.ReferenceBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanFunction;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
@@ -36,24 +41,24 @@ import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
+import org.apache.uima.ruta.expression.list.BooleanListVariableExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.list.NumberListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceBooleanListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceNumberListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceStringListExpression;
-import org.apache.uima.ruta.expression.list.ReferenceTypeListExpression;
+import org.apache.uima.ruta.expression.list.NumberListVariableExpression;
 import org.apache.uima.ruta.expression.list.SimpleBooleanListExpression;
 import org.apache.uima.ruta.expression.list.SimpleNumberListExpression;
 import org.apache.uima.ruta.expression.list.SimpleStringListExpression;
 import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
+import org.apache.uima.ruta.expression.list.StringListVariableExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.list.TypeListVariableExpression;
 import org.apache.uima.ruta.expression.list.UntypedListExpression;
 import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.NegativeNumberExpression;
 import org.apache.uima.ruta.expression.number.NumberFeatureExpression;
-import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
+import org.apache.uima.ruta.expression.number.NumberVariableExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.resource.ExternalWordListExpression;
 import org.apache.uima.ruta.expression.resource.ExternalWordTableExpression;
@@ -66,12 +71,12 @@ import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.expression.string.ComposedStringExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.string.ReferenceStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
 import org.apache.uima.ruta.expression.string.StringFeatureExpression;
-import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
+import org.apache.uima.ruta.expression.string.StringVariableExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 
 public class ExpressionFactory {
 
@@ -99,7 +104,7 @@ public class ExpressionFactory {
   }
 
   public static INumberExpression createReferenceNumberExpression(Token var, Token minus) {
-    ReferenceNumberExpression simpleNumberExpression = new ReferenceNumberExpression(var.getText());
+    NumberVariableExpression simpleNumberExpression = new NumberVariableExpression(var.getText());
     if (minus != null) {
       return new NegativeNumberExpression(simpleNumberExpression);
     } else {
@@ -107,8 +112,8 @@ public class ExpressionFactory {
     }
   }
 
-  public static INumberExpression createComposedNumberExpression(List<INumberExpression> expressions,
-          List<Token> opTokens) {
+  public static INumberExpression createComposedNumberExpression(
+          List<INumberExpression> expressions, List<Token> opTokens) {
     List<String> ops = new ArrayList<String>();
     for (Token token : opTokens) {
       ops.add(token.getText());
@@ -124,7 +129,7 @@ public class ExpressionFactory {
     exprList.add(expression);
     return new ComposedNumberExpression(exprList, ops);
   }
-  
+
   public static INumberExpression createComposedNumberExpression(INumberExpression expression1,
           Token opToken, INumberExpression expression2) {
     List<String> ops = new ArrayList<String>();
@@ -146,7 +151,7 @@ public class ExpressionFactory {
   }
 
   public static AbstractStringExpression createReferenceStringExpression(Token var) {
-    return new ReferenceStringExpression(var.getText());
+    return new StringVariableExpression(var.getText());
   }
 
   public static IBooleanExpression createBooleanNumberExpression(INumberExpression e1, Token op,
@@ -159,20 +164,20 @@ public class ExpressionFactory {
   }
 
   public static IBooleanExpression createReferenceBooleanExpression(Token id) {
-    return new ReferenceBooleanExpression(id.getText());
+    return new BooleanVariableExpression(id.getText());
   }
 
-  public static TypeExpression createSimpleTypeExpression(Token typeToken, RutaBlock parent) {
+  public static ITypeExpression createSimpleTypeExpression(Token typeToken, RutaBlock parent) {
     String typeString = typeToken == null ? "uima.tcas.DocumentAnnotation" : typeToken.getText();
     return new SimpleTypeExpression(typeString);
   }
 
-  public static TypeExpression createReferenceTypeExpression(Token varToken) {
+  public static ITypeExpression createReferenceTypeExpression(Token varToken) {
     String varString = varToken == null ? "" : varToken.getText();
-    return new ReferenceTypeExpression(varString);
+    return new TypeVariableExpression(varString);
   }
 
-  public static TypeExpression createSimpleTypeExpression(String typeString, RutaBlock parent) {
+  public static ITypeExpression createSimpleTypeExpression(String typeString, RutaBlock parent) {
     return new SimpleTypeExpression(typeString);
   }
 
@@ -197,33 +202,33 @@ public class ExpressionFactory {
     return new LiteralWordTableExpression(path.getText());
   }
 
-  public static IBooleanExpression createBooleanTypeExpression(TypeExpression e1, Token op,
-          TypeExpression e2) {
+  public static IBooleanExpression createBooleanTypeExpression(ITypeExpression e1, Token op,
+          ITypeExpression e2) {
     return new BooleanTypeExpression(e1, op.getText(), e2);
   }
 
   public static BooleanListExpression createReferenceBooleanListExpression(Token var) {
-    return new ReferenceBooleanListExpression(var.getText());
+    return new BooleanListVariableExpression(var.getText());
   }
 
   public static StringListExpression createReferenceStringListExpression(Token var) {
-    return new ReferenceStringListExpression(var.getText());
+    return new StringListVariableExpression(var.getText());
   }
 
   public static TypeListExpression createReferenceTypeListExpression(Token var) {
-    return new ReferenceTypeListExpression(var.getText());
+    return new TypeListVariableExpression(var.getText());
   }
 
   public static NumberListExpression createReferenceDoubleListExpression(Token var) {
-    return new ReferenceNumberListExpression(var.getText());
+    return new NumberListVariableExpression(var.getText());
   }
 
   public static NumberListExpression createReferenceIntListExpression(Token var) {
-    return new ReferenceNumberListExpression(var.getText());
+    return new NumberListVariableExpression(var.getText());
   }
 
   public static NumberListExpression createReferenceFloatListExpression(Token var) {
-    return new ReferenceNumberListExpression(var.getText());
+    return new NumberListVariableExpression(var.getText());
   }
 
   public static BooleanListExpression createBooleanListExpression(List<IBooleanExpression> list) {
@@ -234,7 +239,7 @@ public class ExpressionFactory {
     return new SimpleNumberListExpression(list);
   }
 
-  public static TypeListExpression createTypeListExpression(List<TypeExpression> list) {
+  public static TypeListExpression createTypeListExpression(List<ITypeExpression> list) {
     return new SimpleTypeListExpression(list);
   }
 
@@ -245,19 +250,19 @@ public class ExpressionFactory {
   public static FeatureExpression createFeatureExpression(MatchReference mr, RutaBlock env) {
     return new SimpleFeatureExpression(mr);
   }
-  
-  public static FeatureMatchExpression createFeatureMatchExpression(MatchReference mr, RutaBlock env) {
-    return new FeatureMatchExpression(mr, env);
-  }
 
-  public static MatchReference createMatchReference(Token refToken, Token opToken,
-          IRutaExpression arg) {
-    String match = refToken.getText();
-    String op = null;
-    if (opToken != null) {
+  public static FeatureMatchExpression createFeatureMatchExpression(MatchReference mr, Token opToken,
+          IRutaExpression arg, RutaBlock env) {
+    String op = "";
+    if(opToken != null) {
       op = opToken.getText();
     }
-    return new MatchReference(match, op, arg);
+    return new FeatureMatchExpression(mr, op, arg, env);
+  }
+
+  public static MatchReference createMatchReference(Token refToken) {
+    String match = refToken.getText();
+    return new MatchReference(match);
   }
 
   public static INumberExpression createNumberFeatureExpression(FeatureExpression fe) {
@@ -284,7 +289,7 @@ public class ExpressionFactory {
           List<IStringExpression> args) {
     return new ExternalWordListExpression(name.getText(), args);
   }
-  
+
   public static WordTableExpression createExternalWordTableExpression(Token name,
           List<IStringExpression> args) {
     return new ExternalWordTableExpression(name.getText(), args);
@@ -293,7 +298,31 @@ public class ExpressionFactory {
   public static IRutaExpression createNullExpression() {
     return new NullExpression();
   }
-  
 
+  public static IAnnotationExpression createAnnotationAddressExpression(Token address) {
+    return new AnnotationAddressExpression(address.getText());
+  }
+
+  public static IRutaExpression createAnnotationLabelExpression(Token label) {
+    return new AnnotationLabelExpression(label.getText());
+  }
+
+  public static IRutaExpression createAnnotationVariableExpression(Token var) {
+    return new AnnotationVariableExpression(var.getText());
+  }
+
+  public static IRutaExpression createAnnotationListVariableExpression(Token var) {
+    return null;
+  }
+
+  public static IAnnotationExpression createAnnotationFeatureExpression(
+          FeatureExpression featureExpression) {
+    return new AnnotationFeatureExpression(featureExpression);
+  }
+
+  public static IRutaExpression createGenericExpression(Token ref) {
+    MatchReference match = new MatchReference(ref.getText());
+    return new AnnotationTypeExpression(match);
+  }
 
 }

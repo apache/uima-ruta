@@ -25,7 +25,8 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -33,17 +34,19 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MarkOnceAction extends MarkAction {
 
-  public MarkOnceAction(TypeExpression type, INumberExpression scoreValue,
+  public MarkOnceAction(ITypeExpression type, INumberExpression scoreValue,
           List<INumberExpression> list) {
     super(type, scoreValue, list);
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    List<Integer> indexList = getIndexList(element, list, stream);
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
+    List<Integer> indexList = getIndexList(context, list, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
-    Type targetType = type.getType(element.getParent());
+    Type targetType = type.getType(context, stream);
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       boolean partof = false;
       List<RutaBasic> basicsInWindow = stream.getBasicsInWindow(matchedAnnotation);
@@ -54,7 +57,7 @@ public class MarkOnceAction extends MarkAction {
         }
       }
       if (!partof) {
-        createAnnotation(matchedAnnotation, element, stream, match);
+        createAnnotation(matchedAnnotation, context, stream);
       }
     }
   }

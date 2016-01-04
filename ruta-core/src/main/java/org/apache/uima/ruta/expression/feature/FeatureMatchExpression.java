@@ -35,6 +35,7 @@ import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class FeatureMatchExpression extends SimpleFeatureExpression {
 
@@ -46,21 +47,13 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
 
   private String op;
 
-  public FeatureMatchExpression(FeatureExpression f, String op, IRutaExpression arg,
-          RutaBlock parent) {
-    super(f.getTypeExpr(parent), f.getFeatureStringList(parent));
+  public FeatureMatchExpression(MatchReference mr, String op, IRutaExpression arg, RutaBlock env) {
+    super(mr);
     this.op = op;
     this.arg = arg;
   }
 
-  public FeatureMatchExpression(MatchReference mr, RutaBlock env) {
-    super(mr);
-  }
-
   public IRutaExpression getArg() {
-    if (getMatchReference() != null && arg == null) {
-      arg = getMatchReference().getArg();
-    }
     return arg;
   }
 
@@ -69,9 +62,6 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
   }
 
   public String getOp() {
-    if (getMatchReference() != null && op == null) {
-      op = getMatchReference().getOp();
-    }
     return op;
   }
 
@@ -79,20 +69,20 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
     this.op = op;
   }
 
-  public boolean checkFeatureValue(AnnotationFS afs, RutaStream stream, RutaBlock parent) {
-    Feature feature = getFeature(parent);
-    return checkFeatureValue(afs, feature, stream, parent);
+  public boolean checkFeatureValue(AnnotationFS afs, MatchContext context, RutaStream stream) {
+    Feature feature = getFeature(context, stream);
+    return checkFeatureValue(afs, context, feature, stream);
   }
 
-  public boolean checkFeatureValue(AnnotationFS afs, Feature feature, RutaStream stream,
-          RutaBlock parent) {
+  public boolean checkFeatureValue(AnnotationFS afs, MatchContext context, Feature feature,
+          RutaStream stream) {
     // null is possibly coveredText
     String rn = feature == null ? UIMAConstants.TYPE_STRING : feature.getRange().getName();
     if (rn.equals(UIMAConstants.TYPE_BOOLEAN)) {
       Boolean v1 = afs.getBooleanValue(feature);
       if (getArg() instanceof IBooleanExpression) {
         IBooleanExpression expr = (IBooleanExpression) getArg();
-        Boolean v2 = expr.getBooleanValue(parent, afs, stream);
+        Boolean v2 = expr.getBooleanValue(context, stream);
         return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_INTEGER) || rn.equals(UIMAConstants.TYPE_BYTE)
@@ -100,21 +90,21 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
       Integer v1 = afs.getIntValue(feature);
       if (getArg() instanceof INumberExpression) {
         INumberExpression expr = (INumberExpression) getArg();
-        Integer v2 = expr.getIntegerValue(parent, afs, stream);
+        Integer v2 = expr.getIntegerValue(context, stream);
         return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_DOUBLE)) {
       Double v1 = afs.getDoubleValue(feature);
       if (getArg() instanceof INumberExpression) {
         INumberExpression expr = (INumberExpression) getArg();
-        Double v2 = expr.getDoubleValue(parent, afs, stream);
+        Double v2 = expr.getDoubleValue(context, stream);
         return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_FLOAT)) {
       Float v1 = afs.getFloatValue(feature);
       if (getArg() instanceof INumberExpression) {
         INumberExpression expr = (INumberExpression) getArg();
-        Float v2 = expr.getFloatValue(parent, afs, stream);
+        Float v2 = expr.getFloatValue(context, stream);
         return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_STRING)) {
@@ -125,14 +115,14 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
       }
       if (getArg() instanceof IStringExpression) {
         IStringExpression expr = (IStringExpression) getArg();
-        String v2 = expr.getStringValue(parent, afs, stream);
+        String v2 = expr.getStringValue(context, stream);
         return compare(v1, v2);
       }
     } else if (!feature.getRange().isPrimitive() && getArg() instanceof FeatureExpression) {
       FeatureExpression fe = (FeatureExpression) getArg();
       List<AnnotationFS> list = new ArrayList<AnnotationFS>(1);
       list.add(afs);
-      Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, parent,
+      Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
               false);
       return compare(afs.getFeatureValue(feature), featureAnnotations);
     }
@@ -188,4 +178,15 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
     return false;
   }
 
+  public String toString() {
+    String result = super.toString();
+    if(op != null) {
+      result += op;
+    }
+    if(arg != null) {
+      result += arg.toString();
+    }
+    return result;
+  }
+  
 }

@@ -22,13 +22,13 @@ package org.apache.uima.ruta.expression.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.bool.AbstractBooleanExpression;
-import org.apache.uima.ruta.expression.number.AbstractNumberExpression;
-import org.apache.uima.ruta.expression.string.AbstractStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class UntypedListExpression extends ListExpression<Object> {
 
@@ -40,20 +40,20 @@ public class UntypedListExpression extends ListExpression<Object> {
   }
 
   @Override
-  public List<Object> getList(RutaBlock parent, RutaStream stream) {
+  public List<Object> getList(MatchContext context, RutaStream stream) {
     List<Object> result = new ArrayList<Object>();
     for (IRutaExpression each : list) {
-   // TODO support arrays
-      if (each instanceof AbstractBooleanExpression) {
-        result.add(((AbstractBooleanExpression) each).getBooleanValue(parent, null, stream));
-      } else if (each instanceof AbstractNumberExpression) {
-        result.add(((AbstractNumberExpression) each).getDoubleValue(parent, null, stream));
-      } else if (each instanceof TypeExpression) {
-        result.add(((TypeExpression) each).getType(parent));
+      // TODO support arrays
+      if (each instanceof IBooleanExpression) {
+        result.add(((IBooleanExpression) each).getBooleanValue(context, stream));
+      } else if (each instanceof INumberExpression) {
+        result.add(((INumberExpression) each).getDoubleValue(context, stream));
+      } else if (each instanceof ITypeExpression) {
+        result.add(((ITypeExpression) each).getType(context, stream));
       } else if (each instanceof ListExpression) {
-        result.add(((ListExpression<?>) each).getList(parent, stream));
-      } else if (each instanceof AbstractStringExpression) {
-        result.add(((AbstractStringExpression) each).getStringValue(parent, null, stream));
+        result.add(((ListExpression<?>) each).getList(context, stream));
+      } else if (each instanceof IStringExpression) {
+        result.add(((IStringExpression) each).getStringValue(context, stream));
       }
     }
     return result;

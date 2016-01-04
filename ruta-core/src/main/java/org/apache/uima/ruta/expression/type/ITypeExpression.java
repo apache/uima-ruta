@@ -20,18 +20,23 @@
 package org.apache.uima.ruta.expression.type;
 
 import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
-public interface ITypeExpression {
+public interface ITypeExpression extends IStringExpression {
 
   /**
    * Returns the actual type of the TypeExpression
    * 
-   * @param parent - the block of the element 
+   * @param context
+   *          - the match context
+   * @param stream
+   * 
    * @return annotation type
-   * @throws IllegalArgumentException if the type cannot be resolved.
+   * @throws IllegalArgumentException
+   *           if the type cannot be resolved.
    */
-  Type getType(RutaBlock parent);
-  
-  
+  Type getType(MatchContext context, RutaStream stream);
+
 }

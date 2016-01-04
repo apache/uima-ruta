@@ -205,5 +205,4 @@ public class FilterManager {
     return currentHiddenTypes;
   }
 
-  
 }

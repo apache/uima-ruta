@@ -17,25 +17,16 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.annotation;
+package org.apache.uima.ruta.extensions;
 
 import java.util.List;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationFunctionExpression;
 
-public class LabelAnnotationExpression extends AbstractAnnotationExpression {
+public interface IRutaAnnotationFunctionExtension extends IRutaExtension {
 
-  @Override
-  public AnnotationFS getAnnotation(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return getAnnotations(parent, annotation, stream).get(0);
-  }
-
-  @Override
-  public List<AnnotationFS> getAnnotations(RutaBlock parent, AnnotationFS annotation,
-          RutaStream stream) {
-    return null;
-  }
+  AnnotationFunctionExpression createAnnotationFunction(String name, List<RutaExpression> args)
+          throws RutaParseException;
 
 }

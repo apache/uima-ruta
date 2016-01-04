@@ -19,8 +19,9 @@
 
 package org.apache.uima.ruta.expression.resource;
 
-import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.resource.RutaWordList;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class ReferenceWordListExpression extends WordListExpression {
 
@@ -32,8 +33,9 @@ public class ReferenceWordListExpression extends WordListExpression {
   }
 
   @Override
-  public RutaWordList getList(RutaStatement element) {
-    return element.getEnvironment().getVariableValue(ref, RutaWordList.class);
+  public RutaWordList getList(MatchContext context) {
+    RutaBlock parent = context.getParent();
+    return parent.getEnvironment().getVariableValue(ref, RutaWordList.class);
   }
 
   public String getRef() {

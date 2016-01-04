@@ -29,10 +29,11 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 
 public class RutaExternalFactory {
 
@@ -41,6 +42,8 @@ public class RutaExternalFactory {
   private Map<String, IRutaActionExtension> actionExtensions;
 
   private Map<String, IRutaTypeFunctionExtension> typeFunctionExtensions;
+
+  private Map<String, IRutaAnnotationFunctionExtension> annotationFunctionExtensions;
 
   private Map<String, IRutaBooleanFunctionExtension> booleanFunctionExtensions;
 
@@ -60,6 +63,7 @@ public class RutaExternalFactory {
     stringFunctionExtensions = new HashMap<String, IRutaStringFunctionExtension>();
     numberFunctionExtensions = new HashMap<String, IRutaNumberFunctionExtension>();
     typeFunctionExtensions = new HashMap<String, IRutaTypeFunctionExtension>();
+    annotationFunctionExtensions = new HashMap<String, IRutaAnnotationFunctionExtension>();
     blockExtensions = new HashMap<String, IRutaBlockExtension>();
   }
 
@@ -85,12 +89,23 @@ public class RutaExternalFactory {
     return null;
   }
 
-  public TypeExpression createExternalTypeFunction(Token id, List<RutaExpression> args)
+  public ITypeExpression createExternalTypeFunction(Token id, List<RutaExpression> args)
           throws RutaParseException {
     String name = id.getText();
     IRutaTypeFunctionExtension extension = typeFunctionExtensions.get(name);
     if (extension != null) {
       return extension.createTypeFunction(name, args);
+    }
+    // Throw exception
+    return null;
+  }
+
+  public IAnnotationExpression createExternalAnnotationFunction(Token id, List<RutaExpression> args)
+          throws RutaParseException {
+    String name = id.getText();
+    IRutaAnnotationFunctionExtension extension = annotationFunctionExtensions.get(name);
+    if (extension != null) {
+      return extension.createAnnotationFunction(name, args);
     }
     // Throw exception
     return null;
@@ -232,6 +247,15 @@ public class RutaExternalFactory {
     this.typeFunctionExtensions = typeFunctionExtensions;
   }
 
+  public Map<String, IRutaAnnotationFunctionExtension> getAnnotationFunctionExtensions() {
+    return annotationFunctionExtensions;
+  }
+  
+  public void setAnnotationFunctionExtensions(
+          Map<String, IRutaAnnotationFunctionExtension> annotationFunctionExtensions) {
+    this.annotationFunctionExtensions = annotationFunctionExtensions;
+  }
+  
   public Map<String, IRutaActionExtension> getActionExtensions() {
     return actionExtensions;
   }
@@ -263,5 +287,7 @@ public class RutaExternalFactory {
   public void setContext(UimaContext context) {
     this.context = context;
   }
+
+ 
 
 }

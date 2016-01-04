@@ -19,9 +19,8 @@
 
 package org.apache.uima.ruta.expression.bool;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class SimpleBooleanFunction extends AbstractBooleanExpression {
 
@@ -39,9 +38,9 @@ public class SimpleBooleanFunction extends AbstractBooleanExpression {
   }
 
   @Override
-  public boolean getBooleanValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    boolean b1 = e1.getBooleanValue(parent, annotation, stream);
-    boolean b2 = e2.getBooleanValue(parent, annotation, stream);
+  public boolean getBooleanValue(MatchContext context, RutaStream stream) {
+    boolean b1 = e1.getBooleanValue(context, stream);
+    boolean b2 = e2.getBooleanValue(context, stream);
     if ("XOR".equals(op)) {
       return (b1 || b2) && !(b1 && b2);
     } else if ("==".equals(op)) {
@@ -53,9 +52,8 @@ public class SimpleBooleanFunction extends AbstractBooleanExpression {
   }
 
   @Override
-  public String getStringValue(RutaBlock parent, AnnotationFS annotation, RutaStream stream) {
-    return e1.getStringValue(parent, annotation, stream) + " " + op + " "
-            + e2.getStringValue(parent, annotation, stream);
+  public String getStringValue(MatchContext context, RutaStream stream) {
+    return e1.getStringValue(context, stream) + " " + op + " " + e2.getStringValue(context, stream);
   }
 
 }

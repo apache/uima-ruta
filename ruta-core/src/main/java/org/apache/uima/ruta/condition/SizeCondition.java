@@ -19,12 +19,12 @@
 
 package org.apache.uima.ruta.condition;
 
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -48,11 +48,11 @@ public class SizeCondition extends AbstractRutaCondition {
   }
 
   @Override
-  public EvaluatedCondition eval(AnnotationFS annotation, RuleElement element, RutaStream stream,
-          InferenceCrowd crowd) {
-    int count = listExpr.getList(element.getParent(), stream).size();
-    boolean value = count >= minExpr.getIntegerValue(element.getParent(), annotation, stream)
-            && count <= maxExpr.getIntegerValue(element.getParent(), annotation, stream);
+  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    RuleElement element = context.getElement();
+    int count = listExpr.getList(context, stream).size();
+    boolean value = count >= minExpr.getIntegerValue(context, stream)
+            && count <= maxExpr.getIntegerValue(context, stream);
     if (varExpr != null) {
       element.getParent().getEnvironment().setVariableValue(varExpr, count);
     }

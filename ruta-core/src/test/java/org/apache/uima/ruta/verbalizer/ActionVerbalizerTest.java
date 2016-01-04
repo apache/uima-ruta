@@ -70,7 +70,7 @@ import org.apache.uima.ruta.expression.list.SimpleTypeListExpression;
 import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.number.ReferenceNumberExpression;
+import org.apache.uima.ruta.expression.number.NumberVariableExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.resource.ReferenceWordListExpression;
 import org.apache.uima.ruta.expression.resource.ReferenceWordTableExpression;
@@ -79,9 +79,9 @@ import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
-import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.junit.Test;
 
@@ -91,17 +91,17 @@ public class ActionVerbalizerTest {
   @Test
   public void test() {
     RutaVerbalizer v = new RutaVerbalizer();
-    List<TypeExpression> typeExprList = new ArrayList<TypeExpression>();
+    List<ITypeExpression> typeExprList = new ArrayList<ITypeExpression>();
     List<IStringExpression> stringExprList = new ArrayList<IStringExpression>();
     List<IRutaExpression> exprList = new ArrayList<IRutaExpression>();
     List<INumberExpression> indexes = new ArrayList<INumberExpression>();
     String var = "anyVar";
-    TypeExpression typeExpr1 = new SimpleTypeExpression("Type1");
-    TypeExpression typeExpr2 = new ReferenceTypeExpression("typeVar");
+    ITypeExpression typeExpr1 = new SimpleTypeExpression("Type1");
+    ITypeExpression typeExpr2 = new TypeVariableExpression("typeVar");
     typeExprList.add(typeExpr1);
     typeExprList.add(typeExpr2);
     INumberExpression numExpr1 = new SimpleNumberExpression(4);
-    INumberExpression numExpr2 = new ReferenceNumberExpression("numVar");
+    INumberExpression numExpr2 = new NumberVariableExpression("numVar");
     IBooleanExpression boolExpr1 = new SimpleBooleanExpression(true);
     AbstractStringExpression stringExpr = new SimpleStringExpression("string");
     stringExprList.add(stringExpr);

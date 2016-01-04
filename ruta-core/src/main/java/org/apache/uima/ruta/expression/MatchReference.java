@@ -24,47 +24,46 @@ import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaEnvironment;
-import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
-import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
-import org.apache.uima.ruta.expression.type.ReferenceTypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
-import org.apache.uima.ruta.expression.type.TypeExpression;
+import org.apache.uima.ruta.expression.type.TypeVariableExpression;
+import org.apache.uima.ruta.rule.MatchContext;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
 
 public class MatchReference extends RutaExpression {
 
-  private String match;
+  private String reference;
 
-  private String op;
-
-  private IRutaExpression arg;
-
-  private TypeExpression typeExpression;
+  private ITypeExpression typeExpression;
+  
+  private IAnnotationExpression annotationExpression;
 
   private FeatureExpression featureExpression;
 
-  public MatchReference(String match, String op, IRutaExpression arg) {
+  private boolean initialized = false;
+  
+  public MatchReference(String reference) {
     super();
-    this.match = match;
-    this.op = op;
-    this.arg = arg;
+    this.reference = reference;
   }
 
-  public MatchReference(TypeExpression expression) {
-    super();
-    this.typeExpression = expression;
-  }
-
-  private void resolve(RutaBlock parent) {
-    if (typeExpression != null) {
+  private void resolve(MatchContext context, RutaStream stream) {
+    if (initialized) {
       return;
     }
+    RutaBlock parent = context.getParent();
     RutaEnvironment e = parent.getEnvironment();
-    typeExpression = buildTypeExpression(match, e);
-    if (typeExpression == null) {
-      String[] elements = match.split("[.]");
+    
+    boolean success = buildTypeOrAnnotationExpression(reference, e, context, stream);
+    if (!success) {
+      String[] elements = reference.split("[.]");
       StringBuilder sb = new StringBuilder();
       List<String> tail = null;
       int counter = 0;
@@ -74,75 +73,65 @@ public class MatchReference extends RutaExpression {
         }
         sb.append(eachPart);
         String head = sb.toString();
-        typeExpression = buildTypeExpression(head, e);
-        if (typeExpression != null) {
+        success = buildTypeOrAnnotationExpression(head, e, context, stream);
+        if (success) {
           tail = Arrays.asList(elements).subList(counter + 1, elements.length);
           break;
         }
         counter++;
       }
       if (tail != null) {
-        if (op == null) {
           featureExpression = new SimpleFeatureExpression(typeExpression, tail);
-        } else {
-          SimpleFeatureExpression expr = new SimpleFeatureExpression(typeExpression, tail);
-          featureExpression = new FeatureMatchExpression(expr, op, arg, parent);
-        }
       }
     }
-    if(typeExpression == null || typeExpression.getType(parent) == null) {
-      throw new IllegalArgumentException("Not able to resolve type of expression: "+ match);
+    initialized = true;
+    if (typeExpression == null && annotationExpression == null) {
+      throw new IllegalArgumentException("Not able to resolve annotation/type expression: " + reference);
     }
   }
-
-  private TypeExpression buildTypeExpression(String candidate, RutaEnvironment e) {
+  
+  private boolean buildTypeOrAnnotationExpression(String candidate, RutaEnvironment e, MatchContext context, RutaStream stream) {
     if (e.isVariableOfType(candidate, "TYPE")) {
-      return new ReferenceTypeExpression(candidate);
+      typeExpression = new TypeVariableExpression(candidate);
+      return true;
+    } else if (e.isVariableOfType(candidate, "ANNOTATION")) {
+      annotationExpression = new AnnotationVariableExpression(candidate);
+      return true;
     } else if (e.getType(candidate) != null) {
-      return new SimpleTypeExpression(candidate);
+      typeExpression = new SimpleTypeExpression(candidate);
+      return true;
+    } else if (context.getRuleMatch() != null) {
+      RuleMatch ruleMatch = context.getRuleMatch();
+      RuleElement ruleElementWithLabel = ruleMatch.getRule().getRuleElementWithLabel(candidate);
+      if(ruleElementWithLabel != null) {
+        annotationExpression = new AnnotationLabelExpression(candidate);
+        return true;
+      }
     }
-    return null;
+    return false;
   }
 
-  public TypeExpression getTypeExpression(RutaBlock parent) {
-    resolve(parent);
+  public ITypeExpression getTypeExpression(MatchContext context, RutaStream stream) {
+    resolve(context, stream);
     return typeExpression;
   }
-
-  public FeatureExpression getFeatureExpression(RutaBlock parent) {
-    resolve(parent);
-    return featureExpression;
+  
+  public IAnnotationExpression getAnnotationExpression(MatchContext context, RutaStream stream) {
+    resolve(context, stream);
+    return annotationExpression;
   }
 
-  public String getOp() {
-    return op;
-  }
-
-  public IRutaExpression getArg() {
-    return arg;
-  }
-
-  public RutaExpression getRawTypeExpression() {
-    return typeExpression;
-  }
-
-  public RutaExpression getRawFeatureExpression() {
+  public FeatureExpression getFeatureExpression(MatchContext context, RutaStream stream) {
+    resolve(context, stream);
     return featureExpression;
   }
 
   public String toString() {
-    String tail = "";
-    if (op != null) {
-      tail += op;
-    }
-    if (arg != null) {
-      tail += arg.toString();
-    }
-    return match + tail;
+    return reference;
   }
 
   public String getMatch() {
-    return match;
+    return reference;
   }
 
 }

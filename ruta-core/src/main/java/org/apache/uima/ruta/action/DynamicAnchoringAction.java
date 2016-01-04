@@ -19,12 +19,10 @@
 
 package org.apache.uima.ruta.action;
 
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class DynamicAnchoringAction extends AbstractRutaAction {
@@ -44,16 +42,16 @@ public class DynamicAnchoringAction extends AbstractRutaAction {
   }
 
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    RutaBlock parent = element.getParent();
-    boolean activated = active.getBooleanValue(parent, match, element, stream);
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    context.getElement();
+    boolean activated = active.getBooleanValue(context, stream);
     stream.setDynamicAnchoring(activated);
     if (panelty != null) {
-      double p = panelty.getDoubleValue(parent, match, element, stream);
+      double p = panelty.getDoubleValue(context, stream);
       stream.setIndexPenalty(p);
     }
     if (factor != null) {
-      double f = factor.getDoubleValue(parent, match, element, stream);
+      double f = factor.getDoubleValue(context, stream);
       stream.setAnchoringFactor(f);
     }
   }

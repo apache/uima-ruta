@@ -26,8 +26,8 @@ import org.apache.commons.collections.ListUtils;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class MergeAction extends AbstractRutaAction {
@@ -49,21 +49,23 @@ public class MergeAction extends AbstractRutaAction {
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public void execute(RuleMatch match, RuleElement element, RutaStream stream, InferenceCrowd crowd) {
-    boolean union = unionExpr.getBooleanValue(element.getParent(), match, element, stream);
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    context.getRuleMatch();
+    RuleElement element = context.getElement();
+    boolean union = unionExpr.getBooleanValue(context, stream);
     List<Object> list = new ArrayList<Object>();
     if (union) {
       for (ListExpression<Object> each : lists) {
-        list.addAll(each.getList(element.getParent(), stream));
+        list.addAll(each.getList(context, stream));
       }
     } else {
       List<Object> lastList = null;
       for (int i = 1; i < lists.size(); i++) {
-        List l2 = lists.get(i).getList(element.getParent(), stream);
+        List l2 = lists.get(i).getList(context, stream);
         if (lastList != null) {
           lastList = ListUtils.intersection(lastList, l2);
         } else {
-          List l1 = lists.get(i - 1).getList(element.getParent(), stream);
+          List l1 = lists.get(i - 1).getList(context, stream);
           lastList = ListUtils.intersection(l1, l2);
         }
       }
