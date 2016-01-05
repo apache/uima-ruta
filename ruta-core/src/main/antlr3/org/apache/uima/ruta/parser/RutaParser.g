@@ -1214,7 +1214,7 @@ List<Token> fs = new ArrayList<Token>();
 ITypeExpression te = null;
 }
 	:
-	match = dottedId2 
+	match = dottedIdWithIndex 
 	{
 	MatchReference mr = ExpressionFactory.createMatchReference(match);
 	feat = ExpressionFactory.createFeatureExpression(mr, $blockDeclaration::env);
@@ -1223,7 +1223,7 @@ ITypeExpression te = null;
 
 featureMatchExpression returns [FeatureExpression fme = null]
 	:
-	match = dottedId2 ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
+	match = dottedIdWithIndex ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
 	{
 	MatchReference mr = ExpressionFactory.createMatchReference(match);
 	if(comp != null) {
@@ -1236,7 +1236,7 @@ featureMatchExpression returns [FeatureExpression fme = null]
 
 featureMatchExpression2 returns [FeatureMatchExpression fme = null]
 	:
-	match = dottedId2 (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument
+	match = dottedIdWithIndex (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument
 	{
 	MatchReference mr = ExpressionFactory.createMatchReference(match);
 	fme = ExpressionFactory.createFeatureMatchExpression(mr, comp, arg, $blockDeclaration::env);}
@@ -1245,7 +1245,7 @@ featureMatchExpression2 returns [FeatureMatchExpression fme = null]
 
 featureAssignmentExpression returns [FeatureMatchExpression fme = null]
 	:
-	match = dottedId2 op = ASSIGN_EQUAL arg = argument
+	match = dottedIdWithIndex op = ASSIGN_EQUAL arg = argument
 	{
 	MatchReference mr = ExpressionFactory.createMatchReference(match);
 	fme = ExpressionFactory.createFeatureMatchExpression(mr, op, arg, $blockDeclaration::env);
@@ -1293,6 +1293,9 @@ listVariable returns [Token var = null]
 //	;
 
 quantifierPart returns [RuleElementQuantifier quantifier = null]
+options {
+	backtrack = true;
+}
 	:
 	 STAR q = QUESTION? 
 	 {if(q != null) {quantifier = RutaScriptFactory.createStarReluctantQuantifier();} 
@@ -1303,7 +1306,13 @@ quantifierPart returns [RuleElementQuantifier quantifier = null]
 	| QUESTION q = QUESTION? 
 	 {if(q != null) {quantifier = RutaScriptFactory.createQuestionReluctantQuantifier();} 
 	 else {quantifier = RutaScriptFactory.createQuestionGreedyQuantifier();}}
-	| LBRACK min = numberExpression (comma = COMMA (max = numberExpression)?)? RBRACK q = QUESTION?
+	| LBRACK min = numberExpression comma = COMMA max = numberExpression RBRACK q = QUESTION?
+	 {if(q != null) {quantifier = RutaScriptFactory.createMinMaxReluctantQuantifier(min,max,comma);} 
+	 else {quantifier = RutaScriptFactory.createMinMaxGreedyQuantifier(min,max,comma);}}	
+	 | LBRACK min = numberExpression comma = COMMA RBRACK q = QUESTION?
+	 {if(q != null) {quantifier = RutaScriptFactory.createMinMaxReluctantQuantifier(min,max,comma);} 
+	 else {quantifier = RutaScriptFactory.createMinMaxGreedyQuantifier(min,max,comma);}}	
+	 | LBRACK comma = COMMA max = numberExpression RBRACK q = QUESTION?
 	 {if(q != null) {quantifier = RutaScriptFactory.createMinMaxReluctantQuantifier(min,max,comma);} 
 	 else {quantifier = RutaScriptFactory.createMinMaxGreedyQuantifier(min,max,comma);}}	
 	;
@@ -2342,6 +2351,22 @@ dottedId2 returns [Token token = null ]
 	{token = ct;
 	 return token;}
 	;
+
+dottedIdWithIndex returns [Token token = null ]
+@init {CommonToken ct = null;}
+	:
+	id = Identifier {ct = new CommonToken(id);}
+	(
+	lb =  LBRACK {ct.setText(ct.getText() + lb.getText());}
+	index = DecimalLiteral {ct.setText(ct.getText() + index.getText());}
+	rb = RBRACK {ct.setStopIndex(getBounds(rb)[1]);ct.setText(ct.getText() + rb.getText());}
+	|
+	dot = DOT {ct.setText(ct.getText() + dot.getText());}
+	id = Identifier {ct.setStopIndex(getBounds(id)[1]);ct.setText(ct.getText() + id.getText());}
+	)+
+	{token = ct; return token;}
+	;
+
 
 annotationType returns [Token ref = null]
 	: 

@@ -34,6 +34,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
+import org.apache.uima.ruta.expression.feature.LazyFeature;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.type.RutaBasic;
 
@@ -242,6 +243,10 @@ public class RutaTypeMatcher implements RutaMatcher {
     MatchContext context = new MatchContext(annotation, null, null, true);
     context.setParent(parent);
     Feature feature = featureExpression.getFeature(context, stream);
+    if(feature instanceof LazyFeature) {
+      LazyFeature lazyFeature = (LazyFeature) feature;
+      feature = lazyFeature.initialize(annotation);
+    }
     if (featureExpression instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) featureExpression;
       boolean checkFeatureValue = fme.checkFeatureValue(annotation, context, stream);

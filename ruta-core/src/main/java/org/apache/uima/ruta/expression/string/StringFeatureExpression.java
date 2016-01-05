@@ -26,6 +26,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.feature.CoveredTextFeature;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
@@ -48,8 +49,7 @@ public class StringFeatureExpression extends AbstractStringExpression {
             false);
     if (!featureAnnotations.isEmpty()) {
       AnnotationFS next = featureAnnotations.iterator().next();
-      if (feature == null) {
-        // feature == coveredText
+      if (feature instanceof CoveredTextFeature) {
         return next.getCoveredText();
       } else {
         return next.getStringValue(feature);

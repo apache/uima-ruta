@@ -1051,17 +1051,17 @@ externalTypeFunction returns [Expression expr = null]
 
 featureAssignmentExpression returns [Expression expr = null]
 	:
-	feature = dottedId3 comp = ASSIGN_EQUAL value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
+	feature = dottedIdWithIndex comp = ASSIGN_EQUAL value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
 	;
 
 featureTypeExpression returns [Expression expr = null]
 	:
-	feature = dottedId3 (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
+	feature = dottedIdWithIndex (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) value = argument {expr = ExpressionFactory.createFeatureMatch(feature, comp, value);}
 	;
 
 featureExpression returns [Expression expr = null]
 	:
-	f = dottedId3  {expr = ExpressionFactory.createFeatureExpression(f);}
+	f = dottedIdWithIndex  {expr = ExpressionFactory.createFeatureExpression(f);}
 	;
 
 simpleTypeExpression returns [Expression type = null]
@@ -1098,19 +1098,26 @@ listVariable returns [Expression var = null]
 
 	
 quantifierPart returns [List<Expression> exprs = new ArrayList<Expression>()]
+options {
+	backtrack = true;
+}
 	:
 	 s = STAR q = QUESTION? {exprs.add(ExpressionFactory.createQuantifierLiteralExpression(s,q));}
 	| p = PLUS q = QUESTION? {exprs.add(ExpressionFactory.createQuantifierLiteralExpression(p,q));}
 	| q1 = QUESTION q = QUESTION? {exprs.add(ExpressionFactory.createQuantifierLiteralExpression(q1,q));}
-	| (b1 = LBRACK min = numberExpression (COMMA (max = numberExpression)?)? b2 = RBRACK q = QUESTION?
-		 {
-		  //if(b1!=null) {exprs.add(b1);}
-		  if(min!=null) {exprs.add(min);}
-		  if(max!=null) {exprs.add(max);}
-		  //if(b2!=null) {exprs.add(b2);}
-		  if(q!=null) {exprs.add(ExpressionFactory.createQuantifierLiteralExpression(q, null));}
-		 }
+	
+	| (b1 = LBRACK min = numberExpression COMMA max = numberExpression b2 = RBRACK q = QUESTION?
+	 {if(min!=null) {exprs.add(min);} if(max!=null) {exprs.add(max);}
+	  if(q!=null) {exprs.add(ExpressionFactory.createQuantifierLiteralExpression(q, null));}}
 	   )
+	| b1 = LBRACK  COMMA max = numberExpression b2 = RBRACK q = QUESTION?
+	 {if(min!=null) {exprs.add(min);} if(max!=null) {exprs.add(max);}
+	  if(q!=null) {exprs.add(ExpressionFactory.createQuantifierLiteralExpression(q, null));}}
+	   
+	| b1 = LBRACK min = numberExpression COMMA b2 = RBRACK q = QUESTION?
+	 {if(min!=null) {exprs.add(min);} if(max!=null) {exprs.add(max);}
+	  if(q!=null) {exprs.add(ExpressionFactory.createQuantifierLiteralExpression(q, null));}}
+	   
 	;
 	
 	
@@ -2284,6 +2291,21 @@ dottedId3 returns [Token token = null ]
 	 return token;}
 	;
 
+dottedIdWithIndex returns [Token token = null ]
+@init {CommonToken ct = null;}
+	:
+	id = Identifier {ct = new CommonToken(id);}
+	(
+	lb =  LBRACK {ct.setText(ct.getText() + lb.getText());}
+	index = DecimalLiteral {ct.setText(ct.getText() + index.getText());}
+	rb = RBRACK {ct.setStopIndex(getBounds(rb)[1]);ct.setText(ct.getText() + rb.getText());}
+	|
+	dot = DOT {ct.setText(ct.getText() + dot.getText());}
+	id = Identifier {ct.setStopIndex(getBounds(id)[1]);ct.setText(ct.getText() + id.getText());}
+	)+
+	{token = ct; return token;}
+	;
+
 //snooze	
 dottedComponentReference returns [ComponentReference ref = null ]
 @init {CommonToken ct = null;}
@@ -2513,7 +2535,7 @@ expr = ExpressionFactory.createEmptyBooleanExpression(input.LT(1));
 simpleBooleanExpression returns [Expression expr = null]
 	:
 	 (lbE = literalBooleanExpression {expr = lbE;}
-	| {isVariableOfType(input.LT(1).getText(), "BOOLEAN")}?(variableId = Identifier
+	 	| {isVariableOfType(input.LT(1).getText(), "BOOLEAN")}?(variableId = Identifier
 	  {expr = ExpressionFactory.createBooleanVariableReference(variableId);})
 	  )
 	  {expr = ExpressionFactory.createBooleanExpression(expr);}

@@ -76,8 +76,13 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
 
   public boolean checkFeatureValue(AnnotationFS afs, MatchContext context, Feature feature,
           RutaStream stream) {
-    // null is possibly coveredText
-    String rn = feature == null ? UIMAConstants.TYPE_STRING : feature.getRange().getName();
+    String rn = null;
+    if(feature instanceof CoveredTextFeature) {
+      rn = UIMAConstants.TYPE_STRING;
+    } else if (feature != null){
+      rn = feature.getRange().getName();
+    }
+    
     if (rn.equals(UIMAConstants.TYPE_BOOLEAN)) {
       Boolean v1 = afs.getBooleanValue(feature);
       if (getArg() instanceof IBooleanExpression) {
@@ -108,9 +113,11 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
         return compare(v1, v2);
       }
     } else if (rn.equals(UIMAConstants.TYPE_STRING)) {
-      String v1 = afs.getCoveredText();
+      String v1 = null;
       // null is possibly coveredText
-      if (feature != null) {
+      if(feature instanceof CoveredTextFeature) {
+        v1 = afs.getCoveredText();
+      } else if (feature != null) {
         v1 = afs.getStringValue(feature);
       }
       if (getArg() instanceof IStringExpression) {
