@@ -72,6 +72,7 @@ import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.AbstractAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
@@ -1171,6 +1172,7 @@ options {
 }
 	:
 	tf = typeFunction {type = tf;}
+	//| tl = typeListExpression LBRACK index = numberExpression RBRACK {type = ExpressionFactory.createTypeListIndexExpression(tl, index);}
 	| st = simpleTypeExpression {type = st;}
 	;
 	
@@ -2231,6 +2233,8 @@ annotationExpression returns [IRutaExpression expr = null]
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")	}? 
 	id = Identifier {expr = ExpressionFactory.createAnnotationVariableExpression(id);} 
 	|
+	//(annotationListIndexExpression)=> alie = annotationListIndexExpression {expr = alie;}
+	//|
 	ale = annotationListExpression {expr = ale;}
 	|
 	aae = annotationAddressExpression {expr = aae;}
@@ -2243,12 +2247,19 @@ annotationExpression2 returns [IRutaExpression expr = null]
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")}? 
 	id = Identifier {expr = ExpressionFactory.createAnnotationVariableExpression(id);} 
 	|
+	//(annotationListIndexExpression)=> alie = annotationListIndexExpression {expr = alie;}
+	//|
 	ale = annotationListExpression {expr = ale;}
 	|
 	aae = annotationAddressExpression {expr = aae;}
 	;
 
-annotationListExpression returns [ListExpression expr = null]
+annotationListIndexExpression returns [IRutaExpression expr = null]
+	:
+	al = annotationListExpression LBRACK index = numberExpression RBRACK {expr = ExpressionFactory.createAnnotationListIndexExpression(al, index);}
+	;
+
+annotationListExpression returns [AbstractAnnotationListExpression expr = null]
 	:
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")}? 
 	id = Identifier {expr = ExpressionFactory.createAnnotationListVariableExpression(id);} 
@@ -2450,8 +2461,9 @@ multiplicativeExpression returns [INumberExpression expr = null]
 @init{List<INumberExpression> exprs = new ArrayList<INumberExpression>();
 	List<Token> ops = new ArrayList<Token>();}
 	:	
-	(e = simpleNumberExpression{exprs.add(e);} (( STAR | SLASH | PERCENT )=> op = ( STAR | SLASH | PERCENT ){ops.add(op);} e = simpleNumberExpression{exprs.add(e);} )*
+	(e = simpleNumberExpression{exprs.add(e);} (( STAR | SLASH | PERCENT )=> op = ( STAR | SLASH | PERCENT ){ops.add(op);} e = simpleNumberExpression{exprs.add(e);} )*	
 	{expr = ExpressionFactory.createComposedNumberExpression(exprs,ops);}
+	//| nl = numberListExpression LBRACK index = numberExpression RBRACK {expr = ExpressionFactory.createNumberListIndexExpression(nl, index);}
 	|   e1 = numberFunction {expr = e1;})
 	;
 
@@ -2484,6 +2496,7 @@ List<IStringExpression> exprs = new ArrayList<IStringExpression>();
 }
 	:
 	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createStringFeatureExpression(fe);}
+	//|(stringListExpression)=> sl = stringListExpression LBRACK index = numberExpression RBRACK {expr = ExpressionFactory.createStringListIndexExpression(sl, index);}
 	| e = simpleStringExpression {exprs.add(e);} 
 	((PLUS)=>PLUS (e1 = simpleStringExpression {exprs.add(e1);} 
 		| e2 = numberExpressionInPar {exprs.add(e2);}
@@ -2528,7 +2541,7 @@ booleanExpression returns [IBooleanExpression expr = null]
 	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createBooleanFeatureExpression(fe);}
 	| (e = composedBooleanExpression)=> e = composedBooleanExpression {expr = e;}
 	|sbE =  simpleBooleanExpression {expr = sbE;}
-	
+	//| bl = booleanListExpression LBRACK index = numberExpression RBRACK {expr = ExpressionFactory.createBooleanListIndexExpression(bl, index);}
 	;
 
 simpleBooleanExpression returns [IBooleanExpression expr = null]

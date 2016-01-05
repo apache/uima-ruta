@@ -334,4 +334,29 @@ public class ExpressionFactory {
     return new AnnotationTypeExpression(match);
   }
 
+  public static IStringExpression createStringListIndexExpression(StringListExpression sl,
+          INumberExpression index) {
+    return null;
+  }
+  
+  public static IBooleanExpression createBooleanListIndexExpression(BooleanListExpression bl,
+          INumberExpression index) {
+    return null;
+  }
+  
+  public static INumberExpression createNumberListIndexExpression(NumberListExpression nl,
+          INumberExpression index) {
+    return null;
+  }
+  
+  public static ITypeExpression createTypeListIndexExpression(TypeListExpression tl,
+          INumberExpression index) {
+    return null;
+  }
+  
+  public static IAnnotationExpression createAnnotationListIndexExpression(AbstractAnnotationListExpression al,
+          INumberExpression index) {
+    return null;
+  }
+
 }
