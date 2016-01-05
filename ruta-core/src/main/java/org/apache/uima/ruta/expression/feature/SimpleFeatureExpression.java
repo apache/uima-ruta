@@ -29,6 +29,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.IRutaExpression;
@@ -86,6 +87,9 @@ public class SimpleFeatureExpression extends FeatureExpression {
       if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT)) {
         // there is no explicit feature for coveredText
         feature = null;
+      } else if(type.isArray()) {
+        // lazy check of range
+        feature = null;
       } else {
         feature = type.getFeatureByBaseName(each);
         if (feature == null) {
@@ -126,55 +130,89 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
   public Collection<AnnotationFS> getFeatureAnnotations(Collection<AnnotationFS> annotations,
           RutaStream stream, MatchContext context, boolean checkOnFeatureValue) {
+
     Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
     List<Feature> features = getFeatures(context, stream);
+    collectFeatureAnnotations(annotations, features, checkOnFeatureValue, result, stream, context);
+    return result;
+  }
 
-    for (AnnotationFS eachBase : annotations) {
-      AnnotationFS afs = eachBase;
-      if (features != null) {
-        for (Feature feature : features) {
-          if (afs == null) {
-            break;
+  private void collectFeatureAnnotations(Collection<AnnotationFS> annotations,
+          List<Feature> features, boolean checkOnFeatureValue, Collection<AnnotationFS> result,
+          RutaStream stream, MatchContext context) {
+    for (AnnotationFS each : annotations) {
+      collectFeatureAnnotations(each, features, checkOnFeatureValue, result, stream, context);
+    }
+  }
+
+  private void collectFeatureAnnotations(AnnotationFS annotation, List<Feature> features,
+          boolean checkOnFeatureValue, Collection<AnnotationFS> result, RutaStream stream,
+          MatchContext context) {
+    if (annotation == null) {
+      return;
+    }
+
+    Feature currentFeature = null;
+    List<Feature> tail = null;
+
+    if (features != null && !features.isEmpty()) {
+      currentFeature = features.get(0);
+      tail = features.subList(1, features.size());
+    }
+
+    if (currentFeature == null || currentFeature.getRange().isPrimitive()) {
+      // feature == null -> this is the coveredText "feature"
+      if (this instanceof FeatureMatchExpression) {
+        FeatureMatchExpression fme = (FeatureMatchExpression) this;
+        if (checkOnFeatureValue) {
+          if (fme.checkFeatureValue(annotation, context, currentFeature, stream)) {
+            result.add(annotation);
           }
-          if (feature == null || feature.getRange().isPrimitive()) {
-            // feature == null -> this is the coveredText "feature"
-            if (this instanceof FeatureMatchExpression) {
-              FeatureMatchExpression fme = (FeatureMatchExpression) this;
-              if (checkOnFeatureValue) {
-                if (fme.checkFeatureValue(afs, context, feature, stream)) {
-                  result.add(afs);
-                }
-              } else {
-                result.add(afs);
-              }
-              break;
-            } else {
-              result.add(afs);
-            }
-          } else {
-            FeatureStructure value = afs.getFeatureValue(feature);
-            if (value instanceof AnnotationFS) {
-              afs = (AnnotationFS) value;
-            } else if (value != null) {
-              throw new IllegalArgumentException(value.getType()
-                      + " is not supported in a feature match expression (" + mr.getMatch() + ").");
-            }
-          }
-        }
-      }
-      if (!(this instanceof FeatureMatchExpression)) {
-        if (stream.isVisible(afs, true)) {
-          result.add(afs);
+        } else {
+          result.add(annotation);
         }
       } else {
-        // exploit expression for null assignments
-        IRutaExpression arg = ((FeatureMatchExpression) this).getArg();
-        if (arg instanceof NullExpression) {
-          result.addAll(annotations);
+        result.add(annotation);
+      }
+    } else {
+      collectFeatureAnnotations(annotation, currentFeature, tail, checkOnFeatureValue, result, stream, context);
+    }
+  }
+
+  private void collectFeatureAnnotations(AnnotationFS annotation, Feature currentFeature,
+          List<Feature> tail, boolean checkOnFeatureValue, Collection<AnnotationFS> result,
+          RutaStream stream, MatchContext context) {
+    // stop early for match expressions
+    if (this instanceof FeatureMatchExpression && (tail== null || tail.isEmpty())) {
+      FeatureMatchExpression fme = (FeatureMatchExpression) this;
+      if (checkOnFeatureValue) {
+        if (fme.checkFeatureValue(annotation, context, currentFeature, stream)) {
+          result.add(annotation);
+        }
+      } else {
+        result.add(annotation);
+      }
+      return;
+    }
+    
+    FeatureStructure value = annotation.getFeatureValue(currentFeature);
+    if (value instanceof AnnotationFS) {
+      AnnotationFS next = (AnnotationFS) value;
+      collectFeatureAnnotations(next, tail, checkOnFeatureValue, result, stream, context);
+    } else if (value instanceof FSArray) {
+      FSArray array = (FSArray) value;
+      for (int i = 0; i < array.size(); i++) {
+        // TODO: also feature structures or only annotations?
+        FeatureStructure fs = array.get(i);
+        if (fs instanceof AnnotationFS) {
+          AnnotationFS next = (AnnotationFS) fs;
+          collectFeatureAnnotations(next, tail, checkOnFeatureValue, result, stream, context);
         }
       }
+    } else if (value != null) {
+      throw new IllegalArgumentException(value.getType()
+              + " is not supported in a feature match expression (" + mr.getMatch() + ").");
     }
-    return result;
   }
 
   public MatchReference getMatchReference() {

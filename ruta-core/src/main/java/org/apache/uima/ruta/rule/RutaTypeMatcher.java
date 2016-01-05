@@ -79,8 +79,7 @@ public class RutaTypeMatcher implements RutaMatcher {
         annotations.addAll(stream.getAnnotations(type));
       }
     }
-    MatchContext context = new MatchContext(null, null, true);
-    context.setParent(parent);
+    MatchContext context = new MatchContext(parent);
     if (featureExpression != null) {
       return featureExpression
               .getFeatureAnnotations(annotations, stream, context, CHECK_ON_FEATURE);
@@ -249,6 +248,9 @@ public class RutaTypeMatcher implements RutaMatcher {
       if (checkFeatureValue) {
         return true;
       }
+    } else if(feature == null || feature.getRange().isArray()) {
+      // do not check on arrays
+      return true;
     } else {
       TypeSystem typeSystem = stream.getCas().getTypeSystem();
       boolean subsumes = typeSystem.subsumes(feature.getRange(), annotation.getType());

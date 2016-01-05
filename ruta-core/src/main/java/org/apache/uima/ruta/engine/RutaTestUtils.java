@@ -257,6 +257,14 @@ public class RutaTestUtils {
     return cas;
   }
 
+  public static void printAnnotations(CAS cas, int typeId) {
+    Type t = getTestType(cas, typeId);
+    AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t);
+    for (AnnotationFS annotationFS : ai) {
+      System.out.println(annotationFS.getCoveredText());
+    }
+  }
+  
   /**
    * Helper for common assertion in JUnit tests
    * 

@@ -32,47 +32,48 @@ import org.junit.Test;
 
 public class AnnotationFeatureExpressionTest {
 
-//  @Test
-//  public void testList() {
-//    String document = "Some text.";
-//    String script = "";
-//    script += "W{-> CREATE(Inner, \"a\"=W)};";
-//    script += "Document{-> CREATE(Struct, \"as\"=W)};";
-//    script += "Struct.as{->T1};";
-//    script += "Struct.as.a{->T2};";
-//    script += "Struct.as{->T3} @PERIOD;";
-//    script += "Struct.as.a{->T4} @PERIOD;";
-//
-//    Map<String, String> typeMap = new TreeMap<String, String>();
-//    String typeName1 = "Struct";
-//    typeMap.put(typeName1, "uima.tcas.Annotation");
-//    String typeName2 = "Inner";
-//    typeMap.put(typeName2, "uima.tcas.Annotation");
-//
-//    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-//    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
-//    featureMap.put(typeName1, list);
-//    String fn1 = "as";
-//    list.add(new TestFeature(fn1, "", "uima.cas.FSArray"));
-//    list = new ArrayList<RutaTestUtils.TestFeature>();
-//    featureMap.put(typeName2, list);
-//    String fn2 = "a";
-//    list.add(new TestFeature(fn2, "", "uima.cas.FSArray"));
-//
-//    CAS cas = null;
-//    try {
-//      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-//      Ruta.apply(cas, script);
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//
-//    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "Some", "text");
-//    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "Some", "text");
-//    RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "Some", "text");
-//    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "Some", "text");
-//
-//    
-//  }
+  @Test
+  public void testList() {
+    String document = "Some text.";
+    String script = "";
+    script += "W{-> CREATE(Inner, \"a\"=W)};";
+    script += "Document{-> CREATE(Struct, \"as\"=W)};";
+    script += "Struct.as{->T1};";
+    script += "Struct.as.a{->T2};";
+    script += "Struct{-> TRIM(PERIOD)};";
+    script += "Struct.as{->T3} @PERIOD;";
+    script += "Struct.as.a{->T4} @PERIOD;";
+
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    String typeName1 = "Struct";
+    typeMap.put(typeName1, "uima.tcas.Annotation");
+    String typeName2 = "Inner";
+    typeMap.put(typeName2, "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put(typeName1, list);
+    String fn1 = "as";
+    list.add(new TestFeature(fn1, "", "uima.cas.FSArray"));
+    list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put(typeName2, list);
+    String fn2 = "a";
+    list.add(new TestFeature(fn2, "", "uima.cas.FSArray"));
+
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "Some", "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "Some", "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "Some", "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "Some", "text");
+
+    
+  }
   
 }
