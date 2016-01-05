@@ -265,6 +265,13 @@ public class ActionFactory {
     return new ImplicitMarkAction(te);
   }
 
+  public static AbstractRutaAction createImplicitVariableAssignmentAction(Token var, Token op,
+          IRutaExpression arg, RutaBlock env) {
+    String varString = var != null ?  var.getText() : null;
+    String opString = op != null ?  op.getText() : "=";
+    return new ImplicitVariableAssignmentAction(varString, opString, arg);
+  }
+  
   public static AbstractRutaAction createMarkFirstAction(ITypeExpression type, RutaBlock env) {
     return new MarkFirstAction(type);
   }
@@ -279,5 +286,7 @@ public class ActionFactory {
           IBooleanExpression appendToEnd, RutaBlock env) {
     return new SplitAction(type, complete, appendToBegin, appendToEnd);
   }
+
+  
 
 }

@@ -19,36 +19,9 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
-import java.util.List;
-
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.ListExpression;
-import org.apache.uima.ruta.rule.MatchContext;
 
-public class AnnotationListVariableExpression extends AbstractAnnotationListExpression {
-
-  private String var;
-
-  public AnnotationListVariableExpression(String var) {
-    super();
-    this.var = var;
-  }
-
-  
-  @Override
-  public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
-    RutaBlock parent = context.getParent();
-    @SuppressWarnings("unchecked")
-    List<AnnotationFS> list = parent.getEnvironment().getVariableValue(var, List.class);
-    return list;
-  }
-
-
-  @Override
-  public List<AnnotationFS> getAnnotations(MatchContext context, RutaStream stream) {
-    return getList(context, stream);
-  }
+public abstract class AbstractAnnotationListExpression extends ListExpression<AnnotationFS> implements IAnnotationListExpression{
 
 }

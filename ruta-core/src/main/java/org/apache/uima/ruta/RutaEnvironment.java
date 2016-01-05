@@ -706,7 +706,13 @@ public class RutaEnvironment {
   }
 
   public boolean isVariable(String name) {
-    return ownsVariable(name) || owner.getParent().getEnvironment().isVariable(name);
+    if (ownsVariable(name)) {
+      return true;
+    }
+    if (owner != null && owner.getParent() != null) {
+      return owner.getParent().getEnvironment().isVariable(name);
+    }
+    return false;
   }
 
   public boolean isVariableOfType(String name, String type) {

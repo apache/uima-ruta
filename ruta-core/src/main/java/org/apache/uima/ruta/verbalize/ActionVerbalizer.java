@@ -43,6 +43,7 @@ import org.apache.uima.ruta.action.GetListAction;
 import org.apache.uima.ruta.action.GreedyAnchoringAction;
 import org.apache.uima.ruta.action.ImplicitFeatureAction;
 import org.apache.uima.ruta.action.ImplicitMarkAction;
+import org.apache.uima.ruta.action.ImplicitVariableAssignmentAction;
 import org.apache.uima.ruta.action.LogAction;
 import org.apache.uima.ruta.action.MarkAction;
 import org.apache.uima.ruta.action.MarkFastAction;
@@ -166,6 +167,8 @@ public class ActionVerbalizer {
     } else if (action instanceof ImplicitMarkAction) {
       return "";
     } else if (action instanceof ImplicitFeatureAction) {
+      return "";
+    } else if (action instanceof ImplicitVariableAssignmentAction) {
       return "";
     }
 
@@ -492,6 +495,9 @@ public class ActionVerbalizer {
     } else if (action instanceof ImplicitFeatureAction) {
       ImplicitFeatureAction a = (ImplicitFeatureAction) action;
       return verbalizer.verbalize(a.getExpr());
+    } else if (action instanceof ImplicitVariableAssignmentAction) {
+      ImplicitVariableAssignmentAction a = (ImplicitVariableAssignmentAction) action;
+      return a.getVar() + a.getOp() + verbalizer.verbalize(a.getArg());
     }
 
     return action.getClass().getSimpleName();

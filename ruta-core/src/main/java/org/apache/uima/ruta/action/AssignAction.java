@@ -19,22 +19,9 @@
 
 package org.apache.uima.ruta.action;
 
-import java.util.List;
-
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
-import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
-import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.number.INumberExpression;
-import org.apache.uima.ruta.expression.string.IStringExpression;
-import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class AssignAction extends AbstractRutaAction {
@@ -51,35 +38,7 @@ public class AssignAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-    RuleElement element = context.getElement();
-    RutaBlock parent = element.getParent();
-    RutaEnvironment environment = parent.getEnvironment();
-    Class<?> clazz = environment.getVariableType(var);
-    if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
-      double v = ((INumberExpression) expression).getDoubleValue(context, stream);
-      environment.setVariableValue(var, v);
-    } else if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
-      int v = ((INumberExpression) expression).getIntegerValue(context, stream);
-      environment.setVariableValue(var, v);
-    } else if (clazz.equals(Type.class) && expression instanceof ITypeExpression) {
-      Type v = ((ITypeExpression) expression).getType(context, stream);
-      environment.setVariableValue(var, v);
-    } else if (clazz.equals(Boolean.class) && expression instanceof IBooleanExpression) {
-      boolean v = ((IBooleanExpression) expression).getBooleanValue(context, stream);
-      environment.setVariableValue(var, v);
-    } else if (clazz.equals(String.class) && expression instanceof IStringExpression) {
-      String v = ((IStringExpression) expression).getStringValue(context, stream);
-      environment.setVariableValue(var, v);
-    } else if (clazz.equals(AnnotationFS.class) && expression instanceof IAnnotationExpression) {
-      AnnotationFS v = ((IAnnotationExpression) expression).getAnnotation(context, stream);
-      environment.setVariableValue(var, v);
-    } else if(clazz.equals(List.class)) {
-      Class<?> variableGenericType = environment.getVariableGenericType(var);
-      if(variableGenericType.equals(AnnotationFS.class) && expression instanceof IAnnotationListExpression) {
-         List<AnnotationFS> v = ((IAnnotationListExpression) expression).getAnnotations(context, stream);
-         environment.setVariableValue(var, v);
-      }
-    }
+    stream.assignVariable(var, expression, context, stream);
   }
 
   public String getVar() {

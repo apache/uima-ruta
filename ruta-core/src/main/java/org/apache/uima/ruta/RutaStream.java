@@ -49,6 +49,7 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
@@ -59,6 +60,7 @@ import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.MatchContext;
+import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaAnnotation;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.utils.UIMAUtils;
@@ -977,6 +979,22 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
           annotation.setFeatureValue(feature, a);
         }
       }
+    } else if (value instanceof IAnnotationListExpression && !feature.getRange().isPrimitive()) {
+      IAnnotationListExpression ale = (IAnnotationListExpression) value;
+      List<AnnotationFS> annotations = ale.getAnnotations(context, this);
+      if (annotations != null) {
+        if (feature.getRange().isArray()) {
+          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), annotations));
+        } else {
+          if (annotations.isEmpty()) {
+            annotation.setFeatureValue(feature, null);
+          } else {
+            annotation.setFeatureValue(feature, annotations.get(0));
+          }
+        }
+      } else {
+        annotation.setFeatureValue(feature, null);
+      }
     } else if (value instanceof ITypeExpression && !feature.getRange().isPrimitive()) {
       ITypeExpression typeExpr = (ITypeExpression) value;
       Type t = typeExpr.getType(context, this);
@@ -1027,17 +1045,52 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
   }
 
+  public void assignVariable(String var, IRutaExpression expression, MatchContext context,
+          RutaStream stream) {
+    RuleElement element = context.getElement();
+    RutaBlock parent = element.getParent();
+    RutaEnvironment environment = parent.getEnvironment();
+    Class<?> clazz = environment.getVariableType(var);
+    if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
+      double v = ((INumberExpression) expression).getDoubleValue(context, stream);
+      environment.setVariableValue(var, v);
+    } else if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
+      int v = ((INumberExpression) expression).getIntegerValue(context, stream);
+      environment.setVariableValue(var, v);
+    } else if (clazz.equals(Type.class) && expression instanceof ITypeExpression) {
+      Type v = ((ITypeExpression) expression).getType(context, stream);
+      environment.setVariableValue(var, v);
+    } else if (clazz.equals(Boolean.class) && expression instanceof IBooleanExpression) {
+      boolean v = ((IBooleanExpression) expression).getBooleanValue(context, stream);
+      environment.setVariableValue(var, v);
+    } else if (clazz.equals(String.class) && expression instanceof IStringExpression) {
+      String v = ((IStringExpression) expression).getStringValue(context, stream);
+      environment.setVariableValue(var, v);
+    } else if (clazz.equals(AnnotationFS.class) && expression instanceof IAnnotationExpression) {
+      AnnotationFS v = ((IAnnotationExpression) expression).getAnnotation(context, stream);
+      environment.setVariableValue(var, v);
+    } else if (clazz.equals(List.class)) {
+      Class<?> variableGenericType = environment.getVariableGenericType(var);
+      if (variableGenericType.equals(AnnotationFS.class)
+              && expression instanceof IAnnotationListExpression) {
+        List<AnnotationFS> v = ((IAnnotationListExpression) expression).getAnnotations(context,
+                stream);
+        environment.setVariableValue(var, v);
+      }
+    }
+  }
+
   public AnnotationFS getSingleAnnotationByTypeInContext(Type type, MatchContext context) {
     List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), type);
-    if(inWindow != null&& !inWindow.isEmpty()) {
+    if (inWindow != null && !inWindow.isEmpty()) {
       return inWindow.get(0);
     }
     return null;
   }
-  
+
   public List<AnnotationFS> getAnnotationsByTypeInContext(Type type, MatchContext context) {
     List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), type);
     return inWindow;
   }
-  
+
 }

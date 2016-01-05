@@ -17,38 +17,47 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.annotation;
+package org.apache.uima.ruta.action;
 
-import java.util.List;
-
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.list.ListExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.rule.MatchContext;
+import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class AnnotationListVariableExpression extends AbstractAnnotationListExpression {
+public class ImplicitVariableAssignmentAction extends AbstractRutaAction {
 
-  private String var;
+  private final String var;
 
-  public AnnotationListVariableExpression(String var) {
+  private final String op;
+
+  private final IRutaExpression arg;
+
+  public ImplicitVariableAssignmentAction(String varString, String opString, IRutaExpression arg) {
     super();
-    this.var = var;
+    this.var = varString;
+    this.op = opString;
+    this.arg = arg;
   }
 
-  
   @Override
-  public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
-    RutaBlock parent = context.getParent();
-    @SuppressWarnings("unchecked")
-    List<AnnotationFS> list = parent.getEnvironment().getVariableValue(var, List.class);
-    return list;
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
+    // only normal assignment is supported right now
+    if(StringUtils.equals(op, "=")) {
+      stream.assignVariable(var, arg, context, stream);
+    }
   }
 
+  public String getVar() {
+    return var;
+  }
 
-  @Override
-  public List<AnnotationFS> getAnnotations(MatchContext context, RutaStream stream) {
-    return getList(context, stream);
+  public String getOp() {
+    return op;
+  }
+
+  public IRutaExpression getArg() {
+    return arg;
   }
 
 }

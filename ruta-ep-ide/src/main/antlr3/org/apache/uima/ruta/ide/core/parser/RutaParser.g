@@ -870,6 +870,7 @@ listExpression returns [Expression expr = null]
 	| (floatListExpression)=> e = floatListExpression {expr = e;}
 	| (stringListExpression)=> e = stringListExpression {expr = e;}
 	| (typeListExpression)=> e = typeListExpression {expr = e;}
+	| (annotationListExpression)=> e = annotationListExpression {expr = e;}
 	| (untypedListExpression)=> utl = untypedListExpression {expr = utl;}
 	;
 
@@ -1074,6 +1075,14 @@ variable returns [Expression var = null]
 	;	
 	
 
+variableAssignmentAction returns [RutaAction a = null]
+	:
+	var = variable op = ASSIGN_EQUAL arg = argument
+	{
+	a = ActionFactory.createAction(var, arg);
+	}
+	;
+
 listVariable returns [Expression var = null]
 	:
 	{isVariableOfType(input.LT(1).getText(), "BOOLEANLIST")
@@ -1082,6 +1091,7 @@ listVariable returns [Expression var = null]
 	||isVariableOfType(input.LT(1).getText(), "DOUBLELIST")
 	||isVariableOfType(input.LT(1).getText(), "STRINGLIST")
 	||isVariableOfType(input.LT(1).getText(), "TYPELIST")
+	||isVariableOfType(input.LT(1).getText(), "ANNOTATIONLIST")
 	}? v = Identifier {var=ExpressionFactory.createGenericVariableReference(v);}
 	;
 	
@@ -1505,6 +1515,7 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| a = actionAddRetainType
 	| a = actionRemoveFilterType
 	| a = actionRemoveRetainType
+	| (variableAssignmentAction)=> vae = variableAssignmentAction {a = vae;}
 	| (externalAction)=> a = externalAction
 	| (featureAssignmentExpression)=> fae = featureAssignmentExpression {a = ActionFactory.createAction(fae);}
 	| (typeExpression)=> te = typeExpression {a = ActionFactory.createAction(te);}
@@ -2587,15 +2598,18 @@ annotationExpression returns [Expression expr = null]
 	{isVariableOfType(input.LT(1).getText(), "ANNOTATION")}? 
 	id = Identifier {expr = ExpressionFactory.createAnnotationTypeVariableReference(id);} 
 	|
-	{isVariableOfType(input.LT(1).getText(), "ANNOTATIONLIST")}? 
-	id = Identifier {expr = ExpressionFactory.createAnnotationTypeVariableReference(id);} 
+	ale = annotationListExpression {expr = ale;}
 	|
 	aae = annotationAddressExpression {expr = aae;}
 	|
 	ale = annotationLabelExpression {expr = ale;}
 	;  
 
-
+annotationListExpression returns [Expression expr = null]
+	:
+	{isVariableOfType(input.LT(1).getText(), "ANNOTATIONLIST")}? 
+	id = Identifier {expr = ExpressionFactory.createAnnotationTypeVariableReference(id);} 
+	;
 
 annotationAddressExpression returns [Expression expr = null]
 	:

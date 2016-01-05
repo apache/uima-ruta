@@ -1028,6 +1028,7 @@ listExpression returns [ListExpression expr = null]
 	| (floatListExpression)=> dl = floatListExpression {expr = dl;}
 	| (stringListExpression)=> sl = stringListExpression {expr = sl;}
 	| (typeListExpression)=> tl = typeListExpression {expr = tl;}
+	| (annotationListExpression)=> ale = annotationListExpression {expr = ale;}
 	| (untypedListExpression)=> utl = untypedListExpression {expr = utl;}
 	;
 
@@ -1251,6 +1252,13 @@ featureAssignmentExpression returns [FeatureMatchExpression fme = null]
 	}
 	;
 	
+variableAssignmentAction returns [AbstractRutaAction a = null]
+	:
+	var = variable op = ASSIGN_EQUAL arg = argument
+	{
+	a = ActionFactory.createImplicitVariableAssignmentAction(var, op, arg, $blockDeclaration::env);
+	}
+	;
 	
 variable returns [Token var = null]
 	:
@@ -1265,6 +1273,7 @@ listVariable returns [Token var = null]
 	||isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "FLOATLIST")
 	||isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "STRINGLIST")
 	||isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPELIST")
+	||isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "ANNOTATIONLIST")
 	}? v = Identifier {var = v;}
 	;
 
@@ -1590,6 +1599,7 @@ action  returns [AbstractRutaAction result = null]
 	| a = actionRemoveRetainType
 	| a = actionAddFilterType
 	| a = actionRemoveFilterType
+	| (variableAssignmentAction)=> vae = variableAssignmentAction {a = vae;}
 	| (externalAction)=> a = externalAction
 	| (featureAssignmentExpression)=> fae = featureAssignmentExpression {a = ActionFactory.createAction(fae);}
 	| (typeExpression)=> te = typeExpression {a = ActionFactory.createAction(te);}
@@ -2212,8 +2222,7 @@ annotationExpression returns [IRutaExpression expr = null]
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")	}? 
 	id = Identifier {expr = ExpressionFactory.createAnnotationVariableExpression(id);} 
 	|
-	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")	}? 
-	id = Identifier {expr = ExpressionFactory.createAnnotationListVariableExpression(id);} 
+	ale = annotationListExpression {expr = ale;}
 	|
 	aae = annotationAddressExpression {expr = aae;}
 	|
@@ -2225,11 +2234,17 @@ annotationExpression2 returns [IRutaExpression expr = null]
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")}? 
 	id = Identifier {expr = ExpressionFactory.createAnnotationVariableExpression(id);} 
 	|
-	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")}? 
-	id = Identifier {expr = ExpressionFactory.createAnnotationListVariableExpression(id);} 
+	ale = annotationListExpression {expr = ale;}
 	|
 	aae = annotationAddressExpression {expr = aae;}
 	;
+
+annotationListExpression returns [ListExpression expr = null]
+	:
+	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")}? 
+	id = Identifier {expr = ExpressionFactory.createAnnotationListVariableExpression(id);} 
+	;
+	
 
 annotationAddressExpression returns [IAnnotationExpression expr = null]
 	:

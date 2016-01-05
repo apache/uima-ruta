@@ -34,7 +34,7 @@ import org.apache.uima.ruta.rule.MatchContext;
  * An expression referring to annotations (FSArray) stored in a feature.
  *
  */
-public class AnnotationListFeatureExpression extends ListExpression<AnnotationFS> implements IAnnotationListExpression {
+public class AnnotationListFeatureExpression extends AbstractAnnotationListExpression {
 
   private FeatureExpression fe;
 

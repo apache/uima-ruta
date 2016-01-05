@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.expression.annotation.AbstractAnnotationListExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationAddressExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationFeatureExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
@@ -314,7 +315,7 @@ public class ExpressionFactory {
     return new AnnotationVariableExpression(var.getText());
   }
 
-  public static IRutaExpression createAnnotationListVariableExpression(Token var) {
+  public static AbstractAnnotationListExpression createAnnotationListVariableExpression(Token var) {
     return new AnnotationListVariableExpression(var.getText());
   }
 
