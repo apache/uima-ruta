@@ -367,11 +367,6 @@ Sentence{CONTAINS(EmploymentIndicator) -> CREATE(EmplRelation,
     "employeeRef" = Employee, "employerRef" = Employer)};]]></programlisting>
 
     <para>
-      UIMA Ruta rules can not only be used to create or modify annotations, but also to create features for annotations. The next example defines 
-      and assigns a relation of employment, by storing the given annotations as feature values.
-    </para>
-
-    <para>
       The first statement of this example is a declaration that defines a new type of annotation named <quote>EmplRelation</quote>. 
       This annotation has two features: 
       One feature with the name <quote>employeeRef</quote> of the type <quote>Employee</quote> and 
@@ -386,7 +381,21 @@ Sentence{CONTAINS(EmploymentIndicator) -> CREATE(EmplRelation,
     </para>
 
     <para>
-      In the last example, the values of features were defined as annotation types. However, also primitive 
+      In order to refer to annotations and, for example, assigning them to some features, 
+      special kinds of local and global variables can be utilized. Local variables for annotations 
+      do not need to be defined by are specified by a label at a rule element. This label can be utilized
+      for referring to the matched annoation of this rule element within the current rule match alone.
+      Global variables for annotations are declared like other variables and are able to store annotations
+      across rules. The following example illustrate some simple use cases using local variables:
+    <para>
+
+    <programlisting><![CDATA[DECLARE Annotation EmplRelation 
+   (Employee employeeRef, Employer employerRef);
+e1:Employer # EmploymentIndicator # e2:Employee)
+    {-> EmplRelation, EmplRelation.employeeRef=e2, EmplRelation.employerRef=e1};]]></programlisting>
+
+    <para>
+      In the last examples, the values of features were defined as annotation types. However, also primitive 
       types can be used, as will be shown in the next example, together with a short introduction of variables.
     </para>
 
@@ -1088,21 +1097,21 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <title>varNames</title>
           <para>
             This parameter specifies the names of variables and is used in combination with the parameter
-				    varValues, which contains the values of the corresponding variables. The n-th entry of this
-				    string array specifies the variable of the n-th entry of the string array of the parameter
-				    varValues. If the variables is defined in the root of a script, then the name of the variable
-				    suffices. If the variable is defined in a BLOCK or imported script, then the the name must
-				    contain the namespaces of the blocks as a prefix, e.g., InnerBlock.varName or OtherScript.SomeBlock.varName.
+            varValues, which contains the values of the corresponding variables. The n-th entry of this
+            string array specifies the variable of the n-th entry of the string array of the parameter
+            varValues. If the variables is defined in the root of a script, then the name of the variable
+            suffices. If the variable is defined in a BLOCK or imported script, then the the name must
+            contain the namespaces of the blocks as a prefix, e.g., InnerBlock.varName or OtherScript.SomeBlock.varName.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.varValues">
           <title>varValues</title>
           <para>
             This parameter specifies the values of variables as string values in an string array. It is
-				    used in combination with the parameter varNames, which contains the names of the corresponding
-				    variables. The n-th entry of this string array specifies the value of the n-th entry of the
-				    string array of the parameter varNames. Only value of the kinds string, boolean, int, double
-				    and float are allowed.
+            used in combination with the parameter varNames, which contains the names of the corresponding
+            variables. The n-th entry of this string array specifies the value of the n-th entry of the
+            string array of the parameter varNames. Only value of the kinds string, boolean, int, double
+            and float are allowed.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.dictRemoveWS">

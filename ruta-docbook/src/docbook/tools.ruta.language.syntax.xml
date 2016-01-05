@@ -83,6 +83,7 @@ VariableDeclaration -> (("TYPE" Identifier ("," Identifier)*
                                ("," Identifier)* ("=" NumberExpression)?)
                      | ("BOOLEAN" Identifier ("," Identifier)*
                                                 ("=" BooleanExpression)?)
+                     | ("ANNOTATION" Identifier ("=" AnnotationExpression)?)
                      | ("WORDLIST" Identifier ("=" WordListExpression)?)
                      | ("WORDTABLE" Identifier ("=" WordTableExpression)?)
                      | ("TYPELIST" Identifier ("=" TypeListExpression)?)
@@ -92,6 +93,8 @@ VariableDeclaration -> (("TYPE" Identifier ("," Identifier)*
                                   Identifier ("=" NumberListExpression)?)
                      | ("BOOLEANLIST" Identifier
                                            ("=" BooleanListExpression)?))
+                     | ("ANNOTATIONLIST" Identifier 
+                                         ("=" AnnotationListExpression)?)
 AnnotationType      ->  BasicAnnotationType | declaredAnnotationType
 BasicAnnotationType ->  ('COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM'
                       | 'QUESTION' | 'SPECIAL' | 'CAP' | 'COMMA'
@@ -112,7 +115,8 @@ DocumentActionRule     -> Actions ";"
 GroupAssignment        -> TypeExpression 
                         | NumberEpxression "=" TypeExpression
 RuleElements           -> RuleElement+
-RuleElement            -> RuleElementType | RuleElementLiteral
+RuleElement            -> (Identifier ":")? "@"? 
+                        RuleElementType | RuleElementLiteral
                         | RuleElementComposed | RuleElementWildCard
 RuleElementType        ->  MatchReference OptionalRuleElementPart
 RuleElementWithCA      ->  MatchReference ("{" Conditions?  Actions? "}")?
@@ -146,7 +150,7 @@ Actions                -> "->" Action ( "," Action)*
   <para>
     It is also possible to use specific expression as implicit conditions or action additionally to the set of available conditions and actions.
         <programlisting><![CDATA[Condition -> BooleanExpression | FeatureMatchExpression
-Action    -> TypeExpression | FeatureAssignmentExpression 
+Action    -> TypeExpression | FeatureAssignmentExpression | VariableAssignmentExpression 
 ]]></programlisting>
   
 
