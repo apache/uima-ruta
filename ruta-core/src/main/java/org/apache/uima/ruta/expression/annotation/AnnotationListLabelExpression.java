@@ -19,55 +19,44 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.rule.MatchContext;
+import org.apache.uima.ruta.rule.RuleMatch;
 
 /**
- * An expression referring to annotations (FSArray) stored in a feature.
+ * An expression referring to an annotation matched by a rule element identified by a label.
  *
  */
-public class AnnotationListFeatureExpression extends AbstractAnnotationListExpression {
+public class AnnotationListLabelExpression extends AbstractAnnotationListExpression {
 
-  private FeatureExpression fe;
-
-  public AnnotationListFeatureExpression(FeatureExpression fe) {
-    super();
-    this.fe = fe;
-  }
+private String label;
   
+  public AnnotationListLabelExpression(String label) {
+    super();
+    this.label = label;
+  }
+ 
   @Override
   public List<AnnotationFS> getAnnotations(MatchContext context, RutaStream stream) {
-    AnnotationFS annotation = context.getAnnotation();
-    Type type = fe.getTypeExpr(context, stream).getType(context, stream);
-    List<AnnotationFS> list = getTargetAnnotation(annotation, type, stream);
-    Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
-            false);
-    return new ArrayList<AnnotationFS>(featureAnnotations);
-  }
-
-  @Override
-  public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
     return getList(context, stream);
   }
 
-  public FeatureExpression getFeatureExpression() {
-    return fe;
+
+  @Override
+  public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
+    RuleMatch ruleMatch = context.getRuleMatch();
+    List<AnnotationFS> annotations = ruleMatch.getMatchedAnnotationsOfLabel(label);
+    return annotations;
+  }
+  
+  public String getLabel() {
+    return label;
   }
 
-  public void setFeatureExpression(FeatureExpression fe) {
-    this.fe = fe;
-  }
 
-
-
-  
-  
+ 
 
 }
