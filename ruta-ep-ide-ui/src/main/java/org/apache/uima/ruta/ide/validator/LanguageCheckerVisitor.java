@@ -601,7 +601,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         }
         if (namespaces.keySet().contains(name) || namespaces.values().contains(name)
                 || allLongTypeNames.contains(name)
-                || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_AT) {
+                || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_AT
+                || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_UA
+                || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_UAL) {
           return false;
         }
         if (isFeatureMatch(name) != null) {

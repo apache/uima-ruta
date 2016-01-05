@@ -99,6 +99,10 @@ public final class RutaTypeConstants {
   public static final int RUTA_TYPE_TL = (2 << 17) + 5;
 
   public static final int RUTA_TYPE_UTL = (2 << 17) + 6;
+  
+  public static final int RUTA_TYPE_UA = (2 << 17) + 7;
+  
+  public static final int RUTA_TYPE_UAL = (2 << 17) + 8;
 
   public static final Map<Integer, String> typeStringOfInt;
 
@@ -112,6 +116,8 @@ public final class RutaTypeConstants {
     typeStringOfInt.put(RUTA_TYPE_N, "NUMBER");
     typeStringOfInt.put(RUTA_TYPE_I, "INT");
     typeStringOfInt.put(RUTA_TYPE_S, "STRING");
+    typeStringOfInt.put(RUTA_TYPE_UA, "ANNOTATION");
+    typeStringOfInt.put(RUTA_TYPE_UAL, "ANNOTATIONLIST");
     typeStringOfInt.put(RUTA_TYPE_WL, "WORDLIST");
     typeStringOfInt.put(RUTA_TYPE_WT, "WORDTABLE");
     typeStringOfInt.put(RUTA_TYPE_BL, "BOOLEANLIST");

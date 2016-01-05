@@ -479,6 +479,26 @@ variableDeclaration returns [List<Statement> stmts = new ArrayList<Statement>()]
         decls.add(StatementFactory.createVarListVariable(id,type,list, RutaTypeConstants.RUTA_TYPE_TL));
         stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
         }       
+        
+        |
+        type = ANNOTATION id = Identifier {addVariable(id.getText(), type.getText());decls.add(StatementFactory.createTypeVariable(id,type));}
+			(COMMA id = Identifier {addVariable(id.getText(), type.getText());decls.add(StatementFactory.createTypeVariable(id,type));}
+		 )* (ASSIGN_EQUAL init = annotationExpression)?  SEMI
+		{
+		 stmts.add(StatementFactory.createDeclarationsStatement(type, decls, init));
+		 }
+	|
+	type = ANNOTATIONLIST id = Identifier (ASSIGN_EQUAL al = annotationExpression)? SEMI 
+	{
+        addVariable(id.getText(), type.getText());
+        decls.add(StatementFactory.createVarListVariable(id,type,list, RutaTypeConstants.RUTA_TYPE_UAL));
+        stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
+        } 
+	
+	
+	
+	
+        
 	//|
 	//stmt = conditionDeclaration {stmts.add(stmt);}
 	//|
@@ -2562,9 +2582,28 @@ genericVariableReference returns[Expression varRef]
 ;
 
 
+annotationExpression returns [Expression expr = null]
+	:
+	{isVariableOfType(input.LT(1).getText(), "ANNOTATION")}? 
+	id = Identifier {expr = ExpressionFactory.createAnnotationTypeVariableReference(id);} 
+	|
+	{isVariableOfType(input.LT(1).getText(), "ANNOTATIONLIST")}? 
+	id = Identifier {expr = ExpressionFactory.createAnnotationTypeVariableReference(id);} 
+	|
+	aae = annotationAddressExpression {expr = aae;}
+	|
+	ale = annotationLabelExpression {expr = ale;}
+	;  
 
 
 
-    
-
+annotationAddressExpression returns [Expression expr = null]
+	:
+	ADDRESS_PREFIX address = DecimalLiteral {expr = ExpressionFactory.createAnnotationTypeVariableReference(address);}
+	;
+	
+annotationLabelExpression returns [Expression expr = null]
+	:
+	label = Identifier {expr = ExpressionFactory.createAnnotationTypeVariableReference(label);}
+	;
 

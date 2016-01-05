@@ -27,9 +27,11 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.annotation.AnnotationAddressExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationFeatureExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationListFeatureExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationListVariableExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
@@ -319,6 +321,11 @@ public class ExpressionFactory {
   public static IAnnotationExpression createAnnotationFeatureExpression(
           FeatureExpression featureExpression) {
     return new AnnotationFeatureExpression(featureExpression);
+  }
+  
+  public static IAnnotationListExpression createAnnotationListFeatureExpression(
+          FeatureExpression featureExpression) {
+    return new AnnotationListFeatureExpression(featureExpression);
   }
 
   public static IRutaExpression createGenericExpression(Token ref) {

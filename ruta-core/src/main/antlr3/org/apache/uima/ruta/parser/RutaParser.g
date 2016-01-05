@@ -551,8 +551,9 @@ List<String> vars = new ArrayList<String>();
 	
 	|
 	type = ANNOTATION 
-	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
-	name = Identifier (ASSIGN_EQUAL a = annotationExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(a != null){setValue($blockDeclaration::env, name.getText(), a);}} 
+	{!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		(COMMA {!ownsVariable($blockDeclaration::env, input.LT(1).getText())}? id = Identifier {vars.add(id.getText());addVariable($blockDeclaration::env, id.getText(), type.getText());}
+		 )* (ASSIGN_EQUAL value6 = annotationExpression)? {setValue($blockDeclaration::env, vars, value6);} SEMI
 	|
 	type = ANNOTATIONLIST
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 

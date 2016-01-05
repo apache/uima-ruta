@@ -451,7 +451,7 @@ Identifier
 
 fragment
 Letter
-    :  '\u0024' |
+    :  
        '\u0041'..'\u005a' |
        '\u005f' |
        '\u0061'..'\u007a' |
