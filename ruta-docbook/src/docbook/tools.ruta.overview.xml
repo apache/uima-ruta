@@ -387,7 +387,7 @@ Sentence{CONTAINS(EmploymentIndicator) -> CREATE(EmplRelation,
       for referring to the matched annoation of this rule element within the current rule match alone.
       Global variables for annotations are declared like other variables and are able to store annotations
       across rules. The following example illustrate some simple use cases using local variables:
-    <para>
+    </para>
 
     <programlisting><![CDATA[DECLARE Annotation EmplRelation 
    (Employee employeeRef, Employer employerRef);
