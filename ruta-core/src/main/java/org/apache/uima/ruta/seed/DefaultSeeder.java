@@ -19,8 +19,6 @@
 
 package org.apache.uima.ruta.seed;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,9 +32,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.ruta.type.MARKUP;
-import org.apache.uima.ruta.type.TokenSeed;
 
-public class DefaultSeeder implements RutaAnnotationSeeder {
+public class DefaultSeeder extends TextSeeder {
 
   public static final String seedType = "org.apache.uima.ruta.type.TokenSeed";
 
@@ -44,36 +41,14 @@ public class DefaultSeeder implements RutaAnnotationSeeder {
           .compile("</?\\w[\\w-]*((\\s+[\\w-]+(\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)/?>");
 
   public Type seed(String text, CAS cas) {
-    Type result = null;
+    Type result = super.seed(text, cas);
     JCas jCas = null;
-    int size = 0;
     try {
       jCas = cas.getJCas();
-      size = jCas.getAnnotationIndex(TokenSeed.type).size();
-      result = jCas.getTypeSystem().getType(seedType);
-    } catch (CASException e1) {
+    } catch (CASException e) {
+      throw new RuntimeException(e);
     }
-    // do not apply seeding if there are already annotations of this seed type
-    if (jCas == null || size != 0 || text == null) {
-      return result;
-    }
-    BufferedReader reader = new BufferedReader(new StringReader(text));
-    final SeedLexer sourceLexer = new SeedLexer(reader);
-    sourceLexer.setJCas(jCas);
-    AnnotationFS a = null;
-
-    try {
-      a = sourceLexer.yylex();
-    } catch (Exception e) {
-    }
-    while (a != null) {
-      cas.addFsToIndexes(a);
-      try {
-        a = sourceLexer.yylex();
-      } catch (Exception e) {
-      }
-    }
-
+    
     // FIXME: lexer rules for html markup won't work. Therefore, those rules where removed in the
     // grammar and the functionality is included directly with regex
     Matcher matcher = markupPattern.matcher(text);
