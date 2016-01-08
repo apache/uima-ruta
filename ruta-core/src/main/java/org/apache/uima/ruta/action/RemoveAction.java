@@ -22,9 +22,12 @@ package org.apache.uima.ruta.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -60,21 +63,22 @@ public class RemoveAction extends AbstractRutaAction {
     RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
     List list = parent.getEnvironment().getVariableValue(var, List.class);
+    Class<?> vgtype = parent.getEnvironment().getVariableGenericType(var);
     List<Object> toRemove = new ArrayList<Object>();
     for (Object entry : list) {
-      Object value1 = getValue(entry, context, stream);
+      Object value1 = getValue(entry, vgtype, context, stream);
       for (IRutaExpression arg : elements) {
         if (arg instanceof ListExpression) {
           ListExpression l = (ListExpression) arg;
           List list2 = l.getList(context, stream);
           for (Object object : list2) {
-            Object value2 = getValue(object, context, stream);
+            Object value2 = getValue(object, vgtype, context, stream);
             if (value1.equals(value2)) {
               toRemove.add(entry);
             }
           }
         } else {
-          Object value2 = getValue(arg, context, stream);
+          Object value2 = getValue(arg, vgtype, context, stream);
           if (value1.equals(value2)) {
             toRemove.add(entry);
           }
@@ -87,17 +91,19 @@ public class RemoveAction extends AbstractRutaAction {
     parent.getEnvironment().setVariableValue(var, list);
   }
 
-  private Object getValue(Object obj, MatchContext context, RutaStream stream) {
+  private Object getValue(Object obj, Class<?> vgtype, MatchContext context, RutaStream stream) {
     if (obj instanceof INumberExpression) {
       return ((INumberExpression) obj).getDoubleValue(context, stream);
     } else if (obj instanceof IBooleanExpression) {
       return ((IBooleanExpression) obj).getBooleanValue(context, stream);
-    } else if (obj instanceof ITypeExpression) {
+    } else if (vgtype.equals(Type.class) && obj instanceof ITypeExpression) {
       return ((ITypeExpression) obj).getType(context, stream);
+    } else if (vgtype.equals(AnnotationFS.class) && obj instanceof IAnnotationExpression) {
+      return ((IAnnotationExpression) obj).getAnnotation(context, stream);
     } else if (obj instanceof IStringExpression) {
       return ((IStringExpression) obj).getStringValue(context, stream);
     }
-    return null;
+    return obj;
   }
 
 }
