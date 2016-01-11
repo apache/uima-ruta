@@ -128,7 +128,7 @@
             <goal>package</goal>
             <goal>integration-test</goal>
           </goals>
-          <invokerTest>importByName,multimodule,wordlists</invokerTest>
+          <invokerTest>conflictingShortName,importByName,multimodule,wordlists</invokerTest>
         </configuration>
         <executions>
           <execution>

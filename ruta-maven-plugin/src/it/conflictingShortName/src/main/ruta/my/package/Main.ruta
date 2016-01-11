@@ -1,0 +1,7 @@
+PACKAGE my.package;
+
+SCRIPT my.package.One;
+SCRIPT my.package.Two;
+
+CALL(One);
+CALL(Two);
