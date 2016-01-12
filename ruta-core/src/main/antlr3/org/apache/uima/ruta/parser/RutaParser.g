@@ -30,7 +30,10 @@ package org.apache.uima.ruta.parser;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -189,7 +192,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 		return parent.getEnvironment().ownsVariable(name);
 	}
 	public boolean isVariable(RutaBlock parent, String name) {
-		return parent.getEnvironment().isVariable(name);
+		return parent.getEnvironment().isVariable(name) || isTemporaryVariable(name);
 	}
 	
 	public void setValue(RutaBlock parent, List<String> names, Object obj) {
@@ -211,33 +214,12 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	}
 	
 	public boolean isVariableOfType(RutaBlock parent, String name, String type) {
-		return parent.getEnvironment().isVariableOfType(name,type);
+		return parent.getEnvironment().isVariableOfType(name,type) || isTemporaryVariable(name,type);
 	}
 	
-	/*
-	public void addType(RutaBlock parent, String type) {
-	    assert !moduleName.contains(".");
-	    assert !type.contains(".");
-
-	    String resolvedType = type;
-	    if (!type.contains(".")) {
-	        resolvedType = namespace + "." + moduleName + "." + type;
-	    }
-            parent.getEnvironment().declareType(resolvedType);
-            
-            if(descInfo!= null) {
-	            String descriptionString = null;
-		    if(StringUtils.isBlank(namespace)) {
-		       descriptionString = "Type defined in " + moduleName;
-		    } else {
-		       descriptionString = "Type defined in " + parent.getNamespace() + "." + moduleName;
-		    }
-		    String parentType = "uima.tcas.Annotation";
-		    
-		    descInfo.addType(parent.getNamespace()+"."+type.trim(), descriptionString, parentType);
-		}
-	}
-	*/
+	
+	
+	
 	public void addType(RutaBlock parent, Token nameToken, Token parentTypeToken, List featureTypes,
           List featureNames) {
           String name = nameToken.getText();
@@ -274,11 +256,6 @@ public void setExternalFactory(RutaExternalFactory factory) {
 		return parent.getEnvironment().getType(type) != null || type.equals("Document");
 	}
 	
-	public void checkVariable(String var, IntStream input) throws NoViableAltException {
-		if(!vars.contains(var)) {
-			throw new NoViableAltException("not declared \"" + var + "\"", 3, 0, input);
-		}
-	}
 	
 	public void addImportTypeSystem(RutaBlock parent, String descriptor) {
 		parent.getEnvironment().addTypeSystem(descriptor);
@@ -407,7 +384,36 @@ public void setExternalFactory(RutaExternalFactory factory) {
       	  return external.getBlockExtensions().keySet().contains(name);
       	}
       	
-
+      	
+      	
+	private void addActionMacro(RutaBlock env, String text, Map<String,String> def, List<AbstractRutaAction> as) {
+     		int i = 0;	
+ 	}
+ 	 
+ 	 
+ 	private Map<String,String> temporaryVariables = new HashMap<>(); 
+ 	
+ 	private boolean isTemporaryVariable(String name, String type) {
+ 		return StringUtils.equals(temporaryVariables.get(name), type);
+	}
+	private boolean isTemporaryVariable(String name) {
+ 		return temporaryVariables.keySet().contains(name);
+	}
+	private void addTemporaryVariable(String name, String type) {
+		temporaryVariables.put(name, type);
+	}
+	private void removeTemporaryVariable(String name) {
+		temporaryVariables.remove(name);
+	}
+	private void addTemporaryVariables(Map<String, String> def) {
+		temporaryVariables.putAll(def);
+	}
+	private void removeTemporaryVariables(Map<String, String> def) {
+		Set<String> keySet = def.keySet();
+		for (String key : keySet) {
+		    temporaryVariables.remove(key);
+     		}
+	}
 
 }
 
@@ -473,6 +479,8 @@ statement returns [RutaStatement stmt = null]
 	:	
 	( stmtDecl = declaration {stmt = stmtDecl;}
 	| stmtVariable = variableDeclaration {stmt = stmtVariable;}
+	| stmtCM = conditionMacroDeclaration {stmt = stmtCM;}
+	| stmtAM = actionMacroDeclaration {stmt = stmtAM;}
 	| stmtRule = simpleStatement {stmt = stmtRule;}
 	| stmtBlock = blockDeclaration {stmt = stmtBlock;}
 	| stmtExternal = externalBlock {stmt = stmtExternal;}
@@ -559,37 +567,47 @@ List<String> vars = new ArrayList<String>();
 	type = ANNOTATIONLIST
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
 	name = Identifier (ASSIGN_EQUAL al = annotationExpression)? SEMI {addVariable($blockDeclaration::env, name.getText(), type.getText());if(al != null){setValue($blockDeclaration::env, name.getText(), al);}} 
-	
-	
-	
-	//|
-	//stmt1 = conditionDeclaration {stmt = stmt1;}
-	//|
-	//stmt2 = actionDeclaration {stmt = stmt2;}
+
 	;
 
-//TODO added rule
-//conditionDeclaration returns [RutaStatement stmt = null]
-  //  :
-//    type = CONDITION id = Identifier ASSIGN_EQUAL LPAREN cons = conditions RPAREN SEMI
-//    {addVariable($blockDeclaration::env, id.getText(), type.getText());
-//    AbstractRutaCondition condition = ConditionFactory.createConditionAnd(cons,$blockDeclaration::env);
-//    setValue($blockDeclaration::env, id.getText(), condition);}
-//    ;
 
-//TODO added rule
-//actionDeclaration returns [RutaStatement stmt = null]
-//    :
-//    type = ACTION id = Identifier ASSIGN_EQUAL LPAREN a = actions RPAREN SEMI
-//    {addVariable($blockDeclaration::env, id.getText(), type.getText());
-//    AbstractRutaAction action = ActionFactory.createComposedAction(a,$blockDeclaration::env);
-//    setValue($blockDeclaration::env, id.getText(), action);}
-//    ;
+conditionMacroDeclaration returns [RutaStatement stmt = null]
+  :
+    type = CONDITION id = Identifier ASSIGN_EQUAL LPAREN cons = conditions RPAREN SEMI
+    {addVariable($blockDeclaration::env, id.getText(), type.getText());
+    AbstractRutaCondition condition = ConditionFactory.createConditionAnd(cons,$blockDeclaration::env);
+    setValue($blockDeclaration::env, id.getText(), condition);}
+    ;
+
+
+actionMacroDeclaration returns [RutaStatement stmt = null]
+@init {
+Map<String,String> def = new LinkedHashMap<>();
+}
+    :
+    ACTION name = Identifier 
+    LPAREN  
+    (argType = varTypeToken argName = Identifier  {def.put(argName.getText(),argType.getText());}
+    (COMMA argType = varTypeToken argName = Identifier {def.put(argName.getText(),argType.getText());})*)? 
+    {addTemporaryVariables(def);}
+    RPAREN ASSIGN_EQUAL as = actions SEMI
+    {removeTemporaryVariables(def);}
+    {addActionMacro($blockDeclaration::env, name.getText(), def, as);}
+       
+    ;
+
+varTypeToken returns [Token token = null ]
+	:
+	t = (ANNOTATION | ANNOTATIONLIST | StringString | STRINGLIST 
+		| BooleanString | BOOLEANLIST | IntString | INTLIST 
+		| DoubleString | DOUBLELIST | FloatString | FLOATLIST
+		| TypeString | TYPELIST) {token = t;}
+	;
 
 importStatement returns [RutaStatement stmt = null]
 @init {
 List<String> configurationData = new ArrayList<String>();
-}	
+}
 	:
 	TypeSystemString ts = dottedIdentifier2{addImportTypeSystem($blockDeclaration::env, ts);} SEMI
 	| ScriptString ns = dottedIdentifier2{addImportScript($blockDeclaration::env, ns);} SEMI
@@ -1642,6 +1660,8 @@ action  returns [AbstractRutaAction result = null]
 //	| a = variableAction
 	) {result = a;}
 	;
+		
+	
 rawAction  returns [AbstractRutaAction result = null]
 	:
 	(
