@@ -26,11 +26,11 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
-import org.apache.uima.ruta.expression.list.StringListExpression;
-import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 
 public class ConditionFactory {
@@ -111,7 +111,7 @@ public class ConditionFactory {
   }
 
   public static AbstractRutaCondition createConditionPartOf(ITypeExpression type,
-          TypeListExpression list, RutaBlock parent) {
+          AbstractTypeListExpression list, RutaBlock parent) {
     if (type != null) {
       return new PartOfCondition(type);
     } else {
@@ -179,7 +179,7 @@ public class ConditionFactory {
   }
 
   public static AbstractRutaCondition createConditionIs(ITypeExpression type,
-          TypeListExpression list, RutaBlock env) {
+          AbstractTypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new IsCondition(type);
     } else {
@@ -188,7 +188,7 @@ public class ConditionFactory {
   }
 
   public static AbstractRutaCondition createConditionAfter(ITypeExpression type,
-          TypeListExpression list, RutaBlock env) {
+          AbstractTypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new AfterCondition(type);
     } else {
@@ -197,7 +197,7 @@ public class ConditionFactory {
   }
 
   public static AbstractRutaCondition createConditionBefore(ITypeExpression type,
-          TypeListExpression list, RutaBlock env) {
+          AbstractTypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new BeforeCondition(type);
     } else {
@@ -206,7 +206,7 @@ public class ConditionFactory {
   }
 
   public static AbstractRutaCondition createConditionEndsWith(ITypeExpression type,
-          TypeListExpression list, RutaBlock env) {
+          AbstractTypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new EndsWithCondition(type);
     } else {
@@ -215,7 +215,7 @@ public class ConditionFactory {
   }
 
   public static AbstractRutaCondition createConditionStartsWith(ITypeExpression type,
-          TypeListExpression list, RutaBlock env) {
+          AbstractTypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new StartsWithCondition(type);
     } else {
@@ -224,7 +224,7 @@ public class ConditionFactory {
   }
 
   public static AbstractRutaCondition createConditionPartOfNeq(ITypeExpression type,
-          TypeListExpression list, RutaBlock env) {
+          AbstractTypeListExpression list, RutaBlock env) {
     if (type != null) {
       return new PartOfNeqCondition(type);
     } else {
@@ -237,7 +237,7 @@ public class ConditionFactory {
     return new SizeCondition(list, min, max, var == null ? null : var.getText());
   }
 
-  public static AbstractRutaCondition createConditionInList(StringListExpression list,
+  public static AbstractRutaCondition createConditionInList(AbstractStringListExpression list,
           IStringExpression arg, RutaBlock env) {
     return new InListCondition(list, arg);
   }

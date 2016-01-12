@@ -960,7 +960,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     } else if (value instanceof AnnotationTypeExpression && !feature.getRange().isPrimitive()) {
       AnnotationTypeExpression ate = (AnnotationTypeExpression) value;
       if (feature.getRange().isArray()) {
-        List<AnnotationFS> annotations = ate.getAnnotations(context, this);
+        List<AnnotationFS> annotations = ate.getAnnotationList(context, this);
         annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), annotations));
       } else {
         AnnotationFS a = ate.getAnnotation(context, this);
@@ -981,7 +981,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       }
     } else if (value instanceof IAnnotationListExpression && !feature.getRange().isPrimitive()) {
       IAnnotationListExpression ale = (IAnnotationListExpression) value;
-      List<AnnotationFS> annotations = ale.getAnnotations(context, this);
+      List<AnnotationFS> annotations = ale.getAnnotationList(context, this);
       if (annotations != null) {
         if (feature.getRange().isArray()) {
           annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), annotations));
@@ -1073,7 +1073,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       Class<?> variableGenericType = environment.getVariableGenericType(var);
       if (variableGenericType.equals(AnnotationFS.class)
               && expression instanceof IAnnotationListExpression) {
-        List<AnnotationFS> v = ((IAnnotationListExpression) expression).getAnnotations(context,
+        List<AnnotationFS> v = ((IAnnotationListExpression) expression).getAnnotationList(context,
                 stream);
         environment.setVariableValue(var, v);
       }

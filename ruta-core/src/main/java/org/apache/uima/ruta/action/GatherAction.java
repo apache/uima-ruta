@@ -39,7 +39,7 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.list.NumberListExpression;
+import org.apache.uima.ruta.expression.number.AbstractNumberListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
@@ -108,8 +108,8 @@ public class GatherAction extends AbstractStructureAction {
         INumberExpression ne = (INumberExpression) expr;
         ints.add(ne.getIntegerValue(context, stream));
         map.put(value, ints);
-      } else if (expr instanceof NumberListExpression) {
-        NumberListExpression ne = (NumberListExpression) expr;
+      } else if (expr instanceof AbstractNumberListExpression) {
+        AbstractNumberListExpression ne = (AbstractNumberListExpression) expr;
         map.put(value, ne.getList(context, stream));
       }
     }

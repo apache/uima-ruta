@@ -19,18 +19,31 @@
 
 package org.apache.uima.ruta.expression.feature;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.ExpressionFactory;
-import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanListExpression;
+import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.number.INumberListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.string.IStringListExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class GenericFeatureExpression extends RutaExpression implements INumberExpression,
-        IBooleanExpression, IStringExpression, IAnnotationExpression {
+public class GenericFeatureExpression extends ListExpression<Object> implements INumberExpression,
+        IBooleanExpression, IStringExpression, IAnnotationExpression, IAnnotationListExpression, IBooleanListExpression, INumberListExpression, IStringListExpression {
 
   private FeatureExpression featureExpression;
 
@@ -42,6 +55,14 @@ public class GenericFeatureExpression extends RutaExpression implements INumberE
   
   private IAnnotationExpression annotationExpression;
 
+  private INumberListExpression numberListExpression;
+
+  private IStringListExpression stringListExpression;
+
+  private IBooleanListExpression booleanListExpression;
+  
+  private IAnnotationListExpression annotationListExpression;
+  
   public GenericFeatureExpression(FeatureExpression fe) {
     super();
     this.featureExpression = fe;
@@ -103,5 +124,55 @@ public class GenericFeatureExpression extends RutaExpression implements INumberE
     this.featureExpression = featureExpression;
   }
 
+  @Override
+  public List<String> getStringList(MatchContext context, RutaStream stream) {
+    if (stringListExpression == null) {
+      stringListExpression = ExpressionFactory.createStringListFeatureExpression(featureExpression);
+    }
+    return stringListExpression.getStringList(context, stream);
+  }
+
+  @Override
+  public List<Number> getNumberList(MatchContext context, RutaStream stream) {
+    if (numberListExpression == null) {
+      numberListExpression = ExpressionFactory.createNumberListFeatureExpression(featureExpression);
+    }
+    return numberListExpression.getNumberList(context, stream);
+  }
+
+  @Override
+  public List<Boolean> getBooleanList(MatchContext context, RutaStream stream) {
+    if (booleanListExpression == null) {
+      booleanListExpression = ExpressionFactory.createBooleanListFeatureExpression(featureExpression);
+    }
+    return booleanListExpression.getBooleanList(context, stream);
+  }
+
+  @Override
+  public List<AnnotationFS> getAnnotationList(MatchContext context, RutaStream stream) {
+    if (annotationListExpression == null) {
+      annotationListExpression = ExpressionFactory.createAnnotationListFeatureExpression(featureExpression);
+    }
+    return annotationListExpression.getAnnotationList(context, stream);
+  }
+  
+  
+
+  @Override
+  public List<Object> getList(MatchContext context, RutaStream stream) {
+    System.out.println();
+    Feature feature = featureExpression.getFeature(context, stream);
+    Type range = feature.getRange();
+    if(!range.isArray()) {
+      return Collections.emptyList();
+    }
+    List<Object> result = new ArrayList<Object>();
+    if(StringUtils.equals(range.getName(), UIMAConstants.TYPE_FSARRAY)) {
+      result.addAll(getAnnotationList(context, stream));
+    }
+    return result;
+  }
+
+  
 
 }

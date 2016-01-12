@@ -17,20 +17,16 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.annotation;
+package org.apache.uima.ruta.expression.type;
 
 import java.util.List;
 
-import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public abstract class AbstractAnnotationListExpression extends ListExpression<AnnotationFS> implements IAnnotationListExpression{
+public interface ITypeListExpression {
   
-  @Override
-  public List<AnnotationFS> getAnnotationList(MatchContext context, RutaStream stream) {
-    return getList(context, stream);
-  }
+  List<Type> getTypeList(MatchContext context, RutaStream stream);
   
 }

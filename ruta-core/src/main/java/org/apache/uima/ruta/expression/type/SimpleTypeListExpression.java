@@ -17,8 +17,34 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.list;
+package org.apache.uima.ruta.expression.type;
 
-public abstract class StringListExpression extends ListExpression<String> {
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.uima.cas.Type;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
+
+public class SimpleTypeListExpression extends AbstractTypeListExpression {
+
+  private List<ITypeExpression> list;
+
+  public SimpleTypeListExpression(List<ITypeExpression> list) {
+    super();
+    this.list = list;
+  }
+
+  @Override
+  public List<Type> getList(MatchContext context, RutaStream stream) {
+    List<Type> result = new ArrayList<Type>();
+    for (ITypeExpression each : list) {
+      result.add(each.getType(context, stream));
+    }
+    return result;
+  }
+
+  public List<ITypeExpression> getList() {
+    return list;
+  }
 }

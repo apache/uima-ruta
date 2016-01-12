@@ -17,8 +17,20 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.list;
+package org.apache.uima.ruta.expression.type;
 
-public abstract class NumberListExpression extends ListExpression<Number> {
+import java.util.List;
 
+import org.apache.uima.cas.Type;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.list.ListExpression;
+import org.apache.uima.ruta.rule.MatchContext;
+
+public abstract class AbstractTypeListExpression extends ListExpression<Type> implements ITypeListExpression {
+
+  @Override
+  public List<Type> getTypeList(MatchContext context, RutaStream stream) {
+    return getList(context, stream);
+  }
+  
 }

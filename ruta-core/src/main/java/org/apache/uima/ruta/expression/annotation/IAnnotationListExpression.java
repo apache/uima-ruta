@@ -33,6 +33,6 @@ import org.apache.uima.ruta.rule.MatchContext;
  */
 public interface IAnnotationListExpression extends IStringExpression {
 
-  List<AnnotationFS> getAnnotations(MatchContext context, RutaStream stream);
+  List<AnnotationFS> getAnnotationList(MatchContext context, RutaStream stream);
 
 }

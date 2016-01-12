@@ -17,43 +17,34 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.list;
+package org.apache.uima.ruta.expression.string;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.Type;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class TypeListVariableExpression extends TypeListExpression {
+public class SimpleStringListExpression extends AbstractStringListExpression {
 
-  private String var;
+  private List<IStringExpression> list;
 
-  public TypeListVariableExpression(String var) {
+  public SimpleStringListExpression(List<IStringExpression> list) {
     super();
-    this.var = var;
+    this.list = list;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public List<Type> getList(MatchContext context, RutaStream stream) {
-    RutaBlock parent = context.getParent();
-    List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
-    List<Type> result = new ArrayList<Type>();
-    for (Object each : list) {
-      if (each instanceof ITypeExpression) {
-        result.add(((ITypeExpression) each).getType(context, stream));
-      } else if (each instanceof Type) {
-        result.add((Type) each);
-      }
+  public List<String> getList(MatchContext context, RutaStream stream) {
+    List<String> result = new ArrayList<String>();
+    for (IStringExpression each : list) {
+      // TODO support arrays
+      result.add(each.getStringValue(context, stream));
     }
     return result;
   }
 
-  public String getVar() {
-    return var;
+  public List<IStringExpression> getList() {
+    return list;
   }
 }

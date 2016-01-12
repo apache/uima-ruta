@@ -37,15 +37,15 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
-import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 import org.apache.uima.util.XMLInputSource;
 
 public class ExecAction extends CallAction {
 
-  private TypeListExpression typeList;
+  private AbstractTypeListExpression typeList;
 
   private IStringExpression view;
 
@@ -53,7 +53,7 @@ public class ExecAction extends CallAction {
     super(namespace);
   }
 
-  public ExecAction(String ns, TypeListExpression tl, IStringExpression view) {
+  public ExecAction(String ns, AbstractTypeListExpression tl, IStringExpression view) {
     this(ns);
     this.typeList = tl;
     this.view = view;
@@ -110,7 +110,7 @@ public class ExecAction extends CallAction {
 
   }
 
-  public TypeListExpression getTypeList() {
+  public AbstractTypeListExpression getTypeList() {
     return typeList;
   }
 

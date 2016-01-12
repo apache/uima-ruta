@@ -17,37 +17,36 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.list;
+package org.apache.uima.ruta.expression.type;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class NumberListVariableExpression extends NumberListExpression {
+public class TypeListVariableExpression extends AbstractTypeListExpression {
 
   private String var;
 
-  public NumberListVariableExpression(String var) {
+  public TypeListVariableExpression(String var) {
     super();
     this.var = var;
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Number> getList(MatchContext context, RutaStream stream) {
+  public List<Type> getList(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
-    List<Number> result = new ArrayList<Number>();
+    List<Type> result = new ArrayList<Type>();
     for (Object each : list) {
-      if (each instanceof INumberExpression) {
-        // TODO support arrays
-        result.add(((INumberExpression) each).getDoubleValue(context, stream));
-      } else if (each instanceof Number) {
-        result.add((Number) each);
+      if (each instanceof ITypeExpression) {
+        result.add(((ITypeExpression) each).getType(context, stream));
+      } else if (each instanceof Type) {
+        result.add((Type) each);
       }
     }
     return result;
@@ -56,4 +55,6 @@ public class NumberListVariableExpression extends NumberListExpression {
   public String getVar() {
     return var;
   }
+
+ 
 }

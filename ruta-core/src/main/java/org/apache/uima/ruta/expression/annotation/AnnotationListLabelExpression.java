@@ -40,12 +40,6 @@ private String label;
   }
  
   @Override
-  public List<AnnotationFS> getAnnotations(MatchContext context, RutaStream stream) {
-    return getList(context, stream);
-  }
-
-
-  @Override
   public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
     RuleMatch ruleMatch = context.getRuleMatch();
     List<AnnotationFS> annotations = ruleMatch.getMatchedAnnotationsOfLabel(label);

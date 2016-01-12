@@ -25,7 +25,7 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -39,7 +39,7 @@ public class PartOfCondition extends TypeSentiveCondition {
     super(type);
   }
 
-  public PartOfCondition(TypeListExpression list) {
+  public PartOfCondition(AbstractTypeListExpression list) {
     super(list);
   }
 

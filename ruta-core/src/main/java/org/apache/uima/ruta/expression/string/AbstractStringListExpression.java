@@ -17,35 +17,18 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.list;
+package org.apache.uima.ruta.expression.string;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class SimpleStringListExpression extends StringListExpression {
-
-  private List<IStringExpression> list;
-
-  public SimpleStringListExpression(List<IStringExpression> list) {
-    super();
-    this.list = list;
-  }
-
+public abstract class AbstractStringListExpression extends ListExpression<String> implements IStringListExpression {
+  
   @Override
-  public List<String> getList(MatchContext context, RutaStream stream) {
-    List<String> result = new ArrayList<String>();
-    for (IStringExpression each : list) {
-      // TODO support arrays
-      result.add(each.getStringValue(context, stream));
-    }
-    return result;
-  }
-
-  public List<IStringExpression> getList() {
-    return list;
+  public List<String> getStringList(MatchContext context, RutaStream stream) {
+    return getStringList(context, stream);
   }
 }

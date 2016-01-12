@@ -74,11 +74,11 @@ import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.annotation.AbstractAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.list.BooleanListExpression;
+import org.apache.uima.ruta.expression.bool.AbstractBooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
-import org.apache.uima.ruta.expression.list.NumberListExpression;
-import org.apache.uima.ruta.expression.list.StringListExpression;
-import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.AbstractNumberListExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringListExpression;
+import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
@@ -1023,6 +1023,19 @@ rawActions returns [List<AbstractRutaAction> actions = new ArrayList<AbstractRut
 
 listExpression returns [ListExpression expr = null]
 	:
+	(featureExpression)=>fe = featureExpression {expr = ExpressionFactory.createGenericFeatureExpression(fe);}
+	| (booleanListExpression)=> bl = booleanListExpression {expr = bl;}
+	| (intListExpression)=> il = intListExpression {expr = il;}
+	| (doubleListExpression)=> dl = doubleListExpression {expr = dl;}
+	| (floatListExpression)=> dl = floatListExpression {expr = dl;}
+	| (stringListExpression)=> sl = stringListExpression {expr = sl;}
+	| (typeListExpression)=> tl = typeListExpression {expr = tl;}
+	| (annotationListExpression)=> ale = annotationListExpression {expr = ale;}
+	| (untypedListExpression)=> utl = untypedListExpression {expr = utl;}
+	;
+
+plainListExpression returns [ListExpression expr = null]
+	:
 	(booleanListExpression)=> bl = booleanListExpression {expr = bl;}
 	| (intListExpression)=> il = intListExpression {expr = il;}
 	| (doubleListExpression)=> dl = doubleListExpression {expr = dl;}
@@ -1041,12 +1054,12 @@ untypedListExpression returns [ListExpression expr = null]
 	{expr = ExpressionFactory.createUntypedListExpression(list);}
 	;
 
-booleanListExpression returns [BooleanListExpression expr = null]
+booleanListExpression returns [AbstractBooleanListExpression expr = null]
 	:
 	e = simpleBooleanListExpression {expr = e;}
 	;
 
-simpleBooleanListExpression returns [BooleanListExpression expr = null]
+simpleBooleanListExpression returns [AbstractBooleanListExpression expr = null]
 @init{
 	List<IBooleanExpression> list = new ArrayList<IBooleanExpression>();
 }	:
@@ -1058,12 +1071,12 @@ simpleBooleanListExpression returns [BooleanListExpression expr = null]
 	;
 
 
-intListExpression returns [NumberListExpression expr = null]
+intListExpression returns [AbstractNumberListExpression expr = null]
 	:
 	e = simpleIntListExpression {expr = e;}
 	;
 
-simpleIntListExpression returns [NumberListExpression expr = null]
+simpleIntListExpression returns [AbstractNumberListExpression expr = null]
 @init{
 	List<INumberExpression> list = new ArrayList<INumberExpression>();
 }	:
@@ -1075,7 +1088,7 @@ simpleIntListExpression returns [NumberListExpression expr = null]
 	;
 
 
-numberListExpression returns [NumberListExpression expr = null]
+numberListExpression returns [AbstractNumberListExpression expr = null]
 	:
 	(e1 = doubleListExpression)=> e1 = doubleListExpression {expr = e1;}
 	|
@@ -1084,12 +1097,12 @@ numberListExpression returns [NumberListExpression expr = null]
 	e2 = intListExpression {expr = e2;}
 	;
 	
-doubleListExpression returns [NumberListExpression expr = null]
+doubleListExpression returns [AbstractNumberListExpression expr = null]
 	:
 	e = simpleDoubleListExpression {expr = e;}
 	;
 
-simpleDoubleListExpression returns [NumberListExpression expr = null]
+simpleDoubleListExpression returns [AbstractNumberListExpression expr = null]
 @init{
 	List<INumberExpression> list = new ArrayList<INumberExpression>();
 }	:
@@ -1101,12 +1114,12 @@ simpleDoubleListExpression returns [NumberListExpression expr = null]
 	;
 
 	
-floatListExpression returns [NumberListExpression expr = null]
+floatListExpression returns [AbstractNumberListExpression expr = null]
 	:
 	e = simpleFloatListExpression {expr = e;}
 	;
 
-simpleFloatListExpression returns [NumberListExpression expr = null]
+simpleFloatListExpression returns [AbstractNumberListExpression expr = null]
 @init{
 	List<INumberExpression> list = new ArrayList<INumberExpression>();
 }	:
@@ -1117,12 +1130,12 @@ simpleFloatListExpression returns [NumberListExpression expr = null]
 	{expr = ExpressionFactory.createReferenceFloatListExpression(var);}
 	;
 
-stringListExpression returns [StringListExpression expr = null]
+stringListExpression returns [AbstractStringListExpression expr = null]
 	:
 	e = simpleStringListExpression {expr = e;}
 	;
 
-simpleStringListExpression returns [StringListExpression expr = null]
+simpleStringListExpression returns [AbstractStringListExpression expr = null]
 @init{
 	List<IStringExpression> list = new ArrayList<IStringExpression>();
 }	:
@@ -1134,12 +1147,12 @@ simpleStringListExpression returns [StringListExpression expr = null]
 	;
 
 
-typeListExpression returns [TypeListExpression expr = null]
+typeListExpression returns [AbstractTypeListExpression expr = null]
 	:
 	e = simpleTypeListExpression {expr = e;}
 	;
 
-simpleTypeListExpression returns [TypeListExpression expr = null]
+simpleTypeListExpression returns [AbstractTypeListExpression expr = null]
 @init{
 	List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }	:
@@ -1389,7 +1402,7 @@ conditionContains returns [AbstractRutaCondition cond = null]
 	backtrack = true;
 }
     :   
-    CONTAINS LPAREN (type = typeExpression | list = listExpression COMMA a = argument) 
+    CONTAINS LPAREN (type = typeExpression | list = plainListExpression COMMA a = argument) 
     (COMMA min = numberExpression COMMA max = numberExpression (COMMA percent = booleanExpression)?)? RPAREN
     {if(type != null) {cond = ConditionFactory.createConditionContains(type, min, max, percent,$blockDeclaration::env);}
     else {cond = ConditionFactory.createConditionContains(list,a, min, max, percent, $blockDeclaration::env);};}
@@ -2502,7 +2515,7 @@ List<IStringExpression> exprs = new ArrayList<IStringExpression>();
 		| e2 = numberExpressionInPar {exprs.add(e2);}
 		| be = simpleBooleanExpression {exprs.add(be);}
 		| te = typeExpression {exprs.add(te);}
-		| le = listExpression {exprs.add(le);}
+		//| le = listExpression {exprs.add(le);}
 		))*
 	{expr = ExpressionFactory.createComposedStringExpression(exprs);}
 	|(e = stringFunction)=> e = stringFunction{expr = e;} 

@@ -44,10 +44,4 @@ public class AnnotationListVariableExpression extends AbstractAnnotationListExpr
     return list;
   }
 
-
-  @Override
-  public List<AnnotationFS> getAnnotations(MatchContext context, RutaStream stream) {
-    return getList(context, stream);
-  }
-
 }

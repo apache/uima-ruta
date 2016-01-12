@@ -17,39 +17,63 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.annotation;
+package org.apache.uima.ruta.expression.string;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.StringArrayFS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 /**
- * An expression referring to annotations (FSArray) stored in a feature.
+ * An expression referring to strings stored in a feature.
  *
  */
-public class AnnotationListFeatureExpression extends AbstractAnnotationListExpression {
+public class StringListFeatureExpression extends AbstractStringListExpression {
 
   private FeatureExpression fe;
 
-  public AnnotationListFeatureExpression(FeatureExpression fe) {
+  public StringListFeatureExpression(FeatureExpression fe) {
     super();
     this.fe = fe;
   }
   
   @Override
-  public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
+  public List<String> getList(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
     Type type = fe.getTypeExpr(context, stream).getType(context, stream);
+    Feature feature = fe.getFeature(context, stream);
+    if(feature == null || !feature.getRange().isArray() || !StringUtils.equals(feature.getRange().getName(), UIMAConstants.TYPE_BOOLEAN)) {
+      // throw runtime exception?
+      return Collections.emptyList();
+    }
     List<AnnotationFS> list = getTargetAnnotation(annotation, type, stream);
     Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
             false);
-    return new ArrayList<AnnotationFS>(featureAnnotations);
+    List<String> result = new ArrayList<>();
+
+    for (AnnotationFS each : featureAnnotations) {
+      FeatureStructure featureValue = each.getFeatureValue(feature);
+      if(featureValue instanceof StringArrayFS) {
+        StringArrayFS array = (StringArrayFS) featureValue;
+        for (int i = 0; i < array.size(); i++) {
+          String b = array.get(i);
+          result.add(b);
+        }
+      } 
+    }
+    
+    return result;
   }
 
   public FeatureExpression getFeatureExpression() {

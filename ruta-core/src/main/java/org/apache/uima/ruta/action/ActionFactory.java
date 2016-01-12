@@ -29,12 +29,12 @@ import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
-import org.apache.uima.ruta.expression.list.StringListExpression;
-import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 
 public class ActionFactory {
@@ -59,7 +59,7 @@ public class ActionFactory {
   }
 
   public static AbstractRutaAction createMarkFastAction(ITypeExpression type,
-          StringListExpression list, IBooleanExpression ignore, INumberExpression ignoreLength,
+          AbstractStringListExpression list, IBooleanExpression ignore, INumberExpression ignoreLength,
           IBooleanExpression ignoreWS, RutaBlock env) {
     return new MarkFastAction(type, list, ignore, ignoreLength, ignoreWS);
   }
@@ -159,7 +159,7 @@ public class ActionFactory {
     return new UnmarkAction(f, list, b);
   }
 
-  public static AbstractRutaAction createUnmarkAllAction(ITypeExpression f, TypeListExpression list,
+  public static AbstractRutaAction createUnmarkAllAction(ITypeExpression f, AbstractTypeListExpression list,
           RutaBlock env) {
     return new UnmarkAllAction(f, list);
   }
@@ -184,7 +184,7 @@ public class ActionFactory {
     return new TrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar);
   }
 
-  public static AbstractRutaAction createExecAction(String ns, TypeListExpression tl,
+  public static AbstractRutaAction createExecAction(String ns, AbstractTypeListExpression tl,
           IStringExpression view, RutaBlock env) {
     return new ExecAction(ns, tl, view);
   }
@@ -253,7 +253,7 @@ public class ActionFactory {
   }
 
   public static AbstractRutaAction createTrimAction(List<ITypeExpression> types,
-          TypeListExpression typeList, RutaBlock env) {
+          AbstractTypeListExpression typeList, RutaBlock env) {
     return new TrimAction(types, typeList);
   }
 

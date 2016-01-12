@@ -63,7 +63,7 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
     if (annotationExpression != null) {
       return annotationExpression.getAnnotation(context, stream);
     } else if (annotationListExpression != null) {
-      List<AnnotationFS> annotations = annotationListExpression.getAnnotations(context, stream);
+      List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
       if (annotations != null && !annotations.isEmpty())
         return annotations.get(0);
     } else {
@@ -104,12 +104,12 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
   }
 
   @Override
-  public List<AnnotationFS> getAnnotations(MatchContext context, RutaStream stream) {
+  public List<AnnotationFS> getAnnotationList(MatchContext context, RutaStream stream) {
     if (!initialized) {
       initialize(context, stream);
     }
     if (annotationListExpression != null) {
-      return annotationListExpression.getAnnotations(context, stream);
+      return annotationListExpression.getAnnotationList(context, stream);
     } else if (annotationExpression != null) {
       List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);
       result.add(annotationExpression.getAnnotation(context, stream));

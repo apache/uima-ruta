@@ -26,15 +26,15 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.AbstractBooleanListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.list.BooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
-import org.apache.uima.ruta.expression.list.NumberListExpression;
-import org.apache.uima.ruta.expression.list.StringListExpression;
-import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.AbstractNumberListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -89,33 +89,33 @@ public class CountCondition extends TypeSentiveCondition {
       return new EvaluatedCondition(this, value);
     } else {
       int count = 0;
-      if (arg instanceof IBooleanExpression && list instanceof BooleanListExpression) {
+      if (arg instanceof IBooleanExpression && list instanceof AbstractBooleanListExpression) {
         IBooleanExpression e = (IBooleanExpression) arg;
-        BooleanListExpression le = (BooleanListExpression) list;
+        AbstractBooleanListExpression le = (AbstractBooleanListExpression) list;
         boolean v = e.getBooleanValue(context, stream);
         List<Boolean> l = new ArrayList<Boolean>(le.getList(context, stream));
         while (l.remove(v)) {
           count++;
         }
-      } else if (arg instanceof INumberExpression && list instanceof NumberListExpression) {
+      } else if (arg instanceof INumberExpression && list instanceof AbstractNumberListExpression) {
         INumberExpression e = (INumberExpression) arg;
-        NumberListExpression le = (NumberListExpression) list;
+        AbstractNumberListExpression le = (AbstractNumberListExpression) list;
         Number v = e.getDoubleValue(context, stream);
         List<Number> l = new ArrayList<Number>(le.getList(context, stream));
         while (l.remove(v)) {
           count++;
         }
-      } else if (arg instanceof IStringExpression && list instanceof StringListExpression) {
+      } else if (arg instanceof IStringExpression && list instanceof AbstractStringListExpression) {
         IStringExpression e = (IStringExpression) arg;
-        StringListExpression le = (StringListExpression) list;
+        AbstractStringListExpression le = (AbstractStringListExpression) list;
         String v = e.getStringValue(context, stream);
         List<String> l = new ArrayList<String>(le.getList(context, stream));
         while (l.remove(v)) {
           count++;
         }
-      } else if (arg instanceof ITypeExpression && list instanceof TypeListExpression) {
+      } else if (arg instanceof ITypeExpression && list instanceof AbstractTypeListExpression) {
         ITypeExpression e = (ITypeExpression) arg;
-        TypeListExpression le = (TypeListExpression) list;
+        AbstractTypeListExpression le = (AbstractTypeListExpression) list;
         Type v = e.getType(context, stream);
         List<Type> l = new ArrayList<Type>(le.getList(context, stream));
         while (l.remove(v)) {

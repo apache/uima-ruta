@@ -66,10 +66,10 @@ import org.apache.uima.ruta.action.UnmarkAction;
 import org.apache.uima.ruta.action.UnmarkAllAction;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.list.TypeListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 
 public class ActionVerbalizer {
@@ -182,7 +182,7 @@ public class ActionVerbalizer {
       return name + a.getVar() + ", " + verbalizer.verbalize(a.getExpression()) + ")";
     } else if (action instanceof ExecAction) {
       ExecAction a = (ExecAction) action;
-      TypeListExpression typeList = a.getTypeList();
+      AbstractTypeListExpression typeList = a.getTypeList();
       String types = typeList == null ? "" : ", " + verbalizer.verbalize(typeList);
       String view = a.getView() == null ? "" : verbalizer.verbalize(a.getView()) + ", ";
       return name + view + a.getNamespace() + types + ")";
@@ -481,7 +481,7 @@ public class ActionVerbalizer {
       return name + verbalize + but + ")";
     } else if (action instanceof TrimAction) {
       TrimAction a = (TrimAction) action;
-      TypeListExpression typeList = a.getTypeList();
+      AbstractTypeListExpression typeList = a.getTypeList();
       String verbalize = "";
       if (typeList != null) {
         verbalize = verbalizer.verbalize(typeList);

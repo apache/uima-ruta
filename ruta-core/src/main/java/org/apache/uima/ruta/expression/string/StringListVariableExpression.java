@@ -17,17 +17,16 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.list;
+package org.apache.uima.ruta.expression.string;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class StringListVariableExpression extends StringListExpression {
+public class StringListVariableExpression extends AbstractStringListExpression {
 
   private String var;
 
@@ -56,4 +55,6 @@ public class StringListVariableExpression extends StringListExpression {
   public String getVar() {
     return var;
   }
+
+  
 }

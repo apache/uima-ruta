@@ -17,8 +17,34 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.list;
+package org.apache.uima.ruta.expression.number;
 
-public abstract class BooleanListExpression extends ListExpression<Boolean> {
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.rule.MatchContext;
+
+public class SimpleNumberListExpression extends AbstractNumberListExpression {
+
+  private List<INumberExpression> list;
+
+  public SimpleNumberListExpression(List<INumberExpression> list) {
+    super();
+    this.list = list;
+  }
+
+  @Override
+  public List<Number> getList(MatchContext context, RutaStream stream) {
+    List<Number> result = new ArrayList<Number>();
+    for (INumberExpression each : list) {
+      // TODO support arrays
+      result.add(each.getDoubleValue(context, stream));
+    }
+    return result;
+  }
+
+  public List<INumberExpression> getList() {
+    return list;
+  }
 }

@@ -26,10 +26,10 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
-import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.resource.TreeWordList;
@@ -42,7 +42,7 @@ public class MarkFastAction extends AbstractMarkAction {
 
   private WordListExpression list;
 
-  private StringListExpression stringList;
+  private AbstractStringListExpression stringList;
 
   private IBooleanExpression ignore;
 
@@ -60,7 +60,7 @@ public class MarkFastAction extends AbstractMarkAction {
     this.ignoreWS = ignoreWS == null ? new SimpleBooleanExpression(true) : ignoreWS;
   }
 
-  public MarkFastAction(ITypeExpression type, StringListExpression list, IBooleanExpression ignore,
+  public MarkFastAction(ITypeExpression type, AbstractStringListExpression list, IBooleanExpression ignore,
           INumberExpression ignoreLength, IBooleanExpression ignoreWS) {
     super(type);
     this.stringList = list;
@@ -100,7 +100,7 @@ public class MarkFastAction extends AbstractMarkAction {
     return list;
   }
 
-  public StringListExpression getStringList() {
+  public AbstractStringListExpression getStringList() {
     return stringList;
   }
 

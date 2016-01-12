@@ -67,10 +67,7 @@ public class AddAction extends AbstractRutaAction {
     // Class<?> vtype = environment.getVariableType(var);
     Class<?> vgtype = environment.getVariableGenericType(var);
     for (IRutaExpression each : elements) {
-      if (each instanceof ListExpression) {
-        ListExpression l = (ListExpression) each;
-        list.addAll(l.getList(context, stream));
-      } else if (vgtype.equals(Boolean.class) && each instanceof IBooleanExpression) {
+      if (vgtype.equals(Boolean.class) && each instanceof IBooleanExpression) {
         list.add(((IBooleanExpression) each).getBooleanValue(context, stream));
       } else if (vgtype.equals(Integer.class) && each instanceof INumberExpression) {
         list.add(((INumberExpression) each).getIntegerValue(context, stream));
@@ -82,6 +79,9 @@ public class AddAction extends AbstractRutaAction {
         list.add(((IStringExpression) each).getStringValue(context, stream));
       } else if (vgtype.equals(AnnotationFS.class) && each instanceof IAnnotationExpression) {
         list.add(((IAnnotationExpression) each).getAnnotation(context, stream));
+      } else if (each instanceof ListExpression) {
+        ListExpression l = (ListExpression) each;
+        list.addAll(l.getList(context, stream));
       }
     }
   }

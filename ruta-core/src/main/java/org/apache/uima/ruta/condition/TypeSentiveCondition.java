@@ -19,14 +19,14 @@
 
 package org.apache.uima.ruta.condition;
 
-import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 
 public abstract class TypeSentiveCondition extends TerminalRutaCondition {
 
   protected final ITypeExpression type;
 
-  private final TypeListExpression list;
+  private final AbstractTypeListExpression list;
 
   public ITypeExpression getType() {
     return type;
@@ -38,7 +38,7 @@ public abstract class TypeSentiveCondition extends TerminalRutaCondition {
     this.list = null;
   }
 
-  public TypeSentiveCondition(TypeListExpression list) {
+  public TypeSentiveCondition(AbstractTypeListExpression list) {
     super();
     this.type = null;
     this.list = list;
@@ -48,7 +48,7 @@ public abstract class TypeSentiveCondition extends TerminalRutaCondition {
     return getList() != null;
   }
 
-  public TypeListExpression getList() {
+  public AbstractTypeListExpression getList() {
     return list;
   }
 }

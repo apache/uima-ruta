@@ -34,13 +34,13 @@ import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.AbstractBooleanListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.list.BooleanListExpression;
-import org.apache.uima.ruta.expression.list.NumberListExpression;
-import org.apache.uima.ruta.expression.list.StringListExpression;
-import org.apache.uima.ruta.expression.list.TypeListExpression;
+import org.apache.uima.ruta.expression.number.AbstractNumberListExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -78,12 +78,12 @@ public class ConfigureAction extends AbstractRutaAction {
         String type = configurationParameter.getType();
         if (type.equals("String")) {
           if (configurationParameter.isMultiValued()) {
-            if (value instanceof StringListExpression) {
-              StringListExpression sle = (StringListExpression) value;
+            if (value instanceof AbstractStringListExpression) {
+              AbstractStringListExpression sle = (AbstractStringListExpression) value;
               List<String> list = sle.getList(context, stream);
               targetEngine.setConfigParameterValue(stringValue, list.toArray(new String[0]));
-            } else if (value instanceof TypeListExpression) {
-              TypeListExpression tle = (TypeListExpression) value;
+            } else if (value instanceof AbstractTypeListExpression) {
+              AbstractTypeListExpression tle = (AbstractTypeListExpression) value;
               List<Type> list = tle.getList(context, stream);
               List<String> stringList = new ArrayList<String>();
               for (Type each : list) {
@@ -103,8 +103,8 @@ public class ConfigureAction extends AbstractRutaAction {
             }
           }
         } else if (type.equals("Float")) {
-          if (value instanceof NumberListExpression) {
-            NumberListExpression nle = (NumberListExpression) value;
+          if (value instanceof AbstractNumberListExpression) {
+            AbstractNumberListExpression nle = (AbstractNumberListExpression) value;
             List<Number> list = nle.getList(context, stream);
             List<Float> numbers = new ArrayList<Float>();
             for (Number number : list) {
@@ -119,8 +119,8 @@ public class ConfigureAction extends AbstractRutaAction {
             }
           }
         } else if (type.equals("Integer")) {
-          if (value instanceof NumberListExpression) {
-            NumberListExpression nle = (NumberListExpression) value;
+          if (value instanceof AbstractNumberListExpression) {
+            AbstractNumberListExpression nle = (AbstractNumberListExpression) value;
             List<Number> list = nle.getList(context, stream);
             List<Integer> numbers = new ArrayList<Integer>();
             for (Number number : list) {
@@ -135,8 +135,8 @@ public class ConfigureAction extends AbstractRutaAction {
             }
           }
         } else if (type.equals("Boolean")) {
-          if (value instanceof BooleanListExpression) {
-            BooleanListExpression ble = (BooleanListExpression) value;
+          if (value instanceof AbstractBooleanListExpression) {
+            AbstractBooleanListExpression ble = (AbstractBooleanListExpression) value;
             List<Boolean> list = ble.getList(context, stream);
             targetEngine.setConfigParameterValue(stringValue, list.toArray());
           } else {

@@ -23,8 +23,8 @@ import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.list.StringListExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
+import org.apache.uima.ruta.expression.string.AbstractStringListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
@@ -35,7 +35,7 @@ public class InListCondition extends TerminalRutaCondition {
 
   private WordListExpression listExpr;
 
-  private StringListExpression stringList;
+  private AbstractStringListExpression stringList;
 
   private IStringExpression arg;
 
@@ -45,7 +45,7 @@ public class InListCondition extends TerminalRutaCondition {
     this.arg = arg;
   }
 
-  public InListCondition(StringListExpression list, IStringExpression arg) {
+  public InListCondition(AbstractStringListExpression list, IStringExpression arg) {
     super();
     this.stringList = list;
     this.arg = arg;
@@ -74,7 +74,7 @@ public class InListCondition extends TerminalRutaCondition {
     return listExpr;
   }
 
-  public StringListExpression getStringList() {
+  public AbstractStringListExpression getStringList() {
     return stringList;
   }
 

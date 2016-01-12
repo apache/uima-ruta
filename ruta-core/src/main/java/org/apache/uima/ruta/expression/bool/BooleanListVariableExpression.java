@@ -17,35 +17,44 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.list;
+package org.apache.uima.ruta.expression.bool;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.cas.Type;
+import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class SimpleTypeListExpression extends TypeListExpression {
+public class BooleanListVariableExpression extends AbstractBooleanListExpression {
 
-  private List<ITypeExpression> list;
+  private String var;
 
-  public SimpleTypeListExpression(List<ITypeExpression> list) {
+  public BooleanListVariableExpression(String var) {
     super();
-    this.list = list;
+    this.var = var;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public List<Type> getList(MatchContext context, RutaStream stream) {
-    List<Type> result = new ArrayList<Type>();
-    for (ITypeExpression each : list) {
-      result.add(each.getType(context, stream));
+  public List<Boolean> getList(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
+    List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
+    List<Boolean> result = new ArrayList<Boolean>();
+    for (Object each : list) {
+      if (each instanceof IBooleanExpression) {
+        result.add(((IBooleanExpression) each).getBooleanValue(context, stream));
+      } else if (each instanceof Boolean) {
+        result.add((Boolean) each);
+      }
     }
     return result;
   }
 
-  public List<ITypeExpression> getList() {
-    return list;
+  public String getVar() {
+    return var;
   }
+
+  
+
 }
