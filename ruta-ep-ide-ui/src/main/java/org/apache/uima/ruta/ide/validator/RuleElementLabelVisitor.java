@@ -37,8 +37,8 @@ public class RuleElementLabelVisitor extends ASTVisitor{
       RutaRuleElement element = (RutaRuleElement) s;
       if(!StringUtils.isBlank(element.getLabel())) {
         labels.add(element.getLabel());
-        return true;
       }
+      return true;
     }
     return false;
   }

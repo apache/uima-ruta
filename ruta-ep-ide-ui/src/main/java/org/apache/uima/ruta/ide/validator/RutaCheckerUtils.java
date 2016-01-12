@@ -19,8 +19,6 @@
 
 package org.apache.uima.ruta.ide.validator;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
@@ -28,14 +26,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
-import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_component.AnalysisComponent;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.util.InvalidXMLException;
-import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;

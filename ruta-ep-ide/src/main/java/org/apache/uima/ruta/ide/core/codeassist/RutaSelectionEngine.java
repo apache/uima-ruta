@@ -19,8 +19,6 @@
 
 package org.apache.uima.ruta.ide.core.codeassist;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,17 +27,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.uima.UIMAFramework;
-import org.apache.uima.resource.metadata.TypeDescription;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.ide.core.parser.RutaParseUtils;
 import org.apache.uima.ruta.ide.parser.ast.RutaActionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportStatement;
 import org.apache.uima.ruta.ide.parser.ast.RutaStatementConstants;
-import org.apache.uima.util.InvalidXMLException;
-import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
@@ -59,9 +51,7 @@ import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementVisitor;
-import org.eclipse.dltk.core.IOpenable;
 import org.eclipse.dltk.core.IScriptFolder;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 
 public class RutaSelectionEngine extends ScriptSelectionEngine {

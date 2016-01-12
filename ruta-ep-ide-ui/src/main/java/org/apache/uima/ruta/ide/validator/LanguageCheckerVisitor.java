@@ -89,7 +89,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
@@ -751,6 +750,11 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           }
         }
       }
+      if(conditionName.equals("CONTAINS")) {
+        List<?> args = cond.getChilds();
+        boolean valid = checkContainsArguments(args);
+      }
+      
     }
     if (s instanceof RutaFunction) {
       RutaFunction f = (RutaFunction) s;
@@ -778,6 +782,49 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       }
     }
     return true;
+  }
+
+  private boolean checkContainsArguments(List<?> args) {
+    if (args.size() == 1) {
+      Object arg = args.get(0);
+//      if (arg instanceof ITypeExpression) {
+        return true;
+//      }
+    } else if (args.size() == 2) {
+      Object arg1 = args.get(0);
+      Object arg2 = args.get(1);
+//      if (arg1 instanceof ListExpression) {
+        return true;
+//      }
+    } else if (args.size() == 3) {
+      Object arg1 = args.get(0);
+      Object arg2 = args.get(1);
+      Object arg3 = args.get(2);
+//      if (arg1 instanceof ITypeExpression && arg2 instanceof INumberExpression
+//              && arg3 instanceof INumberExpression) {
+        return true;
+//      }
+    } else if (args.size() == 4) {
+      Object arg1 = args.get(0);
+      Object arg2 = args.get(1);
+      Object arg3 = args.get(2);
+      Object arg4 = args.get(3);
+//      if (arg1 instanceof ITypeExpression && arg2 instanceof INumberExpression
+//              && arg3 instanceof INumberExpression && arg4 instanceof IBooleanExpression) {
+        return true;
+//      }
+    } else if (args.size() == 5) {
+      Object arg1 = args.get(0);
+      Object arg2 = args.get(1);
+      Object arg3 = args.get(2);
+      Object arg4 = args.get(3);
+      Object arg5 = args.get(3);
+//      if (arg1 instanceof ListExpression && arg3 instanceof INumberExpression
+//              && arg4 instanceof INumberExpression && arg5 instanceof IBooleanExpression) {
+        return true;
+//      }
+    }
+    return false;
   }
 
   private boolean isLabel(String name) {

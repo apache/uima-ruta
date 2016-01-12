@@ -35,7 +35,6 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.extensions.IRutaBlockExtension;
 import org.apache.uima.ruta.ide.core.IRutaKeywords;
 import org.apache.uima.ruta.ide.core.RutaExtensionManager;
-import org.apache.uima.ruta.ide.core.RutaKeywords;
 import org.apache.uima.ruta.ide.core.RutaKeywordsManager;
 import org.apache.uima.ruta.ide.parser.ast.RutaModuleDeclaration;
 import org.apache.uima.ruta.parser.RutaLexer;

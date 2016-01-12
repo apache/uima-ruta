@@ -872,6 +872,8 @@ listExpression returns [Expression expr = null]
 	| (typeListExpression)=> e = typeListExpression {expr = e;}
 	| (annotationListExpression)=> e = annotationListExpression {expr = e;}
 	| (untypedListExpression)=> utl = untypedListExpression {expr = utl;}
+	| (featureExpression)=>fe = featureExpression {expr = fe;}
+	
 	;
 
 untypedListExpression returns [Expression expr = null]
@@ -1189,15 +1191,22 @@ conditionAnd returns [RutaCondition cond = null]
     ;
 
 conditionContains returns [RutaCondition cond = null]
- options {
-	backtrack = true;
+@init {
+List<Expression> args = new ArrayList<>();
 }
     :   
-    name =  CONTAINS LPAREN (type = typeExpression | list = listExpression COMMA a = argument) 
-    (COMMA min = numberExpression COMMA max = numberExpression (COMMA percent = booleanExpression)?)? 
-    {if(type != null) {cond = ConditionFactory.createCondition(name,type, min, max, percent);}
-    else {cond = ConditionFactory.createCondition(name,list,a, min, max, percent);};}
+    name = CONTAINS LPAREN 
+    a = argument {args.add(a);} 
+    (COMMA a = argument{args.add(a);})*
     RPAREN
+    
+    //(type = typeExpression | list = plainListExpression COMMA a = argument) 
+    //(COMMA min = numberExpression COMMA max = numberExpression (COMMA percent = booleanExpression)?)? RPAREN
+    {
+    cond = ConditionFactory.createCondition(name, args);
+    //if(type != null) {cond = ConditionFactory.createConditionContains(type, min, max, percent,$blockDeclaration::env);}
+    //else if(list != null) {cond = ConditionFactory.createConditionContains(list, a, min, max, percent, $blockDeclaration::env);}
+    }
     ;
     
 conditionContextCount returns [RutaCondition cond = null]
