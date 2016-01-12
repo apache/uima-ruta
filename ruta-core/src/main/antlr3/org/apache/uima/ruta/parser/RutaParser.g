@@ -1398,14 +1398,25 @@ conditionAnd returns [AbstractRutaCondition cond = null]
     ;
     
 conditionContains returns [AbstractRutaCondition cond = null]
- options {
+options {
 	backtrack = true;
 }
+@init {
+List<IRutaExpression> args = new ArrayList<>();
+}
     :   
-    CONTAINS LPAREN (type = typeExpression | list = plainListExpression COMMA a = argument) 
-    (COMMA min = numberExpression COMMA max = numberExpression (COMMA percent = booleanExpression)?)? RPAREN
-    {if(type != null) {cond = ConditionFactory.createConditionContains(type, min, max, percent,$blockDeclaration::env);}
-    else {cond = ConditionFactory.createConditionContains(list,a, min, max, percent, $blockDeclaration::env);};}
+    CONTAINS LPAREN 
+    a = argument {args.add(a);} 
+    (COMMA a = argument{args.add(a);})*
+    RPAREN
+    
+    //(type = typeExpression | list = plainListExpression COMMA a = argument) 
+    //(COMMA min = numberExpression COMMA max = numberExpression (COMMA percent = booleanExpression)?)? RPAREN
+    {
+    cond = ConditionFactory.createConditionContains(args, $blockDeclaration::env);
+    //if(type != null) {cond = ConditionFactory.createConditionContains(type, min, max, percent,$blockDeclaration::env);}
+    //else if(list != null) {cond = ConditionFactory.createConditionContains(list, a, min, max, percent, $blockDeclaration::env);}
+    }
     ;
 conditionContextCount returns [AbstractRutaCondition cond = null]
     :   

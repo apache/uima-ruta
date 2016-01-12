@@ -257,8 +257,10 @@ public class SimpleFeatureExpression extends FeatureExpression {
         }
       }
     } else if (value != null) {
-      throw new IllegalArgumentException(value.getType()
-              + " is not supported in a feature match expression (" + mr.getMatch() + ").");
+      result.add(annotation);
+      // primitive? -> return last annotation for further processing
+//      throw new IllegalArgumentException(value.getType()
+//              + " is not supported in a feature match expression (" + mr.getMatch() + ").");
     }
   }
 

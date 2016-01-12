@@ -29,6 +29,6 @@ public abstract class AbstractStringListExpression extends ListExpression<String
   
   @Override
   public List<String> getStringList(MatchContext context, RutaStream stream) {
-    return getStringList(context, stream);
+    return getList(context, stream);
   }
 }

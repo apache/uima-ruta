@@ -41,6 +41,16 @@ public class UIMAConstants {
 
   public static final String TYPE_FSARRAY = "uima.cas.FSArray";
   
+  public static final String TYPE_STRINGARRAY = "uima.cas.StringArray";
+  
+  public static final String TYPE_BOOLEANARRAY = "uima.cas.BooleanArray";
+  
+  public static final String TYPE_INTARRAY = "uima.cas.IntArray";
+  
+  public static final String TYPE_DOUBLEARRAY = "uima.cas.DoubleArray";
+  
+  public static final String TYPE_FLOATARRAY = "uima.cas.FloatArray";
+  
   public static final String FEATURE_COVERED_TEXT = "coveredText";
 
   public static final String FEATURE_COVERED_TEXT_SHORT = "ct";

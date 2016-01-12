@@ -49,13 +49,13 @@ public class NumberListFeatureExpression extends AbstractNumberListExpression {
     super();
     this.fe = fe;
   }
-  
+
   @Override
   public List<Number> getList(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
     Type type = fe.getTypeExpr(context, stream).getType(context, stream);
     Feature feature = fe.getFeature(context, stream);
-    if(feature == null || !feature.getRange().isArray() || !StringUtils.equals(feature.getRange().getName(), UIMAConstants.TYPE_BOOLEAN)) {
+    if (feature == null || !feature.getRange().isArray() || !validType(feature)) {
       // throw runtime exception?
       return Collections.emptyList();
     }
@@ -66,19 +66,19 @@ public class NumberListFeatureExpression extends AbstractNumberListExpression {
 
     for (AnnotationFS each : featureAnnotations) {
       FeatureStructure featureValue = each.getFeatureValue(feature);
-      if(featureValue instanceof IntArrayFS) {
+      if (featureValue instanceof IntArrayFS) {
         IntArrayFS array = (IntArrayFS) featureValue;
         for (int i = 0; i < array.size(); i++) {
           Integer b = array.get(i);
           result.add(b);
         }
-      } else if(featureValue instanceof DoubleArrayFS) {
+      } else if (featureValue instanceof DoubleArrayFS) {
         DoubleArrayFS array = (DoubleArrayFS) featureValue;
         for (int i = 0; i < array.size(); i++) {
           Double b = array.get(i);
           result.add(b);
         }
-      } else if(featureValue instanceof FloatArrayFS) {
+      } else if (featureValue instanceof FloatArrayFS) {
         FloatArrayFS array = (FloatArrayFS) featureValue;
         for (int i = 0; i < array.size(); i++) {
           Float b = array.get(i);
@@ -86,8 +86,15 @@ public class NumberListFeatureExpression extends AbstractNumberListExpression {
         }
       }
     }
-    
+
     return result;
+  }
+
+  private boolean validType(Feature feature) {
+    String name = feature.getRange().getName();
+    return StringUtils.equals(name, UIMAConstants.TYPE_INTARRAY)
+            || StringUtils.equals(name, UIMAConstants.TYPE_DOUBLEARRAY)
+            || StringUtils.equals(name, UIMAConstants.TYPE_FLOATARRAY);
   }
 
   public FeatureExpression getFeatureExpression() {
@@ -97,10 +104,5 @@ public class NumberListFeatureExpression extends AbstractNumberListExpression {
   public void setFeatureExpression(FeatureExpression fe) {
     this.fe = fe;
   }
-
-
-
-  
-  
 
 }

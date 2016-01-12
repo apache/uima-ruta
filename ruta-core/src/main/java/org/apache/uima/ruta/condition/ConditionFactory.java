@@ -53,9 +53,65 @@ public class ConditionFactory {
     return new NotCondition(cond);
   }
 
+  @SuppressWarnings("rawtypes")
+  public static AbstractRutaCondition createConditionContains(List<IRutaExpression> args,
+          RutaBlock parent) {
+    if (args.size() == 1) {
+      IRutaExpression arg = args.get(0);
+      if (arg instanceof ITypeExpression) {
+        return createConditionContains((ITypeExpression) arg, null, null, null, parent);
+      }
+    } else if (args.size() == 2) {
+      IRutaExpression arg1 = args.get(0);
+      IRutaExpression arg2 = args.get(1);
+      if (arg1 instanceof ListExpression) {
+        return createConditionContains((ListExpression) arg1, arg2, null, null, null, parent);
+      }
+    } else if (args.size() == 3) {
+      IRutaExpression arg1 = args.get(0);
+      IRutaExpression arg2 = args.get(1);
+      IRutaExpression arg3 = args.get(2);
+      if (arg1 instanceof ITypeExpression && arg2 instanceof INumberExpression
+              && arg3 instanceof INumberExpression) {
+        return createConditionContains((ITypeExpression) arg1, (INumberExpression) arg2,
+                (INumberExpression) arg3, null, parent);
+      }
+    } else if (args.size() == 4) {
+      IRutaExpression arg1 = args.get(0);
+      IRutaExpression arg2 = args.get(1);
+      IRutaExpression arg3 = args.get(2);
+      IRutaExpression arg4 = args.get(3);
+      if (arg1 instanceof ITypeExpression && arg2 instanceof INumberExpression
+              && arg3 instanceof INumberExpression && arg4 instanceof IBooleanExpression) {
+        return createConditionContains((ITypeExpression) arg1, (INumberExpression) arg2,
+                (INumberExpression) arg3, (IBooleanExpression) arg4, parent);
+      }
+    } else if (args.size() == 5) {
+      IRutaExpression arg1 = args.get(0);
+      IRutaExpression arg2 = args.get(1);
+      IRutaExpression arg3 = args.get(2);
+      IRutaExpression arg4 = args.get(3);
+      IRutaExpression arg5 = args.get(3);
+      if (arg1 instanceof ListExpression && arg3 instanceof INumberExpression
+              && arg4 instanceof INumberExpression && arg5 instanceof IBooleanExpression) {
+        return createConditionContains((ListExpression) arg1, arg2, (INumberExpression) arg3,
+                (INumberExpression) arg4, (IBooleanExpression) arg5, parent);
+      }
+    }
+
+    return null;
+  }
+
   public static AbstractRutaCondition createConditionContains(ITypeExpression typeExpr,
           INumberExpression min, INumberExpression max, IBooleanExpression percent, RutaBlock parent) {
     return new ContainsCondition(typeExpr, min, max, percent);
+  }
+
+  @SuppressWarnings("rawtypes")
+  public static AbstractRutaCondition createConditionContains(ListExpression list,
+          IRutaExpression a, INumberExpression min, INumberExpression max,
+          IBooleanExpression percent, RutaBlock env) {
+    return new ContainsCondition(list, a, min, max, percent);
   }
 
   public static AbstractRutaCondition createConditionContextCount(ITypeExpression typeExpr,
@@ -245,13 +301,6 @@ public class ConditionFactory {
   public static AbstractRutaCondition createConditionCount(ListExpression<Object> type,
           IRutaExpression a, INumberExpression min, INumberExpression max, Token var, RutaBlock env) {
     return new CountCondition(type, a, min, max, var == null ? null : var.getText());
-  }
-
-  @SuppressWarnings("rawtypes")
-  public static AbstractRutaCondition createConditionContains(ListExpression list,
-          IRutaExpression a, INumberExpression min, INumberExpression max,
-          IBooleanExpression percent, RutaBlock env) {
-    return new ContainsCondition(list, a, min, max, percent);
   }
 
   public static AbstractRutaCondition createImplicitCondition(IRutaExpression expr) {

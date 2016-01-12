@@ -36,6 +36,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class AnnotationLabelExpressionTest {
@@ -249,4 +250,35 @@ public class AnnotationLabelExpressionTest {
     assertEquals("Some", a.getCoveredText());
 
   }
+
+  @Test
+  @Ignore
+  public void testInsideOut() {
+    String document = "Some text.";
+    String script = "(a:W{-PARTOF(Struct) -> CREATE(Struct, \"a\"=a, \"c\"=a)})+;";
+    script += "Struct.a{-> T1};";
+    script += "Struct{SIZE(Struct.c,1,1)-> T3};";
+
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    String typeName = "Struct";
+    typeMap.put(typeName, "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put(typeName, list);
+    list.add(new TestFeature("a", "", "uima.tcas.Annotation"));
+    list.add(new TestFeature("c", "", "uima.cas.FSArray"));
+
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "Some", "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "Some", "text");
+  }
+
 }

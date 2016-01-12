@@ -53,7 +53,7 @@ public class StringListFeatureExpression extends AbstractStringListExpression {
     AnnotationFS annotation = context.getAnnotation();
     Type type = fe.getTypeExpr(context, stream).getType(context, stream);
     Feature feature = fe.getFeature(context, stream);
-    if(feature == null || !feature.getRange().isArray() || !StringUtils.equals(feature.getRange().getName(), UIMAConstants.TYPE_BOOLEAN)) {
+    if(feature == null || !feature.getRange().isArray() || !StringUtils.equals(feature.getRange().getName(), UIMAConstants.TYPE_STRINGARRAY)) {
       // throw runtime exception?
       return Collections.emptyList();
     }

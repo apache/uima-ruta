@@ -32,17 +32,23 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.uima.cas.BooleanArrayFS;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.ConstraintFactory;
+import org.apache.uima.cas.DoubleArrayFS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FSMatchConstraint;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.FloatArrayFS;
+import org.apache.uima.cas.IntArrayFS;
+import org.apache.uima.cas.StringArrayFS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.FSIteratorImplBase;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.engine.RutaEngine;
@@ -51,11 +57,14 @@ import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
+import org.apache.uima.ruta.expression.number.INumberListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.string.IStringListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
@@ -63,6 +72,7 @@ import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaAnnotation;
 import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.utils.RutaListUtils;
 import org.apache.uima.ruta.utils.UIMAUtils;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -927,6 +937,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     if (feature == null) {
       throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
     }
+    CAS cas = annotation.getCAS();
     String range = feature.getRange().getName();
     if (range.equals(UIMAConstants.TYPE_STRING)) {
       if (value instanceof IStringExpression) {
@@ -934,29 +945,96 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         String string = stringExpr.getStringValue(context, this);
         annotation.setStringValue(feature, string);
       }
-    } else if (value instanceof INumberExpression
-            && (range.equals(UIMAConstants.TYPE_INTEGER) || range.equals(UIMAConstants.TYPE_LONG)
-                    || range.equals(UIMAConstants.TYPE_SHORT) || range
-                      .equals(UIMAConstants.TYPE_BYTE))) {
-      INumberExpression numberExpr = (INumberExpression) value;
-      int v = numberExpr.getIntegerValue(context, this);
-      annotation.setIntValue(feature, v);
-    } else if (value instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_DOUBLE))) {
-      INumberExpression numberExpr = (INumberExpression) value;
-      double v = numberExpr.getDoubleValue(context, this);
-      annotation.setDoubleValue(feature, v);
-    } else if (value instanceof INumberExpression && (range.equals(UIMAConstants.TYPE_FLOAT))) {
-      INumberExpression numberExpr = (INumberExpression) value;
-      float v = numberExpr.getFloatValue(context, this);
-      annotation.setFloatValue(feature, v);
-    } else if (value instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
-      IBooleanExpression booleanExpr = (IBooleanExpression) value;
-      boolean v = booleanExpr.getBooleanValue(context, this);
-      annotation.setBooleanValue(feature, v);
-    } else if (value instanceof IBooleanExpression && (range.equals(UIMAConstants.TYPE_BOOLEAN))) {
-      IBooleanExpression booleanExpr = (IBooleanExpression) value;
-      boolean v = booleanExpr.getBooleanValue(context, this);
-      annotation.setBooleanValue(feature, v);
+    } else if (range.equals(UIMAConstants.TYPE_STRINGARRAY)) {
+      if (value instanceof IStringListExpression) {
+        IStringListExpression stringListExpr = (IStringListExpression) value;
+        List<String> stringList = stringListExpr.getStringList(context, this);
+        StringArrayFS stringArray = FSCollectionFactory.createStringArray(cas, stringList);
+        annotation.setFeatureValue(feature, stringArray);
+      } else if (value instanceof IStringExpression) {
+        IStringExpression stringExpr = (IStringExpression) value;
+        String string = stringExpr.getStringValue(context, this);
+        StringArrayFS array = FSCollectionFactory.createStringArray(cas,
+                new String[] { string });
+        annotation.setFeatureValue(feature, array);
+      }
+    } else if (range.equals(UIMAConstants.TYPE_INTEGER) || range.equals(UIMAConstants.TYPE_LONG)
+            || range.equals(UIMAConstants.TYPE_SHORT) || range.equals(UIMAConstants.TYPE_BYTE)) {
+      if (value instanceof INumberExpression) {
+        INumberExpression numberExpr = (INumberExpression) value;
+        int v = numberExpr.getIntegerValue(context, this);
+        annotation.setIntValue(feature, v);
+      }
+    } else if (range.equals(UIMAConstants.TYPE_INTARRAY)) {
+      if (value instanceof INumberExpression) {
+        INumberExpression numberExpr = (INumberExpression) value;
+        int v = numberExpr.getIntegerValue(context, this);
+        IntArrayFS array = FSCollectionFactory.createIntArray(cas,
+                new int[] { v });
+        annotation.setFeatureValue(feature, array);
+      } else if(value instanceof INumberListExpression) {
+        INumberListExpression expr = (INumberListExpression) value;
+        List<Number> list = expr.getNumberList(context, this);
+        IntArrayFS array = FSCollectionFactory.createIntArray(cas,RutaListUtils.toIntArray(list));
+        annotation.setFeatureValue(feature, array);
+      }
+    } else if (range.equals(UIMAConstants.TYPE_DOUBLE)) {
+      if (value instanceof INumberExpression) {
+        INumberExpression numberExpr = (INumberExpression) value;
+        double v = numberExpr.getDoubleValue(context, this);
+        annotation.setDoubleValue(feature, v);
+      }
+    } else if (range.equals(UIMAConstants.TYPE_DOUBLEARRAY)) {
+      if (value instanceof INumberExpression) {
+        INumberExpression numberExpr = (INumberExpression) value;
+        double v = numberExpr.getDoubleValue(context, this);
+        DoubleArrayFS array = FSCollectionFactory.createDoubleArray(cas,
+                new double[] { v });
+        annotation.setFeatureValue(feature, array);
+      } else if(value instanceof INumberListExpression) {
+        INumberListExpression expr = (INumberListExpression) value;
+        List<Number> list = expr.getNumberList(context, this);
+        DoubleArrayFS array = FSCollectionFactory.createDoubleArray(cas,RutaListUtils.toDoubleArray(list));
+        annotation.setFeatureValue(feature, array);
+      }
+    } else if (range.equals(UIMAConstants.TYPE_FLOAT)) {
+      if (value instanceof INumberExpression) {
+        INumberExpression numberExpr = (INumberExpression) value;
+        float v = numberExpr.getFloatValue(context, this);
+        annotation.setFloatValue(feature, v);
+      }
+    } else if (range.equals(UIMAConstants.TYPE_FLOATARRAY)) {
+      if (value instanceof INumberExpression) {
+        INumberExpression numberExpr = (INumberExpression) value;
+        float v = numberExpr.getFloatValue(context, this);
+        FloatArrayFS array = FSCollectionFactory.createFloatArray(cas,
+                new float[] { v });
+        annotation.setFeatureValue(feature, array);
+      } else if(value instanceof INumberListExpression) {
+        INumberListExpression expr = (INumberListExpression) value;
+        List<Number> list = expr.getNumberList(context, this);
+        FloatArrayFS array = FSCollectionFactory.createFloatArray(cas,RutaListUtils.toFloatArray(list));
+        annotation.setFeatureValue(feature, array);
+      }
+    } else if (range.equals(UIMAConstants.TYPE_BOOLEAN)) {
+      if (value instanceof IBooleanExpression) {
+        IBooleanExpression expr = (IBooleanExpression) value;
+        Boolean v = expr.getBooleanValue(context, this);
+        annotation.setBooleanValue(feature, v);
+      }
+    } else if (range.equals(UIMAConstants.TYPE_BOOLEANARRAY)) {
+      if (value instanceof IBooleanListExpression) {
+        IBooleanListExpression expr = (IBooleanListExpression) value;
+        List<Boolean> list = expr.getBooleanList(context, this);
+        BooleanArrayFS array = FSCollectionFactory.createBooleanArray(cas, list);
+        annotation.setFeatureValue(feature, array);
+      } else if (value instanceof IBooleanExpression) {
+        IBooleanExpression expr = (IBooleanExpression) value;
+        Boolean v = expr.getBooleanValue(context, this);
+        BooleanArrayFS array = FSCollectionFactory.createBooleanArray(cas,
+                new boolean[] { v });
+        annotation.setFeatureValue(feature, array);
+      }
     } else if (value instanceof AnnotationTypeExpression && !feature.getRange().isPrimitive()) {
       AnnotationTypeExpression ate = (AnnotationTypeExpression) value;
       if (feature.getRange().isArray()) {
