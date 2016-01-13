@@ -38,7 +38,7 @@ public class AssignAction extends AbstractRutaAction {
 
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-    stream.assignVariable(var, expression, context, stream);
+    stream.assignVariable(var, expression, context);
   }
 
   public String getVar() {

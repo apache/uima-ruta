@@ -30,6 +30,7 @@ package org.apache.uima.ruta.ide.core.parser;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -335,6 +336,8 @@ statement returns [List<Statement> stmts = new ArrayList<Statement>()]
 	:	
 	( stmts1 = declaration {stmts.addAll(stmts1);}
 	| stmtVariable = variableDeclaration {stmts.addAll(stmtVariable);}
+	| stmtCM = macroConditionDeclaration {stmts.add(stmtCM);}
+	| stmtAM = macroActionDeclaration {stmts.add(stmtAM);}
 	| stmt3 = blockDeclaration {stmts.add(stmt3);}
 	| (externalBlock)=> stmt4 = externalBlock {stmts.add(stmt4);}
 	| stmt2 = simpleStatement {stmts.add(stmt2);}
@@ -342,7 +345,42 @@ statement returns [List<Statement> stmts = new ArrayList<Statement>()]
 
 	)
 	;
-	
+
+macroConditionDeclaration returns [Statement stmt = null]
+@init {
+Map<Token,Token> def = new LinkedHashMap<>();
+}
+    :
+    kind = CONDITION name = Identifier 
+    LPAREN  
+    (argType = varTypeToken argName = Identifier  {def.put(argName,argType);}
+    (COMMA argType = varTypeToken argName = Identifier {def.put(argName,argType);})*)? 
+    RPAREN ASSIGN_EQUAL cs = conditions SEMI
+    {stmt = StatementFactory.createMacroStatement(kind, name, def, cs);}
+    ;
+
+
+macroActionDeclaration returns [Statement stmt = null]
+@init {
+Map<Token,Token> def = new LinkedHashMap<>();
+}
+    :
+    kind = ACTION name = Identifier 
+    LPAREN  
+    (argType = varTypeToken argName = Identifier  {def.put(argName,argType);}
+    (COMMA argType = varTypeToken argName = Identifier {def.put(argName,argType);})*)? 
+    RPAREN ASSIGN_EQUAL as = actions SEMI
+    {stmt = StatementFactory.createMacroStatement(kind, name, def, as);}
+    ;
+
+varTypeToken returns [Token token = null ]
+	:
+	t = (ANNOTATION | ANNOTATIONLIST | StringString | STRINGLIST 
+		| BooleanString | BOOLEANLIST | IntString | INTLIST 
+		| DoubleString | DOUBLELIST | FloatString | FLOATLIST
+		| TypeString | TYPELIST) {token = t;}
+	;
+
 importStatement returns [Statement stmt = null]
 	:
 	im = TypeSystemString 

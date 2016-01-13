@@ -124,7 +124,7 @@ public final class RutaTypeConstants {
     typeStringOfInt.put(RUTA_TYPE_NL, "NUMBERLIST");
     typeStringOfInt.put(RUTA_TYPE_SL, "STRINGLIST");
     typeStringOfInt.put(RUTA_TYPE_TL, "TYPELIST");
-    typeStringOfInt.put(RUTA_TYPE_AT, "ANNOTATION_TYPE");
+    typeStringOfInt.put(RUTA_TYPE_AT, "TYPE");
     typeStringOfInt.put(RUTA_TYPE_G, "GENERIC");
   }
 

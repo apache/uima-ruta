@@ -17,36 +17,27 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.action;
+package org.apache.uima.ruta.ide.parser.ast;
 
-import org.apache.uima.cas.CAS;
-import org.apache.uima.ruta.engine.Ruta;
-import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
+import java.util.Map;
 
-public class MacroActionTest {
+import org.antlr.runtime.Token;
+import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.references.SimpleReference;
 
+public class RutaMacroDeclaration extends RutaVariableDeclaration {
 
-  @Test
-  public void test() {
-    String document = "Test";
-    String script = "INT j;\n";
-    script += "ACTION macro(TYPE t, INT inc) = MARK(t),ASSIGN(j,j+inc);\n";
-    script += "Document{-> macro(T1,1)};\n";
-    script += "Document{(j>0)->T2};\n";
-
-
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Test");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Test");
-
-    cas.release();
+  private final Map<Token, Token> definition;
+  
+  public RutaMacroDeclaration(String name, int nameStart, int nameEnd, int declStart, int declEnd,
+          SimpleReference ref, int type, Map<Token, Token> definition, Expression initExpression) {
+    super(name, nameStart, nameEnd, declStart, declEnd, ref, type, initExpression);
+    this.definition = definition;
   }
+
+  public Map<Token, Token> getDefinition() {
+    return definition;
+  }
+
+  
 }

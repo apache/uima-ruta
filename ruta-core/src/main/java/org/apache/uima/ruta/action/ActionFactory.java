@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.antlr.runtime.Token;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
@@ -36,6 +37,7 @@ import org.apache.uima.ruta.expression.string.AbstractStringListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
 
 public class ActionFactory {
 
@@ -59,8 +61,8 @@ public class ActionFactory {
   }
 
   public static AbstractRutaAction createMarkFastAction(ITypeExpression type,
-          AbstractStringListExpression list, IBooleanExpression ignore, INumberExpression ignoreLength,
-          IBooleanExpression ignoreWS, RutaBlock env) {
+          AbstractStringListExpression list, IBooleanExpression ignore,
+          INumberExpression ignoreLength, IBooleanExpression ignoreWS, RutaBlock env) {
     return new MarkFastAction(type, list, ignore, ignoreLength, ignoreWS);
   }
 
@@ -159,8 +161,8 @@ public class ActionFactory {
     return new UnmarkAction(f, list, b);
   }
 
-  public static AbstractRutaAction createUnmarkAllAction(ITypeExpression f, AbstractTypeListExpression list,
-          RutaBlock env) {
+  public static AbstractRutaAction createUnmarkAllAction(ITypeExpression f,
+          AbstractTypeListExpression list, RutaBlock env) {
     return new UnmarkAllAction(f, list);
   }
 
@@ -267,11 +269,11 @@ public class ActionFactory {
 
   public static AbstractRutaAction createImplicitVariableAssignmentAction(Token var, Token op,
           IRutaExpression arg, RutaBlock env) {
-    String varString = var != null ?  var.getText() : null;
-    String opString = op != null ?  op.getText() : "=";
+    String varString = var != null ? var.getText() : null;
+    String opString = op != null ? op.getText() : "=";
     return new ImplicitVariableAssignmentAction(varString, opString, arg);
   }
-  
+
   public static AbstractRutaAction createMarkFirstAction(ITypeExpression type, RutaBlock env) {
     return new MarkFirstAction(type);
   }
@@ -287,6 +289,22 @@ public class ActionFactory {
     return new SplitAction(type, complete, appendToBegin, appendToEnd);
   }
 
-  
+  public static AbstractRutaAction createMacroAction(Token id, List<IRutaExpression> args,
+          RutaBlock env) {
+    String name = id.getText();
+    Pair<Map<String, String>, List<AbstractRutaAction>> macroActionDefinition = env
+            .getEnvironment().getMacroAction(name);
+    if (macroActionDefinition == null) {
+      return null;
+    }
+    Map<String, String> definition = macroActionDefinition.getKey();
+    List<AbstractRutaAction> actions = macroActionDefinition.getValue();
+    if (definition.size() != args.size()) {
+      throw new RutaParseRuntimeException("Arguments of macro action '" + name
+              + "' do not match its definition: " + definition.values());
+    }
+
+    return new MacroAction(name, definition, actions, args);
+  }
 
 }

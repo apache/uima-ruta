@@ -30,14 +30,14 @@ import org.eclipse.dltk.ast.statements.StatementConstants;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class RutaExpressionList extends Expression {
-  private List<Expression> expressions;
+  private List<? extends Expression> expressions;
 
   /**
    * Statement with bounds from first to last expression.
    * 
    * @param expressions
    */
-  public RutaExpressionList(List<Expression> expressions) {
+  public RutaExpressionList(List<? extends Expression> expressions) {
     if (!expressions.isEmpty()) {
       // First
       Expression first = expressions.get(0);
@@ -69,7 +69,7 @@ public class RutaExpressionList extends Expression {
     }
   }
 
-  public List<Expression> getExpressions() {
+  public List<? extends Expression> getExpressions() {
     return this.expressions;
   }
 
@@ -109,7 +109,7 @@ public class RutaExpressionList extends Expression {
   public void printNode(CorePrinter output) {
     if (this.expressions != null) {
       output.formatPrintLn("");
-      Iterator i = this.expressions.iterator();
+      Iterator<? extends Expression> i = this.expressions.iterator();
       while (i.hasNext()) {
         ASTNode node = (ASTNode) i.next();
         node.printNode(output);
@@ -122,7 +122,7 @@ public class RutaExpressionList extends Expression {
   public String toString() {
     String value = "";
     if (this.expressions != null) {
-      Iterator i = this.expressions.iterator();
+      Iterator<? extends Expression> i = this.expressions.iterator();
       while (i.hasNext()) {
         ASTNode node = (ASTNode) i.next();
         value += node.toString();

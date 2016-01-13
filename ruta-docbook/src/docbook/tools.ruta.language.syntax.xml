@@ -103,7 +103,10 @@ BasicAnnotationType ->  ('COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM'
                       | 'SPACE' | 'BREAK')
 BlockDeclaration    -> "BLOCK" "(" Identifier ")" RuleElementWithCA
                                                        "{" Statements "}"]]></programlisting>
-
+actionDeclaration   -> "ACTION" Identifier "(" VarType Identifier ("," VarType Identifier)*")"  
+                      "=" Action ( "," Action)* ";"
+conditionDeclaration-> "CONDITION" Identifier "(" VarType Identifier ("," VarType Identifier)*")"  
+                      "=" Condition ( "," Condition)* ";"  
     Syntax of statements and rule elements:
     <programlisting><![CDATA[SimpleStatement        -> SimpleRule | RegExpRule | ConjunctRules 
                           | DocumentActionRule

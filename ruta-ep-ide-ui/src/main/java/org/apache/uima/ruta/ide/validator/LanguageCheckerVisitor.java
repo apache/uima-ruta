@@ -71,6 +71,7 @@ import org.apache.uima.ruta.ide.parser.ast.RutaFunction;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportStatement;
 import org.apache.uima.ruta.ide.parser.ast.RutaImportTypesStatement;
 import org.apache.uima.ruta.ide.parser.ast.RutaListExpression;
+import org.apache.uima.ruta.ide.parser.ast.RutaMacroDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaRegExpRule;
 import org.apache.uima.ruta.ide.parser.ast.RutaRule;
@@ -196,7 +197,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   private boolean packageChecked = false;
 
   private Collection<String> currentLabels = new HashSet<>();
-  
+
   public LanguageCheckerVisitor(IProblemReporter problemReporter, ISourceLineTracker linetracker,
           ISourceModule sourceModule, ClassLoader classLoader) {
     super();
@@ -221,7 +222,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     IPath location = sourceModule.getResource().getLocation();
     try {
       IPath packagePath = RutaProjectUtils.getPackagePath(location, project);
-      if(packagePath != null) {
+      if (packagePath != null) {
         packagePathString = packagePath.toPortableString().replaceAll("/", ".");
       }
     } catch (CoreException e) {
@@ -240,6 +241,26 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       this.packageName = ((RutaPackageDeclaration) s).getName();
       checkPackage(s);
       return false;
+    }
+    if (s instanceof RutaMacroDeclaration) {
+      RutaMacroDeclaration decl = (RutaMacroDeclaration) s;
+      Map<Token, Token> definition = decl.getDefinition();
+      String name = decl.getName();
+      int kind = decl.getKind();
+      if(kind == RutaTypeConstants.RUTA_TYPE_A) {
+        actionExtensions.put(name, null);
+      } else if(kind == RutaTypeConstants.RUTA_TYPE_C) {
+        conditionExtensions.put(name, null);
+      }
+      Set<Entry<Token,Token>> entrySet = definition.entrySet();
+      Map<String, Integer> map = new HashMap<>();
+      for (Entry<Token, Token> entry : entrySet) {
+        String varName = entry.getKey().getText();
+        String varType = entry.getValue().getText();
+        int vt = getType(varType);
+        map.put(varName, vt);
+      }
+      knownLocalVariables.push(map);
     }
     if (s instanceof RutaImportTypesStatement) {
       RutaImportTypesStatement stmt = (RutaImportTypesStatement) s;
@@ -288,7 +309,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
               IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
                       file.getLocation(), referredProject);
               TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath, url);
-              
+
               List<String> checkDuplicateShortNames = checkOnAmbiguousShortNames(tsDesc);
               if (!checkDuplicateShortNames.isEmpty()) {
                 pr.reportProblem(problemFactory.createDuplicateShortNameInImported(sRef, localPath,
@@ -414,8 +435,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         }
       }
     }
-    if(s instanceof RutaRule) {
-      collectAllLabels((RutaRule)s);
+    if (s instanceof RutaRule) {
+      collectAllLabels((RutaRule) s);
     }
     return true;
   }
@@ -431,7 +452,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   }
 
   private void checkPackage(ASTNode node) {
-    if(!StringUtils.equals(packageName, packagePathString) && !packageChecked) {
+    if (!StringUtils.equals(packageName, packagePathString) && !packageChecked) {
       pr.reportProblem(problemFactory.createWrongPackageProblem(node));
     }
     packageChecked = true;
@@ -608,7 +629,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         if (isFeatureMatch(name) != null) {
           return false;
         }
-        if(isLabel(name)) {
+        if (isLabel(name)) {
           return false;
         }
         if (name.indexOf(".") != -1) {
@@ -618,8 +639,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
             return false;
           }
         }
-        
-        
+
         pr.reportProblem(problemFactory.createTypeProblem(ref, sourceModule));
         return false;
       }
@@ -637,7 +657,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       String[] keywords = RutaKeywordsManager.getKeywords(IRutaKeywords.ACTION);
       List<String> asList = Arrays.asList(keywords);
       if (!StringUtils.isEmpty(actionName) && !"-".equals(actionName)
-              && !asList.contains(actionName) && !implicitString.equals(tma.getName())) {
+              && !asList.contains(actionName) && !implicitString.equals(tma.getName())
+              && !actionExtensions.keySet().contains(actionName)) {
         IProblem problem = problemFactory.createUnknownActionProblem(tma);
         pr.reportProblem(problem);
       }
@@ -720,7 +741,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       String[] keywords = RutaKeywordsManager.getKeywords(IRutaKeywords.CONDITION);
       List<String> asList = Arrays.asList(keywords);
       if (!StringUtils.isEmpty(conditionName) && !"-".equals(conditionName)
-              && !asList.contains(conditionName) && !implicitString.equals(cond.getName())) {
+              && !asList.contains(conditionName) && !implicitString.equals(cond.getName())
+              && !conditionExtensions.keySet().contains(cond)) {
         IProblem problem = problemFactory.createUnknownConditionProblem(cond);
         pr.reportProblem(problem);
       }
@@ -750,11 +772,11 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           }
         }
       }
-      if(conditionName.equals("CONTAINS")) {
+      if (conditionName.equals("CONTAINS")) {
         List<?> args = cond.getChilds();
         boolean valid = checkContainsArguments(args);
       }
-      
+
     }
     if (s instanceof RutaFunction) {
       RutaFunction f = (RutaFunction) s;
@@ -787,48 +809,48 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   private boolean checkContainsArguments(List<?> args) {
     if (args.size() == 1) {
       Object arg = args.get(0);
-//      if (arg instanceof ITypeExpression) {
-        return true;
-//      }
+      // if (arg instanceof ITypeExpression) {
+      return true;
+      // }
     } else if (args.size() == 2) {
       Object arg1 = args.get(0);
       Object arg2 = args.get(1);
-//      if (arg1 instanceof ListExpression) {
-        return true;
-//      }
+      // if (arg1 instanceof ListExpression) {
+      return true;
+      // }
     } else if (args.size() == 3) {
       Object arg1 = args.get(0);
       Object arg2 = args.get(1);
       Object arg3 = args.get(2);
-//      if (arg1 instanceof ITypeExpression && arg2 instanceof INumberExpression
-//              && arg3 instanceof INumberExpression) {
-        return true;
-//      }
+      // if (arg1 instanceof ITypeExpression && arg2 instanceof INumberExpression
+      // && arg3 instanceof INumberExpression) {
+      return true;
+      // }
     } else if (args.size() == 4) {
       Object arg1 = args.get(0);
       Object arg2 = args.get(1);
       Object arg3 = args.get(2);
       Object arg4 = args.get(3);
-//      if (arg1 instanceof ITypeExpression && arg2 instanceof INumberExpression
-//              && arg3 instanceof INumberExpression && arg4 instanceof IBooleanExpression) {
-        return true;
-//      }
+      // if (arg1 instanceof ITypeExpression && arg2 instanceof INumberExpression
+      // && arg3 instanceof INumberExpression && arg4 instanceof IBooleanExpression) {
+      return true;
+      // }
     } else if (args.size() == 5) {
       Object arg1 = args.get(0);
       Object arg2 = args.get(1);
       Object arg3 = args.get(2);
       Object arg4 = args.get(3);
       Object arg5 = args.get(3);
-//      if (arg1 instanceof ListExpression && arg3 instanceof INumberExpression
-//              && arg4 instanceof INumberExpression && arg5 instanceof IBooleanExpression) {
-        return true;
-//      }
+      // if (arg1 instanceof ListExpression && arg3 instanceof INumberExpression
+      // && arg4 instanceof INumberExpression && arg5 instanceof IBooleanExpression) {
+      return true;
+      // }
     }
     return false;
   }
 
   private boolean isLabel(String name) {
-    return  currentLabels.contains(name);
+    return currentLabels.contains(name);
   }
 
   private String expand(String shortName) {
@@ -894,13 +916,17 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (s instanceof RutaDeclareDeclarationsStatement) {
       parentTypeInDeclaration = null;
     }
-    if(!packageChecked) {
+    if (s instanceof RutaMacroDeclaration) {
+      RutaMacroDeclaration decl = (RutaMacroDeclaration) s;
+      knownLocalVariables.pop();
+     }
+    if (!packageChecked) {
       checkPackage(null);
     }
-    if(s instanceof RutaRule) {
+    if (s instanceof RutaRule) {
       currentLabels.clear();
     }
-    
+
     return super.endvisit(s);
   }
 
@@ -1363,10 +1389,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           CoreException {
     IPath descriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(sourceModule.getResource()
             .getLocation(), sourceModule.getScriptProject().getProject());
-    if(descriptorPath == null) {
+    if (descriptorPath == null) {
       return null;
     }
-    
+
     TypeSystemDescription typeSysDescr = null;
     if (descriptorPath.toFile().exists()) {
       typeSysDescr = UIMAFramework.getXMLParser().parseTypeSystemDescription(
@@ -1412,4 +1438,42 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     }
     return name;
   }
+  
+  private int getType(String name) {
+    if (name == null) {
+      return 0;
+    }
+    // TODO reuse field in constants
+    if (name.equals("STRING")) {
+      return RutaTypeConstants.RUTA_TYPE_S;
+    } else if (name.equals("STRINGLIST")) {
+      return RutaTypeConstants.RUTA_TYPE_SL;
+    } else if (name.equals("INT")) {
+      return RutaTypeConstants.RUTA_TYPE_I;
+    } else if (name.equals("INTLIST")) {
+      return RutaTypeConstants.RUTA_TYPE_NL;
+    } else if (name.equals("DOUBLE")) {
+      return RutaTypeConstants.RUTA_TYPE_D;
+    } else if (name.equals("DOUBLELIST")) {
+      return RutaTypeConstants.RUTA_TYPE_NL;
+    } else if (name.equals("FLOAT")) {
+      return RutaTypeConstants.RUTA_TYPE_F;
+    } else if (name.equals("FLOATLIST")) {
+      return RutaTypeConstants.RUTA_TYPE_NL;
+    } else if (name.equals("BOOLEAN")) {
+      return RutaTypeConstants.RUTA_TYPE_B;
+    } else if (name.equals("BOOLEANLIST")) {
+      return RutaTypeConstants.RUTA_TYPE_BL;
+    } else if (name.equals("TYPE")) {
+      return RutaTypeConstants.RUTA_TYPE_AT;
+    } else if (name.equals("TYPELIST")) {
+      return RutaTypeConstants.RUTA_TYPE_TL;
+    } else if (name.equals("ANNOTATION")) {
+      return RutaTypeConstants.RUTA_TYPE_UA;
+    } else if (name.equals("ANNOTATIONLIST")) {
+      return RutaTypeConstants.RUTA_TYPE_UAL;
+    }
+    return 0;
+  }
+  
 }

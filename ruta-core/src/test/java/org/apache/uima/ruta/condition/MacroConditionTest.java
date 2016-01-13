@@ -17,23 +17,24 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.action;
+package org.apache.uima.ruta.condition;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
-public class MacroActionTest {
+public class MacroConditionTest {
 
 
   @Test
   public void test() {
     String document = "Test";
     String script = "INT j;\n";
-    script += "ACTION macro(TYPE t, INT inc) = MARK(t),ASSIGN(j,j+inc);\n";
-    script += "Document{-> macro(T1,1)};\n";
-    script += "Document{(j>0)->T2};\n";
+    script += "CONDITION macro(TYPE t, INT i) = IS(t),(j==i);\n";
+    script += "Document{-> T1, j=1};\n";
+    script += "Document{macro(T1,0)-> T2};\n";
+    script += "Document{macro(T1,1)-> T3};\n";
 
 
     CAS cas = null;
@@ -45,7 +46,8 @@ public class MacroActionTest {
     }
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Test");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Test");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Test");
 
     cas.release();
   }

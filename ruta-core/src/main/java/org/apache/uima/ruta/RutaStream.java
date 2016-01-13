@@ -954,8 +954,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       } else if (value instanceof IStringExpression) {
         IStringExpression stringExpr = (IStringExpression) value;
         String string = stringExpr.getStringValue(context, this);
-        StringArrayFS array = FSCollectionFactory.createStringArray(cas,
-                new String[] { string });
+        StringArrayFS array = FSCollectionFactory.createStringArray(cas, new String[] { string });
         annotation.setFeatureValue(feature, array);
       }
     } else if (range.equals(UIMAConstants.TYPE_INTEGER) || range.equals(UIMAConstants.TYPE_LONG)
@@ -969,13 +968,12 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         int v = numberExpr.getIntegerValue(context, this);
-        IntArrayFS array = FSCollectionFactory.createIntArray(cas,
-                new int[] { v });
+        IntArrayFS array = FSCollectionFactory.createIntArray(cas, new int[] { v });
         annotation.setFeatureValue(feature, array);
-      } else if(value instanceof INumberListExpression) {
+      } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
         List<Number> list = expr.getNumberList(context, this);
-        IntArrayFS array = FSCollectionFactory.createIntArray(cas,RutaListUtils.toIntArray(list));
+        IntArrayFS array = FSCollectionFactory.createIntArray(cas, RutaListUtils.toIntArray(list));
         annotation.setFeatureValue(feature, array);
       }
     } else if (range.equals(UIMAConstants.TYPE_DOUBLE)) {
@@ -988,13 +986,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         double v = numberExpr.getDoubleValue(context, this);
-        DoubleArrayFS array = FSCollectionFactory.createDoubleArray(cas,
-                new double[] { v });
+        DoubleArrayFS array = FSCollectionFactory.createDoubleArray(cas, new double[] { v });
         annotation.setFeatureValue(feature, array);
-      } else if(value instanceof INumberListExpression) {
+      } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
         List<Number> list = expr.getNumberList(context, this);
-        DoubleArrayFS array = FSCollectionFactory.createDoubleArray(cas,RutaListUtils.toDoubleArray(list));
+        DoubleArrayFS array = FSCollectionFactory.createDoubleArray(cas,
+                RutaListUtils.toDoubleArray(list));
         annotation.setFeatureValue(feature, array);
       }
     } else if (range.equals(UIMAConstants.TYPE_FLOAT)) {
@@ -1007,13 +1005,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         float v = numberExpr.getFloatValue(context, this);
-        FloatArrayFS array = FSCollectionFactory.createFloatArray(cas,
-                new float[] { v });
+        FloatArrayFS array = FSCollectionFactory.createFloatArray(cas, new float[] { v });
         annotation.setFeatureValue(feature, array);
-      } else if(value instanceof INumberListExpression) {
+      } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
         List<Number> list = expr.getNumberList(context, this);
-        FloatArrayFS array = FSCollectionFactory.createFloatArray(cas,RutaListUtils.toFloatArray(list));
+        FloatArrayFS array = FSCollectionFactory.createFloatArray(cas,
+                RutaListUtils.toFloatArray(list));
         annotation.setFeatureValue(feature, array);
       }
     } else if (range.equals(UIMAConstants.TYPE_BOOLEAN)) {
@@ -1031,8 +1029,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       } else if (value instanceof IBooleanExpression) {
         IBooleanExpression expr = (IBooleanExpression) value;
         Boolean v = expr.getBooleanValue(context, this);
-        BooleanArrayFS array = FSCollectionFactory.createBooleanArray(cas,
-                new boolean[] { v });
+        BooleanArrayFS array = FSCollectionFactory.createBooleanArray(cas, new boolean[] { v });
         annotation.setFeatureValue(feature, array);
       }
     } else if (value instanceof AnnotationTypeExpression && !feature.getRange().isPrimitive()) {
@@ -1123,38 +1120,38 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
   }
 
-  public void assignVariable(String var, IRutaExpression expression, MatchContext context,
-          RutaStream stream) {
+  public void assignVariable(String var, IRutaExpression expression, MatchContext context) {
     RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
     RutaEnvironment environment = parent.getEnvironment();
     Class<?> clazz = environment.getVariableType(var);
     if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
-      double v = ((INumberExpression) expression).getDoubleValue(context, stream);
+      double v = ((INumberExpression) expression).getDoubleValue(context, this);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
-      int v = ((INumberExpression) expression).getIntegerValue(context, stream);
+      int v = ((INumberExpression) expression).getIntegerValue(context, this);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Type.class) && expression instanceof ITypeExpression) {
-      Type v = ((ITypeExpression) expression).getType(context, stream);
+      Type v = ((ITypeExpression) expression).getType(context, this);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Boolean.class) && expression instanceof IBooleanExpression) {
-      boolean v = ((IBooleanExpression) expression).getBooleanValue(context, stream);
+      boolean v = ((IBooleanExpression) expression).getBooleanValue(context, this);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(String.class) && expression instanceof IStringExpression) {
-      String v = ((IStringExpression) expression).getStringValue(context, stream);
+      String v = ((IStringExpression) expression).getStringValue(context, this);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(AnnotationFS.class) && expression instanceof IAnnotationExpression) {
-      AnnotationFS v = ((IAnnotationExpression) expression).getAnnotation(context, stream);
+      AnnotationFS v = ((IAnnotationExpression) expression).getAnnotation(context, this);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(List.class)) {
       Class<?> variableGenericType = environment.getVariableGenericType(var);
       if (variableGenericType.equals(AnnotationFS.class)
               && expression instanceof IAnnotationListExpression) {
         List<AnnotationFS> v = ((IAnnotationListExpression) expression).getAnnotationList(context,
-                stream);
+                this);
         environment.setVariableValue(var, v);
       }
+      // TODO assign also other lists
     }
   }
 

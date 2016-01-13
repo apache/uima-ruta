@@ -385,11 +385,22 @@ public void setExternalFactory(RutaExternalFactory factory) {
       	}
       	
       	
-      	
-	private void addActionMacro(RutaBlock env, String text, Map<String,String> def, List<AbstractRutaAction> as) {
-     		int i = 0;	
+
+	private void addMacroAction(RutaBlock env, String name, Map<String,String> def, List<AbstractRutaAction> as) {
+     		env.getEnvironment().addMacroAction(name, def, as);
  	}
- 	 
+ 	
+ 	private boolean isMacroAction(String name, RutaBlock env) {
+		return env.getEnvironment().isMacroAction(name);
+	}
+ 	
+ 	private void addMacroCondition(RutaBlock env, String name, Map<String,String> def, List<AbstractRutaCondition> cs) {
+     		env.getEnvironment().addMacroCondition(name, def, cs);
+ 	}
+ 	
+ 	private boolean isMacroCondition(String name, RutaBlock env) {
+		return env.getEnvironment().isMacroCondition(name);
+	}
  	 
  	private Map<String,String> temporaryVariables = new HashMap<>(); 
  	
@@ -414,6 +425,8 @@ public void setExternalFactory(RutaExternalFactory factory) {
 		    temporaryVariables.remove(key);
      		}
 	}
+
+	
 
 }
 
@@ -479,8 +492,8 @@ statement returns [RutaStatement stmt = null]
 	:	
 	( stmtDecl = declaration {stmt = stmtDecl;}
 	| stmtVariable = variableDeclaration {stmt = stmtVariable;}
-	| stmtCM = conditionMacroDeclaration {stmt = stmtCM;}
-	| stmtAM = actionMacroDeclaration {stmt = stmtAM;}
+	| stmtCM = macroConditionDeclaration {stmt = stmtCM;}
+	| stmtAM = macroActionDeclaration {stmt = stmtAM;}
 	| stmtRule = simpleStatement {stmt = stmtRule;}
 	| stmtBlock = blockDeclaration {stmt = stmtBlock;}
 	| stmtExternal = externalBlock {stmt = stmtExternal;}
@@ -571,16 +584,23 @@ List<String> vars = new ArrayList<String>();
 	;
 
 
-conditionMacroDeclaration returns [RutaStatement stmt = null]
-  :
-    type = CONDITION id = Identifier ASSIGN_EQUAL LPAREN cons = conditions RPAREN SEMI
-    {addVariable($blockDeclaration::env, id.getText(), type.getText());
-    AbstractRutaCondition condition = ConditionFactory.createConditionAnd(cons,$blockDeclaration::env);
-    setValue($blockDeclaration::env, id.getText(), condition);}
+macroConditionDeclaration returns [RutaStatement stmt = null]
+@init {
+Map<String,String> def = new LinkedHashMap<>();
+}
+    :
+    CONDITION name = Identifier 
+    LPAREN  
+    (argType = varTypeToken argName = Identifier  {def.put(argName.getText(),argType.getText());}
+    (COMMA argType = varTypeToken argName = Identifier {def.put(argName.getText(),argType.getText());})*)? 
+    {addTemporaryVariables(def);}
+    RPAREN ASSIGN_EQUAL cs = conditions SEMI
+    {removeTemporaryVariables(def);}
+    {addMacroCondition($blockDeclaration::env, name.getText(), def, cs);}
     ;
 
 
-actionMacroDeclaration returns [RutaStatement stmt = null]
+macroActionDeclaration returns [RutaStatement stmt = null]
 @init {
 Map<String,String> def = new LinkedHashMap<>();
 }
@@ -592,8 +612,7 @@ Map<String,String> def = new LinkedHashMap<>();
     {addTemporaryVariables(def);}
     RPAREN ASSIGN_EQUAL as = actions SEMI
     {removeTemporaryVariables(def);}
-    {addActionMacro($blockDeclaration::env, name.getText(), def, as);}
-       
+    {addMacroAction($blockDeclaration::env, name.getText(), def, as);}
     ;
 
 varTypeToken returns [Token token = null ]
@@ -1385,20 +1404,10 @@ condition  returns [AbstractRutaCondition result = null]
 	| (featureMatchExpression2)=> f = featureMatchExpression2 {c = ConditionFactory.createImplicitCondition(f);}
 	| (booleanExpression)=> b = booleanExpression {c = ConditionFactory.createImplicitCondition(b);}
 	| (c = externalCondition)=> c = externalCondition
-	
-//	| c = variableCondition
+	| (c = macroCondition)=> c = macroCondition
 	) {result = c;}
 	;
 
-
-//variableCondition returns [AbstractRutaCondition condition = null]
-//	:		
-//	
-//	id = Identifier
-//	{
-//		condition = ConditionFactory.createConditionVariable(id);
-//	}
-//	;
 
 externalCondition returns [AbstractRutaCondition condition = null]
 	:		
@@ -1409,6 +1418,14 @@ externalCondition returns [AbstractRutaCondition condition = null]
 	}
 	;
 	
+macroCondition returns [AbstractRutaCondition condition = null]
+	:		
+	{isMacroCondition(input.LT(1).getText(), $blockDeclaration::env)}? 
+	id = Identifier LPAREN args = varArgumentList?	RPAREN
+	{
+		condition = ConditionFactory.createMacroCondition(id, args, $blockDeclaration::env);
+	}
+	;
 conditionAnd returns [AbstractRutaCondition cond = null]
     :   
     AND LPAREN conds = conditions RPAREN 
@@ -1654,6 +1671,7 @@ action  returns [AbstractRutaAction result = null]
 	| a = actionRemoveFilterType
 	| (variableAssignmentAction)=> vae = variableAssignmentAction {a = vae;}
 	| (externalAction)=> a = externalAction
+	| (macroAction)=> a = macroAction
 	| (featureAssignmentExpression)=> fae = featureAssignmentExpression {a = ActionFactory.createAction(fae);}
 	| (typeExpression)=> te = typeExpression {a = ActionFactory.createAction(te);}
 	
@@ -1708,19 +1726,11 @@ rawAction  returns [AbstractRutaAction result = null]
 	| a = actionAddFilterType
 	| a = actionRemoveFilterType
 	| (externalAction)=> a = externalAction
-	
-//	| a = variableAction
+	| (macroAction)=> a = macroAction
 	) {result = a;}
 	;	
 
-//variableAction returns [AbstractRutaAction action = null]
-//	:		
-//	
-//	id = Identifier
-//	{
-//		action = ActionFactory.createActionVariable(id);
-//	}
-//	;
+
 
 
 externalAction returns [AbstractRutaAction action = null]
@@ -1732,7 +1742,14 @@ externalAction returns [AbstractRutaAction action = null]
 	}
 	;
 
-
+macroAction returns [AbstractRutaAction action = null]
+	:		
+	{isMacroAction(input.LT(1).getText(), $blockDeclaration::env)}? 
+	id = Identifier LPAREN args = varArgumentList?	RPAREN
+	{
+		action = ActionFactory.createMacroAction(id, args, $blockDeclaration::env);
+	}
+	;
 
 actionCreate returns [AbstractRutaAction action = null]
 @init {
@@ -2600,8 +2617,8 @@ composedBooleanExpression returns [IBooleanExpression expr = null]
 
 	:
 	(e2 = booleanCompare)=> e2 = booleanCompare {expr = e2;}
-	| (bte = booleanTypeExpression)=> bte = booleanTypeExpression{expr = bte;}
 	| (bne = booleanNumberExpression)=> bne = booleanNumberExpression{expr = bne;}
+	| (bte = booleanTypeExpression)=> bte = booleanTypeExpression{expr = bte;}
 	| e1 = booleanFunction {expr = e1;}
 	| LPAREN ep = booleanExpression RPAREN {expr = ep;}
 	;

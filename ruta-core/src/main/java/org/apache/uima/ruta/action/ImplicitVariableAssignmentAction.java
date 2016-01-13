@@ -44,7 +44,7 @@ public class ImplicitVariableAssignmentAction extends AbstractRutaAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     // only normal assignment is supported right now
     if(StringUtils.equals(op, "=")) {
-      stream.assignVariable(var, arg, context, stream);
+      stream.assignVariable(var, arg, context);
     }
   }
 

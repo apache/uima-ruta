@@ -35,6 +35,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.antlr.runtime.CommonToken;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 import org.apache.uima.cas.CAS;
@@ -145,6 +147,10 @@ public class RutaEnvironment {
 
   private Map<String, Class<?>> availableListTypes;
 
+  private Map<String, Pair<Map<String, String>, List<AbstractRutaCondition>>> macroConditions;
+
+  private Map<String, Pair<Map<String, String>, List<AbstractRutaAction>>> macroActions;
+
   private String[] resourcePaths = null;
 
   private CAS cas;
@@ -169,6 +175,8 @@ public class RutaEnvironment {
     variableValues = new HashMap<String, Object>();
     variableTypes = new HashMap<String, Class<?>>();
     variableGenericTypes = new HashMap<String, Class<?>>();
+    macroConditions = new HashMap<>();
+    macroActions = new HashMap<>();
     availableTypes = new HashMap<String, Class<?>>();
     availableTypes.put("ANNOTATION", AnnotationFS.class);
     availableTypes.put("INT", Integer.class);
@@ -644,7 +652,7 @@ public class RutaEnvironment {
     return tables.get(table);
   }
 
-  public void addVariable(String name, Class<?> type, Class<?> generic) {
+  private void addVariable(String name, Class<?> type, Class<?> generic) {
     variableTypes.put(name, type);
     if (generic != null) {
       variableGenericTypes.put(name, generic);
@@ -687,6 +695,12 @@ public class RutaEnvironment {
 
   public void addVariable(String name, String type) {
     addVariable(name, availableTypes.get(type), availableListTypes.get(type));
+  }
+  
+  public void removeVariable(String name) {
+    variableTypes.remove(name);
+    variableGenericTypes.remove(name);
+    variableValues.remove(name);
   }
 
   public boolean ownsVariable(String name) {
@@ -906,4 +920,30 @@ public class RutaEnvironment {
     this.resourceManager = resourceManager;
   }
 
+  public void addMacroAction(String name, Map<String, String> def, List<AbstractRutaAction> actions) {
+    macroActions.put(name, new ImmutablePair<Map<String, String>, List<AbstractRutaAction>>(def,
+            actions));
+  }
+
+  public void addMacroCondition(String name, Map<String, String> def,
+          List<AbstractRutaCondition> conditions) {
+    macroConditions.put(name, new ImmutablePair<Map<String, String>, List<AbstractRutaCondition>>(
+            def, conditions));
+  }
+
+  public boolean isMacroAction(String name) {
+    return macroActions.keySet().contains(name);
+  }
+
+  public boolean isMacroCondition(String name) {
+    return macroConditions.keySet().contains(name);
+  }
+
+  public Pair<Map<String, String>, List<AbstractRutaAction>> getMacroAction(String name) {
+    return macroActions.get(name);
+  }
+
+  public Pair<Map<String, String>, List<AbstractRutaCondition>> getMacroCondition(String name) {
+    return macroConditions.get(name);
+  }
 }

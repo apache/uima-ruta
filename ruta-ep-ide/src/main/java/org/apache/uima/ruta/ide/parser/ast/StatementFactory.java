@@ -21,6 +21,7 @@ package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
@@ -273,12 +274,13 @@ public class StatementFactory extends AbstractFactory {
             declBounds[0], declBounds[1], ref, eachTO);
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "rawtypes" })
   public static Statement createDeclareDeclarationsStatement(Token declareToken, List declarations,
           ASTNode parent) {
     return createDeclareDeclarationsStatement(declareToken, declarations, parent, new ArrayList<RutaFeatureDeclaration>(0));
   }
   
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static Statement createDeclareDeclarationsStatement(Token declareToken, List declarations,
           ASTNode parent, List<RutaFeatureDeclaration> features) {
     List<RutaAbstractDeclaration> decls = declarations;
@@ -304,7 +306,7 @@ public class StatementFactory extends AbstractFactory {
   }
   
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static Statement createDeclarationsStatement(Token declareToken, List declarations,
           Expression init) {
     List<RutaAbstractDeclaration> decls = declarations;
@@ -325,15 +327,15 @@ public class StatementFactory extends AbstractFactory {
             init, declBounds[0], declBounds[1]);
   }
 
-  @SuppressWarnings("unchecked")
+
+  @SuppressWarnings("rawtypes")
   public static Statement createDeclarationsStatement(Token declareToken, List declarations) {
     return createDeclarationsStatement(declareToken, declarations, null);
   }
 
-  @SuppressWarnings("unchecked")
   public static Statement createDeclarationsStatement(Token declareToken,
           RutaAbstractDeclaration declaration, Expression init) {
-    List decl = new ArrayList<RutaAbstractDeclaration>();
+    List<RutaAbstractDeclaration> decl = new ArrayList<>();
     return createDeclarationsStatement(declareToken, decl, init);
   }
 
@@ -366,6 +368,19 @@ public class StatementFactory extends AbstractFactory {
     int nameBounds[] = getBounds(ct);
     String text = ct.getText();
     return new ComponentDeclaration(nameBounds[0], nameBounds[0] + text.length(), text);
+  }
+
+  public static Statement createMacroStatement(Token kind, Token name, Map<Token, Token> def,
+          List<? extends Expression> elements) {
+    int declBounds[] = getBounds(kind, elements.get(elements.size()-1));
+    int nameBounds[] = getBounds(name);
+    int k = kind.equals("CONDITION") ? RutaTypeConstants.RUTA_TYPE_C : RutaTypeConstants.RUTA_TYPE_A;
+    // FieldDeclaration
+    SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], name.getText(),
+            k);
+    RutaExpressionList expr = new RutaExpressionList(elements); 
+    return new RutaVariableDeclaration(name.getText(), nameBounds[0], nameBounds[1], declBounds[0],
+            declBounds[1], ref, k, expr);
   }
 
 

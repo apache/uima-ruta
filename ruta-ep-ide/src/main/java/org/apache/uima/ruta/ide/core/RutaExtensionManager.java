@@ -70,7 +70,7 @@ public class RutaExtensionManager {
     if (infos == null) {
       return new IRutaLanguageExtension[0];
     }
-    List extensions = new ArrayList();
+    List<Object> extensions = new ArrayList<>();
     for (int i = 0; i < infos.length; i++) {
       Object object = manager.getInitObject(infos[i]);
       if (object instanceof IRutaLanguageExtension) {
@@ -83,7 +83,7 @@ public class RutaExtensionManager {
 
   public ISourceElementRequestVisitorExtension[] getSourceElementRequestoVisitorExtensions() {
     IRutaLanguageExtension[] extensions = getExtensions();
-    List result = new ArrayList();
+    List<ISourceElementRequestVisitorExtension> result = new ArrayList<>();
     for (int i = 0; i < extensions.length; i++) {
       ISourceElementRequestVisitorExtension visitorExtension = extensions[i]
               .createSourceElementRequestVisitorExtension();
@@ -97,7 +97,7 @@ public class RutaExtensionManager {
 
   public IMixinBuildVisitorExtension[] getMixinVisitorExtensions() {
     IRutaLanguageExtension[] extensions = getExtensions();
-    List result = new ArrayList();
+    List<IMixinBuildVisitorExtension> result = new ArrayList<>();
     for (int i = 0; i < extensions.length; i++) {
       IMixinBuildVisitorExtension visitorExtension = extensions[i]
               .createMixinBuildVisitorExtension();
@@ -111,7 +111,7 @@ public class RutaExtensionManager {
 
   public IMatchLocatorExtension[] getMatchLocatorExtensions() {
     IRutaLanguageExtension[] extensions = getExtensions();
-    List result = new ArrayList();
+    List<IMatchLocatorExtension> result = new ArrayList<>();
     for (int i = 0; i < extensions.length; i++) {
       IMatchLocatorExtension visitorExtension = extensions[i].createMatchLocatorExtension();
       if (visitorExtension != null) {
@@ -123,7 +123,7 @@ public class RutaExtensionManager {
 
   public ICompletionExtension[] getCompletionExtensions() {
     IRutaLanguageExtension[] extensions = getExtensions();
-    List result = new ArrayList();
+    List<ICompletionExtension> result = new ArrayList<>();
     for (int i = 0; i < extensions.length; i++) {
       ICompletionExtension visitorExtension = extensions[i].createCompletionExtension();
       if (visitorExtension != null) {
@@ -135,7 +135,7 @@ public class RutaExtensionManager {
 
   public ISelectionExtension[] getSelectionExtensions() {
     IRutaLanguageExtension[] extensions = getExtensions();
-    List result = new ArrayList();
+    List<ISelectionExtension> result = new ArrayList<>();
     for (int i = 0; i < extensions.length; i++) {
       ISelectionExtension visitorExtension = extensions[i].createSelectionExtension();
       if (visitorExtension != null) {

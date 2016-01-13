@@ -110,7 +110,7 @@ public class RutaStatement extends Statement {
   public void printNode(CorePrinter output) {
     if (this.expressions != null) {
       output.formatPrintLn("");
-      Iterator i = this.expressions.iterator();
+      Iterator<Expression> i = this.expressions.iterator();
       while (i.hasNext()) {
         ASTNode node = (ASTNode) i.next();
         node.printNode(output);
@@ -123,7 +123,7 @@ public class RutaStatement extends Statement {
   public String toString() {
     String value = "";
     if (this.expressions != null) {
-      Iterator i = this.expressions.iterator();
+      Iterator<Expression> i = this.expressions.iterator();
       while (i.hasNext()) {
         ASTNode node = (ASTNode) i.next();
         value += node.toString();

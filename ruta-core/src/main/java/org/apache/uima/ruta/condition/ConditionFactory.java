@@ -20,8 +20,10 @@
 package org.apache.uima.ruta.condition;
 
 import java.util.List;
+import java.util.Map;
 
 import org.antlr.runtime.Token;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
@@ -32,6 +34,7 @@ import org.apache.uima.ruta.expression.string.AbstractStringListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
 
 public class ConditionFactory {
 
@@ -305,6 +308,23 @@ public class ConditionFactory {
 
   public static AbstractRutaCondition createImplicitCondition(IRutaExpression expr) {
     return new ImplicitCondition(expr);
+  }
+
+  public static AbstractRutaCondition createMacroCondition(Token id, List<IRutaExpression> args, RutaBlock env) {
+    String name = id.getText();
+    Pair<Map<String, String>, List<AbstractRutaCondition>> macroConditionDefinition = env
+            .getEnvironment().getMacroCondition(name);
+    if (macroConditionDefinition == null) {
+      return null;
+    }
+    Map<String, String> definition = macroConditionDefinition.getKey();
+    List<AbstractRutaCondition> conditions = macroConditionDefinition.getValue();
+    if (definition.size() != args.size()) {
+      throw new RutaParseRuntimeException("Arguments of macro action '" + name
+              + "' do not match its definition: " + definition.values());
+    }
+
+    return new MacroCondition(name, definition, conditions, args);
   }
 
 }
