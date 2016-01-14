@@ -379,8 +379,8 @@ public class StatementFactory extends AbstractFactory {
     SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], name.getText(),
             k);
     RutaExpressionList expr = new RutaExpressionList(elements); 
-    return new RutaVariableDeclaration(name.getText(), nameBounds[0], nameBounds[1], declBounds[0],
-            declBounds[1], ref, k, expr);
+    return new RutaMacroDeclaration(name.getText(), nameBounds[0], nameBounds[1], declBounds[0],
+            declBounds[1], ref, k, def, expr);
   }
 
 
