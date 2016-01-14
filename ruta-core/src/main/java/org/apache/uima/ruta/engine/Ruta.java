@@ -27,27 +27,66 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.analysis_engine.metadata.AnalysisEngineMetaData;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.impl.FeatureStructureImplC;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.type.DebugBlockApply;
+import org.apache.uima.ruta.type.DebugMatchedRuleMatch;
+import org.apache.uima.ruta.type.DebugRuleApply;
+import org.apache.uima.ruta.type.DebugRuleMatch;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 
 public class Ruta {
+
+  /**
+   * This applies the given rule on the given JCas object
+   * 
+   * @param jcas
+   * @param String
+   *          containing one or more rules in valid ruta syntax
+   * @param configurationData
+   *          with additional configuration parameter pairs
+   * @throws ResourceInitializationException
+   * @throws AnalysisEngineProcessException
+   */
+  public static void applyRule(JCas jcas, String rule, Object... configurationData)
+          throws ResourceInitializationException, AnalysisEngineProcessException {
+    AnalysisEngine ae = null;
+    if (configurationData == null || configurationData.length == 0) {
+      ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES, rule);
+    } else {
+      Object[] config = ArrayUtils.addAll(configurationData, RutaEngine.PARAM_RULES, rule);
+      ae = AnalysisEngineFactory.createEngine(RutaEngine.class, config);
+    }
+    ae.process(jcas);
+    ae.destroy();
+  }
 
   public static void apply(CAS cas, String script, Map<String, Object> parameters)
           throws IOException, InvalidXMLException, ResourceInitializationException,
@@ -79,6 +118,164 @@ public class Ruta {
           AnalysisEngineProcessException, URISyntaxException {
     apply(cas, script, null);
   }
+
+  private static List<Annotation> getRuleMatches(JCas jcas) {
+    List<Annotation> result = new LinkedList<>();
+    Collection<DebugBlockApply> blockApplies = JCasUtil.select(jcas, DebugBlockApply.class);
+    for (DebugBlockApply debugBlockApply : blockApplies) {
+      collectRuleMatches(debugBlockApply, result);
+    }
+    return result;
+  }
+  
+  private static int countRuleApplies(JCas jcas) {
+    int result = 0;
+    Collection<DebugBlockApply> blockApplies = JCasUtil.select(jcas, DebugBlockApply.class);
+    for (DebugBlockApply debugBlockApply : blockApplies) {
+      result += countRuleApplies(debugBlockApply);
+    }
+    return result;
+  }
+
+  private static int countRuleApplies(Annotation annotation) {
+    int result = 0;
+    if (annotation instanceof DebugBlockApply) {
+      DebugBlockApply dba = (DebugBlockApply) annotation;
+      FSArray innerApply = dba.getInnerApply();
+      for (int i = 0; i < innerApply.size(); i++) {
+        Annotation each = (Annotation) innerApply.get(i);
+        result += countRuleApplies(each);
+      }
+    } else if (annotation instanceof DebugRuleApply) {
+      DebugRuleApply dra = (DebugRuleApply) annotation;
+      result += dra.getApplied();
+    }
+    return result;
+  }
+
+  private static void collectRuleMatches(Annotation annotation, List<Annotation> result) {
+    if (annotation instanceof DebugBlockApply) {
+      DebugBlockApply dba = (DebugBlockApply) annotation;
+      FSArray innerApply = dba.getInnerApply();
+      for (int i = 0; i < innerApply.size(); i++) {
+        Annotation each = (Annotation) innerApply.get(i);
+        collectRuleMatches(each, result);
+      }
+    } else if (annotation instanceof DebugRuleApply) {
+      DebugRuleApply dra = (DebugRuleApply) annotation;
+      FSArray rules = dra.getRules();
+      for (int i = 0; i < rules.size(); i++) {
+        Annotation each = (Annotation) rules.get(i);
+        collectRuleMatches(each, result);
+      }
+    } else if (annotation instanceof DebugMatchedRuleMatch) {
+      DebugMatchedRuleMatch dmrm = (DebugMatchedRuleMatch) annotation;
+      result.add(dmrm);
+    }
+  }
+  
+  private static void removeDebugInformationFromIndex(JCas jcas) {
+    jcas.removeAllIncludingSubtypes(DebugBlockApply.type);
+    jcas.removeAllIncludingSubtypes(DebugRuleApply.type);
+    jcas.removeAllIncludingSubtypes(DebugRuleMatch.type);
+  }
+
+  public static String inject(String script, String placeholder, int[] addresses) {
+    // TODO provide a robust implementation considering also other $, e.g., in strings
+    String quote = Pattern.quote(placeholder);
+    Pattern pattern = Pattern.compile(quote);
+    Matcher matcher = pattern.matcher(script);
+    StringBuilder sb = new StringBuilder();
+    int start = 0;
+    int counter = 0;
+    while(matcher.find(start)) {
+      String group = matcher.group();
+      sb.append(script.substring(start, matcher.start()));
+      if(counter < addresses.length) {
+        sb.append("$" + addresses[0]);
+      } else {
+        sb.append("$" + group);
+      }
+      start = matcher.end();
+    }
+    if(start <script.length()) {
+      sb.append(script.substring(start, script.length()));
+    }
+    return sb.toString();
+  }
+
+  public static String inject(String script, Annotation... annotations) {
+    return inject(script, "$", getAddresses(annotations));
+  }
+  
+
+  public static String inject(String script, FeatureStructureImplC... annotations) {
+    return inject(script, "$", getAddresses(annotations));
+  }
+
+  
+  private static int[] getAddresses(FeatureStructureImplC[] annotations) {
+    int[] result = new int[annotations.length];
+    for (int i = 0; i < annotations.length; i++) {
+      result[i] = annotations[i].getAddress();
+      
+    }
+    return result;
+  }
+
+  private static int[] getAddresses(Annotation[] annotations) {
+    int[] result = new int[annotations.length];
+    for (int i = 0; i < annotations.length; i++) {
+      result[i] = annotations[i].getAddress();
+      
+    }
+    return result;
+  }
+
+  /**
+   * This method returns the spans of successful rule applies.
+   * 
+   * @param jcas
+   * @param String
+   *          containing one or more rules in valid ruta syntax
+   * @param configurationData
+   *          with additional configuration parameter pairs
+   * @return list of successful rule matches
+   * @throws AnalysisEngineProcessException
+   * @throws ResourceInitializationException
+   */
+  public static List<Annotation> select(JCas jcas, String rule, Object... configurationData)
+          throws AnalysisEngineProcessException, ResourceInitializationException {
+    Object[] config = ArrayUtils.addAll(configurationData, RutaEngine.PARAM_DEBUG, true,
+            RutaEngine.PARAM_DEBUG_WITH_MATCHES, true);
+    applyRule(jcas, rule, config);
+    List<Annotation> ruleMatches = getRuleMatches(jcas);
+    removeDebugInformationFromIndex(jcas);
+    return ruleMatches;
+  }
+
+
+  /**
+   * This method returns true if the rule (or one of the rules) was able to match.
+   * 
+   * @param jcas
+   * @param String
+   *          containing one or more rules in valid ruta syntax
+   * @param configurationData
+   *          with additional configuration parameter pairs
+   * @return list of successful rule matches
+   * @throws AnalysisEngineProcessException
+   * @throws ResourceInitializationException
+   */
+  public static boolean matches(JCas jcas, String rule, Object... configurationData)
+          throws AnalysisEngineProcessException, ResourceInitializationException {
+    Object[] config = ArrayUtils.addAll(configurationData, RutaEngine.PARAM_DEBUG, true);
+    applyRule(jcas, rule, config);
+    int applies = countRuleApplies(jcas);
+    removeDebugInformationFromIndex(jcas);
+    return applies > 0;
+  }
+  
 
   public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName)
           throws ResourceInitializationException, ResourceConfigurationException,
@@ -115,11 +312,13 @@ public class Ruta {
     }
   }
 
+  @Deprecated
   public static AnalysisEngineDescription createAnalysisEngineDescription(String script)
           throws IOException, InvalidXMLException, ResourceInitializationException {
     return createAnalysisEngineDescription(script, (TypeSystemDescription[]) null);
   }
 
+  @Deprecated
   public static AnalysisEngineDescription createAnalysisEngineDescription(String script,
           TypeSystemDescription... tsds) throws IOException, InvalidXMLException,
           ResourceInitializationException {
