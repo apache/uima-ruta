@@ -406,6 +406,18 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   @ConfigurationParameter(name = PARAM_VAR_VALUES, mandatory = false, defaultValue = {})
   private String[] varValues;
 
+  /**
+   * This parameter specifies the annotation types which should be reindex for ruta's internal annotations
+   * All annotation types that changed since the last call of a ruta script need to be listed here. 
+   * The value of this parameter needs only be adapted for performance optimization in pipelines that 
+   * contains several ruta analysis engines.
+   * Default value is uima.tcas.Annotation
+   */
+  public static final String PARAM_REINDEX_ONLY = "reindexOnly";
+
+  @ConfigurationParameter(name = PARAM_REINDEX_ONLY, mandatory = false, defaultValue = {"uima.tcas.Annotation"})
+  private String[] reindexOnly;
+  
   private UimaContext context;
 
   private RutaModule script;
@@ -686,7 +698,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     RutaStream stream = new RutaStream(cas, basicType, filter, lowMemoryProfile,
             simpleGreedyForComposed, crowd);
 
-    stream.initalizeBasics();
+    stream.initalizeBasics(reindexOnly);
     return stream;
   }
 

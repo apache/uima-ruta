@@ -789,6 +789,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.reindexOnly'>reindexOnly</link>
+                  </entry>
+                  <entry>Option to select annotation types that should be reindex internally in ruta.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.strictImports'>strictImports</link>
                   </entry>
                   <entry>Option to restrict short type names resolution to those in the declared typesystems.
@@ -1016,6 +1024,16 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <para>
             This parameter specifies whether the inference annotations created by the analysis engine should be removed after processing the CAS.
             The default value is set to true.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.reindexOnly">
+          <title>reindexOnly</title>
+          <para>
+            This parameter specifies the annotation types which should be reindex for ruta's internal annotations
+            All annotation types that changed since the last call of a ruta script need to be listed here. 
+            The value of this parameter needs only be adapted for performance optimization in pipelines that 
+            contains several ruta analysis engines.
+            Default value is uima.tcas.Annotation
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.strictImports">

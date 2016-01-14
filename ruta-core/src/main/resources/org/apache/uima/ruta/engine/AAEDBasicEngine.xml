@@ -95,6 +95,15 @@
           <parameter>RutaEngine/varValues</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>reindexOnly</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RutaEngine/reindexOnly</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings/>
     <flowConstraints>

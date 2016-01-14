@@ -46,12 +46,13 @@ public class StackedScriptsTest {
 
   private static final int LINES = 1;
 
+  private static final int MANY_LINES = 100;
+
   String rules1 = "CW{->T1};";
 
   String rules2 = "T1 W{->T2} W{->T3};";
 
   String rules3 = "W{PARTOF({T1,T2,T3})->T4};";
-
 
   @Test
   public void testWithUimaFitAggregated() throws ResourceInitializationException,
@@ -63,20 +64,22 @@ public class StackedScriptsTest {
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules2),
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules3)));
 
-    CAS cas = getCAS();
+    CAS cas = getCAS(LINES);
 
     aae.process(cas);
-    
-    checkResult(cas);
+
+    checkResult(cas, LINES);
+
+    cas.release();
   }
 
   @Test
   public void testWithoutUimaFit() throws ResourceInitializationException, InvalidXMLException,
           IOException, AnalysisEngineProcessException, ResourceConfigurationException {
 
-    AnalysisEngine rutaAE1 = createAnalysisEngine(rules1);
-    AnalysisEngine rutaAE2 = createAnalysisEngine(rules2);
-    AnalysisEngine rutaAE3 = createAnalysisEngine(rules3);
+    AnalysisEngine rutaAE1 = createAnalysisEngine(rules1, null);
+    AnalysisEngine rutaAE2 = createAnalysisEngine(rules2, null);
+    AnalysisEngine rutaAE3 = createAnalysisEngine(rules3, null);
 
     processAndTest(rutaAE1, rutaAE2, rutaAE3);
 
@@ -85,25 +88,50 @@ public class StackedScriptsTest {
   private void processAndTest(AnalysisEngine rutaAE1, AnalysisEngine rutaAE2, AnalysisEngine rutaAE3)
           throws ResourceInitializationException, IOException, InvalidXMLException,
           AnalysisEngineProcessException {
-    CAS cas = getCAS();
+    CAS cas = getCAS(LINES);
 
     rutaAE1.process(cas);
     rutaAE2.process(cas);
     rutaAE3.process(cas);
 
-    checkResult(cas);
+    checkResult(cas, LINES);
+
+    cas.release();
   }
 
-  private void checkResult(CAS cas) {
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "is");
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "a");
-    RutaTestUtils.assertAnnotationsEquals(cas, 4, 3, "This", "is", "a");
+  private void checkResult(CAS cas, int lines) {
+
+    String[] t1 = new String[lines];
+    String[] t2 = new String[lines];
+    String[] t3 = new String[lines];
+    String[] t4 = new String[lines * 3];
+    for (int i = 0; i < lines; i++) {
+      t1[i] = "This";
+    }
+    for (int i = 0; i < lines; i++) {
+      t2[i] = "is";
+    }
+    for (int i = 0; i < lines; i++) {
+      t3[i] = "a";
+    }
+    for (int i = 0; i < lines * 3; i++) {
+      t4[i] = "This";
+      i++;
+      t4[i] = "is";
+      i++;
+      t4[i] = "a";
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1 * lines, t1);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1 * lines, t2);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1 * lines, t3);
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 3 * lines, t4);
   }
 
-  private CAS getCAS() throws ResourceInitializationException, IOException, InvalidXMLException {
+  private CAS getCAS(int lines) throws ResourceInitializationException, IOException,
+          InvalidXMLException {
     StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < LINES; i++) {
+    for (int i = 0; i < lines; i++) {
       sb.append(DOC_TEXT);
       sb.append("\n");
     }
@@ -111,8 +139,9 @@ public class StackedScriptsTest {
     return cas;
   }
 
-  private AnalysisEngine createAnalysisEngine(String rules) throws IOException,
-          InvalidXMLException, ResourceInitializationException, ResourceConfigurationException {
+  private AnalysisEngine createAnalysisEngine(String rules, String[] reindexOnly)
+          throws IOException, InvalidXMLException, ResourceInitializationException,
+          ResourceConfigurationException {
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
       url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/TestEngine.xml");
@@ -132,9 +161,49 @@ public class StackedScriptsTest {
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
 
     ae.setConfigParameterValue(RutaEngine.PARAM_RULES, rules);
+    if (reindexOnly != null) {
+      ae.setConfigParameterValue(RutaEngine.PARAM_REINDEX_ONLY, reindexOnly);
+    }
     ae.reconfigure();
     return ae;
 
+  }
+
+  @Test
+  public void testPerformanceOfReindexOnly() throws ResourceInitializationException,
+          InvalidXMLException, IOException, AnalysisEngineProcessException {
+    AnalysisEngine aaeNoReindex = createEngine(createEngineDescription(
+            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules1),
+            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules2),
+            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules3)));
+    AnalysisEngine aaeReindex = createEngine(createEngineDescription(
+            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules1,
+                    RutaEngine.PARAM_REINDEX_ONLY, new String[] { CAS.TYPE_NAME_ANNOTATION }),
+            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules2,
+                    RutaEngine.PARAM_REINDEX_ONLY, new String[] { RutaTestUtils.TYPE + "1" }),
+            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules3,
+                    RutaEngine.PARAM_REINDEX_ONLY, new String[] { RutaTestUtils.TYPE + "2",
+                        RutaTestUtils.TYPE + "3" })));
+
+    long start = 0;
+    long end = 0;
+    CAS cas = null;
+
+    cas = getCAS(MANY_LINES);
+    start = System.currentTimeMillis();
+    aaeNoReindex.process(cas);
+    end = System.currentTimeMillis();
+    checkResult(cas, MANY_LINES);
+    cas.release();
+    System.out.printf("Reindexing all... \t took %d ms %n", end - start);
+
+    cas = getCAS(MANY_LINES);
+    start = System.currentTimeMillis();
+    aaeReindex.process(cas);
+    end = System.currentTimeMillis();
+    checkResult(cas, MANY_LINES);
+    cas.release();
+    System.out.printf("Reindexing selected... \t took %d ms %n", end - start);
   }
 
 }

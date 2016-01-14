@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.BooleanArrayFS;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -175,15 +176,27 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     currentIt = filter.createFilteredIterator(cas, basicType);
   }
 
-  public void initalizeBasics() {
+  public void initalizeBasics(String[] reindexOnly) {
     AnnotationIndex<AnnotationFS> basicIndex = cas.getAnnotationIndex(basicType);
-    AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
+    
     final List<AnnotationFS> allAnnotations = new LinkedList<AnnotationFS>();
-    for (AnnotationFS a : annotationIndex) {
-      if (a.getBegin() != a.getEnd()) {
-        allAnnotations.add(a);
-      }
+    for (String eachTypeName : reindexOnly) {
+        Type type = cas.getTypeSystem().getType(eachTypeName);
+        if(type != null) {
+          AnnotationIndex<AnnotationFS> annotationIndex = null;
+          if(StringUtils.equals(eachTypeName, CAS.TYPE_NAME_ANNOTATION)) {
+            annotationIndex = cas.getAnnotationIndex();
+          } else {
+            annotationIndex = cas.getAnnotationIndex(type);
+          }
+          for (AnnotationFS a : annotationIndex) {
+            if (a.getBegin() != a.getEnd()) {
+              allAnnotations.add(a);
+            }
+          }
+        }
     }
+    
     if (basicIndex.size() == 0) {
       TreeSet<Integer> anchors = new TreeSet<Integer>();
       for (AnnotationFS a : allAnnotations) {
@@ -1167,5 +1180,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), type);
     return inWindow;
   }
+
+  
 
 }
