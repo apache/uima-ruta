@@ -197,10 +197,8 @@ public class RutaTestUtils {
   /**
    * Helper to get the test type, e.g. org.apache.uima.T1, org.apache.uima.T2, ...
    * 
-   * @param cas
-   *          The CAS object containing the type system
-   * @param i
-   *          typeId, converted to {@link #TYPE} + i
+   * @param cas - The CAS object containing the type system
+   * @param i - typeId, converted to {@link #TYPE} + i
    * @return the test type object with the given counter
    */
   public static Type getTestType(CAS cas, int i) {
@@ -268,10 +266,10 @@ public class RutaTestUtils {
   /**
    * Helper for common assertion in JUnit tests
    * 
-   * @param cas
-   * @param typeId
-   * @param expectedCnt
-   * @param expecteds
+   * @param cas - The CAS object containing the type system
+   * @param typeId - typeId, converted to {@link #TYPE} + i
+   * @param expectedCnt - the expected amount of annotations
+   * @param expecteds -  the exprected covered texts
    */
   public static void assertAnnotationsEquals(CAS cas, int typeId, int expectedCnt,
           String... expecteds) {
@@ -296,7 +294,7 @@ public class RutaTestUtils {
   /**
    * Helper to run Ruta on a tests script
    * 
-   * @param testClass
+   * @param testClass - the class of the unit test
    * @return the annotated {@link CAS}
    */
   public static CAS processTestScript(Class<?> testClass) {

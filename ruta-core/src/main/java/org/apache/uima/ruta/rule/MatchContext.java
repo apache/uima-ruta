@@ -42,11 +42,10 @@ public class MatchContext {
   /**
    * Container object of the current context during matching
    * 
-   * @param annotation
-   * @param element
-   * @param ruleMatch
-   * @param direction
-   *          , true: left to right, false, right to left
+   * @param annotation - the currently matched annotation
+   * @param element - the current rule element
+   * @param ruleMatch - the current rule match
+   * @param direction, true: left to right, false: right to left
    */
   public MatchContext(AnnotationFS annotation, RuleElement element, RuleMatch ruleMatch,
           boolean direction) {
@@ -63,10 +62,9 @@ public class MatchContext {
   /**
    * Container object of the current context during matching
    * 
-   * @param element
-   * @param ruleMatch
-   * @param direction
-   *          , true: left to right, false, right to left
+   * @param element - the current rule element
+   * @param ruleMatch - the current rule match
+   * @param direction - true: left to right, false: right to left
    */
   public MatchContext(RuleElement element, RuleMatch ruleMatch, boolean direction) {
     this(null, element, ruleMatch, direction);
@@ -75,21 +73,17 @@ public class MatchContext {
   /**
    * Container object of the current context during matching
    * 
-   * @param element
-   * @param ruleMatch
+   * @param element - the current rule element
+   * @param ruleMatch - the current rule match
    */
   public MatchContext(AbstractRuleElement element, RuleMatch ruleMatch) {
     this(element, ruleMatch, true);
   }
 
   /**
-   * Container object of the current context during matching
+   * Container object of the current context if not explicit match context is available. 
    * 
-   * @param annotation
-   * @param element
-   * @param ruleMatch
-   * @param direction
-   *          , true: left to right, false, right to left
+   * @param parent - the current ruta block
    */
   public MatchContext(RutaBlock parent) {
     super();

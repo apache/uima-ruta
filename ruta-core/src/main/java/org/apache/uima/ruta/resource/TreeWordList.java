@@ -69,10 +69,9 @@ public class TreeWordList implements RutaWordList {
   /**
    * Constructs a TreeWordList from a resource.
    * 
-   * @param resource
-   *          Resource to create a TextWordList from
+   * @param resource - Resource to create a TextWordList from
+   * @throws IOException
    * @throws IllegalArgumentException
-   *           When {@code resource.getFileName()} is null or does not end with .txt or .twl.
    */
   public TreeWordList(Resource resource, boolean dictRemoveWS) throws IOException {
     this.dictRemoveWS = dictRemoveWS;
@@ -101,8 +100,8 @@ public class TreeWordList implements RutaWordList {
   /**
    * Constructs a TreeWordList from a file with path = filename
    * 
-   * @param pathname
-   *          path of the file to create a TextWordList from
+   * @param pathname - path of the file to create a TextWordList from
+   * @param dictRemoveWS - remove whitespaces    
    */
   public TreeWordList(String pathname, boolean dictRemoveWS) throws IOException {
     this(new FileSystemResource(pathname), dictRemoveWS);
@@ -113,6 +112,7 @@ public class TreeWordList implements RutaWordList {
    * 
    * @param stream
    *          path of the file to create a TextWordList from
+   * @param dictRemoveWS - remove whitespaces    
    */
   public TreeWordList(InputStream stream, String name, boolean dictRemoveWS) throws IOException {
     this.dictRemoveWS = dictRemoveWS;

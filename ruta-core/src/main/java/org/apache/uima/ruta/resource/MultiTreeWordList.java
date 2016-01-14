@@ -211,10 +211,8 @@ public class MultiTreeWordList implements RutaWordList {
   /**
    * Creates a new Tree in the existing treeWordList from a file with path pathname
    * 
-   * @param stream
-   *          Input stream for the file containing the words for the treeWordList
-   * @param name
-   *          Associated name for the file
+   * @param stream - Input stream for the file containing the words for the treeWordList
+   * @param name - Associated name for the file
    */
   public void buildNewTree(InputStream stream, String name) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(stream, ENCODING));
@@ -933,8 +931,7 @@ public class MultiTreeWordList implements RutaWordList {
    * Returns a map with all strings with a specified edit distance to the string query as keys and
    * the files they belong to as values.
    * 
-   * @param query
-   *          The query string.
+   * @param query - The query string.
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
@@ -946,12 +943,9 @@ public class MultiTreeWordList implements RutaWordList {
    * Returns a map with all strings with a specified edit distance to the string query as keys and
    * the files they belong to as values.
    * 
-   * @param query
-   *          The query string.
-   * @param distance
-   *          The specified edit distance.
-   * @param ignoreCase
-   *          Indicates whether we search case sensitive or not.
+   * @param query - The query string.
+   * @param distance - The specified edit distance.
+   * @param ignoreCase - Indicates whether we search case sensitive or not.
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
@@ -964,14 +958,10 @@ public class MultiTreeWordList implements RutaWordList {
    * Returns a map with all strings with a specified edit distance to the string query as keys and
    * the files they belong to as values.
    * 
-   * @param query
-   *          The query string.
-   * @param distance
-   *          The specified edit distance.
-   * @param ignoreCase
-   *          Indicates whether we search case sensitive or not.
-   * @param fragment
-   *          Indicates whether we search for fragments of the query string or not.
+   * @param query - The query string.
+   * @param distance - The specified edit distance.
+   * @param ignoreCase - Indicates whether we search case sensitive or not.
+   * @param fragment - Indicates whether we search for fragments of the query string or not.
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
@@ -1013,26 +1003,16 @@ public class MultiTreeWordList implements RutaWordList {
    * Returns a map with all strings with a specified edit distance to the string query as keys and
    * the files they belong to as values.
    * 
-   * @param node
-   *          The MultiTextNode which is under consideration at the moment.
-   * @param query
-   *          The query string.
-   * @param result
-   *          The result which matched until now.
-   * @param distance
-   *          The remaining edit distance.
-   * @param index
-   *          The index of the query string at the moment.
-   * @param ignoreCase
-   *          Indicates whether we search case sensitive or not.
-   * @param fragment
-   *          Indicates whether we search for fragments of the query string or not.
-   * @param edm
-   *          The edit distance cost map we are using.
-   * @param lastActionInsert
-   *          Indicates whether the last action was an insert action.
-   * @param lastActionDelete
-   *          Indicates whether the last action was a delete action.
+   * @param node - The MultiTextNode which is under consideration at the moment.
+   * @param query - The query string.
+   * @param result - The result which matched until now.
+   * @param distance - The remaining edit distance.
+   * @param index - The index of the query string at the moment.
+   * @param ignoreCase - Indicates whether we search case sensitive or not.
+   * @param fragment - Indicates whether we search for fragments of the query string or not.
+   * @param edm - The edit distance cost map we are using.
+   * @param lastActionInsert - Indicates whether the last action was an insert action.
+   * @param lastActionDelete - Indicates whether the last action was a delete action.
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
@@ -1126,22 +1106,14 @@ public class MultiTreeWordList implements RutaWordList {
   /**
    * Checks if a string is contained by the MultiTreeWordList.
    * 
-   * @param node
-   *          The MultiTextNode which is under consideration at the moment.
-   * @param query
-   *          The query string.
-   * @param result
-   *          The result which matched until now.
-   * @param distance
-   *          The remaining edit distance.
-   * @param index
-   *          The index of the query string at the moment.
-   * @param ignoreCase
-   *          Indicates whether we search case sensitive or not.
-   * @param fragment
-   *          Indicates whether we search for fragments of the query string or not.
-   * @param edm
-   *          The edit distance cost map we are using.
+   * @param node - The MultiTextNode which is under consideration at the moment.
+   * @param query - The query string.
+   * @param result - The result which matched until now.
+   * @param distance - The remaining edit distance.
+   * @param index - The index of the query string at the moment.
+   * @param ignoreCase - Indicates whether we search case sensitive or not.
+   * @param fragment - Indicates whether we search for fragments of the query string or not.
+   * @param edm - The edit distance cost map we are using.
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
@@ -1236,83 +1208,6 @@ public class MultiTreeWordList implements RutaWordList {
     return false;
   }
 
-  // private Map<String, Set<String>> editDistance(MultiTextNode node, String query, String result,
-  // double distance, int index, boolean ignoreCase, String ignoreToken, boolean fragment,
-  // EditDistanceCostMap edm) {
-  //
-  //
-  // EditDistanceResultMap resultMap = new EditDistanceResultMap();
-  //
-  // // Delete.
-  // if (distance - edm.getDeleteCosts(node.getValue()) >= 0 && result.length() > 0) {
-  // resultMap.putAll(editDistance(node, query, result, distance
-  // - edm.getDeleteCosts(node.getValue()), index + 1, ignoreCase, ignoreToken, fragment,
-  // edm));
-  // }
-  //
-  // // Recursion stop.
-  // if (node.isWordEnd()) {
-  //
-  // HashMap<String, Set<String>> temp = new HashMap<String, Set<String>>();
-  //
-  // if (query.length() - index <= distance) {
-  // temp.put(result, new HashSet<String>(node.getTypes()));
-  // resultMap.putAll(temp);
-  // }
-  //
-  // // Ignore token at the end of the word.
-  // if (ignoreToken.contains(String.valueOf(node.getValue()))) {
-  // temp.put(result, new HashSet<String>(node.getTypes()));
-  // resultMap.putAll(temp);
-  // }
-  //
-  // if (node.getChildren() == null) {
-  // return resultMap;
-  // }
-  // }
-  //
-  // // Recursion.
-  // for (MultiTextNode tempNode : node.getChildren().values()) {
-  //
-  // if (index < query.length()) {
-  // if (ignoreCase) {
-  // if (Character.toLowerCase(tempNode.getValue()) == Character.toLowerCase(query
-  // .charAt(index))) {
-  // resultMap.putAll(editDistance(tempNode, query, result + tempNode.getValue(), distance,
-  // index + 1, ignoreCase, ignoreToken, fragment, edm));
-  // }
-  // } else {
-  // if (tempNode.getValue() == query.charAt(index)) {
-  // resultMap.putAll(editDistance(tempNode, query, result + tempNode.getValue(), distance,
-  // index + 1, ignoreCase, ignoreToken, fragment, edm));
-  // }
-  // }
-  // }
-  //
-  // if (distance - edm.getReplaceCosts(node.getValue(), tempNode.getValue()) >= 0) {
-  //
-  // // Substitute.
-  // resultMap.putAll(editDistance(tempNode, query, result + tempNode.getValue(), distance
-  // - edm.getReplaceCosts(node.getValue(), tempNode.getValue()), index + 1, ignoreCase,
-  // ignoreToken, fragment, edm));
-  // }
-  //
-  // // Ignore token.
-  // if (ignoreToken.contains(String.valueOf(tempNode.getValue()))) {
-  // resultMap.putAll(editDistance(tempNode, query, result + tempNode.getValue(), distance,
-  // index, ignoreCase, ignoreToken, fragment, edm));
-  // } else {
-  // if (distance - edm.getInsertCosts(tempNode.getValue()) >= 0) {
-  // // Insert - use the same index twice.
-  // resultMap.putAll(editDistance(tempNode, query, result + tempNode.getValue(), distance
-  // - edm.getInsertCosts(tempNode.getValue()), index, ignoreCase, ignoreToken,
-  // fragment, edm));
-  // }
-  // }
-  // }
-  //
-  // return resultMap;
-  // }
 
   @Override
   public int hashCode() {

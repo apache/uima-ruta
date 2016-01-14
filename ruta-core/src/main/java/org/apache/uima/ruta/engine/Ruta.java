@@ -67,13 +67,11 @@ public class Ruta {
   /**
    * This applies the given rule on the given JCas object
    * 
-   * @param jcas
-   * @param String
-   *          containing one or more rules in valid ruta syntax
-   * @param configurationData
-   *          with additional configuration parameter pairs
-   * @throws ResourceInitializationException
-   * @throws AnalysisEngineProcessException
+   * @param jcas - the current document
+   * @param rule - String containing one or more rules in valid ruta syntax
+   * @param configurationData - additional configuration parameter pairs
+   * @throws AnalysisEngineProcessException - problem while processing
+   * @throws ResourceInitializationException - problem while initializing
    */
   public static void applyRule(JCas jcas, String rule, Object... configurationData)
           throws ResourceInitializationException, AnalysisEngineProcessException {
@@ -235,14 +233,12 @@ public class Ruta {
   /**
    * This method returns the spans of successful rule applies.
    * 
-   * @param jcas
-   * @param String
-   *          containing one or more rules in valid ruta syntax
-   * @param configurationData
-   *          with additional configuration parameter pairs
+   * @param jcas - the current document
+   * @param rule - String containing one or more rules in valid ruta syntax
+   * @param configurationData - additional configuration parameter pairs
    * @return list of successful rule matches
-   * @throws AnalysisEngineProcessException
-   * @throws ResourceInitializationException
+   * @throws AnalysisEngineProcessException - problem while processing
+   * @throws ResourceInitializationException - problem while initializing
    */
   public static List<Annotation> select(JCas jcas, String rule, Object... configurationData)
           throws AnalysisEngineProcessException, ResourceInitializationException {
@@ -258,14 +254,12 @@ public class Ruta {
   /**
    * This method returns true if the rule (or one of the rules) was able to match.
    * 
-   * @param jcas
-   * @param String
-   *          containing one or more rules in valid ruta syntax
-   * @param configurationData
-   *          with additional configuration parameter pairs
-   * @return list of successful rule matches
-   * @throws AnalysisEngineProcessException
-   * @throws ResourceInitializationException
+   * @param jcas - the current document
+   * @param rule - String containing one or more rules in valid ruta syntax
+   * @param configurationData - additional configuration parameter pairs
+   * @return true if matched, false otherwise
+   * @throws AnalysisEngineProcessException - problem while processing
+   * @throws ResourceInitializationException - problem while initializing
    */
   public static boolean matches(JCas jcas, String rule, Object... configurationData)
           throws AnalysisEngineProcessException, ResourceInitializationException {

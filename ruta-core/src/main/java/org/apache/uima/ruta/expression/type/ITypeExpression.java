@@ -29,10 +29,8 @@ public interface ITypeExpression extends IStringExpression {
   /**
    * Returns the actual type of the TypeExpression
    * 
-   * @param context
-   *          - the match context
-   * @param stream
-   * 
+   * @param context - the match context
+   * @param stream - the current stream
    * @return annotation type
    * @throws IllegalArgumentException
    *           if the type cannot be resolved.
