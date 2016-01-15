@@ -21,10 +21,10 @@
    -->
 
 <head>
-  <title>Apache UIMA Ruta v2.3.1 Release Notes</title>
+  <title>Apache UIMA Ruta v2.4.0 Release Notes</title>
 </head>
 <body>
-<h1>Apache UIMA Ruta&#8482; v2.3.1 Release Notes</h1>
+<h1>Apache UIMA Ruta&#8482; v2.4.0 Release Notes</h1>
 
 <h2>Contents</h2>
 <p>
@@ -48,7 +48,27 @@
 
 <h2><a name="major.changes">2. Major Changes in this Release</a></h2>
 <p>
-  This is a bugfix release. It fixes diverse problems of the rule inference, the ruta-maven-plugin and the UIMA Ruta Workbench.
+  <p>UIMA Ruta Language and Analysis Engine:</p>
+  <ul>
+    <li>Explicit referencing of annotations with variables, labels and addresses</li>
+    <li>Helper methods for applying rules directly in Java code</li>
+    <li>New action for splitting annotations</li>
+    <li>New block for resetting match context</li>
+    <li>Import of uimaFIT analysis engines with manditory parameters</li>
+    <li>Macros for conditions and actions (prototypical)</li>
+    <li>Limited support of UIMA arrays (prototypical)</li>
+    <li>Many, many bug fixes and improvements</li>
+  </ul>
+  <p>UIMA Ruta Workbench:</p>
+  <ul>
+    <li>More support of external files</li>
+    <li>Bug fixes</li>
+  </ul>
+  <p>
+    This release requires an update of script projects and its descriptors in the UIMA Ruta Workbench, 
+   e.g, by deleting all descriptors and updating the script project.
+   Right-click on a project and select "UIMA Ruta -&gt; Convert to UIMA Ruta project
+</p>
 </p>
  
   

@@ -293,6 +293,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	 * @param parent - Block where the type should be imported.
 	 * @param typesystem - Typesystem from which to import the type.
 	 * @param qualifiedType - Type to import from the typesystem.
+	 * @param alias - aliad for the imported type
 	 */
     public void importTypeFromTypeSystem(RutaBlock parent, String typesystem, String qualifiedType, Token alias) {
         if (alias == null) {
