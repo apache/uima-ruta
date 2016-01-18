@@ -172,7 +172,12 @@ public class Ruta {
     }
   }
   
-  private static void removeDebugInformationFromIndex(JCas jcas) {
+  /**
+   * Removes all debug annotations from the index.
+   * 
+   * @param jcas - the current document
+   */
+  public static void removeDebugInformation(JCas jcas) {
     jcas.removeAllIncludingSubtypes(DebugBlockApply.type);
     jcas.removeAllIncludingSubtypes(DebugRuleApply.type);
     jcas.removeAllIncludingSubtypes(DebugRuleMatch.type);
@@ -246,7 +251,7 @@ public class Ruta {
             RutaEngine.PARAM_DEBUG_WITH_MATCHES, true);
     applyRule(jcas, rule, config);
     List<Annotation> ruleMatches = getRuleMatches(jcas);
-    removeDebugInformationFromIndex(jcas);
+    removeDebugInformation(jcas);
     return ruleMatches;
   }
 
@@ -266,7 +271,7 @@ public class Ruta {
     Object[] config = ArrayUtils.addAll(configurationData, RutaEngine.PARAM_DEBUG, true);
     applyRule(jcas, rule, config);
     int applies = countRuleApplies(jcas);
-    removeDebugInformationFromIndex(jcas);
+    removeDebugInformation(jcas);
     return applies > 0;
   }
   

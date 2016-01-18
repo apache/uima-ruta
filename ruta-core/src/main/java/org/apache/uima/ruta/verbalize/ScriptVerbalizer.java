@@ -63,9 +63,9 @@ public class ScriptVerbalizer {
 
   private static final String CBOPEN = "{";
 
-  private static final String THEN = " -> ";
+  private static final String THEN = "->";
 
-  private static final String THEN2 = " <- ";
+  private static final String THEN2 = "<-";
 
   private RutaVerbalizer verbalizer;
 
@@ -108,10 +108,16 @@ public class ScriptVerbalizer {
   public String verbalizeRule(RutaRule rule) {
     List<RuleElement> elements = rule.getRuleElements();
     StringBuilder result = new StringBuilder();
-    for (RuleElement each : elements) {
+    Iterator<RuleElement> iterator = elements.iterator();
+    while (iterator.hasNext()) {
+      RuleElement each = iterator.next();
       result.append(verbalizeRuleElement(each));
-      result.append(" ");
+      if(iterator.hasNext()) {
+        result.append(" ");
+      }
+      
     }
+    result.append(";");
     return result.toString();
   }
 
@@ -149,8 +155,9 @@ public class ScriptVerbalizer {
             }
           }
         }
+      } else {
+        result.append(verbalizeMatcher(tmre));
       }
-      result.append(verbalizeMatcher(tmre));
     } else if (re instanceof WildCardRuleElement) {
       result.append("#");
     }
@@ -187,8 +194,8 @@ public class ScriptVerbalizer {
         result.append(CBOPEN);
         for (RutaStatement rutaStatement : inlinedConditionRules) {
           result.append(verbalize(rutaStatement));
-          result.append(";");
         }
+        result.append(CBCLOSE);
       }
       List<RutaStatement> inlinedActionRules = are.getInlinedActionRules();
       if (inlinedActionRules != null && !inlinedActionRules.isEmpty()) {
@@ -196,8 +203,8 @@ public class ScriptVerbalizer {
         result.append(CBOPEN);
         for (RutaStatement rutaStatement : inlinedActionRules) {
           result.append(verbalize(rutaStatement));
-          result.append(";");
         }
+        result.append(CBCLOSE);
       }
     }
     return result.toString();
