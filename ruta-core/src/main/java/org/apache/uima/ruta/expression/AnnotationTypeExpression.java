@@ -123,4 +123,12 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
     return null;
   }
 
+  public MatchReference getReference() {
+    return reference;
+  }
+
+  public void setReference(MatchReference reference) {
+    this.reference = reference;
+  }
+
 }

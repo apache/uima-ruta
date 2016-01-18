@@ -22,6 +22,7 @@ package org.apache.uima.ruta.verbalize;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
@@ -76,6 +77,8 @@ public class ExpressionVerbalizer {
   public String verbalize(IRutaExpression expression) {
     if (expression instanceof GenericFeatureExpression) {
       return verbalize(((GenericFeatureExpression) expression).getFeatureExpression());
+    } else if (expression instanceof AnnotationTypeExpression) {
+      return verbalize((AnnotationTypeExpression) expression);
     } else if (expression instanceof ITypeExpression) {
       return verbalize((ITypeExpression) expression);
     } else if (expression instanceof IBooleanExpression) {
@@ -272,6 +275,10 @@ public class ExpressionVerbalizer {
 
   public String verbalize(MatchReference expression) {
     return expression.getMatch();
+  }
+  
+  public String verbalize(AnnotationTypeExpression expression) {
+    return verbalize(expression.getReference());
   }
 
   public String verbalize(FeatureExpression expression) {
