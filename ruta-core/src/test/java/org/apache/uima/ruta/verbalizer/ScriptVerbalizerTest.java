@@ -40,12 +40,13 @@ public class ScriptVerbalizerTest {
   public void testRuleVerbalization() throws Exception{
     JCas jcas = RutaTestUtils.getCAS("Some text.").getJCas();
     
-    assertRuleVerbalization(jcas, "W{->T1} W{->T2};");
-    assertRuleVerbalization(jcas, "MARK(T1);", "Document{->MARK(T1)};");
-    assertRuleVerbalization(jcas, "T1<-{W PERIOD;};");
-    assertRuleVerbalization(jcas, "T1->{W{->T1} PERIOD;};");
-    assertRuleVerbalization(jcas, "T1<-{W PERIOD;}->{W{->T1} PERIOD;};");
-    assertRuleVerbalization(jcas, "W W? W?? W+ W+? W* W*? W[1,2] W[1,2]? #;");
+//    assertRuleVerbalization(jcas, "W{->T1} W{->T2};");
+//    assertRuleVerbalization(jcas, "MARK(T1);", "Document{->MARK(T1)};");
+//    assertRuleVerbalization(jcas, "T1<-{W PERIOD;};");
+//    assertRuleVerbalization(jcas, "T1->{W{->T1} PERIOD;};");
+//    assertRuleVerbalization(jcas, "T1<-{W PERIOD;}->{W{->T1} PERIOD;};");
+//    assertRuleVerbalization(jcas, "W W? W?? W+ W+? W* W*? W[1,2] W[1,2]? #;");
+    assertRuleVerbalization(jcas, "Document{CONTAINS(T1)->T2};");
     
     jcas.release();
   }
