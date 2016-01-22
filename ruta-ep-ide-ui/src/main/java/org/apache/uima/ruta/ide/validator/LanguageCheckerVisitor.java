@@ -599,6 +599,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       if (allLongTypeNames.contains(featText)) {
         return true;
       }
+      if(namespaces.keySet().contains(featText)) {
+        // wrong ast elements, alias interpreted as feature expression
+        return false;
+      }
       checkTypeOfFeatureMatch(featText, fme);
       return true;
     }
