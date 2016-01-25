@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.condition;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.AbstractTypeListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
+import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 
 public class ConditionFactory {
 
@@ -101,8 +103,21 @@ public class ConditionFactory {
                 (INumberExpression) arg4, (IBooleanExpression) arg5, parent);
       }
     }
-
-    return null;
+    StringBuilder sb = new StringBuilder();
+    RutaVerbalizer verb = new RutaVerbalizer();
+    Iterator<IRutaExpression> iterator = args.iterator();
+    while (iterator.hasNext()) {
+      IRutaExpression each = iterator.next();
+      sb.append(verb.verbalize(each));
+      sb.append("(");
+      sb.append(each.getClass().getSimpleName());
+      sb.append(")");
+      if(iterator.hasNext()) {
+        sb.append(", ");
+      }
+    }
+    
+    throw new RutaParseRuntimeException("The condition CONTAINS does not support the following arguments: " + sb.toString());
   }
 
   public static AbstractRutaCondition createConditionContains(ITypeExpression typeExpr,

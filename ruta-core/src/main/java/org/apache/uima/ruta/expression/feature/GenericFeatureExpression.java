@@ -39,11 +39,12 @@ import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.INumberListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.IStringListExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class GenericFeatureExpression extends ListExpression<Object> implements INumberExpression,
         IBooleanExpression, IStringExpression, IAnnotationExpression, IAnnotationListExpression,
-        IBooleanListExpression, INumberListExpression, IStringListExpression {
+        IBooleanListExpression, INumberListExpression, IStringListExpression, ITypeExpression {
 
   private FeatureExpression featureExpression;
 
@@ -62,6 +63,8 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   private IBooleanListExpression booleanListExpression;
 
   private IAnnotationListExpression annotationListExpression;
+
+  private ITypeExpression typeExpression;
 
   public GenericFeatureExpression(FeatureExpression fe) {
     super();
@@ -116,6 +119,15 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
     return annotationExpression.getAnnotation(context, stream);
   }
 
+  @Override
+  public Type getType(MatchContext context, RutaStream stream) {
+    // special case where an argument is interpreted as a type expression
+    if (typeExpression == null) {
+      typeExpression = featureExpression.getTypeExpr(context, stream);
+    }
+    return typeExpression.getType(context, stream);
+  }
+  
   public FeatureExpression getFeatureExpression() {
     return featureExpression;
   }
@@ -179,5 +191,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
     }
     return result;
   }
+
+  
 
 }

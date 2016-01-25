@@ -91,23 +91,22 @@ public class MinMaxReluctant extends AbstractRuleElementQuantifier {
     int minValue = min.getIntegerValue(context, stream);
     int maxValue = max.getIntegerValue(context, stream);
     List<RuleElementMatch> list = containerMatch.getInnerMatches().get(ruleElement);
+    int matchedSize = list != null ? list.size() : 0;
     if (list == null) {
-      if (maxValue > 0) {
+      if (maxValue > 0 && minValue != 0) {
         return true;
-      } else {
-        return false;
       }
-    }
-
-    int matchedSize = list.size();
-    if (list == null || list.isEmpty() || matchedSize < minValue) {
+    } else if (matchedSize < minValue) {
       return true;
     }
+
     RuleElementMatch lastMatch = null;
-    if (after) {
-      lastMatch = list.get(list.size() - 1);
-    } else {
-      lastMatch = list.get(0);
+    if (list != null) {
+      if (after) {
+        lastMatch = list.get(list.size() - 1);
+      } else {
+        lastMatch = list.get(0);
+      }
     }
 
     RuleElement nextElement = ruleElement.getContainer().getNextElement(after, ruleElement);
@@ -122,7 +121,8 @@ public class MinMaxReluctant extends AbstractRuleElementQuantifier {
     boolean nextMatched = nextElementMatched(nextElement, continueMatch);
 
     return (matchedSize < maxValue && matchedSize >= minValue && !nextMatched)
-            || (!lastMatch.matched() && matchedSize >= minValue && matchedSize <= maxValue && !nextMatched);
+            || (lastMatch != null && !lastMatch.matched() && matchedSize >= minValue
+                    && matchedSize <= maxValue && !nextMatched);
   }
 
   @Override
