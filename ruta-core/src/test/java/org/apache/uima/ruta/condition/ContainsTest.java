@@ -37,7 +37,6 @@ import org.junit.Test;
 public class ContainsTest {
 
   @Test
-  @Ignore
   public void test() {
 
     CAS cas = RutaTestUtils.processTestScript(this.getClass());
