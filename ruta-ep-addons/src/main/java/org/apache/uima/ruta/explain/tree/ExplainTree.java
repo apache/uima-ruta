@@ -305,6 +305,9 @@ public class ExplainTree {
   }
 
   private void prune(IExplainTreeNode node) {
+    if(node == null) {
+      return;
+    }
     List<IExplainTreeNode> children = node.getChildren();
     IExplainTreeNode parent = node.getParent();
     for (IExplainTreeNode each : new ArrayList<IExplainTreeNode>(children)) {
