@@ -24,9 +24,9 @@
   <name>Apache UIMA Ruta: ${project.artifactId}</name>
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>ruta-parent</artifactId>
+    <artifactId>ruta-ep-parent</artifactId>
     <version>2.4.1-SNAPSHOT</version>
-    <relativePath>../../ruta-parent/pom.xml</relativePath>
+    <relativePath>../../ruta-ep-parent/pom.xml</relativePath>
   </parent>
   <properties>
     <postNoticeText />
@@ -49,12 +49,6 @@
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-ep-ide-ui</artifactId>
       <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.dltk</groupId>
-      <artifactId>core</artifactId>
-      <version>[3.0.1,5.0.0)</version>
-      <scope>provided</scope>
     </dependency>
    <dependency>
       <groupId>org.antlr</groupId>

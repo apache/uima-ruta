@@ -22,9 +22,9 @@
   <artifactId>ruta-ep-caseditor</artifactId>
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>ruta-parent</artifactId>
+    <artifactId>ruta-ep-parent</artifactId>
     <version>2.4.1-SNAPSHOT</version>
-    <relativePath>../ruta-parent/pom.xml</relativePath>
+    <relativePath>../ruta-ep-parent/pom.xml</relativePath>
   </parent>
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>

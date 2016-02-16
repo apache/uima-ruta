@@ -48,7 +48,7 @@ public class ReferenceFinder extends ASTVisitor {
     if (node instanceof RutaAction) {
       RutaAction a = (RutaAction) node;
       if (ActionFactory.IMPLICIT.equals(a.getName()) && !a.getChilds().isEmpty()) {
-        Expression expression = a.getChilds().get(0);
+        ASTNode expression = a.getChilds().get(0);
         if (expression != null && !expression.getChilds().isEmpty()) {
           return (ASTNode) expression.getChilds().get(0);
         }
@@ -57,7 +57,7 @@ public class ReferenceFinder extends ASTVisitor {
     if (node instanceof RutaCondition) {
       RutaCondition c = (RutaCondition) node;
       if (ConditionFactory.IMPLICIT.equals(c.getName()) && !c.getChilds().isEmpty()) {
-        Expression expression = c.getChilds().get(0);
+        ASTNode expression = c.getChilds().get(0);
         if (expression != null && !expression.getChilds().isEmpty()) {
           return (ASTNode) expression.getChilds().get(0);
         }

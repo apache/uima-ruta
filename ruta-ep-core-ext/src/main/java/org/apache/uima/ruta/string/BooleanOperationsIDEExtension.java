@@ -28,6 +28,7 @@ import org.apache.uima.ruta.ide.core.extensions.IRutaCheckerProblemFactory;
 import org.apache.uima.ruta.ide.parser.ast.RutaFunction;
 import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.string.bool.BooleanOperationsExtension;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
@@ -46,13 +47,13 @@ public class BooleanOperationsIDEExtension implements IIDEBooleanFunctionExtensi
       RutaFunction f = (RutaFunction) element;
       String name = f.getName();
       boolean ok = true;
-      List<Expression> childs = f.getChilds();
+      List<ASTNode> childs = f.getChilds();
       if (childs.size() < 1) {
         IProblem problem = problemFactory.createWrongNumberOfArgumentsProblem(name, element, 1);
         rep.reportProblem(problem);
         ok = false;
       }
-      Expression expr = childs.get(0);
+      Expression expr = (Expression) childs.get(0);
       if (expr.getKind() != RutaTypeConstants.RUTA_TYPE_S) {
         IProblem problem = problemFactory.createWrongArgumentTypeProblem(expr, "TypeExpression");
         rep.reportProblem(problem);

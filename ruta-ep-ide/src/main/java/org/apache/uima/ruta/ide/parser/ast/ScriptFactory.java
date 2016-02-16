@@ -230,11 +230,13 @@ public class ScriptFactory extends AbstractFactory {
     filterNullObjects(body);
     int innerStart = 0;
     int innerEnd = 0;
+    List<ASTNode> list = new ArrayList<>();
     if (body != null && !body.isEmpty()) {
       innerStart = body.get(0).sourceStart();
       innerEnd = body.get(body.size() - 1).sourceEnd();
+      list.addAll(body);
     }
-    Block inner = new Block(innerStart, innerEnd, body);
+    Block inner = new Block(innerStart, innerEnd, list);
     block.acceptBody(inner, false);
     block.setRule(rule);
     block.setEnd(rc != null ? getBounds(rc)[1] : rule.sourceEnd());
