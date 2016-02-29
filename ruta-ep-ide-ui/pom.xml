@@ -107,12 +107,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.swt</groupId>
-      <artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
-      <version>[3.2.0,5.0.0)</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>ide</artifactId>
       <version>[3.3.0,5.0.0)</version>
