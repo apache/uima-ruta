@@ -31,7 +31,6 @@ import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.GlobalCASSource;
 import org.apache.uima.ruta.textruler.core.TextRulerToolkit;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 
 /**
  * This "algorithm" gets executed right before the real algorithms get started. It preprocesses the

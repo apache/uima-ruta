@@ -29,7 +29,6 @@ import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ExampleCondition extends AbstractRutaCondition {

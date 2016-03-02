@@ -20,7 +20,6 @@
 package org.apache.uima.ruta.testing.ui.views;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
@@ -36,7 +35,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;

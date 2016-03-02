@@ -23,11 +23,9 @@ import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
 import org.apache.uima.ruta.ide.core.extensions.IIDEBooleanFunctionExtension;
-import org.apache.uima.ruta.ide.core.extensions.IIDEStringFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IRutaCheckerProblemFactory;
 import org.apache.uima.ruta.ide.parser.ast.RutaFunction;
 import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
-import org.apache.uima.ruta.string.bool.BooleanOperationsExtension;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.compiler.problem.IProblem;

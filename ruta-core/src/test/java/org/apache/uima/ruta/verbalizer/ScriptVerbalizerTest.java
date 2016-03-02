@@ -21,8 +21,6 @@ package org.apache.uima.ruta.verbalizer;
 
 import java.util.Collection;
 
-import junit.framework.Assert;
-
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -33,6 +31,8 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.type.DebugBlockApply;
 import org.apache.uima.ruta.type.DebugRuleApply;
 import org.junit.Test;
+
+import junit.framework.Assert;
 
 public class ScriptVerbalizerTest {
 

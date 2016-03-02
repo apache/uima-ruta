@@ -24,8 +24,6 @@ import org.apache.uima.caseditor.ide.searchstrategy.ITypeSystemSearchStrategy;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
-import org.eclipse.core.filesystem.URIUtil;
-import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;
@@ -38,7 +36,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.dltk.internal.launching.LaunchConfigurationUtils;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
-import org.eclipse.ui.internal.Workbench;
 
 public class LastLaunchSearchStrategy implements ITypeSystemSearchStrategy {
 

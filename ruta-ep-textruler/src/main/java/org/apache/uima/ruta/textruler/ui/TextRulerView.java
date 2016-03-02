@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
-import org.apache.uima.ruta.textruler.core.GlobalCASSource;
 import org.apache.uima.ruta.textruler.extension.TextRulerController;
 import org.apache.uima.ruta.textruler.extension.TextRulerControllerDelegate;
 import org.apache.uima.ruta.textruler.extension.TextRulerLearner.TextRulerLearnerState;

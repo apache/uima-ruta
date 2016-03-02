@@ -31,7 +31,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ContainsTest {

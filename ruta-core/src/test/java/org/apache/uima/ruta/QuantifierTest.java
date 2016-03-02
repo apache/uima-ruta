@@ -21,8 +21,6 @@ package org.apache.uima.ruta;
 
 import java.io.IOException;
 
-import junit.framework.Assert;
-
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
@@ -31,6 +29,8 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
+
+import junit.framework.Assert;
 
 public class QuantifierTest {
   

@@ -28,7 +28,6 @@ import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.explain.ExplainConstants;
 import org.apache.uima.ruta.explain.failed.FailedView;
 import org.apache.uima.ruta.explain.matched.MatchedView;
-import org.apache.uima.ruta.explain.tree.IExplainTreeNode;
 import org.apache.uima.ruta.explain.tree.RuleElementRootNode;
 import org.apache.uima.ruta.explain.tree.RuleMatchNode;
 import org.eclipse.jface.resource.ImageDescriptor;

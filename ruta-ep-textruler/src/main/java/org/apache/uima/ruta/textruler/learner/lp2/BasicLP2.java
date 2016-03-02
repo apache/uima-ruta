@@ -34,7 +34,6 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
-import org.apache.uima.ruta.textruler.core.GlobalCASSource;
 import org.apache.uima.ruta.textruler.core.TextRulerAnnotation;
 import org.apache.uima.ruta.textruler.core.TextRulerBasicLearner;
 import org.apache.uima.ruta.textruler.core.TextRulerExample;

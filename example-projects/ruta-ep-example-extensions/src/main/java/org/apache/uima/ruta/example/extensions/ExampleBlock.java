@@ -34,7 +34,6 @@ import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.RuleApply;
 import org.apache.uima.ruta.rule.RuleMatch;
-import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 

@@ -20,8 +20,6 @@ package org.apache.uima.ruta.maven;
 
 import java.io.File;
 
-import junit.framework.Assert;
-
 import org.apache.maven.execution.DefaultMavenExecutionRequest;
 import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
@@ -37,6 +35,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.util.XMLInputSource;
 import org.codehaus.plexus.util.FileUtils;
+
+import junit.framework.Assert;
 
 
 public class RutaGenerateDescriptorMojoTest extends AbstractMojoTestCase {

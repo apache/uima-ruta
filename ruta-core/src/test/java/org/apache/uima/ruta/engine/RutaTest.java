@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -51,6 +49,8 @@ import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.Test;
+
+import junit.framework.Assert;
 
 public class RutaTest {
 

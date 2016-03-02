@@ -49,13 +49,11 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.textruler.TextRulerPlugin;
 import org.apache.uima.ruta.textruler.core.TextRulerTarget.MLTargetType;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLSerializer;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
 /**

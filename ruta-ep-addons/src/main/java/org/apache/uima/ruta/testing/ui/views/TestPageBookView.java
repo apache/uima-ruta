@@ -19,7 +19,6 @@
 
 package org.apache.uima.ruta.testing.ui.views;
 
-import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IMemento;
