@@ -44,6 +44,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -162,8 +163,12 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     IScriptProject scriptProject = AbstractScriptLaunchConfigurationDelegate
             .getScriptProject(configuration);
     extendedClasspath.addAll(getClassPath(scriptProject));
-
-    return extendedClasspath.toArray(new String[extendedClasspath.size()]);
+    String[] result = extendedClasspath.toArray(new String[extendedClasspath.size()]);
+    
+//    ILog log = RutaIdeUIPlugin.getDefault().getLog();
+//    log.log(new Status(IStatus.INFO, RutaIdeUIPlugin.PLUGIN_ID, "Classpath of "+ configuration.getName()+": " + StringUtils.join(result, ";")));
+    
+    return result;
   }
 
   public static List<String> getClassPath(IScriptProject project) throws CoreException {
