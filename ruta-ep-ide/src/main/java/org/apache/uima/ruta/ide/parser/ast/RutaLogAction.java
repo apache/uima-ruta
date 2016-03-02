@@ -21,7 +21,7 @@ package org.apache.uima.ruta.ide.parser.ast;
 
 import java.util.List;
 
-import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.ASTNode;
 
 public class RutaLogAction extends RutaAction {
   int[] logLevelBounds;
@@ -29,7 +29,7 @@ public class RutaLogAction extends RutaAction {
   boolean logLevelAssigned;
 
   public RutaLogAction(int exprStart, int exprEnd, String name, int nameStart, int nameEnd,
-          List<Expression> exprs, int levelStart, int levelEnd) {
+          List<ASTNode> exprs, int levelStart, int levelEnd) {
     super(exprStart, exprEnd, exprs, RutaActionConstants.A_LOG, name, nameStart, nameEnd);
     logLevelBounds = new int[2];
     logLevelBounds[0] = levelStart;

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.Token;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 
 public class ConditionFactory extends AbstractFactory {
@@ -47,11 +48,11 @@ public class ConditionFactory extends AbstractFactory {
             nameEnd);
   }
 
-  public static RutaCondition createCondition(Expression... exprsArray) {
-    List<Expression> exprL = new ArrayList<Expression>();
+  public static RutaCondition createCondition(ASTNode... exprsArray) {
+    List<ASTNode> exprL = new ArrayList<ASTNode>();
     if (exprsArray != null) {
       for (int i = 0; i < exprsArray.length; i++) {
-        Expression expression = exprsArray[i];
+        ASTNode expression = exprsArray[i];
         if (expression != null) {
           exprL.add(expression);
         }
@@ -80,7 +81,7 @@ public class ConditionFactory extends AbstractFactory {
       return null;
     }
     int bounds[] = getBounds(token);
-    return new RutaCondition(bounds[0], bounds[1], new ArrayList<Expression>(),
+    return new RutaCondition(bounds[0], bounds[1], new ArrayList<ASTNode>(),
             RutaConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[1]);
   }
 

@@ -23,11 +23,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 
 public class RutaCondition extends Expression {
-  protected List<Expression> exprs;
+  protected List<ASTNode> exprs;
 
   protected int kind;
 
@@ -43,13 +44,13 @@ public class RutaCondition extends Expression {
    * @param exprs
    * @param kind
    */
-  public RutaCondition(int start, int end, List<Expression> exprs, int kind, String name,
+  public RutaCondition(int start, int end, List<ASTNode> exprs, int kind, String name,
           int nameStart, int nameEnd) {
     super(start, end);
     if (exprs != null) {
       this.exprs = exprs;
     } else {
-      this.exprs = new ArrayList<Expression>();
+      this.exprs = new ArrayList<ASTNode>();
     }
     this.kind = kind;
     this.name = name;
@@ -65,8 +66,8 @@ public class RutaCondition extends Expression {
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
-      for (Iterator<Expression> iterator = exprs.iterator(); iterator.hasNext();) {
-        Expression expr = iterator.next();
+      for (Iterator<ASTNode> iterator = exprs.iterator(); iterator.hasNext();) {
+        ASTNode expr = iterator.next();
         if (expr != null) {
           expr.traverse(visitor);
         }
@@ -76,7 +77,7 @@ public class RutaCondition extends Expression {
   }
 
   @Override
-  public List<Expression> getChilds() {
+  public List<ASTNode> getChilds() {
     return exprs;
   }
 
