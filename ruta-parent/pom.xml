@@ -146,6 +146,17 @@ Creative Commons Attribution 3.0 License.
  
   </properties>
   
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.5</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
   <build>
     <pluginManagement>
       <plugins>

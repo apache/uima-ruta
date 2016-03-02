@@ -98,6 +98,7 @@
     <module>ruta-core</module>
     <module>ruta-core-ext</module>
 
+    <module>ruta-ep-parent</module>
     <module>ruta-ep-engine</module>
     <module>ruta-ep-ide</module>
     <module>ruta-ep-ide-ui</module>
