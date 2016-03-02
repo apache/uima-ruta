@@ -31,6 +31,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
@@ -55,9 +56,9 @@ public class ConfigureLearnersHandler implements IHandler {
     PreferenceNode node = new PreferenceNode("org.apache.uima.ruta.textruler.config", page);
     pm.addToRoot(node);
 
-    List<PreferenceNode> nodes = pm.getElements(0);
-    PreferenceNode top = null;
-    for (PreferenceNode n : nodes)
+    List<IPreferenceNode> nodes = pm.getElements(0);
+    IPreferenceNode top = null;
+    for (IPreferenceNode n : nodes)
       if (n.getId().equals("org.apache.uima.ruta.textruler.config"))
         top = n;
     if (top != null) {

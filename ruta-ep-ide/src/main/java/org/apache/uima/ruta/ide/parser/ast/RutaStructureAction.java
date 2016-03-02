@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 
@@ -33,7 +34,7 @@ public class RutaStructureAction extends RutaAction {
 
   private Map<Expression, Expression> assignments;
 
-  public RutaStructureAction(int start, int end, List<Expression> exprs, int kind, String name,
+  public RutaStructureAction(int start, int end, List<ASTNode> exprs, int kind, String name,
           int nameStart, int nameEnd, Map<Expression, Expression> assignments, Expression structure) {
     super(start, end, exprs, kind, name, nameStart, nameEnd);
     this.assignments = assignments;
@@ -44,7 +45,7 @@ public class RutaStructureAction extends RutaAction {
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
       structure.traverse(visitor);
-      for (Expression e : super.exprs) {
+      for (ASTNode e : super.exprs) {
         e.traverse(visitor);
       }
       Iterator<Entry<Expression, Expression>> it = assignments.entrySet().iterator();
@@ -60,8 +61,8 @@ public class RutaStructureAction extends RutaAction {
   }
 
   @Override
-  public List<Expression> getChilds() {
-    List<Expression> l = new ArrayList<Expression>();
+  public List<ASTNode> getChilds() {
+    List<ASTNode> l = new ArrayList<>();
     l.add(structure);
     l.addAll(assignments.keySet());
     l.addAll(assignments.values());
@@ -77,7 +78,7 @@ public class RutaStructureAction extends RutaAction {
     return structure;
   }
 
-  public List<Expression> getExpressions() {
+  public List<ASTNode> getExpressions() {
     return super.exprs;
   }
 }

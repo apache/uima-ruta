@@ -22,9 +22,9 @@
   <artifactId>ruta-ep-caseditor</artifactId>
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>ruta-parent</artifactId>
+    <artifactId>ruta-ep-parent</artifactId>
     <version>2.4.1-SNAPSHOT</version>
-    <relativePath>../ruta-parent/pom.xml</relativePath>
+    <relativePath>../ruta-ep-parent/pom.xml</relativePath>
   </parent>
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
@@ -59,12 +59,6 @@
       <groupId>org.eclipse</groupId>
       <artifactId>ui</artifactId>
       <version>[3.3.0,5.0.0)</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.swt.win32.win32</groupId>
-      <artifactId>x86</artifactId>
-      <version>[3.2.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

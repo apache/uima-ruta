@@ -26,6 +26,7 @@ import org.apache.uima.ruta.ide.core.extensions.IIDEConditionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IRutaCheckerProblemFactory;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
@@ -48,15 +49,15 @@ public class ExampleConditionIDEExtension implements IIDEConditionExtension {
         return false;
       }
       boolean ok = true;
-      List<Expression> childs = a.getChilds();
+      List<ASTNode> childs = a.getChilds();
       if (childs.size() != 2) {
         IProblem problem = problemFactory.createWrongNumberOfArgumentsProblem(name, element, 2);
         rep.reportProblem(problem);
         ok = false;
       }
-      for (Expression expression : childs) {
-        if (expression.getKind() != RutaTypeConstants.RUTA_TYPE_S) {
-          IProblem problem = problemFactory.createWrongArgumentTypeProblem(expression,
+      for (ASTNode expression : childs) {
+        if (expression instanceof Expression &&  ((Expression)expression).getKind() != RutaTypeConstants.RUTA_TYPE_S) {
+          IProblem problem = problemFactory.createWrongArgumentTypeProblem((Expression) expression,
                   "StringExpression");
           rep.reportProblem(problem);
           ok = false;
