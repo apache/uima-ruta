@@ -22,8 +22,8 @@ package org.apache.uima.ruta.ide.parser.ast;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTListNode;
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
+import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 import org.eclipse.dltk.utils.CorePrinter;
 
@@ -32,7 +32,7 @@ public class RutaListExpression extends RutaExpression {
 
   private int type;
 
-  public RutaListExpression(int start, int end, List<ASTNode> exprList, int type) {
+  public RutaListExpression(int start, int end, List<Expression> exprList, int type) {
     super(start, end, null, RutaTypeConstants.RUTA_TYPE_S);
     this.setExprs(new ASTListNode(start, end, exprList));
     this.type = type;

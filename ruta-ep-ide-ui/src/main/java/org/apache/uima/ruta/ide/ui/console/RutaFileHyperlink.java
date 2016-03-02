@@ -124,7 +124,12 @@ public class RutaFileHyperlink implements IHyperlink {
   }
 
   public IEditorInput getEditorInput(Object item) {
-    return EditorUtility.getEditorInput(item);
+    try {
+      return EditorUtility.getEditorInput(item);
+    } catch (CoreException e) {
+      DLTKDebugUIPlugin.log(e);
+      return null;
+    }
   }
 
   protected Object getSourceModule(String fileName) {

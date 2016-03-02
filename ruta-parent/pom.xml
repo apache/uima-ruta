@@ -101,10 +101,10 @@
 
     <!-- Temporary repository that contains osgi bundles like DLTK 3.0. Added to ease building the UIMA Ruta 
       Eclipse plugins that depend on bundles, which are not provided by public maven repositories. -->
-<!--     <repository> -->
-<!--       <id>ukp-osgi-releases</id> -->
-<!--       <url>http://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-ext-osgi-releases-local</url> -->
-<!--     </repository> -->
+    <repository>
+      <id>ukp-osgi-releases</id>
+      <url>http://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-ext-osgi-releases-local</url>
+    </repository>
 
   </repositories>
 
@@ -141,8 +141,8 @@ Creative Commons Attribution 3.0 License.
      BACKWARD_COMPATIBLE_USER        - minor version (=.+.0)
      NON_BACKWARD_COMPATIBLE         - major version (+.0.0)
      -->
-    <compat.level>BACKWARD_COMPATIBLE_IMPLEMENTER</compat.level>
-    <compat.previous.version>2.4.0</compat.previous.version>
+    <compat.level>BACKWARD_COMPATIBLE_USER</compat.level>
+    <compat.previous.version>2.3.1</compat.previous.version>
  
   </properties>
   

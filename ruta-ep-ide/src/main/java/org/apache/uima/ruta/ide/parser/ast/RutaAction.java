@@ -22,12 +22,11 @@ package org.apache.uima.ruta.ide.parser.ast;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 
 public class RutaAction extends Expression {
-  protected List<ASTNode> exprs;
+  protected List<Expression> exprs;
 
   protected int kind;
 
@@ -51,13 +50,13 @@ public class RutaAction extends Expression {
    * @param exprs
    * @param kind
    */
-  public RutaAction(int start, int end, List<ASTNode> exprs, int kind, String name,
+  public RutaAction(int start, int end, List<Expression> exprs, int kind, String name,
           int nameStart, int nameEnd) {
     super(start, end);
     if (exprs != null) {
       this.exprs = exprs;
     } else {
-      this.exprs = new ArrayList<ASTNode>();
+      this.exprs = new ArrayList<Expression>();
     }
     this.kind = kind;
     this.name = name;
@@ -88,7 +87,7 @@ public class RutaAction extends Expression {
   @Override
   public void traverse(ASTVisitor visitor) throws Exception {
     if (visitor.visit(this)) {
-      for (ASTNode expr : exprs) {
+      for (Expression expr : exprs) {
         if (expr != null) {
           expr.traverse(visitor);
         }
@@ -99,7 +98,7 @@ public class RutaAction extends Expression {
   }
 
   @Override
-  public List<ASTNode> getChilds() {
+  public List<Expression> getChilds() {
     return exprs;
   }
 

@@ -25,7 +25,6 @@ import java.util.List;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 import org.apache.uima.ruta.parser.RutaLexer;
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.BooleanLiteral;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
@@ -153,17 +152,16 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   // =====> STRING-EXPRESSIONS <======
   public static RutaStringExpression createStringExpression(List<Expression> exprList) {
-    List<ASTNode> l = new ArrayList<>();
+    if (exprList == null) {
+      exprList = new ArrayList<Expression>();
+    }
     int start = 0;
     int end = 0;
-    if (exprList != null) {
-      l.addAll(exprList);
-      if (!exprList.isEmpty()) {
-        start = exprList.get(0).sourceStart();
-        end = exprList.get(exprList.size() - 1).sourceEnd();
-      }
+    if (!exprList.isEmpty()) {
+      start = exprList.get(0).sourceStart();
+      end = exprList.get(exprList.size() - 1).sourceEnd();
     }
-    return new RutaStringExpression(start, end, l);
+    return new RutaStringExpression(start, end, exprList);
   }
 
   public static StringLiteral createSimpleString(Token stringToken) {
@@ -321,22 +319,21 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   }
 
   public static Expression createListExpression(List<Expression> exprList, int type) {
-    List<ASTNode> l = new ArrayList<>();
+    if (exprList == null) {
+      exprList = new ArrayList<Expression>();
+    }
     int start = 0;
     int end = 0;
-    if (exprList != null) {
-      l.addAll(exprList);
-      if (!exprList.isEmpty()) {
-        start = exprList.get(0).sourceStart();
-        Expression expression = exprList.get(exprList.size() - 1);
-        if (expression != null) {
-          end = expression.sourceEnd();
-        } else {
-          end = exprList.get(0).sourceEnd();
-        }
+    if (!exprList.isEmpty()) {
+      start = exprList.get(0).sourceStart();
+      Expression expression = exprList.get(exprList.size() - 1);
+      if (expression != null) {
+        end = expression.sourceEnd();
+      } else {
+        exprList.get(0).sourceEnd();
       }
     }
-    return new RutaListExpression(start, end, l, type);
+    return new RutaListExpression(start, end, exprList, type);
   }
 
   public static Expression createListExpression(Token var, int type) {
@@ -377,7 +374,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     int bounds[] = getBounds(type);
     int nameStart = bounds[0];
     int nameEnd = bounds[1];
-    List<ASTNode> exprs = new ArrayList<>();
+    List<Expression> exprs = new ArrayList<Expression>();
     if (exprsRaw != null) {
       for (Object expressionObj : exprsRaw) {
         Expression expr = (Expression) expressionObj;
@@ -402,7 +399,6 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     list.add(fe);
     return createStringExpression(list);
   }
-
   public static Expression createNullExpression(Token t) {
     int bounds[] = getBounds(t);
     return new NullExpression(bounds[0], bounds[1]);

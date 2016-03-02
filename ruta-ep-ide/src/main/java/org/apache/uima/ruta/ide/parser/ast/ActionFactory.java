@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.runtime.Token;
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 
@@ -34,11 +33,11 @@ public class ActionFactory extends AbstractFactory {
 
   public static final String IMPLICIT = "Implicit";
   
-  public static RutaAction createAction(Token type, List<Expression> exprsRaw) {
+  public static RutaAction createAction(Token type, List exprsRaw) {
     int bounds[] = getBounds(type);
     int nameStart = bounds[0];
     int nameEnd = bounds[1];
-    List<ASTNode> exprs = new ArrayList<>();
+    List<Expression> exprs = new ArrayList<Expression>();
     if (exprsRaw != null) {
       for (Object expressionObj : exprsRaw) {
         Expression expr = (Expression) expressionObj;
@@ -70,7 +69,7 @@ public class ActionFactory extends AbstractFactory {
 
   public static RutaAction createEmptyAction(Token token) {
     int bounds[] = getBounds(token);
-    return new RutaAction(bounds[0], bounds[1], new ArrayList<ASTNode>(),
+    return new RutaAction(bounds[0], bounds[1], new ArrayList<Expression>(),
             RutaConditionConstants.CONSTANT_OFFSET, "", bounds[0], bounds[1]);
   }
 
@@ -111,7 +110,7 @@ public class ActionFactory extends AbstractFactory {
    * @param bounds
    * @param exprs
    */
-  private static void filterNullObjsAndSetBounds(List left, int[] bounds, List<ASTNode> exprs) {
+  private static void filterNullObjsAndSetBounds(List left, int[] bounds, List<Expression> exprs) {
     if (left != null) {
       for (Object expressionObj : left) {
         Expression expr = (Expression) expressionObj;
@@ -120,7 +119,7 @@ public class ActionFactory extends AbstractFactory {
         }
       }
       if (!exprs.isEmpty()) {
-        ASTNode lastExpr = exprs.get(exprs.size() - 1);
+        Expression lastExpr = exprs.get(exprs.size() - 1);
         bounds[1] = Math.max(bounds[1], lastExpr.sourceEnd());
       }
     }
@@ -150,7 +149,7 @@ public class ActionFactory extends AbstractFactory {
     int bounds[] = getBounds(type);
     int nameStart = bounds[0];
     int nameEnd = bounds[1];
-    List<ASTNode> numExprs = new ArrayList<>();
+    List<Expression> numExprs = new ArrayList<Expression>();
     Map<Expression, Expression> assignments = new LinkedHashMap<Expression, Expression>();
     List<Expression> indexes = new ArrayList<Expression>();
     indexes.add(table);
@@ -212,7 +211,7 @@ public class ActionFactory extends AbstractFactory {
     int bounds[] = getBounds(name);
     int nameStart = bounds[0];
     int nameEnd = bounds[1];
-    List<ASTNode> numExprs = new ArrayList<>();
+    List<Expression> numExprs = new ArrayList<Expression>();
     Map<Expression, Expression> assignments = new LinkedHashMap<Expression, Expression>();
     filterNullObjsAndSetBounds(args, bounds, numExprs);
     if (left != null && right != null) {
@@ -237,7 +236,7 @@ public class ActionFactory extends AbstractFactory {
   }
 
   public static RutaAction createAction(Expression... exprsArray) {
-    List<ASTNode> exprL = new ArrayList<>();
+    List<Expression> exprL = new ArrayList<Expression>();
     if (exprsArray != null) {
       for (int i = 0; i < exprsArray.length; i++) {
         Expression expression = exprsArray[i];

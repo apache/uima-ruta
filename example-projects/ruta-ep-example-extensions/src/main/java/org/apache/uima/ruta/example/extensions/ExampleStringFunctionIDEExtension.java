@@ -26,7 +26,6 @@ import org.apache.uima.ruta.ide.core.extensions.IIDEStringFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IRutaCheckerProblemFactory;
 import org.apache.uima.ruta.ide.parser.ast.RutaFunction;
 import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
@@ -49,15 +48,15 @@ public class ExampleStringFunctionIDEExtension implements IIDEStringFunctionExte
         return false;
       }
       boolean ok = true;
-      List<ASTNode> childs = f.getChilds();
+      List<Expression> childs = f.getChilds();
       if (childs.size() != 1) {
         IProblem problem = problemFactory.createWrongNumberOfArgumentsProblem(name, element, 1);
         rep.reportProblem(problem);
         ok = false;
       }
-      ASTNode expr = childs.get(0);
-      if (expr instanceof Expression &&  ((Expression)expr).getKind() != RutaTypeConstants.RUTA_TYPE_AT) {
-        IProblem problem = problemFactory.createWrongArgumentTypeProblem((Expression) expr, "TypeExpression");
+      Expression expr = childs.get(0);
+      if (expr.getKind() != RutaTypeConstants.RUTA_TYPE_AT) {
+        IProblem problem = problemFactory.createWrongArgumentTypeProblem(expr, "TypeExpression");
         rep.reportProblem(problem);
         ok = false;
       }

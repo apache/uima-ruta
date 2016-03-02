@@ -26,7 +26,6 @@ import org.apache.uima.ruta.ide.core.extensions.IIDEActionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IRutaCheckerProblemFactory;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
@@ -49,10 +48,10 @@ public class ExampleActionIDEExtension implements IIDEActionExtension {
         return false;
       }
       boolean ok = true;
-      List<ASTNode> childs = a.getChilds();
-      for (ASTNode each : childs) {
-        if (each instanceof Expression &&  ((Expression)each).getKind() != RutaTypeConstants.RUTA_TYPE_N) {
-          IProblem problem = problemFactory.createWrongArgumentTypeProblem((Expression) each,
+      List<Expression> childs = a.getChilds();
+      for (Expression expression : childs) {
+        if (expression.getKind() != RutaTypeConstants.RUTA_TYPE_N) {
+          IProblem problem = problemFactory.createWrongArgumentTypeProblem(expression,
                   "NumberExpression");
           rep.reportProblem(problem);
           ok = false;

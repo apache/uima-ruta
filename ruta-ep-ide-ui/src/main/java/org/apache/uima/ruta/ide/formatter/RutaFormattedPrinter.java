@@ -529,7 +529,7 @@ public class RutaFormattedPrinter extends ASTVisitor {
     append(COMMA);
     append(" ");
     // number expressions
-    List<ASTNode> indices = tmca.getExpressions();
+    List<Expression> indices = tmca.getExpressions();
     if (indices != null) {
       traverseAstNodes(indices);
       if (!indices.isEmpty()) {
@@ -594,7 +594,7 @@ public class RutaFormattedPrinter extends ASTVisitor {
     append(COMMA);
     append(" ");
     // number expressions
-    List<ASTNode> indices = tmca.getExpressions();
+    List<Expression> indices = tmca.getExpressions();
     if (indices != null) {
       traverseAstNodes(indices);
     }
