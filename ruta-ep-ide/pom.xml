@@ -43,6 +43,11 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>
+      <artifactId>contenttype</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
       <artifactId>resources</artifactId>
       <version>[3.3.0,6.0.0)</version>
       <scope>provided</scope>
