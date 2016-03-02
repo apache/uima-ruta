@@ -43,7 +43,7 @@ public class RutaSourceLookupDirector implements IPersistableSourceLocator {
   public Object getSourceElement(IStackFrame stackFrame) {
     if (stackFrame instanceof ScriptStackFrame) {
       ScriptStackFrame sf = (ScriptStackFrame) stackFrame;
-      URI uri = sf.getFileName();
+      URI uri = sf.getSourceURI();
 
       String pathname = uri.getPath();
       if (Platform.getOS().equals(Platform.OS_WIN32)) {

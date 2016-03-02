@@ -19,9 +19,6 @@
 
 package org.apache.uima.ruta.ide.launching;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -35,7 +32,6 @@ public class RutaSourcePathComputer implements ISourcePathComputerDelegate {
 
   public ISourceContainer[] computeSourceContainers(ILaunchConfiguration configuration,
           IProgressMonitor monitor) throws CoreException {
-    List containers = new ArrayList();
-    return (ISourceContainer[]) containers.toArray(new ISourceContainer[containers.size()]);
+    return new ISourceContainer[0];
   }
 }

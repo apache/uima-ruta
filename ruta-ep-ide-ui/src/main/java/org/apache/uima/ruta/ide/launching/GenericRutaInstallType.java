@@ -75,7 +75,7 @@ public class GenericRutaInstallType extends AbstractInterpreterInstallType {
   }
 
   @Override
-  protected void filterEnvironment(Map environment) {
+  protected void filterEnvironment(@SuppressWarnings("rawtypes") Map environment) {
     environment.remove("TMLIBPATH");
     environment.remove("DISPLAY");
   }
