@@ -179,12 +179,6 @@
       </dependency>
       <dependency>
         <groupId>org.eclipse.e4.ui.css</groupId>
-        <artifactId>core</artifactId>
-        <version>0.11.0</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.e4.ui.css</groupId>
         <artifactId>swt</artifactId>
         <version>0.12.0</version>
         <scope>provided</scope>
