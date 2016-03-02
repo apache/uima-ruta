@@ -124,6 +124,12 @@
 <!--   explicit dependencies for mars.1 -->
     <dependencies>
       <dependency>
+        <groupId>org.eclipse.core</groupId>
+        <artifactId>contenttype</artifactId>
+        <version>3.5.0</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
         <groupId>org.eclipse.e4.core</groupId>
         <artifactId>commands</artifactId>
         <version>0.11.0</version>
