@@ -1289,7 +1289,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     </section>
 
     <section id="ugr.tools.ruta.language.actions.split">
-      <title>SHIFT</title>
+      <title>SPLIT</title>
       <para>
         The SPLIT action is able to split the matched annotation for each occurence of annotation 
         of the given type. There are three additional parameters: The first one specifies if complete annotations of the given type 
