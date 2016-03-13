@@ -291,6 +291,9 @@ StringListExpression   ->  StringListVariable
 BooleanListExpression  ->  BooleanListVariable
                            | "{" BooleanExpression 
                               ("," BooleanExpression)* "}"
+AnnotationListExpression  ->  AnnotationListVariable
+                           | "{" AnnotationExpression 
+                              ("," AnnotationExpression)* "}"
 ]]></programlisting>
     A ResourceLiteral is something
     like 'folder/file.txt' (Attention: Use single quotes).
