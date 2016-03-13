@@ -1288,6 +1288,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         for (String feat : split) {
           typeToCheck = expand(typeToCheck);
           typeToCheck = checkFSFeatureOfType(feat, typeToCheck);
+          if(StringUtils.contains(typeToCheck, UIMAConstants.TYPE_FSARRAY)) {
+            // stop here because we do not know the type
+            return UIMAConstants.TYPE_FSARRAY;
+          }
           foundAll &= (typeToCheck != null);
           if (!foundAll) {
             return null;
@@ -1312,9 +1316,18 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       String name = featureDescription.getName();
       String rangeTypeName = featureDescription.getRangeTypeName();
       boolean isFS = isFeatureStructure(rangeTypeName);
-      if (name.equals(featureName) && isFS) {
-        return rangeTypeName;
-      }
+      if (name.equals(featureName)){
+        if (isFS) {
+          return rangeTypeName;
+        } else if(   StringUtils.equals(UIMAConstants.TYPE_FSARRAY, rangeTypeName)) {
+          String elementType = featureDescription.getElementType();
+          if(elementType == null) {
+            return UIMAConstants.TYPE_FSARRAY;
+          } else {
+            return elementType;
+          }
+        }
+      } 
     }
     return null;
   }
