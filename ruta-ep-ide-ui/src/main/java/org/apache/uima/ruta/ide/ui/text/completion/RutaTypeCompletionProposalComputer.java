@@ -19,13 +19,11 @@
 
 package org.apache.uima.ruta.ide.ui.text.completion;
 
-import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.ui.templates.RutaTemplateCompletionProcessor;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.templates.TemplateCompletionProcessor;
 
 public class RutaTypeCompletionProposalComputer extends ScriptCompletionProposalComputer {
@@ -48,7 +46,7 @@ public class RutaTypeCompletionProposalComputer extends ScriptCompletionProposal
 
     collector.setIgnored(CompletionProposal.TYPE_REF, false);
 
-    IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
+//    IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
 
     return collector;
   }
