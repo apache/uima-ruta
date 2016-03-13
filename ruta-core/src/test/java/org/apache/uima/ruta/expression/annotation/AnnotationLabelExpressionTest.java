@@ -22,20 +22,27 @@ package org.apache.uima.ruta.expression.annotation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import junit.framework.Assert;
+
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -181,33 +188,12 @@ public class AnnotationLabelExpressionTest {
 
   @Test
   public void testActions() {
-    String document = "Some text.";
     String script = "a:W W{-> CREATE(Struct1, \"a\"=a)};";
     script += "W W{-> Struct2, Struct3};";
     script += "a:W Struct2{-> SETFEATURE(\"a\", a)};";
     script += "a:W Struct3{-> Struct3.a=a};";
 
-    Map<String, String> typeMap = new TreeMap<String, String>();
-    typeMap.put("Struct1", "uima.tcas.Annotation");
-    typeMap.put("Struct2", "uima.tcas.Annotation");
-    typeMap.put("Struct3", "uima.tcas.Annotation");
-    typeMap.put("Struct4", "uima.tcas.Annotation");
-
-    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
-    featureMap.put("Struct1", list);
-    featureMap.put("Struct2", list);
-    featureMap.put("Struct3", list);
-    featureMap.put("Struct4", list);
-    list.add(new TestFeature("a", "", "uima.tcas.Annotation"));
-
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = applyOnStruct4Cas(script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -281,4 +267,82 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "Some", "text");
   }
 
+  @Test
+  @Ignore
+  public void testInlined() throws AnalysisEngineProcessException, ResourceInitializationException,
+          InvalidXMLException, IOException, CASException {
+    String script = "Document{-> Struct, Struct.a = i}<-{i:SW PERIOD;};";
+    script += "i:Document->{PERIOD{-> Struct2, Struct2.a = i};};";
+    script += "i:Document<-{PERIOD{-> Struct2, Struct2.a = i};};";
+    
+    CAS cas = applyOnStruct4Cas(script);
+    
+    Type t = null;
+    AnnotationIndex<AnnotationFS> ai = null;
+    FSIterator<AnnotationFS> iterator = null;
+    AnnotationFS a = null;
+    AnnotationFS next = null;
+    Feature f = null;
+    
+    t = cas.getTypeSystem().getType("Struct1");
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    next = iterator.next();
+    assertEquals("Some text.", next.getCoveredText());
+    f = t.getFeatureByBaseName("a");
+    a = (AnnotationFS) next.getFeatureValue(f);
+    assertNotNull("Feature value is null!", a);
+    assertEquals("text", a.getCoveredText());
+
+    t = cas.getTypeSystem().getType("Struct2");
+    ai = cas.getAnnotationIndex(t);
+    assertEquals(1, ai.size());
+    iterator = ai.iterator();
+    next = iterator.next();
+    assertEquals(".", next.getCoveredText());
+    f = t.getFeatureByBaseName("a");
+    a = (AnnotationFS) next.getFeatureValue(f);
+    assertNotNull("Feature value is null!", a);
+    assertEquals("Some text.", a.getCoveredText());
+
+  }
+  
+  @Test
+  @Ignore
+  public void testFeature() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, CASException {
+    CAS cas = RutaTestUtils.getCAS("Some text.");
+    Assert.assertTrue(Ruta.matches(cas.getJCas(), "a:W b:W{a.end == (b.begin-1)-> T1};"));
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
+  }
+  
+
+  private CAS applyOnStruct4Cas(String script) {
+    String document = "Some text.";
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    typeMap.put("Struct1", "uima.tcas.Annotation");
+    typeMap.put("Struct2", "uima.tcas.Annotation");
+    typeMap.put("Struct3", "uima.tcas.Annotation");
+    typeMap.put("Struct4", "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put("Struct1", list);
+    featureMap.put("Struct2", list);
+    featureMap.put("Struct3", list);
+    featureMap.put("Struct4", list);
+    list.add(new TestFeature("a", "", "uima.tcas.Annotation"));
+
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return cas;
+  }
+  
+  
 }
