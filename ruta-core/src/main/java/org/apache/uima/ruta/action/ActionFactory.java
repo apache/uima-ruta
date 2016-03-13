@@ -297,9 +297,13 @@ public class ActionFactory {
     if (macroActionDefinition == null) {
       return null;
     }
+    int argSize = 0;
+    if(args != null) {
+      argSize = args.size();
+    }
     Map<String, String> definition = macroActionDefinition.getKey();
     List<AbstractRutaAction> actions = macroActionDefinition.getValue();
-    if (definition.size() != args.size()) {
+    if (definition.size() != argSize) {
       throw new RutaParseRuntimeException("Arguments of macro action '" + name
               + "' do not match its definition: " + definition.values());
     }

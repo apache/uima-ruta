@@ -51,4 +51,24 @@ public class MacroConditionTest {
 
     cas.release();
   }
+  
+  @Test
+  public void testNoArgs() {
+    String document = "This is a Test.";
+    String script = "INT j;\n";
+    script += "CONDITION macro() = OR(IS(CW),IS(PERIOD));\n";
+    script += "ANY{macro()-> T1};\n";
+
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "This", "Test", ".");
+
+    cas.release();
+  }
 }

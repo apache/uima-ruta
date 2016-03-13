@@ -112,12 +112,13 @@ public class ConditionFactory {
       sb.append("(");
       sb.append(each.getClass().getSimpleName());
       sb.append(")");
-      if(iterator.hasNext()) {
+      if (iterator.hasNext()) {
         sb.append(", ");
       }
     }
-    
-    throw new RutaParseRuntimeException("The condition CONTAINS does not support the following arguments: " + sb.toString());
+
+    throw new RutaParseRuntimeException(
+            "The condition CONTAINS does not support the following arguments: " + sb.toString());
   }
 
   public static AbstractRutaCondition createConditionContains(ITypeExpression typeExpr,
@@ -325,16 +326,21 @@ public class ConditionFactory {
     return new ImplicitCondition(expr);
   }
 
-  public static AbstractRutaCondition createMacroCondition(Token id, List<IRutaExpression> args, RutaBlock env) {
+  public static AbstractRutaCondition createMacroCondition(Token id, List<IRutaExpression> args,
+          RutaBlock env) {
     String name = id.getText();
     Pair<Map<String, String>, List<AbstractRutaCondition>> macroConditionDefinition = env
             .getEnvironment().getMacroCondition(name);
     if (macroConditionDefinition == null) {
       return null;
     }
+    int argSize = 0;
+    if(args != null) {
+      argSize = args.size();
+    }
     Map<String, String> definition = macroConditionDefinition.getKey();
     List<AbstractRutaCondition> conditions = macroConditionDefinition.getValue();
-    if (definition.size() != args.size()) {
+    if (definition.size() != argSize) {
       throw new RutaParseRuntimeException("Arguments of macro action '" + name
               + "' do not match its definition: " + definition.values());
     }

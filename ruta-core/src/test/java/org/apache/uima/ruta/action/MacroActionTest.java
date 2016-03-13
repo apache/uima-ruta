@@ -49,4 +49,25 @@ public class MacroActionTest {
 
     cas.release();
   }
+  
+  @Test
+  public void testNoArgs() {
+    String document = "Test.";
+    String script = "INT j;\n";
+    script += "ACTION macro() = MARK(T1), MARK(T2);\n";
+    script += "W{-> macro()};\n";
+
+    CAS cas = null;
+    try {
+      cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Test");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Test");
+
+    cas.release();
+  }
 }
