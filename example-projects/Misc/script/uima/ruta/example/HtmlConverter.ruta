@@ -30,6 +30,6 @@ Document { -> CONFIGURE(HtmlConverter, "inputView" = "_InitialView",
     "outputView" = "plain"), 
       EXEC(HtmlConverter)};
 
-Document{ -> CONFIGURE(ViewWriter, "inputView" = "plain", 
+Document{ -> CONFIGURE(HtmlViewWriter, "inputView" = "plain", 
     "outputView" = "_InitialView", "output" = "/../converted/"), 
     EXEC(HtmlViewWriter)};
