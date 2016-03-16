@@ -387,16 +387,16 @@ public void setExternalFactory(RutaExternalFactory factory) {
       	
       	
 
-	private void addMacroAction(RutaBlock env, String name, Map<String,String> def, List<AbstractRutaAction> as) {
-     		env.getEnvironment().addMacroAction(name, def, as);
+	private void addMacroAction(RutaBlock env, String name, Map<String,String> def, Set<String> vars, List<AbstractRutaAction> as) {
+     		env.getEnvironment().addMacroAction(name, def, vars, as);
  	}
  	
  	private boolean isMacroAction(String name, RutaBlock env) {
 		return env.getEnvironment().isMacroAction(name);
 	}
  	
- 	private void addMacroCondition(RutaBlock env, String name, Map<String,String> def, List<AbstractRutaCondition> cs) {
-     		env.getEnvironment().addMacroCondition(name, def, cs);
+ 	private void addMacroCondition(RutaBlock env, String name, Map<String,String> def, Set<String> vars, List<AbstractRutaCondition> cs) {
+     		env.getEnvironment().addMacroCondition(name, def, vars, cs);
  	}
  	
  	private boolean isMacroCondition(String name, RutaBlock env) {
@@ -588,32 +588,34 @@ List<String> vars = new ArrayList<String>();
 macroConditionDeclaration returns [RutaStatement stmt = null]
 @init {
 Map<String,String> def = new LinkedHashMap<>();
+Set<String> vars = new TreeSet<>();
 }
     :
     CONDITION name = Identifier 
     LPAREN  
-    (argType = varTypeToken argName = Identifier  {def.put(argName.getText(),argType.getText());}
-    (COMMA argType = varTypeToken argName = Identifier {def.put(argName.getText(),argType.getText());})*)? 
+    (v = VAR? argType = varTypeToken argName = Identifier  {def.put(argName.getText(),argType.getText());if(v!= null) vars.add(argName.getText());v=null;}
+    (COMMA v = VAR? argType = varTypeToken argName = Identifier {def.put(argName.getText(),argType.getText());if(v!= null) vars.add(argName.getText());v=null;})*)? 
     {addTemporaryVariables(def);}
     RPAREN ASSIGN_EQUAL cs = conditions SEMI
     {removeTemporaryVariables(def);}
-    {addMacroCondition($blockDeclaration::env, name.getText(), def, cs);}
+    {addMacroCondition($blockDeclaration::env, name.getText(), def, vars, cs);}
     ;
 
 
 macroActionDeclaration returns [RutaStatement stmt = null]
 @init {
 Map<String,String> def = new LinkedHashMap<>();
+Set<String> vars = new TreeSet<>();
 }
     :
     ACTION name = Identifier 
     LPAREN  
-    (argType = varTypeToken argName = Identifier  {def.put(argName.getText(),argType.getText());}
-    (COMMA argType = varTypeToken argName = Identifier {def.put(argName.getText(),argType.getText());})*)? 
+    (v = VAR? argType = varTypeToken argName = Identifier  {def.put(argName.getText(),argType.getText());if(v != null) vars.add(argName.getText());v=null;}
+    (COMMA v = VAR? argType = varTypeToken argName = Identifier {def.put(argName.getText(),argType.getText());if(v != null) vars.add(argName.getText());v=null;})*)? 
     {addTemporaryVariables(def);}
     RPAREN ASSIGN_EQUAL as = actions SEMI
     {removeTemporaryVariables(def);}
-    {addMacroAction($blockDeclaration::env, name.getText(), def, as);}
+    {addMacroAction($blockDeclaration::env, name.getText(), def, vars, as);}
     ;
 
 varTypeToken returns [Token token = null ]

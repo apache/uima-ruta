@@ -35,8 +35,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.antlr.runtime.CommonToken;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 import org.apache.uima.cas.CAS;
@@ -52,6 +52,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
@@ -72,6 +73,7 @@ import org.apache.uima.ruta.resource.RutaTable;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.resource.TreeWordList;
 import org.apache.uima.ruta.rule.MatchContext;
+import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.apache.uima.util.InvalidXMLException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -147,9 +149,9 @@ public class RutaEnvironment {
 
   private Map<String, Class<?>> availableListTypes;
 
-  private Map<String, Pair<Map<String, String>, List<AbstractRutaCondition>>> macroConditions;
+  private Map<String, Triple<Map<String, String>, List<AbstractRutaCondition>, Set<String>>> macroConditions;
 
-  private Map<String, Pair<Map<String, String>, List<AbstractRutaAction>>> macroActions;
+  private Map<String, Triple<Map<String, String>, List<AbstractRutaAction>, Set<String>>> macroActions;
 
   private String[] resourcePaths = null;
 
@@ -159,6 +161,11 @@ public class RutaEnvironment {
 
   private ResourceManager resourceManager;
 
+  private Map<String, String> variableAliases;
+
+  
+  private RutaVerbalizer verbalizer = new RutaVerbalizer();
+  
   public RutaEnvironment(RutaBlock owner) {
     super();
     this.owner = owner;
@@ -206,7 +213,8 @@ public class RutaEnvironment {
     availableListTypes.put("TYPELIST", Type.class);
     resourcePaths = getResourcePaths();
     initializedVariables = new HashMap<String, Object>();
-
+    variableAliases = new HashMap<>();
+    
     // Always import BasicTypeSystem
     addTypeSystem("org.apache.uima.ruta.engine.BasicTypeSystem");
   }
@@ -708,6 +716,9 @@ public class RutaEnvironment {
   }
 
   public boolean ownsVariableOfType(String name, String type) {
+    if(variableAliases.containsKey(name)) {
+      name = variableAliases.get(name);
+    }
     Class<?> varclass = variableTypes.get(name);
     Class<?> aclass = availableTypes.get(type);
     boolean list = true;
@@ -720,6 +731,9 @@ public class RutaEnvironment {
   }
 
   public boolean isVariable(String name) {
+    if(variableAliases.containsKey(name)) {
+      name = variableAliases.get(name);
+    }
     if (ownsVariable(name)) {
       return true;
     }
@@ -736,6 +750,9 @@ public class RutaEnvironment {
   }
 
   public Class<?> getVariableType(String name) {
+    if(variableAliases.containsKey(name)) {
+      name = variableAliases.get(name);
+    }
     Class<?> result = variableTypes.get(name);
     if (result != null) {
       return result;
@@ -756,6 +773,9 @@ public class RutaEnvironment {
   }
 
   public <T> T getVariableValue(String name, Class<T> type) {
+    if(variableAliases.containsKey(name)) {
+      name = variableAliases.get(name);
+    }
     boolean containsKey = variableValues.containsKey(name);
     Object result = variableValues.get(name);
 
@@ -860,15 +880,18 @@ public class RutaEnvironment {
     }
   }
 
-  public void setVariableValue(String var, Object value) {
-    if (ownsVariable(var)) {
-      Class<?> clazz = variableTypes.get(var);
+  public void setVariableValue(String name, Object value) {
+    if(variableAliases.containsKey(name)) {
+      name = variableAliases.get(name);
+    }
+    if (ownsVariable(name)) {
+      Class<?> clazz = variableTypes.get(name);
       if (value == null) {
-        value = getInitialValue(var, clazz);
+        value = getInitialValue(name, clazz);
       }
-      variableValues.put(var, value);
+      variableValues.put(name, value);
     } else if (owner.getParent() != null) {
-      owner.getParent().getEnvironment().setVariableValue(var, value);
+      owner.getParent().getEnvironment().setVariableValue(name, value);
     }
   }
 
@@ -920,15 +943,15 @@ public class RutaEnvironment {
     this.resourceManager = resourceManager;
   }
 
-  public void addMacroAction(String name, Map<String, String> def, List<AbstractRutaAction> actions) {
-    macroActions.put(name, new ImmutablePair<Map<String, String>, List<AbstractRutaAction>>(def,
-            actions));
+  public void addMacroAction(String name, Map<String, String> def, Set<String> vars, List<AbstractRutaAction> actions) {
+    macroActions.put(name, new ImmutableTriple<Map<String, String>, List<AbstractRutaAction>, Set<String>>(def,
+            actions, vars));
   }
 
   public void addMacroCondition(String name, Map<String, String> def,
-          List<AbstractRutaCondition> conditions) {
-    macroConditions.put(name, new ImmutablePair<Map<String, String>, List<AbstractRutaCondition>>(
-            def, conditions));
+          Set<String> vars, List<AbstractRutaCondition> conditions) {
+    macroConditions.put(name, new ImmutableTriple<Map<String, String>, List<AbstractRutaCondition>, Set<String>>(
+            def, conditions, vars));
   }
 
   public boolean isMacroAction(String name) {
@@ -939,11 +962,24 @@ public class RutaEnvironment {
     return macroConditions.keySet().contains(name);
   }
 
-  public Pair<Map<String, String>, List<AbstractRutaAction>> getMacroAction(String name) {
+  public Triple<Map<String, String>, List<AbstractRutaAction>, Set<String>> getMacroAction(String name) {
     return macroActions.get(name);
   }
 
-  public Pair<Map<String, String>, List<AbstractRutaCondition>> getMacroCondition(String name) {
+  public Triple<Map<String, String>, List<AbstractRutaCondition>, Set<String>> getMacroCondition(String name) {
     return macroConditions.get(name);
+  }
+
+  public void addAliasVariable(String name, String var) {
+    variableAliases.put(name, var);
+  }
+
+  public void removeAliasVariable(String name) {
+    variableAliases.remove(name);
+  }
+
+  public String getVariableNameOfExpression(IRutaExpression expression) {
+    String verbalize = verbalizer.verbalize(expression);
+    return verbalize;
   }
 }

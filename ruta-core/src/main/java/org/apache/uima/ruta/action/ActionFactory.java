@@ -21,10 +21,11 @@ package org.apache.uima.ruta.action;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.antlr.runtime.Token;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
@@ -292,7 +293,7 @@ public class ActionFactory {
   public static AbstractRutaAction createMacroAction(Token id, List<IRutaExpression> args,
           RutaBlock env) {
     String name = id.getText();
-    Pair<Map<String, String>, List<AbstractRutaAction>> macroActionDefinition = env
+    Triple<Map<String, String>, List<AbstractRutaAction>, Set<String>> macroActionDefinition = env
             .getEnvironment().getMacroAction(name);
     if (macroActionDefinition == null) {
       return null;
@@ -301,14 +302,15 @@ public class ActionFactory {
     if(args != null) {
       argSize = args.size();
     }
-    Map<String, String> definition = macroActionDefinition.getKey();
-    List<AbstractRutaAction> actions = macroActionDefinition.getValue();
+    Map<String, String> definition = macroActionDefinition.getLeft();
+    List<AbstractRutaAction> actions = macroActionDefinition.getMiddle();
+    Set<String> vars = macroActionDefinition.getRight();
     if (definition.size() != argSize) {
       throw new RutaParseRuntimeException("Arguments of macro action '" + name
               + "' do not match its definition: " + definition.values());
     }
 
-    return new MacroAction(name, definition, actions, args);
+    return new MacroAction(name, definition, actions, vars, args);
   }
 
 }

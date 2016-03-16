@@ -19,9 +19,16 @@
 
 package org.apache.uima.ruta.action;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.resource.ResourceConfigurationException;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class MacroActionTest {
@@ -70,4 +77,24 @@ public class MacroActionTest {
 
     cas.release();
   }
+  
+
+  @Test
+  public void testVariable()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+    String document = "Test";
+    String script = "INT j;\n";
+    script += "ACTION inc(VAR INT var, INT i) = ASSIGN(var,var+i);\n";
+    script += "Document{-> inc(j,5)};\n";
+    script += "Document{(j==5)->T1};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Test");
+
+    cas.release();
+  }
+  
 }

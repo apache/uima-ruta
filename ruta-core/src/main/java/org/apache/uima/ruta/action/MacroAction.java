@@ -39,14 +39,17 @@ public class MacroAction extends AbstractRutaAction {
 
   private final List<AbstractRutaAction> actions;
 
+  private final Set<String> vars;
+
   private final List<IRutaExpression> arguments;
 
   public MacroAction(String name, Map<String, String> definition, List<AbstractRutaAction> actions,
-          List<IRutaExpression> arguments) {
+          Set<String> vars, List<IRutaExpression> arguments) {
     super();
     this.name = name;
     this.definition = definition;
     this.actions = actions;
+    this.vars = vars;
     this.arguments = arguments;
   }
 
@@ -70,8 +73,13 @@ public class MacroAction extends AbstractRutaAction {
       String name = entry.getKey();
       String type = entry.getValue();
       IRutaExpression expression = arguments.get(index);
-      environment.addVariable(name, type);
-      stream.assignVariable(name, expression, context);
+      if (!vars.contains(name)) {
+        environment.addVariable(name, type);
+        stream.assignVariable(name, expression, context);
+      } else {
+        String var = environment.getVariableNameOfExpression(expression);
+        environment.addAliasVariable(name, var);
+      }
       index++;
     }
   }
@@ -82,7 +90,11 @@ public class MacroAction extends AbstractRutaAction {
     Set<Entry<String, String>> entrySet = definition.entrySet();
     for (Entry<String, String> entry : entrySet) {
       String name = entry.getKey();
-      environment.removeVariable(name);
+      if (!vars.contains(name)) {
+        environment.removeVariable(name);
+      } else {
+        environment.removeAliasVariable(name);
+      }
     }
   }
 
