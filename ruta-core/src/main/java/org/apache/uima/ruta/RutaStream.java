@@ -1089,8 +1089,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       assignAnnotationByTypeInWindow(annotation, feature, context, t);
     } else if (value instanceof GenericFeatureExpression && !feature.getRange().isPrimitive()) {
       FeatureExpression fe = ((GenericFeatureExpression) value).getFeatureExpression();
-      ITypeExpression typeExpr = fe.getTypeExpr(context, this);
-      Type t = typeExpr.getType(context, this);
+      Type t = fe.getInitialType(context, this);
       List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), t);
       if (fe instanceof SimpleFeatureExpression) {
         SimpleFeatureExpression sfe = (SimpleFeatureExpression) fe;

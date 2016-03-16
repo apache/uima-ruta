@@ -29,6 +29,9 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.MatchReference;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
@@ -53,9 +56,20 @@ public class ImplicitCondition extends AbstractRutaCondition {
       return new EvaluatedCondition(this, be.getBooleanValue(context, stream));
     } else if (expr instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) expr;
-      ITypeExpression typeExpr = fme.getTypeExpr(context, stream);
-      Type type = typeExpr.getType(context, stream);
-      List<AnnotationFS> annotations = getAnnotationsToCheck(annotation, type, fme, stream);
+      List<AnnotationFS> annotations =new ArrayList<>();
+      MatchReference matchReference = fme.getMatchReference();
+      // TODO refactor
+      ITypeExpression typeExpr = matchReference.getTypeExpression(context, stream);
+      IAnnotationListExpression annotationListExpr = matchReference.getAnnotationListExpression(context, stream);
+      IAnnotationExpression annotationExpr = matchReference.getAnnotationExpression(context, stream);
+      if (typeExpr != null) {
+        Type type = typeExpr.getType(context, stream);
+        annotations = getAnnotationsToCheck(annotation, type, fme, stream);
+      } else if(annotationListExpr!=null) {
+        annotations.addAll(annotationListExpr.getAnnotationList(context, stream));
+      } else if(annotationExpr!=null) {
+        annotations.add(annotationExpr.getAnnotation(context, stream));
+      }
       Collection<AnnotationFS> featureAnnotations = fme.getFeatureAnnotations(annotations, stream,
               context, true);
       return new EvaluatedCondition(this, !featureAnnotations.isEmpty());
@@ -72,11 +86,11 @@ public class ImplicitCondition extends AbstractRutaCondition {
     } else {
       Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(annotation.getBegin())
               .getBeginAnchors(type);
-      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(
-              type);
+      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd())
+              .getEndAnchors(type);
       @SuppressWarnings("unchecked")
-      Collection<AnnotationFS> intersection = CollectionUtils
-              .intersection(beginAnchors, endAnchors);
+      Collection<AnnotationFS> intersection = CollectionUtils.intersection(beginAnchors,
+              endAnchors);
       result.addAll(intersection);
     }
     return result;

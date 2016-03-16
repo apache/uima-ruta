@@ -30,7 +30,6 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.FloatArrayFS;
 import org.apache.uima.cas.IntArrayFS;
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
@@ -53,13 +52,12 @@ public class NumberListFeatureExpression extends AbstractNumberListExpression {
   @Override
   public List<Number> getList(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
-    Type type = fe.getTypeExpr(context, stream).getType(context, stream);
     Feature feature = fe.getFeature(context, stream);
     if (feature == null || !feature.getRange().isArray() || !validType(feature)) {
       // throw runtime exception?
       return Collections.emptyList();
     }
-    List<AnnotationFS> list = getTargetAnnotation(annotation, type, stream);
+    List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
     Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
             false);
     List<Number> result = new ArrayList<>();

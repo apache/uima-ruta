@@ -55,9 +55,17 @@ public class RuleElementMatch {
   }
 
   public void setMatchInfo(boolean baseCondition, List<AnnotationFS> texts,
-          List<EvaluatedCondition> conditionList, RutaStream stream) {
+         RutaStream stream) {
     baseConditionMatched = baseCondition;
     textsMatched = texts;
+    conditionsMatched = baseConditionMatched;
+    if (containerMatch != null) {
+      containerMatch.addInnerMatch(ruleElement, this, stream);
+    }
+  }
+  
+  public void setConditionInfo(boolean baseCondition, List<EvaluatedCondition> conditionList) {
+    baseConditionMatched = baseCondition;
     conditions = conditionList;
     conditionsMatched = baseConditionMatched;
     if (baseConditionMatched) {
@@ -65,10 +73,8 @@ public class RuleElementMatch {
         conditionsMatched = conditionsMatched && each.isValue();
       }
     }
-    if (containerMatch != null) {
-      containerMatch.addInnerMatch(ruleElement, this, stream);
-    }
   }
+  
 
   public boolean matched() {
     return baseConditionMatched && conditionsMatched && inlinedRulesMatched;

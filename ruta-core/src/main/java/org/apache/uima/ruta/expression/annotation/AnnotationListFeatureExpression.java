@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
@@ -45,8 +44,7 @@ public class AnnotationListFeatureExpression extends AbstractAnnotationListExpre
   @Override
   public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
-    Type type = fe.getTypeExpr(context, stream).getType(context, stream);
-    List<AnnotationFS> list = getTargetAnnotation(annotation, type, stream);
+    List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
     Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
             false);
     return new ArrayList<AnnotationFS>(featureAnnotations);

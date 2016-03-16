@@ -20,11 +20,11 @@
 package org.apache.uima.ruta.verbalize;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
+import org.apache.uima.ruta.expression.NullExpression;
 import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanListVariableExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
@@ -286,15 +286,8 @@ public class ExpressionVerbalizer {
     if (expression instanceof SimpleFeatureExpression) {
       SimpleFeatureExpression sfe = (SimpleFeatureExpression) expression;
       sb.append(sfe.getMatchReference().getMatch());
-    } else {
-      sb.append(verbalize(expression.getTypeExpr(null, null)));
-      List<String> list = expression.getFeatureStringList(null, null);
-      if (list != null) {
-        for (String string : list) {
-          sb.append(".");
-          sb.append(string);
-        }
-      }
+    } else if(expression instanceof NullExpression) {
+      sb.append("null");
     }
     return sb.toString();
   }

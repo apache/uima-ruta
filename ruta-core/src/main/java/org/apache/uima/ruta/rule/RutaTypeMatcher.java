@@ -305,8 +305,7 @@ public class RutaTypeMatcher implements RutaMatcher {
       Type type = getType(typeExpression, parent, stream, false);
       result.add(type);
     } else if (featureExpression != null) {
-      Type type = getType(featureExpression.getTypeExpr(new MatchContext(parent), stream), parent,
-              stream, false);
+      Type type = featureExpression.getInitialType(new MatchContext(parent), stream);
       result.add(type);
     }
     return result;

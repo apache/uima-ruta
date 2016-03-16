@@ -32,6 +32,9 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.MatchReference;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
@@ -55,12 +58,22 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     RuleMatch match = context.getRuleMatch();
     RuleElement element = context.getElement();
-    ITypeExpression typeExpr = expr.getTypeExpr(context, stream);
-    Type type = typeExpr.getType(context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comp);
+    MatchReference matchReference = expr.getMatchReference();
+    ITypeExpression typeExpr = matchReference.getTypeExpression(context, stream);
+    IAnnotationListExpression annotationListExpr = matchReference.getAnnotationListExpression(context, stream);
+    IAnnotationExpression annotationExpr = matchReference.getAnnotationExpression(context, stream);
+    // TODO refactor and do we really need multiple annotations for each matched ones?
     for (AnnotationFS annotation : matchedAnnotations) {
-      annotations.addAll(getAnnotations(annotation, type, expr, stream));
+      if (typeExpr != null) {
+        Type type = typeExpr.getType(context, stream);
+        annotations = getAnnotations(annotation, type, expr, stream);
+      } else if(annotationListExpr!=null) {
+        annotations.addAll(annotationListExpr.getAnnotationList(context, stream));
+      } else if(annotationExpr!=null) {
+        annotations.add(annotationExpr.getAnnotation(context, stream));
+      }
     }
     for (AnnotationFS each : annotations) {
       stream.getCas().removeFsFromIndexes(each);
@@ -80,7 +93,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
       stream.getCas().addFsToIndexes(each);
     }
   }
-
+  
 
   private List<AnnotationFS> getAnnotations(AnnotationFS annotation, Type type,
           FeatureMatchExpression fme, RutaStream stream) {

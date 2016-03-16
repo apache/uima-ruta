@@ -65,8 +65,8 @@ public class NullExpression extends FeatureExpression implements IStringExpressi
   }
 
   @Override
-  public ITypeExpression getTypeExpr(MatchContext context, RutaStream stream) {
+  public Type getInitialType(MatchContext context, RutaStream stream) {
     return null;
   }
-
+ 
 }

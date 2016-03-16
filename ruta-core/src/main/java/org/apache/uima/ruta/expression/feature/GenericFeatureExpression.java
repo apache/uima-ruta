@@ -64,8 +64,6 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
 
   private IAnnotationListExpression annotationListExpression;
 
-  private ITypeExpression typeExpression;
-
   public GenericFeatureExpression(FeatureExpression fe) {
     super();
     this.featureExpression = fe;
@@ -122,10 +120,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   @Override
   public Type getType(MatchContext context, RutaStream stream) {
     // special case where an argument is interpreted as a type expression
-    if (typeExpression == null) {
-      typeExpression = featureExpression.getTypeExpr(context, stream);
-    }
-    return typeExpression.getType(context, stream);
+    return featureExpression.getInitialType(context, stream);
   }
   
   public FeatureExpression getFeatureExpression() {

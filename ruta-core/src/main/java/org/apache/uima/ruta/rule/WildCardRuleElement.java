@@ -636,6 +636,10 @@ public class WildCardRuleElement extends AbstractRuleElement {
     MatchContext context = new MatchContext(annotation, this, ruleMatch, true);
 
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
+    if (annotation != null) {
+      textsMatched.add(annotation);
+    }
+    result.setMatchInfo(base, textsMatched, stream);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {
         crowd.beginVisit(condition, null);
@@ -644,10 +648,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
         evaluatedConditions.add(eval);
       }
     }
-    if (annotation != null) {
-      textsMatched.add(annotation);
-    }
-    result.setMatchInfo(base, textsMatched, evaluatedConditions, stream);
+    result.setConditionInfo(base, evaluatedConditions);
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
   }
 

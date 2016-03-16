@@ -23,10 +23,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.RutaExpression;
-import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public abstract class FeatureExpression extends RutaExpression {
@@ -37,10 +37,10 @@ public abstract class FeatureExpression extends RutaExpression {
 
   public abstract List<String> getFeatureStringList(MatchContext context, RutaStream stream);
 
-  public abstract ITypeExpression getTypeExpr(MatchContext context, RutaStream stream);
-
   public abstract Collection<AnnotationFS> getFeatureAnnotations(
           Collection<AnnotationFS> annotations, RutaStream stream, MatchContext context,
           boolean checkOnFeatureValue);
+
+  public abstract Type getInitialType(MatchContext context, RutaStream stream);
 
 }

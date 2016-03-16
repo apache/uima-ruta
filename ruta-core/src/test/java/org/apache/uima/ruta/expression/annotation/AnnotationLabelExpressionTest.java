@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import junit.framework.Assert;
-
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -43,6 +41,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.apache.uima.util.InvalidXMLException;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -274,16 +273,16 @@ public class AnnotationLabelExpressionTest {
     String script = "Document{-> Struct, Struct.a = i}<-{i:SW PERIOD;};";
     script += "i:Document->{PERIOD{-> Struct2, Struct2.a = i};};";
     script += "i:Document<-{PERIOD{-> Struct2, Struct2.a = i};};";
-    
+
     CAS cas = applyOnStruct4Cas(script);
-    
+
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
     AnnotationFS a = null;
     AnnotationFS next = null;
     Feature f = null;
-    
+
     t = cas.getTypeSystem().getType("Struct1");
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
@@ -307,9 +306,8 @@ public class AnnotationLabelExpressionTest {
     assertEquals("Some text.", a.getCoveredText());
 
   }
-  
+
   @Test
-  @Ignore
   public void testFeature() throws ResourceInitializationException, InvalidXMLException,
           IOException, AnalysisEngineProcessException, CASException {
     CAS cas = RutaTestUtils.getCAS("Some text.");
@@ -317,6 +315,21 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
   }
   
+  @Test
+  public void testComplexFeature() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, CASException {
+    String script = "a:W W{-> CREATE(Struct1, \"a\"=a)};";
+    CAS cas = applyOnStruct4Cas(script);
+    Assert.assertTrue(Ruta.matches(cas.getJCas(), "a:Struct1{a.a.begin == 0 -> T1};"));
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
+  }
+
+  @Test(expected=AnalysisEngineProcessException.class)
+  public void testWrongFeature() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, CASException {
+    CAS cas = RutaTestUtils.getCAS("Some text.");
+    Ruta.matches(cas.getJCas(), "a:W b:W{a.x == (b.y-1)-> T1};");
+  }
 
   private CAS applyOnStruct4Cas(String script) {
     String document = "Some text.";
@@ -343,6 +356,5 @@ public class AnnotationLabelExpressionTest {
     }
     return cas;
   }
-  
-  
+
 }

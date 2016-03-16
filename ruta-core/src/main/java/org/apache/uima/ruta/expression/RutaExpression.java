@@ -29,14 +29,19 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.rule.MatchContext;
 
 public class RutaExpression extends RutaElement implements IRutaExpression {
 
-  protected List<AnnotationFS> getTargetAnnotation(AnnotationFS annotation, Type type,
-          RutaStream stream) {
-    if (annotation == null) {
+  protected List<AnnotationFS> getTargetAnnotation(AnnotationFS matchedAnnotation,
+          FeatureExpression fe, MatchContext context, RutaStream stream) {
+    if (matchedAnnotation == null) {
       return Collections.emptyList();
     }
+    // TODO refactor
+
+    Type type = fe.getInitialType(context, stream);
 
     // "autocast" to document annotation when mentioning document.
     // This is either the actual document annotation or the current one in a block or inlined rule
@@ -54,19 +59,19 @@ public class RutaExpression extends RutaElement implements IRutaExpression {
       }
     }
 
-    if (annotation.getType().equals(type)
-            || stream.getCas().getTypeSystem().subsumes(type, annotation.getType())) {
+    if (matchedAnnotation.getType().equals(type)
+            || stream.getCas().getTypeSystem().subsumes(type, matchedAnnotation.getType())) {
       List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);
-      result.add(annotation);
+      result.add(matchedAnnotation);
       return result;
     } else {
-      Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(annotation.getBegin())
+      Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(matchedAnnotation.getBegin())
               .getBeginAnchors(type);
-      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(
-              type);
+      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(matchedAnnotation.getEnd())
+              .getEndAnchors(type);
       @SuppressWarnings("unchecked")
-      Collection<AnnotationFS> intersection = CollectionUtils
-              .intersection(beginAnchors, endAnchors);
+      Collection<AnnotationFS> intersection = CollectionUtils.intersection(beginAnchors,
+              endAnchors);
       return new ArrayList<AnnotationFS>(intersection);
     }
   }

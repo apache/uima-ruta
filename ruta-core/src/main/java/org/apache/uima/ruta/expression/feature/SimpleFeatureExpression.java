@@ -33,6 +33,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.MatchReference;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -43,17 +44,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
   private MatchReference mr;
 
-  private ITypeExpression typeExpr;
-
-  private List<String> features;
-
   protected AnnotationComparator comparator = new AnnotationComparator();
-
-  public SimpleFeatureExpression(ITypeExpression te, List<String> featureReferences) {
-    super();
-    this.typeExpr = te;
-    this.features = featureReferences;
-  }
 
   public SimpleFeatureExpression(MatchReference mr) {
     super();
@@ -77,18 +68,10 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
   @Override
   public List<Feature> getFeatures(MatchContext context, RutaStream stream) {
-    if (mr != null) {
-      typeExpr = mr.getTypeExpression(context, stream);
-      FeatureExpression featureExpression = mr.getFeatureExpression(context, stream);
-      if (featureExpression == null) {
-        return null;
-      }
-      features = featureExpression.getFeatureStringList(context, stream);
-    }
     List<Feature> result = new ArrayList<Feature>();
-    Type type = typeExpr.getType(context, stream);
+    Type type = getInitialType(context, stream);
     Feature feature = null;
-    for (String each : features) {
+    for (String each : getFeatureStringList(context, stream)) {
       IndexedReference indexedReference = ParsingUtils.parseIndexedReference(each);
       if (indexedReference.index != -1) {
         Feature delegate = type.getFeatureByBaseName(indexedReference.reference);
@@ -125,26 +108,23 @@ public class SimpleFeatureExpression extends FeatureExpression {
     return result;
   }
 
-  public ITypeExpression getTypeExpr(MatchContext context, RutaStream stream) {
-    if (mr != null) {
-      return mr.getTypeExpression(context, stream);
+  @Override
+  public Type getInitialType(MatchContext context, RutaStream stream) {
+    ITypeExpression typeExpression = mr.getTypeExpression(context, stream);
+    if(typeExpression!= null) {
+      return typeExpression.getType(context, stream);
+    } else {
+      IAnnotationExpression annotationExpression = mr.getAnnotationExpression(context, stream);
+      if(annotationExpression != null) {
+        AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
+        return annotation.getType();
+      }
     }
-    return typeExpr;
-  }
-
-  public void setTypeExpr(ITypeExpression typeExpr) {
-    this.typeExpr = typeExpr;
+    return null;
   }
 
   public List<String> getFeatureStringList(MatchContext context, RutaStream stream) {
-    if (mr != null) {
-      features = mr.getFeatureExpression(context, stream).getFeatureStringList(context, stream);
-    }
-    return features;
-  }
-
-  public void setFeatures(List<String> features) {
-    this.features = features;
+    return mr.getFeatureList();
   }
 
   public Collection<AnnotationFS> getFeatureAnnotations(Collection<AnnotationFS> annotations,
@@ -152,8 +132,12 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
     Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
     List<Feature> features = getFeatures(context, stream);
-    collectFeatureAnnotations(annotations, features, checkOnFeatureValue, result, stream, context);
+    if(features!= null &&!features.isEmpty()) {
+      collectFeatureAnnotations(annotations, features, checkOnFeatureValue, result, stream, context);
     return result;
+    } else {
+      return annotations;
+    }
   }
 
   private void collectFeatureAnnotations(Collection<AnnotationFS> annotations,

@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.expression;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.ruta.RutaBlock;
@@ -55,6 +56,8 @@ public class MatchReference extends RutaExpression {
 
   private FeatureExpression featureExpression;
 
+  private List<String> features = Collections.emptyList();
+
   private boolean initialized = false;
 
   public MatchReference(String reference) {
@@ -89,7 +92,8 @@ public class MatchReference extends RutaExpression {
         counter++;
       }
       if (tail != null) {
-        featureExpression = new SimpleFeatureExpression(typeExpression, tail);
+        featureExpression = new SimpleFeatureExpression(this);
+        features = tail;
       }
     }
     initialized = true;
@@ -163,6 +167,10 @@ public class MatchReference extends RutaExpression {
 
   public String getMatch() {
     return reference;
+  }
+
+  public List<String> getFeatureList() {
+    return features;
   }
 
 }
