@@ -430,11 +430,14 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private boolean initialized = false;
 
+  private boolean analysisEnginesAlreadyInitialized = false;
+
   private List<Type> seedTypes;
 
   private TypeSystem lastTypeSystem;
 
   private ResourceManager resourceManager = null;
+
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -507,6 +510,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       engineLoader = new RutaEngineLoader();
       verbalizer = new RutaVerbalizer();
 
+      // reinitialize analysis engines if this one is configured
+      analysisEnginesAlreadyInitialized = false;
+      
       resourceManager = UIMAFramework.newDefaultResourceManager();
       String dataPath = "";
       if (descriptorPaths != null) {
@@ -768,7 +774,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     Map<String, RutaModule> additionalScriptsMap = new HashMap<String, RutaModule>();
     Map<String, AnalysisEngine> additionalEnginesMap = new HashMap<String, AnalysisEngine>();
 
-    if (additionalUimafitEngines != null) {
+    if (additionalUimafitEngines != null && !analysisEnginesAlreadyInitialized) {
       for (String eachUimafitEngine : additionalUimafitEngines) {
         AnalysisEngine eachEngine = null;
         String classString = eachUimafitEngine;
@@ -801,7 +807,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         }
       }
     }
-    if (additionalEngines != null) {
+    if (additionalEngines != null && !analysisEnginesAlreadyInitialized) {
       for (String eachEngineLocation : additionalEngines) {
         AnalysisEngine eachEngine;
         String location = locate(eachEngineLocation, descriptorPaths, ".xml");
@@ -858,6 +864,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
     }
 
+    analysisEnginesAlreadyInitialized = true;
+    
     for (RutaModule each : additionalScriptsMap.values()) {
       each.setScriptDependencies(additionalScriptsMap);
     }
