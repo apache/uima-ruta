@@ -19,9 +19,16 @@
 
 package org.apache.uima.ruta;
 
+import java.io.IOException;
+
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.CASException;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class BlockTest {
@@ -51,6 +58,20 @@ public class BlockTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "Some", "Some");
 
     cas.release();
+  }
+
+  @Test
+  public void testExternalBlockCall() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, CASException {
+    String script = "SCRIPT org.apache.uima.ruta.ScriptWithStackedBlocks;";
+    script += "(# PERIOD){-> T3} (# PERIOD){->T4};";
+    script += "T3{-> CALL(ScriptWithStackedBlocks.First)};";
+    script += "T4{-> CALL(ScriptWithStackedBlocks.Second)};";
+    CAS cas = RutaTestUtils.getCAS("Some text. More stuff.");
+    Ruta.applyRule(cas.getJCas(), script, RutaEngine.PARAM_ADDITIONAL_SCRIPTS,
+            new String[] { "org.apache.uima.ruta.ScriptWithStackedBlocks" });
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "text", "stuff");
   }
 
 }

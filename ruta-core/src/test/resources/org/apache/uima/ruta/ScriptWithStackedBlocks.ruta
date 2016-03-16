@@ -1,0 +1,9 @@
+PACKAGE org.apache.uima.ruta;
+
+
+BLOCK(First) Document{}{
+    CW{-> T1};
+    BLOCK(Second) Document{}{
+        SW{-> T2};
+    }
+}
