@@ -267,12 +267,12 @@ public class AnnotationLabelExpressionTest {
   }
 
   @Test
-  @Ignore
   public void testInlined() throws AnalysisEngineProcessException, ResourceInitializationException,
           InvalidXMLException, IOException, CASException {
-    String script = "Document{-> Struct, Struct.a = i}<-{i:SW PERIOD;};";
-    script += "i:Document->{PERIOD{-> Struct2, Struct2.a = i};};";
-    script += "i:Document<-{PERIOD{-> Struct2, Struct2.a = i};};";
+    String script = "ANNOTATION c;";
+    script += "Document{-> Struct1, Struct1.a = c}<-{i:SW{-> c=i} PERIOD;};";
+    script += "i:Document{-> c=i}->{PERIOD{-> Struct2, Struct2.a = c};};";
+//    script += "i:Document<-{PERIOD{-> Struct2, Struct2.a = i};};";
 
     CAS cas = applyOnStruct4Cas(script);
 
@@ -314,7 +314,7 @@ public class AnnotationLabelExpressionTest {
     Assert.assertTrue(Ruta.matches(cas.getJCas(), "a:W b:W{a.end == (b.begin-1)-> T1};"));
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
   }
-  
+
   @Test
   public void testComplexFeature() throws ResourceInitializationException, InvalidXMLException,
           IOException, AnalysisEngineProcessException, CASException {
@@ -324,7 +324,7 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
   }
 
-  @Test(expected=AnalysisEngineProcessException.class)
+  @Test(expected = AnalysisEngineProcessException.class)
   public void testWrongFeature() throws ResourceInitializationException, InvalidXMLException,
           IOException, AnalysisEngineProcessException, CASException {
     CAS cas = RutaTestUtils.getCAS("Some text.");
