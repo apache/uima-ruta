@@ -33,7 +33,6 @@ import org.junit.Test;
 
 public class MacroActionTest {
 
-
   @Test
   public void test() {
     String document = "Test";
@@ -41,7 +40,6 @@ public class MacroActionTest {
     script += "ACTION macro(TYPE t, INT inc) = MARK(t),ASSIGN(j,j+inc);\n";
     script += "Document{-> macro(T1,1)};\n";
     script += "Document{(j>0)->T2};\n";
-
 
     CAS cas = null;
     try {
@@ -56,7 +54,7 @@ public class MacroActionTest {
 
     cas.release();
   }
-  
+
   @Test
   public void testNoArgs() {
     String document = "Test.";
@@ -77,7 +75,6 @@ public class MacroActionTest {
 
     cas.release();
   }
-  
 
   @Test
   public void testVariable()
@@ -90,11 +87,11 @@ public class MacroActionTest {
     script += "Document{(j==5)->T1};\n";
 
     CAS cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Test");
 
     cas.release();
   }
-  
+
 }

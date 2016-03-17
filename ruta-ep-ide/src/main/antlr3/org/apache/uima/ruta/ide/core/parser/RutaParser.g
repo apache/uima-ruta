@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.Stack;
 
 import org.antlr.runtime.BaseRecognizer;
@@ -57,7 +59,7 @@ import org.eclipse.dltk.ast.expressions.BooleanLiteral;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 
 import org.apache.uima.ruta.ide.core.extensions.RutaExternalFactory;
@@ -79,6 +81,7 @@ import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaFeatureDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
+
 }
 
 @parser::members {
@@ -204,11 +207,11 @@ import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 	}
 	
 	public boolean isVariable(String var) {
-		return vars.contains(var);
+		return vars.contains(var)|| isTemporaryVariable(var);
 	}
 	
 	public boolean isVariableOfType(String var, String type) {
-		return vars.contains(var) && type.equals(varTypeMap.get(var));
+		return isTemporaryVariable(var, type) || (vars.contains(var) && type.equals(varTypeMap.get(var)));
 	}
 	
 	public void checkVariable(String var, IntStream input) throws NoViableAltException {
@@ -243,10 +246,27 @@ import org.apache.uima.ruta.ide.parser.ast.RutaPackageDeclaration;
 		return null;
 	}
 	
-//	public String getTypeOf(String varName) {
-//		String vn = varTypeMap.get(varName);
-//		return vn != null? vn : "";
-//	}
+        private Map<String,String> temporaryVariables = new HashMap<>(); 
+ 	
+ 	private boolean isTemporaryVariable(String name, String type) {
+ 		return StringUtils.equals(temporaryVariables.get(name), type);
+	}
+	private boolean isTemporaryVariable(String name) {
+ 		return temporaryVariables.keySet().contains(name);
+	}
+
+	private void addTemporaryVariables(Map<Token, Token> def) {
+		  Set<Entry<Token,Token>> entrySet = def.entrySet();
+		  for (Entry<Token, Token> entry : entrySet) {
+		    temporaryVariables.put(entry.getKey().getText(), entry.getValue().getText());
+      }
+	}
+	private void removeTemporaryVariables(Map<Token, Token> def) {
+		Set<Token> keySet = def.keySet();
+		for (Token key : keySet) {
+		    temporaryVariables.remove(key.getText());
+     		}
+	}
 	
 }
 
@@ -353,9 +373,11 @@ Map<Token,Token> def = new LinkedHashMap<>();
     :
     kind = CONDITION name = Identifier 
     LPAREN  
-    (argType = varTypeToken argName = Identifier  {def.put(argName,argType);}
-    (COMMA argType = varTypeToken argName = Identifier {def.put(argName,argType);})*)? 
+    (VAR? argType = varTypeToken argName = Identifier  {def.put(argName,argType);}
+    (COMMA VAR? argType = varTypeToken argName = Identifier {def.put(argName,argType);})*)? 
+    {addTemporaryVariables(def);}
     RPAREN ASSIGN_EQUAL cs = conditions SEMI
+    {removeTemporaryVariables(def);}
     {stmt = StatementFactory.createMacroStatement(kind, name, def, cs);}
     ;
 
@@ -367,9 +389,11 @@ Map<Token,Token> def = new LinkedHashMap<>();
     :
     kind = ACTION name = Identifier 
     LPAREN  
-    (argType = varTypeToken argName = Identifier  {def.put(argName,argType);}
-    (COMMA argType = varTypeToken argName = Identifier {def.put(argName,argType);})*)? 
+    (VAR? argType = varTypeToken argName = Identifier  {def.put(argName,argType);}
+    (COMMA VAR? argType = varTypeToken argName = Identifier {def.put(argName,argType);})*)? 
+    {addTemporaryVariables(def);}
     RPAREN ASSIGN_EQUAL as = actions SEMI
+    {removeTemporaryVariables(def);}
     {stmt = StatementFactory.createMacroStatement(kind, name, def, as);}
     ;
 
@@ -2502,9 +2526,9 @@ externalNumberFunction returns [Expression expr = null]
 //OK
 numberVariable returns [Expression expr = null]
 	:
-	   ( {isVariableOfType(input.LT(1).getText(), "INT")}? numVarRef = Identifier //
+	 ( {isVariableOfType(input.LT(1).getText(), "INT")}? numVarRef = Identifier //
 	 | {isVariableOfType(input.LT(1).getText(), "DOUBLE")}? numVarRef = Identifier
-	  | {isVariableOfType(input.LT(1).getText(), "FLOAT")}? numVarRef = Identifier)
+	 | {isVariableOfType(input.LT(1).getText(), "FLOAT")}? numVarRef = Identifier)
 	 {	 expr = ExpressionFactory.createNumberVariableReference(numVarRef);}
 	;
 	catch [Exception e]{expr = ExpressionFactory.createNumberVariableReference(input.LT(1));}

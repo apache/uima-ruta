@@ -19,13 +19,19 @@
 
 package org.apache.uima.ruta.condition;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.resource.ResourceConfigurationException;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class MacroConditionTest {
-
 
   @Test
   public void test() {
@@ -35,7 +41,6 @@ public class MacroConditionTest {
     script += "Document{-> T1, j=1};\n";
     script += "Document{macro(T1,0)-> T2};\n";
     script += "Document{macro(T1,1)-> T3};\n";
-
 
     CAS cas = null;
     try {
@@ -51,7 +56,7 @@ public class MacroConditionTest {
 
     cas.release();
   }
-  
+
   @Test
   public void testNoArgs() {
     String document = "This is a Test.";
@@ -68,6 +73,23 @@ public class MacroConditionTest {
     }
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "This", "Test", ".");
+
+    cas.release();
+  }
+
+  @Test
+  public void testVariable()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+    String document = "This is a Test.";
+    String script = "INT j;\n";
+    script += "CONDITION cc(VAR INT var) = TOTALCOUNT(W,1,1000,var);\n";
+    script += "Document{cc(j), (j>2) ->T1};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This is a Test.");
 
     cas.release();
   }

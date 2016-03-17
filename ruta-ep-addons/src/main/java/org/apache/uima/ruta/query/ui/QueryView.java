@@ -53,12 +53,16 @@ public class QueryView extends ViewPart {
 
   @Override
   public void setFocus() {
-    viewContent.setFocus();
+    if(viewContent != null) {
+      viewContent.setFocus();
+    }
   }
 
   @Override
   public void saveState(IMemento memento) {
-    viewContent.saveState(memento);
+    if(viewContent != null) {
+      viewContent.saveState(memento);
+    }
   }
 
   @Override

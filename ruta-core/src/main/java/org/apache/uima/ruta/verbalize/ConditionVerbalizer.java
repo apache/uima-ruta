@@ -38,6 +38,7 @@ import org.apache.uima.ruta.condition.InListCondition;
 import org.apache.uima.ruta.condition.IsCondition;
 import org.apache.uima.ruta.condition.LastCondition;
 import org.apache.uima.ruta.condition.MOfNCondition;
+import org.apache.uima.ruta.condition.MacroCondition;
 import org.apache.uima.ruta.condition.NearCondition;
 import org.apache.uima.ruta.condition.NotCondition;
 import org.apache.uima.ruta.condition.OrCondition;
@@ -140,6 +141,9 @@ public class ConditionVerbalizer {
     } else if (condition instanceof ImplicitCondition) {
       String name = "";
       return name;
+    } else if (condition instanceof MacroCondition) {
+      MacroCondition mc = (MacroCondition) condition;
+      return mc.getName();
     }
 
     return condition.getClass().getSimpleName();
@@ -433,6 +437,9 @@ public class ConditionVerbalizer {
     } else if (condition instanceof ImplicitCondition) {
       ImplicitCondition c = (ImplicitCondition) condition;
       return verbalizer.verbalize(c.getExpr());
+    } else if (condition instanceof MacroCondition) {
+      MacroCondition c = (MacroCondition) condition;
+      return name + verbalizer.verbalizeExpressionList(c.getArguments()) + ")";
     }
 
     return condition.getClass().getSimpleName();

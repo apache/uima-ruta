@@ -352,6 +352,7 @@ AsString        :   'AS';
 SymbolString  : 'SYMBOL';
 CONDITION : 'CONDITION';  
 ACTION    : 'ACTION';
+VAR    : 'VAR';
 BOOLEANLIST 
   :  'BOOLEANLIST';
 INTLIST : 'INTLIST';
