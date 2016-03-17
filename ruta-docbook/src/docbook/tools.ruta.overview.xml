@@ -317,7 +317,7 @@ Paragraph{CONTAINS(Bold, 90, 100, true),
     
     <programlisting><![CDATA[DECLARE Month, Year, Date;
 ANY{INLIST(MonthsList) -> MARK(Month), MARK(Date,1,3)}
-    PERIOD? NUM{REGEXP(".{2,4}") -> MARK(Year))};]]></programlisting>
+    PERIOD? NUM{REGEXP(".{2,4}") -> MARK(Year)};]]></programlisting>
 
     <para>
       This rule consists of three rule elements. The first one matches on every token, which has a covered text that occurs in a word lists named <quote>MonthsList</quote>.
