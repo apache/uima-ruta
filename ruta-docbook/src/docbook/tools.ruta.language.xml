@@ -384,6 +384,32 @@ Sentence{-> SentenceWithNumBeforeWord} <- {NUM W;};
     </para>  
   </section>
   
+  <section id="ugr.tools.ruta.language.macro">
+    <title>Macros for conditions and actions</title>
+    <para>
+      UIMA Ruta supports the specification of macros for conditions and action. 
+      Macros allow the aggregation of these elements. Rule can then refer to the name of the macro in order to 
+      include the aggregated conditions or actions. The syntax of macros is specified in 
+       <xref linkend='ugr.tools.ruta.language.syntax' />. The functionality is illustrated with the following example:
+    </para>
+    <programlisting><![CDATA[CONDITION CWorPERIODor(TYPE t) = OR(IS(CW),IS(PERIOD),IS(t));    
+ACTION INC(VAR INT i, INT inc) = ASSIGN(i,i+inc);
+INT counter = 0;
+ANY{CWorPERIODor(Bold)->INC(counter,1)};]]></programlisting>
+    <para>
+      The first line in this example declares a new macro condition with the name <quote>CWorPERIODor</quote>
+      with one annotation type argument named <quote>t</quote>. The condition is fulfilled if the matched text is either
+      a CW annotation, a PERIOD annotation or an annotation of the given type t. The second line declares a new macro action
+      with the name <quote>INC</quote> and two integer arguments <quote>i</quote> and <quote>inc</quote>. 
+      The keyword <quote>VAR</quote> indicated that the first argument should be treated as a variable meaning that 
+      the actions of the macro can assign new values to the given argument. Else only the value of the argument 
+      would be accessible to the actions. The action itself just contains an ASSIGN action, which add the second argument to the variable
+      given in the first argument. The rule in line 4 finally matches on each annotation of the type ANY and validates if
+      the matched position is either a CW, a PERIOD or an annotation of the type Bold. If this is the case, then value of 
+      the variable counter defined in line 3 is incremented by 1.
+    </para>
+  </section>
+  
   <section id="ugr.tools.ruta.language.score">
     <title>Heuristic extraction using scoring rules</title>
     <para>
