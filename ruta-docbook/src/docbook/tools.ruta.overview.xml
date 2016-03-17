@@ -204,7 +204,7 @@ W{REGEXP("dog"), active -> Animal};]]></programlisting>
       in the complete document.
     </para>
 
-    <programlisting><![CDATA[WORDLIST AnimalsList = 'Animals.txt;'
+    <programlisting><![CDATA[WORDLIST AnimalsList = 'Animals.txt';
 DECLARE Animal;
 Document{-> MARKFAST(Animal, AnimalsList)};
 ]]></programlisting>
