@@ -19,9 +19,16 @@
 
 package org.apache.uima.ruta.condition;
 
+import java.io.IOException;
+
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.CASException;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.util.InvalidXMLException;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class ImplicitCondition2Test {
@@ -53,4 +60,15 @@ public class ImplicitCondition2Test {
 
     cas.release();
   }
+  
+  @Test
+  public void testStringCompare() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, CASException {
+    CAS cas = RutaTestUtils.getCAS("a b. a b.");
+    Assert.assertTrue(Ruta.matches(cas.getJCas(), "(w:W # W{W.ct==w.ct}){->T1};"));
+    Assert.assertTrue(Ruta.matches(cas.getJCas(), "STRING s1 = \"a\"; (w:W W{s1==w.ct}){->T2};"));
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "a b. a", "b. a b");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "a b", "a b");
+  }
+  
+  
 }

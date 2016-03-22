@@ -66,7 +66,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return new RutaExpression(e.sourceStart(), e.sourceEnd(), e, RutaTypeConstants.RUTA_TYPE_B);
   }
 
-  public static RutaBooleanNumberExpression createBooleanNumberExpression(Expression e1, Token op,
+  public static RutaBooleanCompareExpression createBooleanNumberExpression(Expression e1, Token op,
           Expression e2) {
     int lexerOpID = op.getType(); // Integer.valueOf(op.getText());
     int operatorID = 0;
@@ -93,7 +93,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
       default:
         break;
     }
-    return new RutaBooleanNumberExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1, e2);
+    return new RutaBooleanCompareExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1, e2);
   }
 
   public static VariableReference createBooleanVariableReference(Token variableId) {
@@ -315,11 +315,31 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
         break;
     }
     if (e1 != null && e2 != null) {
-      return new RutaBooleanTypeExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1, e2);
+      return new RutaBooleanCompareExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1, e2);
     }
     return null;
   }
 
+  public static Expression createBooleanStringExpression(Expression e1, Token op, Expression e2) {
+    int lexerOpID = op.getType(); // Integer.valueOf(op.getText());
+    int operatorID = 0;
+    // convert lexer-opId to dltk-opId:
+    switch (lexerOpID) {
+      case RutaLexer.EQUAL:
+        operatorID = E_EQUAL;
+        break;
+      case RutaLexer.NOTEQUAL:
+        operatorID = E_NOT_EQUAL;
+        break;
+      default:
+        break;
+    }
+    if (e1 != null && e2 != null) {
+      return new RutaBooleanCompareExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1, e2);
+    }
+    return null;
+  }
+  
   public static Expression createListExpression(List<Expression> exprList, int type) {
     List<ASTNode> l = new ArrayList<>();
     int start = 0;
@@ -407,4 +427,6 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     int bounds[] = getBounds(t);
     return new NullExpression(bounds[0], bounds[1]);
   }
+
+ 
 }

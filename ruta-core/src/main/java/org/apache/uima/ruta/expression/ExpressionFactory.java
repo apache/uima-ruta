@@ -38,6 +38,7 @@ import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanListFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanListVariableExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
+import org.apache.uima.ruta.expression.bool.BooleanStringExpression;
 import org.apache.uima.ruta.expression.bool.BooleanTypeExpression;
 import org.apache.uima.ruta.expression.bool.BooleanVariableExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
@@ -167,6 +168,11 @@ public class ExpressionFactory {
   public static IBooleanExpression createBooleanNumberExpression(INumberExpression e1, Token op,
           INumberExpression e2) {
     return new BooleanNumberExpression(e1, op.getText(), e2);
+  }
+  
+  public static IBooleanExpression createBooleanStringExpression(IStringExpression e1, Token op,
+          IStringExpression e2) {
+    return new BooleanStringExpression(e1, op.getText(), e2);
   }
 
   public static IBooleanExpression createSimpleBooleanExpression(Token v) {

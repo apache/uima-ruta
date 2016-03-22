@@ -878,12 +878,17 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     String bref = featText.substring(0, firstIndexOf);
     String aref = featText.substring(0, lastIndexOf);
     String fref = featText.substring(lastIndexOf + 1, featText.length());
+    if(currentLabels.contains(aref)) {
+      return;
+    }
     String match = isFeatureMatch(aref);
     if (match == null
             && (getVariableType(aref) == RutaTypeConstants.RUTA_TYPE_AT || getVariableType(bref) == RutaTypeConstants.RUTA_TYPE_AT)) {
       // do not check on variables!
       return;
     }
+   
+    
     match = expand(match);
     if (match != null) {
       int kind = -1;

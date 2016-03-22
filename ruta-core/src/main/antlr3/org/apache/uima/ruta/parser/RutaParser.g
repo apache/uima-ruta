@@ -2621,6 +2621,7 @@ composedBooleanExpression returns [IBooleanExpression expr = null]
 	:
 	(e2 = booleanCompare)=> e2 = booleanCompare {expr = e2;}
 	| (bne = booleanNumberExpression)=> bne = booleanNumberExpression{expr = bne;}
+	| (bse = booleanStringExpression)=> bse = booleanStringExpression{expr = bse;}
 	| (bte = booleanTypeExpression)=> bte = booleanTypeExpression{expr = bte;}
 	| e1 = booleanFunction {expr = e1;}
 	| LPAREN ep = booleanExpression RPAREN {expr = ep;}
@@ -2669,7 +2670,14 @@ booleanTypeExpression  returns  [IBooleanExpression expr = null]
 	e2 = typeExpression
 	{expr = ExpressionFactory.createBooleanTypeExpression(e1,op,e2);}
 	;
-	
+booleanStringExpression  returns  [IBooleanExpression expr = null]
+	:
+	e1 = stringExpression
+	op = (EQUAL | NOTEQUAL)
+	e2 = stringExpression
+	{expr = ExpressionFactory.createBooleanStringExpression(e1,op,e2);}
+	;
+
 booleanNumberExpression  returns  [IBooleanExpression expr = null]
 	:
 	//LPAREN

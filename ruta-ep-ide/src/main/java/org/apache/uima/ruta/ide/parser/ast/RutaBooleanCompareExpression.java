@@ -23,7 +23,7 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.utils.CorePrinter;
 
-public class RutaBooleanNumberExpression extends Expression {
+public class RutaBooleanCompareExpression extends Expression {
   /**
    * <,<=,>,>=,==,...
    */
@@ -33,7 +33,7 @@ public class RutaBooleanNumberExpression extends Expression {
 
   private Expression e2;
 
-  public RutaBooleanNumberExpression(int start, int end, int operatorID, Expression e1,
+  public RutaBooleanCompareExpression(int start, int end, int operatorID, Expression e1,
           Expression e2) {
     super(start, end);
     this.kind = operatorID;

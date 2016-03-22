@@ -2616,8 +2616,9 @@ simpleBooleanExpression returns [Expression expr = null]
 composedBooleanExpression returns [Expression expr = null]
 	:
 	(e2 = booleanCompare)=> e2 = booleanCompare {expr = e2;}
-	| (bte = booleanTypeExpression)=> bte = booleanTypeExpression{expr = bte;}
 	| (bne = booleanNumberExpression)=> bne = booleanNumberExpression{expr = bne;}
+	| (bse = booleanStringExpression)=> bse = booleanStringExpression{expr = bse;}
+	| (bte = booleanTypeExpression)=> bte = booleanTypeExpression{expr = bte;}
 	| e1 = booleanFunction {expr = e1;}
 	| LPAREN ep = booleanExpression RPAREN {expr = ep;}
 	;
@@ -2677,6 +2678,16 @@ booleanNumberExpression  returns  [Expression expr = null]
 	e2 = numberExpression
 	//RPAREN
 	{expr = ExpressionFactory.createBooleanNumberExpression(e1,op,e2);}
+	;
+
+booleanStringExpression  returns  [Expression expr = null]
+	:
+	//LPAREN
+	e1 = stringExpression
+	op = (EQUAL | NOTEQUAL)
+	e2 = stringExpression
+	//RPAREN
+	{expr = ExpressionFactory.createBooleanStringExpression(e1,op,e2);}
 	;
 
 genericVariableReference returns[Expression varRef]

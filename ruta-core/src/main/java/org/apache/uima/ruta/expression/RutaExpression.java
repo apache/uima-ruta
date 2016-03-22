@@ -29,13 +29,32 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class RutaExpression extends RutaElement implements IRutaExpression {
 
   protected List<AnnotationFS> getTargetAnnotation(AnnotationFS matchedAnnotation,
           FeatureExpression fe, MatchContext context, RutaStream stream) {
+
+    if (fe instanceof SimpleFeatureExpression) {
+      SimpleFeatureExpression sfe = (SimpleFeatureExpression) fe;
+      IAnnotationExpression annotationExpression = sfe.getMatchReference()
+              .getAnnotationExpression(context, stream);
+      IAnnotationListExpression annotationListExpression = sfe.getMatchReference()
+              .getAnnotationListExpression(context, stream);
+      if (annotationExpression != null) {
+        List<AnnotationFS> as = new ArrayList<>(1);
+        as.add(annotationExpression.getAnnotation(context, stream));
+        return as;
+      } else if (annotationListExpression != null) {
+        return annotationListExpression.getAnnotationList(context, stream);
+      }
+    }
+
     if (matchedAnnotation == null) {
       return Collections.emptyList();
     }
