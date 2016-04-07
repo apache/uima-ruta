@@ -33,7 +33,7 @@ import org.apache.uima.ruta.ide.parser.ast.RutaAbstractDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaBinaryArithmeticExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaBlock;
-import org.apache.uima.ruta.ide.parser.ast.RutaBooleanNumberExpression;
+import org.apache.uima.ruta.ide.parser.ast.RutaBooleanCompareExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaConditionConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaDeclarationsStatement;
@@ -439,8 +439,8 @@ public class RutaFormattedPrinter extends ASTVisitor {
       return false;
     }
     // special format for boolean number expressions
-    if (s instanceof RutaBooleanNumberExpression) {
-      RutaBooleanNumberExpression tmbne = (RutaBooleanNumberExpression) s;
+    if (s instanceof RutaBooleanCompareExpression) {
+      RutaBooleanCompareExpression tmbne = (RutaBooleanCompareExpression) s;
       append(PAR_OPEN);
       if (tmbne.getE1() != null) {
         tmbne.getE1().traverse(this);
