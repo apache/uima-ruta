@@ -247,12 +247,12 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       Map<Token, Token> definition = decl.getDefinition();
       String name = decl.getName();
       int kind = decl.getKind();
-      if(kind == RutaTypeConstants.RUTA_TYPE_A) {
+      if (kind == RutaTypeConstants.RUTA_TYPE_A) {
         actionExtensions.put(name, null);
-      } else if(kind == RutaTypeConstants.RUTA_TYPE_C) {
+      } else if (kind == RutaTypeConstants.RUTA_TYPE_C) {
         conditionExtensions.put(name, null);
       }
-      Set<Entry<Token,Token>> entrySet = definition.entrySet();
+      Set<Entry<Token, Token>> entrySet = definition.entrySet();
       Map<String, Integer> map = new HashMap<>();
       for (Entry<Token, Token> entry : entrySet) {
         String varName = entry.getKey().getText();
@@ -294,8 +294,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           IFile file = RutaCheckerUtils.checkScriptImport(localPath,
                   sourceModule.getScriptProject());
           if (file == null) {
-            String typesystemSuffix = RutaProjectUtils.getTypeSystemSuffix(sourceModule
-                    .getScriptProject().getProject());
+            String typesystemSuffix = RutaProjectUtils
+                    .getTypeSystemSuffix(sourceModule.getScriptProject().getProject());
             url = RutaCheckerUtils.checkImportExistence(localPath + typesystemSuffix, "xml",
                     classLoader);
           }
@@ -306,9 +306,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
             if (file != null) {
               // script in other project? use that if the file was found in the workspace
               referredProject = file.getProject();
-              IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
-                      file.getLocation(), referredProject);
-              TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath, url);
+              IPath typeSystemDescriptorPath = RutaProjectUtils
+                      .getTypeSystemDescriptorPath(file.getLocation(), referredProject);
+              TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath,
+                      url);
 
               List<String> checkDuplicateShortNames = checkOnAmbiguousShortNames(tsDesc);
               if (!checkDuplicateShortNames.isEmpty()) {
@@ -352,8 +353,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       }
 
       if (reportWarningOnShortNames && namespaces.containsKey(shortName)) {
-        IProblem problem = problemFactory
-                .createDuplicateShortName(newType, ProblemSeverity.WARNING);
+        IProblem problem = problemFactory.createDuplicateShortName(newType,
+                ProblemSeverity.WARNING);
         pr.reportProblem(problem);
         return false;
       }
@@ -506,12 +507,12 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   }
 
   private TypeSystemDescription importTypeSystem(IPath path, URL url, Token typeToken,
-          Token pkgToken, Token aliasToken) throws InvalidXMLException, IOException,
-          MalformedURLException, CoreException {
+          Token pkgToken, Token aliasToken)
+          throws InvalidXMLException, IOException, MalformedURLException, CoreException {
     TypeSystemDescription tsDesc = null;
     if (path != null) {
-      tsDesc = UIMAFramework.getXMLParser().parseTypeSystemDescription(
-              new XMLInputSource(path.toFile()));
+      tsDesc = UIMAFramework.getXMLParser()
+              .parseTypeSystemDescription(new XMLInputSource(path.toFile()));
     } else {
       tsDesc = UIMAFramework.getXMLParser().parseTypeSystemDescription(new XMLInputSource(url));
     }
@@ -546,12 +547,12 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     return tsDesc;
   }
 
-  private ResourceManager getResourceManager(ClassLoader classloader) throws MalformedURLException,
-          CoreException {
+  private ResourceManager getResourceManager(ClassLoader classloader)
+          throws MalformedURLException, CoreException {
     if (resourceManager == null) {
       resourceManager = new ResourceManager_impl(classloader);
-      List<IFolder> folders = RutaProjectUtils.getAllDescriptorFolders(sourceModule
-              .getScriptProject().getProject());
+      List<IFolder> folders = RutaProjectUtils
+              .getAllDescriptorFolders(sourceModule.getScriptProject().getProject());
       StringBuilder sb = new StringBuilder();
       Iterator<IFolder> iterator = folders.iterator();
       while (iterator.hasNext()) {
@@ -599,7 +600,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       if (allLongTypeNames.contains(featText)) {
         return true;
       }
-      if(namespaces.keySet().contains(featText)) {
+      if (namespaces.keySet().contains(featText)) {
         // wrong ast elements, alias interpreted as feature expression
         return false;
       }
@@ -620,7 +621,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
         Set<String> set = ambiguousTypeAlias.get(name);
         if (set != null && !set.isEmpty()) {
-          pr.reportProblem(problemFactory.createAmbiguousShortName(ref, set, ProblemSeverity.ERROR));
+          pr.reportProblem(
+                  problemFactory.createAmbiguousShortName(ref, set, ProblemSeverity.ERROR));
           return false;
         }
         if (namespaces.keySet().contains(name) || namespaces.values().contains(name)
@@ -878,17 +880,16 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     String bref = featText.substring(0, firstIndexOf);
     String aref = featText.substring(0, lastIndexOf);
     String fref = featText.substring(lastIndexOf + 1, featText.length());
-    if(currentLabels.contains(aref)) {
+    if (currentLabels.contains(aref)) {
       return;
     }
     String match = isFeatureMatch(aref);
-    if (match == null
-            && (getVariableType(aref) == RutaTypeConstants.RUTA_TYPE_AT || getVariableType(bref) == RutaTypeConstants.RUTA_TYPE_AT)) {
+    if (match == null && (getVariableType(aref) == RutaTypeConstants.RUTA_TYPE_AT
+            || getVariableType(bref) == RutaTypeConstants.RUTA_TYPE_AT)) {
       // do not check on variables!
       return;
     }
-   
-    
+
     match = expand(match);
     if (match != null) {
       int kind = -1;
@@ -898,6 +899,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           kind = RutaTypeConstants.RUTA_TYPE_S;
         } else if (fme.getValue() instanceof NumericLiteral) {
           kind = RutaTypeConstants.RUTA_TYPE_N;
+        } else if (fme.getValue() instanceof RutaFunction) {
+          // check on function deactivates, requires correct parsing of AST with external factory
+          kind = -1;
         }
       }
       boolean findFeature = findFeature(match, fref, kind);
@@ -928,7 +932,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (s instanceof RutaMacroDeclaration) {
       RutaMacroDeclaration decl = (RutaMacroDeclaration) s;
       knownLocalVariables.pop();
-     }
+    }
     if (!packageChecked) {
       checkPackage(null);
     }
@@ -965,8 +969,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (longTypeName == null) {
       return false;
     }
-    if (longTypeName.equals("Document")
-            || longTypeName.equals("org.apache.uima.ruta.type.Document")
+    if (longTypeName.equals("Document") || longTypeName.equals("org.apache.uima.ruta.type.Document")
             || longTypeName.equals("uima.tcas.DocumentAnnotation")) {
       if (featureName.equals("language") || featureName.equals("begin")
               || featureName.equals("end")) {
@@ -984,7 +987,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       for (FeatureDescription featureDescription : set) {
         String fName = featureDescription.getName();
         // TODO check on correct feature type, e.g., the type of the annotation
-        if (fName.equals(featureName) && (kind == -1 || checkFeatureKind(featureDescription, kind))) {
+        if (fName.equals(featureName)
+                && (kind == -1 || checkFeatureKind(featureDescription, kind))) {
           return true;
         }
       }
@@ -1148,11 +1152,11 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       }
     }
 
-    List<String> uimaPredefTypes = Arrays.asList(new String[] { "uima.cas.Boolean",
-        "uima.cas.Byte", "uima.cas.Short", "uima.cas.Integer", "uima.cas.Long", "uima.cas.Float",
-        "uima.cas.Double", "uima.cas.String", "uima.cas.BooleanArray", "uima.cas.ByteArray",
-        "uima.cas.ShortArray", "uima.cas.IntegerArray", "uima.cas.LongArray",
-        "uima.cas.FloatArray", "uima.cas.DoubleArray", "uima.cas.StringArray", "uima.cas.FSArray",
+    List<String> uimaPredefTypes = Arrays.asList(new String[] { "uima.cas.Boolean", "uima.cas.Byte",
+        "uima.cas.Short", "uima.cas.Integer", "uima.cas.Long", "uima.cas.Float", "uima.cas.Double",
+        "uima.cas.String", "uima.cas.BooleanArray", "uima.cas.ByteArray", "uima.cas.ShortArray",
+        "uima.cas.IntegerArray", "uima.cas.LongArray", "uima.cas.FloatArray",
+        "uima.cas.DoubleArray", "uima.cas.StringArray", "uima.cas.FSArray",
         "uima.cas.AnnotationBase", "uima.tcas.Annotation", "uima.tcas.DocumentAnnotation",
         "uima.cas.FloatList", "uima.cas.IntegerList", "uima.cas.StringList", "uima.cas.FSList",
         "uima.cas.EmptyFloatList", "uima.cas.EmptyIntegerList", "uima.cas.EmptyStringList",
@@ -1293,7 +1297,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         for (String feat : split) {
           typeToCheck = expand(typeToCheck);
           typeToCheck = checkFSFeatureOfType(feat, typeToCheck);
-          if(StringUtils.contains(typeToCheck, UIMAConstants.TYPE_FSARRAY)) {
+          if (StringUtils.contains(typeToCheck, UIMAConstants.TYPE_FSARRAY)) {
             // stop here because we do not know the type
             return UIMAConstants.TYPE_FSARRAY;
           }
@@ -1321,18 +1325,18 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       String name = featureDescription.getName();
       String rangeTypeName = featureDescription.getRangeTypeName();
       boolean isFS = isFeatureStructure(rangeTypeName);
-      if (name.equals(featureName)){
+      if (name.equals(featureName)) {
         if (isFS) {
           return rangeTypeName;
-        } else if(   StringUtils.equals(UIMAConstants.TYPE_FSARRAY, rangeTypeName)) {
+        } else if (StringUtils.equals(UIMAConstants.TYPE_FSARRAY, rangeTypeName)) {
           String elementType = featureDescription.getElementType();
-          if(elementType == null) {
+          if (elementType == null) {
             return UIMAConstants.TYPE_FSARRAY;
           } else {
             return elementType;
           }
         }
-      } 
+      }
     }
     return null;
   }
@@ -1369,8 +1373,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         String errMsg = "Variable \"" + ref.getName() + "\" has type "
                 + RutaTypeConstants.typeStringOfInt.get(variableType) + ". But type "
                 + RutaTypeConstants.typeStringOfInt.get(requiredType) + " is required.";
-        IProblem problem = new RutaCheckerDefaultProblem(sourceModule.getElementName(), errMsg,
-                ref, linetracker.getLineNumberOfOffset(ref.sourceStart()));
+        IProblem problem = new RutaCheckerDefaultProblem(sourceModule.getElementName(), errMsg, ref,
+                linetracker.getLineNumberOfOffset(ref.sourceStart()));
         pr.reportProblem(problem);
         return false;
       }
@@ -1384,8 +1388,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       if (namespaces.keySet().contains(ref.getName())) {
         String errMsg = "\"" + ref.getName() + "\" declared as a Type. Variable of type "
                 + RutaTypeConstants.typeStringOfInt.get(ref.getType()) + " required.";
-        IProblem problem = new RutaCheckerDefaultProblem(sourceModule.getElementName(), errMsg,
-                ref, linetracker.getLineNumberOfOffset(ref.sourceStart()));
+        IProblem problem = new RutaCheckerDefaultProblem(sourceModule.getElementName(), errMsg, ref,
+                linetracker.getLineNumberOfOffset(ref.sourceStart()));
         pr.reportProblem(problem);
         return false;
       }
@@ -1407,18 +1411,18 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     return nameSpace[nameSpace.length - 1];
   }
 
-  private TypeSystemDescription getTypeSystemOfScript() throws InvalidXMLException, IOException,
-          CoreException {
-    IPath descriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(sourceModule.getResource()
-            .getLocation(), sourceModule.getScriptProject().getProject());
+  private TypeSystemDescription getTypeSystemOfScript()
+          throws InvalidXMLException, IOException, CoreException {
+    IPath descriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
+            sourceModule.getResource().getLocation(), sourceModule.getScriptProject().getProject());
     if (descriptorPath == null) {
       return null;
     }
 
     TypeSystemDescription typeSysDescr = null;
     if (descriptorPath.toFile().exists()) {
-      typeSysDescr = UIMAFramework.getXMLParser().parseTypeSystemDescription(
-              new XMLInputSource(descriptorPath.toPortableString()));
+      typeSysDescr = UIMAFramework.getXMLParser()
+              .parseTypeSystemDescription(new XMLInputSource(descriptorPath.toPortableString()));
       ResourceManager resMgr = getResourceManager(classLoader);
       typeSysDescr.resolveImports(resMgr);
     } else {
@@ -1430,8 +1434,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       String pattern = prefix + lastSegment;
       Resource[] resources = resolver.getResources(pattern);
       if (resources != null && resources.length != 0) {
-        typeSysDescr = UIMAFramework.getXMLParser().parseTypeSystemDescription(
-                new XMLInputSource(resources[0].getURL()));
+        typeSysDescr = UIMAFramework.getXMLParser()
+                .parseTypeSystemDescription(new XMLInputSource(resources[0].getURL()));
         ResourceManager resMgr = getResourceManager(classLoader);
         typeSysDescr.resolveImports(resMgr);
       }
@@ -1460,7 +1464,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     }
     return name;
   }
-  
+
   private int getType(String name) {
     if (name == null) {
       return 0;
@@ -1497,5 +1501,5 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     }
     return 0;
   }
-  
+
 }
