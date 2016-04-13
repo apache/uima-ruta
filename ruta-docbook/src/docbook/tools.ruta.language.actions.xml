@@ -313,8 +313,7 @@ Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};]]></programlisting>
     <title>DEL</title>
     <para>
       The DEL action deletes the matched text fragments in the
-      modified
-      view.
+      modified view. For removing annotations see UNMARK.
     </para>
     <section>
       <title>
