@@ -36,5 +36,5 @@ Document{-> RETAINTYPE};
 Document { -> CONFIGURE(HtmlConverter, "inputView" = "_InitialView", "outputView" = "plain", "skipWhitespaces" = false), 
       EXEC(HtmlConverter)};
 
-Document{ -> CONFIGURE(ViewWriter, "inputView" = "plain", "outputView" = "_InitialView", "output" = "/../converted/"), 
+Document{ -> CONFIGURE(TEIViewWriter, "inputView" = "plain", "outputView" = "_InitialView", "output" = "/../converted/"), 
     EXEC(TEIViewWriter)};
