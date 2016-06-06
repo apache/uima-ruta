@@ -77,6 +77,9 @@ public class ApplyTreeLabelProvider extends LabelProvider implements ILabelProvi
         Feature f3 = ruleType.getFeatureByBaseName(ExplainConstants.ELEMENT);
         String v3 = fs.getStringValue(f3);
         v3 = v3.replaceAll("[\\n\\r]", "");
+        if(v3.length() > 150) {
+          v3 = v3.substring(0, 148) + "...";
+        }
         Feature f4 = ruleType.getFeatureByBaseName(ExplainConstants.TIME);
         long v4 = fs.getLongValue(f4);
         String time = "";
