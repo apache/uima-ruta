@@ -46,7 +46,8 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  */
 @Mojo(name = "twl", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class RutaGenerateTWLMojo extends AbstractMojo {
-  @Component
+  
+  @Parameter( defaultValue = "${project}", readonly = true )
   private MavenProject project;
 
   @Component
@@ -131,9 +132,9 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
     for (Object each : FileUtils.getFiles(directory, includes, excludes)) {
       if (each instanceof File) {
         File inputFile = (File) each;
-        File outputfile = getOutputFile(inputFile, directory, outputDirectory);
-        if (outputfile == null || !outputfile.exists() || buildContext.hasDelta(inputFile)) {
-          result.put(inputFile, outputfile);
+        File outputFile = getOutputFile(inputFile, directory, outputDirectory);
+        if (outputFile == null || !outputFile.exists() || inputFile.lastModified() > outputFile.lastModified()) {
+          result.put(inputFile, outputFile);
         }
       }
     }

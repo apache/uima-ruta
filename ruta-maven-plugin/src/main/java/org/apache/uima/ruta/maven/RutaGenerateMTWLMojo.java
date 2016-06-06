@@ -44,7 +44,8 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  */
 @Mojo(name = "mtwl", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class RutaGenerateMTWLMojo extends AbstractMojo {
-  @Component
+  
+  @Parameter( defaultValue = "${project}", readonly = true )
   private MavenProject project;
 
   @Component
@@ -119,6 +120,7 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
     List<File> result = new ArrayList<File>();
 
     boolean exists = outputFile.exists();
+    long outputModified = outputFile.lastModified();
     
     File directory = new File(fileSet.getDirectory());
     String includes = Utils.toString(fileSet.getIncludes());
@@ -128,10 +130,11 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
     for (Object each : FileUtils.getFiles(directory, includes, excludes)) {
       if (each instanceof File) {
         File file = (File) each;
-        result.add(file);
-        if (buildContext.hasDelta(file)) {
+        long inputModified = file.lastModified();
+        if(inputModified > outputModified) {
           modified = true;
         }
+        result.add(file);
       }
     }
     if(!exists || modified) {

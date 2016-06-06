@@ -35,9 +35,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.util.XMLInputSource;
 import org.codehaus.plexus.util.FileUtils;
-
-import junit.framework.Assert;
-
+import org.junit.Assert;
 
 public class RutaGenerateDescriptorMojoTest extends AbstractMojoTestCase {
 
