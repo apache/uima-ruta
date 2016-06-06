@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-    <name>TEIConverterTypeSystem</name>
+    <name>uima.ruta.example.TEIConverterTypeSystem</name>
     <imports>
-        <import location="..\..\..\BasicTypeSystem.xml"/>
-        <import location="..\..\..\utils\HtmlTypeSystem.xml"/>
-        <import location="..\..\..\utils\SourceDocumentInformation.xml"/>
+        <import location="../../../BasicTypeSystem.xml"/>
+        <import location="../../../utils/HtmlTypeSystem.xml"/>
+        <import location="../../../utils/SourceDocumentInformation.xml"/>
     </imports>
     <types>
         <typeDescription>
-            <name>TEIConverter.PersName</name>
-            <description>Type defined in TEIConverter</description>
+            <name>uima.ruta.example.TEIConverter.LastName</name>
+            <description>Type defined in uima.ruta.example.TEIConverter</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
         <typeDescription>
-            <name>TEIConverter.AddName</name>
-            <description>Type defined in TEIConverter</description>
+            <name>uima.ruta.example.TEIConverter.PersName</name>
+            <description>Type defined in uima.ruta.example.TEIConverter</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
         <typeDescription>
-            <name>TEIConverter.LastName</name>
-            <description>Type defined in TEIConverter</description>
+            <name>uima.ruta.example.TEIConverter.FirstName</name>
+            <description>Type defined in uima.ruta.example.TEIConverter</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
         <typeDescription>
-            <name>TEIConverter.FirstName</name>
-            <description>Type defined in TEIConverter</description>
+            <name>uima.ruta.example.TEIConverter.AddName</name>
+            <description>Type defined in uima.ruta.example.TEIConverter</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
     </types>
