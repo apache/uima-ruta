@@ -72,7 +72,9 @@ public class CallAction extends AbstractRutaAction {
       if (block != null) {
         callScript(block, context, stream, crowd);
       } else {
-        System.out.println("Found no script/block: " + namespace);
+        if(targetEngine == null) {
+          throw new IllegalArgumentException("Analysis Engine or Script/Block with name '"+namespace+"' is unknown.");
+        }
       }
     }
 
