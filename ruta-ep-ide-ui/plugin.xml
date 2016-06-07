@@ -416,6 +416,7 @@ under the License.
            id="org.apache.uima.ruta.ide.debug.ui.launcher.GenericRutaInstallType">
      </interpreterInstallType>
   </extension>
+  <!--
   <extension
         point="org.eclipse.debug.core.launchDelegates">
      <launchDelegate
@@ -426,6 +427,7 @@ under the License.
            type="org.eclipse.jdt.launching.localJavaApplication">
      </launchDelegate>
   </extension>
+  -->
   <extension
         point="org.eclipse.dltk.console.scriptInterpreter">
      <scriptInterpreter
