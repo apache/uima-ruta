@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.antlr.runtime.CommonToken;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.apache.uima.UIMAFramework;
@@ -80,6 +81,8 @@ import org.springframework.core.io.ResourceLoader;
 
 public class RutaEnvironment {
 
+  private static final String DOCUMENT = "Document";
+
   private final Object annotationTypeDummy = new Object();
 
   private Map<String, Type> types;
@@ -105,6 +108,11 @@ public class RutaEnvironment {
    * Set of imported typesystems.
    */
   private Set<String> typesystems;
+
+  /**
+   * Set of imported scripts.
+   */
+  private Set<String> scripts;
 
   /**
    * An alias from a long to a short name.
@@ -163,9 +171,8 @@ public class RutaEnvironment {
 
   private Map<String, String> variableAliases;
 
-  
   private RutaVerbalizer verbalizer = new RutaVerbalizer();
-  
+
   public RutaEnvironment(RutaBlock owner) {
     super();
     this.owner = owner;
@@ -174,6 +181,7 @@ public class RutaEnvironment {
     namespaces = new HashMap<String, String>();
     ambiguousTypeAlias = new HashMap<String, Set<String>>();
     typesystems = new HashSet<String>();
+    scripts = new HashSet<String>();
     typeImports = new HashMap<String, List<Alias>>();
     packageImports = new HashMap<String, List<String>>();
     declaredAnnotationTypes = new HashSet<String>();
@@ -214,7 +222,7 @@ public class RutaEnvironment {
     resourcePaths = getResourcePaths();
     initializedVariables = new HashMap<String, Object>();
     variableAliases = new HashMap<>();
-    
+
     // Always import BasicTypeSystem
     addTypeSystem("org.apache.uima.ruta.engine.BasicTypeSystem");
   }
@@ -235,6 +243,7 @@ public class RutaEnvironment {
         importDeclaredTypesystems(cas.getTypeSystem());
         importTypeAliases(cas.getTypeSystem());
         importPackageAliases(cas.getTypeSystem());
+        importDeclaredScripts(cas.getTypeSystem());
       } else {
         // import all types known to the cas
         importAllTypes(cas.getTypeSystem());
@@ -245,10 +254,10 @@ public class RutaEnvironment {
       // "Document" can be resolved to "uima.tcas.DocumentAnnotation" or
       // "org.apache.uima.ruta.type.Document",
       // we force it to the former
-      ambiguousTypeAlias.remove("Document");
-      namespaces.remove("Document");
+      ambiguousTypeAlias.remove(DOCUMENT);
+      namespaces.remove(DOCUMENT);
       Type documentType = cas.getTypeSystem().getType(UIMAConstants.TYPE_DOCUMENT);
-      addType("Document", documentType);
+      addType(DOCUMENT, documentType);
 
       Type annotationType = cas.getJCas().getCasType(org.apache.uima.jcas.tcas.Annotation.type);
       addType("Annotation", annotationType);
@@ -316,6 +325,33 @@ public class RutaEnvironment {
       } else {
         throw new RuntimeException("Type '" + td.getName() + "' not found");
       }
+    }
+  }
+
+  /**
+   * Import all already initialized types of imported scripts.
+   *
+   * @param casTS
+   *          Type system containing all known types.
+   * @throws InvalidXMLException
+   *           When import cannot be resolved.
+   */
+  private void importDeclaredScripts(TypeSystem casTS) throws InvalidXMLException {
+
+    RutaModule script = owner.getScript();
+    for (String eachImportedScript : scripts) {
+      RutaModule importedModule = script.getScript(eachImportedScript);
+      RutaEnvironment importedEnvironment = importedModule.getRootBlock().getEnvironment();
+      Map<String, Type> importedTypeMap = importedEnvironment.getTypes();
+      Map<String, String> importedNamespaces = importedEnvironment.getNamespaces();
+      Set<Entry<String, String>> entrySet = importedNamespaces.entrySet();
+      for (Entry<String, String> entry : entrySet) {
+        if (!ownsType(entry.getValue()) && !StringUtils.equals(entry.getKey(), DOCUMENT)) {
+          Type type = importedTypeMap.get(entry.getValue());
+          addType(entry.getKey(), type);
+        }
+      }
+      // TODO import also wordlists and variables?
     }
   }
 
@@ -391,9 +427,6 @@ public class RutaEnvironment {
         }
       } else {
         complete = string;
-        String[] split = complete.split("\\p{Punct}");
-        String name = split[split.length - 1];
-        importType(complete, name);
       }
     }
     return complete;
@@ -453,6 +486,16 @@ public class RutaEnvironment {
    */
   public void addTypeSystem(String descriptor) {
     typesystems.add(descriptor);
+  }
+
+  /**
+   * Add a script to the script.
+   *
+   * @param script
+   *          the script's full name.
+   */
+  public void addScript(String script) {
+    scripts.add(script);
   }
 
   /**
@@ -544,8 +587,8 @@ public class RutaEnvironment {
 
     for (TypeDescription td : tsd.getTypes()) {
       String qname = td.getName();
-      if (packageName == null
-              || (qname.startsWith(packageName) && qname.indexOf('.', packageName.length() + 1) == -1)) {
+      if (packageName == null || (qname.startsWith(packageName)
+              && qname.indexOf('.', packageName.length() + 1) == -1)) {
         // td is in packageName
         if (alias != null) {
           String shortName = alias + "." + qname.substring(qname.lastIndexOf('.') + 1);
@@ -643,8 +686,8 @@ public class RutaEnvironment {
                     "Error reading csv table " + table, e);
           }
         } else {
-          Logger.getLogger(this.getClass().getName())
-                  .log(Level.SEVERE, "Can't find " + table + "!");
+          Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                  "Can't find " + table + "!");
         }
       } else {
         try {
@@ -704,7 +747,7 @@ public class RutaEnvironment {
   public void addVariable(String name, String type) {
     addVariable(name, availableTypes.get(type), availableListTypes.get(type));
   }
-  
+
   public void removeVariable(String name) {
     variableTypes.remove(name);
     variableGenericTypes.remove(name);
@@ -716,7 +759,7 @@ public class RutaEnvironment {
   }
 
   public boolean ownsVariableOfType(String name, String type) {
-    if(variableAliases.containsKey(name)) {
+    if (variableAliases.containsKey(name)) {
       name = variableAliases.get(name);
     }
     Class<?> varclass = variableTypes.get(name);
@@ -731,7 +774,7 @@ public class RutaEnvironment {
   }
 
   public boolean isVariable(String name) {
-    if(variableAliases.containsKey(name)) {
+    if (variableAliases.containsKey(name)) {
       name = variableAliases.get(name);
     }
     if (ownsVariable(name)) {
@@ -744,13 +787,12 @@ public class RutaEnvironment {
   }
 
   public boolean isVariableOfType(String name, String type) {
-    return ownsVariableOfType(name, type)
-            || (owner.getParent() != null && owner.getParent().getEnvironment()
-                    .isVariableOfType(name, type));
+    return ownsVariableOfType(name, type) || (owner.getParent() != null
+            && owner.getParent().getEnvironment().isVariableOfType(name, type));
   }
 
   public Class<?> getVariableType(String name) {
-    if(variableAliases.containsKey(name)) {
+    if (variableAliases.containsKey(name)) {
       name = variableAliases.get(name);
     }
     Class<?> result = variableTypes.get(name);
@@ -773,7 +815,7 @@ public class RutaEnvironment {
   }
 
   public <T> T getVariableValue(String name, Class<T> type) {
-    if(variableAliases.containsKey(name)) {
+    if (variableAliases.containsKey(name)) {
       name = variableAliases.get(name);
     }
     boolean containsKey = variableValues.containsKey(name);
@@ -881,7 +923,7 @@ public class RutaEnvironment {
   }
 
   public void setVariableValue(String name, Object value) {
-    if(variableAliases.containsKey(name)) {
+    if (variableAliases.containsKey(name)) {
       name = variableAliases.get(name);
     }
     if (ownsVariable(name)) {
@@ -943,15 +985,18 @@ public class RutaEnvironment {
     this.resourceManager = resourceManager;
   }
 
-  public void addMacroAction(String name, Map<String, String> def, Set<String> vars, List<AbstractRutaAction> actions) {
-    macroActions.put(name, new ImmutableTriple<Map<String, String>, List<AbstractRutaAction>, Set<String>>(def,
-            actions, vars));
+  public void addMacroAction(String name, Map<String, String> def, Set<String> vars,
+          List<AbstractRutaAction> actions) {
+    macroActions.put(name,
+            new ImmutableTriple<Map<String, String>, List<AbstractRutaAction>, Set<String>>(def,
+                    actions, vars));
   }
 
-  public void addMacroCondition(String name, Map<String, String> def,
-          Set<String> vars, List<AbstractRutaCondition> conditions) {
-    macroConditions.put(name, new ImmutableTriple<Map<String, String>, List<AbstractRutaCondition>, Set<String>>(
-            def, conditions, vars));
+  public void addMacroCondition(String name, Map<String, String> def, Set<String> vars,
+          List<AbstractRutaCondition> conditions) {
+    macroConditions.put(name,
+            new ImmutableTriple<Map<String, String>, List<AbstractRutaCondition>, Set<String>>(def,
+                    conditions, vars));
   }
 
   public boolean isMacroAction(String name) {
@@ -962,11 +1007,13 @@ public class RutaEnvironment {
     return macroConditions.keySet().contains(name);
   }
 
-  public Triple<Map<String, String>, List<AbstractRutaAction>, Set<String>> getMacroAction(String name) {
+  public Triple<Map<String, String>, List<AbstractRutaAction>, Set<String>> getMacroAction(
+          String name) {
     return macroActions.get(name);
   }
 
-  public Triple<Map<String, String>, List<AbstractRutaCondition>, Set<String>> getMacroCondition(String name) {
+  public Triple<Map<String, String>, List<AbstractRutaCondition>, Set<String>> getMacroCondition(
+          String name) {
     return macroConditions.get(name);
   }
 
@@ -982,4 +1029,21 @@ public class RutaEnvironment {
     String verbalize = verbalizer.verbalize(expression);
     return verbalize;
   }
+
+  public Map<String, Type> getTypes() {
+    return types;
+  }
+
+  public Set<String> getDeclaredAnnotationTypes() {
+    return declaredAnnotationTypes;
+  }
+
+  public Set<String> getTypesystems() {
+    return typesystems;
+  }
+
+  public Map<String, String> getNamespaces() {
+    return namespaces;
+  }
+
 }

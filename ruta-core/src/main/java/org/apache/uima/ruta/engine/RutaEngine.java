@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.antlr.runtime.ANTLRFileStream;
@@ -231,7 +232,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
    */
   public static final String PARAM_SEEDERS = "seeders";
 
-  @ConfigurationParameter(name = PARAM_SEEDERS, mandatory = false, defaultValue = { "org.apache.uima.ruta.seed.DefaultSeeder" })
+  @ConfigurationParameter(name = PARAM_SEEDERS, mandatory = false, defaultValue = {
+      "org.apache.uima.ruta.seed.DefaultSeeder" })
   private String[] seeders;
 
   /**
@@ -407,17 +409,17 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private String[] varValues;
 
   /**
-   * This parameter specifies the annotation types which should be reindex for ruta's internal annotations
-   * All annotation types that changed since the last call of a ruta script need to be listed here. 
-   * The value of this parameter needs only be adapted for performance optimization in pipelines that 
-   * contains several ruta analysis engines.
-   * Default value is uima.tcas.Annotation
+   * This parameter specifies the annotation types which should be reindex for ruta's internal
+   * annotations All annotation types that changed since the last call of a ruta script need to be
+   * listed here. The value of this parameter needs only be adapted for performance optimization in
+   * pipelines that contains several ruta analysis engines. Default value is uima.tcas.Annotation
    */
   public static final String PARAM_REINDEX_ONLY = "reindexOnly";
 
-  @ConfigurationParameter(name = PARAM_REINDEX_ONLY, mandatory = false, defaultValue = {"uima.tcas.Annotation"})
+  @ConfigurationParameter(name = PARAM_REINDEX_ONLY, mandatory = false, defaultValue = {
+      "uima.tcas.Annotation" })
   private String[] reindexOnly;
-  
+
   private UimaContext context;
 
   private RutaModule script;
@@ -437,7 +439,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private TypeSystem lastTypeSystem;
 
   private ResourceManager resourceManager = null;
-
 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
@@ -512,7 +513,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
       // reinitialize analysis engines if this one is configured
       analysisEnginesAlreadyInitialized = false;
-      
+
       resourceManager = UIMAFramework.newDefaultResourceManager();
       String dataPath = "";
       if (descriptorPaths != null) {
@@ -554,7 +555,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
     boolean typeSystemChanged = lastTypeSystem != cas.getTypeSystem();
     if (!initialized || reloadScript || typeSystemChanged) {
-      initializeTypes(script, cas);
+      initializeTypes(script, cas, new ArrayList<String>());
       initialized = true;
       lastTypeSystem = cas.getTypeSystem();
     }
@@ -607,15 +608,21 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
   }
 
-  private void initializeTypes(RutaModule script, CAS cas) {
+  private void initializeTypes(RutaModule script, CAS cas, List<String> initialized) {
     // TODO find a better solution for telling everyone about the types!
     RutaBlock mainRootBlock = script.getBlock(null);
-    mainRootBlock.getEnvironment().initializeTypes(cas, strictImports);
-    Collection<RutaModule> values = script.getScripts().values();
-    for (RutaModule eachModule : values) {
-      relinkEnvironments(eachModule, mainRootBlock, new ArrayList<RutaModule>());
-      initializeTypes(eachModule, cas);
+    Collection<Entry<String, RutaModule>> values = script.getScripts().entrySet();
+    for (Entry<String, RutaModule> eachImport : values) {
+      String name = eachImport.getKey();
+      if (!initialized.contains(name)) {
+        RutaModule eachModule = eachImport.getValue();
+        relinkEnvironments(eachModule, mainRootBlock, new ArrayList<RutaModule>());
+        initializeTypes(eachModule, cas, initialized);
+        initialized.add(name);
+      }
     }
+    mainRootBlock.getEnvironment().initializeTypes(cas, strictImports);
+
   }
 
   private void relinkEnvironments(RutaModule script, RutaBlock mainRootBlock,
@@ -673,8 +680,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private InferenceCrowd initializeCrowd() {
     List<RutaInferenceVisitor> visitors = new ArrayList<RutaInferenceVisitor>();
     if (debug) {
-      visitors.add(new DebugInfoCollectorVisitor(debug, debugWithMatches, Arrays
-              .asList(debugOnlyFor), verbalizer));
+      visitors.add(new DebugInfoCollectorVisitor(debug, debugWithMatches,
+              Arrays.asList(debugOnlyFor), verbalizer));
     }
     if (profile) {
       visitors.add(new TimeProfilerVisitor());
@@ -749,12 +756,12 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           String mainScriptPath = mainScript.replaceAll("\\.", "/") + SCRIPT_FILE_EXTENSION;
           script = loadScriptIS(mainScriptPath);
         } catch (IOException e) {
-          throw new AnalysisEngineProcessException(new FileNotFoundException("Script ["
-                  + mainScript + "] cannot be found at [" + collectionToString(scriptPaths)
+          throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
+                  + "] cannot be found at [" + collectionToString(scriptPaths)
                   + "] or classpath with extension .ruta"));
         } catch (RecognitionException e) {
-          throw new AnalysisEngineProcessException(new FileNotFoundException("Script ["
-                  + mainScript + "] cannot be found at [" + collectionToString(scriptPaths)
+          throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
+                  + "] cannot be found at [" + collectionToString(scriptPaths)
                   + "] or classpath  with extension .ruta"));
         }
       } else {
@@ -799,7 +806,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           additionalEnginesMap.put(classString, eachEngine);
           String[] eachEngineLocationPartArray = classString.split("\\.");
           if (eachEngineLocationPartArray.length > 1) {
-            String shortEachEngineLocation = eachEngineLocationPartArray[eachEngineLocationPartArray.length - 1];
+            String shortEachEngineLocation = eachEngineLocationPartArray[eachEngineLocationPartArray.length
+                    - 1];
             additionalEnginesMap.put(shortEachEngineLocation, eachEngine);
           }
         } catch (Exception e) {
@@ -816,23 +824,23 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           try {
             eachEngine = engineLoader.loadEngineIS(locationIS, viewName);
           } catch (InvalidXMLException e) {
-            throw new AnalysisEngineProcessException(new FileNotFoundException("Engine at ["
-                    + eachEngineLocation + "] cannot be found in ["
-                    + collectionToString(descriptorPaths)
-                    + "] with extension .xml (from mainScript=" + mainScript + " in "
-                    + collectionToString(scriptPaths)));
+            throw new AnalysisEngineProcessException(
+                    new FileNotFoundException("Engine at [" + eachEngineLocation
+                            + "] cannot be found in [" + collectionToString(descriptorPaths)
+                            + "] with extension .xml (from mainScript=" + mainScript + " in "
+                            + collectionToString(scriptPaths)));
           } catch (ResourceInitializationException e) {
-            throw new AnalysisEngineProcessException(new FileNotFoundException("Engine at ["
-                    + eachEngineLocation + "] cannot be found in ["
-                    + collectionToString(descriptorPaths)
-                    + "] with extension .xml (from mainScript=" + mainScript + " in "
-                    + collectionToString(scriptPaths)));
+            throw new AnalysisEngineProcessException(
+                    new FileNotFoundException("Engine at [" + eachEngineLocation
+                            + "] cannot be found in [" + collectionToString(descriptorPaths)
+                            + "] with extension .xml (from mainScript=" + mainScript + " in "
+                            + collectionToString(scriptPaths)));
           } catch (IOException e) {
-            throw new AnalysisEngineProcessException(new FileNotFoundException("Engine at ["
-                    + eachEngineLocation + "] cannot be found in ["
-                    + collectionToString(descriptorPaths)
-                    + "] with extension .xml (from mainScript=" + mainScript + " in "
-                    + collectionToString(scriptPaths)));
+            throw new AnalysisEngineProcessException(
+                    new FileNotFoundException("Engine at [" + eachEngineLocation
+                            + "] cannot be found in [" + collectionToString(descriptorPaths)
+                            + "] with extension .xml (from mainScript=" + mainScript + " in "
+                            + collectionToString(scriptPaths)));
           } catch (ResourceConfigurationException e) {
             throw new AnalysisEngineProcessException(e);
           } catch (URISyntaxException e) {
@@ -849,7 +857,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           additionalEnginesMap.put(eachEngineLocation, eachEngine);
           String[] eachEngineLocationPartArray = eachEngineLocation.split("\\.");
           if (eachEngineLocationPartArray.length > 1) {
-            String shortEachEngineLocation = eachEngineLocationPartArray[eachEngineLocationPartArray.length - 1];
+            String shortEachEngineLocation = eachEngineLocationPartArray[eachEngineLocationPartArray.length
+                    - 1];
             additionalEnginesMap.put(shortEachEngineLocation, eachEngine);
           }
         } catch (Exception e) {
@@ -865,7 +874,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
 
     analysisEnginesAlreadyInitialized = true;
-    
+
     for (RutaModule each : additionalScriptsMap.values()) {
       each.setScriptDependencies(additionalScriptsMap);
     }
@@ -1000,25 +1009,25 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         String scriptPath = toLoad.replaceAll("\\.", "/") + SCRIPT_FILE_EXTENSION;
         eachScript = loadScriptIS(scriptPath);
       } catch (IOException e) {
-        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + toLoad
-                + "] cannot be found at [" + collectionToString(scriptPaths)
-                + "] with extension .ruta"));
+        throw new AnalysisEngineProcessException(
+                new FileNotFoundException("Script [" + toLoad + "] cannot be found at ["
+                        + collectionToString(scriptPaths) + "] with extension .ruta"));
       } catch (RecognitionException e) {
-        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + toLoad
-                + "] cannot be found at [" + collectionToString(scriptPaths)
-                + "] with extension .ruta"));
+        throw new AnalysisEngineProcessException(
+                new FileNotFoundException("Script [" + toLoad + "] cannot be found at ["
+                        + collectionToString(scriptPaths) + "] with extension .ruta"));
       }
     } else {
       try {
         eachScript = loadScript(location);
       } catch (IOException e) {
-        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + toLoad
-                + "] cannot be found at [" + collectionToString(scriptPaths)
-                + "] with extension .ruta"));
+        throw new AnalysisEngineProcessException(
+                new FileNotFoundException("Script [" + toLoad + "] cannot be found at ["
+                        + collectionToString(scriptPaths) + "] with extension .ruta"));
       } catch (RecognitionException e) {
-        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + toLoad
-                + "] cannot be found at [" + collectionToString(scriptPaths)
-                + "] with extension .ruta"));
+        throw new AnalysisEngineProcessException(
+                new FileNotFoundException("Script [" + toLoad + "] cannot be found at ["
+                        + collectionToString(scriptPaths) + "] with extension .ruta"));
       }
     }
     additionalScripts.put(toLoad, eachScript);

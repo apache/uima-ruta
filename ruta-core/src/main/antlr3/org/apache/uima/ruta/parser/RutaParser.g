@@ -265,6 +265,7 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	}
 	public void addImportScript(RutaBlock parent, String namespace) {
 		parent.getScript().addScript(namespace, null);
+		parent.getEnvironment().addScript(namespace);
 		if(descInfo != null) {
 		  descInfo.addScript(namespace);
 		}
