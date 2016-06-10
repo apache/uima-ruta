@@ -42,6 +42,7 @@ public class RutaTest {
 		jcas.setDocumentText("This text is processed by Ruta.");
 		AnalysisEngineDescription aed = AnalysisEngineFactory.createEngineDescriptionFromPath("target/generated-sources/ruta/descriptor/${packageAsPath}/${projectNameCamelCase}MainRutaAnnotator.xml");
 		SimplePipeline.runPipeline(jcas, aed);
+		
 		Collection<RutaMention> select = JCasUtil.select(jcas, RutaMention.class);
 		Assert.assertEquals(1, select.size());
 		Assert.assertEquals("Ruta", select.iterator().next().getCoveredText());
