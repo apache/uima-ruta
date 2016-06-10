@@ -35,9 +35,8 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.XMLInputSource;
+import org.junit.Assert;
 import org.junit.Test;
-
-import junit.framework.Assert;
 
 public class DefaultSeederTest {
 

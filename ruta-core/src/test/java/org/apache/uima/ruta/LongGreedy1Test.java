@@ -28,6 +28,7 @@ import org.junit.Test;
 
 public class LongGreedy1Test {
 
+  @SuppressWarnings("unused")
   @Test
   public void test() {
     String name = this.getClass().getSimpleName();

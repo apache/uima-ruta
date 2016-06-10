@@ -48,9 +48,8 @@ import org.apache.uima.resource.metadata.impl.TypeSystemDescription_impl;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
+import org.junit.Assert;
 import org.junit.Test;
-
-import junit.framework.Assert;
 
 public class RutaTest {
 

@@ -30,9 +30,9 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.type.DebugBlockApply;
 import org.apache.uima.ruta.type.DebugRuleApply;
+import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.Assert;
 
 public class ScriptVerbalizerTest {
 

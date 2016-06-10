@@ -41,6 +41,7 @@ import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.AnalysisComponent;
@@ -514,18 +515,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       // reinitialize analysis engines if this one is configured
       analysisEnginesAlreadyInitialized = false;
 
-      resourceManager = UIMAFramework.newDefaultResourceManager();
-      String dataPath = "";
-      if (descriptorPaths != null) {
-        for (String path : descriptorPaths) {
-          dataPath += path + File.pathSeparator;
-        }
-        try {
-          resourceManager.setDataPath(dataPath);
-        } catch (MalformedURLException e) {
-          throw new ResourceInitializationException(e);
-        }
-      }
+      handleDataPath();
+      
       if (!factory.isInitialized()) {
         initializeExtensionWithClassPath();
       }
@@ -541,6 +532,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
     }
   }
+
+  
 
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {
@@ -591,6 +584,35 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
   }
 
+  private void handleDataPath() throws ResourceInitializationException {
+    String dataPath = context.getDataPath();
+    String[] singleDataPaths = dataPath.split(File.pathSeparator);
+    
+    String[] clonedDescriptorPath = null;
+    if(descriptorPaths != null) {
+      clonedDescriptorPath = descriptorPaths.clone();
+    }
+    
+    if(!StringUtils.isBlank(dataPath)) {
+      scriptPaths= ArrayUtils.addAll(scriptPaths, singleDataPaths);
+      descriptorPaths= ArrayUtils.addAll(descriptorPaths, singleDataPaths);
+      resourcePaths= ArrayUtils.addAll(resourcePaths, singleDataPaths);
+    }
+    
+    resourceManager = UIMAFramework.newDefaultResourceManager();
+    if (clonedDescriptorPath != null) {
+      for (String path : clonedDescriptorPath) {
+        dataPath += path + File.pathSeparator;
+      }
+      try {
+        resourceManager.setDataPath(dataPath);
+      } catch (MalformedURLException e) {
+        throw new ResourceInitializationException(e);
+      }
+    }
+  }
+  
+  
   private void resetEnvironments(CAS cas) {
     resetEnvironment(script, cas);
     Collection<RutaModule> scripts = script.getScripts().values();
