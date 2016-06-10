@@ -40,6 +40,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -444,7 +445,8 @@ public class TreeWordList implements RutaWordList {
   }
 
   public void writeNode(Writer writer, TextNode node) throws IOException {
-    String output = "<node char=\"" + node.getValue() + "\" isWordEnd=\""
+    String value = StringEscapeUtils.escapeXml11(String.valueOf(node.getValue()));
+    String output = "<node char=\"" + value + "\" isWordEnd=\""
             + Boolean.toString(node.isWordEnd()) + "\">";
     writer.write(output);
     for (TextNode child : node.getChildren().values()) {

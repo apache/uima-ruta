@@ -21,6 +21,7 @@ package org.apache.uima.ruta.resource;
 
 import java.util.Stack;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -46,7 +47,10 @@ public class XMLEventHandler extends DefaultHandler {
   public void startElement(String namespaceURI, String localName, String qualifiedName,
           Attributes atts) {
     if ("node".equals(localName) || "node".equals(qualifiedName)) {
-      char c = atts.getValue("char").charAt(0);
+      String value = atts.getValue("char");
+      // unescaping should and is be done by the parser
+      String unescapeXml = StringEscapeUtils.unescapeXml(value);
+      char c = unescapeXml.charAt(0);
       boolean isWordEnd = Boolean.valueOf(atts.getValue("isWordEnd"));
       TextNode newNode = new TextNode(c, isWordEnd);
       stack.peek().addChild(newNode);
