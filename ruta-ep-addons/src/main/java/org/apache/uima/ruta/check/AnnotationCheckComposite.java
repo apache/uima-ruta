@@ -38,6 +38,7 @@ import java.util.Set;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
@@ -47,10 +48,20 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.FsIndexDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
+import org.apache.uima.util.CasCopier;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -89,8 +100,8 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.ViewPart;
 import org.xml.sax.SAXException;
 
-public class AnnotationCheckComposite extends Composite implements ISelectionChangedListener,
-        ISelectionListener {
+public class AnnotationCheckComposite extends Composite
+        implements ISelectionChangedListener, ISelectionListener {
 
   private CheckAnnotationDocumentListener annotationListener;
 
@@ -644,28 +655,15 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
     } catch (ResourceInitializationException e) {
       RutaAddonsPlugin.error(e);
     }
+    String goldFolderLocation = documentSink.getText();
     for (AnnotationCheckTreeNode each : children) {
       CheckDocument cd = (CheckDocument) each.getElement();
       if (cd.checked && cd.keep) {
         cas.reset();
+        casSource.reset();
         File oldFile = new File(cd.source);
-        File goldFile = new File(documentSink.getText(), oldFile.getName());
-        try {
-          if (goldFile.exists()) {
-            XmiCasDeserializer.deserialize(new FileInputStream(goldFile), cas, false);
-          } else {
-            XmiCasDeserializer.deserialize(new FileInputStream(oldFile), cas, true);
-          }
-        } catch (FileNotFoundException e) {
-          RutaAddonsPlugin.error(e);
-        } catch (SAXException e) {
-          RutaAddonsPlugin.error(e);
-        } catch (IOException e) {
-          RutaAddonsPlugin.error(e);
-        }
-        String documentText = cas.getDocumentText();
-        cas.reset();
-        cas.setDocumentText(documentText);
+        File goldFile = new File(goldFolderLocation, oldFile.getName());
+
         try {
           XmiCasDeserializer.deserialize(new FileInputStream(oldFile), casSource, true);
         } catch (FileNotFoundException e) {
@@ -675,11 +673,29 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
         } catch (IOException e) {
           RutaAddonsPlugin.error(e);
         }
+
+        try {
+          if (goldFile.exists()) {
+            XmiCasDeserializer.deserialize(new FileInputStream(goldFile), cas, false);
+          } else {
+            String documentText = casSource.getDocumentText();
+            cas.setDocumentText(documentText);
+          }
+        } catch (FileNotFoundException e) {
+          RutaAddonsPlugin.error(e);
+        } catch (SAXException e) {
+          RutaAddonsPlugin.error(e);
+        } catch (IOException e) {
+          RutaAddonsPlugin.error(e);
+        }
+        CasCopier cc = new CasCopier(casSource, cas);
+
         for (String uncheckedTypeName : typesToTransferUnchecked) {
           Type type = cas.getTypeSystem().getType(uncheckedTypeName);
           if (type != null) {
             for (AnnotationFS annot : casSource.getAnnotationIndex(type)) {
-              cas.addFsToIndexes(cas.createAnnotation(type, annot.getBegin(), annot.getEnd()));
+              FeatureStructure copyFs = cc.copyFs(annot);
+              cas.addFsToIndexes(copyFs);
             }
           }
         }
@@ -716,12 +732,21 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
           docs.add(cd);
         }
       }
-      File dataFile = new File(documentSink.getText(), "data.xml");
+      File dataFile = new File(goldFolderLocation, "data.xml");
       try {
         XMLUtils.write(docs, dataFile);
       } catch (IOException e) {
         RutaAddonsPlugin.error(e);
       }
+    }
+
+    IPath goldPath = Path.fromOSString(goldFolderLocation);
+    IContainer containerForLocation = ResourcesPlugin.getWorkspace().getRoot()
+            .getContainerForLocation(goldPath);
+    try {
+      containerForLocation.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+    } catch (CoreException e) {
+      RutaAddonsPlugin.error(e);
     }
   }
 
@@ -794,8 +819,8 @@ public class AnnotationCheckComposite extends Composite implements ISelectionCha
   public void refreshTypeSystem() {
     try {
       String typeSystem = getPathToTypeSystem();
-      TypeSystemDescription tsd = UIMAFramework.getXMLParser().parseTypeSystemDescription(
-              new XMLInputSource(new File(typeSystem)));
+      TypeSystemDescription tsd = UIMAFramework.getXMLParser()
+              .parseTypeSystemDescription(new XMLInputSource(new File(typeSystem)));
       tsd.resolveImports();
       this.tsd = tsd;
     } catch (InvalidXMLException e) {
