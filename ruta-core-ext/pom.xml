@@ -58,6 +58,7 @@
 							<configuration>
 								<excludes>
 									<exclude>src/test/resources/org/apache/uima/ruta/block/fst/*.txt</exclude> <!-- test data -->
+                                    <exclude>src/test/resources/org/apache/uima/ruta/action/*.*</exclude> <!-- test data -->
 									<exclude>issuesFixed/**</exclude> <!-- generated -->
 								</excludes>
 							</configuration>
