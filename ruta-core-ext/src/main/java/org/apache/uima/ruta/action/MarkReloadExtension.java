@@ -17,7 +17,7 @@ import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 public class MarkReloadExtension implements IRutaActionExtension{
   private final String[] knownExtensions = new String[] { "MARKFASTRELOAD", "MARKTABLERELOAD" };
 
-  private final Class<?>[] extensions = new Class[] { MarkFastReloadTest.class, MarkTableReloadAction.class };
+  private final Class<?>[] extensions = new Class[] { MarkFastReloadAction.class, MarkTableReloadAction.class };
 
   public String verbalize(RutaElement element, RutaVerbalizer verbalizer) {
     if (element instanceof MarkFastReloadAction) {
