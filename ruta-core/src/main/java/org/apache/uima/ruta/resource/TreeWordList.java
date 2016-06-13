@@ -71,8 +71,9 @@ public class TreeWordList implements RutaWordList {
    * Constructs a TreeWordList from a resource.
    * 
    * @param resource - Resource to create a TextWordList from
-   * @throws IOException
-   * @throws IllegalArgumentException
+   * @param dictRemoveWS - option to remove whitespaces fromt he resource
+   * @throws IOException - when there is a problem reading the resource
+   * @throws IllegalArgumentException - for an invalid name or file ending
    */
   public TreeWordList(Resource resource, boolean dictRemoveWS) throws IOException {
     this.dictRemoveWS = dictRemoveWS;
@@ -103,6 +104,7 @@ public class TreeWordList implements RutaWordList {
    * 
    * @param pathname - path of the file to create a TextWordList from
    * @param dictRemoveWS - remove whitespaces    
+   * @throws IOException - when there is a problem reading the pathname
    */
   public TreeWordList(String pathname, boolean dictRemoveWS) throws IOException {
     this(new FileSystemResource(pathname), dictRemoveWS);
@@ -113,7 +115,9 @@ public class TreeWordList implements RutaWordList {
    * 
    * @param stream
    *          path of the file to create a TextWordList from
+   * @param name - the name of the resource in the stream
    * @param dictRemoveWS - remove whitespaces    
+   * @throws IOException - when there is a problem reading the stream
    */
   public TreeWordList(InputStream stream, String name, boolean dictRemoveWS) throws IOException {
     this.dictRemoveWS = dictRemoveWS;
@@ -145,6 +149,7 @@ public class TreeWordList implements RutaWordList {
    * @param stream
    *          Open InputStream containing the word for the treeWordList, this method will close the
    *          stream.
+   * @throws IOException - when there is a problem reading the stream
    */
   public void buildNewTree(InputStream stream) throws IOException {
     Scanner scan = new Scanner(stream, "UTF-8");
@@ -194,9 +199,6 @@ public class TreeWordList implements RutaWordList {
     pointer.setWordEnd(s.length() > 0);
   }
 
-  /**
-   * Checks if TreeWordList contains String s
-   */
   public boolean contains(String s, boolean ignoreCase, int size, char[] ignoreChars,
           int maxIgnoreChars, boolean ignoreWS) {
     if (s == null) {

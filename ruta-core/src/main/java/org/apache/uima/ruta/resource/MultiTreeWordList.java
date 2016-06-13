@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
@@ -65,6 +66,7 @@ public class MultiTreeWordList implements RutaWordList {
 
   /**
    * Default constructor.
+   * @throws IOException - should not happen but required by called constructor
    */
   public MultiTreeWordList() throws IOException {
     this(new String[] {}, null);
@@ -75,6 +77,10 @@ public class MultiTreeWordList implements RutaWordList {
    * 
    * @param pathname
    *          the pathname of the used file.
+   * @param base
+   *          the relative base
+   * @throws IOException
+   *          When there is a problem reading pathname.
    */
   public MultiTreeWordList(String pathname, File base) throws IOException {
     this(new FileSystemResource(pathname));
@@ -119,6 +125,8 @@ public class MultiTreeWordList implements RutaWordList {
    *          the stream to read the file from.
    * @param name
    *          associated name
+   * @throws IOException
+   *           When there is a problem reading the input stream.
    */
   public MultiTreeWordList(InputStream stream, String name) throws IOException {
     this.root = new MultiTextNode();
@@ -135,6 +143,9 @@ public class MultiTreeWordList implements RutaWordList {
    * 
    * @param pathnames
    *          path of the file to create a TextWordList from
+   * @param base - the relative base
+   * @throws IOException
+   *           When there is a problem reading a path.
    */
   public MultiTreeWordList(String[] pathnames, File base) throws IOException {
     this.root = new MultiTextNode();
@@ -145,6 +156,11 @@ public class MultiTreeWordList implements RutaWordList {
     }
   }
 
+  /**
+   * @param files - the input files
+   * @param base - the relative base
+   * @throws IOException - When there is a problem reading the files.
+   */
   public MultiTreeWordList(List<File> files, File base) throws IOException {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
@@ -202,9 +218,7 @@ public class MultiTreeWordList implements RutaWordList {
         throw new IllegalArgumentException("File name should end with .mtwl or .txt, found " + name);
       }
     } finally {
-      if (stream != null) {
-        stream.close();
-      }
+      IOUtils.closeQuietly(stream);
     }
   }
 
@@ -965,6 +979,7 @@ public class MultiTreeWordList implements RutaWordList {
    * @param query - The query string.
    * @param distance - The specified edit distance.
    * @param ignoreCase - Indicates whether we search case sensitive or not.
+   * @param ignoreToken - the characters to ignore
    * @param fragment - Indicates whether we search for fragments of the query string or not.
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
