@@ -213,6 +213,8 @@ public class MultiTreeWordList implements RutaWordList {
    * 
    * @param stream - Input stream for the file containing the words for the treeWordList
    * @param name - Associated name for the file
+   * @throws IOException
+   *           When there is a problem reading the inputstream.
    */
   public void buildNewTree(InputStream stream, String name) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(stream, ENCODING));
@@ -932,6 +934,7 @@ public class MultiTreeWordList implements RutaWordList {
    * the files they belong to as values.
    * 
    * @param query - The query string.
+   * @param distance - The specified edit distance.
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
@@ -946,6 +949,7 @@ public class MultiTreeWordList implements RutaWordList {
    * @param query - The query string.
    * @param distance - The specified edit distance.
    * @param ignoreCase - Indicates whether we search case sensitive or not.
+   * @param ignoreToken - Indicates the characters to ignore
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
