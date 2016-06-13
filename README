@@ -1,5 +1,5 @@
 
-Apache UIMA Ruta (TM) v2.4.0
+Apache UIMA Ruta (TM) v2.4.1
 -------------------------------------------------------------------------
 
 Building from the Source Distribution
@@ -18,12 +18,6 @@ change the command to
    
 For more details, please see http://uima.apache.org/building-uima.html   
 
-
--------------------------------------
-
-This release requires an update of script projects and its descriptors, 
-e.g, in the UIMA Ruta Workbench by deleting all descriptors and updating the script project.
-Right-click on a project and select "UIMA Ruta -> Convert to UIMA Ruta project"
 
 -------------------------------------
 

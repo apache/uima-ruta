@@ -73,6 +73,8 @@ import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
 import org.apache.uima.ruta.parser.RutaLexer;
 import org.apache.uima.ruta.parser.RutaParser;
 import org.apache.uima.ruta.seed.RutaAnnotationSeeder;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.type.TokenSeed;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.apache.uima.ruta.visitor.CreatedByVisitor;
 import org.apache.uima.ruta.visitor.DebugInfoCollectorVisitor;
@@ -566,12 +568,10 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     crowd.finished(stream);
 
     if (removeBasics) {
+      jcas.removeAllIncludingSubtypes(RutaBasic.type);
+      jcas.removeAllIncludingSubtypes(TokenSeed.type);
+      
       List<AnnotationFS> toRemove = new ArrayList<AnnotationFS>();
-      Type basicType = cas.getTypeSystem().getType(BASIC_TYPE);
-      AnnotationIndex<AnnotationFS> basicIndex = cas.getAnnotationIndex(basicType);
-      for (AnnotationFS fs : basicIndex) {
-        toRemove.add(fs);
-      }
       for (Type seedType : seedTypes) {
         AnnotationIndex<AnnotationFS> seedIndex = cas.getAnnotationIndex(seedType);
         for (AnnotationFS fs : seedIndex) {
