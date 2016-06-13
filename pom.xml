@@ -94,27 +94,27 @@
   </dependencies>
   
   <modules>
-<!--     <module>ruta-parent</module> -->
-<!--     <module>ruta-core</module> -->
-<!--     <module>ruta-core-ext</module> -->
+    <module>ruta-parent</module>
+    <module>ruta-core</module>
+    <module>ruta-core-ext</module>
 
-<!--     <module>ruta-ep-parent</module> -->
-<!--     <module>ruta-ep-engine</module> -->
-<!--     <module>ruta-ep-ide</module> -->
-<!--     <module>ruta-ep-ide-ui</module> -->
-<!--     <module>ruta-ep-caseditor</module> -->
-<!--     <module>ruta-ep-addons</module> -->
-<!--     <module>ruta-ep-textruler</module> -->
-<!--     <module>ruta-ep-core-ext</module> -->
+    <module>ruta-ep-parent</module>
+    <module>ruta-ep-engine</module>
+    <module>ruta-ep-ide</module>
+    <module>ruta-ep-ide-ui</module>
+    <module>ruta-ep-caseditor</module>
+    <module>ruta-ep-addons</module>
+    <module>ruta-ep-textruler</module>
+    <module>ruta-ep-core-ext</module>
 
-<!-- 	  <module>ruta-maven-plugin</module> -->
-<!--     <module>ruta-maven-archetype</module> -->
+	  <module>ruta-maven-plugin</module>
+    <module>ruta-maven-archetype</module>
 	
-<!--     <module>ruta-docbook</module> -->
-<!--     <module>ruta-eclipse-feature</module> -->
+    <module>ruta-docbook</module>
+    <module>ruta-eclipse-feature</module>
     
-<!--     <module>example-projects/ruta-ep-example-extensions</module> -->
-<!--     <module>example-projects/ruta-maven-example</module> -->
+    <module>example-projects/ruta-ep-example-extensions</module>
+    <module>example-projects/ruta-maven-example</module>
   </modules>
   <build>
     <pluginManagement>
