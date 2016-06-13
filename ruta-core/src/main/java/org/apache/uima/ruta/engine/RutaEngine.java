@@ -1199,5 +1199,16 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
     }
   }
+  
+  @Override
+  public void destroy() {
+    super.destroy();
+    if (script != null) {
+      Collection<AnalysisEngine> values = script.getEngines().values();
+      for (AnalysisEngine each : values) {
+        each.destroy();
+      }
+    }
+  }
 
 }
