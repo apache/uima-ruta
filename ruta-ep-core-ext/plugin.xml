@@ -54,5 +54,12 @@ under the License.
             engine="org.apache.uima.ruta.string.bool.BooleanOperationsExtension">
       </condition>
    </extension>
+   <extension
+         point="org.apache.uima.ruta.ide.actionExtension">
+      <condition
+            class="org.apache.uima.ruta.action.MarkReloadActionIDEExtension"
+            engine="org.apache.uima.ruta.action.MarkReloadExtension">
+      </condition>
+   </extension>
 
 </plugin>
