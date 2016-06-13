@@ -94,26 +94,27 @@
   </dependencies>
   
   <modules>
-    <module>ruta-parent</module>
-    <module>ruta-core</module>
-    <module>ruta-core-ext</module>
+<!--     <module>ruta-parent</module> -->
+<!--     <module>ruta-core</module> -->
+<!--     <module>ruta-core-ext</module> -->
 
-    <module>ruta-ep-parent</module>
-    <module>ruta-ep-engine</module>
-    <module>ruta-ep-ide</module>
-    <module>ruta-ep-ide-ui</module>
-    <module>ruta-ep-caseditor</module>
-    <module>ruta-ep-addons</module>
-    <module>ruta-ep-textruler</module>
-    <module>ruta-ep-core-ext</module>
+<!--     <module>ruta-ep-parent</module> -->
+<!--     <module>ruta-ep-engine</module> -->
+<!--     <module>ruta-ep-ide</module> -->
+<!--     <module>ruta-ep-ide-ui</module> -->
+<!--     <module>ruta-ep-caseditor</module> -->
+<!--     <module>ruta-ep-addons</module> -->
+<!--     <module>ruta-ep-textruler</module> -->
+<!--     <module>ruta-ep-core-ext</module> -->
 
-	  <module>ruta-maven-plugin</module>
+<!-- 	  <module>ruta-maven-plugin</module> -->
+<!--     <module>ruta-maven-archetype</module> -->
 	
-    <module>ruta-docbook</module>
-    <module>ruta-eclipse-feature</module>
+<!--     <module>ruta-docbook</module> -->
+<!--     <module>ruta-eclipse-feature</module> -->
     
-    <module>example-projects/ruta-ep-example-extensions</module>
-    <module>example-projects/ruta-maven-example</module>
+<!--     <module>example-projects/ruta-ep-example-extensions</module> -->
+<!--     <module>example-projects/ruta-maven-example</module> -->
   </modules>
   <build>
     <pluginManagement>
@@ -134,8 +135,11 @@
                   <exclude>issuesFixed/**</exclude>
                   <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
                   <exclude>marker-file-identifying-*</exclude>
+                  <exclude>ruta-eclipse-update-site/target/**</exclude>
                   <exclude>ruta-eclipse-update-site/marker-file-identifying-*</exclude>
+                  <exclude>ruta-eclipse-update-site/.settings</exclude>
                   <exclude>DEPENDENCIES</exclude>
+                  <exclude>**</exclude>
                 </excludes>
               </configuration>
             </execution>
@@ -224,6 +228,12 @@
                     </zip>
                     <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
                       <zipfileset dir="${basedir}/example-projects/TextRulerExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/TextRulerExample/" />
+                    </zip>
+                    <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
+                      <zipfileset dir="${basedir}/example-projects/GermanNovels/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/GermanNovels/" />
+                    </zip>
+                    <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
+                      <zipfileset dir="${basedir}/example-projects/Misc/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/Misc/" />
                     </zip>
 		              </target>
 		            </configuration>
