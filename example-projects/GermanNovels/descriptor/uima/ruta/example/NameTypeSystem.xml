@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
     <name>uima.ruta.example.NameTypeSystem</name>
     <imports>
@@ -9,57 +8,7 @@
     </imports>
     <types>
         <typeDescription>
-            <name>uima.ruta.example.Name.PersName</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.AddName</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.FirstName</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.LastName</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
             <name>uima.ruta.example.Name.AnAnimal</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.RelativesTitle</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.GeneralTitle</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.MilitaryTitle</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.NobleTitle</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.Job</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.BodyPart</name>
             <description>Type defined in uima.ruta.example.Name</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
@@ -69,52 +18,7 @@
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
         <typeDescription>
-            <name>uima.ruta.example.Name.PersName</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.AddName</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
             <name>uima.ruta.example.Name.FirstName</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.LastName</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.AnAnimal</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.RelativesTitle</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.GeneralTitle</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.MilitaryTitle</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.NobleTitle</name>
-            <description>Type defined in uima.ruta.example.Name</description>
-            <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-        <typeDescription>
-            <name>uima.ruta.example.Name.Job</name>
             <description>Type defined in uima.ruta.example.Name</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
@@ -124,7 +28,42 @@
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>
         <typeDescription>
-            <name>uima.ruta.example.Name.IMPhrase</name>
+            <name>uima.ruta.example.Name.LastName</name>
+            <description>Type defined in uima.ruta.example.Name</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.Name.GeneralTitle</name>
+            <description>Type defined in uima.ruta.example.Name</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.Name.RelativesTitle</name>
+            <description>Type defined in uima.ruta.example.Name</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.Name.Job</name>
+            <description>Type defined in uima.ruta.example.Name</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.Name.PersName</name>
+            <description>Type defined in uima.ruta.example.Name</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.Name.NobleTitle</name>
+            <description>Type defined in uima.ruta.example.Name</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.Name.AddName</name>
+            <description>Type defined in uima.ruta.example.Name</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.Name.MilitaryTitle</name>
             <description>Type defined in uima.ruta.example.Name</description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
         </typeDescription>

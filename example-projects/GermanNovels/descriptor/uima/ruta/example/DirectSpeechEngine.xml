@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
     <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
     <primitive>true</primitive>
     <annotatorImplementationName>org.apache.uima.ruta.engine.RutaEngine</annotatorImplementationName>
     <analysisEngineMetaData>
-        <name>BasicEngine</name>
+        <name>uima.ruta.example.DirectSpeechEngine</name>
         <description/>
         <version>1.0</version>
         <vendor/>
@@ -163,6 +162,24 @@
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
             </configurationParameter>
+            <configurationParameter>
+                <name>varNames</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>varValues</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>rules</name>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
         </configurationParameters>
         <configurationParameterSettings>
             <nameValuePair>
@@ -188,7 +205,6 @@
                 <value>
                     <array>
                         <string>org.apache.uima.ruta.type.SPACE</string>
-                        <string>org.apache.uima.ruta.type.NBSP</string>
                         <string>org.apache.uima.ruta.type.BREAK</string>
                         <string>org.apache.uima.ruta.type.MARKUP</string>
                     </array>
@@ -224,7 +240,7 @@
                 <name>scriptPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/workspace-ruta/GermanNovels/script</string>
+                        <string>C:/work/ws/ws-uima-ruta-plain/ruta-trunk/example-projects/GermanNovels/script</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -232,8 +248,8 @@
                 <name>descriptorPaths</name>
                 <value>
                     <array>
-                        <string>D:/work/workspace-ruta/GermanNovels/target/classes</string>
-                        <string>D:/work/workspace-ruta/GermanNovels/descriptor</string>
+                        <string>C:/work/ws/ws-uima-ruta-plain/ruta-trunk/example-projects/GermanNovels/descriptor</string>
+                        <string>C:/work/ws/ws-uima-ruta-plain/ruta-trunk/example-projects/GermanNovels/target/classes</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -241,8 +257,8 @@
                 <name>resourcePaths</name>
                 <value>
                     <array>
-                        <string>D:\work\workspace-ruta\GermanNovels\resources</string>
-                        <string>D:\work\workspace-ruta\GermanNovels\target\resources</string>
+                        <string>C:/work/ws/ws-uima-ruta-plain/ruta-trunk/example-projects/GermanNovels/target/classes</string>
+                        <string>C:/work/ws/ws-uima-ruta-plain/ruta-trunk/example-projects/GermanNovels/resources</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -268,17 +284,11 @@
                 <name>additionalExtensions</name>
                 <value>
                     <array>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleConditionExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleActionExtension</string>
                         <string>org.apache.uima.ruta.string.bool.BooleanOperationsExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleBooleanFunctionExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleNumberFunctionExtension</string>
                         <string>org.apache.uima.ruta.string.StringOperationsExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleStringFunctionExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleTypeFunctionExtension</string>
                         <string>org.apache.uima.ruta.block.OnlyFirstBlockExtension</string>
                         <string>org.apache.uima.ruta.block.OnlyOnceBlockExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleBlockExtension</string>
+                        <string>org.apache.uima.ruta.block.fst.FSTBlockExtension</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -290,22 +300,9 @@
             </nameValuePair>
         </configurationParameterSettings>
         <typeSystemDescription>
-            <name>uima.ruta.example.DirectSpeechTypeSystem</name>
             <imports>
-                <import location="../../../BasicTypeSystem.xml"/>
+                <import location="DirectSpeechTypeSystem.xml"/>
             </imports>
-            <types>
-                <typeDescription>
-                    <name>uima.ruta.example.DirectSpeech.DirectSpeech</name>
-                    <description>Type defined in uima.ruta.example.DirectSpeech</description>
-                    <supertypeName>uima.tcas.Annotation</supertypeName>
-                </typeDescription>
-                <typeDescription>
-                    <name>uima.ruta.example.DirectSpeech.DirectSpeech</name>
-                    <description>Type defined in uima.ruta.example.DirectSpeech</description>
-                    <supertypeName>uima.tcas.Annotation</supertypeName>
-                </typeDescription>
-            </types>
         </typeSystemDescription>
         <typePriorities>
             <priorityList>

@@ -1,0 +1,2 @@
+Additionally to the instructions of the tutorial, one needs to generate the type system description of the DKPROCore types.
+This can simply be achieved by executing the main method of the class GenerateDKProCoreTypes.java 
