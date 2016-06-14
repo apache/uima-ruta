@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package org.apache.uima.ruta;
+package org.apache.uima.ruta.block;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.rule.RuleApply;
 
 public class BlockApply extends ScriptApply {

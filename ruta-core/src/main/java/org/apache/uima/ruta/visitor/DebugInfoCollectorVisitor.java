@@ -26,13 +26,13 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.BlockApply;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
+import org.apache.uima.ruta.block.BlockApply;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.RuleApply;

@@ -20,8 +20,8 @@
 package org.apache.uima.ruta.expression.annotation;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.rule.MatchContext;
 
 /**

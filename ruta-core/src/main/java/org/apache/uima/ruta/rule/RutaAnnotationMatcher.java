@@ -27,8 +27,8 @@ import java.util.TreeSet;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
@@ -234,4 +234,5 @@ public class RutaAnnotationMatcher implements RutaMatcher {
   public long estimateAnchors(RutaBlock parent, RutaStream stream) {
     return 1;
   }
+
 }

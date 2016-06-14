@@ -27,6 +27,9 @@ import java.util.TreeMap;
 import org.antlr.runtime.Token;
 import org.apache.uima.UimaContext;
 import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.block.ForEachBlock;
+import org.apache.uima.ruta.block.RutaBlock;
+import org.apache.uima.ruta.block.RutaScriptBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
@@ -115,6 +118,21 @@ public class RutaScriptFactory {
     return result;
   }
 
+  public RutaBlock createForEachBlock(Token varToken, RutaRuleElement ruleElement, List<RutaStatement> body, RutaBlock parent) {
+    
+    if(varToken== null) {
+      throw new IllegalArgumentException("A FOREACH block requires that the annotation variable is named.");
+    }
+    
+    String varName = varToken.getText();
+    RutaRule rule = null;
+    if(ruleElement != null) {
+      rule = createRule(ruleElement, parent);
+    }
+    String namespace = parent.getNamespace()+ "." + varName;
+    return new ForEachBlock(varName, rule, body, parent, namespace);
+  }
+  
   public RutaRule createRule(RuleElement element, RutaBlock parent) {
     List<RuleElement> elements = new ArrayList<RuleElement>();
     elements.add(element);
@@ -270,5 +288,7 @@ public class RutaScriptFactory {
   public void setContext(UimaContext context) {
     this.context = context;
   }
+
+  
 
 }

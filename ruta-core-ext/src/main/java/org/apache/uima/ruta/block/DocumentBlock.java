@@ -21,8 +21,6 @@ package org.apache.uima.ruta.block;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
-import org.apache.uima.ruta.RutaScriptBlock;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.visitor.InferenceCrowd;

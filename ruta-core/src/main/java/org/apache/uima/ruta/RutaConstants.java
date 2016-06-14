@@ -16,31 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.uima.ruta;
 
-package org.apache.uima.ruta.block;
+import org.apache.uima.ruta.parser.RutaLexer;
+import org.apache.uima.ruta.parser.RutaParser;
 
-import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.ScriptApply;
-import org.apache.uima.ruta.visitor.InferenceCrowd;
+public class RutaConstants {
+  
+  public static final String RUTA_VARIABLE_ANNOTATION = RutaParser.tokenNames[RutaLexer.ANNOTATION];
+  
+  public static final String RUTA_VARIABLE_ANNOTATION_LIST = RutaParser.tokenNames[RutaLexer.ANNOTATIONLIST];
 
-/**
- * A block construct in UIMA Ruta, in which each rule matches only once and additional positions are
- * skipped.
- * 
- */
-public class OnlyOnceBlock extends RutaScriptBlock {
-
-  public OnlyOnceBlock(RutaBlock parent, String defaultNamespace) {
-    super(null, null, null, parent, defaultNamespace);
-  }
-
-  @Override
-  public ScriptApply apply(RutaStream stream, InferenceCrowd crowd) {
-    boolean oldSetting = stream.isOnlyOnce();
-    stream.setOnlyOnce(true);
-    ScriptApply result = super.apply(stream, crowd);
-    stream.setOnlyOnce(oldSetting);
-    return result;
-  }
+  public static final String RUTA_VARIABLE_TYPE = RutaParser.tokenNames[RutaLexer.TypeString];;
 
 }

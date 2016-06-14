@@ -21,8 +21,8 @@ package org.apache.uima.ruta.block.fst;
 
 import java.util.List;
 
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.extensions.IRutaBlockExtension;
 import org.apache.uima.ruta.extensions.RutaParseException;

@@ -51,6 +51,7 @@ import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.IRutaExpression;
@@ -193,7 +194,7 @@ public class RutaEnvironment {
     macroConditions = new HashMap<>();
     macroActions = new HashMap<>();
     availableTypes = new HashMap<String, Class<?>>();
-    availableTypes.put("ANNOTATION", AnnotationFS.class);
+    availableTypes.put(RutaConstants.RUTA_VARIABLE_ANNOTATION, AnnotationFS.class);
     availableTypes.put("INT", Integer.class);
     availableTypes.put("STRING", String.class);
     availableTypes.put("DOUBLE", Double.class);

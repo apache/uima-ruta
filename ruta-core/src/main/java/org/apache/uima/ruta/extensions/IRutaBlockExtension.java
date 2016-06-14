@@ -21,7 +21,7 @@ package org.apache.uima.ruta.extensions;
 
 import java.util.List;
 
-import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.RutaExpression;
 
 public interface IRutaBlockExtension extends IRutaExtension {

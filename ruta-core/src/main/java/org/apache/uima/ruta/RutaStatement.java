@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta;
 
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public abstract class RutaStatement extends RutaElement {

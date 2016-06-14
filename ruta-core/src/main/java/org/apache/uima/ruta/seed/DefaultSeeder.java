@@ -37,8 +37,8 @@ public class DefaultSeeder extends TextSeeder {
 
   public static final String seedType = "org.apache.uima.ruta.type.TokenSeed";
 
-  private final Pattern markupPattern = Pattern
-          .compile("</?\\w[\\w-]*((\\s+[\\w-]+(\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)/?>");
+  private final Pattern markupPattern = Pattern.compile(
+          "</?\\w[\\w-]*((\\s+[\\w-]+(\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)/?>");
 
   public Type seed(String text, CAS cas) {
     Type result = super.seed(text, cas);
@@ -48,21 +48,23 @@ public class DefaultSeeder extends TextSeeder {
     } catch (CASException e) {
       throw new RuntimeException(e);
     }
-    
+
     // FIXME: lexer rules for html markup won't work. Therefore, those rules where removed in the
     // grammar and the functionality is included directly with regex
-    Matcher matcher = markupPattern.matcher(text);
-    Collection<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
-    while (matcher.find()) {
-      int begin = matcher.start();
-      int end = matcher.end();
-      MARKUP markup = new MARKUP(jCas, begin, end);
-      markup.addToIndexes();
-      List<AnnotationFS> selectCovered = CasUtil.selectCovered(result, markup);
-      toRemove.addAll(selectCovered);
-    }
-    for (AnnotationFS each : toRemove) {
-      cas.removeFsFromIndexes(each);
+    if (text != null) {
+      Matcher matcher = markupPattern.matcher(text);
+      Collection<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
+      while (matcher.find()) {
+        int begin = matcher.start();
+        int end = matcher.end();
+        MARKUP markup = new MARKUP(jCas, begin, end);
+        markup.addToIndexes();
+        List<AnnotationFS> selectCovered = CasUtil.selectCovered(result, markup);
+        toRemove.addAll(selectCovered);
+      }
+      for (AnnotationFS each : toRemove) {
+        cas.removeFsFromIndexes(each);
+      }
     }
     return result;
   }

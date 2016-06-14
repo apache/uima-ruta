@@ -339,6 +339,7 @@ ScriptString  : 'SCRIPT';
 EngineString  : 'ENGINE';
 UimafitString : 'UIMAFIT';
 BlockString   : 'BLOCK';
+ForEachString   : 'FOREACH';
 TypeString  : 'TYPE';
 IntString : 'INT';
 DoubleString  : 'DOUBLE';

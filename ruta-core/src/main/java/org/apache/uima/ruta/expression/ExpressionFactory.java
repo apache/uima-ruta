@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.Token;
-import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.annotation.AbstractAnnotationListExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationAddressExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationFeatureExpression;

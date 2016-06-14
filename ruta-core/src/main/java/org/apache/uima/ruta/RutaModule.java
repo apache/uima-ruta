@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class RutaModule extends RutaElement {

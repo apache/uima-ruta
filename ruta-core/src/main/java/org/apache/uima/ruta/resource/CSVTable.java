@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;

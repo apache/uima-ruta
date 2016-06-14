@@ -17,11 +17,14 @@
  * under the License.
  */
 
-package org.apache.uima.ruta;
+package org.apache.uima.ruta.block;
 
 import java.util.List;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.ruta.RutaEnvironment;
+import org.apache.uima.ruta.RutaModule;
+import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.rule.RutaRule;
 
 public abstract class RutaBlock extends RutaStatement {

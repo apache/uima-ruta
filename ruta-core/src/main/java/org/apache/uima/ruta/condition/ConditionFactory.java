@@ -26,7 +26,7 @@ import java.util.Set;
 
 import org.antlr.runtime.Token;
 import org.apache.commons.lang3.tuple.Triple;
-import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;

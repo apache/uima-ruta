@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.ruta;
+package org.apache.uima.ruta.block;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
-public class BlockTest {
+public class RutaScriptBlockTest {
 
   @Test
   public void testInnerDocumentMatch() {

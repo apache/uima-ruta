@@ -96,6 +96,7 @@ public abstract class AbstractFactory {
    *          in ascending elements order
    * @return bounds of arguments
    */
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   protected static final int[] getSurroundingBounds(ASTNode head, List... astnodeListArray) {
     int bounds[] = { Integer.MAX_VALUE, -1 };
     if (head != null) {

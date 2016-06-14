@@ -25,8 +25,8 @@ import java.util.Map;
 
 import org.antlr.runtime.Token;
 import org.apache.uima.UimaContext;
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;

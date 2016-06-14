@@ -21,7 +21,7 @@ package org.apache.uima.ruta.rule;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.block.RutaBlock;
 
 /**
  * This is a generic container class for contextual information during rule matching

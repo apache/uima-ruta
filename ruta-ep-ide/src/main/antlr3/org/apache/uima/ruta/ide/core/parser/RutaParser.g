@@ -670,7 +670,7 @@ level--;
 }
 	:
 
-	(declareToken = BlockString)
+	(declareToken = (BlockString | ForEachString))
 	LPAREN
 	id = Identifier {addVariable(id.getText(), declareToken.getText());}
 	{

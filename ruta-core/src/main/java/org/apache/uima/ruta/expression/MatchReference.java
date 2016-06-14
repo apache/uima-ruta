@@ -23,9 +23,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationListLabelExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationListVariableExpression;
@@ -108,20 +109,20 @@ public class MatchReference extends RutaExpression {
     
     IndexedReference indexedReference = ParsingUtils.parseIndexedReference(candidate);    
     if (indexedReference.index >= 0) {
-      if (e.isVariableOfType(candidate, "ANNOTATIONLIST")) {
+      if (e.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST)) {
         annotationExpression = new AnnotationListVariableIndexExpression(indexedReference.reference, indexedReference.index);
         return true;
       }
 
     } else {
 
-      if (e.isVariableOfType(candidate, "TYPE")) {
+      if (e.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_TYPE)) {
         typeExpression = new TypeVariableExpression(candidate);
         return true;
-      } else if (e.isVariableOfType(candidate, "ANNOTATION")) {
+      } else if (e.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_ANNOTATION)) {
         annotationExpression = new AnnotationVariableExpression(candidate);
         return true;
-      } else if (e.isVariableOfType(candidate, "ANNOTATIONLIST")) {
+      } else if (e.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST)) {
         annotationListExpression = new AnnotationListVariableExpression(candidate);
         return true;
       } else if (e.getType(candidate) != null) {

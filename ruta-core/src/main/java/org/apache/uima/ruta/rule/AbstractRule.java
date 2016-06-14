@@ -19,8 +19,8 @@
 
 package org.apache.uima.ruta.rule;
 
-import org.apache.uima.ruta.RutaBlock;
 import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.block.RutaBlock;
 
 public abstract class AbstractRule extends RutaStatement {
 

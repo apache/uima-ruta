@@ -63,12 +63,13 @@ import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.action.ActionFactory;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.condition.ConditionFactory;
-import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaModule;
-import org.apache.uima.ruta.RutaScriptBlock;
 import org.apache.uima.ruta.RutaScriptFactory;
 import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.block.RutaBlock;
+import org.apache.uima.ruta.block.RutaScriptBlock;
 import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
@@ -498,6 +499,7 @@ statement returns [RutaStatement stmt = null]
 	| stmtAM = macroActionDeclaration {stmt = stmtAM;}
 	| stmtRule = simpleStatement {stmt = stmtRule;}
 	| stmtBlock = blockDeclaration {stmt = stmtBlock;}
+	| stmtBlock = forEachDeclaration {stmt = stmtBlock;}
 	| stmtExternal = externalBlock {stmt = stmtExternal;}
 	)
 	;
@@ -724,9 +726,7 @@ level--;
 	re1 = ruleElementWithCA[container]
 	 {re = re1;	 }
 	{RutaRule rule = factory.createRule(re, block);
-	if(block instanceof RutaScriptBlock) {
-	((RutaScriptBlock)block).setRule(rule);
-	}
+	block.setRule(rule);
 	container.setContainer(rule);
 	}
 	LCURLY body = statements RCURLY
@@ -735,6 +735,46 @@ level--;
 	}	
 	;
 
+forEachDeclaration returns [RutaBlock block = null]
+options {
+	backtrack = true;
+}
+
+scope {
+	RutaBlock env;
+}
+@init{
+Map<String,String> def = new LinkedHashMap<>();
+RutaRuleElement re = null;
+RuleElementIsolator container = null;
+level++;
+}
+@after {
+level--;
+}
+
+	:
+	type = ForEachString 
+	LPAREN
+	id = Identifier 
+	RPAREN
+	{block = factory.createForEachBlock(id, re, body, $blockDeclaration[level - 1]::env);}
+	{$blockDeclaration::env = block;
+	container = new RuleElementIsolator();}
+	re1 = ruleElementWithCA[container]
+	 {re = re1;	 }
+	{RutaRule rule = factory.createRule(re, block);
+	block.setRule(rule);
+	container.setContainer(rule);
+	}
+	{def.put(id.getText(),RutaConstants.RUTA_VARIABLE_ANNOTATION);}
+	{addTemporaryVariables(def);}
+	LCURLY body = statements RCURLY
+	{removeTemporaryVariables(def);}
+	{block.setElements(body);
+	$blockDeclaration::env.getScript().addBlock(id.getText(),block);
+	}	
+	;
 
 externalBlock returns [RutaBlock block = null]
 options {

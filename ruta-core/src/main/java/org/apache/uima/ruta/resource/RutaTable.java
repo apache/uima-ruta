@@ -21,7 +21,7 @@ package org.apache.uima.ruta.resource;
 
 import java.util.List;
 
-import org.apache.uima.ruta.RutaBlock;
+import org.apache.uima.ruta.block.RutaBlock;
 
 public interface RutaTable {
 

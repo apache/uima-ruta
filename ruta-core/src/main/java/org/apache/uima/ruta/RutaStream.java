@@ -52,6 +52,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;

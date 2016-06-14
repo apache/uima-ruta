@@ -17,30 +17,14 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.block;
+package org.apache.uima.ruta.ide.parser.ast;
 
-import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.ScriptApply;
-import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-/**
- * A block construct in UIMA Ruta, in which each rule matches only once and additional positions are
- * skipped.
- * 
- */
-public class OnlyOnceBlock extends RutaScriptBlock {
+public class ForEachBlock extends RutaBlock {
 
-  public OnlyOnceBlock(RutaBlock parent, String defaultNamespace) {
-    super(null, null, null, parent, defaultNamespace);
-  }
-
-  @Override
-  public ScriptApply apply(RutaStream stream, InferenceCrowd crowd) {
-    boolean oldSetting = stream.isOnlyOnce();
-    stream.setOnlyOnce(true);
-    ScriptApply result = super.apply(stream, crowd);
-    stream.setOnlyOnce(oldSetting);
-    return result;
+  public ForEachBlock(String name, String namespace, int nameStart, int nameEnd, int declStart,
+          int declEnd) {
+    super(name, namespace, nameStart, nameEnd, declStart, declEnd);
   }
 
 }

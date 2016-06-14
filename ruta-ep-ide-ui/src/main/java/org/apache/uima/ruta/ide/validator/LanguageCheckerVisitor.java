@@ -60,6 +60,7 @@ import org.apache.uima.ruta.ide.core.extensions.IIDEStringFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IIDETypeFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IRutaExtension;
 import org.apache.uima.ruta.ide.parser.ast.FeatureMatchExpression;
+import org.apache.uima.ruta.ide.parser.ast.ForEachBlock;
 import org.apache.uima.ruta.ide.parser.ast.NullExpression;
 import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaBlock;
@@ -241,6 +242,12 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       this.packageName = ((RutaPackageDeclaration) s).getName();
       checkPackage(s);
       return false;
+    }
+    if(s instanceof ForEachBlock) {
+      String name = ((ForEachBlock) s).getName();
+      Map<String, Integer> map = new HashMap<>();
+      map.put(name, RutaTypeConstants.RUTA_TYPE_UA);
+      knownLocalVariables.push(map);
     }
     if (s instanceof RutaMacroDeclaration) {
       RutaMacroDeclaration decl = (RutaMacroDeclaration) s;
@@ -781,6 +788,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       if (conditionName.equals("CONTAINS")) {
         List<?> args = cond.getChilds();
         boolean valid = checkContainsArguments(args);
+        if(!valid) {
+          IProblem problem = problemFactory.createWrongArgumentTypeProblem(cond, "different combination of arguments.");
+          pr.reportProblem(problem);
+        }
       }
 
     }
@@ -812,6 +823,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     return true;
   }
 
+  @SuppressWarnings("unused")
   private boolean checkContainsArguments(List<?> args) {
     if (args.size() == 1) {
       Object arg = args.get(0);
@@ -929,8 +941,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (s instanceof RutaDeclareDeclarationsStatement) {
       parentTypeInDeclaration = null;
     }
+    if(s instanceof ForEachBlock) {
+      knownLocalVariables.pop();
+    }
     if (s instanceof RutaMacroDeclaration) {
-      RutaMacroDeclaration decl = (RutaMacroDeclaration) s;
       knownLocalVariables.pop();
     }
     if (!packageChecked) {
@@ -1082,13 +1096,14 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     return false;
   }
 
-  private int getVariableType(String name) {
+  private Integer getVariableType(String name) {
     for (Map<String, Integer> each : knownLocalVariables) {
       Integer integer = each.get(name);
-      if (integer != null)
+      if (integer != null) {
         return integer;
+      }
     }
-    return 0;
+    return null;
   }
 
   private String getFeatureName(Expression expression, String defaultValue) {

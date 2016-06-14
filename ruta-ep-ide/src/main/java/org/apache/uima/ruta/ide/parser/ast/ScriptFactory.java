@@ -27,6 +27,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.antlr.runtime.Token;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.ruta.ide.core.parser.RutaLexer;
+import org.apache.uima.ruta.parser.RutaParser;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Block;
@@ -49,14 +52,13 @@ public class ScriptFactory extends AbstractFactory {
   public RutaRule createImplicitRule(List<RutaAction> actions, Token end) {
     List<Expression> elements = new ArrayList<Expression>();
     RutaRuleElement element = createRuleElement(null, null, null, actions, end);
-    if(actions != null && !actions.isEmpty()) {
+    if (actions != null && !actions.isEmpty()) {
       element.setStart(actions.get(0).sourceStart());
     }
     elements.add(element);
     return createRule(elements, null);
   }
 
-  
   public RutaRule createRule(List<Expression> elements, Token s, boolean updateCounter) {
     RutaRule rule = new RutaRule(elements, idCounter);
     if (updateCounter) {
@@ -197,23 +199,40 @@ public class ScriptFactory extends AbstractFactory {
    * @return RutaBlock
    */
   public RutaBlock createScriptBlock(Token id, Token type, RutaBlock rutaBlock) {
+    boolean forEach = false;
+    if (id != null) {
+      forEach = StringUtils.equals(id.getText(), RutaParser.tokenNames[RutaLexer.ForEachString]);
+    }
     int[] bounds = getBounds(type, id);
     int[] nameBounds = getBounds(id);
+    RutaBlock block = null;
     if (rutaBlock == null) {
-      RutaBlock block = new RutaBlock(id.getText(), "error", nameBounds[0], nameBounds[1],
-              bounds[0], bounds[1]);
+      if (forEach) {
+        block = new ForEachBlock(id.getText(), "error", nameBounds[0], nameBounds[1], bounds[0],
+                bounds[1]);
+      } else {
+        block = new RutaScriptBlock(id.getText(), "error", nameBounds[0], nameBounds[1], bounds[0],
+                bounds[1]);
+      }
       return block;
     } else {
-      RutaBlock block = new RutaBlock(id.getText(), rutaBlock.getNamespace(), nameBounds[0],
-              nameBounds[1], bounds[0], bounds[1]);
+      if (forEach) {
+        block = new ForEachBlock(id.getText(), rutaBlock.getNamespace(), nameBounds[0],
+                nameBounds[1], bounds[0], bounds[1]);
+      } else {
+        block = new RutaScriptBlock(id.getText(), rutaBlock.getNamespace(), nameBounds[0],
+                nameBounds[1], bounds[0], bounds[1]);
+      }
       return block;
     }
   }
 
   /**
    * Creates an AST element for an external block construct
+   * 
    * @param type
-   * @param parent block
+   * @param parent
+   *          block
    * @return new external block construct
    */
   public RutaBlock createExternalBlock(Token type, RutaBlock parent) {
