@@ -951,9 +951,11 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         valueObj = value;
       } else if (Boolean.class.equals(variableType)) {
         valueObj = Boolean.parseBoolean(value);
+      } else if (Type.class.equals(variableType)) {
+        valueObj = value;
       } else {
         throw new IllegalArgumentException(
-                "Only variables for primitives can be assigned by parameters: " + shortName
+                "Only variables for primitives and types can be assigned by parameters: " + shortName
                         + " defined in block: " + blockName);
       }
       environment.setVariableValue(shortName, valueObj);

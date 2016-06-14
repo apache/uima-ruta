@@ -825,13 +825,23 @@ public class RutaEnvironment {
     if (result instanceof String && type.equals(Type.class)) {
       // "cast" string to type, because initial values were set when there was no cas/type system
       // yet
-      result = types.get(result);
+      String stringValue = (String) result;
+      result = types.get(stringValue);
+      if(result == null) {
+        // try to resolve short names
+        result = getType(stringValue);
+      }
     }
 
     if (containsKey && result == null) {
       // TODO find the problem with the null values!
       // this might now work for word lists in another env.
-      return type.cast(getInitialValue(name, type));
+      Object initialValue = getInitialValue(name, type);
+      if(initialValue instanceof Type) {
+        return type.cast(initialValue);
+      } else {
+        throw new IllegalArgumentException("Variable "+name+" of type" +type +" is nto correctly initialized! It is not a Type!");
+      }
     }
     if (result == annotationTypeDummy) {
       return type.cast(cas.getAnnotationType());

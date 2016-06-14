@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.type.SW;
 import org.junit.Test;
 
 public class ParamVarTest {
@@ -45,10 +46,14 @@ public class ParamVarTest {
     script += "W.ct==s{-> T3};\n";
     script += "W.begin==i{-> T4};\n";
     script += "Document{b -> T5};\n";
+    script += "TYPE type1 = CW;\n";
+    script += "type1{-> T6};\n";
+    script += "TYPE type2 = SW;\n";
+    script += "type2{-> T7};\n";
     CAS cas = null;
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put(RutaEngine.PARAM_VAR_NAMES, new String[] {"First.s", "Second.s", "s", "i", "b"});
-    params.put(RutaEngine.PARAM_VAR_VALUES, new String[] {"Some", "text", "Some", "0", "true"});
+    params.put(RutaEngine.PARAM_VAR_NAMES, new String[] {"First.s", "Second.s", "s", "i", "b", "type1", "type2"});
+    params.put(RutaEngine.PARAM_VAR_VALUES, new String[] {"Some", "text", "Some", "0", "true", SW.class.getName(), "CW"});
     
     try {
       cas = RutaTestUtils.getCAS(document);
@@ -62,6 +67,8 @@ public class ParamVarTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "Some text.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 1, "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 1, "Some");
 
     cas.release();
   }

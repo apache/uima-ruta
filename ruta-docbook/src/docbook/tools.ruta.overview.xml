@@ -1128,7 +1128,7 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
             This parameter specifies the values of variables as string values in an string array. It is
             used in combination with the parameter varNames, which contains the names of the corresponding
             variables. The n-th entry of this string array specifies the value of the n-th entry of the
-            string array of the parameter varNames. Only value of the kinds string, boolean, int, double
+            string array of the parameter varNames. Only value of the kinds annotation type, string, boolean, int, double
             and float are allowed.
           </para>
         </section>
