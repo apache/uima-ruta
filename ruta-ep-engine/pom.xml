@@ -83,7 +83,7 @@ licensed under the Common Public License.
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimafit-core</artifactId>
-      <version>2.1.0</version>
+      <version>${uimafit-version}</version>
       <scope>compile</scope>
       <!-- Exclude aop stuff, which is not need by uimafit 
       and only introduces a non-asl license -->
