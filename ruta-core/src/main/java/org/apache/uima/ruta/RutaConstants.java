@@ -18,15 +18,12 @@
  */
 package org.apache.uima.ruta;
 
-import org.apache.uima.ruta.parser.RutaLexer;
-import org.apache.uima.ruta.parser.RutaParser;
-
 public class RutaConstants {
   
-  public static final String RUTA_VARIABLE_ANNOTATION = RutaParser.tokenNames[RutaLexer.ANNOTATION];
+  public static final String RUTA_VARIABLE_ANNOTATION = "ANNOTATION";
   
-  public static final String RUTA_VARIABLE_ANNOTATION_LIST = RutaParser.tokenNames[RutaLexer.ANNOTATIONLIST];
+  public static final String RUTA_VARIABLE_ANNOTATION_LIST = "ANNOTATIONLIST";
 
-  public static final String RUTA_VARIABLE_TYPE = RutaParser.tokenNames[RutaLexer.TypeString];;
+  public static final String RUTA_VARIABLE_TYPE = "TYPE";
 
 }
