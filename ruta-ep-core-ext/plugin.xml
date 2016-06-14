@@ -61,5 +61,12 @@ under the License.
             engine="org.apache.uima.ruta.action.MarkReloadExtension">
       </condition>
    </extension>
+   <extension
+         point="org.apache.uima.ruta.ide.typeFunctionExtension">
+      <condition
+            class="org.apache.uima.ruta.type.TypeFromStringFunctionIDEExtension"
+            engine="org.apache.uima.ruta.type.TypeFromStringFunctionExtension">
+      </condition>
+   </extension>
 
 </plugin>

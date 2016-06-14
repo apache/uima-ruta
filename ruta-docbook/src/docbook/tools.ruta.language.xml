@@ -867,7 +867,7 @@ FeatureAssignment -> "(" StringExpression "=" Expression
       <title>Provided Extensions</title>
       <para>
         The UIMA Ruta language already provides extensions besides the exemplary elements.
-        The projet ruta-core-ext contains the implementation for the analysis engine and the project
+        The project ruta-core-ext contains the implementation for the analysis engine and the project
         ruta-ep-core-ext contains the integration in the UIMA Ruta Workbench.
       </para>
 
@@ -875,7 +875,7 @@ FeatureAssignment -> "(" StringExpression "=" Expression
         <title>DOCUMENTBLOCK</title>
         <para>
           This additional block construct applies the contained statements/rules on
-          the complete document independent of previous windows and restictions.
+          the complete document independent of previous windows and restrictions.
           It resets the matching context, but otherwise behaves like a normal BLOCK.
         </para>
         <programlisting><![CDATA[BLOCK(ex) NUM{}{
@@ -908,7 +908,6 @@ FeatureAssignment -> "(" StringExpression "=" Expression
           the second rules is able to match, then the third rule will not try to be applied.
         </para>
       </section>
-    </section>
     <section id="ugr.tools.ruta.language.extensions.core-ext.onlyonce">
       <title>ONLYONCE</title>
       <para>
@@ -951,7 +950,7 @@ CW{INLIST(sl) -> Test};]]></programlisting>
           the according word with a capital first Character is added to the
           STRINGLIST.
           This
-          might be helpful in german Named-Entity-Recognition where you will
+          might be helpful in German Named-Entity-Recognition where you will
           encounter "der blonde
           Junge..." and "der Blonde",
           both map to the same entity. Applied to the word "blonde" you
@@ -1170,12 +1169,25 @@ BLOCK(forEACH) W{}{
         </para>
       </section>
     </section>
+    <section id="ugr.tools.ruta.language.extensions.core-ext.typefunctions">
+      <title>typeFromString</title>
+      <para>
+        This function takes a string expression and tries to find the corresponding type.
+        Short names are supported but need to be unambiguous.
+      </para>
+      <programlisting><![CDATA[CW{-> typeFromString("Person")}]]></programlisting>
+      <para>
+        In this example, each <code>CW</code> annotation is 
+        annotated with an annotation of the type <code>Person</code>.
+      </para>
+    </section>
+    </section>
     <section id="ugr.tools.ruta.language.extensions.new">
       <title>Adding new Language Elements</title>
       <para>
-        The extension of the UIMA Ruta language is illustrated using an exmaple on how to add a new
+        The extension of the UIMA Ruta language is illustrated using an example on how to add a new
         condition.
-        Other langauge elements can be specified straightforwardly by using the corresponding interfaces and
+        Other language elements can be specified straightforwardly by using the corresponding interfaces and
         extensions.
       </para>
       <para>

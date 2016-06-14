@@ -28,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.block.ForEachBlock;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.IRutaExpression;
@@ -79,7 +80,11 @@ public class ScriptVerbalizer {
     RutaRule rule = block.getRule();
     List<RutaStatement> elements = block.getElements();
     String name = block.getName();
-    result.append("BLOCK");
+    if(block instanceof ForEachBlock) {
+      result.append("FOREACH");
+    } else {
+      result.append("BLOCK");
+    }
     if (name != null) {
       result.append("(");
       result.append(name);

@@ -28,7 +28,6 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
-import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
@@ -50,7 +49,6 @@ public class ExampleAction extends AbstractRutaAction {
     RuleElement element = context.getElement();
     List<Integer> indexes = new ArrayList<Integer>();
     for (INumberExpression each : indexExprList) {
-      RutaBlock parent = element.getParent();
       int integerValue = each.getIntegerValue(context, stream);
       indexes.add(integerValue);
     }

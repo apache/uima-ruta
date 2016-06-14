@@ -28,7 +28,6 @@ import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ExampleCondition extends AbstractRutaCondition {
@@ -46,7 +45,6 @@ public class ExampleCondition extends AbstractRutaCondition {
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
-    RuleElement element = context.getElement();
     String coveredText = annotation.getCoveredText();
     String dateValue = dateExpr.getStringValue(context, stream);
     String formatValue = formatExpr.getStringValue(context, stream);
