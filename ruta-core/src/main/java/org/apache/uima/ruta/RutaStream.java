@@ -1058,7 +1058,6 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     } else if (value instanceof IAnnotationExpression && !feature.getRange().isPrimitive()) {
       IAnnotationExpression ae = (IAnnotationExpression) value;
       AnnotationFS a = ae.getAnnotation(context, this);
-      if (a != null) {
         // TODO support annotation list expressions
         if (feature.getRange().isArray()) {
           List<AnnotationFS> c = new ArrayList<AnnotationFS>();
@@ -1067,7 +1066,6 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         } else {
           annotation.setFeatureValue(feature, a);
         }
-      }
     } else if (value instanceof IAnnotationListExpression && !feature.getRange().isPrimitive()) {
       IAnnotationListExpression ale = (IAnnotationListExpression) value;
       List<AnnotationFS> annotations = ale.getAnnotationList(context, this);
