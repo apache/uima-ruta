@@ -50,4 +50,9 @@ private String var;
     return var;
   }
 
+  @Override
+  public String toString() {
+    return var;
+  }
+  
 }

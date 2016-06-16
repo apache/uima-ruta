@@ -21,12 +21,16 @@ package org.apache.uima.ruta.block;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.seed.TextSeeder;
 import org.apache.uima.util.InvalidXMLException;
@@ -121,6 +125,33 @@ public class ForEachBlockTest {
     script += "W+{-> T7} @NUM{-> T8};\n";
     script += "CW{-> T9} # @NUM{-> T10};\n";
     return script;
+  }
+  
+  @Test
+  public void testRigthToLeft() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+    String script = "NUM{-> T1};";
+    script += "FOREACH(t) T1{}{\n";
+    script += "n:T1 SPECIAL.ct==\"^\" t{-> t.begin = n.begin};\n";
+    script += "}";
+    CAS cas = RutaTestUtils.getCAS("2^3");
+    Ruta.apply(cas, script);
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "2^3", "2");
+  }
+  
+  @Test
+  public void testEnforcedLeftToRigth() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+    String script = "NUM{-> T1};";
+    script += "FOREACH(t) T1{}{\n";
+    script += "n:@T1{->UNMARK(T1)} SPECIAL.ct==\"^\" t{-> t.begin = n.begin};\n";
+    script += "}";
+    CAS cas = RutaTestUtils.getCAS("2^3");
+    Map<String, Object> parameters = new HashMap<>();
+    parameters.put(RutaEngine.PARAM_DEBUG, true);
+    parameters.put(RutaEngine.PARAM_DEBUG_WITH_MATCHES, true);
+    Ruta.apply(cas, script, parameters);
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "2^3");
   }
 
 }

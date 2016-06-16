@@ -118,7 +118,10 @@ public class ForEachBlock extends RutaBlock {
     } else if (ruleElement instanceof ComposedRuleElement) {
       List<RuleElement> ruleElements = ((ComposedRuleElement) ruleElement).getRuleElements();
       for (RuleElement eachInnerRuleElement : ruleElements) {
-        return setRuleElementAnchorRecursively(eachInnerRuleElement);
+        boolean set = setRuleElementAnchorRecursively(eachInnerRuleElement);
+        if(set) {
+          return set;
+        }
       }
     }
     return false;

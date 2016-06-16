@@ -234,5 +234,16 @@ public class RutaAnnotationMatcher implements RutaMatcher {
   public long estimateAnchors(RutaBlock parent, RutaStream stream) {
     return 1;
   }
+  
+  @Override
+  public String toString() {
+    IRutaExpression expression = getExpression();
+    if (expression != null) {
+      return expression.toString();
+    } else {
+      return "";
+    }
+  }
+
 
 }
