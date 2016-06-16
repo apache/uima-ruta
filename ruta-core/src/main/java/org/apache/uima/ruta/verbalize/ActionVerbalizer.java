@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.action.AddAction;
 import org.apache.uima.ruta.action.AssignAction;
@@ -348,8 +349,14 @@ public class ActionVerbalizer {
         if (a.getList() == null) {
           return name + verbalizer.verbalize(a.getType()) + ")";
         } else {
-          return name + verbalizer.verbalize(a.getType()) + ", "
-                  + verbalizer.verbalizeExpressionList(a.getList()) + ")";
+         String l = verbalizer.verbalizeExpressionList(a.getList());
+         if(StringUtils.isBlank(l)) {
+           return name + verbalizer.verbalize(a.getType())+ ")";
+         } else {
+           return name + verbalizer.verbalize(a.getType()) + ", "
+                   + l + ")";
+         }
+         
         }
       } else {
         return name + verbalizer.verbalize(a.getType()) + ", "
