@@ -117,7 +117,9 @@ public class SimpleFeatureExpression extends FeatureExpression {
       IAnnotationExpression annotationExpression = mr.getAnnotationExpression(context, stream);
       if(annotationExpression != null) {
         AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
-        return annotation.getType();
+        if(annotation != null) {
+          return annotation.getType();
+        }
       }
     }
     return null;

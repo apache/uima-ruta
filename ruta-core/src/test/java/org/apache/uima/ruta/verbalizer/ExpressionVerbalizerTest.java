@@ -24,6 +24,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
 import org.apache.uima.ruta.expression.bool.AbstractBooleanListExpression;
 import org.apache.uima.ruta.expression.bool.BooleanListVariableExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
@@ -217,4 +219,12 @@ public class ExpressionVerbalizerTest {
     assertEquals("anyVar", s);
 
   }
+  
+  @Test
+  public void testAnnotationExpression() {
+    RutaVerbalizer v = new RutaVerbalizer();
+    assertEquals("l" , v.verbalize(new AnnotationLabelExpression("l")));
+    assertEquals("l" , v.verbalize(new AnnotationVariableExpression("l")));
+  }
+  
 }
