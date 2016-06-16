@@ -772,7 +772,7 @@ level--;
 	LCURLY body = statements RCURLY
 	{removeTemporaryVariables(def);}
 	{block.setElements(body);
-	$blockDeclaration::env.getScript().addBlock(id.getText(),block);
+	{$blockDeclaration::env = block.getParent();}
 	}	
 	;
 

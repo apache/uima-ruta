@@ -125,25 +125,17 @@ public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
             if (element instanceof RutaRule && parent.getRule().equals(element)
                     && result instanceof RuleApply) {
               blockApply.setRuleApply((RuleApply) result);
-
-              // } else {
-              // blockApply.add(result);
-              // }
-
             } else if (stack.size() == 1) {
               if (callStack.size() > 1) {
                 // TODO hotfixed
                 RutaElement tme = callStack.get(callStack.size() - 2);
-                if (tme.equals(parent)
-                // || tme.equals(element)
-                ) {
+                if (tme.equals(parent)) {
                   blockApply.add(result);
                 } else {
                   // TODO too many blocks added
                 }
               } else {
                 blockApply.add(result);
-
               }
             } else {
               // TODO refactor !!! ... really!!!!

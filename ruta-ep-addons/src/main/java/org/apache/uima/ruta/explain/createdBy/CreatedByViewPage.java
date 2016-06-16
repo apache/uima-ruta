@@ -222,7 +222,7 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
         while (iterator.hasNext()) {
           FeatureStructure fs = (FeatureStructure) iterator.next();
           AnnotationFS afs = (AnnotationFS) fs.getFeatureValue(featureAnnotation);
-          if (afs.equals(featureStructure)) {
+          if (afs != null && afs.equals(featureStructure)) {
             viewer.setInput(fs);
             return;
           }
