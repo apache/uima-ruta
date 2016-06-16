@@ -93,7 +93,7 @@ public class ForEachBlock extends RutaBlock {
         List<RuleElement> ruleElements = eachRule.getRuleElements();
         for (RuleElement ruleElement : ruleElements) {
           boolean set = setRuleElementAnchorRecursively(ruleElement);
-          if(set) {
+          if (set) {
             break;
           }
         }
@@ -104,15 +104,18 @@ public class ForEachBlock extends RutaBlock {
   }
 
   private boolean setRuleElementAnchorRecursively(RuleElement ruleElement) {
-    if(ruleElement instanceof RutaRuleElement) {
+    if (ruleElement instanceof RutaRuleElement) {
       RutaMatcher matcher = ((RutaRuleElement) ruleElement).getMatcher();
-     if(matcher instanceof RutaAnnotationMatcher && matcher.getExpression() instanceof AnnotationVariableExpression) {
-       AnnotationVariableExpression expr =  (AnnotationVariableExpression) matcher.getExpression();
-      boolean equals = StringUtils.equals(name, expr.getVar());
-      ruleElement.setStartAnchor(equals);
-      return equals;
-     }
-    } else if(ruleElement instanceof ComposedRuleElement) {
+      if (matcher instanceof RutaAnnotationMatcher
+              && matcher.getExpression() instanceof AnnotationVariableExpression) {
+        AnnotationVariableExpression expr = (AnnotationVariableExpression) matcher.getExpression();
+        boolean equals = StringUtils.equals(name, expr.getVar());
+        if(equals) {
+          ruleElement.setStartAnchor(equals);
+        }
+        return equals;
+      }
+    } else if (ruleElement instanceof ComposedRuleElement) {
       List<RuleElement> ruleElements = ((ComposedRuleElement) ruleElement).getRuleElements();
       for (RuleElement eachInnerRuleElement : ruleElements) {
         return setRuleElementAnchorRecursively(eachInnerRuleElement);
@@ -120,7 +123,7 @@ public class ForEachBlock extends RutaBlock {
     }
     return false;
   }
-  
+
   @Override
   public String toString() {
     String ruleString = rule == null ? "Document" : rule.toString();
