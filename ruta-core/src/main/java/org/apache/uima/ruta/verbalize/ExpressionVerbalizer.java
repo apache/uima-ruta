@@ -25,6 +25,10 @@ import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.NullExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationAddressExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
+import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanListVariableExpression;
 import org.apache.uima.ruta.expression.bool.BooleanNumberExpression;
@@ -79,6 +83,8 @@ public class ExpressionVerbalizer {
       return verbalize(((GenericFeatureExpression) expression).getFeatureExpression());
     } else if (expression instanceof AnnotationTypeExpression) {
       return verbalize((AnnotationTypeExpression) expression);
+    } else if (expression instanceof IAnnotationExpression) {
+      return verbalize((IAnnotationExpression) expression);
     } else if (expression instanceof ITypeExpression) {
       return verbalize((ITypeExpression) expression);
     } else if (expression instanceof IBooleanExpression) {
@@ -273,6 +279,23 @@ public class ExpressionVerbalizer {
     return expression.getClass().getSimpleName();
   }
 
+  public String verbalize(IAnnotationExpression expression) {
+    if (expression == null) {
+      return null;
+    }
+    if (expression instanceof AnnotationAddressExpression) {
+      AnnotationAddressExpression e = (AnnotationAddressExpression) expression;
+      return "$" + e.getAddress();
+    } else if (expression instanceof AnnotationVariableExpression) {
+      AnnotationVariableExpression e = (AnnotationVariableExpression) expression;
+      return e.getVar();
+    } else if (expression instanceof AnnotationLabelExpression) {
+      AnnotationLabelExpression e = (AnnotationLabelExpression) expression;
+      return e.getLabel();
+    }
+    return expression.getClass().getSimpleName();
+  }
+  
   public String verbalize(MatchReference expression) {
     return expression.getMatch();
   }
