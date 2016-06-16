@@ -330,6 +330,13 @@ public class AnnotationLabelExpressionTest {
     CAS cas = RutaTestUtils.getCAS("Some text.");
     Ruta.matches(cas.getJCas(), "a:W b:W{a.x == (b.y-1)-> T1};");
   }
+  
+  @Test(expected = AnalysisEngineProcessException.class)
+  public void testSequentialLabelSelfMatch() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, CASException {
+    CAS cas = RutaTestUtils.getCAS("Some text.");
+    Assert.assertFalse(Ruta.matches(cas.getJCas(), "e:CW e;"));
+  }
 
   private CAS applyOnStruct4Cas(String script) {
     String document = "Some text.";

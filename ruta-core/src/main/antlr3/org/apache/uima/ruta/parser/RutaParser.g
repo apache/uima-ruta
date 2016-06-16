@@ -2357,6 +2357,8 @@ annotationExpression2 returns [IRutaExpression expr = null]
 	ale = annotationListExpression {expr = ale;}
 	|
 	aae = annotationAddressExpression {expr = aae;}
+	//|
+	//ale = annotationLabelExpression {expr = ale;}
 	;
 
 annotationListIndexExpression returns [IRutaExpression expr = null]
