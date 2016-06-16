@@ -585,7 +585,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         String text = fme.getFeature().getText();
         int lastIndexOf = text.lastIndexOf('.');
         String twf = text.substring(0, lastIndexOf);
-        if (getVariableType(twf) == RutaTypeConstants.RUTA_TYPE_AT) {
+        Integer variableType = getVariableType(twf);
+        if (variableType != null && variableType == RutaTypeConstants.RUTA_TYPE_AT) {
           matchedType = twf;
         } else {
           twf = expand(twf);
@@ -634,9 +635,13 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         }
         if (namespaces.keySet().contains(name) || namespaces.values().contains(name)
                 || allLongTypeNames.contains(name)
-                || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_AT
-                || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_UA
-                || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_UAL) {
+                 ) {
+          return false;
+        }
+        Integer variableType = getVariableType(name);
+        if(variableType != null && variableType == RutaTypeConstants.RUTA_TYPE_AT
+                || variableType == RutaTypeConstants.RUTA_TYPE_UA
+                || variableType == RutaTypeConstants.RUTA_TYPE_UAL) {
           return false;
         }
         if (isFeatureMatch(name) != null) {
@@ -896,8 +901,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       return;
     }
     String match = isFeatureMatch(aref);
-    if (match == null && (getVariableType(aref) == RutaTypeConstants.RUTA_TYPE_AT
-            || getVariableType(bref) == RutaTypeConstants.RUTA_TYPE_AT)) {
+    Integer variableType1 = getVariableType(aref);
+    Integer variableType2 = getVariableType(bref);
+    if (match == null && variableType1 != null && variableType2 != null && (variableType1 == RutaTypeConstants.RUTA_TYPE_AT
+            || variableType2 == RutaTypeConstants.RUTA_TYPE_AT)) {
       // do not check on variables!
       return;
     }
