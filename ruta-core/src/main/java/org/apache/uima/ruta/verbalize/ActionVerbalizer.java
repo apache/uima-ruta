@@ -26,6 +26,8 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.action.AddAction;
+import org.apache.uima.ruta.action.AddFilterTypeAction;
+import org.apache.uima.ruta.action.AddRetainTypeAction;
 import org.apache.uima.ruta.action.AssignAction;
 import org.apache.uima.ruta.action.CallAction;
 import org.apache.uima.ruta.action.ClearAction;
@@ -57,6 +59,8 @@ import org.apache.uima.ruta.action.MatchedTextAction;
 import org.apache.uima.ruta.action.MergeAction;
 import org.apache.uima.ruta.action.RemoveAction;
 import org.apache.uima.ruta.action.RemoveDuplicateAction;
+import org.apache.uima.ruta.action.RemoveFilterTypeAction;
+import org.apache.uima.ruta.action.RemoveRetainTypeAction;
 import org.apache.uima.ruta.action.ReplaceAction;
 import org.apache.uima.ruta.action.RetainTypeAction;
 import org.apache.uima.ruta.action.SetFeatureAction;
@@ -102,6 +106,10 @@ public class ActionVerbalizer {
       return "FILL";
     } else if (action instanceof FilterTypeAction) {
       return "FILTERTYPE";
+    } else if (action instanceof AddFilterTypeAction) {
+      return "ADDFILTERTYPE";
+    } else if (action instanceof RemoveFilterTypeAction) {
+      return "REMOVEFILTERTYPE";
     } else if (action instanceof LogAction) {
       return "LOG";
     } else if (action instanceof MarkOnceAction) {
@@ -124,6 +132,10 @@ public class ActionVerbalizer {
       return "REPLACE";
     } else if (action instanceof RetainTypeAction) {
       return "RETAINTYPE";
+    } else if (action instanceof AddRetainTypeAction) {
+      return "ADDRETAINTYPE";
+    } else if (action instanceof RemoveRetainTypeAction) {
+      return "REMOVERETAINTYPE";
     } else if (action instanceof SetFeatureAction) {
       String name = "SETFEATURE";
       return name;
@@ -268,6 +280,12 @@ public class ActionVerbalizer {
       FilterTypeAction a = (FilterTypeAction) action;
       return a.getList().isEmpty() ? "FILTERTYPE" : "FILTERTYPE("
               + verbalizer.verbalizeExpressionList(a.getList()) + ")";
+    } else if (action instanceof AddFilterTypeAction) {
+      AddFilterTypeAction a = (AddFilterTypeAction) action;
+      return name + verbalizer.verbalizeExpressionList(a.getList()) + ")";
+    } else if (action instanceof RemoveFilterTypeAction) {
+      RemoveFilterTypeAction a = (RemoveFilterTypeAction) action;
+      return name + verbalizer.verbalizeExpressionList(a.getList()) + ")";
     } else if (action instanceof LogAction) {
       LogAction a = (LogAction) action;
       return name + verbalizer.verbalize(a.getText()) + ", " + a.getLevel() + ")";
@@ -333,6 +351,12 @@ public class ActionVerbalizer {
       RetainTypeAction a = (RetainTypeAction) action;
       return a.getList().isEmpty() ? "RETAINTYPE" : "RETAINTYPE("
               + verbalizer.verbalizeExpressionList(a.getList()) + ")";
+    } else if (action instanceof AddRetainTypeAction) {
+      AddRetainTypeAction a = (AddRetainTypeAction) action;
+      return name + verbalizer.verbalizeExpressionList(a.getList()) + ")";
+    } else if (action instanceof RemoveRetainTypeAction) {
+      RemoveRetainTypeAction a = (RemoveRetainTypeAction) action;
+      return name + verbalizer.verbalizeExpressionList(a.getList()) + ")";
     } else if (action instanceof SetFeatureAction) {
       SetFeatureAction a = (SetFeatureAction) action;
       String e1 = verbalizer.verbalize(a.getFeatureStringExpression());
