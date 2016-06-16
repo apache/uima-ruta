@@ -200,8 +200,8 @@ public class ScriptFactory extends AbstractFactory {
    */
   public RutaBlock createScriptBlock(Token id, Token type, RutaBlock rutaBlock) {
     boolean forEach = false;
-    if (id != null) {
-      forEach = StringUtils.equals(id.getText(), RutaParser.tokenNames[RutaLexer.ForEachString]);
+    if (type != null) {
+      forEach = StringUtils.equals(type.getText(), "FOREACH");
     }
     int[] bounds = getBounds(type, id);
     int[] nameBounds = getBounds(id);

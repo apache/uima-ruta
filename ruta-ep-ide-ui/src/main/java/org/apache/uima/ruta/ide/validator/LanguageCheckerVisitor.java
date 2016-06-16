@@ -243,12 +243,6 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       checkPackage(s);
       return false;
     }
-    if(s instanceof ForEachBlock) {
-      String name = ((ForEachBlock) s).getName();
-      Map<String, Integer> map = new HashMap<>();
-      map.put(name, RutaTypeConstants.RUTA_TYPE_UA);
-      knownLocalVariables.push(map);
-    }
     if (s instanceof RutaMacroDeclaration) {
       RutaMacroDeclaration decl = (RutaMacroDeclaration) s;
       Map<Token, Token> definition = decl.getDefinition();
@@ -639,9 +633,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           return false;
         }
         Integer variableType = getVariableType(name);
-        if(variableType != null && variableType == RutaTypeConstants.RUTA_TYPE_AT
+        if(variableType != null && (variableType == RutaTypeConstants.RUTA_TYPE_AT
                 || variableType == RutaTypeConstants.RUTA_TYPE_UA
-                || variableType == RutaTypeConstants.RUTA_TYPE_UAL) {
+                || variableType == RutaTypeConstants.RUTA_TYPE_UAL)) {
           return false;
         }
         if (isFeatureMatch(name) != null) {
@@ -904,7 +898,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     Integer variableType1 = getVariableType(aref);
     Integer variableType2 = getVariableType(bref);
     if (match == null && variableType1 != null && variableType2 != null && (variableType1 == RutaTypeConstants.RUTA_TYPE_AT
-            || variableType2 == RutaTypeConstants.RUTA_TYPE_AT)) {
+            || variableType2 == RutaTypeConstants.RUTA_TYPE_AT|| variableType1 == RutaTypeConstants.RUTA_TYPE_UA)) {
       // do not check on variables!
       return;
     }
@@ -977,12 +971,15 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   public boolean visit(MethodDeclaration s) throws Exception {
     if (s instanceof RutaBlock) {
       RutaBlock b = (RutaBlock) s;
-      knownLocalVariables.push(new HashMap<String, Integer>());
       String name = b.getName();
+      HashMap<String, Integer> map = new HashMap<String, Integer>();
+      if(b instanceof ForEachBlock) {
+        map.put(name, RutaTypeConstants.RUTA_TYPE_UA);
+      }
+      knownLocalVariables.push(map);
       blocks.push(name);
       // TODO add syntax check for block extensions
     }
-
     return true;
   }
 
