@@ -241,8 +241,7 @@ BLOCK(GermanDates) Document{FEATURE("language", "de")} {
       </section>
       <section id="ugr.tools.ruta.language.blocks.block.foreach">
         <title>
-          <quote>Foreach</quote>
-          -Loops
+          Loops with restriction of the matching window
         </title>
         <para>
           A block can be used to execute the containing rules on a
@@ -365,8 +364,13 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
     <section id="ugr.tools.ruta.language.blocks.foreach">
     <title>FOREACH</title>
     <para>
-      A FOREACH block is very similar to the common BLOCK construct and has the same syntax.
-      There are, however, also some essential differences: 
+      The syntax of the FOREACH block is very similar to the common BLOCK construct, 
+      but the execution of the contained rules can lead to other results.
+      the execution of the rules is, however, different. 
+      Here, all contained rules are applied on each matched annotation consecutively. 
+      In a BLOCK construct,
+      each rule is applied within the window of each matched annotation.
+      The differences can be summarized with: 
     </para>
     <para>
         <orderedlist numeration="arabic">
@@ -387,6 +391,14 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
             <para>
               It is expected that the local variable is part of each rule within the FOREACH block.
               The start anchor of each rule is set to the rule element that contains the annotation as a matching condition.
+              If not another start anchor is defined before the variable.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              An additional optional boolean parameter specifies the direction of the matching process. 
+              With the default value <code>true</code>, the loop will start with the first annotation continuing with the following annotations. 
+              If set to false, the loop will start with the last annotation continuing with the previous annotations.
             </para>
           </listitem>
         </orderedlist>
@@ -395,7 +407,7 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
       <para>
         The following example illustrates the syntax and semantic of the FOREACH block:
       </para>
-      <programlisting><![CDATA[FOREACH(num) NUM{}{
+      <programlisting><![CDATA[FOREACH(num, true) NUM{}{
     num{-> SpecialNum} CW;
     SW{-> T5} num{-> SpecialNum};
 }]]></programlisting>   

@@ -677,6 +677,7 @@ level--;
 		block = scriptFactory.createScriptBlock(id, declareToken, $blockDeclaration[level - 1]::env);
 		$blockDeclaration::env = block;
 	}
+	(COMMA booleanExpression)?
 	RPAREN
 	re1 = ruleElementWithCA
 	{

@@ -83,23 +83,23 @@ public class ForEachBlockTest {
     TextSeeder textSeeder = new TextSeeder();
     CAS cas = RutaTestUtils.getCAS(sb.toString());
     textSeeder.seed(cas.getDocumentText(), cas);
-    
+
     long startOriginal = System.currentTimeMillis();
     Ruta.apply(cas, getOriginalScript());
     long endOriginal = System.currentTimeMillis();
-    System.out.println("BLOCK: " + (endOriginal - startOriginal)+"ms");
-    
+    System.out.println("BLOCK: " + (endOriginal - startOriginal) + "ms");
+
     cas.reset();
     cas.setDocumentText(sb.toString());
     textSeeder.seed(cas.getDocumentText(), cas);
-    
+
     long startForEach = System.currentTimeMillis();
     Ruta.apply(cas, getForEachScript());
     long endForEach = System.currentTimeMillis();
-    System.out.println("FOREACH: " + (endForEach - startForEach)+"ms");
-    
+    System.out.println("FOREACH: " + (endForEach - startForEach) + "ms");
+
     cas.release();
-    
+
   }
 
   private String getForEachScript() {
@@ -125,21 +125,25 @@ public class ForEachBlockTest {
     script += "CW{-> T9} # @NUM{-> T10};\n";
     return script;
   }
-  
+
   @Test
-  public void testRigthToLeft() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testRigthToLeft()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
     String script = "NUM{-> T1};";
     script += "FOREACH(t) T1{}{\n";
     script += "n:T1 SPECIAL.ct==\"^\" t{-> t.begin = n.begin};\n";
     script += "}";
     CAS cas = RutaTestUtils.getCAS("2^3");
     Ruta.apply(cas, script);
-    
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "2^3", "2");
   }
-  
+
   @Test
-  public void testEnforcedLeftToRigthInComposedWithDebbugging() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testEnforcedLeftToRigthInComposedWithDebbugging()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
     String script = "NUM{-> T1};";
     script += "FOREACH(t) T1{}{\n";
     script += "(n:@T1{->UNMARK(T1)} SPECIAL.ct==\"^\" t){-> t.begin = n.begin};\n";
@@ -149,8 +153,26 @@ public class ForEachBlockTest {
     parameters.put(RutaEngine.PARAM_DEBUG, true);
     parameters.put(RutaEngine.PARAM_DEBUG_WITH_MATCHES, true);
     Ruta.apply(cas, script, parameters);
-    
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "4", "2^3");
+  }
+
+  @Test
+  public void testDirection()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+    String script = "NUM{-> T1};";
+    script += "FOREACH(t,true) T1{}{\n";
+    script += "(# t{-PARTOF(T2)}){->T2};\n";
+    script += "}";
+    script += "FOREACH(t,false) T1{}{\n";
+    script += "(# t{-PARTOF(T3)}){->T3};\n";
+    script += "}";
+    CAS cas = RutaTestUtils.getCAS("text 4x2^3 text");
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "text 4x2^3", "text 4x2", "text 4");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "text 4x2^3");
   }
 
 }

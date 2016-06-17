@@ -756,7 +756,7 @@ level--;
 	:
 	type = ForEachString 
 	LPAREN
-	id = Identifier (direction = booleanExpression)?
+	id = Identifier (COMMA direction = booleanExpression)?
 	RPAREN
 	{block = factory.createForEachBlock(id, direction, re, body, $blockDeclaration[level - 1]::env);}
 	{$blockDeclaration::env = block;
