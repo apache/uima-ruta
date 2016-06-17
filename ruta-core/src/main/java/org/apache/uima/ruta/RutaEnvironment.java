@@ -259,7 +259,8 @@ public class RutaEnvironment {
       namespaces.remove(DOCUMENT);
       Type documentType = cas.getTypeSystem().getType(UIMAConstants.TYPE_DOCUMENT);
       addType(DOCUMENT, documentType);
-
+      addType(documentType.getShortName(), documentType);
+      
       Type annotationType = cas.getJCas().getCasType(org.apache.uima.jcas.tcas.Annotation.type);
       addType("Annotation", annotationType);
     } catch (CASException e) {
