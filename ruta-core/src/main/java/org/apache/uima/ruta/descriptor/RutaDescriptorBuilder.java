@@ -128,7 +128,7 @@ public class RutaDescriptorBuilder {
         if (relativeLocation != null) {
           import_impl.setLocation(relativeLocation);
         } else {
-          toInclude.add(initialTypeSystem);
+          import_impl.setName(initialTypeSystem.getName());
         }
       } else {
         toInclude.add(initialTypeSystem);
