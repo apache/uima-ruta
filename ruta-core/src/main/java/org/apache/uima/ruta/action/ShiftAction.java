@@ -28,6 +28,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.AnnotationComparator;
@@ -39,8 +40,11 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ShiftAction extends MarkAction {
 
-  public ShiftAction(ITypeExpression type, List<INumberExpression> list) {
+  private IBooleanExpression all;
+
+  public ShiftAction(ITypeExpression type, List<INumberExpression> list, IBooleanExpression all) {
     super(type, null, list);
+    this.all = all;
   }
 
   @Override
@@ -48,6 +52,7 @@ public class ShiftAction extends MarkAction {
     RuleMatch match = context.getRuleMatch();
     RuleElement element = context.getElement();
     Type targetType = type.getType(context, stream);
+    
     List<Integer> indexList = getIndexList(context, list, stream);
     List<AnnotationFS> destinationAnnotationSpans = match.getMatchedAnnotations(indexList,
             element.getContainer());
@@ -56,6 +61,8 @@ public class ShiftAction extends MarkAction {
     int size = Math.min(annotationsMatchedByRuleElementofAction.size(),
             destinationAnnotationSpans.size());
 
+    boolean expandAll = all == null ? false : all.getBooleanValue(context, stream);
+    
     RutaBasic firstBasicOfAll = stream.getFirstBasicOfAll();
     RutaBasic lastBasicOfAll = stream.getLastBasicOfAll();
     int windowBegin = firstBasicOfAll == null ? 0 : firstBasicOfAll.getBegin();
@@ -65,13 +72,18 @@ public class ShiftAction extends MarkAction {
       AnnotationFS eachDestination = destinationAnnotationSpans.get(i);
       Set<AnnotationFS> allAnchoredAnnotations = new TreeSet<AnnotationFS>(
               new AnnotationComparator());
+      
+      if(expandAll) {
       Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(eachMatched.getBegin())
               .getBeginAnchors(targetType);
       Collection<AnnotationFS> endAnchors = stream.getEndAnchor(eachMatched.getEnd())
               .getEndAnchors(targetType);
       allAnchoredAnnotations.addAll(beginAnchors);
       allAnchoredAnnotations.addAll(endAnchors);
-
+      } else {
+        allAnchoredAnnotations.addAll(stream.getBestGuessedAnnotationsAt(eachMatched, targetType));
+      }
+      
       for (AnnotationFS eachAnchored : allAnchoredAnnotations) {
         if (eachAnchored.getBegin() >= windowBegin && eachAnchored.getEnd() <= windowEnd) {
           Annotation a = (Annotation) eachAnchored;
@@ -82,6 +94,10 @@ public class ShiftAction extends MarkAction {
         }
       }
     }
+  }
+
+  public IBooleanExpression getAll() {
+    return all;
   }
 
 }

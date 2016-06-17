@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.BooleanArrayFS;
 import org.apache.uima.cas.CAS;
@@ -46,6 +47,7 @@ import org.apache.uima.cas.FloatArrayFS;
 import org.apache.uima.cas.IntArrayFS;
 import org.apache.uima.cas.StringArrayFS;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.impl.FSIteratorImplBase;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -61,6 +63,7 @@ import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -1179,6 +1182,23 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return inWindow;
   }
 
+  public List<AnnotationFS> getBestGuessedAnnotationsAt(AnnotationFS window, Type type) {
+    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
+    TypeSystem typeSystem = getCas().getTypeSystem();
+    if (typeSystem.subsumes(type, window.getType())) {
+      result.add(window);
+    } else {
+      Collection<AnnotationFS> beginAnchors = getBeginAnchor(window.getBegin())
+              .getBeginAnchors(type);
+      Collection<AnnotationFS> endAnchors = getEndAnchor(window.getEnd()).getEndAnchors(
+              type);
+      @SuppressWarnings("unchecked")
+      Collection<AnnotationFS> intersection = CollectionUtils
+              .intersection(beginAnchors, endAnchors);
+      result.addAll(intersection);
+    }
+    return result;
+  }
   
 
 }

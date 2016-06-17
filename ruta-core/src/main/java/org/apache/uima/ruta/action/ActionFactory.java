@@ -246,8 +246,8 @@ public class ActionFactory {
   }
 
   public static AbstractRutaAction createShiftAction(ITypeExpression type,
-          List<INumberExpression> list, RutaBlock env) {
-    return new ShiftAction(type, list);
+          List<INumberExpression> list, IBooleanExpression all, RutaBlock env) {
+    return new ShiftAction(type, list, all);
   }
 
   public static AbstractRutaAction createDynamicAnchoringAction(IBooleanExpression active,

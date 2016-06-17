@@ -1931,14 +1931,13 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
 }
     :   
     SHIFT LPAREN 
-    type = typeExpression
-    (
-        COMMA (index = numberExpression) => index = numberExpression
-        {list.add(index);}
-    )*
-     RPAREN
+    type = typeExpression 
+    COMMA index1 = numberExpression {list.add(index1);}
+    COMMA index2 = numberExpression {list.add(index2);}
+    (COMMA (all=booleanExpression)=> all= booleanExpression)?
+    RPAREN
     
-    {action = ActionFactory.createShiftAction(type, list,$blockDeclaration::env);}
+    {action = ActionFactory.createShiftAction(type, list, all, $blockDeclaration::env);}
     ;
 
 

@@ -20,11 +20,9 @@
 package org.apache.uima.ruta.expression;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaElement;
@@ -77,22 +75,9 @@ public class RutaExpression extends RutaElement implements IRutaExpression {
         return result;
       }
     }
-
-    if (matchedAnnotation.getType().equals(type)
-            || stream.getCas().getTypeSystem().subsumes(type, matchedAnnotation.getType())) {
-      List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);
-      result.add(matchedAnnotation);
-      return result;
-    } else {
-      Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(matchedAnnotation.getBegin())
-              .getBeginAnchors(type);
-      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(matchedAnnotation.getEnd())
-              .getEndAnchors(type);
-      @SuppressWarnings("unchecked")
-      Collection<AnnotationFS> intersection = CollectionUtils.intersection(beginAnchors,
-              endAnchors);
-      return new ArrayList<AnnotationFS>(intersection);
-    }
+    
+    return stream.getBestGuessedAnnotationsAt(matchedAnnotation, type);
+    
   }
 
 }

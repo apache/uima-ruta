@@ -1252,9 +1252,11 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     <section id="ugr.tools.ruta.language.actions.shift">
       <title>SHIFT</title>
       <para>
-        The SHIFT action can be used to change the offsets of an annotation. The optional number expressions,
+        The SHIFT action can be used to change the offsets of an annotation. The two number expressions,
         which point the rule elements of the rule, specify the new offsets of the annotation. The annotations that
-        will be modified have to start or end at the match of the rule element of the action. This means that the action 
+        will be modified have to start or end at the match of the rule element of the action if the boolean option is set to true. 
+        By default, only the matched annotation of the given type will be modified.
+        In either way, this means that the action 
         has to be placed at a matching condition, which will be used to specify the annotations to be changed.
       </para>
       <section>
@@ -1262,7 +1264,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
           <emphasis role="bold">Definition:</emphasis>
         </title>
         <para>
-          <programlisting><![CDATA[SHIFT(TypeExpression(,NumberExpression)*)]]></programlisting>
+          <programlisting><![CDATA[SHIFT(TypeExpression,NumberExpression,NumberExpression,BooleanExpression?)]]></programlisting>
         </para>
       </section>
       <section>
@@ -1274,10 +1276,10 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         </para>
         <para>
           In this example, an annotation of the type <quote>Author</quote> is expanded 
-          in order to cover the following punctation mark.
+          in order to cover the following punctuation mark.
         </para>
         <para>
-          <programlisting><![CDATA[W{STARTSWITH(FS) -> SHIFT(FS, 1, 2)} W+ MARKUP;]]></programlisting>
+          <programlisting><![CDATA[W{STARTSWITH(FS) -> SHIFT(FS, 1, 2, true)} W+ MARKUP;]]></programlisting>
         </para>
         <para>
           In this example, an annotation of the type <quote>FS</quote> that consists mostly of words 

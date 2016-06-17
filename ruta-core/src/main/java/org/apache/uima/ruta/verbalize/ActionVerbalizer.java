@@ -306,7 +306,11 @@ public class ActionVerbalizer {
       if (a.getList() != null && !a.getList().isEmpty()) {
         string = ", " + verbalizer.verbalizeExpressionList(a.getList());
       }
-      return name + verbalizer.verbalize(a.getType()) + string + ")";
+      String all = "";
+      if(a.getAll() != null) {
+        all =  ", " + verbalizer.verbalize(a.getAll());
+      }
+      return name + verbalizer.verbalize(a.getType()) + string + all+ ")";
     } else if (action instanceof MarkAction) {
       MarkAction a = (MarkAction) action;
       if (a.getScore() != null) {

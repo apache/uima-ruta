@@ -1769,9 +1769,10 @@ List<Expression> list = new ArrayList<Expression>();
     name = SHIFT LPAREN 
     type = typeExpression
     {list.add(type);}
-    (
-    COMMA (index = numberExpression) => index = numberExpression {list.add(index);}
-    )*
+    
+    COMMA index1 = numberExpression {list.add(index1);}
+    COMMA index2 = numberExpression {list.add(index2);}
+    (COMMA  all= booleanExpression {list.add(all);})? 
     {action = ActionFactory.createAction(name, list);}
      RPAREN
     ;

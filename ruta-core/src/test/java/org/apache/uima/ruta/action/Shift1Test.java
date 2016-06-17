@@ -19,8 +19,16 @@
 
 package org.apache.uima.ruta.action;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.resource.ResourceConfigurationException;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class Shift1Test {
@@ -34,4 +42,17 @@ public class Shift1Test {
 
     cas.release();
   }
+  
+  @Test
+  public void testOverlapping() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+    String text = "text 2 3 x 4";
+    String script = "";
+    script += "NUM+{->T1};";
+    script += "T1.ct==\"3\"{-> SHIFT(T1,1,3)} SW T1;";
+    CAS cas = RutaTestUtils.getCAS(text);
+    Ruta.apply(cas, script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "2 3", "3 x 4", "4");
+    cas.release();
+  }
+  
 }

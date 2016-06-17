@@ -138,6 +138,7 @@ public class ForEachBlockTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "2^3", "2");
+    cas.release();
   }
 
   @Test
@@ -155,6 +156,7 @@ public class ForEachBlockTest {
     Ruta.apply(cas, script, parameters);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "4", "2^3");
+    cas.release();
   }
 
   @Test
@@ -173,6 +175,7 @@ public class ForEachBlockTest {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "text 4x2^3", "text 4x2", "text 4");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "text 4x2^3");
+    cas.release();
   }
 
 }
