@@ -108,7 +108,7 @@ public class RutaAnnotationMatcher implements RutaMatcher {
       if (annotationExpression != null) {
 
         AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
-        boolean beginsWith = nextBasic.beginsWith(ref.getType());
+        boolean beginsWith = nextBasic.getBegin() == ref.getBegin();
         if (beginsWith) {
           Collection<AnnotationFS> result = new ArrayList<>(1);
           result.add(ref);
@@ -118,7 +118,7 @@ public class RutaAnnotationMatcher implements RutaMatcher {
         List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
         Collection<AnnotationFS> result = new ArrayList<>();
         for (AnnotationFS each : annotations) {
-          boolean beginsWith = nextBasic.beginsWith(each.getType());
+          boolean beginsWith = nextBasic.getBegin() == each.getBegin();
           if (beginsWith) {
             result.add(each);
           }
@@ -156,7 +156,7 @@ public class RutaAnnotationMatcher implements RutaMatcher {
       MatchContext context = new MatchContext(parent);
       if (annotationExpression != null) {
         AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
-        boolean endsWith = nextBasic.beginsWith(ref.getType());
+        boolean endsWith = nextBasic.getEnd() == ref.getEnd();
         if (endsWith) {
           Collection<AnnotationFS> result = new ArrayList<>(1);
           result.add(ref);
@@ -165,7 +165,7 @@ public class RutaAnnotationMatcher implements RutaMatcher {
       } else if (annotationListExpression != null) {
         List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
         for (AnnotationFS each : annotations) {
-          boolean endsWith = nextBasic.beginsWith(each.getType());
+          boolean endsWith = nextBasic.getEnd() == each.getEnd();
           if (endsWith) {
             Collection<AnnotationFS> result = new ArrayList<>();
             result.add(each);

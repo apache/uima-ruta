@@ -756,9 +756,9 @@ level--;
 	:
 	type = ForEachString 
 	LPAREN
-	id = Identifier 
+	id = Identifier (direction = booleanExpression)?
 	RPAREN
-	{block = factory.createForEachBlock(id, re, body, $blockDeclaration[level - 1]::env);}
+	{block = factory.createForEachBlock(id, direction, re, body, $blockDeclaration[level - 1]::env);}
 	{$blockDeclaration::env = block;
 	container = new RuleElementIsolator();}
 	re1 = ruleElementWithCA[container]

@@ -24,7 +24,6 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.collections.MapUtils;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceConfigurationException;
@@ -140,18 +139,18 @@ public class ForEachBlockTest {
   }
   
   @Test
-  public void testEnforcedLeftToRigth() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testEnforcedLeftToRigthInComposedWithDebbugging() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
     String script = "NUM{-> T1};";
     script += "FOREACH(t) T1{}{\n";
-    script += "n:@T1{->UNMARK(T1)} SPECIAL.ct==\"^\" t{-> t.begin = n.begin};\n";
+    script += "(n:@T1{->UNMARK(T1)} SPECIAL.ct==\"^\" t){-> t.begin = n.begin};\n";
     script += "}";
-    CAS cas = RutaTestUtils.getCAS("2^3");
+    CAS cas = RutaTestUtils.getCAS("text 4x2^3 text");
     Map<String, Object> parameters = new HashMap<>();
     parameters.put(RutaEngine.PARAM_DEBUG, true);
     parameters.put(RutaEngine.PARAM_DEBUG_WITH_MATCHES, true);
     Ruta.apply(cas, script, parameters);
     
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "2^3");
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "4", "2^3");
   }
 
 }

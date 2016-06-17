@@ -32,6 +32,7 @@ import org.apache.uima.ruta.block.ForEachBlock;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
@@ -80,7 +81,7 @@ public class ScriptVerbalizer {
     RutaRule rule = block.getRule();
     List<RutaStatement> elements = block.getElements();
     String name = block.getName();
-    if(block instanceof ForEachBlock) {
+    if (block instanceof ForEachBlock) {
       result.append("FOREACH");
     } else {
       result.append("BLOCK");
@@ -88,6 +89,13 @@ public class ScriptVerbalizer {
     if (name != null) {
       result.append("(");
       result.append(name);
+      if (block instanceof ForEachBlock) {
+        IBooleanExpression direction = ((ForEachBlock) block).getDirection();
+        if (direction != null) {
+          result.append(", ");
+          result.append(verbalizer.verbalize(direction));
+        }
+      }
       result.append(")");
     }
     result.append(" ");
@@ -117,10 +125,10 @@ public class ScriptVerbalizer {
     while (iterator.hasNext()) {
       RuleElement each = iterator.next();
       result.append(verbalizeRuleElement(each));
-      if(iterator.hasNext()) {
+      if (iterator.hasNext()) {
         result.append(" ");
       }
-      
+
     }
     result.append(";");
     return result.toString();
@@ -148,7 +156,7 @@ public class ScriptVerbalizer {
       // action-only rule
       if (matcher instanceof RutaTypeMatcher) {
         IRutaExpression expression = ((RutaTypeMatcher) matcher).getExpression();
-        if(expression != null) {
+        if (expression != null) {
           result.append(verbalizer.verbalize(expression));
         } else {
           Iterator<AbstractRutaAction> ait = actions.iterator();

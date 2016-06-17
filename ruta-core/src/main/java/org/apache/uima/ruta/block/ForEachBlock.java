@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.block;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,9 +29,11 @@ import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleApply;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
@@ -44,10 +47,13 @@ public class ForEachBlock extends RutaBlock {
 
   private boolean anchorsSet = false;
 
-  public ForEachBlock(String varName, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
+  private IBooleanExpression direction;
+  
+  public ForEachBlock(String varName, IBooleanExpression direction, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
           String defaultNamespace) {
     super(varName, rule, elements, parent, defaultNamespace,
             parent != null ? parent.getContext() : null);
+    this.direction = direction;
   }
 
   @Override
@@ -57,8 +63,17 @@ public class ForEachBlock extends RutaBlock {
 
     setRuleElementAnchor();
 
+    boolean leftToRight = true;
+    if(direction != null) {
+      leftToRight = direction.getBooleanValue(new MatchContext(getParent()), stream);
+    }
+    
     RuleApply apply = rule.apply(stream, crowd, true);
-    for (AbstractRuleMatch<? extends AbstractRule> eachMatch : apply.getList()) {
+    List<AbstractRuleMatch<? extends AbstractRule>> list = apply.getList();
+    if(!leftToRight) {
+      Collections.reverse(list);
+    }
+    for (AbstractRuleMatch<? extends AbstractRule> eachMatch : list) {
       if (eachMatch.matched()) {
 
         List<AnnotationFS> matchedAnnotations = ((RuleMatch) eachMatch).getMatchedAnnotations(null,
@@ -132,6 +147,10 @@ public class ForEachBlock extends RutaBlock {
     String ruleString = rule == null ? "Document" : rule.toString();
     int elementSize = elements == null ? 0 : elements.size();
     return "FOREACH(" + name + ") " + ruleString + " containing " + elementSize + " Elements";
+  }
+
+  public IBooleanExpression getDirection() {
+    return direction;
   }
 
 }
