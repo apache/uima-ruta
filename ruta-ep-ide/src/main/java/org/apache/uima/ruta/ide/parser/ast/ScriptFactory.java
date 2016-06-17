@@ -77,6 +77,11 @@ public class ScriptFactory extends AbstractFactory {
 
   public RutaRule createRegExpRule(List<Expression> exprs,
           Map<Expression, Map<Expression, Expression>> fa, Token s) {
+    return createRegExpRule(exprs, fa, s, false);
+  }
+  
+  public RutaRule createRegExpRule(List<Expression> exprs,
+          Map<Expression, Map<Expression, Expression>> fa, Token s, boolean updateCounter) {
     List<Expression> expressions = new ArrayList<Expression>();
     for (Expression each : exprs) {
       if (each != null) {
@@ -91,7 +96,10 @@ public class ScriptFactory extends AbstractFactory {
         }
       }
     }
-    RutaRegExpRule rule = new RutaRegExpRule(expressions, fa, idCounter++);
+    RutaRegExpRule rule = new RutaRegExpRule(expressions, fa, idCounter);
+    if(updateCounter) {
+      idCounter++;
+    }
     if (s != null) {
       int[] bounds = getBounds(s);
       rule.setEnd(bounds[1]);

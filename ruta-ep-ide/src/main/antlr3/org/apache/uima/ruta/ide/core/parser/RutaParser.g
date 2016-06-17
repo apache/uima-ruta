@@ -783,7 +783,7 @@ regexpRule returns [RutaRule stmt = null]
 	)*
 
 	s = SEMI
-	{stmt = scriptFactory.createRegExpRule(exprs, fa, s);}
+	{stmt = scriptFactory.createRegExpRule(exprs, fa, s, true);}
 	
 	;
 
