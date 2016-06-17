@@ -1291,11 +1291,11 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
     <section id="ugr.tools.ruta.language.actions.split">
       <title>SPLIT</title>
       <para>
-        The SPLIT action is able to split the matched annotation for each occurence of annotation 
+        The SPLIT action is able to split the matched annotation for each occurrence of annotation 
         of the given type. There are three additional parameters: The first one specifies if complete annotations of the given type 
         should be used to split the matched annotations. If set to false, then even the boundary of an annotation will cause splitting.
         The third (addToBegin) and fourth (addToEnd) argument specify if the complete annotation (for splitting) 
-        will be added to the begin or end of the splitted annotation. 
+        will be added to the begin or end of the split annotation. 
         The latter two are only utilized if the first one is set to true..
         If omitted, the first argument is true and the other two arguments are false by default.
       </para>
@@ -1317,7 +1317,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         </para>
         <para>
           In this example, an annotation of the type <quote>Sentence</quote> is 
-          splitted for each occurence of a period, which is added to the end of the new sentence. 
+          split for each occurrence of a period, which is added to the end of the new sentence. 
         </para>
       </section>
     </section>
