@@ -87,10 +87,7 @@ public class ShiftAction extends MarkAction {
       for (AnnotationFS eachAnchored : allAnchoredAnnotations) {
         if (eachAnchored.getBegin() >= windowBegin && eachAnchored.getEnd() <= windowEnd) {
           Annotation a = (Annotation) eachAnchored;
-          stream.removeAnnotation(a);
-          a.setBegin(eachDestination.getBegin());
-          a.setEnd(eachDestination.getEnd());
-          stream.addAnnotation(a, true, match);
+          stream.changeOffsets(a, eachDestination.getBegin(), eachDestination.getEnd(), match);
         }
       }
     }

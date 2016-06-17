@@ -63,7 +63,6 @@ import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
-import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -182,25 +181,25 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   public void initalizeBasics(String[] reindexOnly) {
     AnnotationIndex<AnnotationFS> basicIndex = cas.getAnnotationIndex(basicType);
-    
+
     final List<AnnotationFS> allAnnotations = new LinkedList<AnnotationFS>();
     for (String eachTypeName : reindexOnly) {
-        Type type = cas.getTypeSystem().getType(eachTypeName);
-        if(type != null) {
-          AnnotationIndex<AnnotationFS> annotationIndex = null;
-          if(StringUtils.equals(eachTypeName, CAS.TYPE_NAME_ANNOTATION)) {
-            annotationIndex = cas.getAnnotationIndex();
-          } else {
-            annotationIndex = cas.getAnnotationIndex(type);
-          }
-          for (AnnotationFS a : annotationIndex) {
-            if (a.getBegin() != a.getEnd()) {
-              allAnnotations.add(a);
-            }
+      Type type = cas.getTypeSystem().getType(eachTypeName);
+      if (type != null) {
+        AnnotationIndex<AnnotationFS> annotationIndex = null;
+        if (StringUtils.equals(eachTypeName, CAS.TYPE_NAME_ANNOTATION)) {
+          annotationIndex = cas.getAnnotationIndex();
+        } else {
+          annotationIndex = cas.getAnnotationIndex(type);
+        }
+        for (AnnotationFS a : annotationIndex) {
+          if (a.getBegin() != a.getEnd()) {
+            allAnnotations.add(a);
           }
         }
+      }
     }
-    
+
     if (basicIndex.size() == 0) {
       TreeSet<Integer> anchors = new TreeSet<Integer>();
       for (AnnotationFS a : allAnnotations) {
@@ -590,8 +589,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
             && windowAnnotation.getBegin() == 0) {
       subSet = beginAnchors.values();
     } else {
-      subSet = beginAnchors.subMap(windowAnnotation.getBegin(), true, windowAnnotation.getEnd(),
-              false).values();
+      subSet = beginAnchors
+              .subMap(windowAnnotation.getBegin(), true, windowAnnotation.getEnd(), false).values();
     }
     return subSet;
   }
@@ -648,8 +647,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       return result;
     }
     FSMatchConstraint defaultConstraint = filter.getDefaultConstraint();
-    FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(cas
-            .getAnnotationIndex(basicType).subiterator(windowAnnotation), defaultConstraint);
+    FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(
+            cas.getAnnotationIndex(basicType).subiterator(windowAnnotation), defaultConstraint);
 
     while (iterator.isValid()) {
       result.add((RutaBasic) iterator.get());
@@ -662,7 +661,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return getFirstBasicInWindow(windowAnnotation, currentIt);
   }
 
-  public RutaBasic getFirstBasicInWindow(AnnotationFS windowAnnotation, FSIterator<AnnotationFS> it) {
+  public RutaBasic getFirstBasicInWindow(AnnotationFS windowAnnotation,
+          FSIterator<AnnotationFS> it) {
     if (windowAnnotation instanceof RutaBasic) {
       return (RutaBasic) windowAnnotation;
     }
@@ -695,8 +695,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (annotation instanceof RutaAnnotation) {
         RutaAnnotation tma = (RutaAnnotation) annotation;
         if (tma.getBegin() == heuristicAnnotation.getBegin()
-                && tma.getEnd() == heuristicAnnotation.getEnd()
-                && tma.getAnnotation().getType()
+                && tma.getEnd() == heuristicAnnotation.getEnd() && tma.getAnnotation().getType()
                         .equals(heuristicAnnotation.getAnnotation().getType())) {
           return tma;
         }
@@ -758,8 +757,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public RutaBasic getNextBasic2(AnnotationFS previous) {
-    AnnotationFS pointer = cas
-            .createAnnotation(basicType, previous.getEnd() - 1, previous.getEnd());
+    AnnotationFS pointer = cas.createAnnotation(basicType, previous.getEnd() - 1,
+            previous.getEnd());
     currentIt.moveTo(pointer);
     if (currentIt.isValid()) {
       RutaBasic basic = (RutaBasic) currentIt.get();
@@ -853,10 +852,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
 
     AnnotationFS windowAnnotation = filter.getWindowAnnotation();
-    if (!ignoreWindow
-            && windowAnnotation != null
-            && (annotationFS.getBegin() < windowAnnotation.getBegin() || annotationFS.getEnd() > windowAnnotation
-                    .getEnd())) {
+    if (!ignoreWindow && windowAnnotation != null
+            && (annotationFS.getBegin() < windowAnnotation.getBegin()
+                    || annotationFS.getEnd() > windowAnnotation.getEnd())) {
       return false;
     }
     int begin = annotationFS.getBegin();
@@ -903,8 +901,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     Collection<AnnotationFS> result = new LinkedList<AnnotationFS>();
     AnnotationFS windowAnnotation = filter.getWindowAnnotation();
     if (windowAnnotation != null
-            && (windowAnnotation.getBegin() != cas.getDocumentAnnotation().getBegin() || windowAnnotation
-                    .getEnd() != cas.getDocumentAnnotation().getEnd())) {
+            && (windowAnnotation.getBegin() != cas.getDocumentAnnotation().getBegin()
+                    || windowAnnotation.getEnd() != cas.getDocumentAnnotation().getEnd())) {
       AnnotationFS frame = cas.createAnnotation(cas.getTypeSystem().getType(RutaEngine.FRAME_TYPE),
               windowAnnotation.getBegin(), windowAnnotation.getEnd());
       FSIterator<AnnotationFS> subiterator = cas.getAnnotationIndex(type).subiterator(frame);
@@ -979,7 +977,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         int v = numberExpr.getIntegerValue(context, this);
-        annotation.setIntValue(feature, v);
+        if (StringUtils.equals(feature.getShortName(), CAS.FEATURE_BASE_NAME_BEGIN)) {
+          changeBegin(annotation, v, context.getRuleMatch());
+        } else if(StringUtils.equals(feature.getShortName(), CAS.FEATURE_BASE_NAME_END)) {
+          changeEnd(annotation, v, context.getRuleMatch());
+        } else {
+          annotation.setIntValue(feature, v);
+        }
       }
     } else if (range.equals(UIMAConstants.TYPE_INTARRAY)) {
       if (value instanceof INumberExpression) {
@@ -1061,14 +1065,14 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     } else if (value instanceof IAnnotationExpression && !feature.getRange().isPrimitive()) {
       IAnnotationExpression ae = (IAnnotationExpression) value;
       AnnotationFS a = ae.getAnnotation(context, this);
-        // TODO support annotation list expressions
-        if (feature.getRange().isArray()) {
-          List<AnnotationFS> c = new ArrayList<AnnotationFS>();
-          c.add(a);
-          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), c));
-        } else {
-          annotation.setFeatureValue(feature, a);
-        }
+      // TODO support annotation list expressions
+      if (feature.getRange().isArray()) {
+        List<AnnotationFS> c = new ArrayList<AnnotationFS>();
+        c.add(a);
+        annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), c));
+      } else {
+        annotation.setFeatureValue(feature, a);
+      }
     } else if (value instanceof IAnnotationListExpression && !feature.getRange().isPrimitive()) {
       IAnnotationListExpression ale = (IAnnotationListExpression) value;
       List<AnnotationFS> annotations = ale.getAnnotationList(context, this);
@@ -1097,8 +1101,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         SimpleFeatureExpression sfe = (SimpleFeatureExpression) fe;
         List<AnnotationFS> featureAnnotations = inWindow;
         if (fe.getFeatures(context, this) != null) {
-          featureAnnotations = new ArrayList<AnnotationFS>(sfe.getFeatureAnnotations(inWindow,
-                  this, context, false));
+          featureAnnotations = new ArrayList<AnnotationFS>(
+                  sfe.getFeatureAnnotations(inWindow, this, context, false));
         }
         if (feature.getRange().isArray()) {
           annotation.setFeatureValue(feature,
@@ -1190,15 +1194,36 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     } else {
       Collection<AnnotationFS> beginAnchors = getBeginAnchor(window.getBegin())
               .getBeginAnchors(type);
-      Collection<AnnotationFS> endAnchors = getEndAnchor(window.getEnd()).getEndAnchors(
-              type);
+      Collection<AnnotationFS> endAnchors = getEndAnchor(window.getEnd()).getEndAnchors(type);
       @SuppressWarnings("unchecked")
-      Collection<AnnotationFS> intersection = CollectionUtils
-              .intersection(beginAnchors, endAnchors);
+      Collection<AnnotationFS> intersection = CollectionUtils.intersection(beginAnchors,
+              endAnchors);
       result.addAll(intersection);
     }
     return result;
   }
+
+  public void changeOffsets(AnnotationFS annotation, int begin, int end, AbstractRuleMatch<? extends AbstractRule> modifikator) {
+    if(!(annotation instanceof Annotation)) {
+      return;
+    }
+    Annotation a = (Annotation) annotation;
+    if(annotation.getBegin() == begin && annotation.getEnd() == end) {
+      return;
+    }
+    // TODO implement incremental reindexing
+    removeAnnotation(a);
+    a.setBegin(begin);
+    a.setEnd(end);
+    addAnnotation(a, true, modifikator);
+  }
   
+  public void changeBegin(AnnotationFS annotation, int begin, AbstractRuleMatch<? extends AbstractRule> modifikator) {
+    changeOffsets(annotation, begin, annotation.getEnd(), modifikator);
+  }
+  
+  public void changeEnd(AnnotationFS annotation, int end, AbstractRuleMatch<? extends AbstractRule> modifikator) {
+    changeOffsets(annotation, annotation.getBegin(), end, modifikator);
+  }
 
 }
