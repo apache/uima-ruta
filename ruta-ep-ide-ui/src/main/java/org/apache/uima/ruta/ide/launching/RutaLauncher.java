@@ -232,7 +232,7 @@ public class RutaLauncher {
     String path = relativize.getPath();
     String ext = "." + format.getDefaultFileExtension();
     if (!path.endsWith(ext)) {
-      path += "ext";
+      path += ext;
     }
     File result = new File(outputFolder, path);
     result.getParentFile().mkdirs();
