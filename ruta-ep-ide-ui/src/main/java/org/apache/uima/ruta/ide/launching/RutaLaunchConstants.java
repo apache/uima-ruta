@@ -43,6 +43,8 @@ public class RutaLaunchConstants {
 
   public static final String VIEW = "org.apache.uima.ruta.ide.launching.view";
 
-  public static final String ARG_ADD_SDI = "org.apache.uima.ruta.ide.launching.addsdi";;
+  public static final String ARG_ADD_SDI = "org.apache.uima.ruta.ide.launching.addsdi";
+
+  public static final String ARG_FORMAT = "org.apache.uima.ruta.ide.launching.defaultFormat";
 
 }
