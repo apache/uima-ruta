@@ -124,7 +124,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     AnnotationFS nextOne = annotation;
     boolean doneHere = false;
-    while (!doneHere && (nextOne = getNextPositionForComposed(cre, after, nextOne, stream)) != null) {
+    while (!doneHere
+            && (nextOne = getNextPositionForComposed(cre, after, nextOne, stream)) != null) {
       int pointer = after ? nextOne.getBegin() : nextOne.getEnd();
       RutaBasic anchor = stream.getAnchor(!after, pointer);
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
@@ -310,8 +311,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
             ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
                     containerMatch, nextDepth);
             if (coveredByWildCard == null) {
-              result = nextElement.startMatch(ruleMatch, ruleApply, nextContainerMatch,
-                      nextElement, stream, crowd);
+              result = nextElement.startMatch(ruleMatch, ruleApply, nextContainerMatch, nextElement,
+                      stream, crowd);
             } else {
               // TODO match and containermatch should be on the correct level!
               result = nextElement.continueMatch(after, coveredByWildCard, ruleMatch, ruleApply,
@@ -336,7 +337,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     while (!doneHere && iterator.isValid() && stream.isVisible(iterator.get())) {
       AnnotationFS nextOne = iterator.get();
       int pointer = after ? nextOne.getBegin() : nextOne.getEnd();
-      RutaBasic anchor = stream.getAnchor(!after, pointer);
+      AnnotationFS anchor = stream.getAnchor(!after, pointer);
 
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
@@ -348,15 +349,14 @@ public class WildCardRuleElement extends AbstractRuleElement {
         ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
                 extendedContainerMatch, nextDepth);
         if (anchor == null) {
-          result = nextElement.startMatch(extendedMatch, ruleApply, nextContainerMatch,
-                  nextElement, stream, crowd);
-        } else {
-          // TODO match and containermatch should be on the correct level!
-          result = nextElement.continueMatch(after, anchor, extendedMatch, ruleApply,
-                  nextContainerMatch, sideStepOrigin, nextElement, stream, crowd);
+          anchor = stream.getVeryFirstBeforeWindow(after);
         }
+        // TODO match and containermatch should be on the correct level!
+        result = nextElement.continueMatch(after, anchor, extendedMatch, ruleApply,
+                nextContainerMatch, sideStepOrigin, nextElement, stream, crowd);
         List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(nextElement);
-        if (nextList == null || nextList.isEmpty() || !nextList.get(nextList.size() - 1).matched()) {
+        if (nextList == null || nextList.isEmpty()
+                || !nextList.get(nextList.size() - 1).matched()) {
           moveOn(after, iterator, stream);
         } else {
           doneHere = true;
@@ -456,8 +456,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       } catch (CASException e) {
         e.printStackTrace();
       }
-      RutaFrame window = new RutaFrame(jcas, stream.getDocumentAnnotation().getBegin(), stream
-              .getDocumentAnnotation().getEnd());
+      RutaFrame window = new RutaFrame(jcas, stream.getDocumentAnnotation().getBegin(),
+              stream.getDocumentAnnotation().getEnd());
       if (annotation == null) {
         result = cas.getAnnotationIndex(type).subiterator(window);
       } else {
@@ -511,8 +511,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
     while (!doneHere && (indexOf = document.indexOf(stringValue, pointer)) < document.length()) {
       if (indexOf < 0) {
         // can't match, the next next element will see it.
-        ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
-                containerMatch, nextDepth);
+        ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(containerMatch,
+                nextDepth);
         nextElement.continueMatch(after, annotation, ruleMatch, ruleApply, nextContainerMatch,
                 sideStepOrigin, null, stream, crowd);
         doneHere = true;
@@ -529,8 +529,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
         ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
                 extendedContainerMatch, nextDepth);
         if (endAnchor == null) {
-          result = nextElement.startMatch(extendedMatch, ruleApply, nextContainerMatch,
-                  nextElement, stream, crowd);
+          result = nextElement.startMatch(extendedMatch, ruleApply, nextContainerMatch, nextElement,
+                  stream, crowd);
         } else {
           result = nextElement.continueMatch(after, endAnchor, extendedMatch, ruleApply,
                   nextContainerMatch, sideStepOrigin, nextElement, stream, crowd);

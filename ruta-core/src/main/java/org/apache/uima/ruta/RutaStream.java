@@ -76,6 +76,7 @@ import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaAnnotation;
 import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.type.RutaOptional;
 import org.apache.uima.ruta.utils.RutaListUtils;
 import org.apache.uima.ruta.utils.UIMAUtils;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -118,6 +119,11 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   private boolean onlyOnce = false;
 
+  private Annotation documentBeginAnchor;
+
+  private Annotation documentEndAnchor;
+
+
   public RutaStream(CAS cas, Type basicType, FilterManager filter, boolean lowMemoryProfile,
           boolean simpleGreedyForComposed, InferenceCrowd crowd) {
     super();
@@ -134,6 +140,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       documentAnnotation = cas.getDocumentAnnotation();
       documentAnnotationType = getCas().getDocumentAnnotation().getType();
       basicIt.moveToFirst();
+      documentBeginAnchor = new RutaOptional(getJCas(), 0, 0);
+      documentEndAnchor = new RutaOptional(getJCas(), documentAnnotation.getEnd(), documentAnnotation.getEnd());
     } else {
       documentAnnotation = additionalWindow;
       documentAnnotationType = filter.getWindowType();
@@ -1226,4 +1234,23 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     changeOffsets(annotation, annotation.getBegin(), end, modifikator);
   }
 
+  public AnnotationFS getVeryFirstBeforeWindow(boolean direction) {
+    if(direction) {
+      RutaBasic firstBasicOfAll = getFirstBasicOfAll();
+      int begin = firstBasicOfAll.getBegin();
+      if(begin == 0) {
+        return documentBeginAnchor;
+      } else {
+        return getEndAnchor(begin);
+      }
+    } else {
+      RutaBasic lastBasicOfAll = getLastBasicOfAll();
+      int end = lastBasicOfAll.getEnd();
+      if(end == cas.getDocumentAnnotation().getEnd()) {
+        return documentEndAnchor;
+      } else {
+        return getBeginAnchor(end);
+      }
+    }
+  }
 }
