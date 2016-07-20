@@ -35,12 +35,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.SerialFormat;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.util.CasIOUtils;
 import org.apache.uima.util.FileUtils;
-import org.apache.uima.util.SerializationFormat;
 import org.apache.uima.util.impl.ProcessTrace_impl;
 import org.xml.sax.SAXException;
 
@@ -166,7 +166,7 @@ public class RutaLauncher {
 
     }
     
-    SerializationFormat format = SerializationFormat.valueOf(defaultFormat);
+    SerialFormat format = SerialFormat.valueOf(defaultFormat);
     String extension = FilenameUtils.getExtension(file.getName());
     if(COMMON_PLAIN_TEXT_FILE_EXTENSIONS.contains(extension)) {
       String document = FileUtils.file2String(file, inputEncoding);
@@ -227,7 +227,7 @@ public class RutaLauncher {
   }
 
 
-  private static File getOutputFile(File inputFile, File inputFolder, File outputFolder, SerializationFormat format) {
+  private static File getOutputFile(File inputFile, File inputFolder, File outputFolder, SerialFormat format) {
     URI relativize = inputFolder.toURI().relativize(inputFile.toURI());
     String path = relativize.getPath();
     String ext = "." + format.getDefaultFileExtension();

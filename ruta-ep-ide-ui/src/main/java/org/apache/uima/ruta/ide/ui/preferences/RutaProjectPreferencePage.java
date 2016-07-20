@@ -19,9 +19,9 @@
 
 package org.apache.uima.ruta.ide.ui.preferences;
 
+import org.apache.uima.cas.SerialFormat;
 import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.core.RutaCorePreferences;
-import org.apache.uima.util.SerializationFormat;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -61,7 +61,7 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage impleme
             RutaPreferencesMessages.AddSDI, getFieldEditorParent());
     addField(addSDI);
     
-    SerializationFormat[] formats = SerializationFormat.values();
+    SerialFormat[] formats = SerialFormat.values();
     String[][] values = new String[formats.length][];
     for (int i = 0; i < formats.length; i++) {
       values[i] = new String[] {formats[i].toString(),formats[i].toString()};

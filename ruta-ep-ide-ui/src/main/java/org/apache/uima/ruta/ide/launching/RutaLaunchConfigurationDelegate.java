@@ -33,11 +33,11 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.SerialFormat;
 import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
 import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.core.RutaCorePreferences;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
-import org.apache.uima.util.SerializationFormat;
 import org.eclipse.core.internal.resources.Folder;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
@@ -83,7 +83,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     String defaultFormat = preferenceStore
             .getString(RutaCorePreferences.DEFAULT_CAS_SERIALIZATION_FORMAT);
     if (defaultFormat == null) {
-      defaultFormat = SerializationFormat.XMI.name();
+      defaultFormat = SerialFormat.XMI.name();
     }
 
     IResource member = proj.getProject().findMember(mainScriptAttribute);
