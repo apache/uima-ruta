@@ -31,8 +31,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 /**
  * Preference page to manage preferences for the ide plugin.
  */
-public class RutaProjectPreferencePage extends FieldEditorPreferencePage implements
-        IWorkbenchPreferencePage {
+public class RutaProjectPreferencePage extends FieldEditorPreferencePage
+        implements IWorkbenchPreferencePage {
 
   private BooleanFieldEditor clearOutput;
 
@@ -41,7 +41,7 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage impleme
   private BooleanFieldEditor addSDI;
 
   private ComboFieldEditor defaultCasSerializationFormat;
-  
+
   public RutaProjectPreferencePage() {
     setPreferenceStore(RutaIdeUIPlugin.getDefault().getPreferenceStore());
     setDescription("Project Management");
@@ -56,18 +56,21 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage impleme
     noVM = new BooleanFieldEditor(RutaCorePreferences.NO_VM_IN_DEV_MODE,
             RutaPreferencesMessages.NoVMInDevMode, getFieldEditorParent());
     addField(noVM);
-    
-    addSDI = new BooleanFieldEditor(RutaCorePreferences.ADD_SDI,
-            RutaPreferencesMessages.AddSDI, getFieldEditorParent());
+
+    addSDI = new BooleanFieldEditor(RutaCorePreferences.ADD_SDI, RutaPreferencesMessages.AddSDI,
+            getFieldEditorParent());
     addField(addSDI);
-    
+
     SerialFormat[] formats = SerialFormat.values();
     String[][] values = new String[formats.length][];
     for (int i = 0; i < formats.length; i++) {
-      values[i] = new String[] {formats[i].toString(),formats[i].toString()};
+      values[i] = new String[] {
+          formats[i].toString() + " (" + formats[i].getDefaultFileExtension() + ")",
+          formats[i].toString() };
     }
-    
-    defaultCasSerializationFormat = new ComboFieldEditor(RutaCorePreferences.DEFAULT_CAS_SERIALIZATION_FORMAT,
+
+    defaultCasSerializationFormat = new ComboFieldEditor(
+            RutaCorePreferences.DEFAULT_CAS_SERIALIZATION_FORMAT,
             RutaPreferencesMessages.DefaultCasSerializationFormat, values, getFieldEditorParent());
     addField(defaultCasSerializationFormat);
 

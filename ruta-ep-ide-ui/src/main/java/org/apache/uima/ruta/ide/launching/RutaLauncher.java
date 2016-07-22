@@ -167,6 +167,9 @@ public class RutaLauncher {
     }
     
     SerialFormat format = SerialFormat.valueOf(defaultFormat);
+    if(format == SerialFormat.UNKNOWN) {
+      format = SerialFormat.XMI;
+    }
     String extension = FilenameUtils.getExtension(file.getName());
     if(COMMON_PLAIN_TEXT_FILE_EXTENSIONS.contains(extension)) {
       String document = FileUtils.file2String(file, inputEncoding);
