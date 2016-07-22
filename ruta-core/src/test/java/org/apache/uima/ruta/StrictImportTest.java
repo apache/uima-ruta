@@ -181,8 +181,9 @@ public class StrictImportTest {
     Map<String, Object> params = new HashMap<>();
     params.put(RutaEngine.PARAM_STRICT_IMPORTS, true);
     Ruta.apply(cas, "DocumentAnnotation{->TruePositive};", params);
+    Ruta.apply(cas, "Document{->TruePositive};", params);
     AnnotationIndex<Annotation> annotationIndex = cas.getJCas().getAnnotationIndex(TruePositive.type);
-    Assert.assertEquals(1, annotationIndex.size());
+    Assert.assertEquals(2, annotationIndex.size());
     cas.release();
   }
   

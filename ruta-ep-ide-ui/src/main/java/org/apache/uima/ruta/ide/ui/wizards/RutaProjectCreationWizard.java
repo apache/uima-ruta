@@ -166,8 +166,10 @@ public class RutaProjectCreationWizard extends ProjectWizard {
     File utilsDir = new File(descFolder.getLocation().toFile(), "utils/");
     utilsDir.mkdirs();
     copy(descDir, "BasicTypeSystem.xml");
+    copy(descDir, "RutaBasicTypeSystem.xml");
+    copy(descDir, "RutaInternalTypeSystem.xml");
+    copy(descDir, "DefaultSeederTypeSystem.xml");
     copy(descDir, "BasicEngine.xml");
-    copy(descDir, "InternalTypeSystem.xml");
 
     copy(utilsDir, "Modifier.xml");
     copy(utilsDir, "AnnotationWriter.xml");
