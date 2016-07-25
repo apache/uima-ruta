@@ -594,8 +594,7 @@ Document{-> EXEC(Modifier)};
   <para>
     In the last example, a descriptor file was loaded in order to import and apply an external analysis engine. Analysis engines can also be loaded using uimaFIT, 
     whereas the given class name has to be present in the classpath. In the UIMA Ruta Workbench, you can add a dependency to a java project, which contains the 
-    implementation, to the UIMA Ruta project. If the UIMA Ruta script is applied in a UIMA Pipeline, then the configuration parameter 
-    <link linkend="ugr.tools.ruta.ae.basic.parameter.additionalUimafitEngines">additionalUimafitEngines</link> has to list the class of the analysis engine. 
+    implementation, to the UIMA Ruta project. 
     The following example loads an analysis engine without an descriptor and applies it on the document. The additional list of types states that
     the annotations of those types created by the analysis engine should be available to the following Ruta rules.
     
@@ -712,7 +711,7 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                   <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalScripts'>additionalScripts</link>
                   </entry>
-                  <entry>List of names with complete namespace of additional scripts, which can be
+                  <entry>Optional list of names with complete namespace of additional scripts, which can be
                     referred to.
                   </entry>
                   <entry>Multi String</entry>
@@ -721,7 +720,7 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                   <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalEngines'>additionalEngines</link>
                   </entry>
-                  <entry>List of names with complete namespace of additional analysis engines, which
+                  <entry>Optional list of names with complete namespace of additional analysis engines, which
                     can be called by UIMA Ruta rules.
                   </entry>
                   <entry>Multi String</entry>
@@ -730,17 +729,8 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                   <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalUimafitEngines'>additionalUimafitEngines</link>
                   </entry>
-                  <entry>List of class names with complete namespace of additional uimaFIT analysis engines, which
+                  <entry>Optional list of class names with complete namespace of additional uimaFIT analysis engines, which
                     can be called by UIMA Ruta rules.
-                  </entry>
-                  <entry>Multi String</entry>
-                </row>
-                <row>
-                  <entry>
-                    <link linkend='ugr.tools.ruta.ae.basic.parameter.additionalEngineLoaders'>additionalEngineLoaders</link>
-                  </entry>
-                  <entry>List of class names of implementations that are able to perform additional
-                    task when loading external analysis engines.
                   </entry>
                   <entry>Multi String</entry>
                 </row>
@@ -953,36 +943,30 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
         <section id="ugr.tools.ruta.ae.basic.parameter.additionalScripts">
           <title>additionalScripts</title>
           <para>
-            The parameter additionalScripts is defined as a list of string values and contains script files, which are additionally loaded by the analysis engine. These script files are specified by their 
+            The optional parameter additionalScripts is defined as a list of string values and contains script files, which are additionally loaded by the analysis engine. These script files are specified by their 
             complete namespace, exactly like the value of the parameter <link linkend='ugr.tools.ruta.ae.basic.parameter.mainScript'>mainScript</link> 
             and can be refered to by language elements, e.g., by executing the containing rules. An exemplary value of this parameter is "org.apache.uima.SecondaryScript". In this example, the main script could import 
             this script file by the declaration "SCRIPT org.apache.uima.SecondaryScript;" and then could execute it with the rule 
-            "Document{-> CALL(SecondaryScript)};". 
+            "Document{-> CALL(SecondaryScript)};". This optional list can be used as a replacement of global imports in the script file.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.additionalEngines">
           <title>additionalEngines</title>
           <para>
-            This parameter contains a list of additional analysis engines, which can be executed by the UIMA Ruta rules. The single values
+            This optional parameter contains a list of additional analysis engines, which can be executed by the UIMA Ruta rules. The single values
             are given by the name of the analysis engine with their complete namespace and have to be located relative to one value of the parameter
             <link linkend='ugr.tools.ruta.ae.basic.parameter.descriptorPaths'>descriptorPaths</link>, the location where the analysis engine searches for the descriptor file.
             An example for one value of the parameter is "utils.HtmlAnnotator", which points to the descriptor "HtmlAnnotator.xml" in the folder "utils".
-          </para>
-        </section>
-        <section id="ugr.tools.ruta.ae.basic.parameter.additionalEngineLoaders">
-          <title>additionalEngineLoaders</title>
-          <para>
-            The parameter "additionalEngineLoaders" specifies a list of optional implementations of the interface 
-            "org.apache.uima.ruta.extensions.IEngineLoader", which can be used to application-specific configurations of
-            additional analysis engines.
+            This optional list can be used as a replacement of global imports in the script file.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.additionalUimafitEngines">
           <title>additionalUimafitEngines</title>
           <para>
-            This parameter contains a list of additional analysis engines, which can be executed by the UIMA Ruta rules. The single values
+            This optional parameter contains a list of additional analysis engines, which can be executed by the UIMA Ruta rules. The single values
             are given by the name of the implementation with the complete namespace and have to be present int he classpath of the application.
             An example for one value of the parameter is "org.apache.uima.ruta.engine.HtmlAnnotator", which points to the "HtmlAnnotator" class.
+            This optional list can be used as a replacement of global imports in the script file.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.additionalExtensions">
