@@ -281,7 +281,7 @@ public class Ruta {
           InvalidXMLException, IOException, URISyntaxException {
     return wrapAnalysisEngine(descriptorUrl, viewName, false, Charset.defaultCharset().name());
   }
-
+  
   public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName,
           boolean rutaEngine, String encoding) throws ResourceInitializationException,
           ResourceConfigurationException, InvalidXMLException, IOException, URISyntaxException {

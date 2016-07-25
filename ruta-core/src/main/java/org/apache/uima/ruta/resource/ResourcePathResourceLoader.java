@@ -41,10 +41,12 @@ public class ResourcePathResourceLoader implements ResourceLoader {
   }
 
   public Resource getResource(String location) {
-    for (String parent : resourcePaths) {
-      final File f = new File(parent, location);
-      if (f.exists()) {
-        return new FileSystemResource(f);
+    if (resourcePaths != null) {
+      for (String parent : resourcePaths) {
+        final File f = new File(parent, location);
+        if (f.exists()) {
+          return new FileSystemResource(f);
+        }
       }
     }
 

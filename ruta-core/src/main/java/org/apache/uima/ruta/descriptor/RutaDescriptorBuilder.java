@@ -58,6 +58,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.resource.metadata.impl.Import_impl;
 import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -137,13 +138,15 @@ public class RutaDescriptorBuilder {
     if (import_impl.getLocation() != null || import_impl.getName() != null) {
       importList.add(import_impl);
     }
+    
+    RutaResourceLoader descriptorRutaResourceLoader = new RutaResourceLoader(enginePaths, options.getClassLoader());
+    
     for (String eachName : desc.getImportedTypeSystems()) {
-      String locate = RutaEngine.locate(eachName, enginePaths, ".xml");
+      Resource resource = descriptorRutaResourceLoader.getResourceWithDotNotation(eachName, ".xml");
       URL url = null;
       boolean include = false;
-      if (locate != null) {
-        File file = new File(locate);
-        url = file.toURI().toURL();
+      if (resource != null) {
+        url = resource.getURL();
       }
       if (url == null) {
         url = checkImportExistence(eachName, ".xml", options.getClassLoader());
@@ -187,12 +190,11 @@ public class RutaDescriptorBuilder {
       }
     }
     for (String eachName : desc.getImportedScripts()) {
-      String locate = RutaEngine.locate(eachName, enginePaths, options.getTypeSystemSuffix()
+      Resource resource = descriptorRutaResourceLoader.getResourceWithDotNotation(eachName, options.getTypeSystemSuffix()
               + ".xml");
       URL url = null;
-      if (locate != null) {
-        File file = new File(locate);
-        url = file.toURI().toURL();
+      if (resource != null) {
+        url = resource.getURL();
       }
       if (url == null) {
         url = checkImportExistence(eachName, options.getTypeSystemSuffix() + ".xml",
@@ -540,8 +542,6 @@ public class RutaDescriptorBuilder {
 
     String[] extensions = (String[]) configurationParameterSettings
             .getParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS);
-    String[] loaders = (String[]) configurationParameterSettings
-            .getParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINE_LOADERS);
 
     List<String> es = new ArrayList<String>();
     List<String> ls = new ArrayList<String>();
@@ -549,15 +549,10 @@ public class RutaDescriptorBuilder {
       es.addAll(Arrays.asList(extensions));
     }
     es.addAll(languageExtensions);
-    if (loaders != null) {
-      ls.addAll(Arrays.asList(loaders));
-    }
     ls.addAll(options.getEngineLoaders());
 
     configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
             es.toArray(new String[0]));
-    configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINE_LOADERS,
-            ls.toArray(new String[0]));
   }
 
   private TypeSystemDescription getTypeSystemDescriptor(URL url, RutaBuildOptions option,

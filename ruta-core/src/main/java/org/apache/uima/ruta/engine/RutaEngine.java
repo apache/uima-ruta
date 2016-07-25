@@ -24,7 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,9 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
-import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
@@ -57,7 +54,6 @@ import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.FilterManager;
@@ -65,13 +61,11 @@ import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.block.RutaBlock;
-import org.apache.uima.ruta.extensions.IEngineLoader;
 import org.apache.uima.ruta.extensions.IRutaExtension;
-import org.apache.uima.ruta.extensions.RutaEngineLoader;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
-import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
 import org.apache.uima.ruta.parser.RutaLexer;
 import org.apache.uima.ruta.parser.RutaParser;
+import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.apache.uima.ruta.seed.RutaAnnotationSeeder;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.type.TokenSeed;
@@ -82,7 +76,8 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 import org.apache.uima.ruta.visitor.RutaInferenceVisitor;
 import org.apache.uima.ruta.visitor.StatisticsVisitor;
 import org.apache.uima.ruta.visitor.TimeProfilerVisitor;
-import org.apache.uima.util.InvalidXMLException;
+import org.apache.uima.util.Level;
+import org.springframework.core.io.Resource;
 
 public class RutaEngine extends JCasAnnotator_ImplBase {
 
@@ -172,12 +167,13 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private String[] additionalScripts;
 
   /**
-   * This parameter contains a list of additional analysis engines, which can be executed by the
-   * UIMA Ruta rules. The single values are given by the name of the analysis engine with their
-   * complete namespace and have to be located relative to one value of the parameter
-   * descriptorPaths, the location where the analysis engine searches for the descriptor file. An
-   * example for one value of the parameter is "utils.HtmlAnnotator", which points to the descriptor
-   * "HtmlAnnotator.xml" in the folder "utils".
+   * This optional parameter contains a list of additional analysis engines, which can be executed
+   * by the UIMA Ruta rules. The single values are given by the name of the analysis engine with
+   * their complete namespace and have to be located relative to one value of the parameter
+   * descriptorPaths or classpath, the location where the analysis engine searches for the
+   * descriptor file. An example for one value of the parameter is "utils.HtmlAnnotator", which
+   * points to the descriptor "HtmlAnnotator.xml" in the folder "utils". This optional list can be
+   * used if no import is specified in the main script.
    */
   public static final String PARAM_ADDITIONAL_ENGINES = "additionalEngines";
 
@@ -185,22 +181,13 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private String[] additionalEngines;
 
   /**
-   * List of additional uimaFIT analysis engines, which are loaded without descriptor.
+   * Optional list of additional uimaFIT analysis engines, which are loaded without descriptor. This
+   * optional list can be used if no import is specified in the main script.
    */
   public static final String PARAM_ADDITIONAL_UIMAFIT_ENGINES = "additionalUimafitEngines";
 
   @ConfigurationParameter(name = PARAM_ADDITIONAL_UIMAFIT_ENGINES, mandatory = false, defaultValue = {})
   private String[] additionalUimafitEngines;
-
-  /**
-   * The parameter "additionalEngineLoaders" specifies a list of optional implementations of the
-   * interface "org.apache.uima.ruta.extensions.IEngineLoader", which can be used to
-   * application-specific configurations of additional analysis engines.
-   */
-  public static final String PARAM_ADDITIONAL_ENGINE_LOADERS = "additionalEngineLoaders";
-
-  @ConfigurationParameter(name = PARAM_ADDITIONAL_ENGINE_LOADERS, mandatory = false, defaultValue = {})
-  private String[] additionalEngineLoaders;
 
   /**
    * This parameter specifies optional extensions of the UIMA Ruta language. The elements of the
@@ -429,8 +416,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private RutaExternalFactory factory;
 
-  private RutaEngineLoader engineLoader;
-
   private RutaVerbalizer verbalizer;
 
   private boolean initialized = false;
@@ -443,99 +428,42 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private ResourceManager resourceManager = null;
 
+  private RutaResourceLoader scriptRutaResourceLoader;
+
+  private RutaResourceLoader descriptorRutaResourceLoader;
+
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
     if (aContext == null && context != null) {
       aContext = context;
     }
-    if (aContext != null) {
-      seeders = (String[]) aContext.getConfigParameterValue(PARAM_SEEDERS);
-      removeBasics = (Boolean) aContext.getConfigParameterValue(PARAM_REMOVE_BASICS);
-      scriptPaths = (String[]) aContext.getConfigParameterValue(PARAM_SCRIPT_PATHS);
-      descriptorPaths = (String[]) aContext.getConfigParameterValue(PARAM_DESCRIPTOR_PATHS);
-      rules = (String) aContext.getConfigParameterValue(PARAM_RULES);
-      mainScript = (String) aContext.getConfigParameterValue(PARAM_MAIN_SCRIPT);
-      additionalScripts = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_SCRIPTS);
-      additionalEngines = (String[]) aContext.getConfigParameterValue(PARAM_ADDITIONAL_ENGINES);
-      additionalUimafitEngines = (String[]) aContext
-              .getConfigParameterValue(PARAM_ADDITIONAL_UIMAFIT_ENGINES);
-      additionalExtensions = (String[]) aContext
-              .getConfigParameterValue(PARAM_ADDITIONAL_EXTENSIONS);
-      additionalEngineLoaders = (String[]) aContext
-              .getConfigParameterValue(PARAM_ADDITIONAL_ENGINE_LOADERS);
 
-      debug = (Boolean) aContext.getConfigParameterValue(PARAM_DEBUG);
-      debugOnlyFor = (String[]) aContext.getConfigParameterValue(PARAM_DEBUG_ONLY_FOR);
-      profile = (Boolean) aContext.getConfigParameterValue(PARAM_PROFILE);
-      statistics = (Boolean) aContext.getConfigParameterValue(PARAM_STATISTICS);
-      createdBy = (Boolean) aContext.getConfigParameterValue(PARAM_CREATED_BY);
-      debugWithMatches = (Boolean) aContext.getConfigParameterValue(PARAM_DEBUG_WITH_MATCHES);
+    this.context = aContext;
 
-      resourcePaths = (String[]) aContext.getConfigParameterValue(PARAM_RESOURCE_PATHS);
-      scriptEncoding = (String) aContext.getConfigParameterValue(PARAM_SCRIPT_ENCODING);
-      defaultFilteredTypes = (String[]) aContext
-              .getConfigParameterValue(PARAM_DEFAULT_FILTERED_TYPES);
-      dynamicAnchoring = (Boolean) aContext.getConfigParameterValue(PARAM_DYNAMIC_ANCHORING);
-      reloadScript = (Boolean) aContext.getConfigParameterValue(PARAM_RELOAD_SCRIPT);
-      lowMemoryProfile = (Boolean) aContext.getConfigParameterValue(PARAM_LOW_MEMORY_PROFILE);
-      simpleGreedyForComposed = (Boolean) aContext
-              .getConfigParameterValue(PARAM_SIMPLE_GREEDY_FOR_COMPOSED);
-      greedyRuleElement = (Boolean) aContext.getConfigParameterValue(PARAM_GREEDY_RULE_ELEMENT);
-      greedyRule = (Boolean) aContext.getConfigParameterValue(PARAM_GREEDY_RULE);
+    factory = new RutaExternalFactory();
+    factory.setContext(aContext);
+    verbalizer = new RutaVerbalizer();
 
-      resourcePaths = resourcePaths == null ? new String[0] : resourcePaths;
-      removeBasics = removeBasics == null ? false : removeBasics;
-      debug = debug == null ? false : debug;
-      debugOnlyFor = debugOnlyFor == null ? new String[0] : debugOnlyFor;
-      profile = profile == null ? false : profile;
-      statistics = statistics == null ? false : statistics;
-      createdBy = createdBy == null ? false : createdBy;
-      debugWithMatches = debugWithMatches == null ? true : debugWithMatches;
+    // reinitialize analysis engines if this one is configured
+    analysisEnginesAlreadyInitialized = false;
 
-      scriptEncoding = scriptEncoding == null ? "UTF-8" : scriptEncoding;
-      defaultFilteredTypes = defaultFilteredTypes == null ? new String[0] : defaultFilteredTypes;
-      dynamicAnchoring = dynamicAnchoring == null ? false : dynamicAnchoring;
-      reloadScript = reloadScript == null ? false : reloadScript;
-      lowMemoryProfile = lowMemoryProfile == null ? false : lowMemoryProfile;
-      simpleGreedyForComposed = simpleGreedyForComposed == null ? false : simpleGreedyForComposed;
-      greedyRuleElement = greedyRuleElement == null ? false : greedyRuleElement;
-      greedyRule = greedyRule == null ? false : greedyRule;
+    handleDataPath();
 
-      varNames = (String[]) aContext.getConfigParameterValue(PARAM_VAR_NAMES);
-      varValues = (String[]) aContext.getConfigParameterValue(PARAM_VAR_VALUES);
-      dictRemoveWS = (Boolean) aContext.getConfigParameterValue(PARAM_DICT_REMOVE_WS);
-      dictRemoveWS = dictRemoveWS == null ? false : dictRemoveWS;
+    scriptRutaResourceLoader = new RutaResourceLoader(scriptPaths);
+    descriptorRutaResourceLoader = new RutaResourceLoader(descriptorPaths);
 
-      this.context = aContext;
-
-      factory = new RutaExternalFactory();
-      factory.setContext(aContext);
-      engineLoader = new RutaEngineLoader();
-      verbalizer = new RutaVerbalizer();
-
-      // reinitialize analysis engines if this one is configured
-      analysisEnginesAlreadyInitialized = false;
-
-      handleDataPath();
-      
-      if (!factory.isInitialized()) {
-        initializeExtensionWithClassPath();
-      }
-      if (!engineLoader.isInitialized()) {
-        initializeEngineLoaderWithClassPath();
-      }
-      if (!reloadScript) {
-        try {
-          initializeScript(CAS.NAME_DEFAULT_SOFA);
-        } catch (AnalysisEngineProcessException e) {
-          throw new ResourceInitializationException(e);
-        }
+    if (!factory.isInitialized()) {
+      initializeExtensionWithClassPath();
+    }
+    if (!reloadScript) {
+      try {
+        initializeScript(CAS.NAME_DEFAULT_SOFA);
+      } catch (AnalysisEngineProcessException e) {
+        throw new ResourceInitializationException(e);
       }
     }
   }
-
-  
 
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {
@@ -570,7 +498,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     if (removeBasics) {
       jcas.removeAllIncludingSubtypes(RutaBasic.type);
       jcas.removeAllIncludingSubtypes(TokenSeed.type);
-      
+
       List<AnnotationFS> toRemove = new ArrayList<AnnotationFS>();
       for (Type seedType : seedTypes) {
         AnnotationIndex<AnnotationFS> seedIndex = cas.getAnnotationIndex(seedType);
@@ -587,18 +515,18 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private void handleDataPath() throws ResourceInitializationException {
     String dataPath = context.getDataPath();
     String[] singleDataPaths = dataPath.split(File.pathSeparator);
-    
+
     String[] clonedDescriptorPath = null;
-    if(descriptorPaths != null) {
+    if (descriptorPaths != null) {
       clonedDescriptorPath = descriptorPaths.clone();
     }
-    
-    if(!StringUtils.isBlank(dataPath)) {
-      scriptPaths= ArrayUtils.addAll(scriptPaths, singleDataPaths);
-      descriptorPaths= ArrayUtils.addAll(descriptorPaths, singleDataPaths);
-      resourcePaths= ArrayUtils.addAll(resourcePaths, singleDataPaths);
+
+    if (!StringUtils.isBlank(dataPath)) {
+      scriptPaths = ArrayUtils.addAll(scriptPaths, singleDataPaths);
+      descriptorPaths = ArrayUtils.addAll(descriptorPaths, singleDataPaths);
+      resourcePaths = ArrayUtils.addAll(resourcePaths, singleDataPaths);
     }
-    
+
     resourceManager = UIMAFramework.newDefaultResourceManager();
     if (clonedDescriptorPath != null) {
       for (String path : clonedDescriptorPath) {
@@ -611,8 +539,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
     }
   }
-  
-  
+
   private void resetEnvironments(CAS cas) {
     resetEnvironment(script, cas);
     Collection<RutaModule> scripts = script.getScripts().values();
@@ -675,26 +602,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           }
         }
       } catch (Exception e) {
-        // System.out.println("EXTENSION ERROR: " + each);
-      }
-    }
-  }
-
-  private void initializeEngineLoaderWithClassPath() {
-    if (additionalEngineLoaders == null) {
-      return;
-    }
-    for (String each : additionalEngineLoaders) {
-      try {
-        Class<?> forName = Class.forName(each);
-        if (IEngineLoader.class.isAssignableFrom(forName)) {
-          IEngineLoader loader = (IEngineLoader) forName.newInstance();
-          for (String name : loader.getKnownEngines()) {
-            engineLoader.addLoader(name, loader);
-          }
-        }
-      } catch (Exception e) {
-        // System.out.println("LOADER ERROR: " + each);
+        getLogger().log(Level.WARNING, "Failed to initialze extension " + each);
       }
     }
   }
@@ -772,28 +680,17 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         throw new AnalysisEngineProcessException(e);
       }
     } else if (mainScript != null) {
-      String scriptLocation = locate(mainScript, scriptPaths, SCRIPT_FILE_EXTENSION);
-      if (scriptLocation == null) {
-        try {
-          String mainScriptPath = mainScript.replaceAll("\\.", "/") + SCRIPT_FILE_EXTENSION;
-          script = loadScriptIS(mainScriptPath);
-        } catch (IOException e) {
-          throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
-                  + "] cannot be found at [" + collectionToString(scriptPaths)
-                  + "] or classpath with extension .ruta"));
-        } catch (RecognitionException e) {
-          throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
-                  + "] cannot be found at [" + collectionToString(scriptPaths)
-                  + "] or classpath  with extension .ruta"));
-        }
-      } else {
-        try {
-          script = loadScript(scriptLocation);
-        } catch (RutaParseRuntimeException re) {
-          throw re;
-        } catch (Exception e) {
-          throw new AnalysisEngineProcessException(e);
-        }
+      Resource scriptResource = scriptRutaResourceLoader.getResourceWithDotNotation(mainScript,
+              SCRIPT_FILE_EXTENSION);
+      if (scriptResource == null || !scriptResource.exists()) {
+        throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
+                + "] cannot be found at [" + StringUtils.join(scriptPaths, File.pathSeparatorChar)
+                + "] or classpath with extension " + SCRIPT_FILE_EXTENSION));
+      }
+      try {
+        script = loadScript(scriptResource, getModuleName(mainScript));
+      } catch (RecognitionException | IOException e) {
+        throw new AnalysisEngineProcessException(e);
       }
     }
     if (script == null) {
@@ -801,97 +698,33 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
 
     Map<String, RutaModule> additionalScriptsMap = new HashMap<String, RutaModule>();
-    Map<String, AnalysisEngine> additionalEnginesMap = new HashMap<String, AnalysisEngine>();
+    Map<String, AnalysisEngine> additionalUimafitEngineMap = new HashMap<String, AnalysisEngine>();
+    Map<String, AnalysisEngine> additionalDescriptorEngineMap = new HashMap<String, AnalysisEngine>();
 
-    if (additionalUimafitEngines != null && !analysisEnginesAlreadyInitialized) {
-      for (String eachUimafitEngine : additionalUimafitEngines) {
-        AnalysisEngine eachEngine = null;
-        String classString = eachUimafitEngine;
-        Object[] configurationData = new String[0];
-        String[] split = eachUimafitEngine.split("[\\[\\]]");
-        if (split.length == 2) {
-          classString = split[0];
-          configurationData = StringUtils.split(split[1], ",");
-        }
-        try {
-          @SuppressWarnings("unchecked")
-          // Class clazz = this.getClass().getClassLoader().loadClass(eachUimafitEngine) ;
-          Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
-                  .forName(classString);
-          eachEngine = AnalysisEngineFactory.createEngine(uimafitClass, configurationData);
-        } catch (ClassNotFoundException e) {
-          throw new AnalysisEngineProcessException(e);
-        } catch (ResourceInitializationException e) {
-          throw new AnalysisEngineProcessException(e);
-        }
-        try {
-          additionalEnginesMap.put(classString, eachEngine);
-          String[] eachEngineLocationPartArray = classString.split("\\.");
-          if (eachEngineLocationPartArray.length > 1) {
-            String shortEachEngineLocation = eachEngineLocationPartArray[eachEngineLocationPartArray.length
-                    - 1];
-            additionalEnginesMap.put(shortEachEngineLocation, eachEngine);
-          }
-        } catch (Exception e) {
-          throw new AnalysisEngineProcessException(e);
-        }
+    // add configuration parameter values
+    for (String each : additionalUimafitEngines) {
+      String classString = each;
+     List<String> configurationData = new ArrayList<>();
+      String[] split = each.split("[\\[\\]]");
+      if (split.length == 2) {
+        classString = split[0];
+        configurationData = Arrays.asList(StringUtils.split(split[1], ","));
+      }
+      script.addUimafitEngine(classString, null);
+      if(!configurationData.isEmpty()) {
+        script.addConfigurationData(classString, configurationData);
       }
     }
-    if (additionalEngines != null && !analysisEnginesAlreadyInitialized) {
-      for (String eachEngineLocation : additionalEngines) {
-        AnalysisEngine eachEngine;
-        String location = locate(eachEngineLocation, descriptorPaths, ".xml");
-        if (location == null) {
-          String locationIS = locateIS(eachEngineLocation, descriptorPaths, ".xml");
-          try {
-            eachEngine = engineLoader.loadEngineIS(locationIS, viewName);
-          } catch (InvalidXMLException e) {
-            throw new AnalysisEngineProcessException(
-                    new FileNotFoundException("Engine at [" + eachEngineLocation
-                            + "] cannot be found in [" + collectionToString(descriptorPaths)
-                            + "] with extension .xml (from mainScript=" + mainScript + " in "
-                            + collectionToString(scriptPaths)));
-          } catch (ResourceInitializationException e) {
-            throw new AnalysisEngineProcessException(
-                    new FileNotFoundException("Engine at [" + eachEngineLocation
-                            + "] cannot be found in [" + collectionToString(descriptorPaths)
-                            + "] with extension .xml (from mainScript=" + mainScript + " in "
-                            + collectionToString(scriptPaths)));
-          } catch (IOException e) {
-            throw new AnalysisEngineProcessException(
-                    new FileNotFoundException("Engine at [" + eachEngineLocation
-                            + "] cannot be found in [" + collectionToString(descriptorPaths)
-                            + "] with extension .xml (from mainScript=" + mainScript + " in "
-                            + collectionToString(scriptPaths)));
-          } catch (ResourceConfigurationException e) {
-            throw new AnalysisEngineProcessException(e);
-          } catch (URISyntaxException e) {
-            throw new AnalysisEngineProcessException(e);
-          }
-        } else {
-          try {
-            eachEngine = engineLoader.loadEngine(location, viewName);
-          } catch (Exception e) {
-            throw new AnalysisEngineProcessException(e);
-          }
-        }
-        try {
-          additionalEnginesMap.put(eachEngineLocation, eachEngine);
-          String[] eachEngineLocationPartArray = eachEngineLocation.split("\\.");
-          if (eachEngineLocationPartArray.length > 1) {
-            String shortEachEngineLocation = eachEngineLocationPartArray[eachEngineLocationPartArray.length
-                    - 1];
-            additionalEnginesMap.put(shortEachEngineLocation, eachEngine);
-          }
-        } catch (Exception e) {
-          throw new AnalysisEngineProcessException(e);
-        }
-      }
+    for (String each : additionalEngines) {
+      script.addDescriptorEngine(each, null);
     }
+
+    initializeEngines(script, viewName, additionalUimafitEngineMap, additionalDescriptorEngineMap);
 
     if (additionalScripts != null) {
       for (String add : additionalScripts) {
-        recursiveLoadScript(add, additionalScriptsMap, additionalEnginesMap, viewName);
+        recursiveLoadScript(add, additionalScriptsMap, additionalDescriptorEngineMap,
+                additionalUimafitEngineMap, viewName);
       }
     }
 
@@ -903,11 +736,105 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     script.setScriptDependencies(additionalScriptsMap);
 
     for (RutaModule each : additionalScriptsMap.values()) {
-      each.setEngineDependencies(additionalEnginesMap);
+      each.setDescriptorEngineDependencies(additionalDescriptorEngineMap);
+      each.setUimafitEngineDependencies(additionalUimafitEngineMap);
     }
-    script.setEngineDependencies(additionalEnginesMap);
+    script.setDescriptorEngineDependencies(additionalDescriptorEngineMap);
+    script.setUimafitEngineDependencies(additionalUimafitEngineMap);
 
     initializeVariableValues();
+  }
+
+  private void recursiveLoadScript(String toLoad, Map<String, RutaModule> additionalScripts,
+          Map<String, AnalysisEngine> additionalDescriptorEngineMap,
+          Map<String, AnalysisEngine> additionalUimafitEngineMap, String viewName)
+          throws AnalysisEngineProcessException {
+
+    Resource scriptResource = scriptRutaResourceLoader.getResourceWithDotNotation(toLoad,
+            SCRIPT_FILE_EXTENSION);
+    if (scriptResource == null) {
+      throw new AnalysisEngineProcessException(new FileNotFoundException("Script [" + mainScript
+              + "] cannot be found at [" + StringUtils.join(scriptPaths, File.pathSeparatorChar)
+              + "] or classpath with extension " + SCRIPT_FILE_EXTENSION));
+    }
+    RutaModule eachScript = null;
+    try {
+      eachScript = loadScript(scriptResource, getModuleName(toLoad));
+    } catch (RecognitionException | IOException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+    additionalScripts.put(toLoad, eachScript);
+
+    for (String add : eachScript.getScripts().keySet()) {
+      if (!additionalScripts.containsKey(add)) {
+        recursiveLoadScript(add, additionalScripts, additionalDescriptorEngineMap,
+                additionalUimafitEngineMap, viewName);
+      }
+    }
+
+    initializeEngines(eachScript, viewName, additionalUimafitEngineMap,
+            additionalDescriptorEngineMap);
+  }
+
+  private void initializeEngines(RutaModule module, String viewName,
+          Map<String, AnalysisEngine> additionalUimafitEngineMap,
+          Map<String, AnalysisEngine> additionalDescriptorEngineMap)
+          throws AnalysisEngineProcessException {
+    if (!analysisEnginesAlreadyInitialized) {
+      for (String eachUimafitEngine : module.getUimafitEngines().keySet()) {
+        addUimafitAnalysisEngine(module, additionalUimafitEngineMap, eachUimafitEngine);
+      }
+    }
+    if (!analysisEnginesAlreadyInitialized) {
+      for (String eachEngineLocation : module.getDescriptorEngines().keySet()) {
+        Resource descriptorResource = descriptorRutaResourceLoader
+                .getResourceWithDotNotation(eachEngineLocation, ".xml");
+        if (descriptorResource == null) {
+          throw new AnalysisEngineProcessException(
+                  new FileNotFoundException("Engine at [" + eachEngineLocation
+                          + "] cannot be found in [" + StringUtils.join(descriptorPaths, ',')
+                          + "] with extension .xml (from mainScript=" + mainScript + " in "
+                          + StringUtils.join(scriptPaths, ',')));
+        }
+        try {
+          AnalysisEngine eachEngine = Ruta.wrapAnalysisEngine(descriptorResource.getURL(),
+                  viewName);
+          addAnalysisEngineToMap(additionalDescriptorEngineMap, eachEngineLocation, eachEngine);
+        } catch (Exception e) {
+          throw new AnalysisEngineProcessException(e);
+        }
+      }
+    }
+  }
+
+  private void addAnalysisEngineToMap(Map<String, AnalysisEngine> additionalEnginesMap,
+          String eachEngineLocation, AnalysisEngine eachEngine) {
+    String engineName = getModuleName(eachEngineLocation);
+    additionalEnginesMap.put(eachEngineLocation, eachEngine);
+    additionalEnginesMap.put(engineName, eachEngine);
+  }
+
+  private void addUimafitAnalysisEngine(RutaModule script, Map<String, AnalysisEngine> additionalEnginesMap,
+          String eachUimafitEngine) throws AnalysisEngineProcessException {
+    AnalysisEngine eachEngine = null;
+    try {
+      @SuppressWarnings("unchecked")
+      Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
+              .forName(eachUimafitEngine);
+      List<String> configurationData = script.getConfigurationData(eachUimafitEngine);
+      eachEngine = AnalysisEngineFactory.createEngine(uimafitClass, configurationData.toArray());
+    } catch (ClassNotFoundException | ResourceInitializationException e) {
+      throw new AnalysisEngineProcessException(e);
+    }
+    addAnalysisEngineToMap(additionalEnginesMap, eachUimafitEngine, eachEngine);
+  }
+
+  private String getModuleName(String completeNamespace) {
+    int lastIndexOf = completeNamespace.lastIndexOf('.');
+    if (lastIndexOf != -1) {
+      return completeNamespace.substring(lastIndexOf + 1, completeNamespace.length());
+    }
+    return completeNamespace;
   }
 
   private void initializeVariableValues() {
@@ -955,8 +882,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         valueObj = value;
       } else {
         throw new IllegalArgumentException(
-                "Only variables for primitives and types can be assigned by parameters: " + shortName
-                        + " defined in block: " + blockName);
+                "Only variables for primitives and types can be assigned by parameters: "
+                        + shortName + " defined in block: " + blockName);
       }
       environment.setVariableValue(shortName, valueObj);
     }
@@ -992,111 +919,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
   }
 
-  public static String locate(String name, String[] paths, String suffix) {
-    return locate(name, paths, suffix, true);
-  }
-
-  public static String locateIS(String name, String[] paths, String suffix) {
-    return locateIS(name, paths, suffix, true);
-  }
-
-  public static String locate(String name, String[] paths, String suffix, boolean mustExist) {
-    if (name == null || paths == null) {
-      return null;
-    }
-    name = name.replaceAll("[.]", "/");
-    for (String each : paths) {
-      File file = new File(each, name + suffix);
-      String absolutePath = file.getAbsolutePath();
-      if (!mustExist || file.exists()) {
-        return absolutePath;
-      }
-    }
-    return null;
-  }
-
-  public static String locateIS(String name, String[] paths, String suffix, boolean mustExist) {
-    if (name == null) {
-      return null;
-    }
-    name = name.replaceAll("[.]", "/");
-    return name + suffix;
-  }
-
-  private void recursiveLoadScript(String toLoad, Map<String, RutaModule> additionalScripts,
-          Map<String, AnalysisEngine> additionalEngines, String viewName)
-          throws AnalysisEngineProcessException {
-    String location = locate(toLoad, scriptPaths, SCRIPT_FILE_EXTENSION);
-    RutaModule eachScript = null;
-    if (location == null) {
-      try {
-        String scriptPath = toLoad.replaceAll("\\.", "/") + SCRIPT_FILE_EXTENSION;
-        eachScript = loadScriptIS(scriptPath);
-      } catch (IOException e) {
-        throw new AnalysisEngineProcessException(
-                new FileNotFoundException("Script [" + toLoad + "] cannot be found at ["
-                        + collectionToString(scriptPaths) + "] with extension .ruta"));
-      } catch (RecognitionException e) {
-        throw new AnalysisEngineProcessException(
-                new FileNotFoundException("Script [" + toLoad + "] cannot be found at ["
-                        + collectionToString(scriptPaths) + "] with extension .ruta"));
-      }
-    } else {
-      try {
-        eachScript = loadScript(location);
-      } catch (IOException e) {
-        throw new AnalysisEngineProcessException(
-                new FileNotFoundException("Script [" + toLoad + "] cannot be found at ["
-                        + collectionToString(scriptPaths) + "] with extension .ruta"));
-      } catch (RecognitionException e) {
-        throw new AnalysisEngineProcessException(
-                new FileNotFoundException("Script [" + toLoad + "] cannot be found at ["
-                        + collectionToString(scriptPaths) + "] with extension .ruta"));
-      }
-    }
-    additionalScripts.put(toLoad, eachScript);
-
-    for (String add : eachScript.getScripts().keySet()) {
-      if (!additionalScripts.containsKey(add)) {
-        recursiveLoadScript(add, additionalScripts, additionalEngines, viewName);
-      }
-    }
-
-    Set<String> engineKeySet = eachScript.getEngines().keySet();
-    for (String eachEngineLocation : engineKeySet) {
-      if (!additionalEngines.containsKey(eachEngineLocation)) {
-        String engineLocation = locate(eachEngineLocation, descriptorPaths, ".xml");
-        if (engineLocation == null) {
-          String engineLocationIS = locateIS(eachEngineLocation, descriptorPaths, ".xml");
-          try {
-            AnalysisEngine eachEngine = engineLoader.loadEngineIS(engineLocationIS, viewName);
-            additionalEngines.put(eachEngineLocation, eachEngine);
-          } catch (Exception e) {
-            // TODO avoid exception and solve it with return null or something!
-
-            // uimaFit engine?
-            try {
-              @SuppressWarnings("unchecked")
-              Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
-                      .forName(eachEngineLocation);
-              AnalysisEngine eachEngine = AnalysisEngineFactory.createEngine(uimafitClass);
-              additionalEngines.put(eachEngineLocation, eachEngine);
-            } catch (Exception e1) {
-              throw new AnalysisEngineProcessException(e1);
-            }
-          }
-        } else {
-          try {
-            AnalysisEngine eachEngine = engineLoader.loadEngine(engineLocation, viewName);
-            additionalEngines.put(eachEngineLocation, eachEngine);
-          } catch (Exception e) {
-            throw new AnalysisEngineProcessException(e);
-          }
-        }
-      }
-    }
-  }
-
   private RutaModule loadScriptByString(String rules) throws RecognitionException {
     CharStream st = new ANTLRStringStream(rules);
     RutaLexer lexer = new RutaLexer(st);
@@ -1110,30 +932,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     return script;
   }
 
-  private RutaModule loadScript(String scriptLocation) throws IOException, RecognitionException {
-    File scriptFile = new File(scriptLocation);
-    CharStream st = new ANTLRFileStream(scriptLocation, scriptEncoding);
-    RutaLexer lexer = new RutaLexer(st);
-    CommonTokenStream tokens = new CommonTokenStream(lexer);
-    RutaParser parser = new RutaParser(tokens);
-    parser.setContext(context);
-    parser.setExternalFactory(factory);
-    parser.setResourcePaths(resourcePaths);
-    parser.setResourceManager(resourceManager);
-    String name = scriptFile.getName();
-    int lastIndexOf = name.lastIndexOf(SCRIPT_FILE_EXTENSION);
-    if (lastIndexOf != -1) {
-      name = name.substring(0, lastIndexOf);
-    }
-    RutaModule script = parser.file_input(name);
-    return script;
-  }
-
-  private RutaModule loadScriptIS(String scriptLocation) throws IOException, RecognitionException {
-    InputStream scriptInputStream = getClass().getClassLoader().getResourceAsStream(scriptLocation);
-    if (scriptInputStream == null) {
-      throw new FileNotFoundException("No script found in location [" + scriptLocation + "]");
-    }
+  private RutaModule loadScript(Resource scriptResource, String name)
+          throws IOException, RecognitionException {
+    InputStream scriptInputStream = scriptResource.getInputStream();
     CharStream st = new ANTLRInputStream(scriptInputStream, scriptEncoding);
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -1141,15 +942,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     parser.setExternalFactory(factory);
     parser.setContext(context);
     parser.setResourcePaths(resourcePaths);
-    String name = scriptLocation;
-    if (scriptLocation.indexOf("/") != -1) {
-      String[] split = scriptLocation.split("[/]");
-      name = split[split.length - 1];
-    }
-    int lastIndexOf = name.lastIndexOf(SCRIPT_FILE_EXTENSION);
-    if (lastIndexOf != -1) {
-      name = name.substring(0, lastIndexOf);
-    }
     RutaModule script = parser.file_input(name);
     return script;
   }
@@ -1158,33 +950,11 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     return factory;
   }
 
-  public RutaEngineLoader getEngineLoader() {
-    return engineLoader;
-  }
-
-  private String collectionToString(Collection<?> collection) {
-    StringBuilder collectionSB = new StringBuilder();
-    collectionSB.append("{");
-    for (Object element : collection) {
-      collectionSB.append("[").append(element.toString()).append("]");
-    }
-    collectionSB.append("}");
-    return collectionSB.toString();
-  }
-
-  private String collectionToString(Object[] collection) {
-    if (collection == null) {
-      return "";
-    } else {
-      return collectionToString(Arrays.asList(collection));
-    }
-  }
-
   @Override
   public void batchProcessComplete() throws AnalysisEngineProcessException {
     super.batchProcessComplete();
     if (script != null) {
-      Collection<AnalysisEngine> values = script.getEngines().values();
+      Collection<AnalysisEngine> values = script.getAllEngines().values();
       for (AnalysisEngine each : values) {
         each.batchProcessComplete();
       }
@@ -1195,18 +965,18 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
     super.collectionProcessComplete();
     if (script != null) {
-      Collection<AnalysisEngine> values = script.getEngines().values();
+      Collection<AnalysisEngine> values = script.getAllEngines().values();
       for (AnalysisEngine each : values) {
         each.collectionProcessComplete();
       }
     }
   }
-  
+
   @Override
   public void destroy() {
     super.destroy();
     if (script != null) {
-      Collection<AnalysisEngine> values = script.getEngines().values();
+      Collection<AnalysisEngine> values = script.getAllEngines().values();
       for (AnalysisEngine each : values) {
         each.destroy();
       }

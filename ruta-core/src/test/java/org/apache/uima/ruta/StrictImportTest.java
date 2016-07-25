@@ -60,7 +60,7 @@ import org.junit.Test;
  */
 public class StrictImportTest {
   private final String NAME = this.getClass().getSimpleName();
-  private final String NAMESPACE = this.getClass().getPackage().getName().replaceAll("\\.", "/");
+  private final String NAMESPACE = this.getClass().getPackage().getName();
 
   /**
    * Create an analysis engine for a Ruta script.
@@ -87,7 +87,7 @@ public class StrictImportTest {
   @Test
   public void testUndeclaredTypeSystem() throws Exception {
     CAS cas;
-    AnalysisEngine ae = createAE(NAMESPACE + "/" + NAME + "UndeclaredTypeSystem", true);
+    AnalysisEngine ae = createAE(NAMESPACE + "." + NAME + "UndeclaredTypeSystem", true);
     try {
       cas = ae.newCAS();
       cas.setDocumentText("Word");
@@ -105,7 +105,7 @@ public class StrictImportTest {
   @Test
   public void testUndeclaredTypeSystemWithStrictImportOff() throws Exception {
     CAS cas;
-    String script = NAMESPACE + "/" + NAME + "UndeclaredTypeSystem";
+    String script = NAMESPACE + "." + NAME + "UndeclaredTypeSystem";
     AnalysisEngine ae = createAE(script, false);
     try {
       cas = ae.newCAS();
@@ -124,7 +124,7 @@ public class StrictImportTest {
   @Test
   public void testDeclaredTypeSystem() throws Exception {
     CAS cas;
-    String script = NAMESPACE + "/" + NAME + "DeclaredTypeSystem";
+    String script = NAMESPACE + "." + NAME + "DeclaredTypeSystem";
     AnalysisEngine ae = createAE(script, true);
     try {
       cas = ae.newCAS();

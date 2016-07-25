@@ -142,7 +142,7 @@ public class RutaModifier extends JCasAnnotator_ImplBase {
       } else {
         modifiedView = cas.getView(modifiedViewName);
       }
-      String locate = RutaEngine.locate(styleMapLocation, descriptorPaths, ".xml", true);
+      String locate = RutaModifier.locate(styleMapLocation, descriptorPaths, ".xml", true);
       try {
         String modifiedDocument = getModifiedDocument(cas, locate);
         modifiedView.setDocumentText(modifiedDocument);
@@ -268,4 +268,18 @@ public class RutaModifier extends JCasAnnotator_ImplBase {
     return result;
   }
 
+  public static String locate(String name, String[] paths, String suffix, boolean mustExist) {
+    if (name == null || paths == null) {
+      return null;
+    }
+    name = name.replaceAll("[.]", "/");
+    for (String each : paths) {
+      File file = new File(each, name + suffix);
+      String absolutePath = file.getAbsolutePath();
+      if (!mustExist || file.exists()) {
+        return absolutePath;
+      }
+    }
+    return null;
+  }
 }

@@ -272,19 +272,21 @@ public void setExternalFactory(RutaExternalFactory factory) {
 		}
 	}
 	public void addImportEngine(RutaBlock parent, String namespace) {
-		parent.getScript().addEngine(namespace, null);
+		parent.getScript().addDescriptorEngine(namespace, null);
 		if(descInfo != null) {
 		  descInfo.addEngine(namespace);
 		}
 	}
 	public void addImportUimafitEngine(RutaBlock parent, String namespace,
           List<String> configurationData) {
+       
+      String namespaceWithConfig = namespace;
+	    if (configurationData != null && !configurationData.isEmpty()) {
+	      namespaceWithConfig = namespace + "[" + StringUtils.join(configurationData, ",") + "]";
+	    }
 	    parent.getScript().addUimafitEngine(namespace, null);
+	    parent.getScript().addConfigurationData(namespace, configurationData);
 	    if (descInfo != null) {
-	      String namespaceWithConfig = namespace;
-	      if (configurationData != null && !configurationData.isEmpty()) {
-	        namespaceWithConfig = namespace + "[" + StringUtils.join(configurationData, ",") + "]";
-	      }
 	      descInfo.addUimafitEngine(namespaceWithConfig);
 	    }
 	  }
