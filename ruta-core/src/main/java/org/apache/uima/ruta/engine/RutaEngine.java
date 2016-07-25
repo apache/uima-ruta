@@ -697,45 +697,46 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       return;
     }
 
-    Map<String, RutaModule> additionalScriptsMap = new HashMap<String, RutaModule>();
+    Map<String, RutaModule> additionalScriptMap = new HashMap<String, RutaModule>();
     Map<String, AnalysisEngine> additionalUimafitEngineMap = new HashMap<String, AnalysisEngine>();
     Map<String, AnalysisEngine> additionalDescriptorEngineMap = new HashMap<String, AnalysisEngine>();
 
     // add configuration parameter values
     for (String each : additionalUimafitEngines) {
       String classString = each;
-     List<String> configurationData = new ArrayList<>();
+      List<String> configurationData = new ArrayList<>();
       String[] split = each.split("[\\[\\]]");
       if (split.length == 2) {
         classString = split[0];
         configurationData = Arrays.asList(StringUtils.split(split[1], ","));
       }
       script.addUimafitEngine(classString, null);
-      if(!configurationData.isEmpty()) {
+      if (!configurationData.isEmpty()) {
         script.addConfigurationData(classString, configurationData);
       }
     }
     for (String each : additionalEngines) {
       script.addDescriptorEngine(each, null);
     }
+    for (String each : additionalScripts) {
+      script.addScript(each, null);
+    }
 
     initializeEngines(script, viewName, additionalUimafitEngineMap, additionalDescriptorEngineMap);
 
-    if (additionalScripts != null) {
-      for (String add : additionalScripts) {
-        recursiveLoadScript(add, additionalScriptsMap, additionalDescriptorEngineMap,
-                additionalUimafitEngineMap, viewName);
-      }
+    for (String add : script.getScripts().keySet()) {
+      recursiveLoadScript(add, additionalScriptMap, additionalDescriptorEngineMap,
+              additionalUimafitEngineMap, viewName);
     }
 
     analysisEnginesAlreadyInitialized = true;
 
-    for (RutaModule each : additionalScriptsMap.values()) {
-      each.setScriptDependencies(additionalScriptsMap);
+    for (RutaModule each : additionalScriptMap.values()) {
+      each.setScriptDependencies(additionalScriptMap);
     }
-    script.setScriptDependencies(additionalScriptsMap);
+    script.setScriptDependencies(additionalScriptMap);
 
-    for (RutaModule each : additionalScriptsMap.values()) {
+    for (RutaModule each : additionalScriptMap.values()) {
       each.setDescriptorEngineDependencies(additionalDescriptorEngineMap);
       each.setUimafitEngineDependencies(additionalUimafitEngineMap);
     }
@@ -814,8 +815,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     additionalEnginesMap.put(engineName, eachEngine);
   }
 
-  private void addUimafitAnalysisEngine(RutaModule script, Map<String, AnalysisEngine> additionalEnginesMap,
-          String eachUimafitEngine) throws AnalysisEngineProcessException {
+  private void addUimafitAnalysisEngine(RutaModule script,
+          Map<String, AnalysisEngine> additionalEnginesMap, String eachUimafitEngine)
+          throws AnalysisEngineProcessException {
     AnalysisEngine eachEngine = null;
     try {
       @SuppressWarnings("unchecked")

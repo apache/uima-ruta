@@ -104,4 +104,37 @@ public class AdditionalScriptUimaFitTest {
 
     cas.release();
   }
+  
+  @Test
+  public void testOnlyScriptImport() throws Exception {
+    
+    AnalysisEngineDescription aed = createEngineDescription(RutaEngine.class,
+            RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.Main", RutaEngine.PARAM_DEBUG, false
+            );
+    
+    
+    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
+    CAS cas = ae.newCAS();
+    cas.setDocumentText("Some text 10.");
+    
+    ae.process(cas);
+  
+    Type t = null;
+    AnnotationIndex<AnnotationFS> ai = null;
+    FSIterator<AnnotationFS> iterator = null;
+
+    t = cas.getTypeSystem().getType("org.apache.uima.ruta.Additional.NewType1");
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(1, ai.size());
+    assertEquals("10", iterator.next().getCoveredText());
+    
+    t = cas.getTypeSystem().getType("org.apache.uima.ruta.Additional.NewType2");
+    ai = cas.getAnnotationIndex(t);
+    iterator = ai.iterator();
+    assertEquals(1, ai.size());
+    assertEquals("Some", iterator.next().getCoveredText());
+
+    cas.release();
+  }
 }
