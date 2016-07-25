@@ -50,4 +50,20 @@ public class UimaFitAnalysisEngineWithManditoryParameterTest {
 
     cas.release();
   }
+  
+  @Test
+  public void testScriptOnly() throws Exception {
+
+    String document = "Some text.";
+    String script = "UIMAFIT org.apache.uima.ruta.engine.UimaFitAnalysisEngineWithManditoryParameter (type, "
+            + RutaTestUtils.TYPE + "1);";
+    script += "EXEC(UimaFitAnalysisEngineWithManditoryParameter);";
+    
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES, script);
+    CAS cas = RutaTestUtils.getCAS(document);
+    ae.process(cas);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
+    cas.release();
+  }
 }
