@@ -544,12 +544,10 @@ public class RutaDescriptorBuilder {
             .getParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS);
 
     List<String> es = new ArrayList<String>();
-    List<String> ls = new ArrayList<String>();
     if (extensions != null) {
       es.addAll(Arrays.asList(extensions));
     }
     es.addAll(languageExtensions);
-    ls.addAll(options.getEngineLoaders());
 
     configurationParameterSettings.setParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
             es.toArray(new String[0]));

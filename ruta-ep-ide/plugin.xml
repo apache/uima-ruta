@@ -27,7 +27,6 @@ under the License.
    <extension-point id="rutaExtension" name="rutaExtension" schema="schema/rutaExtension.exsd"/>
    <extension-point id="conditionExtension" name="conditionExtension" schema="schema/conditionExtension.exsd"/>
    <extension-point id="actionExtension" name="actionExtension" schema="schema/actionExtension.exsd"/>
-   <extension-point id="engineExtension" name="engineExtension" schema="schema/engineExtension.exsd"/>
    <extension-point id="booleanFunctionExtension" name="booleanFunctionExtension" schema="schema/booleanFunctionExtension.exsd"/>
    <extension-point id="typeFunctionExtension" name="typeFunctionExtension" schema="schema/typeFunctionExtension.exsd"/>
    <extension-point id="numberFunctionExtension" name="numberFunctionExtension" schema="schema/numberFunctionExtension.exsd"/>

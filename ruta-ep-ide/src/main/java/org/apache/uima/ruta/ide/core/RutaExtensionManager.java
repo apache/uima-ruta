@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.uima.ruta.extensions.IEngineLoader;
 import org.apache.uima.ruta.extensions.IRutaActionExtension;
 import org.apache.uima.ruta.extensions.IRutaBlockExtension;
 import org.apache.uima.ruta.extensions.IRutaBooleanFunctionExtension;
@@ -439,25 +438,5 @@ public class RutaExtensionManager {
     return result.toArray(new IRutaBlockExtension[0]);
   }
 
-  public IEngineLoader[] getEngineExtensions() {
-    Collection<IEngineLoader> result = new ArrayList<IEngineLoader>();
-    IExtension[] conditionExtensions = Platform.getExtensionRegistry()
-            .getExtensionPoint(RutaIdeCorePlugin.PLUGIN_ID, "engineExtension").getExtensions();
-    for (IExtension extension : conditionExtensions) {
-      IConfigurationElement[] configurationElements = extension.getConfigurationElements();
-      for (IConfigurationElement configurationElement : configurationElements) {
-        Object obj = null;
-        try {
-          obj = configurationElement.createExecutableExtension("class");
-        } catch (CoreException e) {
-          e.printStackTrace();
-        }
-        if (obj instanceof IEngineLoader) {
-          result.add((IEngineLoader) obj);
-        }
-      }
-    }
-    return result.toArray(new IEngineLoader[0]);
-  }
 
 }

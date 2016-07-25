@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.ide.core.builder;
 
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,7 +32,9 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
+import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -54,6 +57,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.JavaProject;
+import org.springframework.core.io.Resource;
 
 public class RutaProjectUtils {
 
@@ -114,12 +118,17 @@ public class RutaProjectUtils {
     String analysisEngineSuffix = getAnalysisEngineSuffix(project);
     String name = getScriptWithPackage(scriptPath, project);
     String[] paths = getDescriptorPathsArray(project);
-    String locate = RutaEngine.locate(name, paths, analysisEngineSuffix + ".xml");
-    if (locate != null) {
-      return org.eclipse.core.runtime.Path.fromPortableString(locate);
-    } else {
-      return null;
+    RutaResourceLoader loader = new RutaResourceLoader(paths);
+    Resource resource = loader.getResource(name + analysisEngineSuffix + ".xml");
+    if (resource != null && resource.exists()) {
+      try {
+        return org.eclipse.core.runtime.Path
+                .fromPortableString(resource.getFile().getAbsolutePath());
+      } catch (IOException e) {
+        RutaIdeCorePlugin.error(e);
+      }
     }
+    return null;
   }
 
   public static IPath getAnalysisEngineDescriptorPath(String scriptLocation) throws CoreException {
@@ -138,12 +147,17 @@ public class RutaProjectUtils {
     String typeSystemSuffix = getTypeSystemSuffix(project);
     String name = getScriptWithPackage(scriptPath, project);
     String[] paths = getDescriptorPathsArray(project);
-    String locate = RutaEngine.locate(name, paths, typeSystemSuffix + ".xml");
-    if (locate != null) {
-      return org.eclipse.core.runtime.Path.fromPortableString(locate);
-    } else {
-      return null;
+    RutaResourceLoader loader = new RutaResourceLoader(paths);
+    Resource resource = loader.getResource(name + typeSystemSuffix + ".xml");
+    if (resource != null && resource.exists()) {
+      try {
+        return org.eclipse.core.runtime.Path
+                .fromPortableString(resource.getFile().getAbsolutePath());
+      } catch (IOException e) {
+        RutaIdeCorePlugin.error(e);
+      }
     }
+    return null;
   }
 
   public static IPath getTypeSystemDescriptorPath(String scriptLocation) throws CoreException {
@@ -266,7 +280,7 @@ public class RutaProjectUtils {
     result.addAll(getReferencedDescriptorFolders(proj));
     return result;
   }
-  
+
   public static List<IFolder> getAllResourceFolders(IProject proj) throws CoreException {
     List<IFolder> result = new ArrayList<IFolder>();
     result.addAll(getResourceFolders(proj));
@@ -291,7 +305,7 @@ public class RutaProjectUtils {
     }
     return result;
   }
-  
+
   public static List<IFolder> getReferencedResourceFolders(IProject proj) throws CoreException {
     return getReferencedDescriptorFolders(proj, new HashSet<IProject>());
   }
@@ -547,7 +561,7 @@ public class RutaProjectUtils {
       IClasspathEntry[] resolvedClasspath = javaProject.getResolvedClasspath();
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
       IWorkspaceRoot root = workspace.getRoot();
-      
+
       // TODO: skip jre libs?
       for (IClasspathEntry each : resolvedClasspath) {
         int entryKind = each.getEntryKind();
@@ -581,7 +595,8 @@ public class RutaProjectUtils {
     return result;
   }
 
-  private static void addAbsoluteLocation(Collection<String> result, IWorkspaceRoot root, IPath outputLocation) {
+  private static void addAbsoluteLocation(Collection<String> result, IWorkspaceRoot root,
+          IPath outputLocation) {
     if (outputLocation != null) {
       IFolder folder = root.getFolder(outputLocation);
       if (folder != null && folder.exists()) {

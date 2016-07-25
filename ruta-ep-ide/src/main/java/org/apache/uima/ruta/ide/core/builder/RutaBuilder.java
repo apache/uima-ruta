@@ -31,7 +31,6 @@ import org.apache.uima.ruta.descriptor.RutaBuildOptions;
 import org.apache.uima.ruta.descriptor.RutaDescriptorBuilder;
 import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.ruta.extensions.IEngineLoader;
 import org.apache.uima.ruta.extensions.IRutaActionExtension;
 import org.apache.uima.ruta.extensions.IRutaBlockExtension;
 import org.apache.uima.ruta.extensions.IRutaBooleanFunctionExtension;
@@ -252,10 +251,8 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
             .getRutaTypeFunctionExtensions();
     IRutaBlockExtension[] blockExtensions = RutaExtensionManager.getDefault()
             .getRutaBlockExtensions();
-    IEngineLoader[] engineExtensions = RutaExtensionManager.getDefault().getEngineExtensions();
 
     List<String> language = new ArrayList<String>();
-    List<String> engines = new ArrayList<String>();
 
     for (IRutaConditionExtension each : conditionExtensions) {
       language.add(each.getClass().getName());
@@ -278,14 +275,10 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
     for (IRutaBlockExtension each : blockExtensions) {
       language.add(each.getClass().getName());
     }
-    for (IEngineLoader each : engineExtensions) {
-      engines.add(each.getClass().getName());
-    }
 
     try {
       RutaBuildOptions option = new RutaBuildOptions();
       option.setLanguageExtensions(language);
-      option.setEngineLoaders(engines);
       IPreferenceStore store = RutaIdeCorePlugin.getDefault().getPreferenceStore();
       option.setImportByName(store.getBoolean(RutaCorePreferences.BUILDER_IMPORT_BY_NAME));
       option.setResolveImports(store.getBoolean(RutaCorePreferences.BUILDER_RESOLVE_IMPORTS));
