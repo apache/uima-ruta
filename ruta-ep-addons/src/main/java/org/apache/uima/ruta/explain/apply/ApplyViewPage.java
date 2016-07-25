@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.explain.apply;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,7 @@ import org.apache.uima.ruta.explain.ExplainUtils;
 import org.apache.uima.ruta.explain.tree.ExplainTree;
 import org.apache.uima.ruta.explain.tree.RuleApplyNode;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -67,6 +69,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
+import org.springframework.core.io.Resource;
 
 public class ApplyViewPage extends Page implements ISelectionListener, ICasEditorInputListener,
         IDoubleClickListener, ICasDocumentListener {
@@ -181,11 +184,14 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
               try {
                 allScriptFolders = RutaProjectUtils.getAllScriptFolders(scriptProject);
                 List<String> folders = RutaProjectUtils.getFolderLocations(allScriptFolders);
-                String locate = RutaEngine.locate(script, folders.toArray(new String[0]),
+                RutaResourceLoader loader = new RutaResourceLoader(folders.toArray(new String[0]));
+                Resource resource = loader.getResourceWithDotNotation(script,
                         RutaEngine.SCRIPT_FILE_EXTENSION);
-                IPath locatedPath = new Path(locate);
-                ExplainUtils.openInRutaEditor(locatedPath, id);
-              } catch (CoreException e) {
+                if (resource != null && resource.exists()) {
+                  IPath locatedPath = new Path(resource.getFile().getAbsolutePath());
+                  ExplainUtils.openInRutaEditor(locatedPath, id);
+                }
+              } catch (CoreException | IOException e) {
                 RutaAddonsPlugin.error(e);
               }
             }

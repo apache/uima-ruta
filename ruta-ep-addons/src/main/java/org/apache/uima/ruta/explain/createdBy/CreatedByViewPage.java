@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.explain.createdBy;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.explain.ExplainUtils;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
+import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.apache.uima.ruta.visitor.CreatedByVisitor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -67,6 +69,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
+import org.springframework.core.io.Resource;
 
 public class CreatedByViewPage extends Page implements ISelectionListener, ICasEditorInputListener,
         IDoubleClickListener {
@@ -165,16 +168,17 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
           try {
             allScriptFolders = RutaProjectUtils.getAllScriptFolders(scriptProject);
             List<String> folders = RutaProjectUtils.getFolderLocations(allScriptFolders);
-            String locate = RutaEngine.locate(script, folders.toArray(new String[0]),
+            RutaResourceLoader loader = new RutaResourceLoader(folders.toArray(new String[0]));
+            Resource resource = loader.getResourceWithDotNotation(script,
                     RutaEngine.SCRIPT_FILE_EXTENSION);
-            if (locate != null) {
-              IPath locatedPath = new Path(locate);
+            if (resource != null && resource.exists()) {
+              IPath locatedPath = new Path(resource.getFile().getAbsolutePath());
               ExplainUtils.openInRutaEditor(locatedPath, id);
             } else {
               RutaAddonsPlugin.error(new IllegalArgumentException("Not able to locate script: "
                       + script));
             }
-          } catch (CoreException e) {
+          } catch (CoreException | IOException e) {
             RutaAddonsPlugin.error(e);
           }
         }
