@@ -41,10 +41,12 @@ public class RutaResourceLoader implements ResourceLoader {
   /**
    * @param paths
    *          paths to search in priority.
+   * @param classLoader
+   *          optional classloader for fallback resource loader
    */
-  public RutaResourceLoader(String[] resourcePaths, ClassLoader classLoader) {
+  public RutaResourceLoader(String[] paths, ClassLoader classLoader) {
     this.wrapped = new PathMatchingResourcePatternResolver(new ResourcePathResourceLoader(
-            resourcePaths));
+            paths));
     if(classLoader == null) {
       this.classLoader = this.getClass().getClassLoader();
     } else {
