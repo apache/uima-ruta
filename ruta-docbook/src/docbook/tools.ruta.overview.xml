@@ -384,15 +384,32 @@ Sentence{CONTAINS(EmploymentIndicator) -> CREATE(EmplRelation,
       In order to refer to annotations and, for example, assigning them to some features, 
       special kinds of local and global variables can be utilized. Local variables for annotations 
       do not need to be defined by are specified by a label at a rule element. This label can be utilized
-      for referring to the matched annoation of this rule element within the current rule match alone.
-      Global variables for annotations are declared like other variables and are able to store annotations
-      across rules. The following example illustrate some simple use cases using local variables:
+      for referring to the matched annotation of this rule element within the current rule match alone.
+      The following example illustrate some simple use cases using local variables:
     </para>
 
     <programlisting><![CDATA[DECLARE Annotation EmplRelation 
    (Employee employeeRef, Employer employerRef);
 e1:Employer # EmploymentIndicator # e2:Employee)
     {-> EmplRelation, EmplRelation.employeeRef=e2, EmplRelation.employerRef=e1};]]></programlisting>
+    
+    <para>
+      Global variables for annotations are declared like other variables and are able to store annotations
+      across rules as illustrated by the next example:
+    </para>
+    
+     <programlisting><![CDATA[DECLARE MentionedAfter(Annotation first);
+ANNOTATION firstPerson;
+# p:Person{-> firstPerson = p};
+Entity{-> MentionedAfter, MentionedAfter.first = firstPerson};]]></programlisting>
+
+    <para>
+      The first line declares a new type that are utilized afterwards. The second line defines a variable 
+      named <code>firstPerson</code> which can store one annotation. A variable able to hold several annotations 
+      is defined with ANNOTATIONLIST. The next line assigns the first occurrence of Person annotation to the
+      annotation variable <code>firstPerson</code>. The last line creates an annotation of the type MentionedAfter and assigns the value 
+      of the variable <code>firstPerson</code> to the feature <code>first</code> of the created annotation.
+    </para>
 
     <para>
       In the last examples, the values of features were defined as annotation types. However, also primitive 
@@ -438,7 +455,7 @@ Document{-> CALL(SecondaryScript)};]]></programlisting>
     <para>
       The script file with the name <quote>SecondaryScript.ruta</quote>, which is located in the package <quote>uima/ruta/example</quote>, is imported and executed
       by the CALL action on the complete document. The script needs to be located in the folder specified by the parameter 
-      <link linkend="ugr.tools.ruta.ae.basic.parameter.scriptPaths">scriptPaths</link>, or in a coresponding packgae in the classpath. It is also possible to import script files of other UIMA Ruta projects, e.g.,
+      <link linkend="ugr.tools.ruta.ae.basic.parameter.scriptPaths">scriptPaths</link>, or in a corresponding package in the classpath. It is also possible to import script files of other UIMA Ruta projects, e.g.,
       by adapting the configuration parameters of the UIMA Ruta Analysis Engine or 
       by setting a project reference in the project properties of a UIMA Ruta project.
     </para>

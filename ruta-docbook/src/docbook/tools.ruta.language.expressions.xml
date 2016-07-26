@@ -317,7 +317,7 @@ FeatureAssignmentExpression -> FeatureExpression "=" Expression
 ]]></programlisting>
     </para>
     <para>
-      The covered text of an annoation can be referred to with "coveredText" or "ct". 
+      The covered text of an annotation can be referred to with "coveredText" or "ct". 
       The latter one is an abbreviation and returns the covered text of an annotation
       only if the type of the annotation does not define a feature with the name "ct". 
       The following example creates an annotation of the type TypeA for each word with the 
