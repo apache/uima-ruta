@@ -135,7 +135,7 @@ public class RutaDescriptorBuilder {
         toInclude.add(initialTypeSystem);
       }
     }
-    addIfValied(importList, import_impl);
+    addImportIfValid(importList, import_impl);
 
     RutaResourceLoader descriptorRutaResourceLoader = new RutaResourceLoader(enginePaths,
             options.getClassLoader());
@@ -183,7 +183,7 @@ public class RutaDescriptorBuilder {
               }
             }
           }
-          addIfValied(importList, import_impl);
+          addImportIfValid(importList, import_impl);
         }
       } else {
         throw new FileNotFoundException(
@@ -218,7 +218,7 @@ public class RutaDescriptorBuilder {
           String relativeLocation = getRelativeLocation(url.toURI(), typeSystemOutput);
           import_impl.setLocation(relativeLocation);
         }
-        addIfValied(importList, import_impl);
+        addImportIfValid(importList, import_impl);
       } else {
         throw new FileNotFoundException(
                 "Build process can't find " + eachName + " in " + desc.getScriptName());
@@ -292,7 +292,7 @@ public class RutaDescriptorBuilder {
     return typeSystemDescription;
   }
 
-  private void addIfValied(List<Import> importList, Import_impl import_impl) {
+  private void addImportIfValid(List<Import> importList, Import_impl import_impl) {
     if (import_impl.getName() != null && import_impl.getLocation() != null) {
       throw new IllegalArgumentException("Trying to use name and location for import: "
               + import_impl.getName() + " <->" + import_impl.getLocation());
