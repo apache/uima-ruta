@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import org.antlr.runtime.Token;
 import org.apache.commons.lang3.tuple.Triple;
 import org.apache.uima.ruta.block.RutaBlock;
+import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
@@ -162,6 +163,14 @@ public class ActionFactory {
     return new UnmarkAction(f, list, b);
   }
 
+  public static AbstractRutaAction createUnmarkAction(IRutaExpression a, RutaBlock env) {
+    if(a instanceof AnnotationTypeExpression) {
+      return new UnmarkAction((AnnotationTypeExpression) a);
+    }
+    throw new IllegalArgumentException("Expression " + a + " is nto a valid argument for UNMARK.");
+  }
+  
+  
   public static AbstractRutaAction createUnmarkAllAction(ITypeExpression f,
           AbstractTypeListExpression list, RutaBlock env) {
     return new UnmarkAllAction(f, list);
@@ -312,5 +321,7 @@ public class ActionFactory {
 
     return new MacroAction(name, definition, actions, vars, args);
   }
+
+  
 
 }

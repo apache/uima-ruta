@@ -1445,6 +1445,7 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
+        <programlisting><![CDATA[UNMARK(AnnotationExpression)]]></programlisting>
         <programlisting><![CDATA[UNMARK(TypeExpression)]]></programlisting>
         <programlisting><![CDATA[UNMARK(TypeExpression (,NumberExpression)*)]]></programlisting>
         <programlisting><![CDATA[UNMARK(TypeExpression, BooleanExpression)]]></programlisting>
@@ -1471,6 +1472,12 @@ Document{-> MARKTABLE(Struct, 1, TestTable,
       </para>
       <para>
         Here, all Headline annotations are removed that start with a capitalized word.
+      </para>
+      <para>
+        <programlisting><![CDATA[Complex{->UNMARK(Complex.inner)};]]></programlisting>
+      </para>
+      <para>
+        Here, the annotation stored in the feature <code>inner</code> will be removed.
       </para>
     </section>
   </section>

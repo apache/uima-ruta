@@ -2141,7 +2141,9 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
     :
     name = UNMARK LPAREN 
     
-    f = typeExpression 
+    (
+    
+    (typeExpression COMMA)=>f = typeExpression 
 
     (COMMA 
     (
@@ -2151,12 +2153,14 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
   	index = numberExpression {list.add(index);} 
   	(COMMA index = numberExpression {list.add(index);})*
   	)
+    ) 
     )
-      
-    )?
-
      RPAREN
     {action = ActionFactory.createUnmarkAction(f, list, b,$blockDeclaration::env);}
+    |
+    (annotationOrTypeExpression)=>a = annotationOrTypeExpression RPAREN {action = ActionFactory.createUnmarkAction(a, $blockDeclaration::env);}
+    
+    )
     ;
 
 

@@ -1377,17 +1377,18 @@ Document{-&gt; MARKTABLE(Struct, 1, TestTable,
       If instead a boolean is given as an additional argument, then all annotations of the given type are removed
       that start at the matched position.
     </p>
-    <div class="section" title="2.8.42.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2257">2.8.42.1.&nbsp;
+    <div class="section" title="2.8.42.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2259">2.8.42.1.&nbsp;
         <span class="bold"><strong>Definition:</strong></span>
       </h4></div></div></div>
       
       <p>
+        </p><pre class="programlisting">UNMARK(AnnotationExpression)</pre><p>
         </p><pre class="programlisting">UNMARK(TypeExpression)</pre><p>
         </p><pre class="programlisting">UNMARK(TypeExpression (,NumberExpression)*)</pre><p>
         </p><pre class="programlisting">UNMARK(TypeExpression, BooleanExpression)</pre><p>
       </p>
     </div>
-    <div class="section" title="2.8.42.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2264">2.8.42.2.&nbsp;
+    <div class="section" title="2.8.42.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2267">2.8.42.2.&nbsp;
         <span class="bold"><strong>Example:</strong></span>
       </h4></div></div></div>
       
@@ -1408,6 +1409,12 @@ Document{-&gt; MARKTABLE(Struct, 1, TestTable,
       </p>
       <p>
         Here, all Headline annotations are removed that start with a capitalized word.
+      </p>
+      <p>
+        </p><pre class="programlisting">Complex{-&gt;UNMARK(Complex.inner)};</pre><p>
+      </p>
+      <p>
+        Here, the annotation stored in the feature <code class="code">inner</code> will be removed.
       </p>
     </div>
   </div>

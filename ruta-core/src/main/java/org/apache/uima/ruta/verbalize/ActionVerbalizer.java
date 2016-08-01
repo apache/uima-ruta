@@ -373,6 +373,11 @@ public class ActionVerbalizer {
               + ")";
     } else if (action instanceof UnmarkAction) {
       UnmarkAction a = (UnmarkAction) action;
+      
+      if(a.getExpression()!= null) {
+        return name + verbalizer.verbalize(a.getExpression()) + ")";
+      }
+      
       if (a.getAllAnchor() == null) {
         if (a.getList() == null) {
           return name + verbalizer.verbalize(a.getType()) + ")";
