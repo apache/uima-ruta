@@ -176,7 +176,7 @@ public class RutaLauncher {
       cas.setDocumentText(document);
     } else {
       try {
-        format = CasIOUtils.load(file, null, cas, true);
+        format = CasIOUtils.load(file.toURI().toURL(), null, cas, true);
       } catch (Exception e) {
         // no format? maybe really a plain text format?
         String document = FileUtils.file2String(file, inputEncoding);

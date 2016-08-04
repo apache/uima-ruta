@@ -61,19 +61,28 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage
             getFieldEditorParent());
     addField(addSDI);
 
-    SerialFormat[] formats = SerialFormat.values();
-    String[][] values = new String[formats.length][];
-    for (int i = 0; i < formats.length; i++) {
-      values[i] = new String[] {
-          formats[i].toString() + " (" + formats[i].getDefaultFileExtension() + ")",
-          formats[i].toString() };
-    }
+    String[][] values = new String[7][];
+    int index = 0;
+    addFormat(values, index++, SerialFormat.XMI);
+    addFormat(values, index++, SerialFormat.XCAS);
+    addFormat(values, index++, SerialFormat.BINARY);
+    addFormat(values, index++, SerialFormat.COMPRESSED);
+    addFormat(values, index++, SerialFormat.COMPRESSED_FILTERED);
+    addFormat(values, index++, SerialFormat.SERIALIZED);
+    addFormat(values, index++, SerialFormat.SERIALIZED_TS);
+    
 
     defaultCasSerializationFormat = new ComboFieldEditor(
             RutaCorePreferences.DEFAULT_CAS_SERIALIZATION_FORMAT,
             RutaPreferencesMessages.DefaultCasSerializationFormat, values, getFieldEditorParent());
     addField(defaultCasSerializationFormat);
 
+  }
+
+  private void addFormat(String[][] values, int index, SerialFormat serialFormat) {
+    values[index] = new String[] {
+        serialFormat.toString() + " (" + serialFormat.getDefaultFileExtension() + ")",
+        serialFormat.toString() };
   }
 
   public void init(IWorkbench workbench) {
