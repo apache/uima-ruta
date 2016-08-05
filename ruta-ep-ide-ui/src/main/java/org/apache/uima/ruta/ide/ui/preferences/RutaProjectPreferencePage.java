@@ -69,7 +69,7 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage
     addFormat(values, index++, SerialFormat.COMPRESSED);
     addFormat(values, index++, SerialFormat.COMPRESSED_FILTERED);
     addFormat(values, index++, SerialFormat.SERIALIZED);
-    addFormat(values, index++, SerialFormat.SERIALIZED_TS);
+    addFormat(values, index++, SerialFormat.SERIALIZED_TSI);
     
 
     defaultCasSerializationFormat = new ComboFieldEditor(
