@@ -217,7 +217,7 @@ under the License.
       <extension
          point="org.apache.uima.ruta.addons.evaluators">
       <evaluator
-            factory="org.apache.uima.ruta.testing.evaluator.PartialMatchCasEvaluatorFacotry"
+            factory="org.apache.uima.ruta.testing.evaluator.PartialMatchCasEvaluatorFactory"
             id="org.apache.uima.ruta.testing.partialmatchevaluator"
             name="Partial Match">
       </evaluator>

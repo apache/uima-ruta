@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.testing.evaluator;
 
-public class PartialMatchCasEvaluatorFacotry implements ICasEvaluatorFactory {
+public class PartialMatchCasEvaluatorFactory implements ICasEvaluatorFactory {
 
   public ICasEvaluator createEvaluator() {
     
