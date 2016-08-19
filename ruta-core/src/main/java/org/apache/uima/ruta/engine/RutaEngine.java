@@ -41,8 +41,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
+import org.apache.uima.UimaContextAdmin;
 import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
@@ -526,8 +528,16 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       descriptorPaths = ArrayUtils.addAll(descriptorPaths, singleDataPaths);
       resourcePaths = ArrayUtils.addAll(resourcePaths, singleDataPaths);
     }
-
-    resourceManager = UIMAFramework.newDefaultResourceManager();
+    if (context instanceof UimaContextAdmin) {
+      UimaContextAdmin uca = (UimaContextAdmin) context;
+      ResourceManager rm = uca.getResourceManager();
+      if (rm != null) {
+        resourceManager = rm;
+      }
+    }
+    if (resourceManager == null) {
+      resourceManager = UIMAFramework.newDefaultResourceManager();
+    }
     if (clonedDescriptorPath != null) {
       for (String path : clonedDescriptorPath) {
         dataPath += path + File.pathSeparator;
@@ -799,7 +809,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         }
         try {
           AnalysisEngine eachEngine = Ruta.wrapAnalysisEngine(descriptorResource.getURL(),
-                  viewName);
+                  viewName, resourceManager);
           addAnalysisEngineToMap(additionalDescriptorEngineMap, eachEngineLocation, eachEngine);
         } catch (Exception e) {
           throw new AnalysisEngineProcessException(e);
@@ -824,7 +834,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
               .forName(eachUimafitEngine);
       List<String> configurationData = script.getConfigurationData(eachUimafitEngine);
-      eachEngine = AnalysisEngineFactory.createEngine(uimafitClass, configurationData.toArray());
+      AnalysisEngineDescription aed = AnalysisEngineFactory.createEngineDescription(uimafitClass,
+              configurationData.toArray());
+      eachEngine = UIMAFramework.produceAnalysisEngine(aed, resourceManager, null);
     } catch (ClassNotFoundException | ResourceInitializationException e) {
       throw new AnalysisEngineProcessException(e);
     }

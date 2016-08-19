@@ -131,7 +131,7 @@ public class RutaLauncher {
     }
 
     AnalysisEngine ae = Ruta.wrapAnalysisEngine(descriptor.toURI().toURL(), view, true,
-            inputEncoding);
+            inputEncoding, null);
     configure(ae);
     CAS cas = ae.newCAS();
 
