@@ -142,13 +142,13 @@ public class RutaProjectUtils {
     return analysisEngineDescriptorPath;
   }
 
-  public static IPath getTypeSystemDescriptorPath(IPath scriptPath, IProject project)
+  public static IPath getTypeSystemDescriptorPath(IPath scriptPath, IProject project, ClassLoader classLoader)
           throws CoreException {
     String typeSystemSuffix = getTypeSystemSuffix(project);
     String name = getScriptWithPackage(scriptPath, project);
     String[] paths = getDescriptorPathsArray(project);
-    RutaResourceLoader loader = new RutaResourceLoader(paths);
-    Resource resource = loader.getResource(name + typeSystemSuffix + ".xml");
+    RutaResourceLoader loader = new RutaResourceLoader(paths, classLoader);
+    Resource resource = loader.getResourceWithDotNotation(name + typeSystemSuffix, ".xml");
     if (resource != null && resource.exists()) {
       try {
         return org.eclipse.core.runtime.Path
@@ -161,14 +161,14 @@ public class RutaProjectUtils {
   }
 
   public static IPath getTypeSystemDescriptorPath(String scriptLocation) throws CoreException {
-    IPath analysisEngineDescriptorPath;
+    IPath typeSystemDescriptorPath;
     IPath scriptPath = new org.eclipse.core.runtime.Path(scriptLocation);
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     IWorkspaceRoot workspaceRoot = workspace.getRoot();
     IFile fileForLocation = workspaceRoot.getFileForLocation(scriptPath);
-    analysisEngineDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(scriptPath,
-            fileForLocation.getProject());
-    return analysisEngineDescriptorPath;
+    typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(scriptPath,
+            fileForLocation.getProject(), null);
+    return typeSystemDescriptorPath;
   }
 
   public static String getScriptWithPackage(IPath scriptPath, IProject project)

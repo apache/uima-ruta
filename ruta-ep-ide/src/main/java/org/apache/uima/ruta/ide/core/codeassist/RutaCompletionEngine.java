@@ -25,7 +25,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -495,18 +494,6 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     return types;
   }
 
-  private IFile getFile(IFolder folder, String filePath) {
-    int lastDot = filePath.lastIndexOf('.');
-    int sndLastDot = filePath.lastIndexOf('.', lastDot - 1);
-    String fName = filePath;
-    if (sndLastDot >= 0) {
-      String subFolder = filePath.substring(0, sndLastDot);
-      folder = folder.getFolder(subFolder);
-      fName = filePath.substring(sndLastDot + 1);
-    }
-    return folder.getFile(fName);
-  }
-
   private void doCompletionOnAction(IModuleSource cu, RutaModuleDeclaration parsed,
           String startPart, int type, String complString) {
     String[] keywords = RutaKeywordsManager.getKeywords(IRutaKeywords.ACTION);
@@ -536,7 +523,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     if (type == RutaTypeConstants.RUTA_TYPE_AT) {
       try {
         IPath path = sourceModule.getModelElement().getResource().getLocation();
-        IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(path, sourceModule.getModelElement().getScriptProject().getProject());
+        IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(path, sourceModule.getModelElement().getScriptProject().getProject(), classloader);
         types = getTypes(typeSystemDescriptorPath);
       } catch (Exception e) {
       }
@@ -578,17 +565,6 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
             || removeLowerCase(string).startsWith(complString);
   }
 
-  private void collectFields(SourceMethod sm, List<IField> fields) throws ModelException {
-    IModelElement[] children = sm.getChildren();
-    for (IModelElement me : children) {
-      if (me instanceof SourceMethod) {
-        collectFields((SourceMethod) me, fields);
-      } else if (me instanceof SourceField) {
-        fields.add((IField) me);
-      }
-    }
-  }
-
   private void collectBlocks(SourceMethod sm, List<IMethod> blocks) throws ModelException {
     blocks.add(sm);
     IModelElement[] children = sm.getChildren();
@@ -604,7 +580,6 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     return replaceAll;
   }
 
-  @SuppressWarnings({ "unchecked" })
   private void doCompletionOnEmptyStatement(IModuleSource cu, int position, int i) {
     int kind = CompletionProposal.LOCAL_VARIABLE_REF;
     if (!super.requestor.isIgnored(kind)) {
@@ -647,47 +622,12 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     // }
   }
 
-  /**
-   * @param complString
-   * @param names
-   * @param field
-   */
-  private void addProposal(String complString, List names, IField field) {
-    char[] fieldName = field.getElementName().toCharArray();
-    char[] complFragment = complString.toCharArray();
-
-    if (CharOperation.camelCaseMatch(complString.toCharArray(), fieldName)
-            || match(complString, field.getElementName())) {
-
-      int relevance = RelevanceConstants.R_DEFAULT + 1;
-      relevance += computeRelevanceForCaseMatching(complFragment, field.getElementName());
-
-      // accept result
-      super.noProposal = false;
-      int kind = CompletionProposal.LOCAL_VARIABLE_REF;
-      if (!super.requestor.isIgnored(kind)) {
-        CompletionProposal proposal = super.createProposal(kind, actualCompletionPosition);
-        proposal.setRelevance(relevance);
-        proposal.setModelElement(field);
-        proposal.setName(field.getElementName());
-        proposal.setCompletion(field.getElementName());
-        proposal.setReplaceRange(this.startPosition - this.offset, this.endPosition - this.offset);
-        try {
-          proposal.setFlags(field.getFlags());
-        } catch (ModelException e) {
-        }
-        this.requestor.accept(proposal);
-        if (DEBUG) {
-          this.printDebug(proposal);
-        }
-      }
-    }
-  }
 
   private void addProposal(String complString, String string, int kind) {
     addProposal(complString, string, string, kind);
   }
 
+  @SuppressWarnings("deprecation")
   private void addProposal(String complString, String string, String name, int kind) {
     char[] fieldName = string.toCharArray();
     char[] complFragment = complString.toCharArray();
@@ -721,16 +661,5 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     }
   }
 
-  private void doCompletionOnKeyword(int position, int pos, String startPart) {
-    List<String> keywords = new ArrayList<String>();
-    for (int i = 0; i < IRutaKeywords.END_INDEX; i++) {
-      keywords.addAll(Arrays.asList(RutaKeywordsManager.getKeywords(i)));
-    }
-    char[][] keyWordsArray = new char[keywords.size()][];
-    for (int a = 0; a < keywords.size(); a++) {
-      keyWordsArray[a] = keywords.get(a).toCharArray();
-    }
-    findKeywords(startPart.toCharArray(), keywords.toArray(new String[0]), true);
-  }
 
 }

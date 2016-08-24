@@ -308,7 +308,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
               // script in other project? use that if the file was found in the workspace
               referredProject = file.getProject();
               IPath typeSystemDescriptorPath = RutaProjectUtils
-                      .getTypeSystemDescriptorPath(file.getLocation(), referredProject);
+                      .getTypeSystemDescriptorPath(file.getLocation(), referredProject, classLoader);
               TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath,
                       url);
 
@@ -1433,7 +1433,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   private TypeSystemDescription getTypeSystemOfScript()
           throws InvalidXMLException, IOException, CoreException {
     IPath descriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
-            sourceModule.getResource().getLocation(), sourceModule.getScriptProject().getProject());
+            sourceModule.getResource().getLocation(), sourceModule.getScriptProject().getProject(), classLoader);
     if (descriptorPath == null) {
       return null;
     }
