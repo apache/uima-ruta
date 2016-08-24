@@ -75,11 +75,11 @@ public class SimpleFeatureExpression extends FeatureExpression {
       IndexedReference indexedReference = ParsingUtils.parseIndexedReference(each);
       if (indexedReference.index != -1) {
         Feature delegate = type.getFeatureByBaseName(indexedReference.reference);
-        if(delegate != null) {
+        if (delegate != null) {
           feature = new IndexedFeature(delegate, indexedReference.index);
         } else {
-          throw new IllegalArgumentException("Not able to access feature " + each + " of type "
-                  + type.getName());
+          throw new IllegalArgumentException(
+                  "Not able to access feature " + each + " of type " + type.getName());
         }
       } else if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT)) {
         // there is no explicit feature for coveredText
@@ -93,8 +93,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
           if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT_SHORT)) {
             feature = new CoveredTextFeature();
           } else {
-            throw new IllegalArgumentException("Not able to access feature " + each + " of type "
-                    + type.getName());
+            throw new IllegalArgumentException(
+                    "Not able to access feature " + each + " of type " + type.getName());
           }
         }
       }
@@ -111,13 +111,13 @@ public class SimpleFeatureExpression extends FeatureExpression {
   @Override
   public Type getInitialType(MatchContext context, RutaStream stream) {
     ITypeExpression typeExpression = mr.getTypeExpression(context, stream);
-    if(typeExpression!= null) {
+    if (typeExpression != null) {
       return typeExpression.getType(context, stream);
     } else {
       IAnnotationExpression annotationExpression = mr.getAnnotationExpression(context, stream);
-      if(annotationExpression != null) {
+      if (annotationExpression != null) {
         AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
-        if(annotation != null) {
+        if (annotation != null) {
           return annotation.getType();
         }
       }
@@ -134,9 +134,10 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
     Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
     List<Feature> features = getFeatures(context, stream);
-    if(features!= null &&!features.isEmpty()) {
-      collectFeatureAnnotations(annotations, features, checkOnFeatureValue, result, stream, context);
-    return result;
+    if (features != null && !features.isEmpty()) {
+      collectFeatureAnnotations(annotations, features, checkOnFeatureValue, result, stream,
+              context);
+      return result;
     } else {
       return annotations;
     }
@@ -213,19 +214,19 @@ public class SimpleFeatureExpression extends FeatureExpression {
     }
 
     int index = -1;
-    if(currentFeature instanceof IndexedFeature) {
+    if (currentFeature instanceof IndexedFeature) {
       IndexedFeature indexedFeature = (IndexedFeature) currentFeature;
       currentFeature = indexedFeature.getDelegate();
       index = indexedFeature.getIndex();
     }
-    
+
     FeatureStructure value = annotation.getFeatureValue(currentFeature);
     if (value instanceof AnnotationFS) {
       AnnotationFS next = (AnnotationFS) value;
       collectFeatureAnnotations(next, tail, checkOnFeatureValue, result, stream, context);
     } else if (value instanceof FSArray && index >= 0) {
       FSArray array = (FSArray) value;
-      if(index < array.size()) {
+      if (index < array.size()) {
         FeatureStructure fs = array.get(index);
         if (fs instanceof AnnotationFS) {
           AnnotationFS next = (AnnotationFS) fs;
@@ -245,8 +246,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
     } else if (value != null) {
       result.add(annotation);
       // primitive? -> return last annotation for further processing
-//      throw new IllegalArgumentException(value.getType()
-//              + " is not supported in a feature match expression (" + mr.getMatch() + ").");
+      // throw new IllegalArgumentException(value.getType()
+      // + " is not supported in a feature match expression (" + mr.getMatch() + ").");
     }
   }
 

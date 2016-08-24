@@ -535,7 +535,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return result;
   }
 
-  public List<AnnotationFS> getAnnotationsInWindow2(AnnotationFS windowAnnotation, Type type) {
+  private List<AnnotationFS> getAnnotationsInWindow2(AnnotationFS windowAnnotation, Type type) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     windowAnnotation = cas.createAnnotation(type, windowAnnotation.getBegin(),
             windowAnnotation.getEnd() + 1);
@@ -574,8 +574,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public List<AnnotationFS> getAnnotationsInWindow(AnnotationFS windowAnnotation, Type type) {
-    if (type == null)
-      return null;
+    if (windowAnnotation == null || type == null) {
+      return Collections.emptyList();
+    }
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     List<AnnotationFS> inWindow = getAnnotationsInWindow2(windowAnnotation, type);
     result = inWindow;
