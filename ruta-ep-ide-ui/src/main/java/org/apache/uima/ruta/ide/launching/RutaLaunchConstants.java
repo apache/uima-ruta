@@ -47,4 +47,6 @@ public class RutaLaunchConstants {
 
   public static final String ARG_FORMAT = "org.apache.uima.ruta.ide.launching.defaultFormat";
 
+  public static final String ARG_CLASSPATH = "org.apache.uima.ruta.ide.launching.classPath";
+
 }

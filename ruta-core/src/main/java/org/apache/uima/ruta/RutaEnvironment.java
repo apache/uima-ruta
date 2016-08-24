@@ -317,9 +317,8 @@ public class RutaEnvironment {
    */
   private void importDeclaredTypesystems(TypeSystem casTS) throws InvalidXMLException {
     String[] descriptors = typesystems.toArray(new String[typesystems.size()]);
-    TypeSystemDescription ts = TypeSystemDescriptionFactory
-            .createTypeSystemDescription(descriptors);
-    ts.resolveImports();
+    TypeSystemDescription ts = TypeSystemDescriptionFactory.createTypeSystemDescription(descriptors);
+    ts.resolveImports(resourceManager);
     for (TypeDescription td : ts.getTypes()) {
       Type type = casTS.getType(td.getName());
       if (type != null) {

@@ -49,8 +49,9 @@ public class CASLoader {
     }
 
     try {
+      ClassLoader classLoader = RutaProjectUtils.getClassLoader(r.getProject());
       IPath engineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(r.getLocation(),
-              r.getProject());
+              r.getProject(), classLoader);
       XMLInputSource in = new XMLInputSource(engineDescriptorPath.toPortableString());
       ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
       AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);

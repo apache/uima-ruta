@@ -44,6 +44,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.engine.RutaEngine;
@@ -159,8 +160,11 @@ public class QueryActionHandler implements IHandler {
       try {
         URL aedesc = RutaEngine.class.getResource("BasicEngine.xml");
         XMLInputSource inae = new XMLInputSource(aedesc);
+        IFile iFile = QueryComposite.getIFile(typeSystemLocation);
+        IProject project = iFile.getProject();
+        ClassLoader classLoader = RutaProjectUtils.getClassLoader(project);
+        ResourceManager resMgr = new ResourceManager_impl(classLoader);
         ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(inae);
-        ResourceManager resMgr = UIMAFramework.newDefaultResourceManager();
         AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
         TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().getTypeSystem();
 
@@ -170,12 +174,10 @@ public class QueryActionHandler implements IHandler {
           Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
           tsds.add(basicTypeSystem);
           if (typeSystemLocation.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
-            IFile iFile = QueryComposite.getIFile(typeSystemLocation);
             IPath scriptPath = iFile.getLocation();
-            IProject project = iFile.getProject();
             IPath descriptorRootPath = RutaProjectUtils.getDescriptorRootPath(project);
             resMgr.setDataPath(descriptorRootPath.toPortableString());
-            IPath path = RutaProjectUtils.getTypeSystemDescriptorPath(scriptPath, project);
+            IPath path = RutaProjectUtils.getTypeSystemDescriptorPath(scriptPath, project, classLoader);
             tsLocation = path.toPortableString();
           }
           File tsFile = new File(tsLocation);

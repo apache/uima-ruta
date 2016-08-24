@@ -19,8 +19,12 @@
 
 package org.apache.uima.ruta.ide.core.builder;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -46,7 +50,9 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathEntry;
@@ -113,13 +119,13 @@ public class RutaProjectUtils {
     return DEFAULT_TYPESYSTEM_SUFFX;
   }
 
-  public static IPath getAnalysisEngineDescriptorPath(IPath scriptPath, IProject project)
-          throws CoreException {
+  public static IPath getAnalysisEngineDescriptorPath(IPath scriptPath, IProject project,
+          ClassLoader classLoader) throws CoreException {
     String analysisEngineSuffix = getAnalysisEngineSuffix(project);
     String name = getScriptWithPackage(scriptPath, project);
     String[] paths = getDescriptorPathsArray(project);
-    RutaResourceLoader loader = new RutaResourceLoader(paths);
-    Resource resource = loader.getResource(name + analysisEngineSuffix + ".xml");
+    RutaResourceLoader loader = new RutaResourceLoader(paths, classLoader);
+    Resource resource = loader.getResourceWithDotNotation(name + analysisEngineSuffix, ".xml");
     if (resource != null && resource.exists()) {
       try {
         return org.eclipse.core.runtime.Path
@@ -131,6 +137,7 @@ public class RutaProjectUtils {
     return null;
   }
 
+  @Deprecated
   public static IPath getAnalysisEngineDescriptorPath(String scriptLocation) throws CoreException {
     IPath analysisEngineDescriptorPath;
     IPath scriptPath = new org.eclipse.core.runtime.Path(scriptLocation);
@@ -138,12 +145,12 @@ public class RutaProjectUtils {
     IWorkspaceRoot workspaceRoot = workspace.getRoot();
     IFile fileForLocation = workspaceRoot.getFileForLocation(scriptPath);
     analysisEngineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(scriptPath,
-            fileForLocation.getProject());
+            fileForLocation.getProject(), null);
     return analysisEngineDescriptorPath;
   }
 
-  public static IPath getTypeSystemDescriptorPath(IPath scriptPath, IProject project, ClassLoader classLoader)
-          throws CoreException {
+  public static IPath getTypeSystemDescriptorPath(IPath scriptPath, IProject project,
+          ClassLoader classLoader) throws CoreException {
     String typeSystemSuffix = getTypeSystemSuffix(project);
     String name = getScriptWithPackage(scriptPath, project);
     String[] paths = getDescriptorPathsArray(project);
@@ -160,6 +167,7 @@ public class RutaProjectUtils {
     return null;
   }
 
+  @Deprecated
   public static IPath getTypeSystemDescriptorPath(String scriptLocation) throws CoreException {
     IPath typeSystemDescriptorPath;
     IPath scriptPath = new org.eclipse.core.runtime.Path(scriptLocation);
@@ -548,6 +556,28 @@ public class RutaProjectUtils {
       return p;
     }
     return null;
+  }
+
+  public static ClassLoader getClassLoader(IProject project) throws CoreException {
+    Collection<String> classPath = RutaProjectUtils.getClassPath(project);
+    ClassLoader classLoader = getClassLoader(classPath);
+    return classLoader;
+  }
+
+  public static ClassLoader getClassLoader(Collection<String> classPath) throws CoreException {
+    URL[] urls = new URL[classPath.size()];
+    int counter = 0;
+    for (String dep : classPath) {
+      try {
+        urls[counter] = new File(dep).toURI().toURL();
+      } catch (MalformedURLException e) {
+        throw new CoreException(
+                new Status(IStatus.ERROR, RutaIdeCorePlugin.PLUGIN_ID, e.getMessage()));
+      }
+      counter++;
+    }
+    ClassLoader classLoader = new URLClassLoader(urls);
+    return classLoader;
   }
 
   public static Collection<String> getClassPath(IProject project) throws CoreException {

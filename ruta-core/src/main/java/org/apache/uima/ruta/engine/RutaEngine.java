@@ -570,6 +570,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private void initializeTypes(RutaModule script, CAS cas, List<String> initialized) {
     // TODO find a better solution for telling everyone about the types!
     RutaBlock mainRootBlock = script.getBlock(null);
+    mainRootBlock.getEnvironment().setResourceManager(resourceManager);
     Collection<Entry<String, RutaModule>> values = script.getScripts().entrySet();
     for (Entry<String, RutaModule> eachImport : values) {
       String name = eachImport.getKey();

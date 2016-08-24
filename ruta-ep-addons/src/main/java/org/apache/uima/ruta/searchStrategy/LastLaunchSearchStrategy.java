@@ -64,8 +64,9 @@ public class LastLaunchSearchStrategy implements ITypeSystemSearchStrategy {
       if (scriptFile.exists()) {
         IPath path = null;
         try {
+          ClassLoader classLoader = RutaProjectUtils.getClassLoader(project);
           path = RutaProjectUtils.getTypeSystemDescriptorPath(scriptFile.getLocation(),
-                  project);
+                  project, classLoader);
         } catch (CoreException e) {
           RutaAddonsPlugin.error(e);
         }

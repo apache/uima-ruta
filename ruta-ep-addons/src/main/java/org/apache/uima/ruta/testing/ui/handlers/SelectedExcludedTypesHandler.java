@@ -80,7 +80,8 @@ public class SelectedExcludedTypesHandler implements IHandler {
     TypeSystemDescription defaultTypeSystemDescription = null;
     List<String> types = new ArrayList<String>();
     try {
-      String tsDesc = RutaProjectUtils.getTypeSystemDescriptorPath(location, resource.getProject())
+      ClassLoader classLoader = RutaProjectUtils.getClassLoader(resource.getProject());
+      String tsDesc = RutaProjectUtils.getTypeSystemDescriptorPath(location, resource.getProject(), classLoader)
               .toPortableString();
 
       defaultTypeSystemDescription = UIMAFramework.getXMLParser().parseTypeSystemDescription(

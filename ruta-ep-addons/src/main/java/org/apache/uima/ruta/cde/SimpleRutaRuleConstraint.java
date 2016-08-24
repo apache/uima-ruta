@@ -90,7 +90,7 @@ public class SimpleRutaRuleConstraint implements IRutaRuleConstraint {
         IProject project = iFile.getProject();
         IPath descriptorRootPath = RutaProjectUtils.getDescriptorRootPath(project);
         resMgr.setDataPath(descriptorRootPath.toPortableString());
-        IPath path = RutaProjectUtils.getTypeSystemDescriptorPath(scriptPath, project);
+        IPath path = RutaProjectUtils.getTypeSystemDescriptorPath(scriptPath, project, null);
         tsLocation = path.toPortableString();
       }
       File tsFile = new File(tsLocation);

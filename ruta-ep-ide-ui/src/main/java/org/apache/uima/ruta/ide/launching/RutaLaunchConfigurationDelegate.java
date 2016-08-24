@@ -90,8 +90,10 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     IPath projectPath = proj.getResource().getLocation();
     IPath inputDirPath = projectPath.append(RutaProjectUtils.getDefaultInputLocation());
     IPath outputDirPath = projectPath.append(RutaProjectUtils.getDefaultOutputLocation());
+    Collection<String> classPath = RutaProjectUtils.getClassPath(proj.getProject());
+    ClassLoader classLoader = RutaProjectUtils.getClassLoader(classPath);
     IPath analysisEngineDescriptorPath = RutaProjectUtils
-            .getAnalysisEngineDescriptorPath(member.getLocation(), proj.getProject());
+            .getAnalysisEngineDescriptorPath(member.getLocation(), proj.getProject(), classLoader);
     String engineDefaultMethod = "";
     if (analysisEngineDescriptorPath != null) {
       engineDefaultMethod = analysisEngineDescriptorPath.toPortableString();
@@ -125,6 +127,9 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
       cmdline.append(
               URLEncoder.encode(makeAbsolute(output, configuration), RutaLauncher.URL_ENCODING)
                       + " ");
+      
+      cmdline.append(RutaLaunchConstants.ARG_CLASSPATH + " ");
+      cmdline.append(URLEncoder.encode(StringUtils.join(classPath, File.pathSeparatorChar), RutaLauncher.URL_ENCODING) + " ");
 
     } catch (UnsupportedEncodingException e) {
       throw new CoreException(
@@ -147,7 +152,8 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
     cmdline.append(RutaLaunchConstants.ARG_FORMAT + " ");
     cmdline.append(defaultFormat + " ");
-
+    
+   
     return cmdline.toString();
   }
 
