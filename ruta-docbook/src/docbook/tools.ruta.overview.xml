@@ -1129,8 +1129,8 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
             This parameter specifies the values of variables as string values in an string array. It is
             used in combination with the parameter varNames, which contains the names of the corresponding
             variables. The n-th entry of this string array specifies the value of the n-th entry of the
-            string array of the parameter varNames. Only value of the kinds annotation type, string, boolean, int, double
-            and float are allowed.
+            string array of the parameter varNames. The values for list variables are separated by the character 
+            <quote>,</quote>. Thus, the usage of commas is not allowed if the variable is a list.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.dictRemoveWS">

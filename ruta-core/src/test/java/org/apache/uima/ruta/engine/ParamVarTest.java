@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.type.CW;
 import org.apache.uima.ruta.type.SW;
 import org.junit.Test;
 
@@ -52,16 +53,18 @@ public class ParamVarTest {
     script += "type2{-> T7};\n";
     CAS cas = null;
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put(RutaEngine.PARAM_VAR_NAMES, new String[] {"First.s", "Second.s", "s", "i", "b", "type1", "type2"});
-    params.put(RutaEngine.PARAM_VAR_VALUES, new String[] {"Some", "text", "Some", "0", "true", SW.class.getName(), "CW"});
-    
+    params.put(RutaEngine.PARAM_VAR_NAMES,
+            new String[] { "First.s", "Second.s", "s", "i", "b", "type1", "type2" });
+    params.put(RutaEngine.PARAM_VAR_VALUES,
+            new String[] { "Some", "text", "Some", "0", "true", SW.class.getName(), "CW" });
+
     try {
       cas = RutaTestUtils.getCAS(document);
       Ruta.apply(cas, script, params);
     } catch (Exception e) {
       e.printStackTrace();
     }
-    
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "text");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");
@@ -70,6 +73,25 @@ public class ParamVarTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 6, 1, "text");
     RutaTestUtils.assertAnnotationsEquals(cas, 7, 1, "Some");
 
+    cas.release();
+  }
+
+  @Test
+  public void testMultiValue() throws Exception {
+    String document = "Some text.";
+    String script = "";
+    script += "TYPELIST tl;";
+    script += "ANY{PARTOF(tl) -> T1};";
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put(RutaEngine.PARAM_VAR_NAMES, new String[] { "tl" });
+    params.put(RutaEngine.PARAM_VAR_VALUES, new String[] {
+        SW.class.getName() + RutaEngine.SEPARATOR_VAR_VALUES + CW.class.getName() });
+
+    CAS cas = RutaTestUtils.getCAS(document);
+      Ruta.apply(cas, script, params);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "Some", "text");
+    
     cas.release();
   }
 }

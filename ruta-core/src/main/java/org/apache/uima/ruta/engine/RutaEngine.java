@@ -84,6 +84,8 @@ import org.springframework.core.io.Resource;
 public class RutaEngine extends JCasAnnotator_ImplBase {
 
   public static final String SCRIPT_FILE_EXTENSION = ".ruta";
+  
+  public static final String SEPARATOR_VAR_VALUES = ",";
 
   public static final String SOURCE_DOCUMENT_INFORMATION = "org.apache.uima.examples.SourceDocumentInformation";
 
@@ -867,7 +869,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
       int lastIndexOf = longName.lastIndexOf('.');
       String shortName = longName;
-      String blockName = null;
+      String blockName = script.getRootBlock().getName();
       if (lastIndexOf != -1) {
         blockName = longName.substring(0, lastIndexOf);
         shortName = longName.substring(lastIndexOf + 1, longName.length());
@@ -883,26 +885,52 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
       Object valueObj = null;
       Class<?> variableType = environment.getVariableType(shortName);
-      if (Integer.class.equals(variableType)) {
-        valueObj = Integer.parseInt(value);
-      } else if (Double.class.equals(variableType)) {
-        valueObj = Double.parseDouble(value);
-      } else if (Float.class.equals(variableType)) {
-        valueObj = Float.parseFloat(value);
-      } else if (String.class.equals(variableType)) {
-        valueObj = value;
-      } else if (Boolean.class.equals(variableType)) {
-        valueObj = Boolean.parseBoolean(value);
-      } else if (Type.class.equals(variableType)) {
-        valueObj = value;
-      } else {
-        throw new IllegalArgumentException(
-                "Only variables for primitives and types can be assigned by parameters: "
-                        + shortName + " defined in block: " + blockName);
+      
+      if(variableType == null) {
+          throw new IllegalArgumentException("Variable "+shortName+" is not known in block: " + blockName);
       }
+      
+      if(List.class.equals(variableType)) {
+        valueObj = getListVariableValueFromString(value, shortName, environment);
+      } else {
+        valueObj = getVariableValueFromString(value, variableType);
+      }
+      
+      if(value == null) {
+        throw new IllegalArgumentException("Cannot determine value "+ value +" of variable "+shortName+"  in block: " + blockName + ". Null values are not allowed");
+      }
+
       environment.setVariableValue(shortName, valueObj);
     }
 
+  }
+
+  private Object getVariableValueFromString(String value, Class<?> variableType) {
+     
+    if (Integer.class.equals(variableType)) {
+      return Integer.parseInt(value);
+    } else if (Double.class.equals(variableType)) {
+      return Double.parseDouble(value);
+    } else if (Float.class.equals(variableType)) {
+      return Float.parseFloat(value);
+    } else if (String.class.equals(variableType)) {
+      return value;
+    } else if (Boolean.class.equals(variableType)) {
+      return Boolean.parseBoolean(value);
+    } else if (Type.class.equals(variableType)) {
+      return value;
+    }  
+    return null;
+  }
+
+  private List<?> getListVariableValueFromString(String value, String shortName, RutaEnvironment environment) {
+    List<Object> result = new ArrayList<>();
+    Class<?> genericType = environment.getVariableGenericType(shortName);
+    String[] split = StringUtils.split(value, RutaEngine.SEPARATOR_VAR_VALUES);
+    for (String string : split) {
+      result.add(getVariableValueFromString(string.trim(), genericType));
+    }
+    return result;
   }
 
   public static void addSourceDocumentInformation(CAS cas, File each) {
