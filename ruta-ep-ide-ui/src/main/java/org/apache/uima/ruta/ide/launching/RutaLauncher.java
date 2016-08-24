@@ -23,10 +23,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,7 +45,6 @@ import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.util.CasIOUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.impl.ProcessTrace_impl;
@@ -144,7 +147,7 @@ public class RutaLauncher {
     ResourceManager resourceManager = null;
     if (classPath != null) {
       String[] split = classPath.split(File.pathSeparator);
-      ClassLoader classLoader = RutaProjectUtils.getClassLoader(Arrays.asList(split));
+      ClassLoader classLoader = getClassLoader(Arrays.asList(split));
       resourceManager = new ResourceManager_impl(classLoader);
     }
     AnalysisEngine ae = Ruta.wrapAnalysisEngine(descriptor.toURI().toURL(), view, true,
@@ -257,6 +260,18 @@ public class RutaLauncher {
     File result = new File(outputFolder, path);
     result.getParentFile().mkdirs();
     return result;
+  }
+  
+  private static ClassLoader getClassLoader(Collection<String> classPath) throws MalformedURLException {
+   // TODO copied method to avoid extended classpath
+    URL[] urls = new URL[classPath.size()];
+    int counter = 0;
+    for (String dep : classPath) {
+      urls[counter] = new File(dep).toURI().toURL();
+      counter++;
+    }
+    ClassLoader classLoader = new URLClassLoader(urls);
+    return classLoader;
   }
 
 }
