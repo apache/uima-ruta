@@ -697,21 +697,23 @@ Martin
         listed
         names, could be annotated
         by using
-        <literal>Document{->MARKFAST(FirstName, "FirstNames.txt")};</literal>
+        <literal>Document{->MARKFAST(FirstName, 'FirstNames.txt')};</literal>
         , assuming
         an already declared type FirstName. To make this rule
         recognizing more first names,
         add
         them to the external list.
         You could also use a WORLIST variable to do the same thing as
-        follows:
+        follows, which is preferable:
         <programlisting><![CDATA[WORDLIST FirstNameList = 'FirstNames.txt';
 DECLARE FirstName;
 Document{->MARKFAST(FirstName, FirstNameList)};
 ]]></programlisting>
-      </para>
+
+
+      </para>      
       <para>
-        Another possibility to provide WORDLISTs is the use of compiled
+        Another possibility compared to the plain text files to provide WORDLISTs is the use of compiled
         <quote>tree word list</quote>
         s. The file ending for this is
         <quote>.twl</quote>
@@ -731,7 +733,7 @@ Document{->MARKFAST(FirstName, FirstNameList)};
         .
         A tree word list is used in the same way as simple word lists,
         for example
-        <literal>Document{->MARKFAST(FirstName, "FirstNames.twl")};</literal>
+        <literal>Document{->MARKFAST(FirstName, 'FirstNames.twl')};</literal>
         .
       </para>
       <para>
@@ -771,6 +773,15 @@ Declare FirstName, LastName;
 Document{->TRIE("FirstNames.txt" = FirstName, "LastNames.txt" = LastName,
     Names, false, 0, false, 0, "")};]]></programlisting>
       </para>
+      <para>
+              Only if the wordlist is explicitly declared with WORDLIST, then also a StringExpression including variables can be applied to specify the file:
+        <programlisting><![CDATA[STRING package ="my/package/";
+WORDLIST FirstNameList = "" + package + "FirstNames.txt';
+DECLARE FirstName;
+Document{->MARKFAST(FirstName, FirstNameList)};
+]]></programlisting>
+      </para>
+      
     </section>
     <section>
       <title>WORDTABLEs</title>
@@ -808,6 +819,12 @@ Barack Obama;democrats;2009
 DECLARE Annotation PresidentOfUSA(STRING party, INT yearOfInauguration);
 Document{->MARKTABLE(PresidentOfUSA, 1, presidentsOfUSA, "party" = 2, 
 		"yearOfInauguration" = 3)};]]></programlisting>
+      </para>
+      <para>
+              Only if the wordtable is explicitly declared with WORDTABLE, then also a StringExpression including variables can be applied to specify the file:
+        <programlisting><![CDATA[STRING package ="my/package/";
+WORDTABLE presidentsOfUSA = "" + package + "presidentsOfUSA.csv";
+]]></programlisting>
       </para>
     </section>
   </section>

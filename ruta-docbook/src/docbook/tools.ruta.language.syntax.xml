@@ -84,8 +84,8 @@ VariableDeclaration -> (("TYPE" Identifier ("," Identifier)*
                      | ("BOOLEAN" Identifier ("," Identifier)*
                                                 ("=" BooleanExpression)?)
                      | ("ANNOTATION" Identifier ("=" AnnotationExpression)?)
-                     | ("WORDLIST" Identifier ("=" WordListExpression)?)
-                     | ("WORDTABLE" Identifier ("=" WordTableExpression)?)
+                     | ("WORDLIST" Identifier ("=" WordListExpression | StringExpression)?)
+                     | ("WORDTABLE" Identifier ("=" WordTableExpression | StringExpression)?)
                      | ("TYPELIST" Identifier ("=" TypeListExpression)?)
                      | ("STRINGLIST" Identifier
                                              ("=" StringListExpression)?)

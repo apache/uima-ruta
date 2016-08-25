@@ -486,18 +486,18 @@ variableDeclaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 		 stmts.add(StatementFactory.createDeclarationsStatement(type, decls, init));
 		 }
         |
-        type = WORDLIST id = Identifier (ASSIGN_EQUAL list = wordListExpression)? SEMI
+        type = WORDLIST id = Identifier (ASSIGN_EQUAL (wl = wordListExpression | wl = stringExpression))? SEMI
         {
         addVariable(id.getText(), type.getText());
-        decls.add(StatementFactory.createListVariable(id,type,list));
-        stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
+        decls.add(StatementFactory.createListVariable(id,type,wl));
+        stmts.add(StatementFactory.createDeclarationsStatement(type, decls, wl));
         }
         |
-        type = WORDTABLE id = Identifier (ASSIGN_EQUAL table = wordTableExpression)?  SEMI
+        type = WORDTABLE id = Identifier (ASSIGN_EQUAL (wt = wordTableExpression | wt = stringExpression))?  SEMI
         {
         addVariable(id.getText(), type.getText());
-        decls.add(StatementFactory.createTableVariable(id,type,table));
-        stmts.add(StatementFactory.createDeclarationsStatement(type, decls, table));
+        decls.add(StatementFactory.createTableVariable(id,type,wt));
+        stmts.add(StatementFactory.createDeclarationsStatement(type, decls, wt));
         }
         |
         type = BOOLEANLIST id = Identifier (ASSIGN_EQUAL list = booleanListExpression)?  SEMI
