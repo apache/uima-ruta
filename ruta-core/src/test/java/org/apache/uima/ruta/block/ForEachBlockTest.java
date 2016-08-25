@@ -178,4 +178,36 @@ public class ForEachBlockTest {
     cas.release();
   }
 
+
+  @Test
+  public void testComposed() throws Exception {
+    String script = "NUM{-> T1};";
+    script += "FOREACH(t) T1{}{\n";
+    script += "(t (SW NUM)* (SPECIAL NUM)?{-PARTOF(T2)}){->T2};";
+    script += "}";
+
+    CAS cas = RutaTestUtils.getCAS("text 4x2^3 text");
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "4x2^3");
+    cas.release();
+  }
+  
+  
+  @Test
+  public void testConditionMacro() throws Exception {
+    String script = "CONDITION isSmall() = REGEXP(\".\");\n";
+    script += "FOREACH(num) NUM{} {\n";
+    script += "num{isSmall()-> T1};";
+    script += "}";
+
+    CAS cas = RutaTestUtils.getCAS("1 22 333");
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "1");
+    cas.release();
+  }
+  
+  
+  
 }

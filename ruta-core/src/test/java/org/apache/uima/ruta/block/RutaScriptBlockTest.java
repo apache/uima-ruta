@@ -74,4 +74,18 @@ public class RutaScriptBlockTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "text", "stuff");
   }
 
+  @Test
+  public void testConditionMacro() throws Exception {
+    String script = "CONDITION isSmall() = REGEXP(\".\");\n";
+    script += "BLOCK(num) NUM{} {\n";
+    script += "Document{isSmall()-> T1};";
+    script += "}";
+
+    CAS cas = RutaTestUtils.getCAS("1 22 333");
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "1");
+    cas.release();
+  }
+  
 }

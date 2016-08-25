@@ -1014,19 +1014,43 @@ public class RutaEnvironment {
 	}
 
 	public boolean isMacroAction(String name) {
-		return macroActions.keySet().contains(name);
+		boolean isDefined = macroActions.keySet().contains(name);
+		if(isDefined) {
+		  return true;
+		} else if (owner != null && owner.getParent() != null) {
+		  return owner.getParent().getEnvironment().isMacroAction(name);
+		}
+    return false;
 	}
 
 	public boolean isMacroCondition(String name) {
-		return macroConditions.keySet().contains(name);
+	  boolean isDefined = macroConditions.keySet().contains(name);
+    if(isDefined) {
+      return true;
+    } else if (owner != null && owner.getParent() != null) {
+      return owner.getParent().getEnvironment().isMacroCondition(name);
+    }
+    return false;
 	}
 
 	public Triple<Map<String, String>, List<AbstractRutaAction>, Set<String>> getMacroAction(String name) {
-		return macroActions.get(name);
+	  Triple<Map<String, String>, List<AbstractRutaAction>, Set<String>> definition = macroActions.get(name);
+	  if(definition != null) {
+	    return definition;
+	  } else if (owner != null && owner.getParent() != null) {
+	    return owner.getParent().getEnvironment().getMacroAction(name);
+	  }
+		return null;
 	}
 
 	public Triple<Map<String, String>, List<AbstractRutaCondition>, Set<String>> getMacroCondition(String name) {
-		return macroConditions.get(name);
+    Triple<Map<String, String>, List<AbstractRutaCondition>, Set<String>> definition = macroConditions.get(name);
+    if(definition != null) {
+      return definition;
+    } else if (owner != null && owner.getParent() != null) {
+      return owner.getParent().getEnvironment().getMacroCondition(name);
+    }
+    return null;
 	}
 
 	public void addAliasVariable(String name, String var) {
