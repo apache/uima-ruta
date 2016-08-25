@@ -253,7 +253,7 @@ public class RutaTypeMatcher implements RutaMatcher {
       if (checkFeatureValue) {
         return true;
       }
-    } else if(feature == null || feature.getRange().isArray()) {
+    } else if(feature == null || (feature.getRange() != null && feature.getRange().isArray())) {
       // do not check on arrays
       return true;
     } else {
