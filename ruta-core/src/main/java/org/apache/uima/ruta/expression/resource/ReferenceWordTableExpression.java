@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.expression.resource;
 
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.resource.RutaTable;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -33,9 +34,9 @@ public class ReferenceWordTableExpression extends WordTableExpression {
   }
 
   @Override
-  public RutaTable getTable(MatchContext context) {
+  public RutaTable getTable(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    return parent.getEnvironment().getVariableValue(ref, RutaTable.class);
+    return parent.getEnvironment().getVariableValue(ref, RutaTable.class, stream);
   }
 
   public String getRef() {

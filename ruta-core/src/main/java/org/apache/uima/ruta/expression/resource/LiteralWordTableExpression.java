@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.expression.resource;
 
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.resource.RutaTable;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -41,7 +42,7 @@ public class LiteralWordTableExpression extends WordTableExpression {
   }
 
   @Override
-  public RutaTable getTable(MatchContext context) {
+  public RutaTable getTable(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     RutaTable table = parent.getEnvironment().getWordTable(getText());
     return table;

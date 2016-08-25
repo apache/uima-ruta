@@ -62,6 +62,8 @@ import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberListExpression;
 import org.apache.uima.ruta.expression.resource.LiteralWordListExpression;
 import org.apache.uima.ruta.expression.resource.LiteralWordTableExpression;
+import org.apache.uima.ruta.expression.resource.StringWordListExpression;
+import org.apache.uima.ruta.expression.resource.StringWordTableExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -680,7 +682,7 @@ public class RutaEnvironment {
 	public RutaTable getWordTable(String table) {
 		RutaTable result = tables.get(table);
 		if (result == null) {
-			if (table.endsWith("csv")) {
+			if (table.endsWith("csv") || table.endsWith("txt") || table.endsWith("tsv")) {
 				ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths());
 				Resource resource = resourceLoader.getResource(table);
 				if (resource.exists()) {
@@ -818,7 +820,7 @@ public class RutaEnvironment {
 		return null;
 	}
 
-	public <T> T getVariableValue(String name, Class<T> type) {
+	public <T> T getVariableValue(String name, Class<T> type, RutaStream stream) {
 		if (variableAliases.containsKey(name)) {
 			name = variableAliases.get(name);
 		}
@@ -855,23 +857,23 @@ public class RutaEnvironment {
 			MatchContext context = new MatchContext(owner);
 			if (RutaWordList.class.isAssignableFrom(type) && result instanceof WordListExpression) {
 				WordListExpression wle = (WordListExpression) result;
-				RutaWordList list = wle.getList(context);
+				RutaWordList list = wle.getList(context, stream);
 				return type.cast(list);
 			} else if (RutaTable.class.isAssignableFrom(type) && result instanceof WordTableExpression) {
 				WordTableExpression wte = (WordTableExpression) result;
-				RutaTable table = wte.getTable(context);
+				RutaTable table = wte.getTable(context, stream);
 				return type.cast(table);
 			} else {
 				return type.cast(result);
 			}
 		} else if (owner.getParent() != null) {
-			return owner.getParent().getEnvironment().getVariableValue(name, type);
+			return owner.getParent().getEnvironment().getVariableValue(name, type, stream);
 		}
 		return null;
 	}
 
-	public Object getVariableValue(String name) {
-		return getVariableValue(name, Object.class);
+	public Object getVariableValue(String name, RutaStream stream) {
+		return getVariableValue(name, Object.class, stream);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -899,10 +901,14 @@ public class RutaEnvironment {
 			}
 			if (clazz.equals(RutaWordList.class) && value instanceof LiteralWordListExpression) {
 				return value;
+			}	else if (clazz.equals(RutaWordList.class) && value instanceof StringWordListExpression) {
+	        return value;
 			} else if (clazz.equals(RutaWordList.class) && value instanceof String) {
 				return value;
 			} else if (clazz.equals(RutaTable.class) && value instanceof LiteralWordTableExpression) {
 				return value;
+			} else if (clazz.equals(RutaTable.class) && value instanceof StringWordTableExpression) {
+        return value;
 			} else if (clazz.equals(RutaTable.class) && value instanceof String) {
 				return value;
 			} else if (clazz.equals(List.class) && value instanceof ListExpression) {

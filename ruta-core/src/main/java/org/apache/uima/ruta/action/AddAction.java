@@ -63,7 +63,7 @@ public class AddAction extends AbstractRutaAction {
     RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
     RutaEnvironment environment = parent.getEnvironment();
-    List list = environment.getVariableValue(var, List.class);
+    List list = environment.getVariableValue(var, List.class, stream);
     // Class<?> vtype = environment.getVariableType(var);
     Class<?> vgtype = environment.getVariableGenericType(var);
     for (IRutaExpression each : elements) {

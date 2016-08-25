@@ -17,31 +17,29 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.annotation;
+package org.apache.uima.ruta.expression.resource;
 
-import java.util.List;
+import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.engine.Ruta;
+import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.junit.Test;
 
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.block.RutaBlock;
-import org.apache.uima.ruta.rule.MatchContext;
+public class WordListStringExpressionTest {
 
-public class AnnotationListVariableExpression extends AbstractAnnotationListExpression {
 
-  private String var;
+  @Test
+  public void test() throws Exception {
+    String document = "1 0 0 text 2 0 0.";
 
-  public AnnotationListVariableExpression(String var) {
-    super();
-    this.var = var;
+    String script="STRING s = \"org/apache/uima/ruta/action/\";\n";
+    script +="WORDLIST wl = s + \"MarkFastTestList.txt\";\n";
+    script +="MARKFAST(T1,wl);\n";
+    
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "1 0 0", "2 0 0");
+
   }
-
   
-  @Override
-  public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
-    RutaBlock parent = context.getParent();
-    @SuppressWarnings("unchecked")
-    List<AnnotationFS> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
-    return list;
-  }
-
 }

@@ -35,7 +35,7 @@ public class StringVariableExpression extends LiteralStringExpression {
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    String variableValue = parent.getEnvironment().getVariableValue(getVar(), String.class);
+    String variableValue = parent.getEnvironment().getVariableValue(getVar(), String.class, stream);
     return variableValue;
   }
 

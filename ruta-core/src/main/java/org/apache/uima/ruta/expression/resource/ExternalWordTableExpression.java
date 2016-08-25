@@ -22,6 +22,7 @@ package org.apache.uima.ruta.expression.resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.resource.RutaTable;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -39,7 +40,7 @@ public class ExternalWordTableExpression extends WordTableExpression {
   }
 
   @Override
-  public RutaTable getTable(MatchContext context) {
+  public RutaTable getTable(MatchContext context, RutaStream stream) {
     List<String> argList = new ArrayList<String>();
     for (IStringExpression each : args) {
       argList.add(each.getStringValue(context, null));

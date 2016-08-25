@@ -183,7 +183,7 @@ public class ForEachBlockTest {
   public void testComposed() throws Exception {
     String script = "NUM{-> T1};";
     script += "FOREACH(t) T1{}{\n";
-    script += "(t (SW NUM)* (SPECIAL NUM)?{-PARTOF(T2)}){->T2};";
+    script += "(t (SW NUM)* (SPECIAL NUM)?){-PARTOF(T2) ->T2};";
     script += "}";
 
     CAS cas = RutaTestUtils.getCAS("text 4x2^3 text");

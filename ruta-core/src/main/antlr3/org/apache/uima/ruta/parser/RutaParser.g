@@ -543,13 +543,13 @@ List<String> vars = new ArrayList<String>();
 	|
 	type = WORDLIST 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
-	name = Identifier (ASSIGN_EQUAL list = wordListExpression)? 
+	name = Identifier (ASSIGN_EQUAL list = wordListOrStringExpression)? 
 	{addVariable($blockDeclaration::env, name.getText(), type.getText());if(list != null){setValue($blockDeclaration::env, name.getText(), list);}} 
 	SEMI 
 	| 
 	type = WORDTABLE 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
-	name = Identifier (ASSIGN_EQUAL table = wordTableExpression)? 
+	name = Identifier (ASSIGN_EQUAL table = wordTableOrStringExpression)? 
 	{addVariable($blockDeclaration::env, name.getText(), type.getText());if(table != null){setValue($blockDeclaration::env, name.getText(), table);}}
 	SEMI 
 	|
@@ -2507,13 +2507,21 @@ List<IStringExpression> args = new ArrayList<IStringExpression>();
 	RESOURCE LPAREN name = dottedId (COMMA arg = stringExpression {args.add(arg);} )* RPAREN
 	{expr = ExpressionFactory.createExternalWordListExpression(name, args);}
 	|
-	id = Identifier
-	{expr = ExpressionFactory.createReferenceWordListExpression(id);}
-	|
 	path = RessourceLiteral
 	{expr = ExpressionFactory.createLiteralWordListExpression(path);}
+	|
+	id = Identifier
+	{expr = ExpressionFactory.createReferenceWordListExpression(id);}
 	;
 
+wordListOrStringExpression returns [WordListExpression expr = null]
+	:
+	(stringExpression)=> string = stringExpression
+	{expr = ExpressionFactory.createStringWordListExpression(string);}
+	|	
+	e = wordListExpression
+	{expr = e;}
+	;
 
 wordTableExpression returns [WordTableExpression expr = null]
 @init  {
@@ -2523,11 +2531,21 @@ List<IStringExpression> args = new ArrayList<IStringExpression>();
 	RESOURCE LPAREN name = dottedId (COMMA arg = stringExpression {args.add(arg);} )* RPAREN
 	{expr = ExpressionFactory.createExternalWordTableExpression(name, args);}
 	|
-	id = Identifier
-	{expr = ExpressionFactory.createReferenceWordTableExpression(id);}
-	|
 	path = RessourceLiteral
 	{expr = ExpressionFactory.createLiteralWordTableExpression(path);}
+	|
+	id = Identifier
+	{expr = ExpressionFactory.createReferenceWordTableExpression(id);}
+	;
+
+wordTableOrStringExpression returns [WordTableExpression expr = null]
+	:
+	(stringExpression)=>string = stringExpression
+	{expr = ExpressionFactory.createStringWordTableExpression(string);}
+	|	
+	e = wordTableExpression
+	{expr = e;}
+	|
 	;
 
 // not checked

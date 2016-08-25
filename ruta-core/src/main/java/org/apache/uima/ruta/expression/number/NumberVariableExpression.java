@@ -34,7 +34,7 @@ public class NumberVariableExpression extends AbstractNumberExpression {
 
   public double getDoubleValue(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    Object value = parent.getEnvironment().getVariableValue(getVar());
+    Object value = parent.getEnvironment().getVariableValue(getVar(), stream);
     double variableValue = 0;
     if (value instanceof Number) {
       variableValue = ((Number) value).doubleValue();
@@ -44,7 +44,7 @@ public class NumberVariableExpression extends AbstractNumberExpression {
 
   public float getFloatValue(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    Object value = parent.getEnvironment().getVariableValue(getVar());
+    Object value = parent.getEnvironment().getVariableValue(getVar(), stream);
     float variableValue = 0;
     if (value instanceof Number) {
       variableValue = ((Number) value).floatValue();
@@ -54,7 +54,7 @@ public class NumberVariableExpression extends AbstractNumberExpression {
 
   public int getIntegerValue(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    Object value = parent.getEnvironment().getVariableValue(getVar());
+    Object value = parent.getEnvironment().getVariableValue(getVar(), stream);
     int variableValue = 0;
     if (value instanceof Number) {
       variableValue = ((Number) value).intValue();

@@ -19,12 +19,13 @@
 
 package org.apache.uima.ruta.expression.resource;
 
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public abstract class WordListExpression extends RutaExpression {
 
-  public abstract RutaWordList getList(MatchContext context);
+  public abstract RutaWordList getList(MatchContext context, RutaStream stream);
 
 }

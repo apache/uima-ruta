@@ -17,31 +17,34 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.expression.annotation;
+package org.apache.uima.ruta.expression.resource;
 
-import java.util.List;
-
-import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.block.RutaBlock;
+import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class AnnotationListVariableExpression extends AbstractAnnotationListExpression {
+public class StringWordListExpression extends WordListExpression {
 
-  private String var;
+  private final IStringExpression expression;
 
-  public AnnotationListVariableExpression(String var) {
+  public StringWordListExpression(IStringExpression expression) {
     super();
-    this.var = var;
+    this.expression = expression;
+    
   }
 
-  
   @Override
-  public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
+  public RutaWordList getList(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    @SuppressWarnings("unchecked")
-    List<AnnotationFS> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
+    String stringValue = expression.getStringValue(context, stream);
+    RutaWordList list = parent.getEnvironment().getWordList(stringValue);
     return list;
+  }
+
+  public IStringExpression getExpression() {
+    return expression;
   }
 
 }

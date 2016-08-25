@@ -35,7 +35,7 @@ public class BooleanVariableExpression extends AbstractBooleanExpression {
   @Override
   public boolean getBooleanValue(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    Boolean variableValue = parent.getEnvironment().getVariableValue(var, Boolean.class);
+    Boolean variableValue = parent.getEnvironment().getVariableValue(var, Boolean.class, stream);
     if (variableValue == null) {
       return false;
     }

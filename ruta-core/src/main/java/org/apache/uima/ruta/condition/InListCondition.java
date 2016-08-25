@@ -62,7 +62,7 @@ public class InListCondition extends TerminalRutaCondition {
       return new EvaluatedCondition(this, false);
     }
     if (stringList == null) {
-      RutaWordList wordList = listExpr.getList(context);
+      RutaWordList wordList = listExpr.getList(context, stream);
       return new EvaluatedCondition(this, wordList.contains(text, false, 0, null, 0, true));
     }
     List<String> sList = stringList.getList(context, stream);
