@@ -22,9 +22,13 @@ package org.apache.uima.ruta.rule;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaEnvironment;
+import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -33,12 +37,16 @@ public class RutaRule extends AbstractRule {
 
   private ComposedRuleElement root;
 
-  private Map<String, RuleElement> label2Element;
+  /**
+   *  labels of all rule elements including those in inlined rules.
+   *  The values store the values of overridden variables.
+   */
+  private Map<String, Object> labels;
 
   public RutaRule(List<RuleElement> elements, RutaBlock parent, int id) {
     super(parent, id);
     this.root = new ComposedRuleElement(elements, null, null, null, null, parent);
-    this.label2Element = new HashMap<>();
+    this.labels = new HashMap<>();
   }
 
   @Override
@@ -48,10 +56,13 @@ public class RutaRule extends AbstractRule {
 
   public RuleApply apply(RutaStream stream, InferenceCrowd crowd, boolean remember) {
     RuleApply ruleApply = new RuleApply(this, remember);
+    MatchContext context = new MatchContext(getParent());
+    prepareEnvironment(context, stream);
     crowd.beginVisit(this, ruleApply);
     RuleMatch ruleMatch = new RuleMatch(this);
     root.startMatch(ruleMatch, ruleApply, null, null, stream, crowd);
     crowd.endVisit(this, ruleApply);
+    cleanupEnvironment(context, stream);
     return ruleApply;
   }
 
@@ -62,10 +73,6 @@ public class RutaRule extends AbstractRule {
 
   public final List<RuleElement> getRuleElements() {
     return root.getRuleElements();
-  }
-
-  public RuleElement getRuleElementWithLabel(String label) {
-    return label2Element.get(label);
   }
 
   @Override
@@ -91,7 +98,7 @@ public class RutaRule extends AbstractRule {
 
   private void fillLabelMap(RuleElement ruleElement) {
     if (!StringUtils.isBlank(ruleElement.getLabel())) {
-      label2Element.put(ruleElement.getLabel(), ruleElement);
+      labels.put(ruleElement.getLabel(), null);
     }
     if (ruleElement instanceof ComposedRuleElement) {
       ComposedRuleElement cre = (ComposedRuleElement) ruleElement;
@@ -100,8 +107,57 @@ public class RutaRule extends AbstractRule {
         fillLabelMap(each);
       }
     }
+    fillLabelMapWithInlinedRules(ruleElement.getInlinedConditionRules());
+    fillLabelMapWithInlinedRules(ruleElement.getInlinedActionRules());
   }
 
+  private void fillLabelMapWithInlinedRules(List<RutaStatement> rules) {
+    if (rules != null) {
+      for (RutaStatement eachInlined : rules) {
+        if (eachInlined instanceof RutaRule) {
+          RutaRule inlinedRule = (RutaRule) eachInlined;
+          fillLabelMap(inlinedRule.getRoot());
+        }
+      }
+    }
+  }
+
+  private void prepareEnvironment(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
+    RutaEnvironment environment = parent.getEnvironment();
+    for (Entry<String, Object> entry : labels.entrySet()) {
+      String label = entry.getKey();
+      if(environment.isVariable(label)) {
+        Class<?> variableType = environment.getVariableType(label);
+        Class<?> variableGenericType = environment.getVariableGenericType(label);
+        if(variableType != null && variableGenericType!= null && variableType.isAssignableFrom(List.class) && variableGenericType.isAssignableFrom(AnnotationFS.class)) {
+          labels.put(label, environment.getVariableValue(label, stream));
+        } else if(variableType != null && variableType.isAssignableFrom(AnnotationFS.class)) {
+        } else {
+          String type = variableType== null ? "unknown" : variableType.getSimpleName();
+          throw new RuntimeException("Overriding global variable '"+label+"' of type '"+ type+ "' with a local label variable is not allowed!");
+        }
+      } else {
+        environment.addVariable(label, RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST);
+      }
+    }
+  }
+
+  private void cleanupEnvironment(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
+    RutaEnvironment environment = parent.getEnvironment();
+    for (Entry<String, Object> entry : labels.entrySet()) {
+      String label = entry.getKey();
+      Object value = entry.getValue();
+      if(value == null) {
+        environment.removeVariable(label);
+      } else {
+        environment.setVariableValue(label, value);
+      }
+    }
+  }
+  
+  
   public ComposedRuleElement getRoot() {
     return root;
   }

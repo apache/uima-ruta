@@ -69,8 +69,13 @@ public class AnnotationTypeExpression extends RutaExpression
       return annotationExpression.getAnnotation(context, stream);
     } else if (annotationListExpression != null) {
       List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
-      if (annotations != null && !annotations.isEmpty())
-        return annotations.get(0);
+      if (annotations != null && !annotations.isEmpty()) {
+        if(context.getDirection()) {
+          return annotations.get(annotations.size()-1);
+        } else {
+          return annotations.get(0);
+        }
+      }
     } else {
       Type type = getType(context, stream);
       if (type != null) {

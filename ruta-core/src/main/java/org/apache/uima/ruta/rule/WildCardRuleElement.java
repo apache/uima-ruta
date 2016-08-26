@@ -640,12 +640,16 @@ public class WildCardRuleElement extends AbstractRuleElement {
       textsMatched.add(annotation);
     }
     result.setMatchInfo(base, textsMatched, stream);
+    context.getParent().getEnvironment().addMatchToVariable(ruleMatch, this, context, stream);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {
         crowd.beginVisit(condition, null);
         EvaluatedCondition eval = condition.eval(context, stream, crowd);
         crowd.endVisit(condition, null);
         evaluatedConditions.add(eval);
+        if(!eval.isValue()) {
+          break;
+        }
       }
     }
     result.setConditionInfo(base, evaluatedConditions);

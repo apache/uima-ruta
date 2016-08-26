@@ -24,7 +24,6 @@ import java.util.List;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleMatch;
 
 /**
  * An expression referring to an annotation matched by a rule element identified by a label.
@@ -39,11 +38,10 @@ private String label;
     this.label = label;
   }
  
+  @SuppressWarnings("unchecked")
   @Override
   public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
-    RuleMatch ruleMatch = context.getRuleMatch();
-    List<AnnotationFS> annotations = ruleMatch.getMatchedAnnotationsOfLabel(label);
-    return annotations;
+    return context.getParent().getEnvironment().getVariableValue(label, List.class, stream);
   }
   
   public String getLabel() {

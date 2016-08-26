@@ -77,6 +77,8 @@ import org.apache.uima.ruta.resource.RutaTable;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.resource.TreeWordList;
 import org.apache.uima.ruta.rule.MatchContext;
+import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.apache.uima.util.InvalidXMLException;
 import org.springframework.core.io.Resource;
@@ -210,7 +212,7 @@ public class RutaEnvironment {
 		availableTypes.put("ACTION", AbstractRutaAction.class);
 		availableTypes.put("WORDLIST", RutaWordList.class);
 		availableTypes.put("WORDTABLE", RutaTable.class);
-		availableTypes.put("ANNOTATIONLIST", List.class);
+		availableTypes.put(RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST, List.class);
 		availableTypes.put("BOOLEANLIST", List.class);
 		availableTypes.put("INTLIST", List.class);
 		availableTypes.put("DOUBLELIST", List.class);
@@ -218,7 +220,7 @@ public class RutaEnvironment {
 		availableTypes.put("STRINGLIST", List.class);
 		availableTypes.put("TYPELIST", List.class);
 		availableListTypes = new HashMap<String, Class<?>>();
-		availableListTypes.put("ANNOTATIONLIST", AnnotationFS.class);
+		availableListTypes.put(RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST, AnnotationFS.class);
 		availableListTypes.put("BOOLEANLIST", Boolean.class);
 		availableListTypes.put("INTLIST", Integer.class);
 		availableListTypes.put("DOUBLELIST", Double.class);
@@ -1087,5 +1089,42 @@ public class RutaEnvironment {
 	public Map<String, String> getNamespaces() {
 		return namespaces;
 	}
+
+//  public void addAnnotationToVariable(AnnotationFS annotation, String var, RutaStream stream) {
+//    Class<?> variableType = getVariableType(var);
+//    if(List.class.equals(variableType) &&  AnnotationFS.class.equals(getVariableGenericType(var))) {
+//      @SuppressWarnings("unchecked")
+//      List<AnnotationFS> value = getVariableValue(var, List.class, stream);
+//      if(value == null) {
+//        value = new ArrayList<>();
+//        setVariableValue(var, value);
+//      }
+//      value.add(annotation);
+//    } else if(AnnotationFS.class.equals(variableType)) {
+//      setVariableValue(var, annotation);
+//    }
+//  }
+  
+  public void addMatchToVariable(RuleMatch ruleMatch, RuleElement element, MatchContext context,  RutaStream stream) {
+    String var = element.getLabel();
+    if(StringUtils.isBlank(var)) {
+      return;
+    }
+    List<AnnotationFS> annotations = ruleMatch.getMatchedAnnotationsOfElement(element);
+    Class<?> variableType = getVariableType(var);
+    if(List.class.equals(variableType) &&  AnnotationFS.class.equals(getVariableGenericType(var))) {
+      setVariableValue(var, annotations);
+    } else if(AnnotationFS.class.equals(variableType)) {
+      if(context.getDirection()) {
+        AnnotationFS annotation = null;
+        if(context.getDirection()) {
+          annotation = annotations.get(annotations.size()-1);
+        } else {
+          annotation = annotations.get(0);
+        }
+        setVariableValue(var, annotation);
+      }
+    }
+  }
 
 }

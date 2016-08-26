@@ -58,7 +58,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
       Feature feature = features.get(features.size() - 1);
       if (feature instanceof LazyFeature) {
         LazyFeature lazyFeature = (LazyFeature) feature;
-        lazyFeature.initialize(context.getAnnotation());
+        feature = lazyFeature.initialize(context.getAnnotation());
       }
       return feature;
     } else {
@@ -120,7 +120,21 @@ public class SimpleFeatureExpression extends FeatureExpression {
         if (annotation != null) {
           return annotation.getType();
         }
-      }
+      } 
+//      else {
+//        IAnnotationListExpression annotationListExpression = mr.getAnnotationListExpression(context, stream);
+//        if (annotationListExpression != null) {
+//          CAS cas = stream.getCas();
+//          TypeSystem typeSystem = cas.getTypeSystem();
+//          typeSystem.
+//          Type mostGeneralType = null;
+//          cas.g
+//          List<AnnotationFS> annotationList = annotationListExpression.getAnnotationList(context, stream);
+//          for (AnnotationFS annotationFS : annotationList) {
+//            
+//          }
+//        }
+//      }
     }
     return null;
   }
@@ -167,8 +181,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
         LazyFeature lazyFeature = (LazyFeature) currentFeature;
         Feature delegate = lazyFeature.initialize(annotation);
         if (delegate == null) {
-          // invalid feature
-          return;
+          throw new RuntimeException("Invalid feature! Feature '"+lazyFeature.getFeatureName()+"' is not defined for type '"+annotation.getType()+"'.");
         } else {
           currentFeature = delegate;
         }

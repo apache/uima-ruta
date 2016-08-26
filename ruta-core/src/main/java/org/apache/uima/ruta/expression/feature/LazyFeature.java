@@ -77,4 +77,9 @@ public class LazyFeature implements Feature {
     return delegate.isMultipleReferencesAllowed();
   }
 
+  public String getFeatureName() {
+    return featureName;
+  }
+
+
 }

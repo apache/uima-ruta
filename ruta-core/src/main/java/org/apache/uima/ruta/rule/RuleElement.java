@@ -85,5 +85,9 @@ public interface RuleElement {
   void setLabel(String label);
 
   String getLabel();
+  
+  List<RutaStatement> getInlinedConditionRules();
+  
+  List<RutaStatement> getInlinedActionRules();
 
 }

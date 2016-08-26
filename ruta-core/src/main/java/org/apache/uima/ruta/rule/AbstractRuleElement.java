@@ -126,6 +126,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     return result;
   }
 
+  @Override
   public void apply(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     for (AbstractRutaAction action : actions) {
       crowd.beginVisit(action, null);
@@ -163,11 +164,13 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     return matchInfo;
   }
 
+  @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           MatchContext context, RutaStream stream) {
     return quantifier.evaluateMatches(matches, context, stream, emptyCrowd);
   }
 
+  @Override
   public List<Integer> getSelfIndexList() {
     List<Integer> result = new ArrayList<Integer>(1);
     if (getContainer() == null) {
@@ -178,6 +181,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     return result;
   }
 
+  @Override
   public boolean hasAncestor(boolean after) {
     RuleElementContainer c = getContainer();
     if (c == null) {
@@ -232,14 +236,17 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     return false;
   }
 
+  @Override
   public RuleElementQuantifier getQuantifier() {
     return quantifier;
   }
 
+  @Override
   public RutaBlock getParent() {
     return parent;
   }
 
+  @Override
   public List<AbstractRutaCondition> getConditions() {
     return conditions;
   }
@@ -248,6 +255,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     this.conditions = conditions;
   }
 
+  @Override
   public List<AbstractRutaAction> getActions() {
     return actions;
   }
@@ -260,46 +268,57 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     this.quantifier = quantifier;
   }
 
+  @Override
   public RutaRule getRule() {
     return container.getRule();
   }
 
+  @Override
   public RuleElementContainer getContainer() {
     return container;
   }
 
+  @Override
   public void setContainer(RuleElementContainer container) {
     this.container = container;
   }
 
+  @Override
   public void setStartAnchor(boolean start) {
     this.startAnchor = start;
   }
 
+  @Override
   public boolean isStartAnchor() {
     return startAnchor;
   }
 
+  @Override
   public String getLabel() {
     return label;
   }
 
+  @Override
   public void setLabel(String label) {
     this.label = label;
   }
 
+  @Override
   public void setInlinedConditionRules(List<RutaStatement> innerRules) {
     this.inlinedConditionRules = innerRules;
   }
 
+  @Override
   public List<RutaStatement> getInlinedConditionRules() {
     return inlinedConditionRules;
   }
 
+  @Override
   public void setInlinedActionRules(List<RutaStatement> innerRules) {
     this.inlinedActionRules = innerRules;
   }
 
+  @Override
   public List<RutaStatement> getInlinedActionRules() {
     return inlinedActionRules;
   }

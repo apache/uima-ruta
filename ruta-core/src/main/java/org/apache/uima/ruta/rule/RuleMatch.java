@@ -54,17 +54,6 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     return getMatchedAnnotations(element.getSelfIndexList(), element.getContainer());
   }
 
-  public List<AnnotationFS> getMatchedAnnotationsOfLabel(String label) {
-    RuleElement element = getRuleElementWithLabel(label);
-    return getMatchedAnnotationsOfElement(element);
-  }
-
-  private RuleElement getRuleElementWithLabel(String label) {
-    RutaRule rule = getRule();
-    RuleElement element = rule.getRuleElementWithLabel(label);
-    return element;
-  }
-
   public AnnotationFS getLastMatchedAnnotation(MatchContext context, RutaStream stream) {
     RuleElement element = context.getElement();
     AnnotationFS annotation = context.getAnnotation();

@@ -24,7 +24,6 @@ import java.util.List;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleMatch;
 
 /**
  * An expression referring to an annotation matched by a rule element identified by a label.
@@ -42,10 +41,9 @@ private String label;
   
   @Override
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
-    RuleMatch ruleMatch = context.getRuleMatch();
-    List<AnnotationFS> annotations = ruleMatch.getMatchedAnnotationsOfLabel(label);
+    @SuppressWarnings("unchecked")
+    List<AnnotationFS> annotations = context.getParent().getEnvironment().getVariableValue(label, List.class, stream);
     AnnotationFS annotation = null;
-    // TODO which one to return?
     if(annotations != null && !annotations.isEmpty()) {
       if(context.getDirection()) {
         annotation = annotations.get(annotations.size()-1);
