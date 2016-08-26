@@ -61,9 +61,6 @@ public class AnnotationTreeLabelProvider extends LabelProvider implements ILabel
       String name = ((ITreeNode) element).getName();
 
       if (name != null) {
-        // TODO reactive html stuff
-        // name = ParserUtils.trimSpacesBeginEnd(
-        // ParserUtils.trimAllTags(Translate.decode(name), false), "");
         name = name.replaceAll("[\\n]", "").replaceAll("[\\r]", "");
       }
       if (element instanceof TypeTreeNode) {

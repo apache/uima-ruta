@@ -21,8 +21,6 @@ package org.apache.uima.ruta.caseditor.view.tree;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
@@ -44,33 +42,33 @@ public class PrimitiveFeatureTreeNode implements ITreeNode {
     this.children = new ArrayList<ITreeNode>();
   }
 
+  @Override
   public void addChild(ITreeNode child) {
     this.children.add(child);
   }
 
+  @Override
   public ITreeNode[] getChildren() {
     return this.children.toArray(new ITreeNode[] {});
   }
 
-  public Iterator<ITreeNode> getChildrenIterator() {
-    return this.children.iterator();
-  }
-
+  @Override
   public String getName() {
     return f.getShortName() + ": " + value;
   }
 
-  public void getNodes(LinkedList<ITreeNode> list) {
-  }
 
+  @Override
   public ITreeNode getParent() {
     return parent;
   }
 
+  @Override
   public Type getType() {
     return f.getRange();
   }
 
+  @Override
   public boolean hasChildren() {
     if (children.size() > 0) {
       return true;
@@ -86,10 +84,13 @@ public class PrimitiveFeatureTreeNode implements ITreeNode {
     return value;
   }
 
+  @Override
   public void sort(Comparator<ITreeNode> cp) {
     // nothing to do
   }
 
+  @Override
+  @SuppressWarnings("unchecked")
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (PrimitiveFeatureTreeNode.class.equals(adapter)) {

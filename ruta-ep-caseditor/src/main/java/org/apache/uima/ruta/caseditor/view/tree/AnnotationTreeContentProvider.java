@@ -48,6 +48,7 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
     editor.addCasEditorInputListener(this);
   }
 
+  @Override
   public void dispose() {
     document.removeChangeListener(this);
     editor.removeCasEditorInputListener(this);
@@ -58,6 +59,7 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
    * 
    * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang. Object)
    */
+  @Override
   public Object[] getChildren(Object element) {
     if (element instanceof ITreeNode)
       return ((ITreeNode) element).getChildren();
@@ -69,6 +71,7 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
    * 
    * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object )
    */
+  @Override
   public Object getParent(Object element) {
     if (element instanceof ITreeNode)
       return ((ITreeNode) element).getParent();
@@ -81,6 +84,7 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
    * 
    * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang. Object)
    */
+  @Override
   public boolean hasChildren(Object element) {
     return (element instanceof ITreeNode) && ((ITreeNode) element).hasChildren();
   }
@@ -90,6 +94,7 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
    * 
    * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java .lang.Object)
    */
+  @Override
   public Object[] getElements(Object inputElement) {
     if (inputElement instanceof IRootTreeNode)
       return ((IRootTreeNode) inputElement).getChildren();
@@ -97,6 +102,7 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
     return null;
   }
 
+  @Override
   public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
     // changed();
   }
@@ -104,6 +110,7 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
   @Override
   public void changed() {
     Display.getDefault().syncExec(new Runnable() {
+      @Override
       public void run() {
         page.reloadTree();
       }
@@ -131,12 +138,9 @@ public class AnnotationTreeContentProvider extends AbstractAnnotationDocumentLis
   }
 
 
+  @Override
   public void casDocumentChanged(IEditorInput oldInput, ICasDocument oldDocument,
           IEditorInput newInput, ICasDocument newDocument) {
-//    document.removeChangeListener(this);
-//    document = newDocument;
-//    document.addChangeListener(this);
-//    changed();
   }
 
 }

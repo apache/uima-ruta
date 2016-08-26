@@ -53,6 +53,7 @@ public class ToolTipListener implements Listener {
    * 
    * @see org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets .Event)
    */
+  @Override
   public void handleEvent(Event event) {
     switch (event.type) {
       case SWT.Dispose:
@@ -82,9 +83,6 @@ public class ToolTipListener implements Listener {
           } else if (item.getData() instanceof TypeTreeNode) {
             TypeTreeNode ttn = (TypeTreeNode) item.getData();
             text = "Type: " + ttn.getName();
-            // TODO would be nice to show the description of the type, too
-            // however, that seems to require the TypeDescription object
-            // Type type = ttn.getType();
           }
           if (tip != null && !tip.isDisposed())
             tip.dispose();

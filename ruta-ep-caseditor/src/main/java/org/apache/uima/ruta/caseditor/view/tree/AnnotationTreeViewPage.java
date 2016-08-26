@@ -100,6 +100,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   public class TreeViewAnnotationStyleChangeListener extends AnnotationStyleChangeListener {
 
+    @Override
     public void annotationStylesChanged(Collection<AnnotationStyle> styles) {
       for (AnnotationStyle annotationStyle : styles) {
         String annotation = annotationStyle.getAnnotation();
@@ -130,7 +131,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
   private class ShowTypesWithoutAnnotations extends Action {
 
     public ShowTypesWithoutAnnotations() {
-      super("Show Types Without Annotations", Action.AS_CHECK_BOX);
+      super("Show Types Without Annotations", IAction.AS_CHECK_BOX);
       setChecked(isTreeWithTypesWithoutAnnotations());
     }
 
@@ -202,6 +203,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
     KeyListener checkSelectedKeyListener = new KeyAdapter() {
 
+      @Override
       public void keyPressed(KeyEvent keyEvent) {
         int keyCode = keyEvent.keyCode;
         if (keyCode == SWT.CR || keyCode == SWT.LF || keyCode == SWT.KEYPAD_CR) {
@@ -221,7 +223,6 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     filterTypeTextField.addListener(SWT.KeyUp, this);
     filterTypeTextField.addListener(SWT.MouseUp, this);
     filterTypeTextField.addListener(SWT.Modify, this);
-    // TODO only for 3.3 see pom
     filterTypeTextField.setMessage("Only types with...");
     filterTypeTextField.addKeyListener(checkSelectedKeyListener);
 
@@ -235,7 +236,6 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     filterCoveredTextTextField.addListener(SWT.KeyUp, this);
     filterCoveredTextTextField.addListener(SWT.MouseUp, this);
     filterCoveredTextTextField.addListener(SWT.Modify, this);
-    // TODO only for 3.3 see pom
     filterCoveredTextTextField.setMessage("Only annotations with...");
     filterCoveredTextTextField.addKeyListener(checkSelectedKeyListener);
 
@@ -267,8 +267,6 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       @Override
       public void keyPressed(KeyEvent e) {
         int keyCode = e.keyCode;
-        // TODO refactor to actions with key bindings: ...
-        //
         // backspace or delete: delete annotations
         if (keyCode == SWT.BS || keyCode == SWT.DEL) {
           deleteSelectedAnnotations();
@@ -313,12 +311,6 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     editor.addAnnotationListener(this);
     if (!useSelection) {
       reloadTree();
-
-      // TODO auto-check all
-      // if (RutaCasEditorPlugin.getDefault().getPreferenceStore().getBoolean("AlwaysCheckAll")) {
-      // checkAll();
-      // }
-
     }
 
   }
@@ -340,7 +332,6 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     createActionUncheckAll.setImageDescriptor(RutaCasEditorPlugin
             .getImageDescriptor("/icons/lightbulb_off.png"));
     toolBarManager.add(createActionUncheckAll);
-    //
     if (!useSelection) {
       IAction showTypesWithoutAnnotations = new ShowTypesWithoutAnnotations();
       menuManager.add(showTypesWithoutAnnotations);
@@ -350,16 +341,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
   /**
    * Unchecks all types of the typesystem so that they are not highlighted anymore.
    * 
-   * TODO use more efficient implementation since UIMA 2.5.1 setShownAnnotationType!s!
    */
   public void uncheckAll() {
-    // Collection<Type> shownAnnotationTypes = new
-    // ArrayList<Type>(editor.getShownAnnotationTypes());
-    // Iterator<Type> typeIterator = shownAnnotationTypes.iterator();
-    // while (typeIterator.hasNext()) {
-    // Type type = (Type) typeIterator.next();
-    // editor.setShownAnnotationType(type, false);
-    // }
     editor.setShownAnnotationTypes(new LinkedList<Type>());
     getTreeViewer().getTree().deselectAll();
   }
@@ -367,11 +350,10 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
   /**
    * Checks all visible types of the tree to be highlighted.
    * 
-   * TODO use more efficient implementation since UIMA 2.5.1 setShownAnnotationType!s!
    */
   public void checkAllVisible() {
     TypeSystem ts = editor.getDocument().getCAS().getTypeSystem();
-    Type documentAnnotationType = ts.getType("uima.tcas.DocumentAnnotation");
+    Type documentAnnotationType = ts.getType(CAS.TYPE_NAME_DOCUMENT_ANNOTATION);
     List<Type> selectedTypes = new LinkedList<Type>();
     for (TreeItem i : getTreeViewer().getTree().getItems()) {
       Object e = i.getData();
@@ -379,7 +361,6 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
         TypeTreeNode typeTreeNode = (TypeTreeNode) e;
         Type type = typeTreeNode.getType();
         if (!documentAnnotationType.equals(type)) {
-          // editor.setShownAnnotationType(type, true);
           selectedTypes.add(type);
         }
       }
@@ -436,12 +417,11 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
    * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse
    * .jface.viewers.DoubleClickEvent)
    */
+  @Override
   public void doubleClick(DoubleClickEvent event) {
     if (event.getSelection() != null && event.getSelection() instanceof ITreeSelection) {
       Object treeNode = ((ITreeSelection) event.getSelection()).getFirstElement();
       if (treeNode instanceof AnnotationTreeNode) {
-        // FeatureStructureSelectionProvider provider =
-        // ((FeatureStructureSelectionProvider)editor.getSelectionProvider();
       } else if (treeNode instanceof TypeTreeNode) {
         editor.setAnnotationMode(((TypeTreeNode) treeNode).getType());
       }
@@ -453,8 +433,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
    * 
    * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt .events.MouseEvent)
    */
+  @Override
   public void mouseDoubleClick(MouseEvent e) {
-    // TODO
 
   }
 
@@ -529,83 +509,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
    * 
    * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events .MouseEvent)
    */
+  @Override
   public void mouseDown(final MouseEvent mouseEvent) {
-    // TODO popup menu deactivated
-    // if (mouseEvent.button == 3) {
-    // Display display = Display.getCurrent();
-    // Menu menu = new Menu(display.getActiveShell(), SWT.POP_UP);
-    // MenuItem itemFgC = new MenuItem(menu, SWT.PUSH);
-    //
-    // itemFgC.setText("Change Font Color");
-    // itemFgC.addListener(SWT.Selection, new Listener() {
-    // public void handleEvent(Event e) {
-    // TreeItem item = treeView.getTree().getItem(new Point(mouseEvent.x, mouseEvent.y));
-    //
-    // if (item != null && item.getData() instanceof ITreeNode) {
-    // Type type = ((ITreeNode) item.getData()).getType();
-    // ColorDialog cd = new ColorDialog(Display.getCurrent().getActiveShell());
-    // cd.setRGB(casData.getForegroundColor(type).getRGB());
-    //
-    // RGB rgb = cd.open();
-    //
-    // if (rgb != null)
-    // casData.setForegroundColor(type, new Color(Display.getCurrent(), rgb));
-    // }
-    // }
-    // });
-    //
-    // MenuItem itemBgC = new MenuItem(menu, SWT.PUSH);
-    // itemBgC.setText("Change Background Color");
-    // itemBgC.addListener(SWT.Selection, new Listener() {
-    // public void handleEvent(Event e) {
-    // TreeItem item = treeView.getTree().getItem(new Point(mouseEvent.x, mouseEvent.y));
-    //
-    // if (item != null && item.getData() instanceof ITreeNode) {
-    // Type type = ((ITreeNode) item.getData()).getType();
-    //
-    // ColorDialog cd = new ColorDialog(Display.getCurrent().getActiveShell());
-    // cd.setRGB(casData.getBackgroundColor(type).getRGB());
-    //
-    // RGB rgb = cd.open();
-    //
-    // if (rgb != null)
-    // casData.setBackgroundColor(type, new Color(Display.getCurrent(), rgb));
-    // }
-    // }
-    // });
-    //
-    // TreeItem item = treeView.getTree().getItem(new Point(mouseEvent.x, mouseEvent.y));
-    // if (item != null && item.getData() instanceof FeatureTreeNode) {
-    // itemBgC.setEnabled(false);
-    // itemFgC.setEnabled(false);
-    // }
-    //
-    // new MenuItem(menu, SWT.SEPARATOR);
-    //
-    // MenuItem itemDelA = new MenuItem(menu, SWT.PUSH);
-    // itemDelA.setText("Delete selected Items");
-    // itemDelA.addListener(SWT.Selection, new Listener() {
-    // public void handleEvent(Event e) {
-    // deleteSelectedAnnotations();
-    // }
-    // });
-    //
-    // itemDelA.setEnabled(false);
-    // TreeItem[] items = treeView.getTree().getSelection();
-    // for (TreeItem ti : items)
-    // if (!(ti.getData() instanceof FeatureTreeNode)) {
-    // itemDelA.setEnabled(true);
-    // break;
-    // }
-    //
-    // menu.setVisible(true);
-    //
-    // while (!menu.isDisposed() && menu.isVisible()) {
-    // if (!display.readAndDispatch())
-    // display.sleep();
-    // }
-    // menu.dispose();
-    // }
   }
 
   /*
@@ -613,6 +518,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
    * 
    * @seeorg.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events. MouseEvent)
    */
+  @Override
   public void mouseUp(MouseEvent e) {
   }
 
@@ -712,6 +618,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     return root;
   }
 
+  @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
     if (!useSelection)
       return;
@@ -721,6 +628,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     }
   }
 
+  @Override
   public void handleEvent(Event event) {
     if ((event.widget == filterTypeTextField || event.widget == filterCoveredTextTextField)
             && event.type == SWT.Modify) {
@@ -772,6 +680,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     }
   }
 
+  @Override
   public void checkStateChanged(CheckStateChangedEvent event) {
     Object element = event.getElement();
     boolean checked = event.getChecked();
@@ -786,10 +695,12 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     }
   }
 
+  @Override
   public void annotationModeChanged(Type newMode) {
     getTreeViewer().setGrayed(new TypeTreeNode(newMode), true);
   }
 
+  @Override
   public void showAnnotationsChanged(Collection<Type> shownAnnotationTypes) {
     List<TypeTreeNode> nodes = toNodes(shownAnnotationTypes);
     getTreeViewer().setCheckedElements(nodes.toArray());

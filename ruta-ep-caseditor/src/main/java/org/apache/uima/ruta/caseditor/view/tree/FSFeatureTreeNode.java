@@ -42,6 +42,7 @@ public class FSFeatureTreeNode extends FSTreeNode implements IAnnotationNode, IA
     this.feature = feature;
   }
 
+  @Override
   public AnnotationFS getAnnotation() {
     return (AnnotationFS) fs;
   }
@@ -51,6 +52,7 @@ public class FSFeatureTreeNode extends FSTreeNode implements IAnnotationNode, IA
     return feature.getShortName() + ": " + getAnnotation().getCoveredText();
   }
 
+  @Override
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
     if (FSTreeNode.class.equals(adapter)) {
       return this;

@@ -20,8 +20,6 @@
 package org.apache.uima.ruta.caseditor.view.tree;
 
 import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 import org.apache.uima.cas.Type;
 import org.eclipse.core.runtime.IAdaptable;
@@ -32,8 +30,6 @@ public interface ITreeNode extends IAdaptable {
 
   public ITreeNode[] getChildren();
 
-  public Iterator<ITreeNode> getChildrenIterator();
-
   public String getName();
 
   public ITreeNode getParent();
@@ -41,8 +37,6 @@ public interface ITreeNode extends IAdaptable {
   public boolean hasChildren();
 
   public Type getType();
-
-  public void getNodes(LinkedList<ITreeNode> list);
 
   public void sort(Comparator<ITreeNode> cp);
 }

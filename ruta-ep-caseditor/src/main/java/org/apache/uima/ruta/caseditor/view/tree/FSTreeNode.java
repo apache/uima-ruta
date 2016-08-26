@@ -50,10 +50,12 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
     parentTypes.pop();
   }
 
+  @Override
   public String getName() {
     return fs.getType().getShortName();
   }
 
+  @Override
   public Type getType() {
     return fs.getType();
   }
@@ -113,6 +115,8 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
     return frequency < 2;
   }
 
+  @Override
+  @SuppressWarnings("unchecked")
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
     if (FSTreeNode.class.equals(adapter)) {
       return this;

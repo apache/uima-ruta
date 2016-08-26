@@ -37,6 +37,7 @@ public class AnnotationTreeNode extends FSTreeNode implements IAnnotationNode, I
     super(parent, annotation, parentTypes);
   }
 
+  @Override
   public AnnotationFS getAnnotation() {
     return (AnnotationFS) fs;
   }
@@ -46,6 +47,7 @@ public class AnnotationTreeNode extends FSTreeNode implements IAnnotationNode, I
     return getAnnotation().getCoveredText();
   }
 
+  @Override
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (FSTreeNode.class.equals(adapter)) {

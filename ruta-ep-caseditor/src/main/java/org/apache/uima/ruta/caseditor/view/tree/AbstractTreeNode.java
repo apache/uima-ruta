@@ -22,8 +22,6 @@ package org.apache.uima.ruta.caseditor.view.tree;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 public abstract class AbstractTreeNode implements ITreeNode {
 
@@ -40,38 +38,27 @@ public abstract class AbstractTreeNode implements ITreeNode {
     children = new ArrayList<ITreeNode>();
   }
 
+  @Override
   public void addChild(ITreeNode child) {
     children.add(child);
   }
 
+  @Override
   public ITreeNode[] getChildren() {
     return children.toArray(new ITreeNode[] {});
   }
 
-  public Iterator<ITreeNode> getChildrenIterator() {
-    return children.iterator();
-  }
-
+  @Override
   public ITreeNode getParent() {
     return parent;
   }
 
+  @Override
   public boolean hasChildren() {
     return children.size() > 0;
   }
 
-  public void getNodes(LinkedList<ITreeNode> list) {
-    Iterator<ITreeNode> iter = getChildrenIterator();
-
-    while (iter.hasNext()) {
-      ITreeNode node = iter.next();
-
-      list.add(node);
-
-      node.getNodes(list);
-    }
-  }
-
+  @Override
   public void sort(Comparator<ITreeNode> cp) {
     Collections.sort(children, cp);
   }

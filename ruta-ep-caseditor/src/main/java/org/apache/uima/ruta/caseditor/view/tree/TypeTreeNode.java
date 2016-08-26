@@ -34,10 +34,12 @@ public class TypeTreeNode extends AbstractTreeNode {
     this.type = type;
   }
 
+  @Override
   public String getName() {
     return type.getName();
   }
 
+  @Override
   public Type getType() {
     return type;
   }
@@ -57,6 +59,8 @@ public class TypeTreeNode extends AbstractTreeNode {
     return type.hashCode();
   }
 
+  @Override
+  @SuppressWarnings("unchecked")
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (TypeTreeNode.class.equals(adapter)) {
