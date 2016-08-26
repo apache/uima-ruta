@@ -81,21 +81,23 @@ public class SimpleFeatureExpression extends FeatureExpression {
           throw new IllegalArgumentException(
                   "Not able to access feature " + each + " of type " + type.getName());
         }
-      } else if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT)) {
-        // there is no explicit feature for coveredText
-        feature = new CoveredTextFeature();
+      } else if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT)
+              || StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT_SHORT)) {
+        if(type != null) {
+          feature = type.getFeatureByBaseName(each);
+        }
+        if (feature == null) {
+          // there is no explicit feature for coveredText
+          feature = new CoveredTextFeature();
+        }
       } else if (type == null || type.isArray()) {
         // lazy check of range
         feature = new LazyFeature(each);
       } else {
         feature = type.getFeatureByBaseName(each);
         if (feature == null) {
-          if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT_SHORT)) {
-            feature = new CoveredTextFeature();
-          } else {
-            throw new IllegalArgumentException(
-                    "Not able to access feature " + each + " of type " + type.getName());
-          }
+          throw new IllegalArgumentException(
+                  "Not able to access feature " + each + " of type " + type.getName());
         }
       }
       result.add(feature);
@@ -120,21 +122,23 @@ public class SimpleFeatureExpression extends FeatureExpression {
         if (annotation != null) {
           return annotation.getType();
         }
-      } 
-//      else {
-//        IAnnotationListExpression annotationListExpression = mr.getAnnotationListExpression(context, stream);
-//        if (annotationListExpression != null) {
-//          CAS cas = stream.getCas();
-//          TypeSystem typeSystem = cas.getTypeSystem();
-//          typeSystem.
-//          Type mostGeneralType = null;
-//          cas.g
-//          List<AnnotationFS> annotationList = annotationListExpression.getAnnotationList(context, stream);
-//          for (AnnotationFS annotationFS : annotationList) {
-//            
-//          }
-//        }
-//      }
+      }
+      // else {
+      // IAnnotationListExpression annotationListExpression =
+      // mr.getAnnotationListExpression(context, stream);
+      // if (annotationListExpression != null) {
+      // CAS cas = stream.getCas();
+      // TypeSystem typeSystem = cas.getTypeSystem();
+      // typeSystem.
+      // Type mostGeneralType = null;
+      // cas.g
+      // List<AnnotationFS> annotationList = annotationListExpression.getAnnotationList(context,
+      // stream);
+      // for (AnnotationFS annotationFS : annotationList) {
+      //
+      // }
+      // }
+      // }
     }
     return null;
   }
@@ -181,7 +185,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
         LazyFeature lazyFeature = (LazyFeature) currentFeature;
         Feature delegate = lazyFeature.initialize(annotation);
         if (delegate == null) {
-          throw new RuntimeException("Invalid feature! Feature '"+lazyFeature.getFeatureName()+"' is not defined for type '"+annotation.getType()+"'.");
+          throw new RuntimeException("Invalid feature! Feature '" + lazyFeature.getFeatureName()
+                  + "' is not defined for type '" + annotation.getType() + "'.");
         } else {
           currentFeature = delegate;
         }
