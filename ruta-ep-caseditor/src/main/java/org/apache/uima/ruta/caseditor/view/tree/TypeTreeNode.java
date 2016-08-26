@@ -19,18 +19,19 @@
 
 package org.apache.uima.ruta.caseditor.view.tree;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 
 public class TypeTreeNode extends AbstractTreeNode {
 
   private Type type;
 
-  public TypeTreeNode(Type type) {
-    this(null, type);
+  public TypeTreeNode(CAS cas, Type type) {
+    this(cas, null, type);
   }
 
-  public TypeTreeNode(ITreeNode parent, Type type) {
-    super(parent);
+  public TypeTreeNode(CAS cas, ITreeNode parent, Type type) {
+    super(cas, parent);
     this.type = type;
   }
 

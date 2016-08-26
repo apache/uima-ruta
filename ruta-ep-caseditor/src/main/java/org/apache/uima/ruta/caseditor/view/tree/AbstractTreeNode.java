@@ -22,32 +22,45 @@ package org.apache.uima.ruta.caseditor.view.tree;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+
+import org.apache.uima.cas.CAS;
 
 public abstract class AbstractTreeNode implements ITreeNode {
 
+  private static final ITreeNode[] emptyArray = new ITreeNode[0];
+
   private ITreeNode parent;
 
-  private ArrayList<ITreeNode> children;
+  protected List<ITreeNode> children;
 
-  public AbstractTreeNode() {
-    this(null);
+  /**
+   * not used yet, may be null
+   */
+  protected final CAS cas;
+
+  public AbstractTreeNode(CAS cas) {
+    this(cas, null);
   }
 
-  public AbstractTreeNode(ITreeNode parent) {
+  public AbstractTreeNode(CAS cas, ITreeNode parent) {
     this.parent = parent;
-    children = new ArrayList<ITreeNode>();
+    this.cas = cas;
   }
 
   @Override
   public void addChild(ITreeNode child) {
+    if(children == null) {
+      children = new ArrayList<>();
+    }
     children.add(child);
   }
 
   @Override
   public ITreeNode[] getChildren() {
-    return children.toArray(new ITreeNode[] {});
+    return children.toArray(emptyArray);
   }
-
+  
   @Override
   public ITreeNode getParent() {
     return parent;
@@ -55,6 +68,9 @@ public abstract class AbstractTreeNode implements ITreeNode {
 
   @Override
   public boolean hasChildren() {
+    if(children == null) {
+      return false;
+    }
     return children.size() > 0;
   }
 

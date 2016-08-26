@@ -19,11 +19,12 @@
 
 package org.apache.uima.ruta.caseditor.view.tree;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FeatureStructure;
 
 public interface IRootTreeNode extends ITreeNode {
 
-  public void insertFS(FeatureStructure annotation, boolean withParents);
+  public void insertFS(FeatureStructure annotation, CAS cas, boolean withParents);
 
   public void sort();
 }

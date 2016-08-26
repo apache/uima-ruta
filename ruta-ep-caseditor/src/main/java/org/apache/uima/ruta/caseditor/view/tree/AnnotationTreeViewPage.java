@@ -581,12 +581,12 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
   }
 
   public IRootTreeNode getTypeOrderedTree(int pos, String manualTypeFilter, String manualTextFilter) {
-    TypeOrderedRootTreeNode root = new TypeOrderedRootTreeNode();
+    CAS cas = editor.getDocument().getCAS();
+    TypeOrderedRootTreeNode root = new TypeOrderedRootTreeNode(cas);
     IPreferenceStore preferenceStore = RutaCasEditorPlugin.getDefault().getPreferenceStore();
     boolean withParents = preferenceStore
             .getBoolean(CasEditorViewsPreferenceConstants.SHOW_PARENT_TYPES);
     if (isTreeWithTypesWithoutAnnotations()) {
-      CAS cas = editor.getDocument().getCAS();
       Type atype = cas.getAnnotationType();
       TypeSystem ts = cas.getTypeSystem();
       Iterator<Type> tit = ts.getProperlySubsumedTypes(atype).iterator();
@@ -595,7 +595,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
         boolean typeConstraint = StringUtils.isEmpty(manualTypeFilter)
                 || type.getName().toLowerCase().indexOf(manualTypeFilter.toLowerCase()) != -1;
         if (typeConstraint) {
-          root.getTreeNode(type); // register type
+          root.getTreeNode(type, cas); // register type
         }
       }
     }
@@ -610,7 +610,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
               || annotationFS.getCoveredText().toLowerCase()
                       .indexOf(manualTextFilter.toLowerCase()) != -1;
       if (offsetConstraint && typeConstraint && textConstraint) {
-        root.insertFS(annotationFS, withParents);
+        root.insertFS(annotationFS, cas, withParents);
       }
 
     }
@@ -654,7 +654,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     Collection<Type> shownAnnotationTypes = editor.getShownAnnotationTypes();
     List<TypeTreeNode> nodes = toNodes(shownAnnotationTypes);
     getTreeViewer().setCheckedElements(nodes.toArray());
-    getTreeViewer().setGrayed(new TypeTreeNode(editor.getAnnotationMode()), true);
+    getTreeViewer().setGrayed(new TypeTreeNode(null, editor.getAnnotationMode()), true);
     // try to restore selection:
     if (selectedFS != null) {
       Type type = selectedFS.getType();
@@ -697,7 +697,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   @Override
   public void annotationModeChanged(Type newMode) {
-    getTreeViewer().setGrayed(new TypeTreeNode(newMode), true);
+    getTreeViewer().setGrayed(new TypeTreeNode(null, newMode), true);
   }
 
   @Override
@@ -709,7 +709,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
   private List<TypeTreeNode> toNodes(Collection<Type> shownAnnotationTypes) {
     List<TypeTreeNode> nodes = new ArrayList<TypeTreeNode>();
     for (Type type : shownAnnotationTypes) {
-      nodes.add(new TypeTreeNode(type));
+      nodes.add(new TypeTreeNode(null, type));
     }
     return nodes;
   }

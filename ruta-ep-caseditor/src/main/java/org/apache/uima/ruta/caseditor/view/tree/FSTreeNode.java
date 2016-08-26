@@ -25,6 +25,7 @@ import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.ArrayFS;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CommonArrayFS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -36,16 +37,16 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
 
   protected FeatureStructure fs;
 
-  public FSTreeNode(ITreeNode parent, FeatureStructure annotation) {
-    this(parent, annotation, new Stack<Type>());
+  public FSTreeNode(CAS cas, ITreeNode parent, FeatureStructure annotation) {
+    this(cas, parent, annotation, new Stack<Type>());
   }
 
-  public FSTreeNode(ITreeNode parent, FeatureStructure annotation, Stack<Type> parentTypes) {
-    super(parent);
+  public FSTreeNode(CAS cas, ITreeNode parent, FeatureStructure annotation, Stack<Type> parentTypes) {
+    super(cas, parent);
     this.fs = annotation;
     parentTypes.push(fs.getType());
     for (Feature f : annotation.getType().getFeatures()) {
-      addFeatures(this, f, annotation, parentTypes);
+      addFeatures(this, f, annotation, cas, parentTypes);
     }
     parentTypes.pop();
   }
@@ -60,7 +61,7 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
     return fs.getType();
   }
 
-  public void addFeatures(ITreeNode parent, Feature f, FeatureStructure featureStructure,
+  public void addFeatures(ITreeNode parent, Feature f, FeatureStructure featureStructure, CAS cas,
           Stack<Type> parentTypes) {
     if (f.getRange().isArray()) {
       // handle all kinds of arrays
@@ -81,9 +82,9 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
                 ITreeNode fsNode;
                 if (fs instanceof AnnotationFS) {
                   AnnotationFS faa = (AnnotationFS) fs;
-                  fsNode = new AnnotationTreeNode(arrayNode, faa, parentTypes);
+                  fsNode = new AnnotationTreeNode(cas, arrayNode, faa, parentTypes);
                 } else {
-                  fsNode = new TypeTreeNode(arrayNode, fsType);
+                  fsNode = new TypeTreeNode(cas, arrayNode, fsType);
                 }
                 arrayNode.addChild(fsNode);
               }
@@ -105,7 +106,7 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
     } else if (f.getRange() instanceof Type) {
       FeatureStructure featureValue = featureStructure.getFeatureValue(f);
       if (featureValue instanceof AnnotationFS && expandable(featureValue.getType(), parentTypes)) {
-        parent.addChild(new FSFeatureTreeNode(this, f, featureValue, parentTypes));
+        parent.addChild(new FSFeatureTreeNode(cas, this, f, featureValue, parentTypes));
       }
     }
   }
