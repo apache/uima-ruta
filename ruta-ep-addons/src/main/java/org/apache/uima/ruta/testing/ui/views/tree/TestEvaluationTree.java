@@ -49,11 +49,11 @@ public class TestEvaluationTree {
     }
     // Creating RootNode and children that function as root nodes
     // for the FalsePositive /FalseNegative subtrees
-    root = new TypeTreeNode(null, cas.getAnnotationType());
+    root = new TypeTreeNode(cas, null, cas.getAnnotationType());
 
-    TypeTreeNode fproot = new TypeTreeNode(root, falsePositiveType);
-    TypeTreeNode fnroot = new TypeTreeNode(root, falseNegativeType);
-    TypeTreeNode tproot = new TypeTreeNode(root, truePositiveType);
+    TypeTreeNode fproot = new TypeTreeNode(cas, root, falsePositiveType);
+    TypeTreeNode fnroot = new TypeTreeNode(cas, root, falseNegativeType);
+    TypeTreeNode tproot = new TypeTreeNode(cas, root, truePositiveType);
 
     // Iterating through CAS and adding nodes to according subtrees
 
@@ -76,10 +76,10 @@ public class TestEvaluationTree {
         FeatureStructure originalfs = fs.getFeatureValue(original);
         TypeTreeNode parentTypeNode = containsTypeNode(fproot, originalfs);
         if (parentTypeNode == null && originalfs != null) {
-          parentTypeNode = new TypeTreeNode(fproot, originalfs.getType());
+          parentTypeNode = new TypeTreeNode(cas, fproot, originalfs.getType());
           fproot.addChild(parentTypeNode);
         }
-        AnnotationTreeNode newNode = new AnnotationTreeNode(parentTypeNode, a);
+        AnnotationTreeNode newNode = new AnnotationTreeNode(cas, parentTypeNode, a);
         if (parentTypeNode != null) {
           parentTypeNode.addChild(newNode);
         } else {
