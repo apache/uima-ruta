@@ -57,12 +57,12 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
   private Number getNumberValue(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
     Number result = null;
-    Feature feature = fe.getFeature(context, stream);
-    Type range = feature.getRange();
     List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
     Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
             false);
     if (!featureAnnotations.isEmpty()) {
+      Feature feature = fe.getFeature(context, stream);
+      Type range = feature.getRange();
       AnnotationFS next = featureAnnotations.iterator().next();
       if (UIMAConstants.TYPE_BYTE.equals(range.getName())) {
         result = next.getByteValue(feature);

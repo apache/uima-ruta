@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -315,6 +316,24 @@ public class AnnotationLabelExpressionTest {
     Assert.assertFalse(Ruta.matches(cas.getJCas(), "e:CW e;"));
   }
 
+  @Test
+  public void testSpecialFeatureWithoutContextMatch() throws Exception {
+    Map<String, String> types = new HashMap<>();
+    String type = "Valued";
+    types.put(type, "uima.tcas.Annotation");
+    Map<String, List<TestFeature>> features = new HashMap<>();
+    List<TestFeature> list = new ArrayList<>();
+    list.add(new TestFeature("value", "", "uima.cas.Integer"));
+    features.put(type, list);
+    CAS cas = RutaTestUtils.getCAS("Some text.", types, features);
+    
+    String script = "a:W{-> Valued, Valued.value = a.end};\n";
+    script += "(a:Valued b:Valued){a.value == (b.value-5) -> T1};";
+    
+    Ruta.apply(cas, script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text");
+  }
+  
   @Test
   public void testAcrossInlinedRules() throws Exception {
     String script = "(# PERIOD){->T1};\n";

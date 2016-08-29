@@ -58,7 +58,12 @@ public class SimpleFeatureExpression extends FeatureExpression {
       Feature feature = features.get(features.size() - 1);
       if (feature instanceof LazyFeature) {
         LazyFeature lazyFeature = (LazyFeature) feature;
-        feature = lazyFeature.initialize(context.getAnnotation());
+        AnnotationFS annotation = context.getAnnotation();
+        List<AnnotationFS> targetAnnotation = getTargetAnnotation(annotation, this, context, stream);
+        if(targetAnnotation != null && !targetAnnotation.isEmpty()) {
+          annotation = targetAnnotation.get(0);
+        }
+        feature = lazyFeature.initialize(annotation);
       }
       return feature;
     } else {
@@ -123,22 +128,6 @@ public class SimpleFeatureExpression extends FeatureExpression {
           return annotation.getType();
         }
       }
-      // else {
-      // IAnnotationListExpression annotationListExpression =
-      // mr.getAnnotationListExpression(context, stream);
-      // if (annotationListExpression != null) {
-      // CAS cas = stream.getCas();
-      // TypeSystem typeSystem = cas.getTypeSystem();
-      // typeSystem.
-      // Type mostGeneralType = null;
-      // cas.g
-      // List<AnnotationFS> annotationList = annotationListExpression.getAnnotationList(context,
-      // stream);
-      // for (AnnotationFS annotationFS : annotationList) {
-      //
-      // }
-      // }
-      // }
     }
     return null;
   }
