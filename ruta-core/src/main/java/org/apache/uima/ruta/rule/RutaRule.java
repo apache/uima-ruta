@@ -116,6 +116,7 @@ public class RutaRule extends AbstractRule {
       for (RutaStatement eachInlined : rules) {
         if (eachInlined instanceof RutaRule) {
           RutaRule inlinedRule = (RutaRule) eachInlined;
+          inlinedRule.setInlined(true);
           fillLabelMap(inlinedRule.getRoot());
         }
       }
@@ -123,6 +124,10 @@ public class RutaRule extends AbstractRule {
   }
 
   private void prepareEnvironment(MatchContext context, RutaStream stream) {
+    if(isInlined()) {
+      // only the actual rule may setup the environment
+      return;
+    }
     RutaBlock parent = context.getParent();
     RutaEnvironment environment = parent.getEnvironment();
     for (Entry<String, Object> entry : labels.entrySet()) {
@@ -144,6 +149,10 @@ public class RutaRule extends AbstractRule {
   }
 
   private void cleanupEnvironment(MatchContext context, RutaStream stream) {
+    if(isInlined()) {
+      // only the actual rule may revert the environment
+      return;
+    }
     RutaBlock parent = context.getParent();
     RutaEnvironment environment = parent.getEnvironment();
     for (Entry<String, Object> entry : labels.entrySet()) {

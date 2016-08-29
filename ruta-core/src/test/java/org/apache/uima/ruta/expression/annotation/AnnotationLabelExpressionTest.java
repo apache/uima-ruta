@@ -23,7 +23,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,6 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
@@ -319,14 +317,18 @@ public class AnnotationLabelExpressionTest {
 
   @Test
   public void testAcrossInlinedRules() throws Exception {
-//    String script = "(# PERIOD){->T1};\n";
-//    script += "T1{-> Struct1, Struct1.a = i}<-{i:SW;};\n";
-//    script += "o:T1<-{SW{->Struct2, Struct2.a = o};};\n";
-//    script += "Struct1.a{->T2};\n";
-//    script += "Struct1{Struct1.a.ct==\"text\"->T3};\n";
-//    CAS cas = applyOnStruct4Cas(script);
-//    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "text");
-//    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some text.");
+    String script = "(# PERIOD){->T1};\n";
+    script += "T1{-> Struct1, Struct1.a = i}<-{i:SW;};\n";
+    script += "o:T1<-{SW{->Struct2, Struct2.a = o};};\n";
+    script += "Struct1.a{->T2};\n";
+    script += "Struct1{Struct1.a.ct==\"text\"->T3};\n";
+    script += "Struct2.a{->T4};\n";
+    script += "Struct2{Struct2.a.ct==\"Some text.\"->T5};\n";
+    CAS cas = applyOnStruct4Cas(script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some text.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "Some text.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "text");
   }
 
   

@@ -26,6 +26,8 @@ public abstract class AbstractRule extends RutaStatement {
 
   private final int id;
 
+  private boolean inlined;
+  
   public AbstractRule(RutaBlock parent, int id) {
     super(parent);
     this.id = id;
@@ -33,6 +35,14 @@ public abstract class AbstractRule extends RutaStatement {
 
   public int getId() {
     return id;
+  }
+
+  public boolean isInlined() {
+    return inlined;
+  }
+
+  public void setInlined(boolean inlined) {
+    this.inlined = inlined;
   }
 
 }
