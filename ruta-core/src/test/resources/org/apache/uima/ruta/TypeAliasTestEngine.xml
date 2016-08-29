@@ -274,25 +274,6 @@
                 </value>
             </nameValuePair>
             <nameValuePair>
-                <name>additionalExtensions</name>
-                <value>
-                    <array>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleConditionExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleActionExtension</string>
-                        <string>org.apache.uima.ruta.string.bool.BooleanOperationsExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleBooleanFunctionExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleNumberFunctionExtension</string>
-                        <string>org.apache.uima.ruta.string.StringOperationsExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleStringFunctionExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleTypeFunctionExtension</string>
-                        <string>org.apache.uima.ruta.block.OnlyFirstBlockExtension</string>
-                        <string>org.apache.uima.ruta.block.OnlyOnceBlockExtension</string>
-                        <string>org.apache.uima.ruta.block.fst.FSTBlockExtension</string>
-                        <string>org.apache.uima.ruta.example.extensions.ExampleBlockExtension</string>
-                    </array>
-                </value>
-            </nameValuePair>
-            <nameValuePair>
                 <name>additionalEngineLoaders</name>
                 <value>
                     <array/>
