@@ -253,8 +253,8 @@ public class RutaTypeMatcher implements RutaMatcher {
       if (checkFeatureValue) {
         return true;
       }
-    } else if(feature == null || (feature.getRange() != null && feature.getRange().isArray())) {
-      // do not check on arrays
+    } else if(feature == null || (feature instanceof LazyFeature) ||(feature.getRange() != null && feature.getRange().isArray())) {
+      // do not check on arrays, or lazy features
       return true;
     } else {
       TypeSystem typeSystem = stream.getCas().getTypeSystem();
