@@ -41,7 +41,7 @@ and NOTICE files
    </url>
 
    <requires>
-      <import feature="org.apache.uima.tools" version="2.4.1" match="greaterOrEqual"/>
+      <import feature="org.apache.uima.tools" version="2.9.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.dltk.core" version="3.0.0" match="greaterOrEqual"/>
    </requires>
 
@@ -86,7 +86,7 @@ and NOTICE files
          install-size="0"
          version="${parsedVersion.osgiVersion}"
          unpack="false"/>
-         
+
    <plugin
          id="org.apache.uima.ruta.core.ext"
          download-size="0"
