@@ -1,0 +1,5 @@
+PACKAGE org.apache.uima;
+
+DECLARE Document LanguageStorage(STRING language);
+
+TRANSFER(LanguageStorage);

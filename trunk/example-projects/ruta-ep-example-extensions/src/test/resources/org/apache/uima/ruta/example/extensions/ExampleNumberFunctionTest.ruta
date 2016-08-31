@@ -1,0 +1,11 @@
+PACKAGE uima.ruta.example;
+
+DECLARE T1, T2, T3;
+
+Document{IF((ExampleNumberFunction(Document) == 4)) -> MARK(T1)};
+
+
+
+
+
+

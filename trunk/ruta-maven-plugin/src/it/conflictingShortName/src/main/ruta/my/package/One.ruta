@@ -1,0 +1,8 @@
+PACKAGE my.package;
+
+TYPESYSTEM TypeSystemOne;
+
+DECLARE LocalType;
+
+Document{-> LocalType};
+Document{-> ExternalType};

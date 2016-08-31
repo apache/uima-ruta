@@ -1,0 +1,13 @@
+uima.ruta.example.Author
+uima.ruta.example.Date
+uima.ruta.example.Pages
+uima.ruta.example.Publisher
+uima.ruta.example.Institution
+uima.ruta.example.Volume
+uima.ruta.example.Editor
+uima.ruta.example.Title
+uima.ruta.example.Booktitle
+uima.ruta.example.Note
+uima.ruta.example.Journal
+uima.ruta.example.Location
+uima.ruta.example.Tech

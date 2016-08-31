@@ -1,0 +1,2 @@
+In this text, every word is marked, that stands after at least 1 dot.
+So every word from here on is marked.

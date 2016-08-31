@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one
+   or more contributor license agreements.  See the NOTICE file
+   distributed with this work for additional information
+   regarding copyright ownership.  The ASF licenses this file
+   to you under the Apache License, Version 2.0 (the
+   "License"); you may not use this file except in compliance
+   with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.apache.uima</groupId>
+    <artifactId>parent-pom</artifactId>
+    <version>10</version>
+    <relativePath />
+  </parent>
+
+  <artifactId>ruta-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>2.5.0</version>
+  <name>Apache UIMA Ruta: ${project.artifactId}</name>
+  <url>${uimaWebsiteUrl}</url>
+  <inceptionYear>2011</inceptionYear>
+  <description>The common parent pom for the UIMA Ruta</description>
+  
+  <!-- Special inheritance note
+       even though the <scm> element that follows is exactly the
+       same as those in super poms, it cannot be inherited because
+       there is some special code that computes the connection elements
+       from the chain of parent poms, if this is omitted.
+
+       Keeping this a bit factored allows cutting/pasting the <scm>
+       element, and just changing the following two properties -->
+  <scm>
+    <url>http://svn.apache.org/viewvc/uima/ruta/tags/ruta-2.5.0/ruta-parent</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/tags/ruta-2.5.0/ruta-parent</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/tags/ruta-2.5.0/ruta-parent</developerConnection>
+  </scm>
+
+  <!-- The repositories and pluginRepositories section is duplicated from the parent pom one, and adds 
+    the Apache Snapshot Nexus repository where UIMA snapshots are deployed. This is needed if for instance, 
+    a project depends on some new SNAPSHOT level of a build tool, where the users hasn't checked out the 
+    build tooling. This allows maven to find the snapshots when looking for the parent of this pom -->
+  <repositories>
+    <repository>
+      <id>eclipsePlugins</id>
+      <name>Eclipse components</name>
+      <layout>default</layout>
+      <url>http://repo1.maven.org/eclipse</url>
+
+      <releases>
+        <updatePolicy>never</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+
+    <!-- modify central repository access: Turn on checksum checking -->
+    <repository>
+      <id>central</id>
+      <name>Maven Repository Switchboard</name>
+      <layout>default</layout>
+      <url>http://repo1.maven.org/maven2</url>
+
+      <releases>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+
+    </repository>
+
+    <repository>
+      <id>apache.snapshots</id>
+      <name>Apache Snapshot Repository</name>
+      <url>http://repository.apache.org/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>apache.snapshots.plugins</id>
+      <name>Apache Snapshot Repository - Maven plugins</name>
+      <url>http://repository.apache.org/snapshots</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+  
+    <properties>
+    <uniWueNoticeText>Portions of UIMA Ruta were originally developed by 
+the Universität Würzburg.
+Copyright (c) 2006, 2011 Universität Würzburg.</uniWueNoticeText>
+    <postNoticeText>${uniWueNoticeText}
+
+This product contains icons developed by Mark James 
+(http://www.famfamfam.com/lab/icons/silk/), licensed under the 
+Creative Commons Attribution 3.0 License.
+    </postNoticeText>
+    <uimaVersion>2.9.0</uimaVersion>
+    <uimafit-version>2.2.0</uimafit-version>
+        <!-- 
+     BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+)
+     BACKWARD_COMPATIBLE_USER        - minor version (=.+.0)
+     NON_BACKWARD_COMPATIBLE         - major version (+.0.0)
+     -->
+    <compat.level>NON_BACKWARD_COMPATIBLE</compat.level>
+    <compat.previous.version>2.4.0</compat.previous.version>
+ 
+  </properties>
+  
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.uima</groupId>
+          <artifactId>uima-build-helper-maven-plugin</artifactId>
+          <version>7</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.7</source>
+            <target>1.7</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId> 
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <configuration>
+                <source>7</source>
+              </configuration> 
+            </execution>
+          </executions>
+          <configuration>
+            <source>7</source>
+          </configuration>  
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  <plugins>
+    <plugin>
+      <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-versions</id>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>3.0</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>1.7</version>
+                </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+    </plugin>
+    <plugin>
+      <artifactId>maven-resources-plugin</artifactId>
+      <executions>
+        <execution>
+          <id>copy customized bin LICENSE file</id>
+          <phase>prepare-package</phase>
+          <goals>
+            <goal>copy-resources</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>${project.build.directory}/classes/META-INF</outputDirectory>
+            <resources>
+              <resource>
+                <directory>src/main/readme_bin</directory>
+                <includes>
+                  <include>LICENSE</include>
+                  <include>NOTICE</include>
+                </includes>
+                <filtering>true</filtering>
+              </resource>
+            </resources>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+  </build>
+    <profiles>
+    <profile>
+      <id>enforce-compatibility</id>
+      <activation>
+        <file>
+          <exists>marker-file-identifying-api-compatibility-check</exists>
+        </file>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <artifactId>maven-enforcer-plugin</artifactId>
+              <dependencies>
+                <dependency>
+                  <groupId>org.semver</groupId>
+                  <artifactId>enforcer-rule</artifactId>
+                  <version>0.9.33</version>
+                </dependency>
+              </dependencies>
+              <executions>
+                <execution>
+                  <id>enforce-compatibility</id>
+                  <phase>verify</phase>
+                  <goals>
+                    <goal>enforce</goal>
+                  </goals>
+                  <configuration>
+                    <rules>
+                      <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
+                        <previousVersion>${compat.previous.version}</previousVersion>
+                        <dumpDetails>true</dumpDetails>
+                        <compatibilityType>${compat.level}</compatibilityType>
+                        <includes>
+                          <include>org/apache/uima/ruta/engine/**/*</include>
+                          <include>org/apache/uima/ruta/descriptor/**/*</include>
+                        </includes>
+                      </requireBackwardCompatibility>
+                    </rules>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
+</project>

@@ -1,0 +1,1 @@
+To count the number of annotations within a given annotation, use the TOTALCOUNT condition.

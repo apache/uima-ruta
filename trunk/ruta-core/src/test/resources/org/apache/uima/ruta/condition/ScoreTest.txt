@@ -1,0 +1,4 @@
+Score Condition:
+
+As some rules mark annotations with different scores (e.g. according to their accuracy),
+it is possible to read these scores with the SCORE condition.

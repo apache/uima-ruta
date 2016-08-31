@@ -1,0 +1,16 @@
+PACKAGE org.apache.uima.ruta;
+
+TYPESYSTEM org.apache.uima.ruta.TS1;// defines ts1.Token
+TYPESYSTEM org.apache.uima.ruta.TS2;// defined ts2.Token
+IMPORT ts1.Token FROM TS1 AS Token1;
+
+DECLARE T1, T2, T3;
+
+TYPE T = ts1.Token;
+"Peter" -> ts1.POS ("value" = "NN");
+ts1.POS {-> GATHER(ts1.Token, "pos" = 1)};
+ts1.POS {-> CREATE(ts1.Token, "pos" = ts1.POS)};
+(ts1.Token{REGEXP(ts1.Token.pos.value, "N.*")}){-> MARK(T1)}; 
+(T{REGEXP(T.pos.value, "N.*")}){-> MARK(T2)}; 
+(Token1{REGEXP(Token1.pos.value, "N.*")}){-> MARK(T3)}; 
+

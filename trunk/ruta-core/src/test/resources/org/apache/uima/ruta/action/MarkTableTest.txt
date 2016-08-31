@@ -1,0 +1,14 @@
+Kluegl
+Schor
+Kottmann
+
+now with some extra chars
+
+K-l--ue-gl
+Sc h<b> o</b>.r
+K,o,   t,,tm,ann
+
+should not match:
+
+K-l-...........................-ue-gl
+

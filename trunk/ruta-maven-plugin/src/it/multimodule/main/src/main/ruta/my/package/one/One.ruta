@@ -1,0 +1,8 @@
+PACKAGE my.package.one;
+SCRIPT my.package.two.Two;
+ENGINE my.package.three.ThreeEngine;
+TYPESYSTEM my.package.three.ThreeTypeSystem;
+CALL(Two);
+EXEC(ThreeEngine);
+DECLARE Type1;
+Type2{-> Type1};

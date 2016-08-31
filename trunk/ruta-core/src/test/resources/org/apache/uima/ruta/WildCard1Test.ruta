@@ -1,0 +1,47 @@
+PACKAGE org.apache.uima;
+
+
+DECLARE T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30;
+
+
+CW{-PARTOF(T1)} #{-> MARK(T1,1,2)};
+DYNAMICANCHORING(true);
+#{-PARTOF(T2)-> MARK(T2,1,2)} CW;
+#{-PARTOF(T3) -> MARK(T3,1,2)} PERIOD;
+DYNAMICANCHORING(false);
+CW{-PARTOF(T4)} #{-> MARK(T4,1,2,3)} PERIOD;
+#{-> MARK(T5)} PERIOD;
+DYNAMICANCHORING(true);
+#{-PARTOF(T6) -> MARK(T6)} PERIOD;
+DYNAMICANCHORING(false);
+#{-> MARK(T7)};
+# #{-> MARK(T8)};
+"Ruta" #{-> MARK(T9)} ".";
+#{-PARTOF(T10)-> MARK(T10)} ".";
+CW{-PARTOF(T11)} #{-> MARK(T11,1,2,3)} (PERIOD | COLON);
+#{-PARTOF(T12) -> MARK(T12,1,2)} (PERIOD | COLON);
+CW{-PARTOF(T13)} #{-> MARK(T13,1,2,3)} (SW PERIOD);
+CW{-PARTOF(T14)} #{-> MARK(T14,1,2,3)} ("elements" PERIOD);
+
+T4{-PARTOF(T15) -> MARK(T15,1,2)} T4;
+
+BLOCK(window) T15{}{
+    CW{-PARTOF(T16)} #{-> MARK(T16,1,2)};
+    DYNAMICANCHORING(true);
+    #{-PARTOF(T17)-> MARK(T17,1,2)} CW;
+    #{-PARTOF(T18) -> MARK(T18,1,2)} PERIOD;
+    DYNAMICANCHORING(false);
+    CW{-PARTOF(T19)} #{-> MARK(T19,1,2,3)} PERIOD;
+    #{-> MARK(T20)} PERIOD;
+    DYNAMICANCHORING(true);
+    #{-PARTOF(T21) -> MARK(T21)} PERIOD;
+    DYNAMICANCHORING(false);
+    #{-> MARK(T22)};
+    # #{-> MARK(T23)};
+    "Ruta" #{-> MARK(T24)} ".";
+    #{-PARTOF(T25)-> MARK(T25)} ".";
+    CW{-PARTOF(T26)} #{-> MARK(T26,1,2,3)} (PERIOD | COLON);
+    #{-PARTOF(T27) -> MARK(T27,1,2)} (PERIOD | COLON);
+    CW{-PARTOF(T28)} #{-> MARK(T28,1,2,3)} (SW PERIOD);
+    CW{-PARTOF(T29)} #{-> MARK(T29,1,2,3)} ("elements" PERIOD);
+}

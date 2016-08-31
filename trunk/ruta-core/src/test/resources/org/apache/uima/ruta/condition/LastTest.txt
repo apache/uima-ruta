@@ -1,0 +1,3 @@
+Some different sentences.
+But which of them end with an exclamation mark?
+This we can test with the LAST condition!

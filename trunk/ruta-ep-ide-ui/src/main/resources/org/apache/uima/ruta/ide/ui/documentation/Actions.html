@@ -1,0 +1,1449 @@
+  <div class="section" title="2.8.1.&nbsp;ADD"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.add">2.8.1.&nbsp;ADD</h3></div></div></div>
+    
+    <p>
+      The ADD action adds all the elements of the passed
+      RutaExpressions to a given list. For example, this expressions
+      could be a string, an integer variable or a list. For a
+      complete overview on UIMA Ruta expressions see
+      <a class="xref" href="#ugr.tools.ruta.language.expressions" title="2.6.&nbsp;Expressions">Section&nbsp;2.6, &#8220;Expressions&#8221;</a>.
+    </p>
+    <div class="section" title="2.8.1.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1604">2.8.1.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">ADD(ListVariable,(RutaExpression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.1.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1609">2.8.1.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;ADD(list, var)};</pre><p>
+      </p>
+      <p>
+        In this example, the variable 'var' is added to the list
+        'list'.
+      </p>
+    </div>
+  </div>
+  
+  <div class="section" title="2.8.2.&nbsp;ADDFILTERTYPE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.addfiltertype">2.8.2.&nbsp;ADDFILTERTYPE</h3></div></div></div>
+    
+    <p>
+      The ADDFILTERTYPE action adds its arguments to the list of filtered types, 
+      which restrict the visibility of the rules.
+    </p>
+    <div class="section" title="2.8.2.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1618">2.8.2.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">ADDFILTERTYPE(TypeExpression(,TypeExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.2.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1623">2.8.2.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;ADDFILTERTYPE(CW)};</pre><p>
+      </p>
+      <p>
+        After applying this rule, capitalized words are invisible additionally to the previously filtered types.
+      </p>
+    </div>
+  </div>
+  
+    <div class="section" title="2.8.3.&nbsp;ADDRETAINTYPE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.addretaintype">2.8.3.&nbsp;ADDRETAINTYPE</h3></div></div></div>
+    
+    <p>
+      The ADDFILTERTYPE action adds its arguments to the list of retained types, 
+      which extend the visibility of the rules.
+    </p>
+    <div class="section" title="2.8.3.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1632">2.8.3.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">ADDRETAINTYPE(TypeExpression(,TypeExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.3.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1637">2.8.3.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;ADDRETAINTYPE(MARKUP)};</pre><p>
+      </p>
+      <p>
+        After applying this rule, markup is visible additionally to the previously retained types.
+      </p>
+    </div>
+  </div>
+  
+  
+  <div class="section" title="2.8.4.&nbsp;ASSIGN"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.assign">2.8.4.&nbsp;ASSIGN</h3></div></div></div>
+    
+    <p>
+      The ASSIGN action assigns the value of the passed expression to
+      a variable of the same type.
+    </p>
+    <div class="section" title="2.8.4.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1646">2.8.4.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">ASSIGN(BooleanVariable,BooleanExpression)</pre><p>
+      </p>
+      <p>
+        </p><pre class="programlisting">ASSIGN(NumberVariable,NumberExpression)</pre><p>
+      </p>
+      <p>
+        </p><pre class="programlisting">ASSIGN(StringVariable,StringExpression)</pre><p>
+      </p>
+      <p>
+        </p><pre class="programlisting">ASSIGN(TypeVariable,TypeExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.4.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1657">2.8.4.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;ASSIGN(amount, (amount/2))};</pre><p>
+      </p>
+      <p>
+        In this example, the value of the variable 'amount' is divided in half.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.5.&nbsp;CALL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.call">2.8.5.&nbsp;CALL</h3></div></div></div>
+    
+    <p>
+      The CALL action initiates the execution of a different script
+      file or script block. Currently, only complete script files are
+      supported.
+    </p>
+    <div class="section" title="2.8.5.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1666">2.8.5.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CALL(DifferentFile)</pre><p>
+      </p>
+      <p>
+        </p><pre class="programlisting">CALL(Block)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.5.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1673">2.8.5.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;CALL(NamedEntities)};</pre><p>
+      </p>
+      <p>
+        Here, a script 'NamedEntities' for named entity recognition is
+        executed.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.6.&nbsp;CLEAR"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.clear">2.8.6.&nbsp;CLEAR</h3></div></div></div>
+    
+    <p>
+      The CLEAR action removes all elements of the given list. If the list was initialized as it was declared, 
+      then it is reset to its initial value.
+    </p>
+    <div class="section" title="2.8.6.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1682">2.8.6.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CLEAR(ListVariable)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.6.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1687">2.8.6.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;CLEAR(SomeList)};</pre><p>
+      </p>
+      <p>
+        This rule clears the list 'SomeList'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.7.&nbsp;COLOR"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.color">2.8.7.&nbsp;COLOR</h3></div></div></div>
+    
+    <p>
+      The COLOR action sets the color of an annotation type in the
+      modified view, if the rule has fired. The background color is passed as
+      the second parameter. The font color can be changed by passing a
+      further color as a third parameter. The supported colors are: black, silver, gray,
+      white, maroon, red, purple, fuchsia, green, lime, olive, yellow,
+      navy, blue, aqua, lightblue, lightgreen, orange, pink, salmon, cyan,
+      violet, tan, brown, white and mediumpurple.
+    </p>
+    <div class="section" title="2.8.7.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1696">2.8.7.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">COLOR(TypeExpression,StringExpression(, StringExpression
+          (, BooleanExpression)?)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.7.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1701">2.8.7.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;COLOR(Headline, "red", "green", true)};</pre><p>
+      </p>
+      <p>
+        This rule colors all Headline annotations in the modified view.
+        Thereby, the background color is set to red, font color is set to green
+        and all 'Headline' annotations are selected when opening the
+        modified view.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.8.&nbsp;CONFIGURE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.configure">2.8.8.&nbsp;CONFIGURE</h3></div></div></div>
+    
+    <p>
+      The CONFIGURE action can be used to configure the analysis
+      engine of the given namespace (first parameter). The parameters that
+      should be configured with corresponding values are passed as
+      name-value
+      pairs.
+    </p>
+    <div class="section" title="2.8.8.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1710">2.8.8.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CONFIGURE(AnalysisEngine(,StringExpression = Expression)+)</pre><p>
+      </p>
+    </div>
+     <div class="section" title="2.8.8.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1715">2.8.8.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">ENGINE utils.HtmlAnnotator;
+Document{-&gt;CONFIGURE(HtmlAnnotator, "onlyContent" = false)};</pre><p>
+      </p>
+      <p>
+        The former rule changes the value of configuration parameter <span class="quote">&#8220;<span class="quote">onlyContent</span>&#8221;</span>
+        to false and reconfigure the analysis engine.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.9.&nbsp;CREATE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.create">2.8.9.&nbsp;CREATE</h3></div></div></div>
+    
+    <p>
+      The CREATE action is similar to the MARK action. It also
+      annotates the matched text fragments with a type annotation, but
+      additionally assigns values to a chosen subset of the type's feature
+      elements.
+    </p>
+    <div class="section" title="2.8.9.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1725">2.8.9.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">CREATE(TypeExpression(,NumberExpression)*
+                         (,StringExpression = Expression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.9.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1730">2.8.9.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Paragraph{COUNT(ANY,0,10000,cnt)-&gt;CREATE(Headline,"size" = cnt)};</pre><p>
+      </p>
+      <p>
+        This rule counts the number of tokens of type ANY in a
+        Paragraph annotation and assigns the counted value to the int
+        variable 'cnt'. If the counted number is between 0 and 10000, a
+        Headline annotation is created for this Paragraph. Moreover, the
+        feature named 'size' of Headline is set to the value of 'cnt'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.10.&nbsp;DEL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.del">2.8.10.&nbsp;DEL</h3></div></div></div>
+    
+    <p>
+      The DEL action deletes the matched text fragments in the
+      modified
+      view.
+    </p>
+    <div class="section" title="2.8.10.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1739">2.8.10.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">DEL</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.10.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1744">2.8.10.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Name{-&gt;DEL};</pre><p>
+      </p>
+      <p>
+        This rule deletes all text fragments that are annotated with a
+        Name annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.11.&nbsp;DYNAMICANCHORING"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.dynamicanchoring">2.8.11.&nbsp;DYNAMICANCHORING</h3></div></div></div>
+    
+    <p>
+      The DYNAMICANCHORING action turns dynamic anchoring on or off
+      (first parameter) and assigns the anchoring parameters penalty
+      (second parameter) and factor (third parameter).
+    </p>
+    <div class="section" title="2.8.11.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1753">2.8.11.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">DYNAMICANCHORING(BooleanExpression
+              (,NumberExpression(,NumberExpression)?)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.11.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1758">2.8.11.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;DYNAMICANCHORING(true)};</pre><p>
+      </p>
+      <p>
+        The above mentioned example activates dynamic anchoring.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.12.&nbsp;EXEC"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.exec">2.8.12.&nbsp;EXEC</h3></div></div></div>
+    
+    <p>
+      The EXEC action initiates the execution of a different script
+      file or analysis engine on the complete input document, independent from
+      the matched text and the current filtering settings. If the imported component (DifferentFile)
+      refers to another script file, it is applied on a new representation of the document:
+      the complete text of the original CAS with the default filtering
+      settings of the UIMA Ruta analysis engine. If it refers to an 
+      external analysis engine, then it is applied on the complete document. 
+      The optional, first argument is is a string expression, which specifies the view the component should be applied on.
+      The optional, third argument is a list of types, which should be reindexed by Ruta (not UIMA itself).
+    </p>
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+    <p>
+      Annotations created by the external analysis engine are not accessible for UIMA Ruta rules in the same script. 
+      The types of these annotations need to be provided in the second argument in order to be visible to the Ruta rules.
+    </p>
+    </div>
+    <div class="section" title="2.8.12.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1769">2.8.12.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">EXEC((StringExpression,)? DifferentFile(, TypeListExpression)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.12.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1774">2.8.12.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">ENGINE NamedEntities;
+Document{-&gt;EXEC(NamedEntities, {Person, Location})};</pre><p>
+      </p>
+      <p>
+        Here, an analysis engine for named entity recognition is
+        executed once on the complete document and the annotations of the types Person and Location (and all subtypes) 
+        are reindexed in UIMA Ruta. Without this list of types, the annotations are added to the CAS, but cannot be accessed by Ruta rules.
+      </p>
+    </div>
+  </div>
+  <div class="section" title="2.8.13.&nbsp;FILL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.fill">2.8.13.&nbsp;FILL</h3></div></div></div>
+    
+    <p>
+      The FILL action fills a chosen subset of the given type's
+      feature elements.
+    </p>
+    <div class="section" title="2.8.13.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1783">2.8.13.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">FILL(TypeExpression(,StringExpression = Expression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.13.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1788">2.8.13.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Headline{COUNT(ANY,0,10000,tokenCount)
+          -&gt;FILL(Headline,"size" = tokenCount)};</pre><p>
+      </p>
+      <p>
+        Here, the number of tokens within an Headline annotation is
+        counted and stored in variable 'tokenCount'. If the number of tokens
+        is within the interval [0;10000], the FILL action fills the
+        Headline's feature 'size' with the value of 'tokenCount'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.14.&nbsp;FILTERTYPE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.filtertype">2.8.14.&nbsp;FILTERTYPE</h3></div></div></div>
+    
+    <p>
+      This action filters the given types of annotations. They are now
+      ignored by rules. Expressions are not yet supported. 
+      This action is related to RETAINTYPE (see <a class="xref" href="#ugr.tools.ruta.language.actions.retaintype" title="2.8.35.&nbsp;RETAINTYPE">Section&nbsp;2.8.35, &#8220;RETAINTYPE&#8221;</a>).
+    </p>
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>    
+      <p>
+        The visibility of types is calculated using three lists: 
+        A list <span class="quote">&#8220;<span class="quote">default</span>&#8221;</span> for the initially filtered types, 
+        which is specified in the configuration parameters of the analysis engine, the list <span class="quote">&#8220;<span class="quote">filtered</span>&#8221;</span>, which is 
+        specified by the FILTERTYPE action, and the list <span class="quote">&#8220;<span class="quote">retained</span>&#8221;</span>, which is specified by the RETAINTYPE action.
+        For determining the actual visibility of types, list <span class="quote">&#8220;<span class="quote">filtered</span>&#8221;</span> is added to list <span class="quote">&#8220;<span class="quote">default</span>&#8221;</span> 
+        and then all elements of list <span class="quote">&#8220;<span class="quote">retained</span>&#8221;</span> are removed. The annotations of the types in the resulting list are not visible.
+        Please note that the actions FILTERTYPE and RETAINTYPE replace all elements of the respective lists and that RETAINTYPE 
+        overrides FILTERTYPE.
+      </p>
+    </div>
+    <div class="section" title="2.8.14.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1806">2.8.14.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">FILTERTYPE((TypeExpression(,TypeExpression)*))?</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.14.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1811">2.8.14.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;FILTERTYPE(SW)};</pre><p>
+      </p>
+      <p>
+        This rule filters all small written words in the input
+        document. They are further ignored by every rule.
+      </p>
+      <p>
+        </p><pre class="programlisting">Document{-&gt;FILTERTYPE};</pre><p>
+      </p>
+      <p>
+        Here, the the action (without parentheses) specifies that no additional types should be filtered.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.15.&nbsp;GATHER"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.gather">2.8.15.&nbsp;GATHER</h3></div></div></div>
+    
+    <p>
+      This action creates a complex structure: an annotation with
+      features. The optionally passed indexes (NumberExpressions after the
+      TypeExpression) can be used to create an annotation that spans the
+      matched information of several rule elements. The features are
+      collected using the indexes of the rule elements of the complete
+      rule.
+    </p>
+    <div class="section" title="2.8.15.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1823">2.8.15.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">GATHER(TypeExpression(,NumberExpression)*
+          (,StringExpression = NumberExpression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.15.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1828">2.8.15.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">DECLARE Annotation A;
+DECLARE Annotation B;
+DECLARE Annotation C(Annotation a, Annotation b);
+W{REGEXP("A")-&gt;MARK(A)};
+W{REGEXP("B")-&gt;MARK(B)};
+A B{-&gt; GATHER(C, 1, 2, "a" = 1, "b" = 2)};</pre><p>
+      </p>
+      <p>
+        Two annotations A and B are declared and annotated. The last
+        rule creates an annotation C spanning the elements A (index 1 since
+        it is the first rule element) and B (index 2) with its features 'a'
+        set to annotation A (again index 1) and 'b' set to annotation B
+        (again index 2).
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.16.&nbsp;GET"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.get">2.8.16.&nbsp;GET</h3></div></div></div>
+    
+    <p>
+      The GET action retrieves an element of the given list dependent on a
+      given strategy.
+      </p><div class="table"><a name="d5e1837"></a><p class="title"><b>Table&nbsp;2.3.&nbsp;Currently supported strategies</b></p><div class="table-contents">
+        
+        <table summary="Currently supported strategies" style="border-collapse: collapse;border-top: 0.5pt solid black; border-bottom: 0.5pt solid black; border-left: 0.5pt solid black; border-right: 0.5pt solid black; "><colgroup><col><col></colgroup><thead><tr><th style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Strategy</th><th style="border-bottom: 0.5pt solid black; " align="left">Functionality</th></tr></thead><tbody><tr><td style="border-right: 0.5pt solid black; " align="left">dominant</td><td style="" align="left">finds the most occurring element</td></tr></tbody></table>
+      </div></div><p><br class="table-break">
+    </p>
+    <div class="section" title="2.8.16.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1848">2.8.16.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">GET(ListExpression, Variable, StringExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.16.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1853">2.8.16.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;GET(list, var, "dominant")};</pre><p>
+      </p>
+      <p>
+        In this example, the element of the list 'list' that occurs
+        most is stored in the variable 'var'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.17.&nbsp;GETFEATURE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.getfeature">2.8.17.&nbsp;GETFEATURE</h3></div></div></div>
+    
+    <p>
+      The GETFEATURE action stores the value of the matched
+      annotation's feature (first paramter) in the given variable (second
+      parameter).
+    </p>
+    <div class="section" title="2.8.17.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1862">2.8.17.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">GETFEATURE(StringExpression, Variable)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.17.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1867">2.8.17.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;GETFEATURE("language", stringVar)};</pre><p>
+      </p>
+      <p>
+        In this example, variable 'stringVar' will contain the value of
+        the feature 'language'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.18.&nbsp;GETLIST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.getlist">2.8.18.&nbsp;GETLIST</h3></div></div></div>
+    
+    <p>
+      This action retrieves a list of types dependent on a given strategy.
+      </p><div class="table"><a name="d5e1876"></a><p class="title"><b>Table&nbsp;2.4.&nbsp;Currently supported strategies</b></p><div class="table-contents">
+        
+        <table summary="Currently supported strategies" style="border-collapse: collapse;border-top: 0.5pt solid black; border-bottom: 0.5pt solid black; border-left: 0.5pt solid black; border-right: 0.5pt solid black; "><colgroup><col><col></colgroup><thead><tr><th style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Strategy</th><th style="border-bottom: 0.5pt solid black; " align="left">Functionality</th></tr></thead><tbody><tr><td style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Types</td><td style="border-bottom: 0.5pt solid black; " align="left">get all types within the matched annotation</td></tr><tr><td style="border-right: 0.5pt solid black; border-bottom: 0.5pt solid black; " align="left">Types:End</td><td style="border-bottom: 0.5pt solid black; " align="left">get all types that end at the same offset as the matched
+                annotation
+              </td></tr><tr><td style="border-right: 0.5pt solid black; " align="left">Types:Begin</td><td style="" align="left">get all types that start at the same offset as the
+                matched
+                annotation
+              </td></tr></tbody></table>
+      </div></div><p><br class="table-break">
+    </p>
+    <div class="section" title="2.8.18.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1893">2.8.18.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">GETLIST(ListVariable, StringExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.18.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1898">2.8.18.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;GETLIST(list, "Types")};</pre><p>
+      </p>
+      <p>
+        Here, a list of all types within the document is created and
+        assigned to list variable 'list'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.19.&nbsp;GREEDYANCHORING"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.greedyanchoring">2.8.19.&nbsp;GREEDYANCHORING</h3></div></div></div>
+    
+    <p>
+      The GREEDYANCHORING action turns greedy anchoring on or off. 
+      If the first parameter is set to true, then start positions already matched by the same rule element will be ignored. This situation 
+      occurs mostly for rules that start with a quantifier. The second optional parameter activates greedy acnhoring for the complete rule.
+      Later rule matches are only possible after previous matches.
+    </p>
+    <div class="section" title="2.8.19.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1907">2.8.19.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">GREEDYANCHORING(BooleanExpression(,BooleanExpression)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.19.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1912">2.8.19.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;GREEDYANCHORING(true, true)};
+        ANY+;
+        CW CW;</pre><p>
+      </p>
+      <p>
+        The above mentioned example activates dynamic anchoring and the second rule will then only match once 
+        since the next positions, e.g., the second token, are already covered by the first attempt.
+        The third rule will not match on capitalized word that have benn already considered by previous matches of the rule.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.20.&nbsp;LOG"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.log">2.8.20.&nbsp;LOG</h3></div></div></div>
+    
+    <p>
+      The LOG action writes a log message.
+    </p>
+    <div class="section" title="2.8.20.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1921">2.8.20.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">LOG(StringExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.20.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1926">2.8.20.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;LOG("processed")};</pre><p>
+      </p>
+      <p>
+        This rule writes a log message with the string "processed".
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.21.&nbsp;MARK"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.mark">2.8.21.&nbsp;MARK</h3></div></div></div>
+    
+    <p>
+      The MARK action is the most important action in the UIMA Ruta
+      system. It creates a new annotation of the given type. The optionally
+      passed indexes (NumberExpressions after the TypeExpression) can be
+      used to create an annotation that spanns the matched information of
+      several rule elements.
+    </p>
+    <div class="section" title="2.8.21.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1935">2.8.21.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARK(TypeExpression(,NumberExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.21.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1940">2.8.21.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Freeline Paragraph{-&gt;MARK(ParagraphAfterFreeline,1,2)};</pre><p>
+      </p>
+      <p>
+        This rule matches on a free line followed by a Paragraph
+        annotation and annotates both in a single ParagraphAfterFreeline
+        annotation. The two numerical expressions at the end of the mark
+        action state that the matched text of the first and the second rule
+        elements are joined to create the boundaries of the new annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.22.&nbsp;MARKFAST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.markfast">2.8.22.&nbsp;MARKFAST</h3></div></div></div>
+    
+    <p>
+      The MARKFAST action creates annotations of the given type (first
+      parameter), if an element of the passed list (second parameter) occurs
+      within the window of the matched annotation. Thereby, the created
+      annotation does not cover the whole matched annotation. Instead, it
+      only covers the text of the found occurrence. The third parameter is
+      optional. It defines, whether the MARKFAST action should ignore the case,
+      whereby its default value is false. The optional fourth parameter
+      specifies a character threshold for the ignorence of the case. It is
+      only relevant, if the ignore-case value is set to true. The last
+      parameter is set to true by default and specifies whether whitespaces
+      in the entries of the dictionary should be ignored. For more
+      information on lists see
+      <a class="xref" href="#ugr.tools.ruta.language.declarations.ressource" title="2.5.3.&nbsp;Resources">Section&nbsp;2.5.3, &#8220;Resources&#8221;</a>. 
+      Additionally to external word lists, string lists variables can be
+      used.
+    </p>
+    <div class="section" title="2.8.22.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1950">2.8.22.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARKFAST(TypeExpression,ListExpression(,BooleanExpression
+          (,NumberExpression,(BooleanExpression)?)?)?)</pre><p>
+        </p><pre class="programlisting">MARKFAST(TypeExpression,StringListExpression(,BooleanExpression
+          (,NumberExpression,(BooleanExpression)?)?)?)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.22.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1956">2.8.22.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">WORDLIST FirstNameList = 'FirstNames.txt';
+DECLARE FirstName;
+Document{-&gt; MARKFAST(FirstName, FirstNameList, true, 2)};</pre><p>
+      </p>
+      <p>
+        This rule annotates all first names listed in the list
+        'FirstNameList' within the document and ignores the case, if the
+        length of the word
+        is greater than 2.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.23.&nbsp;MARKFIRST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.markfirst">2.8.23.&nbsp;MARKFIRST</h3></div></div></div>
+    
+    <p>
+      The MARKFIRST action annotates the first token (basic annotation) of the matched
+      annotation with the given type.
+    </p>
+    <div class="section" title="2.8.23.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1965">2.8.23.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARKFIRST(TypeExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.23.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1970">2.8.23.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;MARKFIRST(First)};</pre><p>
+      </p>
+      <p>
+        This rule annotates the first token of the document with the
+        annotation First.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.24.&nbsp;MARKLAST"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.marklast">2.8.24.&nbsp;MARKLAST</h3></div></div></div>
+    
+    <p>
+      The MARKLAST action annotates the last token of the matched
+      annotation with the given type.
+    </p>
+    <div class="section" title="2.8.24.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1979">2.8.24.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARKLAST(TypeExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.24.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1984">2.8.24.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;MARKLAST(Last)};</pre><p>
+      </p>
+      <p>
+        This rule annotates the last token of the document with the
+        annotation Last.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.25.&nbsp;MARKONCE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.markonce">2.8.25.&nbsp;MARKONCE</h3></div></div></div>
+    
+    <p>
+      The MARKONCE action has the same functionality as the MARK
+      action, but creates a new annotation only, 
+      if each part of the matched annotation is not yet part of the given type.
+    </p>
+    <div class="section" title="2.8.25.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e1993">2.8.25.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARKONCE(NumberExpression,TypeExpression(,NumberExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.25.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e1998">2.8.25.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Freeline Paragraph{-&gt;MARKONCE(ParagraphAfterFreeline,1,2)};</pre><p>
+      </p>
+      <p>
+        This rule matches on a free line followed by a Paragraph and
+        annotates both in a single ParagraphAfterFreeline annotation, if no part 
+        is not already annotated with ParagraphAfterFreeline annotation. The
+        two numerical expressions at the end of the MARKONCE action state
+        that the matched text of the first and the second rule elements are
+        joined to create the boundaries of the new annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.26.&nbsp;MARKSCORE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.markscore">2.8.26.&nbsp;MARKSCORE</h3></div></div></div>
+    
+    <p>
+      The MARKSCORE action is similar to the MARK action. It also creates a
+      new annotation of the given type, but only if it is not yet existing.
+      The optionally passed indexes (parameters after the TypeExpression)
+      can be used to create an annotation that spanns the matched
+      information of several rule elements. Additionally, a score value
+      (first parameter) is added to the heuristic score value of the
+      annotation. For more information on heuristic scores see
+      <a class="xref" href="#ugr.tools.ruta.language.score" title="2.12.&nbsp;Heuristic extraction using scoring rules">Section&nbsp;2.12, &#8220;Heuristic extraction using scoring rules&#8221;</a>
+      .
+    </p>
+    <div class="section" title="2.8.26.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2008">2.8.26.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARKSCORE(NumberExpression,TypeExpression(,NumberExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.26.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2013">2.8.26.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Freeline Paragraph{-&gt;MARKSCORE(10,ParagraphAfterFreeline,1,2)};</pre><p>
+      </p>
+      <p>
+        This rule matches on a free line followed by a paragraph and
+        annotates both in a single ParagraphAfterFreeline annotation. The
+        two number expressions at the end of the mark action indicate that
+        the matched text of the first and the second rule elements are
+        joined to create the boundaries of the new annotation. Additionally,
+        the score '10' is added to the heuristic threshold of this
+        annotation.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.27.&nbsp;MARKTABLE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.marktable">2.8.27.&nbsp;MARKTABLE</h3></div></div></div>
+    
+    <p>
+      The MARKTABLE action creates annotations of the given type (first
+      parameter), if an element of the given column (second parameter) of a
+      passed table (third parameter) occures within the window of the
+      matched annotation. Thereby, the created annotation does not cover the
+      whole matched annotation. Instead, it only covers the text of the
+      found occurrence. Optionally the MARKTABLE action is able to assign
+      entries of the given table to features of the created annotation.
+      For
+      more information on tables see
+      <a class="xref" href="#ugr.tools.ruta.language.declarations.ressource" title="2.5.3.&nbsp;Resources">Section&nbsp;2.5.3, &#8220;Resources&#8221;</a>. Additionally, several configuration parameters are possible. (See example.)
+    </p>
+    <div class="section" title="2.8.27.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2023">2.8.27.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MARKTABLE(TypeExpression, NumberExpression, TableExpression 
+          (,BooleanExpression, NumberExpression, 
+          StringExpression, NumberExpression)? 
+          (,StringExpression = NumberExpression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.27.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2028">2.8.27.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">WORDTABLE TestTable = 'TestTable.csv';
+DECLARE Annotation Struct(STRING first);
+Document{-&gt; MARKTABLE(Struct, 1, TestTable, 
+    true, 4, ".,-", 2, "first" = 2)};</pre><p>
+      </p>
+      <p>
+        In this example, the whole document is searched for all
+        occurrences of the entries of the first column of the given table
+        'TestTable'. For each occurrence, an annotation of the type Struct is
+        created and its feature 'first' is filled with the entry of the
+        second column. Moreover, the case of the word is ignored if the
+        length of the word exceeds 4. Additionally, the chars '.', ',' and
+        '-' are ignored, but maximally two of them.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.28.&nbsp;MATCHEDTEXT"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.matchedtext">2.8.28.&nbsp;MATCHEDTEXT</h3></div></div></div>
+    
+    <p>
+      The MATCHEDTEXT action saves the text of the matched annotation
+      in a passed String variable. The optionally passed indexes can be
+      used to match the text of several rule elements.
+    </p>
+    <div class="section" title="2.8.28.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2037">2.8.28.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MATCHEDTEXT(StringVariable(,NumberExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.28.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2042">2.8.28.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Headline Paragraph{-&gt;MATCHEDTEXT(stringVariable,1,2)};</pre><p>
+      </p>
+      <p>
+        The text covered by the Headline (rule element 1) and the
+        Paragraph (rule element 2) annotation is saved in variable
+        'stringVariable'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.29.&nbsp;MERGE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.merge">2.8.29.&nbsp;MERGE</h3></div></div></div>
+    
+    <p>
+      The MERGE action merges a number of given lists. The first
+      parameter defines, if the merge is done as intersection (false) or as
+      union (true). The second parameter is the list variable that will
+      contain the result.
+    </p>
+    <div class="section" title="2.8.29.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2051">2.8.29.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">MERGE(BooleanExpression, ListVariable, ListExpression, (ListExpression)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.29.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2056">2.8.29.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;MERGE(false, listVar, list1, list2, list3)};</pre><p>
+      </p>
+      <p>
+        The elements that occur in all three lists will be placed in
+        the list 'listVar'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.30.&nbsp;REMOVE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.remove">2.8.30.&nbsp;REMOVE</h3></div></div></div>
+    
+    <p>
+      The REMOVE action removes lists or single values from a given
+      list.
+    </p>
+    <div class="section" title="2.8.30.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2065">2.8.30.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">REMOVE(ListVariable,(Argument)+)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.30.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2070">2.8.30.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;REMOVE(list, var)};</pre><p>
+      </p>
+      <p>
+        In this example, the variable 'var' is removed from the list
+        'list'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.31.&nbsp;REMOVEDUPLICATE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.removeduplicate">2.8.31.&nbsp;REMOVEDUPLICATE</h3></div></div></div>
+    
+    <p>
+      This action removes all duplicates within a given list.
+    </p>
+    <div class="section" title="2.8.31.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2079">2.8.31.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">REMOVEDUPLICATE(ListVariable)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.31.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2084">2.8.31.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;REMOVEDUPLICATE(list)};</pre><p>
+      </p>
+      <p>
+        Here, all duplicates within the list 'list' are removed.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.32.&nbsp;REMOVEFILTERTYPE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.removefiltertype">2.8.32.&nbsp;REMOVEFILTERTYPE</h3></div></div></div>
+    
+    <p>
+      The REMOVEFILTERTYPE action removes its arguments from the list of filtered types, 
+      which restrict the visibility of the rules.
+    </p>
+    <div class="section" title="2.8.32.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2093">2.8.32.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">REMOVEFILTERTYPE(TypeExpression(,TypeExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.32.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2098">2.8.32.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;REMOVEFILTERTYPE(W)};</pre><p>
+      </p>
+      <p>
+        After applying this rule, words are possibly visible again depending on the current filtering settings.
+      </p>
+    </div>
+  </div>
+  
+    <div class="section" title="2.8.33.&nbsp;REMOVERETAINTYPE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.removeretaintype">2.8.33.&nbsp;REMOVERETAINTYPE</h3></div></div></div>
+    
+    <p>
+      The REMOVEFILTERTYPE action removes its arguments from the list of retained types, 
+      which extend the visibility of the rules.
+    </p>
+    <div class="section" title="2.8.33.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2107">2.8.33.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">REMOVERETAINTYPE(TypeExpression(,TypeExpression)*)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.33.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2112">2.8.33.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;REMOVERETAINTYPE(W)};</pre><p>
+      </p>
+      <p>
+        After applying this rule, words are possibly not visible anymore depending on the current filtering settings.
+      </p>
+    </div>
+  </div>
+
+
+  <div class="section" title="2.8.34.&nbsp;REPLACE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.replace">2.8.34.&nbsp;REPLACE</h3></div></div></div>
+    
+    <p>
+      The REPLACE action replaces the text of all matched annotations with
+      the given StringExpression. It remembers the modification for the
+      matched annotations and shows them in the modified view (see
+      <a class="xref" href="#ugr.tools.ruta.language.modification" title="2.13.&nbsp;Modification">Section&nbsp;2.13, &#8220;Modification&#8221;</a>).
+    </p>
+    <div class="section" title="2.8.34.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2122">2.8.34.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">REPLACE(StringExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.34.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2127">2.8.34.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">FirstName{-&gt;REPLACE("first name")};</pre><p>
+      </p>
+      <p>
+        This rule replaces all first names with the string 'first
+        name'.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.35.&nbsp;RETAINTYPE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.retaintype">2.8.35.&nbsp;RETAINTYPE</h3></div></div></div>
+    
+    <p>
+      The RETAINTYPE action retains the given types. This means that they
+      are now not ignored by rules. This action is related to
+      FILTERTYPE (see <a class="xref" href="#ugr.tools.ruta.language.actions.filtertype" title="2.8.14.&nbsp;FILTERTYPE">Section&nbsp;2.8.14, &#8220;FILTERTYPE&#8221;</a>).
+    </p>
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>    
+      <p>
+        The visibility of types is calculated using three lists: 
+        A list <span class="quote">&#8220;<span class="quote">default</span>&#8221;</span> for the initially filtered types, 
+        which is specified in the configuration parameters of the analysis engine, the list <span class="quote">&#8220;<span class="quote">filtered</span>&#8221;</span>, which is 
+        specified by the FILTERTYPE action, and the list <span class="quote">&#8220;<span class="quote">retained</span>&#8221;</span>, which is specified by the RETAINTYPE action.
+        For determining the actual visibility of types, list <span class="quote">&#8220;<span class="quote">filtered</span>&#8221;</span> is added to list <span class="quote">&#8220;<span class="quote">default</span>&#8221;</span> 
+        and then all elements of list <span class="quote">&#8220;<span class="quote">retained</span>&#8221;</span> are removed. The annotations of the types in the resulting list are not visible.
+        Please note that the actions FILTERTYPE and RETAINTYPE replace all elements of the respective lists and that RETAINTYPE 
+        overrides FILTERTYPE.
+      </p>
+    </div>
+    <div class="section" title="2.8.35.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2145">2.8.35.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">RETAINTYPE((TypeExpression(,TypeExpression)*))?</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.35.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2150">2.8.35.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;RETAINTYPE(SPACE)};</pre><p>
+      </p>
+      <p>
+        Here, all spaces are retained and can be matched by rules.
+      </p>
+      <p>
+        </p><pre class="programlisting">Document{-&gt;RETAINTYPE};</pre><p>
+      </p>
+      <p>
+        Here, the the action (without parentheses) specifies that no types should be retained.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.36.&nbsp;SETFEATURE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.setfeature">2.8.36.&nbsp;SETFEATURE</h3></div></div></div>
+    
+    <p>
+      The SETFEATURE action sets the value of a feature of the
+      matched
+      complex structure.
+    </p>
+    <div class="section" title="2.8.36.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2162">2.8.36.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">SETFEATURE(StringExpression,Expression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.36.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2167">2.8.36.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;SETFEATURE("language","en")};</pre><p>
+      </p>
+      <p>
+        Here, the feature 'language' of the input document is set to
+        English.
+      </p>
+    </div>
+  </div>
+
+    <div class="section" title="2.8.37.&nbsp;SHIFT"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.shift">2.8.37.&nbsp;SHIFT</h3></div></div></div>
+      
+      <p>
+        The SHIFT action can be used to change the offsets of an annotation. The optional number expressions,
+        which point the rule elements of the rule, specify the new offsets of the annotation. The annotations that
+        will be modified have to start or end at the match of the rule element of the action. This means that the action 
+        has to be placed at a matching condition, which will be used to specify the annotations to be changed.
+      </p>
+      <div class="section" title="2.8.37.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2176">2.8.37.1.&nbsp;
+          <span class="bold"><strong>Definition:</strong></span>
+        </h4></div></div></div>
+        
+        <p>
+          </p><pre class="programlisting">SHIFT(TypeExpression(,NumberExpression)*)</pre><p>
+        </p>
+      </div>
+      <div class="section" title="2.8.37.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2181">2.8.37.2.&nbsp;
+          <span class="bold"><strong>Example:</strong></span>
+        </h4></div></div></div>
+        
+        <p>
+          </p><pre class="programlisting">Author{-&gt; SHIFT(Author,1,2)} PM;</pre><p>
+        </p>
+        <p>
+          In this example, an annotation of the type <span class="quote">&#8220;<span class="quote">Author</span>&#8221;</span> is expanded 
+          in order to cover the following punctation mark.
+        </p>
+        <p>
+          </p><pre class="programlisting">W{STARTSWITH(FS) -&gt; SHIFT(FS, 1, 2)} W+ MARKUP;</pre><p>
+        </p>
+        <p>
+          In this example, an annotation of the type <span class="quote">&#8220;<span class="quote">FS</span>&#8221;</span> that consists mostly of words 
+          is shrinked by removing the last MARKUP annotation. 
+        </p>
+      </div>
+    </div>
+
+    <div class="section" title="2.8.38.&nbsp;SPLIT"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.split">2.8.38.&nbsp;SPLIT</h3></div></div></div>
+      
+      <p>
+        The SPLIT action is able to split the matched annotation for each occurrence of annotation 
+        of the given type. There are three additional parameters: The first one specifies if complete annotations of the given type 
+        should be used to split the matched annotations. If set to false, then even the boundary of an annotation will cause splitting.
+        The third (addToBegin) and fourth (addToEnd) argument specify if the complete annotation (for splitting) 
+        will be added to the begin or end of the splitted annotation. 
+        The latter two are only utilized if the first one is set to true..
+        If omitted, the first argument is true and the other two arguments are false by default.
+      </p>
+      <div class="section" title="2.8.38.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2195">2.8.38.1.&nbsp;
+          <span class="bold"><strong>Definition:</strong></span>
+        </h4></div></div></div>
+        
+        <p>
+          </p><pre class="programlisting">SPLIT(TypeExpression(,BooleanExpression, 
+          (BooleanExpression, BooleanExpression)? )?</pre><p>
+        </p>
+      </div>
+      <div class="section" title="2.8.38.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2200">2.8.38.2.&nbsp;
+          <span class="bold"><strong>Example:</strong></span>
+        </h4></div></div></div>
+        
+        <p>
+          </p><pre class="programlisting">Sentence{-&gt; SPLIT(PERIOD, true, false, true)};</pre><p>
+        </p>
+        <p>
+          In this example, an annotation of the type <span class="quote">&#8220;<span class="quote">Sentence</span>&#8221;</span> is 
+          splitted for each occurence of a period, which is added to the end of the new sentence. 
+        </p>
+      </div>
+    </div>
+
+  <div class="section" title="2.8.39.&nbsp;TRANSFER"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.transfer">2.8.39.&nbsp;TRANSFER</h3></div></div></div>
+    
+    <p>
+      The TRANSFER action creates a new feature structure and adds all
+      compatible features of the matched annotation.
+    </p>
+    <div class="section" title="2.8.39.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2210">2.8.39.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">TRANSFER(TypeExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.39.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2215">2.8.39.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;TRANSFER(LanguageStorage)};</pre><p>
+      </p>
+      <p>
+        Here, a new feature structure <span class="quote">&#8220;<span class="quote">LanguageStorage</span>&#8221;</span> is created and
+        the compatible features of the Document annotation are copied. E.g.,
+        if LanguageStorage defined a feature named 'language', then the
+        feature value of the Document annotation is copied.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.40.&nbsp;TRIE"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.trie">2.8.40.&nbsp;TRIE</h3></div></div></div>
+    
+    <p>
+      The TRIE action uses an external multi tree word list to
+      annotate the matched annotation and provides several configuration
+      parameters.
+    </p>
+    <div class="section" title="2.8.40.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2225">2.8.40.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">TRIE((String = (TypeExpression|{TypeExpression,StringExpression,
+          Expression}))+,ListExpression,BooleanExpression,NumberExpression,
+          BooleanExpression,NumberExpression,StringExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.40.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2230">2.8.40.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Document{-&gt;TRIE("FirstNames.txt" = FirstName, "Companies.txt" = Company, 
+          'Dictionary.mtwl', true, 4, false, 0, ".,-/")};</pre><p>
+      </p>
+      <p>
+        Here, the dictionary 'Dictionary.mtwl' that contains word lists
+        for first names and companies is used to annotate the document. The
+        words previously contained in the file 'FirstNames.txt' are
+        annotated with the type FirstName and the words in the file
+        'Companies.txt' with the type Company. The case of the word is
+        ignored, if the length of the word exceeds 4. The edit distance is
+        deactivated. The cost of an edit operation can currently not be
+        configured by an argument. The last argument additionally defines
+        several chars that will be ignored.
+      </p>
+      <p>
+        </p><pre class="programlisting">Document{-&gt;TRIE("FirstNames.txt" = {A, "a", "first"}, "LastNames.txt" = 
+          {B, "b", true}, "CompleteNames.txt" = {C, "c", 6},
+          list1, true, 4, false, 0, ":")};</pre><p>
+      </p>
+      <p>
+        Here, the dictionary 'list1' is applied on the document. Matches originated in dictionary 'FirstNames.txt'
+        result in annotations of type A wheras their features 'a' are set to 'first'. The other two dictionaries 
+        create annotations of type 'B' and 'C' for the corresponding dictionaries with a boolean feature value 
+        and a integer feature value.
+      </p>
+    </div>
+  </div>
+
+<div class="section" title="2.8.41.&nbsp;TRIM"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.trim">2.8.41.&nbsp;TRIM</h3></div></div></div>
+    
+    <p>
+      The TRIM action changes the offsets on the matched annotations by removing annotations, whose
+      types are specified by the given parameters.
+    </p>
+    <div class="section" title="2.8.41.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2242">2.8.41.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">TRIM(TypeExpression ( , TypeExpression)*)</pre><p>
+        </p><pre class="programlisting">TRIM(TypeListExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.41.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2248">2.8.41.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Keyword{-&gt; TRIM(SPACE)};</pre><p>
+      </p>
+      <p>
+        This rule removes all spaces at the beginning and at the end of Keyword annotations and
+        thus changes the offsets of the matched annotations.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.42.&nbsp;UNMARK"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.unmark">2.8.42.&nbsp;UNMARK</h3></div></div></div>
+    
+    <p>
+      The UNMARK action removes the annotation of the given type
+      overlapping the matched annotation. There are two additional configurations: If additional
+      indexes are given, then the span of the specified rule elements are applied, similar the the MARK action.
+      If instead a boolean is given as an additional argument, then all annotations of the given type are removed
+      that start at the matched position.
+    </p>
+    <div class="section" title="2.8.42.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2259">2.8.42.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">UNMARK(AnnotationExpression)</pre><p>
+        </p><pre class="programlisting">UNMARK(TypeExpression)</pre><p>
+        </p><pre class="programlisting">UNMARK(TypeExpression (,NumberExpression)*)</pre><p>
+        </p><pre class="programlisting">UNMARK(TypeExpression, BooleanExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.42.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2267">2.8.42.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Headline{-&gt;UNMARK(Headline)};</pre><p>
+      </p>
+      <p>
+        Here, the Headline annotation is removed.
+      </p>
+      <p>
+        </p><pre class="programlisting">CW ANY+? QUESTION{-&gt;UNMARK(Headline,1,3)};</pre><p>
+      </p>
+      <p>
+        Here, all Headline annotations are removed that start with a capitalized word and end with a question mark.
+      </p>
+      <p>
+        </p><pre class="programlisting">CW{-&gt;UNMARK(Headline,true)};</pre><p>
+      </p>
+      <p>
+        Here, all Headline annotations are removed that start with a capitalized word.
+      </p>
+      <p>
+        </p><pre class="programlisting">Complex{-&gt;UNMARK(Complex.inner)};</pre><p>
+      </p>
+      <p>
+        Here, the annotation stored in the feature <code class="code">inner</code> will be removed.
+      </p>
+    </div>
+  </div>
+
+  <div class="section" title="2.8.43.&nbsp;UNMARKALL"><div class="titlepage"><div><div><h3 class="title" id="ugr.tools.ruta.language.actions.unmarkall">2.8.43.&nbsp;UNMARKALL</h3></div></div></div>
+    
+    <p>
+      The UNMARKALL action removes all the annotations of the given
+      type and all of its descendants overlapping the matched annotation,
+      except the annotation is of at least one type in the passed list.
+    </p>
+    <div class="section" title="2.8.43.1.&nbsp; Definition:"><div class="titlepage"><div><div><h4 class="title" id="d5e2279">2.8.43.1.&nbsp;
+        <span class="bold"><strong>Definition:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">UNMARKALL(TypeExpression, TypeListExpression)</pre><p>
+      </p>
+    </div>
+    <div class="section" title="2.8.43.2.&nbsp; Example:"><div class="titlepage"><div><div><h4 class="title" id="d5e2284">2.8.43.2.&nbsp;
+        <span class="bold"><strong>Example:</strong></span>
+      </h4></div></div></div>
+      
+      <p>
+        </p><pre class="programlisting">Annotation{-&gt;UNMARKALL(Annotation, {Headline})};</pre><p>
+      </p>
+      <p>
+        Here, all annotations except from headlines are removed.
+      </p>
+      
+    </div>
+  </div>

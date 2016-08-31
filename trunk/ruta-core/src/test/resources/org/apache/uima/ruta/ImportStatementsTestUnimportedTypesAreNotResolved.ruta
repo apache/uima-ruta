@@ -1,0 +1,6 @@
+PACKAGE org.apache.uima.ruta;
+
+IMPORT org.apache.uima.ruta.Type1 FROM org.apache.uima.ruta.ImportStatementsTestTypeSystem;
+
+// Type2 is in org.apache.uima.ruta.ImportStatementsTestTypeSystem, but it is not imported. It should not be resolved.
+W{-> MARK(Type2)};

@@ -1,0 +1,11 @@
+PACKAGE uima.ruta.tests;
+
+DECLARE T1, T2, T3, T4, T5, T6, T7;
+
+W{-> T1} W{-> T2} W{-> T3} W{-> T4};
+PERIOD W{-> T1}  W{-> T3} W{-> T4};
+T1 T2? T3 T4{->MARK(T5, 1, 4)};
+T1 (T2)? T3 T4{->MARK(T6, 1, 4)};
+(T1 T2)? T3 T4{->MARK(T7, 1, 4)};
+
+
