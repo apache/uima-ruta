@@ -80,7 +80,7 @@ public class MarkFastAction extends AbstractMarkAction {
       RutaWordList wl = null;
       element.getParent();
       if (list != null) {
-        wl = list.getList(context);
+        wl = list.getList(context, stream);
       } else if (stringList != null) {
         wl = new TreeWordList(stringList.getList(context, stream), false);
       }

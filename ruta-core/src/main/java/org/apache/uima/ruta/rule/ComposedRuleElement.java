@@ -545,7 +545,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
             begin, end);
 
     MatchContext context = new MatchContext(annotation, this, ruleMatch, after);
-
+    context.getParent().getEnvironment().addMatchToVariable(ruleMatch, this, context, stream);
+    
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
             conditions.size());
     for (AbstractRutaCondition condition : conditions) {
@@ -553,6 +554,9 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       EvaluatedCondition eval = condition.eval(context, stream, crowd);
       crowd.endVisit(condition, null);
       evaluatedConditions.add(eval);
+      if(!eval.isValue()) {
+        break;
+      }
     }
     match.setConditionInfo(evaluatedConditions);
     match.evaluateInnerMatches(true, stream);

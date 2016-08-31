@@ -20,6 +20,7 @@
 package org.apache.uima.ruta;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -32,15 +33,21 @@ public class RutaModule extends RutaElement {
 
   private Map<String, RutaModule> scripts;
 
-  private Map<String, AnalysisEngine> engines;
+  private Map<String, AnalysisEngine> descriptorEngines;
+  
+  private Map<String, AnalysisEngine> uimafitEngines;
 
+  private Map<String, List<String>> configurationData;
+  
   private Map<String, RutaBlock> blocks;
 
   public RutaModule(RutaBlock rootBlock) {
     super();
     this.rootBlock = rootBlock;
     scripts = new HashMap<String, RutaModule>();
-    engines = new HashMap<String, AnalysisEngine>();
+    descriptorEngines = new HashMap<String, AnalysisEngine>();
+    uimafitEngines = new HashMap<String, AnalysisEngine>();
+    configurationData = new HashMap<String, List<String>>();
     blocks = new HashMap<String, RutaBlock>();
   }
 
@@ -109,6 +116,7 @@ public class RutaModule extends RutaElement {
   }
 
   public AnalysisEngine getEngine(String name) {
+    Map<String, AnalysisEngine> engines = getAllEngines();
     AnalysisEngine result = engines.get(name);
     if (result == null) {
       for (String each : engines.keySet()) {
@@ -122,18 +130,29 @@ public class RutaModule extends RutaElement {
     return result;
   }
 
-  public void addEngine(String name, AnalysisEngine engine) {
-    engines.put(name, engine);
+  public void addDescriptorEngine(String name, AnalysisEngine engine) {
+    descriptorEngines.put(name, engine);
   }
 
   public void addUimafitEngine(String name, AnalysisEngine engine) {
-    engines.put(name, engine);
+    uimafitEngines.put(name, engine);
   }
 
-  public void setEngineDependencies(Map<String, AnalysisEngine> additionalEngines) {
-    for (String eachTarget : engines.keySet()) {
+  public void addConfigurationData(String name, List<String> configuration) {
+    configurationData.put(name, configuration);
+  }
+  
+  public void setDescriptorEngineDependencies(Map<String, AnalysisEngine> additionalEngines) {
+    for (String eachTarget : descriptorEngines.keySet()) {
       AnalysisEngine engine = additionalEngines.get(eachTarget);
-      addEngine(eachTarget, engine);
+      addDescriptorEngine(eachTarget, engine);
+    }
+  }
+  
+  public void setUimafitEngineDependencies(Map<String, AnalysisEngine> additionalEngines) {
+    for (String eachTarget : uimafitEngines.keySet()) {
+      AnalysisEngine engine = additionalEngines.get(eachTarget);
+        addUimafitEngine(eachTarget, engine);
     }
   }
 
@@ -145,12 +164,31 @@ public class RutaModule extends RutaElement {
     return blocks;
   }
 
-  public Map<String, AnalysisEngine> getEngines() {
-    return engines;
+  public Map<String, AnalysisEngine> getAllEngines() {
+    Map<String, AnalysisEngine> result = new HashMap<>();
+    result.putAll(descriptorEngines);
+    result.putAll(uimafitEngines);
+    return result;
   }
 
+  public Map<String, AnalysisEngine> getDescriptorEngines() {
+    return descriptorEngines;
+  }
+
+  public Map<String, AnalysisEngine> getUimafitEngines() {
+    return uimafitEngines;
+  }
+  
   public RutaBlock getRootBlock() {
     return rootBlock;
+  }
+
+  public Map<String, List<String>> getConfigurationData() {
+    return configurationData;
+  }
+
+  public List<String> getConfigurationData(String engine) {
+    return configurationData.get(engine);
   }
 
 }

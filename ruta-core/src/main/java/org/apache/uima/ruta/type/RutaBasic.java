@@ -297,6 +297,7 @@ public class RutaBasic extends Annotation {
     for (Collection<?> each : beginMap) {
       if (each != null && !each.isEmpty()) {
         this.empty = false;
+        break;
       }
     }
   }
@@ -306,6 +307,7 @@ public class RutaBasic extends Annotation {
     for (Collection<?> each : endMap) {
       if (each != null && !each.isEmpty()) {
         this.empty = false;
+        break;
       }
     }
   }
@@ -317,6 +319,12 @@ public class RutaBasic extends Annotation {
 
   public void clearEndMap() {
     this.endMap = new ArrayList<?>[((TypeSystemImpl) getCAS().getTypeSystem()).getLargestTypeCode()];
+    for (Collection<?> each : beginMap) {
+      if (each != null && !each.isEmpty()) {
+        return;
+      }
+    }
+    this.empty = true;
   }
 
   /**

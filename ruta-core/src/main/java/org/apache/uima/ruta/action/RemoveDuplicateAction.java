@@ -50,7 +50,7 @@ public class RemoveDuplicateAction extends AbstractRutaAction {
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     RuleElement element = context.getElement();
-    List list = element.getParent().getEnvironment().getVariableValue(var, List.class);
+    List list = element.getParent().getEnvironment().getVariableValue(var, List.class, stream);
     Collection<Object> values = new HashSet<Object>();
     List<Object> result = new ArrayList<Object>();
     for (Object each : list) {

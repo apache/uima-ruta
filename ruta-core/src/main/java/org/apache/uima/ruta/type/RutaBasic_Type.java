@@ -19,11 +19,13 @@ import org.apache.uima.jcas.tcas.Annotation_Type;
  */
 public class RutaBasic_Type extends Annotation_Type {
   /** @generated */
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   protected FSGenerator getFSGenerator() {
     return fsGenerator;
   }
 
   /** @generated */
+  @SuppressWarnings("rawtypes")
   private final FSGenerator fsGenerator = new FSGenerator() {
     public FeatureStructure createFS(int addr, CASImpl cas) {
       if (RutaBasic_Type.this.useExistingInstance) {

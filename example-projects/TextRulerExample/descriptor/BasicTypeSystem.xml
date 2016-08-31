@@ -138,11 +138,6 @@
       <supertypeName>org.apache.uima.ruta.type.WS</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.apache.uima.ruta.type.Document</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-    </typeDescription>
-    <typeDescription>
       <name>org.apache.uima.ruta.type.TokenSeed</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>

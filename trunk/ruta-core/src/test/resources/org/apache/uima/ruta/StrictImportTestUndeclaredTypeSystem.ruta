@@ -1,6 +1,0 @@
-PACKAGE org.apache.uima.ruta;
-
-DECLARE T1;
-
-W{-> MARK(MyType)};
-W{-> MARK(T1)};

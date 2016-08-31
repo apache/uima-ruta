@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -24,128 +23,8 @@
   <version>1.0</version>
   <vendor/>
   <imports>
-    <import location="InternalTypeSystem.xml"/>
+    <import location="RutaInternalTypeSystem.xml"/>
+    <import location="RutaBasicTypeSystem.xml"/>
+    <import location="DefaultSeederTypeSystem.xml"/>
   </imports>
-  <types>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.ALL</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.TokenSeed</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.ANY</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.ALL</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.MARKUP</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.ALL</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.CW</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.W</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.W</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.SW</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.W</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.PM</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.CAP</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.W</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.COLON</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.PM</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.PERIOD</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.SENTENCEEND</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.SENTENCEEND</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.PM</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.QUESTION</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.SENTENCEEND</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.COMMA</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.PM</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.EXCLAMATION</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.SENTENCEEND</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.SEMICOLON</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.PM</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.WS</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.NUM</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.SPECIAL</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.NBSP</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.SPACE</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.AMP</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.ANY</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.SPACE</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.WS</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.BREAK</name>
-      <description/>
-      <supertypeName>org.apache.uima.ruta.type.WS</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.Document</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>org.apache.uima.ruta.type.TokenSeed</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-    </typeDescription>
-  </types>
-</typeSystemDescription>
+  </typeSystemDescription>

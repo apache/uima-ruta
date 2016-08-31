@@ -62,7 +62,7 @@ public class RemoveAction extends AbstractRutaAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     RuleElement element = context.getElement();
     RutaBlock parent = element.getParent();
-    List list = parent.getEnvironment().getVariableValue(var, List.class);
+    List list = parent.getEnvironment().getVariableValue(var, List.class, stream);
     Class<?> vgtype = parent.getEnvironment().getVariableGenericType(var);
     List<Object> toRemove = new ArrayList<Object>();
     for (Object entry : list) {

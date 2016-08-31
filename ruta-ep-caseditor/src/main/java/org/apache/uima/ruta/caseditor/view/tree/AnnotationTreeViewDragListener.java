@@ -31,12 +31,14 @@ public class AnnotationTreeViewDragListener extends DragSourceAdapter {
     this.viewer = viewer;
   }
 
+  @Override
   public void dragFinished(DragSourceEvent event) {
     if (!event.doit)
       return;
 
   }
 
+  @Override
   public void dragSetData(DragSourceEvent event) {
     IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
     Object[] list = selection.toList().toArray();
@@ -49,6 +51,7 @@ public class AnnotationTreeViewDragListener extends DragSourceAdapter {
     }
   }
 
+  @Override
   public void dragStart(DragSourceEvent event) {
     event.doit = !viewer.getSelection().isEmpty();
   }

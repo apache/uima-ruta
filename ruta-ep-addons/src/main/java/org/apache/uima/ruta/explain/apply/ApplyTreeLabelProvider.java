@@ -19,6 +19,10 @@
 
 package org.apache.uima.ruta.explain.apply;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -31,6 +35,12 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 public class ApplyTreeLabelProvider extends LabelProvider implements ILabelProvider {
+
+  private DecimalFormat dfTime = new DecimalFormat("###,###,##0.000",
+          DecimalFormatSymbols.getInstance(Locale.ENGLISH));;
+
+  private DecimalFormat dfPercentage = new DecimalFormat("##0.00",
+          DecimalFormatSymbols.getInstance(Locale.ENGLISH));;
 
   private ApplyViewPage owner;
 
@@ -62,7 +72,7 @@ public class ApplyTreeLabelProvider extends LabelProvider implements ILabelProvi
   @Override
   public String getText(Object element) {
 
-    String result = "error";
+    StringBuilder result = new StringBuilder();
     if (element instanceof IExplainTreeNode) {
       IExplainTreeNode debugNode = (IExplainTreeNode) element;
       TypeSystem ts = debugNode.getTypeSystem();
@@ -74,38 +84,48 @@ public class ApplyTreeLabelProvider extends LabelProvider implements ILabelProvi
         int v1 = fs.getIntValue(f1);
         Feature f2 = ruleType.getFeatureByBaseName(ExplainConstants.TRIED);
         int v2 = fs.getIntValue(f2);
+        result.append("[");
+        result.append(v1);
+        result.append("/");
+        result.append(v2);
+        result.append("] ");
+
         Feature f3 = ruleType.getFeatureByBaseName(ExplainConstants.ELEMENT);
         String v3 = fs.getStringValue(f3);
         v3 = v3.replaceAll("[\\n\\r]", "");
-        if(v3.length() > 150) {
+        if (v3.length() > 150) {
           v3 = v3.substring(0, 148) + "...";
         }
+        result.append(v3);
+
         Feature f4 = ruleType.getFeatureByBaseName(ExplainConstants.TIME);
         long v4 = fs.getLongValue(f4);
-        String time = "";
-        if (v4 > 0.0) {
+        if (v4 > 0) {
           double took = v4 / 1000.0;
-          time = " [" + took + "s";
+          String s = dfTime.format(took);
+          result.append(" [");
+          result.append(s);
+          result.append("s");
+
+          double percent = 100;
           IExplainTreeNode parentNode = debugNode.getParent();
           if (parentNode != null) {
             FeatureStructure parent = parentNode.getFeatureStructure();
             if (parent != null) {
               long parentTime = parent.getLongValue(f4);
-              double percent = (took / (parentTime / 1000.0)) * 100.0;
-              percent = Math.round(percent * 100.0) / 100.0;
-              time += "|" + percent + "%]";
-            } else {
-              time += "]";
+              if(parentTime>0) {
+                percent = (took / (parentTime / 1000.0)) * 100.0;
+              }
             }
-          } else {
-            time += "]";
           }
-
+          result.append("|");
+          result.append(dfPercentage.format(percent));
+          result.append("%");
+          result.append("]");
         }
-        result = "[" + v1 + "/" + v2 + "] " + v3 + time;
       }
     }
-    return result;
+    return result.toString();
 
   }
 

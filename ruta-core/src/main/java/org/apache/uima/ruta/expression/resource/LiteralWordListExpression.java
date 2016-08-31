@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.expression.resource;
 
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.resource.RutaWordList;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -41,7 +42,7 @@ public class LiteralWordListExpression extends WordListExpression {
   }
 
   @Override
-  public RutaWordList getList(MatchContext context) {
+  public RutaWordList getList(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     RutaWordList list = parent.getEnvironment().getWordList(getText());
     return list;

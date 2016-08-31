@@ -69,6 +69,8 @@ import org.apache.uima.ruta.expression.resource.LiteralWordListExpression;
 import org.apache.uima.ruta.expression.resource.LiteralWordTableExpression;
 import org.apache.uima.ruta.expression.resource.ReferenceWordListExpression;
 import org.apache.uima.ruta.expression.resource.ReferenceWordTableExpression;
+import org.apache.uima.ruta.expression.resource.StringWordListExpression;
+import org.apache.uima.ruta.expression.resource.StringWordTableExpression;
 import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.AbstractStringExpression;
@@ -216,6 +218,14 @@ public class ExpressionFactory {
 
   public static WordTableExpression createLiteralWordTableExpression(Token path) {
     return new LiteralWordTableExpression(path.getText());
+  }
+  
+  public static WordListExpression createStringWordListExpression(IStringExpression expr) {
+    return new StringWordListExpression(expr);
+  }
+
+  public static WordTableExpression createStringWordTableExpression(IStringExpression expr) {
+    return new StringWordTableExpression(expr);
   }
 
   public static IBooleanExpression createBooleanTypeExpression(ITypeExpression e1, Token op,

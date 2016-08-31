@@ -1,3 +1,0 @@
-PACKAGE org.apache.uima;
-
-W{->SHIFT(W, 1, 1)};

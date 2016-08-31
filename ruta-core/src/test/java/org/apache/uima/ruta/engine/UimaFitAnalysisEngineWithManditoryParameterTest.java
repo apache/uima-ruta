@@ -32,24 +32,38 @@ public class UimaFitAnalysisEngineWithManditoryParameterTest {
 
   @Test
   public void test() throws Exception {
-    
+
     String document = "Some text.";
-    String script = "UIMAFIT org.apache.uima.ruta.engine.UimaFitAnalysisEngineWithManditoryParameter (type, "+RutaTestUtils.TYPE+"1);";
+    String script = "UIMAFIT org.apache.uima.ruta.engine.UimaFitAnalysisEngineWithManditoryParameter (type, "
+            + RutaTestUtils.TYPE + "1);";
     script += "EXEC(UimaFitAnalysisEngineWithManditoryParameter);";
-    CAS cas = null;
+
     RutaDescriptorFactory factory = new RutaDescriptorFactory();
     RutaDescriptorInformation rdi = factory.parseDescriptorInformation(script);
-    AnalysisEngineDescription aed = factory.createAnalysisEngineDescription(null, rdi, new RutaBuildOptions(), null, null, null, this.getClass().getClassLoader());
+    AnalysisEngineDescription aed = factory.createAnalysisEngineDescription(null, rdi,
+            new RutaBuildOptions(), null, null, null, this.getClass().getClassLoader());
     AnalysisEngine ae = AnalysisEngineFactory.createEngine(aed, RutaEngine.PARAM_RULES, script);
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      ae.process(cas);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    
+    CAS cas = RutaTestUtils.getCAS(document);
+    ae.process(cas);
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
-      
+
+    cas.release();
+  }
+  
+  @Test
+  public void testScriptOnly() throws Exception {
+
+    String document = "Some text.";
+    String script = "UIMAFIT org.apache.uima.ruta.engine.UimaFitAnalysisEngineWithManditoryParameter (type, "
+            + RutaTestUtils.TYPE + "1);";
+    script += "EXEC(UimaFitAnalysisEngineWithManditoryParameter);";
+    
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES, script);
+    CAS cas = RutaTestUtils.getCAS(document);
+    ae.process(cas);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
     cas.release();
   }
 }

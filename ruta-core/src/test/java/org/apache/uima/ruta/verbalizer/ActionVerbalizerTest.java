@@ -273,7 +273,7 @@ public class ActionVerbalizerTest {
     assertEquals("SETFEATURE(\"string\", Type1)", s);
 
     // SHIFT
-    a = new ShiftAction(typeExpr1, indexes);
+    a = new ShiftAction(typeExpr1, indexes, null);
     s = v.verbalize(a);
     assertEquals("SHIFT(Type1, 4, numVar)", s);
 

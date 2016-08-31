@@ -35,14 +35,18 @@ public class LazyFeature implements Feature {
   
   public Feature initialize(Type type) {
    delegate = type.getFeatureByBaseName(featureName);
+   if(delegate == null) {
+     return this;
+   }
    return delegate;
   }
   
   public Feature initialize(AnnotationFS annotation) {
     if(annotation!= null) {
       delegate = annotation.getType().getFeatureByBaseName(featureName);
-    } else {
-      delegate = null;
+    } 
+    if(delegate == null) {
+      return this;
     }
     return delegate;
    }
@@ -76,5 +80,10 @@ public class LazyFeature implements Feature {
   public boolean isMultipleReferencesAllowed() {
     return delegate.isMultipleReferencesAllowed();
   }
+
+  public String getFeatureName() {
+    return featureName;
+  }
+
 
 }

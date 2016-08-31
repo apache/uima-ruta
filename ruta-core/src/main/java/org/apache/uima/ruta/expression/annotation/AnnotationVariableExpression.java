@@ -41,7 +41,7 @@ private String var;
   @Override
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    AnnotationFS variableValue = parent.getEnvironment().getVariableValue(var, AnnotationFS.class);
+    AnnotationFS variableValue = parent.getEnvironment().getVariableValue(var, AnnotationFS.class, stream);
     return variableValue;
   }
 
@@ -50,4 +50,9 @@ private String var;
     return var;
   }
 
+  @Override
+  public String toString() {
+    return var;
+  }
+  
 }

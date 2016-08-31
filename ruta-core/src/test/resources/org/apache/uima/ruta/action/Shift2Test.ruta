@@ -6,4 +6,4 @@ DECLARE Annotation FS (Annotation doc, STRING lang);
 
 CREATE(FS, "doc" = Document, "lang" = "unknown");
 RETAINTYPE(MARKUP);
-W{STARTSWITH(FS) -> SHIFT(FS, 1, 2)} W+ MARKUP;
+W{STARTSWITH(FS) -> SHIFT(FS, 1, 2, true)} W+ MARKUP;

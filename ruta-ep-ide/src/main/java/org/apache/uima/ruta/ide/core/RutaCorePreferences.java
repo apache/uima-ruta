@@ -33,4 +33,6 @@ public class RutaCorePreferences {
   public static final String ADD_SDI = "AddSDI";
 
   public static final String COMPRESS_WORDLISTS = "CompressWordLists";
+
+  public static final String DEFAULT_CAS_SERIALIZATION_FORMAT = "DefaultCasSerializationFormat";
 }

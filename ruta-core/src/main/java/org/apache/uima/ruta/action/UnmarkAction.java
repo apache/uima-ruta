@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
@@ -41,17 +42,43 @@ public class UnmarkAction extends TypeSensitiveAction {
 
   private IBooleanExpression allAnchor;
 
+  private AnnotationTypeExpression expression;
+
   public UnmarkAction(ITypeExpression type, List<INumberExpression> list, IBooleanExpression b) {
     super(type);
     this.list = list;
     this.allAnchor = b;
   }
 
+  public UnmarkAction(AnnotationTypeExpression expression) {
+    super(null);
+    this.expression = expression;
+  }
+
   @Override
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     RuleMatch match = context.getRuleMatch();
     RuleElement element = context.getElement();
-    Type t = type.getType(context, stream);
+
+    if (expression != null) {
+      List<AnnotationFS> annotationList = expression.getAnnotationList(context, stream);
+      if(expression.getTypeExpression() != null && expression.getFeatureExpression() == null && expression.getAnnotationExpression() == null && expression.getAnnotationListExpression()== null) {
+        // type-based like old behavior
+        Type t = expression.getTypeExpression().getType(context, stream);
+        removeTypeBased(context, stream, match, element, t);
+      } else {
+      for (AnnotationFS annotationFS : annotationList) {
+        stream.removeAnnotation(annotationFS);
+      }
+      }
+    } else {
+      Type t = type.getType(context, stream);
+      removeTypeBased(context, stream, match, element, t);
+    }
+  }
+
+  private void removeTypeBased(MatchContext context, RutaStream stream, RuleMatch match,
+          RuleElement element, Type t) {
     boolean allAtAnchor = false;
     if (allAnchor != null) {
       allAtAnchor = allAnchor.getBooleanValue(context, stream);
@@ -77,7 +104,6 @@ public class UnmarkAction extends TypeSensitiveAction {
       }
 
     }
-
   }
 
   public List<INumberExpression> getList() {
@@ -108,4 +134,9 @@ public class UnmarkAction extends TypeSensitiveAction {
     }
     return indexList;
   }
+
+  public AnnotationTypeExpression getExpression() {
+    return expression;
+  }
+
 }

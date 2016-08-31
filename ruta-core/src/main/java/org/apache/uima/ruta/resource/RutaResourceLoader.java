@@ -31,20 +31,40 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
  * found.
  */
 public class RutaResourceLoader implements ResourceLoader {
+  
   private final ResourceLoader wrapped;
 
   private final ResourceLoader fallback;
 
+  private final ClassLoader classLoader;
+  
   /**
-   * @param resourcePaths
-   *          Resource paths to search in priority.
+   * @param paths
+   *          paths to search in priority.
+   * @param classLoader
+   *          optional classloader for fallback resource loader
    */
-  public RutaResourceLoader(String[] resourcePaths) {
+  public RutaResourceLoader(String[] paths, ClassLoader classLoader) {
     this.wrapped = new PathMatchingResourcePatternResolver(new ResourcePathResourceLoader(
-            resourcePaths));
-    this.fallback = new DefaultResourceLoader();
+            paths));
+    if(classLoader == null) {
+      this.classLoader = this.getClass().getClassLoader();
+    } else {
+      this.classLoader = classLoader;
+    }
+    this.fallback = new DefaultResourceLoader(this.classLoader);
+  }
+  
+  /**
+   * @param paths
+   *          paths to search in priority.
+   */
+  public RutaResourceLoader(String[] paths) {
+    this(paths, null);
   }
 
+  
+  @Override
   public Resource getResource(String location) {
     Resource resource = this.wrapped.getResource(location);
     if (!resource.exists()) {
@@ -53,7 +73,14 @@ public class RutaResourceLoader implements ResourceLoader {
     return resource;
   }
 
-  public ClassLoader getClassLoader() {
-    return getClass().getClassLoader();
+  public Resource getResourceWithDotNotation(String location, String extension) {
+    String path = location.replaceAll("[.]", "/") + extension;
+    return getResource(path);
   }
+  
+  @Override
+  public ClassLoader getClassLoader() {
+    return classLoader;
+  }
+
 }

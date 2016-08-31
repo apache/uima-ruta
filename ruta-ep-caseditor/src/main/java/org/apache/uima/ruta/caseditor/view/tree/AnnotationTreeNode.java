@@ -21,6 +21,7 @@ package org.apache.uima.ruta.caseditor.view.tree;
 
 import java.util.Stack;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -29,14 +30,15 @@ import org.eclipse.core.runtime.IAdaptable;
 public class AnnotationTreeNode extends FSTreeNode implements IAnnotationNode, IAdaptable {
 
 
-  public AnnotationTreeNode(ITreeNode parent, AnnotationFS annotation) {
-    super(parent, annotation);
+  public AnnotationTreeNode(CAS cas, ITreeNode parent, AnnotationFS annotation) {
+    super(cas, parent, annotation);
   }
   
-  public AnnotationTreeNode(ITreeNode parent, AnnotationFS annotation, Stack<Type> parentTypes) {
-    super(parent, annotation, parentTypes);
+  public AnnotationTreeNode(CAS cas, ITreeNode parent, AnnotationFS annotation, Stack<Type> parentTypes) {
+    super(cas, parent, annotation, parentTypes);
   }
 
+  @Override
   public AnnotationFS getAnnotation() {
     return (AnnotationFS) fs;
   }
@@ -46,6 +48,7 @@ public class AnnotationTreeNode extends FSTreeNode implements IAnnotationNode, I
     return getAnnotation().getCoveredText();
   }
 
+  @Override
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (FSTreeNode.class.equals(adapter)) {

@@ -20,11 +20,10 @@
 package org.apache.uima.ruta.caseditor.view.tree;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Stack;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -33,36 +32,32 @@ public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTr
 
   private Map<Type, TypeTreeNode> typeMap = new HashMap<Type, TypeTreeNode>();
 
-  public TypeOrderedRootTreeNode() {
-    super();
+  public TypeOrderedRootTreeNode(CAS cas) {
+    super(cas);
   }
 
+  @Override
   public String getName() {
     return null;
   }
 
+  @Override
   public Type getType() {
     return null;
   }
 
-  /**
-   * Gets a tree node for a type from cache; may create a new tree node.
-   * 
-   * @param type
-   * @return
-   */
-  public TypeTreeNode getTreeNode(Type type) {
+  public TypeTreeNode getTreeNode(Type type, CAS cas) {
     TypeTreeNode typeTreeNode = typeMap.get(type);
     if (typeTreeNode == null) {
-      typeTreeNode = new TypeTreeNode(this, type);
+      typeTreeNode = new TypeTreeNode(cas, this, type);
       typeMap.put(type, typeTreeNode);
       addChild(typeTreeNode);
     }
     return typeTreeNode;
   }
 
-  public void insertFS(FeatureStructure fs, boolean withParents) {
-    // TODO hotfix for explanation types...
+  @Override
+  public void insertFS(FeatureStructure fs, CAS cas, boolean withParents) {
     Type type = fs.getType();
     if (type.getShortName().equals("RutaBasic") || type.getShortName().equals("DebugBlockApply")
             || type.getShortName().equals("DebugMatchedRuleMatch")
@@ -72,85 +67,36 @@ public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTr
             || type.getShortName().equals("DebugRuleElementMatch")) {
       return;
     }
-    insertFS(fs, type, withParents);
+    insertFS(fs, type, cas, withParents);
   }
 
-  private void insertFS(FeatureStructure fs, Type type, boolean withParents) {
-    TypeTreeNode typeTreeNode = getTreeNode(type);
+  private void insertFS(FeatureStructure fs, Type type, CAS cas, boolean withParents) {
+    TypeTreeNode typeTreeNode = getTreeNode(type, cas);
 
     FSTreeNode node = createFSNode(typeTreeNode, fs);
     typeTreeNode.addChild(node);
     if (withParents) {
       Type parent = fs.getCAS().getTypeSystem().getParent(type);
       if (parent != null) {
-        insertFS(fs, parent, withParents);
+        insertFS(fs, parent, cas, withParents);
       }
     }
   }
 
   private FSTreeNode createFSNode(ITreeNode parent, FeatureStructure fs) {
     if (fs instanceof AnnotationFS) {
-      return new AnnotationTreeNode(parent, (AnnotationFS) fs, new Stack<Type>());
+      return new AnnotationTreeNode(cas, parent, (AnnotationFS) fs, new Stack<Type>());
     }
-    return new FSTreeNode(parent, fs);
+    return new FSTreeNode(cas, parent, fs);
   }
 
-  public LinkedList<ITreeNode> getNodes() {
-    LinkedList<ITreeNode> list = new LinkedList<ITreeNode>();
-    getNodes(list);
-    return list;
-  }
-
-  public LinkedList<ITreeNode> getNodes(Type type) {
-    Iterator<ITreeNode> iter = getChildrenIterator();
-
-    LinkedList<ITreeNode> list = new LinkedList<ITreeNode>();
-
-    while (iter.hasNext()) {
-      TypeTreeNode typeNode = (TypeTreeNode) iter.next();
-
-      if (typeNode.getType().equals(type)) {
-        Iterator<ITreeNode> children = typeNode.getChildrenIterator();
-
-        list.add(typeNode);
-
-        while (children.hasNext())
-          list.add(children.next());
-      }
-    }
-
-    return list;
-  }
-
-  public LinkedList<ITreeNode> getNodes(AnnotationFS annot) {
-    Iterator<ITreeNode> iter = getChildrenIterator();
-
-    LinkedList<ITreeNode> list = new LinkedList<ITreeNode>();
-
-    while (iter.hasNext()) {
-      TypeTreeNode typeNode = (TypeTreeNode) iter.next();
-
-      if (typeNode.getType().equals(annot.getType())) {
-        Iterator<ITreeNode> children = typeNode.getChildrenIterator();
-
-        while (children.hasNext()) {
-          AnnotationTreeNode node = (AnnotationTreeNode) children.next();
-
-          if (node.getAnnotation().equals(annot)) {
-            list.add(node);
-            return list;
-          }
-        }
-      }
-    }
-
-    return list;
-  }
-
+  @Override
   public void sort() {
     sort(new TreeComparator());
   }
 
+  @Override
+  @SuppressWarnings("unchecked")
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (TypeTreeNode.class.equals(adapter)) {

@@ -100,8 +100,9 @@ public abstract class AbstractApplyScriptHandlerJob extends Job {
       AnalysisEngine ae = null;
       try {
         IPath rootPath = RutaProjectUtils.getDescriptorRootPath(scriptFile.getProject());
+        ClassLoader classLoader = RutaProjectUtils.getClassLoader(scriptFile.getProject());
         IPath descriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(
-                scriptFile.getLocation(), scriptFile.getProject());
+                scriptFile.getLocation(), scriptFile.getProject(), classLoader);
         XMLInputSource in = new XMLInputSource(descriptorPath.toPortableString());
         ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
         ResourceManager resMgr = UIMAFramework.newDefaultResourceManager();

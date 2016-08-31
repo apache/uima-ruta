@@ -243,12 +243,6 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       checkPackage(s);
       return false;
     }
-    if(s instanceof ForEachBlock) {
-      String name = ((ForEachBlock) s).getName();
-      Map<String, Integer> map = new HashMap<>();
-      map.put(name, RutaTypeConstants.RUTA_TYPE_UA);
-      knownLocalVariables.push(map);
-    }
     if (s instanceof RutaMacroDeclaration) {
       RutaMacroDeclaration decl = (RutaMacroDeclaration) s;
       Map<Token, Token> definition = decl.getDefinition();
@@ -314,7 +308,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
               // script in other project? use that if the file was found in the workspace
               referredProject = file.getProject();
               IPath typeSystemDescriptorPath = RutaProjectUtils
-                      .getTypeSystemDescriptorPath(file.getLocation(), referredProject);
+                      .getTypeSystemDescriptorPath(file.getLocation(), referredProject, classLoader);
               TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath,
                       url);
 
@@ -585,7 +579,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         String text = fme.getFeature().getText();
         int lastIndexOf = text.lastIndexOf('.');
         String twf = text.substring(0, lastIndexOf);
-        if (getVariableType(twf) == RutaTypeConstants.RUTA_TYPE_AT) {
+        Integer variableType = getVariableType(twf);
+        if (variableType != null && variableType == RutaTypeConstants.RUTA_TYPE_AT) {
           matchedType = twf;
         } else {
           twf = expand(twf);
@@ -634,9 +629,13 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         }
         if (namespaces.keySet().contains(name) || namespaces.values().contains(name)
                 || allLongTypeNames.contains(name)
-                || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_AT
-                || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_UA
-                || getVariableType(name) == RutaTypeConstants.RUTA_TYPE_UAL) {
+                 ) {
+          return false;
+        }
+        Integer variableType = getVariableType(name);
+        if(variableType != null && (variableType == RutaTypeConstants.RUTA_TYPE_AT
+                || variableType == RutaTypeConstants.RUTA_TYPE_UA
+                || variableType == RutaTypeConstants.RUTA_TYPE_UAL)) {
           return false;
         }
         if (isFeatureMatch(name) != null) {
@@ -896,8 +895,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       return;
     }
     String match = isFeatureMatch(aref);
-    if (match == null && (getVariableType(aref) == RutaTypeConstants.RUTA_TYPE_AT
-            || getVariableType(bref) == RutaTypeConstants.RUTA_TYPE_AT)) {
+    Integer variableType1 = getVariableType(aref);
+    Integer variableType2 = getVariableType(bref);
+    if (match == null && variableType1 != null && variableType2 != null && (variableType1 == RutaTypeConstants.RUTA_TYPE_AT
+            || variableType2 == RutaTypeConstants.RUTA_TYPE_AT|| variableType1 == RutaTypeConstants.RUTA_TYPE_UA)) {
       // do not check on variables!
       return;
     }
@@ -970,12 +971,15 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   public boolean visit(MethodDeclaration s) throws Exception {
     if (s instanceof RutaBlock) {
       RutaBlock b = (RutaBlock) s;
-      knownLocalVariables.push(new HashMap<String, Integer>());
       String name = b.getName();
+      HashMap<String, Integer> map = new HashMap<String, Integer>();
+      if(b instanceof ForEachBlock) {
+        map.put(name, RutaTypeConstants.RUTA_TYPE_UA);
+      }
+      knownLocalVariables.push(map);
       blocks.push(name);
       // TODO add syntax check for block extensions
     }
-
     return true;
   }
 
@@ -1429,7 +1433,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   private TypeSystemDescription getTypeSystemOfScript()
           throws InvalidXMLException, IOException, CoreException {
     IPath descriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
-            sourceModule.getResource().getLocation(), sourceModule.getScriptProject().getProject());
+            sourceModule.getResource().getLocation(), sourceModule.getScriptProject().getProject(), classLoader);
     if (descriptorPath == null) {
       return null;
     }

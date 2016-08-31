@@ -26,8 +26,6 @@ public class RutaBuildOptions {
 
   private List<String> languageExtensions = Collections.emptyList();
 
-  private List<String> engineLoaders = Collections.emptyList();
-
   private boolean importByName = false;
 
   private boolean resolveImports = false;
@@ -100,14 +98,6 @@ public class RutaBuildOptions {
 
   public void setLanguageExtensions(List<String> languageExtensions) {
     this.languageExtensions = languageExtensions;
-  }
-
-  public List<String> getEngineLoaders() {
-    return engineLoaders;
-  }
-
-  public void setEngineLoaders(List<String> engineLoaders) {
-    this.engineLoaders = engineLoaders;
   }
 
   public void setClassLoader(ClassLoader classLoader) {

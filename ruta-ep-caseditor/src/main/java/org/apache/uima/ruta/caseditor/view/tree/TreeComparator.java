@@ -26,6 +26,7 @@ public class TreeComparator implements java.util.Comparator<ITreeNode> {
    * 
    * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
    */
+  @Override
   public int compare(ITreeNode o1, ITreeNode o2) {
     return o1.getName().compareToIgnoreCase(o2.getName());
   }

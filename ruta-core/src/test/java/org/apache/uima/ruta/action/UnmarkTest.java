@@ -19,8 +19,15 @@
 
 package org.apache.uima.ruta.action;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.junit.Test;
 
 public class UnmarkTest {
@@ -36,4 +43,45 @@ public class UnmarkTest {
 
     cas.release();
   }
+  
+  
+  @Test
+  public void testAnnotationExpression() throws Exception {
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    typeMap.put("Complex", "uima.tcas.Annotation");
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put("Complex", list);
+    list.add(new TestFeature("inner", "", "uima.tcas.Annotation"));
+    
+    CAS cas = RutaTestUtils.getCAS("This is a test.", typeMap, featureMap);
+    String script = "";
+    script += "CW{->T1};t:T1 SW SW{-> UNMARK(t)};";
+    script += "CW{->T2};\n t:T2 # PERIOD{-> Complex, Complex.inner=t};\n Complex{-> UNMARK(Complex.inner)};\n";
+    Ruta.apply(cas, script);
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    
+  }
+  
+  @Test
+  public void testAnnotationListExpression()  throws Exception {
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    typeMap.put("Complex", "uima.tcas.Annotation");
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put("Complex", list);
+    list.add(new TestFeature("inner", "", "uima.cas.FSArray"));
+    
+    CAS cas = RutaTestUtils.getCAS("This is a test.", typeMap, featureMap);
+    String script = "";
+    script += "W{->T1}; Document{-> Complex, Complex.inner = T1};";
+    script += "Complex{-> UNMARK(Complex.inner)};\n";
+    Ruta.apply(cas, script);
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+  }
+  
 }

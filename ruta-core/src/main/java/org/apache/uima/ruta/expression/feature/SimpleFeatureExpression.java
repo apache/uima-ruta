@@ -58,7 +58,12 @@ public class SimpleFeatureExpression extends FeatureExpression {
       Feature feature = features.get(features.size() - 1);
       if (feature instanceof LazyFeature) {
         LazyFeature lazyFeature = (LazyFeature) feature;
-        lazyFeature.initialize(context.getAnnotation());
+        AnnotationFS annotation = context.getAnnotation();
+        List<AnnotationFS> targetAnnotation = getTargetAnnotation(annotation, this, context, stream);
+        if(targetAnnotation != null && !targetAnnotation.isEmpty()) {
+          annotation = targetAnnotation.get(0);
+        }
+        feature = lazyFeature.initialize(annotation);
       }
       return feature;
     } else {
@@ -75,27 +80,29 @@ public class SimpleFeatureExpression extends FeatureExpression {
       IndexedReference indexedReference = ParsingUtils.parseIndexedReference(each);
       if (indexedReference.index != -1) {
         Feature delegate = type.getFeatureByBaseName(indexedReference.reference);
-        if(delegate != null) {
+        if (delegate != null) {
           feature = new IndexedFeature(delegate, indexedReference.index);
         } else {
-          throw new IllegalArgumentException("Not able to access feature " + each + " of type "
-                  + type.getName());
+          throw new IllegalArgumentException(
+                  "Not able to access feature " + each + " of type " + type.getName());
         }
-      } else if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT)) {
-        // there is no explicit feature for coveredText
-        feature = new CoveredTextFeature();
+      } else if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT)
+              || StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT_SHORT)) {
+        if(type != null) {
+          feature = type.getFeatureByBaseName(each);
+        }
+        if (feature == null) {
+          // there is no explicit feature for coveredText
+          feature = new CoveredTextFeature();
+        }
       } else if (type == null || type.isArray()) {
         // lazy check of range
         feature = new LazyFeature(each);
       } else {
         feature = type.getFeatureByBaseName(each);
         if (feature == null) {
-          if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT_SHORT)) {
-            feature = new CoveredTextFeature();
-          } else {
-            throw new IllegalArgumentException("Not able to access feature " + each + " of type "
-                    + type.getName());
-          }
+          throw new IllegalArgumentException(
+                  "Not able to access feature " + each + " of type " + type.getName());
         }
       }
       result.add(feature);
@@ -111,13 +118,15 @@ public class SimpleFeatureExpression extends FeatureExpression {
   @Override
   public Type getInitialType(MatchContext context, RutaStream stream) {
     ITypeExpression typeExpression = mr.getTypeExpression(context, stream);
-    if(typeExpression!= null) {
+    if (typeExpression != null) {
       return typeExpression.getType(context, stream);
     } else {
       IAnnotationExpression annotationExpression = mr.getAnnotationExpression(context, stream);
-      if(annotationExpression != null) {
+      if (annotationExpression != null) {
         AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
-        return annotation.getType();
+        if (annotation != null) {
+          return annotation.getType();
+        }
       }
     }
     return null;
@@ -132,9 +141,10 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
     Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
     List<Feature> features = getFeatures(context, stream);
-    if(features!= null &&!features.isEmpty()) {
-      collectFeatureAnnotations(annotations, features, checkOnFeatureValue, result, stream, context);
-    return result;
+    if (features != null && !features.isEmpty()) {
+      collectFeatureAnnotations(annotations, features, checkOnFeatureValue, result, stream,
+              context);
+      return result;
     } else {
       return annotations;
     }
@@ -164,8 +174,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
         LazyFeature lazyFeature = (LazyFeature) currentFeature;
         Feature delegate = lazyFeature.initialize(annotation);
         if (delegate == null) {
-          // invalid feature
-          return;
+          throw new RuntimeException("Invalid feature! Feature '" + lazyFeature.getFeatureName()
+                  + "' is not defined for type '" + annotation.getType() + "'.");
         } else {
           currentFeature = delegate;
         }
@@ -211,19 +221,19 @@ public class SimpleFeatureExpression extends FeatureExpression {
     }
 
     int index = -1;
-    if(currentFeature instanceof IndexedFeature) {
+    if (currentFeature instanceof IndexedFeature) {
       IndexedFeature indexedFeature = (IndexedFeature) currentFeature;
       currentFeature = indexedFeature.getDelegate();
       index = indexedFeature.getIndex();
     }
-    
+
     FeatureStructure value = annotation.getFeatureValue(currentFeature);
     if (value instanceof AnnotationFS) {
       AnnotationFS next = (AnnotationFS) value;
       collectFeatureAnnotations(next, tail, checkOnFeatureValue, result, stream, context);
     } else if (value instanceof FSArray && index >= 0) {
       FSArray array = (FSArray) value;
-      if(index < array.size()) {
+      if (index < array.size()) {
         FeatureStructure fs = array.get(index);
         if (fs instanceof AnnotationFS) {
           AnnotationFS next = (AnnotationFS) fs;
@@ -243,8 +253,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
     } else if (value != null) {
       result.add(annotation);
       // primitive? -> return last annotation for further processing
-//      throw new IllegalArgumentException(value.getType()
-//              + " is not supported in a feature match expression (" + mr.getMatch() + ").");
+      // throw new IllegalArgumentException(value.getType()
+      // + " is not supported in a feature match expression (" + mr.getMatch() + ").");
     }
   }
 

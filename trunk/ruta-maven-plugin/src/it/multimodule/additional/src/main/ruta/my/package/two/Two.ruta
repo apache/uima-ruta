@@ -1,3 +1,0 @@
-PACKAGE my.package.two;
-DECLARE Type2;
-CW{-> Type2};

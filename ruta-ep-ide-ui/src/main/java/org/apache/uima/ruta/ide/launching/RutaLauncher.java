@@ -20,30 +20,40 @@
 package org.apache.uima.ruta.ide.launching;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.impl.XmiCasDeserializer;
-import org.apache.uima.cas.impl.XmiCasSerializer;
+import org.apache.uima.cas.SerialFormat;
 import org.apache.uima.resource.ResourceConfigurationException;
+import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.util.CasIOUtils;
 import org.apache.uima.util.FileUtils;
-import org.apache.uima.util.XMLSerializer;
 import org.apache.uima.util.impl.ProcessTrace_impl;
 import org.xml.sax.SAXException;
 
 public class RutaLauncher {
+
+  public static final List<String> COMMON_PLAIN_TEXT_FILE_EXTENSIONS = Arrays
+          .asList(new String[] { ".txt", ".csv", "html", "xhtml" });
 
   public static final String URL_ENCODING = "UTF-8";
 
@@ -62,6 +72,10 @@ public class RutaLauncher {
   private static String launchMode = "run";
 
   private static String view = null;
+
+  private static String defaultFormat = null;
+
+  private static String classPath = null;
 
   private static boolean parseCmdLineArgs(String[] args) throws UnsupportedEncodingException {
     int index = 0;
@@ -110,6 +124,16 @@ public class RutaLauncher {
           return false;
         }
         view = args[index++];
+      } else if (RutaLaunchConstants.ARG_FORMAT.equals(each)) {
+        if (index >= args.length) {
+          return false;
+        }
+        defaultFormat = args[index++];
+      } else if (RutaLaunchConstants.ARG_CLASSPATH.equals(each)) {
+        if (index >= args.length) {
+          return false;
+        }
+        classPath =  URLDecoder.decode(args[index++], URL_ENCODING);
       }
     }
     return count == 2;
@@ -120,8 +144,14 @@ public class RutaLauncher {
       throw new IllegalArgumentException("Passed arguments are invalid!");
     }
 
+    ResourceManager resourceManager = null;
+    if (classPath != null) {
+      String[] split = classPath.split(File.pathSeparator);
+      ClassLoader classLoader = getClassLoader(Arrays.asList(split));
+      resourceManager = new ResourceManager_impl(classLoader);
+    }
     AnalysisEngine ae = Ruta.wrapAnalysisEngine(descriptor.toURI().toURL(), view, true,
-            inputEncoding);
+            inputEncoding, resourceManager);
     configure(ae);
     CAS cas = ae.newCAS();
 
@@ -136,8 +166,8 @@ public class RutaLauncher {
     ae.destroy();
   }
 
-  private static void processFile(File file, AnalysisEngine ae, CAS cas) throws IOException,
-          AnalysisEngineProcessException, SAXException {
+  private static void processFile(File file, AnalysisEngine ae, CAS cas)
+          throws IOException, AnalysisEngineProcessException, SAXException {
     if (view != null) {
       boolean found = false;
       Iterator<CAS> viewIterator = cas.getViewIterator();
@@ -155,11 +185,23 @@ public class RutaLauncher {
       }
 
     }
-    if (file.getName().endsWith(".xmi")) {
-      XmiCasDeserializer.deserialize(new FileInputStream(file), cas, true);
-    } else {
+
+    SerialFormat format = SerialFormat.valueOf(defaultFormat);
+    if (format == SerialFormat.UNKNOWN) {
+      format = SerialFormat.XMI;
+    }
+    String extension = FilenameUtils.getExtension(file.getName());
+    if (COMMON_PLAIN_TEXT_FILE_EXTENSIONS.contains(extension)) {
       String document = FileUtils.file2String(file, inputEncoding);
       cas.setDocumentText(document);
+    } else {
+      try {
+        format = CasIOUtils.load(file.toURI().toURL(), null, cas, true);
+      } catch (Exception e) {
+        // no format? maybe really a plain text format?
+        String document = FileUtils.file2String(file, inputEncoding);
+        cas.setDocumentText(document);
+      }
     }
 
     if (addSDI) {
@@ -168,8 +210,10 @@ public class RutaLauncher {
     }
     ae.process(cas);
     if (outputFolder != null) {
-      File outputFile = getOutputFile(file, inputFolder, outputFolder);
-      writeXmi(cas, outputFile);
+      File outputFile = getOutputFile(file, inputFolder, outputFolder, format);
+      FileOutputStream os = new FileOutputStream(outputFile);
+      CasIOUtils.save(cas, os, format);
+      IOUtils.closeQuietly(os);
     }
     cas.reset();
   }
@@ -205,29 +249,29 @@ public class RutaLauncher {
     return result;
   }
 
-  private static void writeXmi(CAS cas, File file) throws IOException, SAXException {
-    FileOutputStream out = null;
-    try {
-      out = new FileOutputStream(file);
-      XmiCasSerializer ser = new XmiCasSerializer(cas.getTypeSystem());
-      XMLSerializer xmlSer = new XMLSerializer(out, false);
-      ser.serialize(cas, xmlSer.getContentHandler());
-    } finally {
-      if (out != null) {
-        out.close();
-      }
-    }
-  }
-
-  private static File getOutputFile(File inputFile, File inputFolder, File outputFolder) {
+  private static File getOutputFile(File inputFile, File inputFolder, File outputFolder,
+          SerialFormat format) {
     URI relativize = inputFolder.toURI().relativize(inputFile.toURI());
     String path = relativize.getPath();
-    if (!path.endsWith(".xmi")) {
-      path += ".xmi";
+    String ext = "." + format.getDefaultFileExtension();
+    if (!path.endsWith(ext)) {
+      path += ext;
     }
     File result = new File(outputFolder, path);
     result.getParentFile().mkdirs();
     return result;
+  }
+  
+  private static ClassLoader getClassLoader(Collection<String> classPath) throws MalformedURLException {
+   // TODO copied method to avoid extended classpath
+    URL[] urls = new URL[classPath.size()];
+    int counter = 0;
+    for (String dep : classPath) {
+      urls[counter] = new File(dep).toURI().toURL();
+      counter++;
+    }
+    ClassLoader classLoader = new URLClassLoader(urls);
+    return classLoader;
   }
 
 }

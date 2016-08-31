@@ -1,3 +1,0 @@
-A1 B B A2 C
-A3 A4 A5 C
-A6 A7

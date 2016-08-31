@@ -157,9 +157,9 @@ public class RerunActionHandler implements IHandler {
       IPath engineDescriptorPath = null;
       IPath typeSystemDescriptorPath = null;
       try {
-        engineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(r.getLocation(), project);
-        typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
-                fScript.getLocation(), project);
+        ClassLoader classLoader = RutaProjectUtils.getClassLoader(project);
+        engineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(r.getLocation(), project, classLoader);
+        typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(fScript.getLocation(), project, classLoader);
       } catch (CoreException e) {
         RutaAddonsPlugin.error(e);
       }
@@ -280,8 +280,9 @@ public class RerunActionHandler implements IHandler {
       }
 
       try {
+        ClassLoader classLoader = RutaProjectUtils.getClassLoader(project);
         IPath descriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(scriptFile.getLocation(),
-                project);
+                project, classLoader);
         String descriptorAbsolutePath = descriptorPath.toFile().getAbsolutePath();
         ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
         ILaunchConfigurationType type = mgr

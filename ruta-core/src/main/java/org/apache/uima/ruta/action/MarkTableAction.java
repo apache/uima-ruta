@@ -90,7 +90,10 @@ public class MarkTableAction extends AbstractRutaAction {
     RuleMatch match = context.getRuleMatch();
     RuleElement element = context.getElement();
     element.getParent();
-    RutaTable table = tableExpr.getTable(context);
+    RutaTable table = tableExpr.getTable(context, stream);
+    if(table == null) {
+      return;
+    }
     int index = indexExpr.getIntegerValue(context, stream);
     Type type = typeExpr.getType(context, stream);
     Map<String, Integer> map = new HashMap<String, Integer>();

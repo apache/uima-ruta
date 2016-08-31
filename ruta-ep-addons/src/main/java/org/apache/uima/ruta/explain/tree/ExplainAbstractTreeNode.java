@@ -80,6 +80,7 @@ public abstract class ExplainAbstractTreeNode implements IExplainTreeNode, IAdap
     return fs.toString();
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public Object getAdapter(Class adapter) {
 
     if (FeatureStructure.class.equals(adapter)) {

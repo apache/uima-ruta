@@ -486,18 +486,18 @@ variableDeclaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 		 stmts.add(StatementFactory.createDeclarationsStatement(type, decls, init));
 		 }
         |
-        type = WORDLIST id = Identifier (ASSIGN_EQUAL list = wordListExpression)? SEMI
+        type = WORDLIST id = Identifier (ASSIGN_EQUAL (wl = wordListExpression | wl = stringExpression))? SEMI
         {
         addVariable(id.getText(), type.getText());
-        decls.add(StatementFactory.createListVariable(id,type,list));
-        stmts.add(StatementFactory.createDeclarationsStatement(type, decls, list));
+        decls.add(StatementFactory.createListVariable(id,type,wl));
+        stmts.add(StatementFactory.createDeclarationsStatement(type, decls, wl));
         }
         |
-        type = WORDTABLE id = Identifier (ASSIGN_EQUAL table = wordTableExpression)?  SEMI
+        type = WORDTABLE id = Identifier (ASSIGN_EQUAL (wt = wordTableExpression | wt = stringExpression))?  SEMI
         {
         addVariable(id.getText(), type.getText());
-        decls.add(StatementFactory.createTableVariable(id,type,table));
-        stmts.add(StatementFactory.createDeclarationsStatement(type, decls, table));
+        decls.add(StatementFactory.createTableVariable(id,type,wt));
+        stmts.add(StatementFactory.createDeclarationsStatement(type, decls, wt));
         }
         |
         type = BOOLEANLIST id = Identifier (ASSIGN_EQUAL list = booleanListExpression)?  SEMI
@@ -677,6 +677,7 @@ level--;
 		block = scriptFactory.createScriptBlock(id, declareToken, $blockDeclaration[level - 1]::env);
 		$blockDeclaration::env = block;
 	}
+	(COMMA booleanExpression)?
 	RPAREN
 	re1 = ruleElementWithCA
 	{
@@ -782,7 +783,7 @@ regexpRule returns [RutaRule stmt = null]
 	)*
 
 	s = SEMI
-	{stmt = scriptFactory.createRegExpRule(exprs, fa, s);}
+	{stmt = scriptFactory.createRegExpRule(exprs, fa, s, true);}
 	
 	;
 
@@ -1768,9 +1769,10 @@ List<Expression> list = new ArrayList<Expression>();
     name = SHIFT LPAREN 
     type = typeExpression
     {list.add(type);}
-    (
-    COMMA (index = numberExpression) => index = numberExpression {list.add(index);}
-    )*
+    
+    COMMA index1 = numberExpression {list.add(index1);}
+    COMMA index2 = numberExpression {list.add(index2);}
+    (COMMA  all= booleanExpression {list.add(all);})? 
     {action = ActionFactory.createAction(name, list);}
      RPAREN
     ;
@@ -2078,7 +2080,10 @@ actionUnmark returns [RutaAction action = null]
 List<Expression> list = new ArrayList<Expression>();
 }
     :
-    name = UNMARK LPAREN f = typeExpression
+    name = UNMARK LPAREN (
+   
+    
+    f = typeExpression
     {action = ActionFactory.createAction(name, f);}
     
     (COMMA 
@@ -2097,6 +2102,7 @@ List<Expression> list = new ArrayList<Expression>();
     )?
     {action = ActionFactory.createAction(name, f , b, list);}
      RPAREN
+     )
     ;
 
 

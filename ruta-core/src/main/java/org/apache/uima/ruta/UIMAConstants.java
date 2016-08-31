@@ -55,5 +55,4 @@ public class UIMAConstants {
 
   public static final String FEATURE_COVERED_TEXT_SHORT = "ct";
   
-
 }

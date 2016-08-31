@@ -34,6 +34,7 @@ import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
+import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -118,7 +119,7 @@ public class RutaScriptFactory {
     return result;
   }
 
-  public RutaBlock createForEachBlock(Token varToken, RutaRuleElement ruleElement, List<RutaStatement> body, RutaBlock parent) {
+  public RutaBlock createForEachBlock(Token varToken, IBooleanExpression direction, RutaRuleElement ruleElement, List<RutaStatement> body, RutaBlock parent) {
     
     if(varToken== null) {
       throw new IllegalArgumentException("A FOREACH block requires that the annotation variable is named.");
@@ -130,7 +131,7 @@ public class RutaScriptFactory {
       rule = createRule(ruleElement, parent);
     }
     String namespace = parent.getNamespace()+ "." + varName;
-    return new ForEachBlock(varName, rule, body, parent, namespace);
+    return new ForEachBlock(varName, direction, rule, body, parent, namespace);
   }
   
   public RutaRule createRule(RuleElement element, RutaBlock parent) {

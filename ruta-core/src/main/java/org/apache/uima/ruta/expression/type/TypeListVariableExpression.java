@@ -40,13 +40,15 @@ public class TypeListVariableExpression extends AbstractTypeListExpression {
   @Override
   public List<Type> getList(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
+    List<Object> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
     List<Type> result = new ArrayList<Type>();
     for (Object each : list) {
       if (each instanceof ITypeExpression) {
         result.add(((ITypeExpression) each).getType(context, stream));
       } else if (each instanceof Type) {
         result.add((Type) each);
+      } else if(each instanceof String) {
+        result.add(parent.getEnvironment().getType((String) each));
       }
     }
     return result;

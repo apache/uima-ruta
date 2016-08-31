@@ -19,16 +19,13 @@
 
 package org.apache.uima.ruta.action;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
@@ -68,7 +65,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     for (AnnotationFS annotation : matchedAnnotations) {
       if (typeExpr != null) {
         Type type = typeExpr.getType(context, stream);
-        annotations = getAnnotations(annotation, type, expr, stream);
+        annotations = stream.getBestGuessedAnnotationsAt(annotation, type);
       } else if(annotationListExpr!=null) {
         annotations.addAll(annotationListExpr.getAnnotationList(context, stream));
       } else if(annotationExpr!=null) {
@@ -94,25 +91,6 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     }
   }
   
-
-  private List<AnnotationFS> getAnnotations(AnnotationFS annotation, Type type,
-          FeatureMatchExpression fme, RutaStream stream) {
-    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    TypeSystem typeSystem = stream.getCas().getTypeSystem();
-    if (typeSystem.subsumes(type, annotation.getType())) {
-      result.add(annotation);
-    } else {
-      Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(annotation.getBegin())
-              .getBeginAnchors(type);
-      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(annotation.getEnd()).getEndAnchors(
-              type);
-      @SuppressWarnings("unchecked")
-      Collection<AnnotationFS> intersection = CollectionUtils
-              .intersection(beginAnchors, endAnchors);
-      result.addAll(intersection);
-    }
-    return result;
-  }
 
   public FeatureMatchExpression getExpr() {
     return expr;

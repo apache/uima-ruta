@@ -77,7 +77,7 @@ public class StyleMapCreator extends JCasAnnotator_ImplBase {
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {
     try {
-      String locate = RutaEngine.locate(styleMapLocation, descriptorPaths, ".xml", false);
+      String locate = RutaModifier.locate(styleMapLocation, descriptorPaths, ".xml", false);
       if (locate != null) {
         styleMapFactory.createStyleMap(locate, jcas);
       }
@@ -86,4 +86,6 @@ public class StyleMapCreator extends JCasAnnotator_ImplBase {
     }
   }
 
+  
+  
 }

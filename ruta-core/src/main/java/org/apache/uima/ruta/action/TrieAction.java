@@ -92,7 +92,7 @@ public class TrieAction extends AbstractRutaAction {
     double distanceValue = distance.getDoubleValue(context, stream);
     String ignoreCharValue = ignoreChar.getStringValue(context, stream);
 
-    RutaWordList wl = list.getList(context);
+    RutaWordList wl = list.getList(context, stream);
     if (wl != null) {
       Collection<AnnotationFS> found = wl.find(stream, typeMap, ignoreCaseValue, ignoreLengthValue,
               editValue, distanceValue, ignoreCharValue);

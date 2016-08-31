@@ -35,10 +35,11 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.factory.JCasFactory;
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -360,9 +361,8 @@ public class HtmlConverterTest {
   }
 
   @Test
-  public void annotationPropagationTest() throws AnalysisEngineProcessException,
-          ResourceConfigurationException, ResourceInitializationException, InvalidXMLException,
-          IOException {
+  public void annotationPropagationTest() throws Exception {
+    JCas jcas = JCasFactory.createJCas();
     for (String htmlContent : new String[] { htmlWin }) {
       // configure annotator and create AE:
       URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
@@ -374,23 +374,12 @@ public class HtmlConverterTest {
       AnalysisEngineDescription specifier = (AnalysisEngineDescription) UIMAFramework
               .getXMLParser().parseResourceSpecifier(in);
 
-      TypeSystemDescription basicTypeSystem = specifier.getAnalysisEngineMetaData().getTypeSystem();
-      basicTypeSystem.addType(HtmlAnnotator.NAMESPACE + "A", "Type for Testing",
-              "uima.tcas.Annotation");
-      basicTypeSystem.addType(HtmlAnnotator.NAMESPACE + "I", "Type for Testing",
-              "uima.tcas.Annotation");
-      basicTypeSystem.addType(HtmlAnnotator.NAMESPACE + "B", "Type for Testing",
-              "uima.tcas.Annotation");
-      basicTypeSystem.addType(HtmlAnnotator.NAMESPACE + "U", "Type for Testing",
-              "uima.tcas.Annotation");
-      specifier.getAnalysisEngineMetaData().setTypeSystem(basicTypeSystem);
-
       AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
       ae.setConfigParameterValue("outputView", outputViewName);
       ae.reconfigure();
 
       // create the cas and input annotation
-      CAS cas = ae.newCAS();
+      CAS cas = jcas.getCas();
       cas.reset();
       cas.setDocumentText(htmlContent);
       Type boldType = cas.getTypeSystem().getType(HtmlAnnotator.NAMESPACE + "B");
@@ -420,9 +409,8 @@ public class HtmlConverterTest {
   }
 
   @Test
-  public void annotationPropagationAndDecodingTest() throws AnalysisEngineProcessException,
-          ResourceConfigurationException, ResourceInitializationException, InvalidXMLException,
-          IOException {
+  public void annotationPropagationAndDecodingTest() throws Exception {
+    JCas jcas = JCasFactory.createJCas();
     // configure annotator and create AE:
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
@@ -432,24 +420,13 @@ public class HtmlConverterTest {
     XMLInputSource in = new XMLInputSource(url);
     AnalysisEngineDescription specifier = (AnalysisEngineDescription) UIMAFramework
             .getXMLParser().parseResourceSpecifier(in);
-
-    TypeSystemDescription basicTypeSystem = specifier.getAnalysisEngineMetaData().getTypeSystem();
-    basicTypeSystem.addType(HtmlAnnotator.NAMESPACE + "A", "Type for Testing",
-            "uima.tcas.Annotation");
-    basicTypeSystem.addType(HtmlAnnotator.NAMESPACE + "I", "Type for Testing",
-            "uima.tcas.Annotation");
-    basicTypeSystem.addType(HtmlAnnotator.NAMESPACE + "B", "Type for Testing",
-            "uima.tcas.Annotation");
-    basicTypeSystem.addType(HtmlAnnotator.NAMESPACE + "U", "Type for Testing",
-            "uima.tcas.Annotation");
-    specifier.getAnalysisEngineMetaData().setTypeSystem(basicTypeSystem);
     
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     ae.setConfigParameterValue("outputView", outputViewName);
     ae.reconfigure();
 
     // create the cas and input annotation
-    CAS cas = ae.newCAS();
+    CAS cas = jcas.getCas();
     cas.reset();
     cas.setDocumentText(htmlDecodingAnnotations);
     Type boldType = cas.getTypeSystem().getType(HtmlAnnotator.NAMESPACE + "B");

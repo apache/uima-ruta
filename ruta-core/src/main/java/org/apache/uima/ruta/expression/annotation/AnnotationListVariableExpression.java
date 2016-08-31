@@ -40,7 +40,7 @@ public class AnnotationListVariableExpression extends AbstractAnnotationListExpr
   public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     @SuppressWarnings("unchecked")
-    List<AnnotationFS> list = parent.getEnvironment().getVariableValue(var, List.class);
+    List<AnnotationFS> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
     return list;
   }
 

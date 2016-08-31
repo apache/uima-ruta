@@ -61,6 +61,9 @@ public class VerbalizerUtils {
   }
 
   public String verbalizeExpressionList(List<? extends IRutaExpression> list) {
+    if(list == null) {
+      return "";
+    }
     StringBuilder result = new StringBuilder();
     Iterator<? extends IRutaExpression> it = list.iterator();
     while (it.hasNext()) {

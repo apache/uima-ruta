@@ -33,6 +33,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.SerialFormat;
 import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
 import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.core.RutaCorePreferences;
@@ -44,7 +45,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -80,13 +80,20 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
     IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
     boolean addSDI = preferenceStore.getBoolean(RutaCorePreferences.ADD_SDI);
+    String defaultFormat = preferenceStore
+            .getString(RutaCorePreferences.DEFAULT_CAS_SERIALIZATION_FORMAT);
+    if (defaultFormat == null) {
+      defaultFormat = SerialFormat.XMI.name();
+    }
 
     IResource member = proj.getProject().findMember(mainScriptAttribute);
     IPath projectPath = proj.getResource().getLocation();
     IPath inputDirPath = projectPath.append(RutaProjectUtils.getDefaultInputLocation());
     IPath outputDirPath = projectPath.append(RutaProjectUtils.getDefaultOutputLocation());
-    IPath analysisEngineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(
-            member.getLocation(), proj.getProject());
+    Collection<String> classPath = RutaProjectUtils.getClassPath(proj.getProject());
+    ClassLoader classLoader = RutaProjectUtils.getClassLoader(classPath);
+    IPath analysisEngineDescriptorPath = RutaProjectUtils
+            .getAnalysisEngineDescriptorPath(member.getLocation(), proj.getProject(), classLoader);
     String engineDefaultMethod = "";
     if (analysisEngineDescriptorPath != null) {
       engineDefaultMethod = analysisEngineDescriptorPath.toPortableString();
@@ -112,16 +119,21 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
       cmdline.append(URLEncoder.encode(engine, RutaLauncher.URL_ENCODING) + " ");
 
       cmdline.append(RutaLaunchConstants.ARG_INPUT_FOLDER + " ");
-      cmdline.append(URLEncoder.encode(makeAbsolute(input, configuration),
-              RutaLauncher.URL_ENCODING) + " ");
+      cmdline.append(
+              URLEncoder.encode(makeAbsolute(input, configuration), RutaLauncher.URL_ENCODING)
+                      + " ");
 
       cmdline.append(RutaLaunchConstants.ARG_OUTPUT_FOLDER + " ");
-      cmdline.append(URLEncoder.encode(makeAbsolute(output, configuration),
-              RutaLauncher.URL_ENCODING) + " ");
+      cmdline.append(
+              URLEncoder.encode(makeAbsolute(output, configuration), RutaLauncher.URL_ENCODING)
+                      + " ");
+      
+      cmdline.append(RutaLaunchConstants.ARG_CLASSPATH + " ");
+      cmdline.append(URLEncoder.encode(StringUtils.join(classPath, File.pathSeparatorChar), RutaLauncher.URL_ENCODING) + " ");
 
     } catch (UnsupportedEncodingException e) {
-      throw new CoreException(new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID,
-              "Unsupported Encoding"));
+      throw new CoreException(
+              new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID, "Unsupported Encoding"));
     }
     cmdline.append(RutaLaunchConstants.ARG_MODE + " ");
     cmdline.append(mode + " ");
@@ -138,6 +150,10 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     cmdline.append(RutaLaunchConstants.ARG_ADD_SDI + " ");
     cmdline.append(addSDI + " ");
 
+    cmdline.append(RutaLaunchConstants.ARG_FORMAT + " ");
+    cmdline.append(defaultFormat + " ");
+    
+   
     return cmdline.toString();
   }
 
@@ -164,10 +180,11 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
             .getScriptProject(configuration);
     extendedClasspath.addAll(getClassPath(scriptProject));
     String[] result = extendedClasspath.toArray(new String[extendedClasspath.size()]);
-    
-//    ILog log = RutaIdeUIPlugin.getDefault().getLog();
-//    log.log(new Status(IStatus.INFO, RutaIdeUIPlugin.PLUGIN_ID, "Classpath of "+ configuration.getName()+": " + StringUtils.join(result, ";")));
-    
+
+    // ILog log = RutaIdeUIPlugin.getDefault().getLog();
+    // log.log(new Status(IStatus.INFO, RutaIdeUIPlugin.PLUGIN_ID, "Classpath of "+
+    // configuration.getName()+": " + StringUtils.join(result, ";")));
+
     return result;
   }
 

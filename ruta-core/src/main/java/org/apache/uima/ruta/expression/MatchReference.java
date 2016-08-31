@@ -27,8 +27,6 @@ import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.block.RutaBlock;
-import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
-import org.apache.uima.ruta.expression.annotation.AnnotationListLabelExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationListVariableExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationListVariableIndexExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
@@ -40,8 +38,6 @@ import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
-import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.utils.IndexedReference;
 import org.apache.uima.ruta.utils.ParsingUtils;
 
@@ -115,7 +111,6 @@ public class MatchReference extends RutaExpression {
       }
 
     } else {
-
       if (e.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_TYPE)) {
         typeExpression = new TypeVariableExpression(candidate);
         return true;
@@ -128,14 +123,6 @@ public class MatchReference extends RutaExpression {
       } else if (e.getType(candidate) != null) {
         typeExpression = new SimpleTypeExpression(candidate);
         return true;
-      } else if (context.getRuleMatch() != null) {
-        RuleMatch ruleMatch = context.getRuleMatch();
-        RuleElement ruleElementWithLabel = ruleMatch.getRule().getRuleElementWithLabel(candidate);
-        if (ruleElementWithLabel != null) {
-          annotationExpression = new AnnotationLabelExpression(candidate);
-          annotationListExpression = new AnnotationListLabelExpression(candidate);
-          return true;
-        }
       }
     }
     return false;

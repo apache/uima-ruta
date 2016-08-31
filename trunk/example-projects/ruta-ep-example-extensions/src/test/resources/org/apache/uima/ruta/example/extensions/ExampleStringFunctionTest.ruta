@@ -1,9 +1,0 @@
-PACKAGE uima.ruta.example;
-
-DECLARE T1, T2, T3;
-
-CAP{REGEXP(ExampleStringFunction(CW)) ->  MARK(T1)}; 
-
-
-
-

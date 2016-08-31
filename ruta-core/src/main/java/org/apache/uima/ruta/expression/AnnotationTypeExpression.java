@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.expression;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.Type;
@@ -27,11 +28,12 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
+import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class AnnotationTypeExpression extends RutaExpression implements ITypeExpression,
-        IAnnotationExpression, IAnnotationListExpression {
+public class AnnotationTypeExpression extends RutaExpression
+        implements ITypeExpression, IAnnotationExpression, IAnnotationListExpression {
 
   private MatchReference reference;
 
@@ -40,6 +42,8 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
   private IAnnotationExpression annotationExpression;
 
   private IAnnotationListExpression annotationListExpression;
+
+  private FeatureExpression featureExpression;
 
   private boolean initialized = false;
 
@@ -51,6 +55,7 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
   private void initialize(MatchContext context, RutaStream stream) {
     annotationExpression = reference.getAnnotationExpression(context, stream);
     annotationListExpression = reference.getAnnotationListExpression(context, stream);
+    featureExpression = reference.getFeatureExpression(context, stream);
     typeExpression = reference.getTypeExpression(context, stream);
     initialized = true;
   }
@@ -64,12 +69,29 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
       return annotationExpression.getAnnotation(context, stream);
     } else if (annotationListExpression != null) {
       List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
-      if (annotations != null && !annotations.isEmpty())
-        return annotations.get(0);
+      if (annotations != null && !annotations.isEmpty()) {
+        if(context.getDirection()) {
+          return annotations.get(annotations.size()-1);
+        } else {
+          return annotations.get(0);
+        }
+      }
     } else {
       Type type = getType(context, stream);
       if (type != null) {
-        return stream.getSingleAnnotationByTypeInContext(type, context);
+        if (getFeatureExpression() != null) {
+          List<AnnotationFS> bestGuessedAnnotationsAt = stream
+                  .getBestGuessedAnnotationsAt(context.getAnnotation(), type);
+          Collection<AnnotationFS> annotations = new ArrayList<>();
+          annotations.addAll(bestGuessedAnnotationsAt);
+          Collection<AnnotationFS> featureAnnotations = getFeatureExpression()
+                  .getFeatureAnnotations(annotations, stream, context, false);
+          if (featureAnnotations != null && !featureAnnotations.isEmpty()) {
+            return featureAnnotations.iterator().next();
+          }
+        } else {
+          return stream.getSingleAnnotationByTypeInContext(type, context);
+        }
       }
     }
     return null;
@@ -115,9 +137,18 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
       result.add(annotationExpression.getAnnotation(context, stream));
       return result;
     } else {
+
       Type type = getType(context, stream);
       if (type != null) {
-        return stream.getAnnotationsByTypeInContext(type, context);
+        if (getFeatureExpression() != null) {
+          List<AnnotationFS> bestGuessedAnnotationsAt = stream
+                  .getBestGuessedAnnotationsAt(context.getAnnotation(), type);
+          Collection<AnnotationFS> featureAnnotations = getFeatureExpression()
+                  .getFeatureAnnotations(bestGuessedAnnotationsAt, stream, context, false);
+          return new ArrayList<>(featureAnnotations);
+        } else {
+          return stream.getAnnotationsByTypeInContext(type, context);
+        }
       }
     }
     return null;
@@ -130,5 +161,22 @@ public class AnnotationTypeExpression extends RutaExpression implements ITypeExp
   public void setReference(MatchReference reference) {
     this.reference = reference;
   }
+
+  public ITypeExpression getTypeExpression() {
+    return typeExpression;
+  }
+
+  public IAnnotationExpression getAnnotationExpression() {
+    return annotationExpression;
+  }
+
+  public IAnnotationListExpression getAnnotationListExpression() {
+    return annotationListExpression;
+  }
+
+  public FeatureExpression getFeatureExpression() {
+    return featureExpression;
+  }
+
 
 }

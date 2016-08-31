@@ -272,19 +272,21 @@ public void setExternalFactory(RutaExternalFactory factory) {
 		}
 	}
 	public void addImportEngine(RutaBlock parent, String namespace) {
-		parent.getScript().addEngine(namespace, null);
+		parent.getScript().addDescriptorEngine(namespace, null);
 		if(descInfo != null) {
 		  descInfo.addEngine(namespace);
 		}
 	}
 	public void addImportUimafitEngine(RutaBlock parent, String namespace,
           List<String> configurationData) {
+       
+      String namespaceWithConfig = namespace;
+	    if (configurationData != null && !configurationData.isEmpty()) {
+	      namespaceWithConfig = namespace + "[" + StringUtils.join(configurationData, ",") + "]";
+	    }
 	    parent.getScript().addUimafitEngine(namespace, null);
+	    parent.getScript().addConfigurationData(namespace, configurationData);
 	    if (descInfo != null) {
-	      String namespaceWithConfig = namespace;
-	      if (configurationData != null && !configurationData.isEmpty()) {
-	        namespaceWithConfig = namespace + "[" + StringUtils.join(configurationData, ",") + "]";
-	      }
 	      descInfo.addUimafitEngine(namespaceWithConfig);
 	    }
 	  }
@@ -541,13 +543,13 @@ List<String> vars = new ArrayList<String>();
 	|
 	type = WORDLIST 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
-	name = Identifier (ASSIGN_EQUAL list = wordListExpression)? 
+	name = Identifier (ASSIGN_EQUAL list = wordListOrStringExpression)? 
 	{addVariable($blockDeclaration::env, name.getText(), type.getText());if(list != null){setValue($blockDeclaration::env, name.getText(), list);}} 
 	SEMI 
 	| 
 	type = WORDTABLE 
 	{!isVariableOfType($blockDeclaration::env, input.LT(1).getText(), type.getText())}? 
-	name = Identifier (ASSIGN_EQUAL table = wordTableExpression)? 
+	name = Identifier (ASSIGN_EQUAL table = wordTableOrStringExpression)? 
 	{addVariable($blockDeclaration::env, name.getText(), type.getText());if(table != null){setValue($blockDeclaration::env, name.getText(), table);}}
 	SEMI 
 	|
@@ -756,9 +758,9 @@ level--;
 	:
 	type = ForEachString 
 	LPAREN
-	id = Identifier 
+	id = Identifier (COMMA direction = booleanExpression)?
 	RPAREN
-	{block = factory.createForEachBlock(id, re, body, $blockDeclaration[level - 1]::env);}
+	{block = factory.createForEachBlock(id, direction, re, body, $blockDeclaration[level - 1]::env);}
 	{$blockDeclaration::env = block;
 	container = new RuleElementIsolator();}
 	re1 = ruleElementWithCA[container]
@@ -772,7 +774,7 @@ level--;
 	LCURLY body = statements RCURLY
 	{removeTemporaryVariables(def);}
 	{block.setElements(body);
-	$blockDeclaration::env.getScript().addBlock(id.getText(),block);
+	{$blockDeclaration::env = block.getParent();}
 	}	
 	;
 
@@ -1931,14 +1933,13 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
 }
     :   
     SHIFT LPAREN 
-    type = typeExpression
-    (
-        COMMA (index = numberExpression) => index = numberExpression
-        {list.add(index);}
-    )*
-     RPAREN
+    type = typeExpression 
+    COMMA index1 = numberExpression {list.add(index1);}
+    COMMA index2 = numberExpression {list.add(index2);}
+    (COMMA (all=booleanExpression)=> all= booleanExpression)?
+    RPAREN
     
-    {action = ActionFactory.createShiftAction(type, list,$blockDeclaration::env);}
+    {action = ActionFactory.createShiftAction(type, list, all, $blockDeclaration::env);}
     ;
 
 
@@ -2140,7 +2141,9 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
     :
     name = UNMARK LPAREN 
     
-    f = typeExpression 
+    (
+    
+    (typeExpression COMMA)=>f = typeExpression 
 
     (COMMA 
     (
@@ -2150,12 +2153,14 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
   	index = numberExpression {list.add(index);} 
   	(COMMA index = numberExpression {list.add(index);})*
   	)
+    ) 
     )
-      
-    )?
-
      RPAREN
     {action = ActionFactory.createUnmarkAction(f, list, b,$blockDeclaration::env);}
+    |
+    (annotationOrTypeExpression)=>a = annotationOrTypeExpression RPAREN {action = ActionFactory.createUnmarkAction(a, $blockDeclaration::env);}
+    
+    )
     ;
 
 
@@ -2357,6 +2362,8 @@ annotationExpression2 returns [IRutaExpression expr = null]
 	ale = annotationListExpression {expr = ale;}
 	|
 	aae = annotationAddressExpression {expr = aae;}
+	//|
+	//ale = annotationLabelExpression {expr = ale;}
 	;
 
 annotationListIndexExpression returns [IRutaExpression expr = null]
@@ -2500,13 +2507,21 @@ List<IStringExpression> args = new ArrayList<IStringExpression>();
 	RESOURCE LPAREN name = dottedId (COMMA arg = stringExpression {args.add(arg);} )* RPAREN
 	{expr = ExpressionFactory.createExternalWordListExpression(name, args);}
 	|
-	id = Identifier
-	{expr = ExpressionFactory.createReferenceWordListExpression(id);}
-	|
 	path = RessourceLiteral
 	{expr = ExpressionFactory.createLiteralWordListExpression(path);}
+	|
+	id = Identifier
+	{expr = ExpressionFactory.createReferenceWordListExpression(id);}
 	;
 
+wordListOrStringExpression returns [WordListExpression expr = null]
+	:
+	(stringExpression)=> string = stringExpression
+	{expr = ExpressionFactory.createStringWordListExpression(string);}
+	|	
+	e = wordListExpression
+	{expr = e;}
+	;
 
 wordTableExpression returns [WordTableExpression expr = null]
 @init  {
@@ -2516,11 +2531,21 @@ List<IStringExpression> args = new ArrayList<IStringExpression>();
 	RESOURCE LPAREN name = dottedId (COMMA arg = stringExpression {args.add(arg);} )* RPAREN
 	{expr = ExpressionFactory.createExternalWordTableExpression(name, args);}
 	|
-	id = Identifier
-	{expr = ExpressionFactory.createReferenceWordTableExpression(id);}
-	|
 	path = RessourceLiteral
 	{expr = ExpressionFactory.createLiteralWordTableExpression(path);}
+	|
+	id = Identifier
+	{expr = ExpressionFactory.createReferenceWordTableExpression(id);}
+	;
+
+wordTableOrStringExpression returns [WordTableExpression expr = null]
+	:
+	(stringExpression)=>string = stringExpression
+	{expr = ExpressionFactory.createStringWordTableExpression(string);}
+	|	
+	e = wordTableExpression
+	{expr = e;}
+	|
 	;
 
 // not checked

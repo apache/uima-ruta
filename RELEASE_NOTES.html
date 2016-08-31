@@ -50,16 +50,33 @@
 <p>
   <p>UIMA Ruta Language and Analysis Engine:</p>
   <ul>
+    <li>Depends on UIMA 2.9.0 and uimaFIT 2.2.0</li>
+    <li>New block FOREACH: iterate over pattern and reuse the matched annotation in contained rules</li>
+    <li>Label expressions across inlined rules are supported, behave like local variables now</li>
+    <li>Feature expressions on label expressions are supported</li>
+    <li>Setting values of variables by configuration parameter</li>
+    <li>Macros support variables</li>
+    <li>New type function: typeFromString</li>
+    <li>Wordlist initialization with string expressions: simplified specification of language-dependent dictionary usage</li>
     <li>New maven archetype for typical UIMA Ruta projects</li>
     <li>Improved and faster maven plugins</li>
-    <li>New block FOREACH: iterate over pattern and reuse the matched annotation in contained rules</li>
+    <li>Parameters additionalScripts and additionalEngines are now optional</li>
+    <li>Removed engine loader concept and parameter completely</li>
+    <li>Removed redundant Document type</li>
     <li>Improved datapath support</li>
+    <li>Improved resource manager support</li>
     <li>Many bug fixes and improvements</li>
   </ul>
   <p>UIMA Ruta Workbench:</p>
   <ul>
+    <li>Improved support of classpath-lookup in maven-based projects</li>
+    <li>Launch configuration supports various serialization formats (with preference)</li>
     <li>Bug fixes</li>
   </ul>
+  <p>
+    This release requires an update of script projects and its descriptors in the UIMA Ruta Workbench, e.g, by deleting all descriptors and updating the script project. Right-click on a project and select "UIMA Ruta -> Convert to UIMA Ruta project.
+  </p>
+  
 </p>
  
   

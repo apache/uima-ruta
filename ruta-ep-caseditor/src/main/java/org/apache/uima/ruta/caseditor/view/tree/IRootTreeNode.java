@@ -19,21 +19,12 @@
 
 package org.apache.uima.ruta.caseditor.view.tree;
 
-import java.util.LinkedList;
-
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FeatureStructure;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
 
 public interface IRootTreeNode extends ITreeNode {
 
-  public void insertFS(FeatureStructure annotation, boolean withParents);
-
-  public LinkedList<ITreeNode> getNodes();
-
-  public LinkedList<ITreeNode> getNodes(Type type);
-
-  public LinkedList<ITreeNode> getNodes(AnnotationFS annot);
+  public void insertFS(FeatureStructure annotation, CAS cas, boolean withParents);
 
   public void sort();
 }

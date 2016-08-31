@@ -183,7 +183,8 @@
             <configuration>
               <!-- one or more ant-like file patterns identifying top level descriptors -->
               <typeSystemIncludes>
-<!--                 <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/BasicTypeSystem.xml</typeSystemInclude> -->
+                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/RutaInternalTypeSystem.xml</typeSystemInclude>
+                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/DefaultSeederTypeSystem.xml</typeSystemInclude>
                 <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/HtmlTypeSystem.xml</typeSystemInclude>
                 <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/PlainTextTypeSystem.xml</typeSystemInclude>
               </typeSystemIncludes>

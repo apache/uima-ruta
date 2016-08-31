@@ -19,7 +19,7 @@
 -->
 
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-  <name>InternalTypeSystem</name>
+  <name>org.apache.uima.ruta.engine.InternalTypeSystem</name>
   <description/>
   <version>1.0</version>
   <vendor/>
@@ -35,6 +35,11 @@
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
       </features>
+    </typeDescription>
+    <typeDescription>
+      <name>org.apache.uima.ruta.type.RutaOptional</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
       <name>org.apache.uima.ruta.type.RutaAnnotation</name>

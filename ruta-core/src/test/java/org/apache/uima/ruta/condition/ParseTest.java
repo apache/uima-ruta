@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.condition;
 
 import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
@@ -38,4 +39,22 @@ public class ParseTest {
 
     cas.release();
   }
+  
+  @Test
+  public void testDecimal() throws Exception {
+    
+    CAS cas = RutaTestUtils.getCAS("text 2.3 text 2,3 text");
+    Ruta.apply(cas, "DOUBLE d; (NUM PM NUM){PARSE(d),d==2.3 -> T1};");
+    Ruta.apply(cas, "DOUBLE d; (NUM PM NUM){PARSE(d, \"en\"),d==2.3 -> T2};");
+    Ruta.apply(cas, "DOUBLE d; (NUM PM NUM){PARSE(d, \"de\"),d==2.3 -> T3};");
+    Ruta.apply(cas, "DOUBLE d; (NUM PM NUM){PARSE(d, \"en\"),d!=2.3 -> T4};");
+    Ruta.apply(cas, "DOUBLE d; (NUM PM NUM){PARSE(d, \"de\"),d!=2.3 -> T5};");
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "2.3");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "2.3");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "2,3");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "2,3");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "2.3");
+  }
+  
 }

@@ -39,7 +39,7 @@ public class NumberListVariableExpression extends AbstractNumberListExpression {
   @Override
   public List<Number> getList(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    List<Object> list = parent.getEnvironment().getVariableValue(var, List.class);
+    List<Object> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
     List<Number> result = new ArrayList<Number>();
     for (Object each : list) {
       if (each instanceof INumberExpression) {

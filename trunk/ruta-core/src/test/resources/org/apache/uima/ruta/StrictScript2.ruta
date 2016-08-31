@@ -1,5 +1,0 @@
-PACKAGE org.apache.uima.ruta;
-
-IMPORT org.apache.uima.ruta.other.Type1 FROM org.apache.uima.ruta.ImportStatementsTestTypeSystem AS OtherType;
-
-DECLARE Type1;

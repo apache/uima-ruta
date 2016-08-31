@@ -41,7 +41,7 @@ public class RemoveFunction extends StringFunctionExpression {
   public String getStringValue(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     StringBuilder result = new StringBuilder();
-    String value = parent.getEnvironment().getVariableValue(var, String.class);
+    String value = parent.getEnvironment().getVariableValue(var, String.class, stream);
     for (IStringExpression each : list) {
       String string = each.getStringValue(context, stream);
       String[] split = value.split(string);

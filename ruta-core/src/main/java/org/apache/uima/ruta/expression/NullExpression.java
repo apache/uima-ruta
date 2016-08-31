@@ -26,12 +26,13 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class NullExpression extends FeatureExpression implements IStringExpression, ITypeExpression {
+public class NullExpression extends FeatureExpression implements IStringExpression, ITypeExpression, IAnnotationExpression {
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
@@ -66,6 +67,11 @@ public class NullExpression extends FeatureExpression implements IStringExpressi
 
   @Override
   public Type getInitialType(MatchContext context, RutaStream stream) {
+    return null;
+  }
+
+  @Override
+  public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
     return null;
   }
  

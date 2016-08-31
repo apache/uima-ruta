@@ -50,6 +50,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -91,7 +92,7 @@ public class Ruta {
           ResourceConfigurationException, AnalysisEngineProcessException, URISyntaxException {
     String viewName = cas.getViewName();
     URL aedesc = RutaEngine.class.getResource("BasicEngine.xml");
-    AnalysisEngine ae = wrapAnalysisEngine(aedesc, viewName);
+    AnalysisEngine ae = wrapAnalysisEngine(aedesc, viewName, null);
 
     File scriptFile = File.createTempFile("Ruta", RutaEngine.SCRIPT_FILE_EXTENSION);
     scriptFile.deleteOnExit();
@@ -276,19 +277,19 @@ public class Ruta {
   }
   
 
-  public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName)
+  public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName, ResourceManager resourceManager)
           throws ResourceInitializationException, ResourceConfigurationException,
           InvalidXMLException, IOException, URISyntaxException {
-    return wrapAnalysisEngine(descriptorUrl, viewName, false, Charset.defaultCharset().name());
+    return wrapAnalysisEngine(descriptorUrl, viewName, false, Charset.defaultCharset().name(), resourceManager);
   }
-
+  
   public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName,
-          boolean rutaEngine, String encoding) throws ResourceInitializationException,
+          boolean rutaEngine, String encoding, ResourceManager resourceManager) throws ResourceInitializationException,
           ResourceConfigurationException, InvalidXMLException, IOException, URISyntaxException {
     if (viewName.equals(CAS.NAME_DEFAULT_SOFA)) {
       XMLInputSource in = new XMLInputSource(descriptorUrl);
       ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
-      AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
+      AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier, resourceManager, null);
       return ae;
     } else {
       InputStream inputStream = null;
@@ -305,7 +306,7 @@ public class Ruta {
       FileUtils.saveString2File(aaedString, tempFile);
       XMLInputSource in = new XMLInputSource(tempFile);
       ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
-      AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
+      AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier,resourceManager, null);
       tempFile.delete();
       return ae;
     }

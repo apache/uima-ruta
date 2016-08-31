@@ -19,9 +19,11 @@
 
 package org.apache.uima.ruta.ide.ui.preferences;
 
+import org.apache.uima.cas.SerialFormat;
 import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.core.RutaCorePreferences;
 import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -29,14 +31,16 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 /**
  * Preference page to manage preferences for the ide plugin.
  */
-public class RutaProjectPreferencePage extends FieldEditorPreferencePage implements
-        IWorkbenchPreferencePage {
+public class RutaProjectPreferencePage extends FieldEditorPreferencePage
+        implements IWorkbenchPreferencePage {
 
   private BooleanFieldEditor clearOutput;
 
   private BooleanFieldEditor noVM;
 
   private BooleanFieldEditor addSDI;
+
+  private ComboFieldEditor defaultCasSerializationFormat;
 
   public RutaProjectPreferencePage() {
     setPreferenceStore(RutaIdeUIPlugin.getDefault().getPreferenceStore());
@@ -52,11 +56,33 @@ public class RutaProjectPreferencePage extends FieldEditorPreferencePage impleme
     noVM = new BooleanFieldEditor(RutaCorePreferences.NO_VM_IN_DEV_MODE,
             RutaPreferencesMessages.NoVMInDevMode, getFieldEditorParent());
     addField(noVM);
-    
-    addSDI = new BooleanFieldEditor(RutaCorePreferences.ADD_SDI,
-            RutaPreferencesMessages.AddSDI, getFieldEditorParent());
+
+    addSDI = new BooleanFieldEditor(RutaCorePreferences.ADD_SDI, RutaPreferencesMessages.AddSDI,
+            getFieldEditorParent());
     addField(addSDI);
 
+    String[][] values = new String[7][];
+    int index = 0;
+    addFormat(values, index++, SerialFormat.XMI);
+    addFormat(values, index++, SerialFormat.XCAS);
+    addFormat(values, index++, SerialFormat.BINARY);
+    addFormat(values, index++, SerialFormat.COMPRESSED);
+    addFormat(values, index++, SerialFormat.COMPRESSED_FILTERED);
+    addFormat(values, index++, SerialFormat.SERIALIZED);
+    addFormat(values, index++, SerialFormat.SERIALIZED_TSI);
+    
+
+    defaultCasSerializationFormat = new ComboFieldEditor(
+            RutaCorePreferences.DEFAULT_CAS_SERIALIZATION_FORMAT,
+            RutaPreferencesMessages.DefaultCasSerializationFormat, values, getFieldEditorParent());
+    addField(defaultCasSerializationFormat);
+
+  }
+
+  private void addFormat(String[][] values, int index, SerialFormat serialFormat) {
+    values[index] = new String[] {
+        serialFormat.toString() + " (" + serialFormat.getDefaultFileExtension() + ")",
+        serialFormat.toString() };
   }
 
   public void init(IWorkbench workbench) {

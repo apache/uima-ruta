@@ -46,7 +46,7 @@ private String var;
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     @SuppressWarnings("unchecked")
-    List<AnnotationFS> list = parent.getEnvironment().getVariableValue(var, List.class);
+    List<AnnotationFS> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
     if(list != null && index >= 0 && index < list.size()) {
       return list.get(index);
     }
