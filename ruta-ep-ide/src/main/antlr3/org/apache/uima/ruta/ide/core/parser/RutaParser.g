@@ -486,14 +486,14 @@ variableDeclaration returns [List<Statement> stmts = new ArrayList<Statement>()]
 		 stmts.add(StatementFactory.createDeclarationsStatement(type, decls, init));
 		 }
         |
-        type = WORDLIST id = Identifier (ASSIGN_EQUAL (wl = wordListExpression | wl = stringExpression))? SEMI
+        type = WORDLIST id = Identifier (ASSIGN_EQUAL wl = wordListOrStringExpression )? SEMI
         {
         addVariable(id.getText(), type.getText());
         decls.add(StatementFactory.createListVariable(id,type,wl));
         stmts.add(StatementFactory.createDeclarationsStatement(type, decls, wl));
         }
         |
-        type = WORDTABLE id = Identifier (ASSIGN_EQUAL (wt = wordTableExpression | wt = stringExpression))?  SEMI
+        type = WORDTABLE id = Identifier (ASSIGN_EQUAL wt = wordTableOrStringExpression)?  SEMI
         {
         addVariable(id.getText(), type.getText());
         decls.add(StatementFactory.createTableVariable(id,type,wt));
@@ -2447,6 +2447,15 @@ wordListExpression returns [Expression expr = null]
 	;
 
 
+wordListOrStringExpression returns [Expression expr = null]
+	:
+	(stringExpression)=>id = stringExpression
+	{expr = ExpressionFactory.createListVariableReference(id);}
+	|
+	e = wordListExpression
+	{expr = e;}
+	;
+
 wordTableExpression returns [Expression expr = null]
 	:
 	id = Identifier
@@ -2454,6 +2463,15 @@ wordTableExpression returns [Expression expr = null]
 	|
 	path = RessourceLiteral
 	{expr = ExpressionFactory.createRessourceReference(path);}
+	;
+
+wordTableOrStringExpression returns [Expression expr = null]
+	:
+	(stringExpression)=>id = stringExpression
+	{expr = ExpressionFactory.createTableVariableReference(id);}
+	|
+	e = wordTableExpression
+	{expr = e;}
 	;
 
 //seems OK

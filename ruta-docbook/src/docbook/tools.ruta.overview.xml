@@ -391,7 +391,8 @@ Sentence{CONTAINS(EmploymentIndicator) -> CREATE(EmplRelation,
     <programlisting><![CDATA[DECLARE Annotation EmplRelation 
    (Employee employeeRef, Employer employerRef);
 e1:Employer # EmploymentIndicator # e2:Employee)
-    {-> EmplRelation, EmplRelation.employeeRef=e2, EmplRelation.employerRef=e1};]]></programlisting>
+    {-> EmplRelation, EmplRelation.employeeRef=e2, 
+        EmplRelation.employerRef=e1};]]></programlisting>
     
     <para>
       Global variables for annotations are declared like other variables and are able to store annotations

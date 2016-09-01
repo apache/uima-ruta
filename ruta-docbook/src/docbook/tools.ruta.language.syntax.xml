@@ -83,9 +83,11 @@ VariableDeclaration -> (("TYPE" Identifier ("," Identifier)*
                                ("," Identifier)* ("=" NumberExpression)?)
                      | ("BOOLEAN" Identifier ("," Identifier)*
                                                 ("=" BooleanExpression)?)
-                     | ("ANNOTATION" Identifier ("=" AnnotationExpression)?)
-                     | ("WORDLIST" Identifier ("=" WordListExpression | StringExpression)?)
-                     | ("WORDTABLE" Identifier ("=" WordTableExpression | StringExpression)?)
+                     | ("ANNOTATION" Identifier("="AnnotationExpression)?)
+                     | ("WORDLIST" Identifier ("=" WordListExpression 
+                                                | StringExpression)?)
+                     | ("WORDTABLE" Identifier ("=" WordTableExpression 
+                                                | StringExpression)?)
                      | ("TYPELIST" Identifier ("=" TypeListExpression)?)
                      | ("STRINGLIST" Identifier
                                              ("=" StringListExpression)?)
@@ -102,13 +104,13 @@ BasicAnnotationType ->  ('COLON'| 'SW' | 'MARKUP' | 'PERIOD' | 'CW'| 'NUM'
                       | 'SENTENCEEND' | 'W' | 'PM' | 'ANY' | 'ALL'
                       | 'SPACE' | 'BREAK')
 BlockDeclaration    -> "BLOCK" "(" Identifier ")" RuleElementWithCA
-                                                       "{" Statements "}"]]></programlisting>
-actionDeclaration   -> "ACTION" Identifier "(" ("VAR"? VarType Identifier)? 
-                      ("," "VAR"? VarType Identifier)*")"  
+                                                       "{" Statements "}"
+actionDeclaration   -> "ACTION" Identifier "(" ("VAR"? VarType 
+                       Identifier)? ("," "VAR"? VarType Identifier)*")"  
                       "=" Action ( "," Action)* ";"
-conditionDeclaration-> "CONDITION" Identifier "(" ("VAR"? VarType Identifier)? 
-                      ("," "VAR"? VarType Identifier)*")"  
-                      "=" Condition ( "," Condition)* ";"  
+conditionDeclaration-> "CONDITION" Identifier "(" ("VAR"? VarType 
+                       Identifier)? ("," "VAR"? VarType Identifier)*")"  
+                      "=" Condition ( "," Condition)* ";"]]></programlisting>
     Syntax of statements and rule elements:
     <programlisting><![CDATA[SimpleStatement        -> SimpleRule | RegExpRule | ConjunctRules 
                           | DocumentActionRule
@@ -155,7 +157,8 @@ Actions                -> "->" Action ( "," Action)*
   <para>
     It is also possible to use specific expression as implicit conditions or action additionally to the set of available conditions and actions.
         <programlisting><![CDATA[Condition -> BooleanExpression | FeatureMatchExpression
-Action    -> TypeExpression | FeatureAssignmentExpression | VariableAssignmentExpression 
+Action    -> TypeExpression | FeatureAssignmentExpression 
+              | VariableAssignmentExpression 
 ]]></programlisting>
   
 

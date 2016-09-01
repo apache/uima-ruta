@@ -263,7 +263,8 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
  A FileSet specifying the UIMA Ruta script files that should be built. 
  
  If this parameter is not specified, then all UIMA Ruta script files 
- in the output directory (e.g., target/classes) of the project will be built. 
+ in the output directory (e.g., target/classes) of the project will 
+ be built. 
  
  default value: none
  <scriptFiles>
@@ -288,8 +289,8 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
  <analysisEngineOutputDirectory>${project.build.directory}/
   generated-sources/ruta/descriptor</analysisEngineOutputDirectory>
 
- <!-- The template descriptor for the generated type system. By default the 
-   descriptor of the maven dependency is loaded. -->
+ <!-- The template descriptor for the generated type system. 
+  By default the descriptor of the maven dependency is loaded. -->
  <!-- default value: none -->
  <!-- not used in this example <typeSystemTemplate>...
    </typeSystemTemplate> -->

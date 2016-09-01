@@ -614,6 +614,12 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         return false;
       }
       RutaVariableReference ref = (RutaVariableReference) s;
+      if(ref.getType() == RutaTypeConstants.RUTA_TYPE_WT || ref.getType() == RutaTypeConstants.RUTA_TYPE_WL) {
+        if(StringUtils.isBlank(ref.getName())) {
+          // declaration with a string expression: do not check
+          return false;
+        }
+      }
       if ((ref.getType() & RutaTypeConstants.RUTA_TYPE_AT) != 0) {
         // types
         String name = ref.getName();

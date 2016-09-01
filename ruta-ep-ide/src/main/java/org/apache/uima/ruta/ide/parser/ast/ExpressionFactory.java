@@ -281,6 +281,17 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   public static Expression createTableVariableReference(Token id) {
     return newVariableReference(id, RutaTypeConstants.RUTA_TYPE_WT);
   }
+  
+  public static Expression createListVariableReference(Expression ref) {
+    int bounds[] = getSurroundingBounds(ref);
+    return new RutaVariableReference(bounds[0], bounds[1], "", RutaTypeConstants.RUTA_TYPE_WL);
+  }
+  
+  public static Expression createTableVariableReference(Expression ref) {
+    int bounds[] = getSurroundingBounds(ref);
+    return new RutaVariableReference(bounds[0], bounds[1], "", RutaTypeConstants.RUTA_TYPE_WT);
+  }
+  
 
   public static Expression createRessourceReference(Token path) {
     int bounds[] = getBounds(path);
@@ -427,6 +438,8 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     int bounds[] = getBounds(t);
     return new NullExpression(bounds[0], bounds[1]);
   }
+
+  
 
  
 }

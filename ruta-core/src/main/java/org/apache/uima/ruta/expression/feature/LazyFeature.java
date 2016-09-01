@@ -53,31 +53,37 @@ public class LazyFeature implements Feature {
   
   @Override
   public int compareTo(Feature o) {
+    checkDelegate();
     return delegate.compareTo(o);
   }
 
   @Override
   public Type getDomain() {
+    checkDelegate();
     return delegate.getDomain();
   }
 
   @Override
   public Type getRange() {
+    checkDelegate();
     return delegate.getRange();
   }
 
   @Override
   public String getName() {
+    checkDelegate();
     return delegate.getName();
   }
 
   @Override
   public String getShortName() {
+    checkDelegate();
     return delegate.getShortName();
   }
 
   @Override
   public boolean isMultipleReferencesAllowed() {
+    checkDelegate();
     return delegate.isMultipleReferencesAllowed();
   }
 
@@ -85,5 +91,11 @@ public class LazyFeature implements Feature {
     return featureName;
   }
 
+  private void checkDelegate() {
+    if(delegate == null) {
+      throw new RuntimeException("Feature with name '"+ featureName +"' has not yet been resolved. Most likely, it is not defined for the given type.");
+    }
+    
+  }
 
 }

@@ -22,31 +22,29 @@ package org.apache.uima.ruta.expression;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class IndexedListExpressionTest {
+
   @Test
-  public void test() {
+  @Ignore
+  public void test() throws Exception{
     String document = "Some text.";
     String script = "";
-    script += "STRINGLIST sl = {\"Some\", \"text\"}";
+    script += "STRINGLIST sl = {\"Some\", \"text\"};";
     script += "W.ct == sl[0]{-> T1};";
     script += "W.ct == sl[1]{-> T2};";
     script += "W{REGEXP(sl[0]) -> T3};";
     script += "W{REGEXP(sl[1]) -> T4};";
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
-//    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
-//    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "text");
-//    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");
-//    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "text");
-    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "text");
+
   }
 }
