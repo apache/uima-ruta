@@ -850,8 +850,7 @@ WORDTABLE presidentsOfUSA = "" + package + "presidentsOfUSA.csv";
       construct, and ignore all filtering settings.
     </para>
 
-    <programlisting><![CDATA[
-RegExpRule        -> StringExpression "->" GroupAssignment 
+    <programlisting><![CDATA[RegExpRule        -> StringExpression "->" GroupAssignment 
                      ("," GroupAssignment)* ";"
 GroupAssignment   -> TypeExpression FeatureAssignment?
                      | NumberEpxression "=" TypeExpression 
