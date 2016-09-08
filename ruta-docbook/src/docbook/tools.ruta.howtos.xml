@@ -515,9 +515,12 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
       A UIMA Ruta project are created with following command using the the archetype (in one line): 
     </para>  
     
-    <programlisting><![CDATA[mvn archetype:generate -DarchetypeGroupId=org.apache.uima 
-    -DarchetypeArtifactId=ruta-maven-archetype -DarchetypeVersion=<ruta-version>
-    -DgroupId=<package> -DartifactId=<project-name>]]></programlisting>
+    <programlisting><![CDATA[mvn archetype:generate 
+    -DarchetypeGroupId=org.apache.uima 
+    -DarchetypeArtifactId=ruta-maven-archetype 
+    -DarchetypeVersion=<ruta-version>
+    -DgroupId=<package> 
+    -DartifactId=<project-name>]]></programlisting>
     
     <para>
       The placeholders need to be replaced with the corresponding values. This could look like:
