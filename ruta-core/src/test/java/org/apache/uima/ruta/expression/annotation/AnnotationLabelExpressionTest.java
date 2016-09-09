@@ -24,7 +24,9 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -37,6 +39,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
@@ -326,14 +329,14 @@ public class AnnotationLabelExpressionTest {
     list.add(new TestFeature("value", "", "uima.cas.Integer"));
     features.put(type, list);
     CAS cas = RutaTestUtils.getCAS("Some text.", types, features);
-    
+
     String script = "a:W{-> Valued, Valued.value = a.end};\n";
     script += "(a:Valued b:Valued){a.value == (b.value-5) -> T1};";
-    
+
     Ruta.apply(cas, script);
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text");
   }
-  
+
   @Test
   public void testAcrossInlinedRules() throws Exception {
     String script = "(# PERIOD){->T1};\n";
@@ -350,7 +353,41 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "text");
   }
 
-  
+  @Test
+  public void testSameOffset() throws Exception {
+    String document = "Some text.";
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    typeMap.put("Struct1", "uima.tcas.Annotation");
+    typeMap.put("Struct2", "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    list.add(new TestFeature("a", "", "uima.cas.String"));
+    featureMap.put("Struct1", list);
+    list = new ArrayList<RutaTestUtils.TestFeature>();
+    list.add(new TestFeature("a", "", "uima.tcas.Annotation"));
+    featureMap.put("Struct2", list);
+
+    String script = "CW{-> CREATE(Struct1, \"a\" = \"1\")};\n";
+    script += "CW{-> CREATE(Struct1, \"a\" = \"2\")};\n";
+    script += "CW{-> CREATE(Struct1, \"a\" = \"3\")};\n";
+    script += "s:Struct1 SW{-> CREATE(Struct2, \"a\" = s)};\n";
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
+    
+    Type type1 = cas.getTypeSystem().getType("Struct1");
+    Feature feature1 = type1.getFeatureByBaseName("a");
+    Type type2 = cas.getTypeSystem().getType("Struct2");
+    Feature feature2 = type2.getFeatureByBaseName("a");
+    Collection<AnnotationFS> select = CasUtil.select(cas, type2);
+    Assert.assertEquals(3, select.size());
+    Iterator<AnnotationFS> iterator = select.iterator();
+    Assert.assertEquals("1", iterator.next().getFeatureValue(feature2).getStringValue(feature1));
+    Assert.assertEquals("2", iterator.next().getFeatureValue(feature2).getStringValue(feature1));
+    Assert.assertEquals("3", iterator.next().getFeatureValue(feature2).getStringValue(feature1));
+    cas.release();
+  }
+
   private CAS applyOnStruct4Cas(String script) throws Exception {
     String document = "Some text.";
     Map<String, String> typeMap = new TreeMap<String, String>();
