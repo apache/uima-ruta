@@ -137,9 +137,9 @@
                   <exclude>marker-file-identifying-*</exclude>
                   <exclude>ruta-eclipse-update-site/target/**</exclude>
                   <exclude>ruta-eclipse-update-site/marker-file-identifying-*</exclude>
-                  <exclude>ruta-eclipse-update-site/.settings</exclude>
+                  <exclude>ruta-eclipse-update-site/.settings/**</exclude>
+                  <exclude>ruta-eclipse-update-site/.project</exclude>
                   <exclude>DEPENDENCIES</exclude>
-                  <exclude>**</exclude>
                 </excludes>
               </configuration>
             </execution>
