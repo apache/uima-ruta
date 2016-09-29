@@ -32,6 +32,7 @@ public class NumberVariableExpression extends AbstractNumberExpression {
     this.var = var;
   }
 
+  @Override
   public double getDoubleValue(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     Object value = parent.getEnvironment().getVariableValue(getVar(), stream);
@@ -42,6 +43,7 @@ public class NumberVariableExpression extends AbstractNumberExpression {
     return variableValue;
   }
 
+  @Override
   public float getFloatValue(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     Object value = parent.getEnvironment().getVariableValue(getVar(), stream);
@@ -52,6 +54,7 @@ public class NumberVariableExpression extends AbstractNumberExpression {
     return variableValue;
   }
 
+  @Override
   public int getIntegerValue(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     Object value = parent.getEnvironment().getVariableValue(getVar(), stream);
@@ -62,6 +65,7 @@ public class NumberVariableExpression extends AbstractNumberExpression {
     return variableValue;
   }
 
+  @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     Class<?> variableType = parent.getEnvironment().getVariableType(getVar());

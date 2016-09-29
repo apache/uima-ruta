@@ -137,7 +137,7 @@ public class Automaton {
     for (RuleElement element : root.getPossibleTransitions()) {
       AbstractState targetState = root.getTransition(element);
       RutaMatcher matcher = ((RutaRuleElement) element).getMatcher();
-      for (AnnotationFS annoFS : matcher.getMatchingAnnotations(stream, parent)) {
+      for (AnnotationFS annoFS : matcher.getMatchingAnnotations(parent, stream)) {
         if (targetState instanceof TransitionState) {
           LinkedList<RuleMatch> ruleMatches = createMatches(annoFS,
                   ((TransitionState) targetState).getRules(), stream, crowd);
@@ -176,7 +176,7 @@ public class Automaton {
       RutaMatcher matcher = ((RutaRuleElement) element).getMatcher();
       AbstractState targetState = startState.getTransition(element);
       for (AnnotationFS annoFS : matcher.getAnnotationsAfter((RutaRuleElement) ruleElement, anno,
-              stream, parent)) {
+              parent, stream)) {
         if (targetState instanceof TransitionState) {
           LinkedList<RuleMatch> ruleMatches = filterMatches(annoFS, matches,
                   (TransitionState) targetState, stream, crowd);
@@ -236,15 +236,7 @@ public class Automaton {
     // boolean base = matcher.match(annotation, stream, getParent());
     boolean base = true;
     MatchContext context = new MatchContext(annotation, element, ruleMatch, true);
-    RutaMatcher matcher = ((RutaRuleElement) element).getMatcher();
-    if (matcher instanceof RutaTypeMatcher) {
-      RutaTypeMatcher rtm = (RutaTypeMatcher) matcher;
-      IRutaExpression expression = rtm.getExpression();
-      if (expression instanceof FeatureExpression) {
-        base = matcher.match(annotation, stream, element.getParent());
-      }
-    }
-    
+        
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (annotation != null) {
       textsMatched.add(annotation);

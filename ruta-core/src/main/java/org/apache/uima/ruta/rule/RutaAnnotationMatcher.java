@@ -54,7 +54,8 @@ public class RutaAnnotationMatcher implements RutaMatcher {
     this.comparator = new AnnotationComparator();
   }
 
-  public Collection<AnnotationFS> getMatchingAnnotations(RutaStream stream, RutaBlock parent) {
+  @Override
+  public Collection<AnnotationFS> getMatchingAnnotations(RutaBlock parent, RutaStream stream) {
     // TODO what about the matching direction?
     MatchContext context = new MatchContext(parent);
     if (annotationExpression != null) {
@@ -70,8 +71,9 @@ public class RutaAnnotationMatcher implements RutaMatcher {
     return Collections.emptyList();
   }
 
+  @Override
   public Collection<AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
-          AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
+          AnnotationFS annotation, RutaBlock parent, RutaStream stream) {
     if (annotation.getEnd() == stream.getDocumentAnnotation().getEnd()) {
       return Collections.emptyList();
     }
@@ -130,8 +132,9 @@ public class RutaAnnotationMatcher implements RutaMatcher {
     return Collections.emptyList();
   }
 
+  @Override
   public Collection<AnnotationFS> getAnnotationsBefore(RutaRuleElement ruleElement,
-          AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
+          AnnotationFS annotation, RutaBlock parent, RutaStream stream) {
     if (annotation.getBegin() == stream.getDocumentAnnotation().getBegin()) {
       return Collections.emptyList();
     }
@@ -175,26 +178,6 @@ public class RutaAnnotationMatcher implements RutaMatcher {
       }
     }
     return Collections.emptyList();
-  }
-
-  public boolean match(AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
-    if (annotation == null) {
-      return false;
-    }
-    MatchContext context = new MatchContext(parent);
-    if (annotationExpression != null) {
-      AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
-
-      return annotation.equals(ref);
-    } else if (annotationListExpression != null) {
-      List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
-      for (AnnotationFS each : annotations) {
-        if (each.equals(annotation)) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 
   @Override

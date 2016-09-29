@@ -39,16 +39,19 @@ public class TimeProfilerVisitor implements RutaInferenceVisitor {
     timeInfo = new HashMap<RutaElement, Long>();
   }
 
+  @Override
   public void beginVisit(RutaElement element, ScriptApply result) {
     getTimeInfo().put(element, System.currentTimeMillis());
   }
 
+  @Override
   public void endVisit(RutaElement element, ScriptApply result) {
     Long start = getTimeInfo().get(element);
     long value = System.currentTimeMillis() - start;
     getTimeInfo().put(element, value);
   }
 
+  @Override
   public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
     // others do the work
   }
@@ -57,6 +60,7 @@ public class TimeProfilerVisitor implements RutaInferenceVisitor {
     return timeInfo;
   }
 
+  @Override
   public void annotationAdded(AnnotationFS annotation,
           AbstractRuleMatch<? extends AbstractRule> creator) {
   }

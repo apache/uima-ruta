@@ -154,10 +154,12 @@ public class ViewWriter extends JCasMultiplier_ImplBase {
     outView = null;
   }
 
+  @Override
   public boolean hasNext() throws AnalysisEngineProcessException {
     return false;
   }
 
+  @Override
   public AbstractCas next() throws AnalysisEngineProcessException {
     return null;
   }

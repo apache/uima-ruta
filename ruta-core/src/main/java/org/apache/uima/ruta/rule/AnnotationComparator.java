@@ -34,6 +34,7 @@ public class AnnotationComparator implements Comparator<AnnotationFS> {
    * 
    * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
    */
+  @Override
   public int compare(AnnotationFS o1, AnnotationFS o2) {
     if (o1.getBegin() < o2.getBegin()) {
       return -1;

@@ -354,7 +354,7 @@ public class RutaDescriptorBuilder {
   private void fillTypeNameMap(Map<String, String> typeNameMap, TypeSystem typeSystem) {
     Iterator<Type> typeIterator = typeSystem.getTypeIterator();
     while (typeIterator.hasNext()) {
-      Type type = (Type) typeIterator.next();
+      Type type = typeIterator.next();
       String shortName = type.getShortName();
       String name = type.getName();
       typeNameMap.put(shortName, name);

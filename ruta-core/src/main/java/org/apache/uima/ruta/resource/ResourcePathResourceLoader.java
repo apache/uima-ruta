@@ -40,6 +40,7 @@ public class ResourcePathResourceLoader implements ResourceLoader {
     this.resourcePaths = resourcePaths;
   }
 
+  @Override
   public Resource getResource(String location) {
     if (resourcePaths != null) {
       for (String parent : resourcePaths) {
@@ -53,6 +54,7 @@ public class ResourcePathResourceLoader implements ResourceLoader {
     return new DescriptiveResource(location + " was not found in resource paths");
   }
 
+  @Override
   public ClassLoader getClassLoader() {
     return getClass().getClassLoader();
   }

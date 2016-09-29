@@ -43,8 +43,8 @@ public class StringFeatureExpression extends AbstractStringExpression {
     AnnotationFS annotation = context.getAnnotation();
     Feature feature = fe.getFeature(context, stream);
     List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
-            false);
+    Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
+            stream);
     if (!featureAnnotations.isEmpty()) {
       AnnotationFS next = featureAnnotations.iterator().next();
       if (feature instanceof CoveredTextFeature) {

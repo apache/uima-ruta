@@ -49,6 +49,7 @@ public class HtmlConverterPSpan implements Comparable<HtmlConverterPSpan> {
     return end;
   }
 
+  @Override
   public int compareTo(HtmlConverterPSpan o) {
     if (this.begin == o.begin) {
       if (this.end == o.end) {

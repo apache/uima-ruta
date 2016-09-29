@@ -29,6 +29,7 @@ public class RuleElementComparator implements Comparator<RuleElement> {
     this.container = container;
   }
 
+  @Override
   public int compare(RuleElement re1, RuleElement re2) {
     List<RuleElement> elements = container.getRuleElements();
     int i1 = elements.indexOf(re1);

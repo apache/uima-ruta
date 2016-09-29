@@ -32,6 +32,7 @@ public class NotMatchConstraint implements FSMatchConstraint {
     this.constraint = constraint;
   }
 
+  @Override
   public boolean match(FeatureStructure fs) {
     return !constraint.match(fs);
   }

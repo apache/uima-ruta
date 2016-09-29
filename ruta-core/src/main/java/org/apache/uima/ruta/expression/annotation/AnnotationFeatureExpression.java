@@ -44,8 +44,8 @@ public class AnnotationFeatureExpression extends AbstractAnnotationExpression {
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
     List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
-            false);
+    Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
+            stream);
     if (!featureAnnotations.isEmpty()) {
       AnnotationFS next = featureAnnotations.iterator().next();
         return next;

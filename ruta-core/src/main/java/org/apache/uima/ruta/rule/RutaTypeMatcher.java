@@ -25,22 +25,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
-import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
-import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
-import org.apache.uima.ruta.expression.feature.LazyFeature;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.type.RutaBasic;
 
 public class RutaTypeMatcher implements RutaMatcher {
 
-  private static final boolean CHECK_ON_FEATURE = false;
+  private static final boolean CHECK_ON_FEATURE = true;
 
   private ITypeExpression typeExpression;
 
@@ -60,7 +56,8 @@ public class RutaTypeMatcher implements RutaMatcher {
     this.comparator = new AnnotationComparator();
   }
 
-  public Collection<AnnotationFS> getMatchingAnnotations(RutaStream stream, RutaBlock parent) {
+  @Override
+  public Collection<? extends AnnotationFS> getMatchingAnnotations(RutaBlock parent, RutaStream stream) {
     // TODO what about the matching direction?
     Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comparator);
     List<Type> types = getTypes(parent, stream);
@@ -83,14 +80,15 @@ public class RutaTypeMatcher implements RutaMatcher {
     MatchContext context = new MatchContext(parent);
     if (featureExpression != null) {
       return featureExpression
-              .getFeatureAnnotations(annotations, stream, context, CHECK_ON_FEATURE);
+              .getAnnotations(annotations, CHECK_ON_FEATURE, context, stream);
     } else {
       return annotations;
     }
   }
 
-  public Collection<AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
-          AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
+  @Override
+  public Collection<? extends AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
+          AnnotationFS annotation, RutaBlock parent, RutaStream stream) {
     if (annotation.getEnd() == stream.getDocumentAnnotation().getEnd()) {
       return Collections.emptyList();
     }
@@ -138,7 +136,7 @@ public class RutaTypeMatcher implements RutaMatcher {
       MatchContext context = new MatchContext(null, null, true);
       context.setParent(parent);
       if (featureExpression != null) {
-        return featureExpression.getFeatureAnnotations(anchors, stream, context, CHECK_ON_FEATURE);
+        return featureExpression.getAnnotations(anchors, CHECK_ON_FEATURE, context, stream);
       } else {
         return anchors;
       }
@@ -146,8 +144,9 @@ public class RutaTypeMatcher implements RutaMatcher {
     return Collections.emptyList();
   }
 
-  public Collection<AnnotationFS> getAnnotationsBefore(RutaRuleElement ruleElement,
-          AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
+  @Override
+  public Collection<? extends AnnotationFS> getAnnotationsBefore(RutaRuleElement ruleElement,
+          AnnotationFS annotation, RutaBlock parent, RutaStream stream) {
     if (annotation.getBegin() == stream.getDocumentAnnotation().getBegin()) {
       return Collections.emptyList();
     }
@@ -184,7 +183,7 @@ public class RutaTypeMatcher implements RutaMatcher {
       MatchContext context = new MatchContext(null, null, true);
       context.setParent(parent);
       if (featureExpression != null) {
-        return featureExpression.getFeatureAnnotations(anchors, stream, context, CHECK_ON_FEATURE);
+        return featureExpression.getAnnotations(anchors, CHECK_ON_FEATURE, context, stream);
       } else {
         return anchors;
       }
@@ -192,79 +191,7 @@ public class RutaTypeMatcher implements RutaMatcher {
     return Collections.emptyList();
   }
 
-  public boolean match(AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
-    // TODO refactor method, current state was chosen for debugging
-    if (annotation == null) {
-      return false;
-    }
-    if (featureExpression == null) {
-      boolean b = checkType(annotation, stream, parent);
-      if (b) {
-        return true;
-      }
-    } else {
 
-      if (featureExpression.getFeatures(new MatchContext(parent), stream) == null) {
-        // hotfix for flawed feature expressions
-        boolean b = checkType(annotation, stream, parent);
-        if (b) {
-          return true;
-        }
-      } else {
-
-        boolean b = checkFeature(annotation, stream, parent);
-        if (b) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-
-  }
-
-  private boolean checkType(AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
-    List<Type> types = getTypes(parent, stream);
-    for (Type type : types) {
-      String name = type.getName();
-      if ("uima.tcas.DocumentAnnotation".equals(name)
-              || stream.getDocumentAnnotationType().getName().equals(name)) {
-        return true;
-      }
-      boolean b = stream.getJCas().getTypeSystem().subsumes(type, annotation.getType());
-      if (b) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean checkFeature(AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
-    MatchContext context = new MatchContext(annotation, null, null, true);
-    context.setParent(parent);
-    Feature feature = featureExpression.getFeature(context, stream);
-    if(feature instanceof LazyFeature) {
-      LazyFeature lazyFeature = (LazyFeature) feature;
-      feature = lazyFeature.initialize(annotation);
-    }
-    if (featureExpression instanceof FeatureMatchExpression) {
-      FeatureMatchExpression fme = (FeatureMatchExpression) featureExpression;
-      boolean checkFeatureValue = fme.checkFeatureValue(annotation, context, stream);
-      if (checkFeatureValue) {
-        return true;
-      }
-    } else if(feature == null || (feature instanceof LazyFeature) ||(feature.getRange() != null && feature.getRange().isArray())) {
-      // do not check on arrays, or lazy features
-      return true;
-    } else {
-      TypeSystem typeSystem = stream.getCas().getTypeSystem();
-      boolean subsumes = typeSystem.subsumes(feature.getRange(), annotation.getType());
-      if (subsumes) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   @Override
   public String toString() {
@@ -295,10 +222,12 @@ public class RutaTypeMatcher implements RutaMatcher {
     return type;
   }
 
+  @Override
   public long estimateAnchors(RutaBlock parent, RutaStream stream) {
     return stream.getHistogram(getType(typeExpression, parent, stream, true));
   }
 
+  @Override
   public List<Type> getTypes(RutaBlock parent, RutaStream stream) {
     List<Type> result = new ArrayList<Type>(1);
     if (typeExpression != null) {

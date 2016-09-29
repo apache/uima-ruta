@@ -36,16 +36,19 @@ public class AnonymousWordList implements RutaWordList {
     this.list = strings;
   }
 
+  @Override
   public boolean contains(String s, boolean ignoreCase, int size, char[] ignoreChars,
           int maxIgnoreChars, boolean ignoreWS) {
     return list.contains(s);
   }
 
+  @Override
   public boolean containsFragment(String s, boolean ignoreCase, int size, char[] ignoreChars,
           int maxIgnoreChars, boolean ignoreWS) {
     return contains(s, ignoreCase, size, ignoreChars, maxIgnoreChars, ignoreWS);
   }
 
+  @Override
   public List<AnnotationFS> find(RutaStream stream, boolean ignoreCase, int size,
           char[] ignoreToken, int maxIgnoredTokens, boolean ignoreWS) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
@@ -61,16 +64,19 @@ public class AnonymousWordList implements RutaWordList {
     return result;
   }
 
+  @Override
   public List<AnnotationFS> find(RutaStream stream, Map<String, Object> typeMap,
           boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken) {
     return new ArrayList<AnnotationFS>();
   }
 
+  @Override
   public List<String> contains(String string, boolean ignoreCase, int ignoreLength, boolean edit,
           double distance, String ignoreToken) {
     return null;
   }
 
+  @Override
   public List<String> containsFragment(String string, boolean ignoreCase, int ignoreLength,
           boolean edit, double distance, String ignoreToken) {
     return null;

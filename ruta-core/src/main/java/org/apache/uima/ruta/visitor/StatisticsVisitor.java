@@ -70,6 +70,7 @@ public class StatisticsVisitor implements RutaInferenceVisitor {
     actionDelta = new HashMap<String, Long>();
   }
 
+  @Override
   public void beginVisit(RutaElement element, ScriptApply result) {
     if (element instanceof AbstractRutaCondition) {
       AbstractRutaCondition c = (AbstractRutaCondition) element;
@@ -92,6 +93,7 @@ public class StatisticsVisitor implements RutaInferenceVisitor {
     }
   }
 
+  @Override
   public void endVisit(RutaElement element, ScriptApply result) {
     if (element instanceof AbstractRutaCondition) {
       AbstractRutaCondition c = (AbstractRutaCondition) element;
@@ -116,6 +118,7 @@ public class StatisticsVisitor implements RutaInferenceVisitor {
     }
   }
 
+  @Override
   public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
     List<String> names = new ArrayList<String>();
     List<Double> totals = new ArrayList<Double>();
@@ -199,6 +202,7 @@ public class StatisticsVisitor implements RutaInferenceVisitor {
     return actionAmount;
   }
 
+  @Override
   public void annotationAdded(AnnotationFS annotation,
           AbstractRuleMatch<? extends AbstractRule> creator) {
   }

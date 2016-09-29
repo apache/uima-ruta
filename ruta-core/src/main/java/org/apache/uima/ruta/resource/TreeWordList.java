@@ -199,6 +199,7 @@ public class TreeWordList implements RutaWordList {
     pointer.setWordEnd(s.length() > 0);
   }
 
+  @Override
   public boolean contains(String s, boolean ignoreCase, int size, char[] ignoreChars,
           int maxIgnoreChars, boolean ignoreWS) {
     if (s == null) {
@@ -209,6 +210,7 @@ public class TreeWordList implements RutaWordList {
             maxIgnoreChars, ignoreWS);
   }
 
+  @Override
   public boolean containsFragment(String s, boolean ignoreCase, int size, char[] ignoreChars,
           int maxIgnoreChars, boolean ignoreWS) {
     TextNode pointer = root;
@@ -303,6 +305,7 @@ public class TreeWordList implements RutaWordList {
     return null;
   }
 
+  @Override
   public List<AnnotationFS> find(RutaStream stream, boolean ignoreCase, int size,
           char[] ignoreChars, int maxIgnoredChars, boolean ignoreWS) {
     ArrayList<AnnotationFS> results = new ArrayList<AnnotationFS>();
@@ -463,16 +466,19 @@ public class TreeWordList implements RutaWordList {
     return name;
   }
 
+  @Override
   public List<AnnotationFS> find(RutaStream stream, Map<String, Object> typeMap,
           boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken) {
     return null;
   }
 
+  @Override
   public List<String> contains(String string, boolean ignoreCase, int ignoreLength, boolean edit,
           double distance, String ignoreToken) {
     return null;
   }
 
+  @Override
   public List<String> containsFragment(String string, boolean ignoreCase, int ignoreLength,
           boolean edit, double distance, String ignoreToken) {
     return null;

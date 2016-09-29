@@ -82,6 +82,7 @@ public class CSVTable implements RutaTable {
     sc.close();
   }
 
+  @Override
   public RutaWordList getWordList(int index, RutaBlock parent) {
     RutaWordList list = columnWordLists.get(index);
     if (list == null) {
@@ -110,10 +111,12 @@ public class CSVTable implements RutaTable {
     return result;
   }
 
+  @Override
   public String getEntry(int row, int column) {
     return tableData.get(row).get(column);
   }
 
+  @Override
   public List<String> getRowWhere(int column, String value) {
     List<String> columnData = getColumnData(column);
     int i = 0;

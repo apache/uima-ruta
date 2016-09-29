@@ -334,7 +334,7 @@ public class ScriptVerbalizer {
           sb.append("(");
           Iterator<Entry<IStringExpression, IRutaExpression>> fit = map.entrySet().iterator();
           while (fit.hasNext()) {
-            Map.Entry<IStringExpression, IRutaExpression> entry = (Map.Entry<IStringExpression, IRutaExpression>) fit
+            Map.Entry<IStringExpression, IRutaExpression> entry = fit
                     .next();
             sb.append(verbalizer.verbalize(entry.getKey()));
             sb.append(" = ");

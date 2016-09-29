@@ -39,16 +39,19 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
     this.fe = fe;
   }
 
+  @Override
   public int getIntegerValue(MatchContext context, RutaStream stream) {
     Number v = getNumberValue(context, stream);
     return v == null ? 0 : v.intValue();
   }
 
+  @Override
   public double getDoubleValue(MatchContext context, RutaStream stream) {
     Number v = getNumberValue(context, stream);
     return v == null ? 0 : v.doubleValue();
   }
 
+  @Override
   public float getFloatValue(MatchContext context, RutaStream stream) {
     Number v = getNumberValue(context, stream);
     return v == null ? 0 : v.floatValue();
@@ -58,8 +61,8 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
     AnnotationFS annotation = context.getAnnotation();
     Number result = null;
     List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
-            false);
+    Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
+            stream);
     if (!featureAnnotations.isEmpty()) {
       Feature feature = fe.getFeature(context, stream);
       Type range = feature.getRange();

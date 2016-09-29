@@ -164,7 +164,7 @@ public class StyleMapFactory {
       Boolean ck = e.getChecked();
       String ckString = ck.toString();
 
-      Boolean hid = (Boolean) Boolean.FALSE;
+      Boolean hid = Boolean.FALSE;
       String hidString = hid.toString();
       // this prevents hidden from being checked,
       // becasue that is not a meaningful combination
@@ -214,7 +214,7 @@ public class StyleMapFactory {
     if (color.startsWith("#")) {
       return Color.decode(color);
     } else {
-      String string = (String) colorNameMap.get(color);
+      String string = colorNameMap.get(color);
       if (string != null)
         return Color.decode(string);
       else
@@ -226,7 +226,7 @@ public class StyleMapFactory {
     if (color.startsWith("#")) {
       return Color.decode(color);
     } else {
-      String string = (String) colorNameMap.get(color);
+      String string = colorNameMap.get(color);
       if (string != null)
         return Color.decode(string);
       else

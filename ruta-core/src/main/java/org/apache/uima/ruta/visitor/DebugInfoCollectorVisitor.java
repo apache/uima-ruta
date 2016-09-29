@@ -82,6 +82,7 @@ public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
     return createDebugInfo || ids.contains("" + rule.getId());
   }
 
+  @Override
   public void beginVisit(RutaElement element, ScriptApply result) {
     if (element instanceof RutaStatement) {
       callStack.push(element);
@@ -100,6 +101,7 @@ public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
     }
   }
 
+  @Override
   public void endVisit(RutaElement element, ScriptApply result) {
     // TODO create UIMA stuff here not later -> save memory!
     if (element instanceof RutaStatement) {
@@ -159,6 +161,7 @@ public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
     }
   }
 
+  @Override
   public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
     if (createDebugInfo) {
       Map<RutaElement, Long> timeInfo = getTimeInfo(visitors);
@@ -178,6 +181,7 @@ public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
     return null;
   }
 
+  @Override
   public void annotationAdded(AnnotationFS annotation,
           AbstractRuleMatch<? extends AbstractRule> creator) {
 

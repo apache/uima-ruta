@@ -30,9 +30,7 @@ import org.apache.uima.ruta.expression.IRutaExpression;
 
 public interface RutaMatcher {
 
-  Collection<AnnotationFS> getMatchingAnnotations(RutaStream stream, RutaBlock parent);
-
-  boolean match(AnnotationFS annotation, RutaStream stream, RutaBlock parent);
+  Collection<? extends AnnotationFS> getMatchingAnnotations(RutaBlock parent, RutaStream stream);
 
   List<Type> getTypes(RutaBlock parent, RutaStream stream);
 
@@ -40,10 +38,10 @@ public interface RutaMatcher {
 
   long estimateAnchors(RutaBlock parent, RutaStream stream);
 
-  Collection<AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
-          AnnotationFS annotation, RutaStream stream, RutaBlock parent);
+  Collection<? extends AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
+          AnnotationFS annotation, RutaBlock parent, RutaStream stream);
 
-  Collection<AnnotationFS> getAnnotationsBefore(RutaRuleElement ruleElement,
-          AnnotationFS annotation, RutaStream stream, RutaBlock parent);
+  Collection<? extends AnnotationFS> getAnnotationsBefore(RutaRuleElement ruleElement,
+          AnnotationFS annotation, RutaBlock parent, RutaStream stream);
 
 }

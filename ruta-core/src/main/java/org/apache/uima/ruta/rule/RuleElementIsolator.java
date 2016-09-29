@@ -37,22 +37,27 @@ public class RuleElementIsolator implements RuleElementContainer {
     this.container = container;
   }
 
+  @Override
   public List<RuleElement> getRuleElements() {
     return container.getRuleElements();
   }
 
+  @Override
   public RuleElement getAnchoringRuleElement(RutaStream stream) {
     return getRuleElement();
   }
 
+  @Override
   public RuleElement getFirstElement() {
     return getRuleElement();
   }
 
+  @Override
   public RuleElement getLastElement() {
     return getRuleElement();
   }
 
+  @Override
   public void applyRuleElements(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     getRuleElement().apply(ruleMatch, stream, crowd);
   }
@@ -69,10 +74,12 @@ public class RuleElementIsolator implements RuleElementContainer {
     return container.getRuleElements().get(0);
   }
 
+  @Override
   public RutaRule getRule() {
     return container.getRule();
   }
 
+  @Override
   public RuleElement getNextElement(boolean after, RuleElement ruleElement) {
     return null;
   }

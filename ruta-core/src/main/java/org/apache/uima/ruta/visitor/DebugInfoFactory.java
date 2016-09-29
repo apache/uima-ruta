@@ -45,7 +45,6 @@ import org.apache.uima.ruta.rule.RuleApply;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementMatch;
 import org.apache.uima.ruta.rule.RuleMatch;
-import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.type.DebugBlockApply;
 import org.apache.uima.ruta.type.DebugEvaluatedCondition;
@@ -73,7 +72,7 @@ public class DebugInfoFactory {
     JCas cas = stream.getJCas();
     DebugBlockApply dba = new DebugBlockApply(cas);
     AnnotationFS matchedAnnotation = ruleMatch.getMatchedAnnotationsOfElement(
-            ((RutaRule) ruleMatch.getRule()).getRoot()).get(0);
+            ruleMatch.getRule().getRoot()).get(0);
     dba.setElement(matchedAnnotation.getCoveredText());
     dba.setBegin(matchedAnnotation.getBegin());
     dba.setEnd(matchedAnnotation.getEnd());

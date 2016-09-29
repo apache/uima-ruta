@@ -34,6 +34,7 @@ public class RuleMatchComparator implements Comparator<RuleMatch> {
     super();
   }
 
+  @Override
   public int compare(RuleMatch m1, RuleMatch m2) {
     List<AnnotationFS> tm1 = m1.getRootMatch().getTextsMatched();
     List<AnnotationFS> tm2 = m2.getRootMatch().getTextsMatched();

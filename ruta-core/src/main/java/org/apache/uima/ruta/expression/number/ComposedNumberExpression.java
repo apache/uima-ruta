@@ -36,6 +36,7 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
     this.ops = ops;
   }
 
+  @Override
   public double getDoubleValue(MatchContext context, RutaStream stream) {
     INumberExpression numberExpression = getExpressions().get(0);
     if (numberExpression == null) {
@@ -52,6 +53,7 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
     return result;
   }
 
+  @Override
   public float getFloatValue(MatchContext context, RutaStream stream) {
     INumberExpression numberExpression = getExpressions().get(0);
     if (numberExpression == null) {
@@ -68,6 +70,7 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
     return result;
   }
 
+  @Override
   public int getIntegerValue(MatchContext context, RutaStream stream) {
     int result = getExpressions().get(0).getIntegerValue(context, stream);
     for (int i = 0; i < getOperators().size(); i++) {

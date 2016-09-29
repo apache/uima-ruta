@@ -54,6 +54,7 @@ public class HtmlVisitor extends NodeVisitor {
     this.onlyContent = onlyContent;
   }
 
+  @Override
   public void visitTag(Tag tag) {
     String name = getName(tag);
     Type type = getType(name, cas);
@@ -83,6 +84,7 @@ public class HtmlVisitor extends NodeVisitor {
     }
   }
 
+  @Override
   public void visitRemarkNode(Remark node) {
     Type type = getType("REMARK", cas);
     int begin = getBeginOffset(node);
@@ -93,11 +95,12 @@ public class HtmlVisitor extends NodeVisitor {
     annotations.add(annotation);
   }
 
+  @Override
   public void visitEndTag(Tag tag) {
     String name = getName(tag);
     AnnotationFS found = null;
     for (int i = annotationStack.size() - 1; i >= 0; i--) {
-      AnnotationFS each = (AnnotationFS) annotationStack.get(i);
+      AnnotationFS each = annotationStack.get(i);
       Feature nameFeature = each.getType().getFeatureByBaseName("name");
       String eachName = each.getStringValue(nameFeature);
       if (name.equals(eachName)) {

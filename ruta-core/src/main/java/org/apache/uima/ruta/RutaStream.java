@@ -433,6 +433,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return stream;
   }
 
+  @Override
   public FSIterator<AnnotationFS> copy() {
     RutaStream stream = new RutaStream(cas, basicType, beginAnchors, endAnchors, filter,
             lowMemoryProfile, simpleGreedyForComposed, crowd);
@@ -442,14 +443,17 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return stream;
   }
 
+  @Override
   public AnnotationFS get() throws NoSuchElementException {
     return currentIt.get();
   }
 
+  @Override
   public boolean isValid() {
     return currentIt.isValid();
   }
 
+  @Override
   public void moveTo(FeatureStructure fs) {
     try {
       currentIt.moveTo(fs);
@@ -458,18 +462,22 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
   }
 
+  @Override
   public void moveToFirst() {
     currentIt.moveToFirst();
   }
 
+  @Override
   public void moveToLast() {
     currentIt.moveToLast();
   }
 
+  @Override
   public void moveToNext() {
     currentIt.moveToNext();
   }
 
+  @Override
   public void moveToPrevious() {
     currentIt.moveToPrevious();
   }
@@ -916,7 +924,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
               windowAnnotation.getBegin(), windowAnnotation.getEnd());
       FSIterator<AnnotationFS> subiterator = cas.getAnnotationIndex(type).subiterator(frame);
       while (subiterator.hasNext()) {
-        AnnotationFS each = (AnnotationFS) subiterator.next();
+        AnnotationFS each = subiterator.next();
         if (isVisible(each)) {
           result.add(each);
         }
@@ -1111,7 +1119,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         List<AnnotationFS> featureAnnotations = inWindow;
         if (fe.getFeatures(context, this) != null) {
           featureAnnotations = new ArrayList<AnnotationFS>(
-                  sfe.getFeatureAnnotations(inWindow, this, context, false));
+                  sfe.getAnnotations(inWindow, false, context, this));
         }
         if (feature.getRange().isArray()) {
           annotation.setFeatureValue(feature,

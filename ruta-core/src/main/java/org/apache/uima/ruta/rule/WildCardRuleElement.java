@@ -47,6 +47,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     super(null, conditions, actions, container, parent);
   }
 
+  @Override
   public List<RuleMatch> startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
@@ -55,6 +56,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     return result;
   }
 
+  @Override
   public List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
@@ -656,6 +658,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
   }
 
+  @Override
   public List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
@@ -664,16 +667,19 @@ public class WildCardRuleElement extends AbstractRuleElement {
     return Collections.emptyList();
   }
 
+  @Override
   public Collection<AnnotationFS> getAnchors(RutaStream symbolStream) {
     // shouldn't happen
     // really? what about anchoring at start?
     return Collections.emptyList();
   }
 
+  @Override
   public long estimateAnchors(RutaStream stream) {
     return Integer.MAX_VALUE;
   }
 
+  @Override
   public String toString() {
     return "#" + (conditions.isEmpty() ? "" : "(" + conditions.toString() + ")" + "\\n")
             + (actions.isEmpty() ? "" : "{" + actions.toString() + "}");

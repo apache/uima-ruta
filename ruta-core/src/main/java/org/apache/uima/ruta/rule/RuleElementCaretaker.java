@@ -53,10 +53,12 @@ public class RuleElementCaretaker implements RuleElementContainer {
     return null;
   }
 
+  @Override
   public List<RuleElement> getRuleElements() {
     return container.getRuleElements();
   }
 
+  @Override
   public RuleElement getAnchoringRuleElement(RutaStream stream) {
     List<RuleElement> ruleElements = container.getRuleElements();
     if (ruleElements.size() == 1
@@ -95,26 +97,31 @@ public class RuleElementCaretaker implements RuleElementContainer {
 
   }
 
+  @Override
   public RuleElement getFirstElement() {
     List<RuleElement> ruleElements = container.getRuleElements();
     return ruleElements.get(0);
   }
 
+  @Override
   public RuleElement getLastElement() {
     List<RuleElement> ruleElements = container.getRuleElements();
     return ruleElements.get(ruleElements.size() - 1);
   }
 
+  @Override
   public void applyRuleElements(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     for (RuleElement eachElement : getRuleElements()) {
       eachElement.apply(ruleMatch, stream, crowd);
     }
   }
 
+  @Override
   public RutaRule getRule() {
     return container.getRule();
   }
 
+  @Override
   public RuleElement getNextElement(boolean after, RuleElement ruleElement) {
     if (after) {
       return getElementAfter(ruleElement);

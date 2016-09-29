@@ -46,6 +46,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     delegateApply = new HashMap<RutaElement, ScriptApply>(0);
   }
 
+  @Override
   public boolean matchedCompletely() {
     return matched && rootMatch.matched();
   }
@@ -87,7 +88,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
 
   @Override
   public List<AnnotationFS> getMatchedAnnotationsOfRoot() {
-    return getMatchedAnnotationsOfElement(((RutaRule) getRule()).getRoot());
+    return getMatchedAnnotationsOfElement(getRule().getRoot());
   }
 
   public List<AnnotationFS> getMatchedAnnotations(List<Integer> indexes,
@@ -95,7 +96,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     indexes = extendIndexes(indexes);
     if (container == null) {
-      container = ((RutaRule) rule).getRoot();
+      container = rule.getRoot();
     }
 
     // TODO refactor this!

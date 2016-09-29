@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
@@ -40,11 +41,17 @@ public class NullExpression extends FeatureExpression implements IStringExpressi
   }
 
   @Override
-  public Collection<AnnotationFS> getFeatureAnnotations(Collection<AnnotationFS> annotations,
-          RutaStream stream, MatchContext context, boolean checkOnFeatureValue) {
+  public Collection<AnnotationFS> getAnnotations(Collection<? extends FeatureStructure> featureStructures, boolean checkOnFeatureValue,
+          MatchContext context, RutaStream stream) {
     return null;
   }
-
+  
+  @Override
+  public Collection<? extends FeatureStructure> getFeatureStructures(Collection<? extends FeatureStructure> featureStructures, boolean checkOnFeatureValue,
+          MatchContext context, RutaStream stream) {
+    return null;
+  }
+  
   @Override
   public Type getType(MatchContext context, RutaStream stream) {
     return null;
@@ -74,5 +81,6 @@ public class NullExpression extends FeatureExpression implements IStringExpressi
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
     return null;
   }
+
  
 }

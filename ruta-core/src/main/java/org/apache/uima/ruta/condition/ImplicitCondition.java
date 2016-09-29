@@ -70,8 +70,8 @@ public class ImplicitCondition extends AbstractRutaCondition {
       } else if(annotationExpr!=null) {
         annotations.add(annotationExpr.getAnnotation(context, stream));
       }
-      Collection<AnnotationFS> featureAnnotations = fme.getFeatureAnnotations(annotations, stream,
-              context, true);
+      Collection<? extends AnnotationFS> featureAnnotations = fme.getAnnotations(annotations, true,
+              context, stream);
       return new EvaluatedCondition(this, !featureAnnotations.isEmpty());
     }
     return new EvaluatedCondition(this, false);

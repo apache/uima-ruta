@@ -114,7 +114,7 @@ public class RutaCutter extends JCasAnnotator_ImplBase {
       // check if view already exists:
       Iterator<JCas> viewIterator = jcas.getViewIterator();
       while (viewIterator.hasNext()) {
-        JCas jCas2 = (JCas) viewIterator.next();
+        JCas jCas2 = viewIterator.next();
         if (jCas2.getViewName().equals(outputViewName)) {
           modview = jCas2;
           getContext().getLogger().log(Level.WARNING,
@@ -137,7 +137,7 @@ public class RutaCutter extends JCasAnnotator_ImplBase {
     if (keepType == null) {
       Iterator<Type> typeIterator = typeSystem.getTypeIterator();
       while (typeIterator.hasNext()) {
-        Type type = (Type) typeIterator.next();
+        Type type = typeIterator.next();
         String shortName = type.getShortName();
         if (shortName.equals(keep)) {
           keepType = type;

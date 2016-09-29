@@ -19,8 +19,8 @@
 package org.apache.uima.ruta.expression.feature;
 
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
 
 public class LazyFeature implements Feature {
 
@@ -41,14 +41,8 @@ public class LazyFeature implements Feature {
    return delegate;
   }
   
-  public Feature initialize(AnnotationFS annotation) {
-    if(annotation!= null) {
-      delegate = annotation.getType().getFeatureByBaseName(featureName);
-    } 
-    if(delegate == null) {
-      return this;
-    }
-    return delegate;
+  public Feature initialize(FeatureStructure featureStructure) {
+    return initialize(featureStructure.getType());
    }
   
   @Override

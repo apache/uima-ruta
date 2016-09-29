@@ -31,18 +31,22 @@ public class NegativeNumberExpression extends AbstractNumberExpression {
     this.ne = simpleNumberExpression;
   }
 
+  @Override
   public double getDoubleValue(MatchContext context, RutaStream stream) {
     return -ne.getDoubleValue(context, stream);
   }
 
+  @Override
   public float getFloatValue(MatchContext context, RutaStream stream) {
     return -ne.getFloatValue(context, stream);
   }
 
+  @Override
   public int getIntegerValue(MatchContext context, RutaStream stream) {
     return -ne.getIntegerValue(context, stream);
   }
 
+  @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
     return "-" + ne.getStringValue(context, stream);
   }

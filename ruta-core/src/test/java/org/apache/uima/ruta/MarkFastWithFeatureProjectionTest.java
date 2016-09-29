@@ -51,8 +51,8 @@ public class MarkFastWithFeatureProjectionTest {
     script += "T1 SPECIAL SW{-> CREATE(AbbrConcept, \"uniqueID\" = \"X\"), ADD(abbrConcepts, AbbrConcept.ct),ASSIGN(matchedText, AbbrConcept.ct)} SPECIAL;";
     script += "MARKFAST(AbbrConcept, abbrConcepts);";
     script += "AbbrConcept.uniqueID==null{CONTAINS(AbbrConcept,2,100) -> UNMARK(AbbrConcept)};";
-    script += "@AbbrConcept.uniqueID!=null{-> ASSIGN(id, AbbrConcept.uniqueID)} ";
-    script += "    # AbbrConcept.uniqueID == null{AbbrConcept.ct == matchedText -> AbbrConcept.uniqueID = id};";
+    script += "AbbrConcept.uniqueID!=null{-> ASSIGN(id, AbbrConcept.uniqueID)} ";
+    script += "    # @AbbrConcept.uniqueID == null{AbbrConcept.ct == matchedText -> AbbrConcept.uniqueID = id};";
 
     Map<String, String> typeMap = new TreeMap<String, String>();
     String typeName = "AbbrConcept";
@@ -82,6 +82,7 @@ public class MarkFastWithFeatureProjectionTest {
 
     assertEquals(4, ai.size());
     iterator = ai.iterator();
+    
     AnnotationFS next = iterator.next();
     assertEquals("c", next.getCoveredText());
     String featureValue = next.getStringValue(f1);

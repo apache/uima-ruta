@@ -31,14 +31,17 @@ public class SimpleNumberExpression extends AbstractNumberExpression {
     this.number = number;
   }
 
+  @Override
   public double getDoubleValue(MatchContext context, RutaStream stream) {
     return number.doubleValue();
   }
 
+  @Override
   public float getFloatValue(MatchContext context, RutaStream stream) {
     return number.floatValue();
   }
 
+  @Override
   public int getIntegerValue(MatchContext context, RutaStream stream) {
     return number.intValue();
   }
@@ -47,6 +50,7 @@ public class SimpleNumberExpression extends AbstractNumberExpression {
     return number;
   }
 
+  @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
     boolean floating = number.intValue() != number.doubleValue();
     if (floating) {

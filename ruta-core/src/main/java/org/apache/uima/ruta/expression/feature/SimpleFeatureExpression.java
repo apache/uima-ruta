@@ -22,7 +22,6 @@ package org.apache.uima.ruta.expression.feature;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.Feature;
@@ -35,7 +34,6 @@ import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
-import org.apache.uima.ruta.rule.AnnotationComparator;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.utils.IndexedReference;
 import org.apache.uima.ruta.utils.ParsingUtils;
@@ -43,8 +41,6 @@ import org.apache.uima.ruta.utils.ParsingUtils;
 public class SimpleFeatureExpression extends FeatureExpression {
 
   private MatchReference mr;
-
-  protected AnnotationComparator comparator = new AnnotationComparator();
 
   public SimpleFeatureExpression(MatchReference mr) {
     super();
@@ -59,8 +55,9 @@ public class SimpleFeatureExpression extends FeatureExpression {
       if (feature instanceof LazyFeature) {
         LazyFeature lazyFeature = (LazyFeature) feature;
         AnnotationFS annotation = context.getAnnotation();
-        List<AnnotationFS> targetAnnotation = getTargetAnnotation(annotation, this, context, stream);
-        if(targetAnnotation != null && !targetAnnotation.isEmpty()) {
+        List<AnnotationFS> targetAnnotation = getTargetAnnotation(annotation, this, context,
+                stream);
+        if (targetAnnotation != null && !targetAnnotation.isEmpty()) {
           annotation = targetAnnotation.get(0);
         }
         feature = lazyFeature.initialize(annotation);
@@ -88,7 +85,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
         }
       } else if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT)
               || StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT_SHORT)) {
-        if(type != null) {
+        if (type != null) {
           feature = type.getFeatureByBaseName(each);
         }
         if (feature == null) {
@@ -101,8 +98,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
       } else {
         feature = type.getFeatureByBaseName(each);
         if (feature == null) {
-          throw new IllegalArgumentException(
-                  "Not able to access feature " + each + " of type " + type.getName());
+          // type maybe not specific enough
+          feature = new LazyFeature(each);
         }
       }
       result.add(feature);
@@ -132,37 +129,63 @@ public class SimpleFeatureExpression extends FeatureExpression {
     return null;
   }
 
+  @Override
   public List<String> getFeatureStringList(MatchContext context, RutaStream stream) {
     return mr.getFeatureList();
   }
 
-  public Collection<AnnotationFS> getFeatureAnnotations(Collection<AnnotationFS> annotations,
-          RutaStream stream, MatchContext context, boolean checkOnFeatureValue) {
+  @Override
+  public Collection<? extends AnnotationFS> getAnnotations(
+          Collection<? extends FeatureStructure> featureStructures, boolean checkOnFeatureValue,
+          MatchContext context, RutaStream stream) {
 
-    Collection<AnnotationFS> result = new TreeSet<AnnotationFS>(comparator);
+    Collection<AnnotationFS> result = new ArrayList<>();
     List<Feature> features = getFeatures(context, stream);
     if (features != null && !features.isEmpty()) {
-      collectFeatureAnnotations(annotations, features, checkOnFeatureValue, result, stream,
-              context);
+      collectFeatureStructures(featureStructures, features, checkOnFeatureValue, true, result,
+              stream, context);
       return result;
     } else {
-      return annotations;
+      return filterAnnotations(featureStructures);
     }
   }
 
-  private void collectFeatureAnnotations(Collection<AnnotationFS> annotations,
-          List<Feature> features, boolean checkOnFeatureValue, Collection<AnnotationFS> result,
+  @Override
+  public Collection<? extends FeatureStructure> getFeatureStructures(
+          Collection<? extends FeatureStructure> featureStructures, boolean checkOnFeatureValue,
+          MatchContext context, RutaStream stream) {
+    Collection<FeatureStructure> result = new ArrayList<>();
+    List<Feature> features = getFeatures(context, stream);
+    if (features != null && !features.isEmpty()) {
+      collectFeatureStructures(featureStructures, features, checkOnFeatureValue, false, result,
+              stream, context);
+      return result;
+    } else {
+      return featureStructures;
+    }
+  }
+
+  private <T> void collectFeatureStructures(Collection<? extends FeatureStructure> featureStructures,
+          List<Feature> features, boolean checkOnFeatureValue, boolean onlyAnnotations,
+          Collection<T> result, RutaStream stream, MatchContext context) {
+    for (FeatureStructure each : featureStructures) {
+      collectFeatureStructures(each, features, checkOnFeatureValue, onlyAnnotations, null, result,
+              stream, context);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private <T> void collectFeatureStructures(FeatureStructure featureStructure, List<Feature> features,
+          boolean checkOnFeatureValue, boolean collectOnlyAnnotations,
+          T lastValidFeatureStructure, Collection<T> result,
           RutaStream stream, MatchContext context) {
-    for (AnnotationFS each : annotations) {
-      collectFeatureAnnotations(each, features, checkOnFeatureValue, result, stream, context);
-    }
-  }
-
-  private void collectFeatureAnnotations(AnnotationFS annotation, List<Feature> features,
-          boolean checkOnFeatureValue, Collection<AnnotationFS> result, RutaStream stream,
-          MatchContext context) {
-    if (annotation == null) {
+    if (featureStructure == null) {
       return;
+    }
+    if (!collectOnlyAnnotations) {
+      lastValidFeatureStructure = (T) featureStructure;
+    } else if (featureStructure instanceof AnnotationFS) {
+      lastValidFeatureStructure = (T) featureStructure;
     }
 
     Feature currentFeature = null;
@@ -172,10 +195,10 @@ public class SimpleFeatureExpression extends FeatureExpression {
       currentFeature = features.get(0);
       if (currentFeature instanceof LazyFeature) {
         LazyFeature lazyFeature = (LazyFeature) currentFeature;
-        Feature delegate = lazyFeature.initialize(annotation);
+        Feature delegate = lazyFeature.initialize(featureStructure);
         if (delegate == null) {
           throw new RuntimeException("Invalid feature! Feature '" + lazyFeature.getFeatureName()
-                  + "' is not defined for type '" + annotation.getType() + "'.");
+                  + "' is not defined for type '" + featureStructure.getType() + "'.");
         } else {
           currentFeature = delegate;
         }
@@ -189,33 +212,35 @@ public class SimpleFeatureExpression extends FeatureExpression {
       if (this instanceof FeatureMatchExpression) {
         FeatureMatchExpression fme = (FeatureMatchExpression) this;
         if (checkOnFeatureValue) {
-          if (fme.checkFeatureValue(annotation, context, currentFeature, stream)) {
-            result.add(annotation);
+          if (fme.checkFeatureValue(featureStructure, currentFeature, context, stream)) {
+            result.add(lastValidFeatureStructure);
           }
         } else {
-          result.add(annotation);
+          result.add(lastValidFeatureStructure);
         }
       } else {
-        result.add(annotation);
+        result.add(lastValidFeatureStructure);
       }
     } else {
-      collectFeatureAnnotations(annotation, currentFeature, tail, checkOnFeatureValue, result,
-              stream, context);
+      collectFeatureStructures(featureStructure, currentFeature, tail, checkOnFeatureValue,
+              collectOnlyAnnotations, lastValidFeatureStructure, result, stream, context);
     }
   }
 
-  private void collectFeatureAnnotations(AnnotationFS annotation, Feature currentFeature,
-          List<Feature> tail, boolean checkOnFeatureValue, Collection<AnnotationFS> result,
-          RutaStream stream, MatchContext context) {
+  private <T> void collectFeatureStructures(FeatureStructure featureStructure, Feature currentFeature,
+          List<Feature> tail, boolean checkOnFeatureValue, boolean collectOnlyAnnotations,
+          T lastValidFeatureStructure, Collection<T> result, RutaStream stream,
+          MatchContext context) {
+
     // stop early for match expressions
     if (this instanceof FeatureMatchExpression && (tail == null || tail.isEmpty())) {
       FeatureMatchExpression fme = (FeatureMatchExpression) this;
       if (checkOnFeatureValue) {
-        if (fme.checkFeatureValue(annotation, context, currentFeature, stream)) {
-          result.add(annotation);
+        if (fme.checkFeatureValue(featureStructure, currentFeature, context, stream)) {
+          result.add(lastValidFeatureStructure);
         }
       } else {
-        result.add(annotation);
+        result.add(lastValidFeatureStructure);
       }
       return;
     }
@@ -227,32 +252,35 @@ public class SimpleFeatureExpression extends FeatureExpression {
       index = indexedFeature.getIndex();
     }
 
-    FeatureStructure value = annotation.getFeatureValue(currentFeature);
+    FeatureStructure value = featureStructure.getFeatureValue(currentFeature);
     if (value instanceof AnnotationFS) {
       AnnotationFS next = (AnnotationFS) value;
-      collectFeatureAnnotations(next, tail, checkOnFeatureValue, result, stream, context);
+      collectFeatureStructures(next, tail, checkOnFeatureValue, collectOnlyAnnotations,
+              lastValidFeatureStructure, result, stream, context);
     } else if (value instanceof FSArray && index >= 0) {
       FSArray array = (FSArray) value;
       if (index < array.size()) {
         FeatureStructure fs = array.get(index);
         if (fs instanceof AnnotationFS) {
           AnnotationFS next = (AnnotationFS) fs;
-          collectFeatureAnnotations(next, tail, checkOnFeatureValue, result, stream, context);
+          collectFeatureStructures(next, tail, checkOnFeatureValue, collectOnlyAnnotations,
+                  lastValidFeatureStructure, result, stream, context);
         }
       }
     } else if (value instanceof FSArray) {
       FSArray array = (FSArray) value;
       for (int i = 0; i < array.size(); i++) {
-        // TODO: also feature structures or only annotations?
         FeatureStructure fs = array.get(i);
-        if (fs instanceof AnnotationFS) {
-          AnnotationFS next = (AnnotationFS) fs;
-          collectFeatureAnnotations(next, tail, checkOnFeatureValue, result, stream, context);
-        }
+        collectFeatureStructures(fs, tail, checkOnFeatureValue, collectOnlyAnnotations,
+                lastValidFeatureStructure, result, stream, context);
       }
+    } else if (value != null && !value.getType().isPrimitive()) {
+      // feature structure feature values
+      collectFeatureStructures(value, tail, checkOnFeatureValue, collectOnlyAnnotations,
+              lastValidFeatureStructure, result, stream, context);
     } else if (value != null) {
-      result.add(annotation);
       // primitive? -> return last annotation for further processing
+      result.add(lastValidFeatureStructure);
       // throw new IllegalArgumentException(value.getType()
       // + " is not supported in a feature match expression (" + mr.getMatch() + ").");
     }
@@ -262,8 +290,21 @@ public class SimpleFeatureExpression extends FeatureExpression {
     return mr;
   }
 
+  @Override
   public String toString() {
     return mr.getMatch();
+  }
+
+  private Collection<AnnotationFS> filterAnnotations(
+          Collection<? extends FeatureStructure> featureStructures) {
+    Collection<AnnotationFS> result = new ArrayList<>(featureStructures.size());
+
+    for (FeatureStructure featureStructure : featureStructures) {
+      if (featureStructure instanceof AnnotationFS) {
+        result.add((AnnotationFS) featureStructure);
+      }
+    }
+    return result;
   }
 
 }

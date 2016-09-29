@@ -39,7 +39,8 @@ public class RutaLiteralMatcher implements RutaMatcher {
     this.expression = expression;
   }
 
-  public List<AnnotationFS> getMatchingAnnotations(RutaStream stream, RutaBlock parent) {
+  @Override
+  public List<AnnotationFS> getMatchingAnnotations(RutaBlock parent, RutaStream stream) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     AnnotationFS windowAnnotation = stream.getDocumentAnnotation();
     List<RutaBasic> list = stream.getBasicsInWindow(windowAnnotation);
@@ -54,35 +55,30 @@ public class RutaLiteralMatcher implements RutaMatcher {
     return result;
   }
 
-  public boolean match(AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
-    if (annotation == null) {
-      return false;
-    }
-    MatchContext context = new MatchContext(annotation, null, null, true);
-    context.setParent(parent);
-    return annotation.getCoveredText().equals(expression.getStringValue(context, stream));
-  }
-
   @Override
   public String toString() {
     return "\"" + expression.toString() + "\"";
   }
 
+  @Override
   public IStringExpression getExpression() {
     return expression;
   }
 
+  @Override
   public long estimateAnchors(RutaBlock parent, RutaStream stream) {
     return Integer.MAX_VALUE;
   }
 
+  @Override
   public Collection<AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
-          AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
+          AnnotationFS annotation, RutaBlock parent, RutaStream stream) {
     return getNextAnnotations(false, annotation, stream, parent);
   }
 
+  @Override
   public Collection<AnnotationFS> getAnnotationsBefore(RutaRuleElement ruleElement,
-          AnnotationFS annotation, RutaStream stream, RutaBlock parent) {
+          AnnotationFS annotation, RutaBlock parent, RutaStream stream) {
     return getNextAnnotations(true, annotation, stream, parent);
   }
 
@@ -102,6 +98,7 @@ public class RutaLiteralMatcher implements RutaMatcher {
     return result;
   }
 
+  @Override
   public List<Type> getTypes(RutaBlock parent, RutaStream stream) {
     return new ArrayList<Type>();
   }

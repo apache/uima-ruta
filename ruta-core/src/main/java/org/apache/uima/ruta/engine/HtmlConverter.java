@@ -323,7 +323,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
       // check if view already exists:
       Iterator<JCas> viewIterator = jcas.getViewIterator();
       while (viewIterator.hasNext()) {
-        JCas jCas2 = (JCas) viewIterator.next();
+        JCas jCas2 = viewIterator.next();
         if (jCas2.getViewName().equals(modifiedViewName)) {
           modview = jCas2;
           getContext().getLogger().log(Level.WARNING,

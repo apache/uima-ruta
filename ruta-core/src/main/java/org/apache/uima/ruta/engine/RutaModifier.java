@@ -261,6 +261,7 @@ public class RutaModifier extends JCasAnnotator_ImplBase {
       }
     }
     Collections.sort(result, new Comparator<Type>() {
+      @Override
       public int compare(Type o1, Type o2) {
         return o1.getShortName().compareTo(o2.getShortName());
       }

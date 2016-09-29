@@ -37,12 +37,14 @@ public class InferenceCrowd implements RutaInferenceVisitor {
     this.visitors = visitors;
   }
 
+  @Override
   public void beginVisit(RutaElement element, ScriptApply result) {
     for (RutaInferenceVisitor each : visitors) {
       each.beginVisit(element, result);
     }
   }
 
+  @Override
   public void endVisit(RutaElement element, ScriptApply result) {
     for (RutaInferenceVisitor each : visitors) {
       each.endVisit(element, result);
@@ -55,10 +57,12 @@ public class InferenceCrowd implements RutaInferenceVisitor {
     }
   }
 
+  @Override
   public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
     finished(stream);
   }
 
+  @Override
   public void annotationAdded(AnnotationFS annotation,
           AbstractRuleMatch<? extends AbstractRule> creator) {
     if (visitors.isEmpty()) {

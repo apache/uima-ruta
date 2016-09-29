@@ -39,6 +39,7 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
     this.elements = elements;
   }
 
+  @Override
   public List<RuleMatch> startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
@@ -73,6 +74,7 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
     return result;
   }
 
+  @Override
   public List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
@@ -80,6 +82,7 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
     throw new UnsupportedOperationException();
   }
 
+  @Override
   public List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
@@ -87,34 +90,42 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
     throw new UnsupportedOperationException();
   }
 
+  @Override
   public Collection<AnnotationFS> getAnchors(RutaStream symbolStream) {
     throw new UnsupportedOperationException();
   }
 
+  @Override
   public long estimateAnchors(RutaStream stream) {
     throw new UnsupportedOperationException();
   }
 
+  @Override
   public List<RuleElement> getRuleElements() {
     return elements;
   }
 
+  @Override
   public RuleElement getFirstElement() {
     return null;
   }
 
+  @Override
   public RuleElement getLastElement() {
     return null;
   }
 
+  @Override
   public RuleElement getAnchoringRuleElement(RutaStream stream) {
     return null;
   }
 
+  @Override
   public RuleElement getNextElement(boolean after, RuleElement ruleElement) {
     return null;
   }
 
+  @Override
   public boolean hasAncestor(boolean after) {
     return false;
   }

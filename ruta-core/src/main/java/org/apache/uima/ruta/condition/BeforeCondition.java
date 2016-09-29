@@ -65,7 +65,7 @@ public class BeforeCondition extends TypeSentiveCondition {
     boolean result = false;
     FSIterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(t).iterator(annotation);
     while (it.isValid()) {
-      AnnotationFS a = (AnnotationFS) it.get();
+      AnnotationFS a = it.get();
       if (a.getEnd() >= annotation.getBegin()) {
         result = true;
         break;

@@ -75,8 +75,8 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     for (AnnotationFS each : annotations) {
       stream.getCas().removeFsFromIndexes(each);
     }
-    Collection<AnnotationFS> featureAnnotations = expr.getFeatureAnnotations(annotations, stream,
-            context, false);
+    Collection<? extends AnnotationFS> featureAnnotations = expr.getAnnotations(annotations, false,
+            context, stream);
     if (featureAnnotations.isEmpty()) {
       // null value in feature, but we require the host
       featureAnnotations = annotations;

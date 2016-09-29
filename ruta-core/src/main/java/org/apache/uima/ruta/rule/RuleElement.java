@@ -52,7 +52,7 @@ public interface RuleElement {
   List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, MatchContext context,
           RutaStream stream);
 
-  Collection<AnnotationFS> getAnchors(RutaStream symbolStream);
+  Collection<? extends AnnotationFS> getAnchors(RutaStream symbolStream);
 
   RutaBlock getParent();
 

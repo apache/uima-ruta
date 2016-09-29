@@ -404,6 +404,7 @@ public class MultiTreeWordList implements RutaWordList {
    * @return Returns a list of types which belong to a string.
    */
 
+  @Override
   public List<String> contains(String string, boolean ignoreCase, int ignoreLength, boolean edit,
           double distance, String ignoreToken) {
 
@@ -482,6 +483,7 @@ public class MultiTreeWordList implements RutaWordList {
    *          The maximum number of ignored characters.
    * @return true, if TreeWordList contains the string, false otherwise.
    */
+  @Override
   public boolean contains(String s, boolean ignoreCase, int size, char[] ignoreChars,
           int maxIgnoreChars, boolean ignoreWS) {
 
@@ -509,6 +511,7 @@ public class MultiTreeWordList implements RutaWordList {
    *          The maximum number of ignored characters.
    * @return true, if TreeWordList contains a prefix of the string, false otherwise.
    */
+  @Override
   public boolean containsFragment(String s, boolean ignoreCase, int size, char[] ignoreChars,
           int maxIgnoreChars, boolean ignoreWS) {
     MultiTextNode pointer = root;
@@ -562,6 +565,7 @@ public class MultiTreeWordList implements RutaWordList {
    * @return A list of types which belong to a prefix of a string that is contained by the
    *         MultiTreeWordList.
    */
+  @Override
   public List<String> containsFragment(String string, boolean ignoreCase, int ignoreLength,
           boolean edit, double distance, String ignoreToken) {
 
@@ -788,6 +792,7 @@ public class MultiTreeWordList implements RutaWordList {
     }
   }
 
+  @Override
   public Collection<AnnotationFS> find(RutaStream stream, Map<String, Object> typeMap,
           boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken) {
 
@@ -862,6 +867,7 @@ public class MultiTreeWordList implements RutaWordList {
     return results;
   }
 
+  @Override
   public List<AnnotationFS> find(RutaStream stream, boolean ignoreCase, int size,
           char[] ignoreChars, int maxIgnoredChars, boolean ignoreWS) {
     assert false;

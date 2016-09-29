@@ -158,7 +158,7 @@ public class ConditionVerbalizer {
       sb.append(name);
       Iterator<AbstractRutaCondition> it = conditions.iterator();
       while (it.hasNext()) {
-        AbstractRutaCondition each = (AbstractRutaCondition) it.next();
+        AbstractRutaCondition each = it.next();
         sb.append(verbalize(each));
         if (it.hasNext()) {
           sb.append(", ");
@@ -256,7 +256,7 @@ public class ConditionVerbalizer {
       }
       Iterator<AbstractRutaCondition> it = conditions.iterator();
       while (it.hasNext()) {
-        AbstractRutaCondition each = (AbstractRutaCondition) it.next();
+        AbstractRutaCondition each = it.next();
         sb.append(verbalize(each));
         if (it.hasNext()) {
           sb.append(", ");
@@ -285,7 +285,7 @@ public class ConditionVerbalizer {
         sb.append(name);
         Iterator<AbstractRutaCondition> it = conditions.iterator();
         while (it.hasNext()) {
-          AbstractRutaCondition each = (AbstractRutaCondition) it.next();
+          AbstractRutaCondition each = it.next();
           sb.append(verbalize(each));
           if (it.hasNext()) {
             sb.append(", ");
@@ -303,7 +303,7 @@ public class ConditionVerbalizer {
       sb.append(name);
       Iterator<AbstractRutaCondition> it = conditions.iterator();
       while (it.hasNext()) {
-        AbstractRutaCondition each = (AbstractRutaCondition) it.next();
+        AbstractRutaCondition each = it.next();
         sb.append(verbalize(each));
         if (it.hasNext()) {
           sb.append(", ");

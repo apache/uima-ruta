@@ -48,14 +48,17 @@ public class BasicTypeConstraint implements FSTypeConstraint {
     }
   }
 
+  @Override
   public void add(Type type) {
     types.add(type);
   }
 
+  @Override
   public void add(String typeString) {
     throw new NotImplementedException();
   }
 
+  @Override
   public boolean match(FeatureStructure fs) {
     boolean result = false;
     if (fs instanceof RutaBasic) {

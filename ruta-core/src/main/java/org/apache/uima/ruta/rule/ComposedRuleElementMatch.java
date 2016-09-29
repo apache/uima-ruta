@@ -41,7 +41,7 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
           ComposedRuleElementMatch containerMatch) {
     super(ruleElement, containerMatch);
     baseConditionMatched = false;
-    ComposedRuleElement cre = (ComposedRuleElement) ruleElement;
+    ComposedRuleElement cre = ruleElement;
     innerMatches = new TreeMap<RuleElement, List<RuleElementMatch>>(new RuleElementComparator(cre));
     List<RuleElement> ruleElements = cre.getRuleElements();
     for (RuleElement eachRuleElement : ruleElements) {
@@ -107,6 +107,7 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
     }
   }
 
+  @Override
   public ComposedRuleElementMatch copy() {
     ComposedRuleElementMatch copy = new ComposedRuleElementMatch((ComposedRuleElement) ruleElement,
             containerMatch);
@@ -262,10 +263,12 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
     enforceUpdate();
   }
 
+  @Override
   public String toString() {
     return "CREM" + innerMatches.toString();
   }
 
+  @Override
   public List<AnnotationFS> getTextsMatched() {
     if (!textsMatchedUpdated || textsMatched == null) {
       Collection<AnnotationFS> set = new TreeSet<AnnotationFS>(new AnnotationComparator());

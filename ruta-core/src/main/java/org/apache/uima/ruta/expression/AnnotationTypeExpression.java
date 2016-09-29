@@ -84,8 +84,8 @@ public class AnnotationTypeExpression extends RutaExpression
                   .getBestGuessedAnnotationsAt(context.getAnnotation(), type);
           Collection<AnnotationFS> annotations = new ArrayList<>();
           annotations.addAll(bestGuessedAnnotationsAt);
-          Collection<AnnotationFS> featureAnnotations = getFeatureExpression()
-                  .getFeatureAnnotations(annotations, stream, context, false);
+          Collection<? extends AnnotationFS> featureAnnotations = getFeatureExpression()
+                  .getAnnotations(annotations, false, context, stream);
           if (featureAnnotations != null && !featureAnnotations.isEmpty()) {
             return featureAnnotations.iterator().next();
           }
@@ -143,8 +143,8 @@ public class AnnotationTypeExpression extends RutaExpression
         if (getFeatureExpression() != null) {
           List<AnnotationFS> bestGuessedAnnotationsAt = stream
                   .getBestGuessedAnnotationsAt(context.getAnnotation(), type);
-          Collection<AnnotationFS> featureAnnotations = getFeatureExpression()
-                  .getFeatureAnnotations(bestGuessedAnnotationsAt, stream, context, false);
+          Collection<? extends AnnotationFS> featureAnnotations = getFeatureExpression()
+                  .getAnnotations(bestGuessedAnnotationsAt, false, context, stream);
           return new ArrayList<>(featureAnnotations);
         } else {
           return stream.getAnnotationsByTypeInContext(type, context);

@@ -29,8 +29,6 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
-import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.rule.quantifier.RuleElementQuantifier;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -48,15 +46,17 @@ public class RutaRuleElement extends AbstractRuleElement {
     this.matcher = matcher;
   }
 
-  public Collection<AnnotationFS> getAnchors(RutaStream stream) {
-    return matcher.getMatchingAnnotations(stream, getParent());
+  @Override
+  public Collection<? extends AnnotationFS> getAnchors(RutaStream stream) {
+    return matcher.getMatchingAnnotations(getParent(), stream);
   }
 
+  @Override
   public List<RuleMatch> startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
-    Collection<AnnotationFS> anchors = getAnchors(stream);
+    Collection<? extends AnnotationFS> anchors = getAnchors(stream);
     boolean useAlternatives = anchors.size() != 1;
     for (AnnotationFS eachAnchor : anchors) {
       if (earlyExit(eachAnchor, ruleApply, stream)) {
@@ -123,6 +123,7 @@ public class RutaRuleElement extends AbstractRuleElement {
     return result;
   }
 
+  @Override
   public List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
@@ -144,7 +145,7 @@ public class RutaRuleElement extends AbstractRuleElement {
                   sideStepOrigin, stream, crowd, entryPoint);
           break;
         }
-        Collection<AnnotationFS> nextAnnotations = getNextAnnotations(after, eachAnchor, stream);
+        Collection<? extends AnnotationFS> nextAnnotations = getNextAnnotations(after, eachAnchor, stream);
         if (nextAnnotations.size() == 0) {
           stopMatching = true;
           result = stepbackMatch(after, eachAnchor, extendedMatch, ruleApply,
@@ -199,6 +200,7 @@ public class RutaRuleElement extends AbstractRuleElement {
     return result;
   }
 
+  @Override
   public List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
@@ -207,7 +209,7 @@ public class RutaRuleElement extends AbstractRuleElement {
     // if() for really lazy quantifiers
     MatchContext context = new MatchContext(this, ruleMatch, after);
     if (quantifier.continueMatch(after, context, annotation, containerMatch, stream, crowd)) {
-      Collection<AnnotationFS> nextAnnotations = getNextAnnotations(after, annotation, stream);
+      Collection<? extends AnnotationFS> nextAnnotations = getNextAnnotations(after, annotation, stream);
       if (nextAnnotations.isEmpty()) {
         result = stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch,
                 sideStepOrigin, stream, crowd, entryPoint);
@@ -371,13 +373,6 @@ public class RutaRuleElement extends AbstractRuleElement {
             conditions.size());
     // boolean base = matcher.match(annotation, stream, getParent());
     boolean base = true;
-    if (matcher instanceof RutaTypeMatcher) {
-      RutaTypeMatcher rtm = (RutaTypeMatcher) matcher;
-      IRutaExpression expression = rtm.getExpression();
-      if (expression instanceof FeatureExpression) {
-        base = matcher.match(annotation, stream, getParent());
-      }
-    }
     MatchContext context = new MatchContext(annotation, this, ruleMatch, after);
 
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
@@ -417,18 +412,22 @@ public class RutaRuleElement extends AbstractRuleElement {
     return matcher;
   }
 
+  @Override
   public List<AbstractRutaCondition> getConditions() {
     return conditions;
   }
 
+  @Override
   public List<AbstractRutaAction> getActions() {
     return actions;
   }
 
+  @Override
   public RutaBlock getParent() {
     return parent;
   }
 
+  @Override
   public long estimateAnchors(RutaStream stream) {
     // TODO what about the match context?
     if (quantifier.isOptional(null, stream)) {
@@ -437,12 +436,12 @@ public class RutaRuleElement extends AbstractRuleElement {
     return matcher.estimateAnchors(parent, stream);
   }
 
-  public Collection<AnnotationFS> getNextAnnotations(boolean after, AnnotationFS annotation,
+  public Collection<? extends AnnotationFS> getNextAnnotations(boolean after, AnnotationFS annotation,
           RutaStream stream) {
     if (after) {
-      return matcher.getAnnotationsAfter(this, annotation, stream, getParent());
+      return matcher.getAnnotationsAfter(this, annotation, getParent(), stream);
     } else {
-      return matcher.getAnnotationsBefore(this, annotation, stream, getParent());
+      return matcher.getAnnotationsBefore(this, annotation, getParent(), stream);
     }
   }
 

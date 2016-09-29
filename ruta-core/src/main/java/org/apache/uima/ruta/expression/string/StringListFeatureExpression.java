@@ -56,8 +56,8 @@ public class StringListFeatureExpression extends AbstractStringListExpression {
       return Collections.emptyList();
     }
     List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
-            false);
+    Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
+            stream);
     List<String> result = new ArrayList<>();
 
     for (AnnotationFS each : featureAnnotations) {

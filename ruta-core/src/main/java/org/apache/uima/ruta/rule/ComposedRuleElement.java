@@ -58,11 +58,13 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     this.caretaker = new RuleElementCaretaker(this);
   }
 
+  @Override
   public void apply(RuleMatch match, RutaStream symbolStream, InferenceCrowd crowd) {
     applyRuleElements(match, symbolStream, crowd);
     super.apply(match, symbolStream, crowd);
   }
 
+  @Override
   public List<RuleMatch> startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
@@ -176,6 +178,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     return composedMatch;
   }
 
+  @Override
   public List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
@@ -353,6 +356,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     return result;
   }
 
+  @Override
   public List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
@@ -564,12 +568,14 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     match.setInlinedRulesMatched(inlinedRulesMatched);
   }
 
-  public Collection<AnnotationFS> getAnchors(RutaStream stream) {
+  @Override
+  public Collection<? extends AnnotationFS> getAnchors(RutaStream stream) {
     RuleElement anchorElement = getAnchoringRuleElement(stream);
-    Collection<AnnotationFS> anchors = anchorElement.getAnchors(stream);
+    Collection<? extends AnnotationFS> anchors = anchorElement.getAnchors(stream);
     return anchors;
   }
 
+  @Override
   public long estimateAnchors(RutaStream stream) {
     long result = 1;
     for (RuleElement each : elements) {
@@ -583,10 +589,12 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     return result;
   }
 
+  @Override
   public RuleElement getAnchoringRuleElement(RutaStream stream) {
     return caretaker.getAnchoringRuleElement(stream);
   }
 
+  @Override
   public List<RuleElement> getRuleElements() {
     return elements;
   }
@@ -595,18 +603,22 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     this.elements = elements;
   }
 
+  @Override
   public RuleElement getFirstElement() {
     return caretaker.getFirstElement();
   }
 
+  @Override
   public RuleElement getLastElement() {
     return caretaker.getLastElement();
   }
 
+  @Override
   public void applyRuleElements(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     caretaker.applyRuleElements(ruleMatch, stream, crowd);
   }
 
+  @Override
   public String toString() {
     String con = "";
     if (conjunct != null) {
@@ -620,6 +632,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     ;
   }
 
+  @Override
   public RuleElement getNextElement(boolean after, RuleElement ruleElement) {
     // return caretaker.getNextElement(after, ruleElement);
     if (conjunct == null || this.equals(ruleElement)) {

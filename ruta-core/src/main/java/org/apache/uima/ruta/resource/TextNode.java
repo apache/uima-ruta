@@ -77,6 +77,7 @@ public class TextNode {
     return this.children;
   }
 
+  @Override
   public String toString() {
     return value + (isWordEnd ? "+" : "");
   }

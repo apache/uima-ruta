@@ -45,8 +45,8 @@ public class AnnotationListFeatureExpression extends AbstractAnnotationListExpre
   public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
     List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<AnnotationFS> featureAnnotations = fe.getFeatureAnnotations(list, stream, context,
-            false);
+    Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
+            stream);
     return new ArrayList<AnnotationFS>(featureAnnotations);
   }
 

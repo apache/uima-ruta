@@ -55,18 +55,22 @@ public class CreatedByVisitor implements RutaInferenceVisitor {
     this.verbalizer = verbalizer;
   }
 
+  @Override
   public void beginVisit(RutaElement element, ScriptApply result) {
   }
 
+  @Override
   public void endVisit(RutaElement element, ScriptApply result) {
   }
 
+  @Override
   public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
     for (FeatureStructure each : fsList) {
       each.getCAS().addFsToIndexes(each);
     }
   }
 
+  @Override
   public void annotationAdded(AnnotationFS annotation,
           AbstractRuleMatch<? extends AbstractRule> creator) {
     CAS cas = annotation.getCAS();

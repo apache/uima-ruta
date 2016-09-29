@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
@@ -37,9 +38,13 @@ public abstract class FeatureExpression extends RutaExpression {
 
   public abstract List<String> getFeatureStringList(MatchContext context, RutaStream stream);
 
-  public abstract Collection<AnnotationFS> getFeatureAnnotations(
-          Collection<AnnotationFS> annotations, RutaStream stream, MatchContext context,
-          boolean checkOnFeatureValue);
+  public abstract Collection<? extends AnnotationFS> getAnnotations(
+          Collection<? extends FeatureStructure> featureStructures, boolean checkOnFeatureValue, MatchContext context,
+          RutaStream stream);
+  
+  public abstract Collection<? extends FeatureStructure> getFeatureStructures(
+          Collection<? extends FeatureStructure> featureStructures, boolean checkOnFeatureValue, MatchContext context,
+          RutaStream stream);
 
   public abstract Type getInitialType(MatchContext context, RutaStream stream);
 
