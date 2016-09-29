@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -70,7 +71,7 @@ public class ImplicitCondition extends AbstractRutaCondition {
       } else if(annotationExpr!=null) {
         annotations.add(annotationExpr.getAnnotation(context, stream));
       }
-      Collection<? extends AnnotationFS> featureAnnotations = fme.getAnnotations(annotations, true,
+      Collection<? extends FeatureStructure> featureAnnotations = fme.getFeatureStructures(annotations, true,
               context, stream);
       return new EvaluatedCondition(this, !featureAnnotations.isEmpty());
     }

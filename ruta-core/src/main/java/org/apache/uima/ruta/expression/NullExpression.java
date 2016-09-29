@@ -82,5 +82,10 @@ public class NullExpression extends FeatureExpression implements IStringExpressi
     return null;
   }
 
+  @Override
+  public FeatureStructure getFeatureStructure(MatchContext context, RutaStream stream) {
+    return null;
+  }
+
  
 }

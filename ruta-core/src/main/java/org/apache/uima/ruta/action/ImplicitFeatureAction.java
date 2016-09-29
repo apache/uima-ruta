@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
@@ -75,7 +76,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     for (AnnotationFS each : annotations) {
       stream.getCas().removeFsFromIndexes(each);
     }
-    Collection<? extends AnnotationFS> featureAnnotations = expr.getAnnotations(annotations, false,
+    Collection<? extends FeatureStructure> featureAnnotations = expr.getFeatureStructures(annotations, false,
             context, stream);
     if (featureAnnotations.isEmpty()) {
       // null value in feature, but we require the host
@@ -83,7 +84,7 @@ public class ImplicitFeatureAction extends AbstractRutaAction {
     }
     Feature feature = expr.getFeature(context, stream);
     IRutaExpression arg = expr.getArg();
-    for (AnnotationFS each : featureAnnotations) {
+    for (FeatureStructure each : featureAnnotations) {
       stream.assignFeatureValue(each, feature, arg, context);
     }
     for (AnnotationFS each : annotations) {

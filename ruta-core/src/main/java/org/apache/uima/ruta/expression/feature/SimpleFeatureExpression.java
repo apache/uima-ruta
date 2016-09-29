@@ -183,7 +183,9 @@ public class SimpleFeatureExpression extends FeatureExpression {
       return;
     }
     if (!collectOnlyAnnotations) {
-      lastValidFeatureStructure = (T) featureStructure;
+      if(!featureStructure.getType().isArray()) {
+        lastValidFeatureStructure = (T) featureStructure;
+      }
     } else if (featureStructure instanceof AnnotationFS) {
       lastValidFeatureStructure = (T) featureStructure;
     }

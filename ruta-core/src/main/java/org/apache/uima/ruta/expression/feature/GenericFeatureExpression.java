@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
@@ -118,6 +119,15 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   }
 
   @Override
+  public FeatureStructure getFeatureStructure(MatchContext context, RutaStream stream) {
+    if (annotationExpression == null) {
+      annotationExpression = ExpressionFactory.createAnnotationFeatureExpression(featureExpression);
+    }
+    return annotationExpression.getFeatureStructure(context, stream);
+  }
+  
+  
+  @Override
   public Type getType(MatchContext context, RutaStream stream) {
     // special case where an argument is interpreted as a type expression
     return featureExpression.getInitialType(context, stream);
@@ -187,6 +197,5 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
     return result;
   }
 
-  
 
 }

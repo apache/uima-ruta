@@ -25,26 +25,32 @@ import org.apache.uima.cas.Type;
 public class LazyFeature implements Feature {
 
   private Feature delegate;
-  
+
   private String featureName;
-  
+
+  private String initializedWith;
+
   public LazyFeature(String featureName) {
     super();
     this.featureName = featureName;
   }
-  
-  public Feature initialize(Type type) {
-   delegate = type.getFeatureByBaseName(featureName);
-   if(delegate == null) {
-     return this;
-   }
-   return delegate;
-  }
-  
+
   public Feature initialize(FeatureStructure featureStructure) {
     return initialize(featureStructure.getType());
-   }
-  
+  }
+
+  public Feature initialize(Type type) {
+    if (type == null) {
+      return this;
+    }
+    delegate = type.getFeatureByBaseName(featureName);
+    initializedWith = type.getName();
+    if (delegate == null) {
+      return this;
+    }
+    return delegate;
+  }
+
   @Override
   public int compareTo(Feature o) {
     checkDelegate();
@@ -86,10 +92,11 @@ public class LazyFeature implements Feature {
   }
 
   private void checkDelegate() {
-    if(delegate == null) {
-      throw new RuntimeException("Feature with name '"+ featureName +"' has not yet been resolved. Most likely, it is not defined for the given type.");
+    if (delegate == null) {
+      throw new RuntimeException("Feature with name '" + featureName
+              + "' has not yet been resolved. Most likely, it is not defined for the given type: " + initializedWith);
     }
-    
+
   }
 
 }

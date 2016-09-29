@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
@@ -61,12 +62,12 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
     AnnotationFS annotation = context.getAnnotation();
     Number result = null;
     List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
+    Collection<? extends FeatureStructure> featureStructures = fe.getFeatureStructures(list, false, context,
             stream);
-    if (!featureAnnotations.isEmpty()) {
+    if (!featureStructures.isEmpty()) {
       Feature feature = fe.getFeature(context, stream);
       Type range = feature.getRange();
-      AnnotationFS next = featureAnnotations.iterator().next();
+      FeatureStructure next = featureStructures.iterator().next();
       if (UIMAConstants.TYPE_BYTE.equals(range.getName())) {
         result = next.getByteValue(feature);
       } else if (UIMAConstants.TYPE_DOUBLE.equals(range.getName())) {

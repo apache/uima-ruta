@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.CoveredTextFeature;
@@ -43,12 +44,11 @@ public class StringFeatureExpression extends AbstractStringExpression {
     AnnotationFS annotation = context.getAnnotation();
     Feature feature = fe.getFeature(context, stream);
     List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
-            stream);
-    if (!featureAnnotations.isEmpty()) {
-      AnnotationFS next = featureAnnotations.iterator().next();
-      if (feature instanceof CoveredTextFeature) {
-        return next.getCoveredText();
+    Collection<? extends FeatureStructure> featureStructures = fe.getFeatureStructures(list, false, context, stream);
+    if (!featureStructures.isEmpty()) {
+      FeatureStructure next = featureStructures.iterator().next();
+      if (next instanceof AnnotationFS && feature instanceof CoveredTextFeature) {
+        return ((AnnotationFS) next).getCoveredText();
       } else {
         return next.getStringValue(feature);
       }

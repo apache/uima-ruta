@@ -22,6 +22,7 @@ package org.apache.uima.ruta.expression.annotation;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
@@ -39,20 +40,30 @@ public class AnnotationFeatureExpression extends AbstractAnnotationExpression {
     super();
     this.fe = fe;
   }
-  
+
   @Override
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
-    AnnotationFS annotation = context.getAnnotation();
-    List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
+    List<AnnotationFS> list = getTargetAnnotation(context.getAnnotation(), fe, context, stream);
     Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
             stream);
     if (!featureAnnotations.isEmpty()) {
       AnnotationFS next = featureAnnotations.iterator().next();
-        return next;
+      return next;
     }
     return null;
   }
 
+  @Override
+  public FeatureStructure getFeatureStructure(MatchContext context, RutaStream stream) {
+    List<AnnotationFS> list = getTargetAnnotation(context.getAnnotation(), fe, context, stream);
+    Collection<? extends FeatureStructure> featureAnnotations = fe.getFeatureStructures(list, false,
+            context, stream);
+    if (!featureAnnotations.isEmpty()) {
+      FeatureStructure next = featureAnnotations.iterator().next();
+      return next;
+    }
+    return null;
+  }
 
   public FeatureExpression getFeatureExpression() {
     return fe;
@@ -61,7 +72,5 @@ public class AnnotationFeatureExpression extends AbstractAnnotationExpression {
   public void setFeatureExpression(FeatureExpression fe) {
     this.fe = fe;
   }
-
-  
 
 }

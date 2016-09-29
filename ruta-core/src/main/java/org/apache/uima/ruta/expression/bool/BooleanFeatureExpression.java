@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
@@ -42,10 +43,10 @@ public class BooleanFeatureExpression extends AbstractBooleanExpression {
     AnnotationFS annotation = context.getAnnotation();
     Feature feature = fe.getFeature(context, stream);
     List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
+    Collection<? extends FeatureStructure> featureStructures = fe.getFeatureStructures(list, false, context,
             stream);
-    if (!featureAnnotations.isEmpty()) {
-      AnnotationFS next = featureAnnotations.iterator().next();
+    if (!featureStructures.isEmpty()) {
+      FeatureStructure next = featureStructures.iterator().next();
       return next.getBooleanValue(feature);
     }
     return false;

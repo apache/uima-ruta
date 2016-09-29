@@ -32,27 +32,26 @@ import org.apache.uima.ruta.rule.MatchContext;
  */
 public class AnnotationListVariableIndexExpression extends AbstractAnnotationExpression {
 
-private String var;
+  private String var;
+
   private int index;
-  
+
   public AnnotationListVariableIndexExpression(String var, int index) {
     super();
     this.var = var;
     this.index = index;
   }
-  
-  
+
   @Override
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     @SuppressWarnings("unchecked")
     List<AnnotationFS> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
-    if(list != null && index >= 0 && index < list.size()) {
+    if (list != null && index >= 0 && index < list.size()) {
       return list.get(index);
     }
     return null;
   }
-
 
   public String getVar() {
     return var;

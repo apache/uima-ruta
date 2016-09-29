@@ -27,40 +27,43 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.MatchContext;
 
-
 /**
- *  An expression referring to an annotation identified by its address.  
+ * An expression referring to an annotation identified by its address.
  *
  */
 public class AnnotationAddressExpression extends AbstractAnnotationExpression {
 
   private String address;
-  
+
   public AnnotationAddressExpression(String address) {
     super();
     this.address = address;
   }
-  
-  
+
   @Override
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
-    Integer ref = Integer.valueOf(address);
-    CAS cas = stream.getCas();
-    if(cas instanceof CASImpl) {
-      CASImpl casImpl = (CASImpl) cas;
-      LowLevelCAS lowLevelCAS = casImpl.getLowLevelCAS();
-      FeatureStructure fs = lowLevelCAS.ll_getFSForRef(ref);
-      if(fs instanceof AnnotationFS) {
-        return (AnnotationFS) fs;
-      }
+    FeatureStructure featureStructure = getFeatureStructure(context, stream);
+    if(featureStructure instanceof AnnotationFS) {
+      return (AnnotationFS) featureStructure;
     }
     return null;
   }
 
+  @Override
+  public FeatureStructure getFeatureStructure(MatchContext context, RutaStream stream) {
+    Integer ref = Integer.valueOf(address);
+    CAS cas = stream.getCas();
+    if (cas instanceof CASImpl) {
+      CASImpl casImpl = (CASImpl) cas;
+      LowLevelCAS lowLevelCAS = casImpl.getLowLevelCAS();
+      FeatureStructure fs = lowLevelCAS.ll_getFSForRef(ref);
+      return fs;
+    }
+    return null;
+  }
 
   public String getAddress() {
     return address;
   }
-  
 
 }

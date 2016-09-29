@@ -130,7 +130,7 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
       FeatureExpression fe = (FeatureExpression) getArg();
       List<FeatureStructure> list = new ArrayList<>(1);
       list.add(fs);
-      Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
+      Collection<? extends FeatureStructure> featureAnnotations = fe.getFeatureStructures(list, false, context,
               stream);
       return compare(fs.getFeatureValue(feature), featureAnnotations);
     }

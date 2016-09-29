@@ -200,6 +200,8 @@ public class AnnotationFeatureExpressionTest {
     script.append("A1.fss.fs.fs{-> T6};");
     script.append("A1.fss.fs.fs.s == \"1\"{-> T7};");
     script.append("A1.fss.fss.s == \"1\"{-> T8};");
+    script.append("a:A1 {a.fss.fss.s == \"1\" -> T9};");
+    script.append("a:A1 {a.fs.s==\"1\" -> T10};");
 
     Ruta.apply(cas, script.toString());
 
@@ -211,6 +213,8 @@ public class AnnotationFeatureExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 6, 4, "Some", "Some", "text", "text");
     RutaTestUtils.assertAnnotationsEquals(cas, 7, 2, "Some", "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 8, 4, "Some", "Some", "text", "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 9, 2, "Some", "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 10, 1, "Some");
 
   }
 

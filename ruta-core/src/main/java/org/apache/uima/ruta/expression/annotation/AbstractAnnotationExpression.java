@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.RutaExpression;
@@ -26,6 +27,11 @@ import org.apache.uima.ruta.rule.MatchContext;
 
 public abstract class AbstractAnnotationExpression extends RutaExpression implements IAnnotationExpression {
 
+  @Override
+  public FeatureStructure getFeatureStructure(MatchContext context, RutaStream stream) {
+    return getAnnotation(context, stream);
+  }
+  
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = getAnnotation(context, stream);

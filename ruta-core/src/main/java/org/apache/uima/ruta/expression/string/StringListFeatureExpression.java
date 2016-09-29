@@ -56,11 +56,11 @@ public class StringListFeatureExpression extends AbstractStringListExpression {
       return Collections.emptyList();
     }
     List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
+    Collection<? extends FeatureStructure> featureStructures = fe.getFeatureStructures(list, false, context,
             stream);
     List<String> result = new ArrayList<>();
 
-    for (AnnotationFS each : featureAnnotations) {
+    for (FeatureStructure each : featureStructures) {
       FeatureStructure featureValue = each.getFeatureValue(feature);
       if(featureValue instanceof StringArrayFS) {
         StringArrayFS array = (StringArrayFS) featureValue;

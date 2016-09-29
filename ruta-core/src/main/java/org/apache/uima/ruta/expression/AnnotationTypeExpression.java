@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
@@ -97,6 +98,15 @@ public class AnnotationTypeExpression extends RutaExpression
     return null;
   }
 
+  @Override
+  public FeatureStructure getFeatureStructure(MatchContext context, RutaStream stream) {
+    if (annotationExpression != null) {
+      return annotationExpression.getFeatureStructure(context, stream);
+    }
+    return getAnnotation(context, stream);
+  }
+  
+  
   @Override
   public Type getType(MatchContext context, RutaStream stream) {
     if (!initialized) {

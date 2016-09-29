@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -32,5 +33,7 @@ import org.apache.uima.ruta.rule.MatchContext;
 public interface IAnnotationExpression extends IStringExpression {
 
   AnnotationFS getAnnotation(MatchContext context, RutaStream stream);
+  
+  FeatureStructure getFeatureStructure(MatchContext context, RutaStream stream);
 
 }
