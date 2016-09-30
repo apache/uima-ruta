@@ -109,7 +109,7 @@ public class RutaLauncher {
           return false;
         }
         addSDI = Boolean.parseBoolean(args[index++]);
-      } else if (RutaLaunchConstants.ARG_RECURSIVE.equals(each)) {
+      } else if (RutaLaunchConstants.ARG_ENCODING.equals(each)) {
         if (index >= args.length) {
           return false;
         }
