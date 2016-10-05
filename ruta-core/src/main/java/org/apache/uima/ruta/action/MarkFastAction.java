@@ -78,7 +78,6 @@ public class MarkFastAction extends AbstractMarkAction {
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
       RutaWordList wl = null;
-      element.getParent();
       if (list != null) {
         wl = list.getList(context, stream);
       } else if (stringList != null) {
