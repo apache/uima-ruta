@@ -387,6 +387,20 @@ public class AnnotationLabelExpressionTest {
     Assert.assertEquals("3", iterator.next().getFeatureValue(feature2).getStringValue(feature1));
     cas.release();
   }
+  
+  
+  @Test
+  public void testFeatureAssignment() throws Exception {
+    String document = "Some text.";
+    
+    String script = "CW{-> T1};\n";
+    script += "t:T1{-> t.end = 10};\n";
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
+  
+    cas.release();
+  }
 
   private CAS applyOnStruct4Cas(String script) throws Exception {
     String document = "Some text.";
@@ -408,4 +422,6 @@ public class AnnotationLabelExpressionTest {
     Ruta.apply(cas, script);
     return cas;
   }
+  
+  
 }
