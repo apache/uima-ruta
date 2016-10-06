@@ -129,7 +129,7 @@ public class RutaCheckerUtils {
     return imports;
   }
 
-  private static Set<String> collectElements(IMethod element, int type, Stack stack)
+  private static Set<String> collectElements(IMethod element, int type, Stack<String> stack)
           throws ModelException {
     Set<String> fieldsCollection = new HashSet<String>();
     IModelElement elements[] = element.getChildren();

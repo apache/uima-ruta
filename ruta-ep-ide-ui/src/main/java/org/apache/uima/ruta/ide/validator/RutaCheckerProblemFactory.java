@@ -131,10 +131,6 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory {
     return problem;
   }
 
-  private String generateFileNotFoundProblemMsg(ASTNode node) {
-    return generateFileNotFoundProblemMsg(node.toString());
-  }
-
   private String generateFileNotFoundProblemMsg(String fileName) {
     return "error: \"" + fileName + "\" not found.";
   }
@@ -165,11 +161,11 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory {
   public IProblem createUnknownFeatureProblem(Expression var, String matchedType) {
     // TODO refactor and find better solution
     String feat = var.toString();
-    List childs = var.getChilds();
+    List<?> childs = var.getChilds();
     if (childs != null && !childs.isEmpty()) {
       Object object = childs.get(0);
       if (object instanceof ASTListNode) {
-        List childs2 = ((ASTListNode) object).getChilds();
+        List<?> childs2 = ((ASTListNode) object).getChilds();
         if (childs2 != null && !childs2.isEmpty()) {
           Object object2 = childs2.get(0);
           if (object2 instanceof StringLiteral) {

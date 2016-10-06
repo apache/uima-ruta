@@ -32,6 +32,7 @@ public class RutaCheckerDefaultProblem extends DefaultProblem {
             .getNameStart(), node.getNameEnd(), line, column);
   }
 
+  @SuppressWarnings("deprecation")
   public RutaCheckerDefaultProblem(String fileName, String message, RutaAbstractDeclaration node,
           int line) {
     super(fileName, message, 0, new String[] {}, ProblemSeverity.ERROR, node.getNameStart(), node
@@ -42,6 +43,7 @@ public class RutaCheckerDefaultProblem extends DefaultProblem {
     this(fileName, message, node, line, ProblemSeverity.ERROR);
   }
 
+  @SuppressWarnings("deprecation")
   public RutaCheckerDefaultProblem(String fileName, String message, ASTNode node, int line,
           ProblemSeverity severity) {
     super(fileName, message, 0, new String[] {}, severity, node.sourceStart(), node.sourceEnd(),

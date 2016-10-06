@@ -897,7 +897,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     String bref = featText.substring(0, firstIndexOf);
     String aref = featText.substring(0, lastIndexOf);
     String fref = featText.substring(lastIndexOf + 1, featText.length());
-    if (currentLabels.contains(aref)) {
+    if (currentLabels.contains(aref) || currentLabels.contains(bref)) {
       return;
     }
     String match = isFeatureMatch(aref);
