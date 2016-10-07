@@ -85,7 +85,11 @@ public class ComposedNumberExpression extends AbstractNumberExpression {
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
-    return "" + getDoubleValue(context, stream);
+    if(ops.isEmpty() && expressions.size() == 1) {
+      return expressions.get(0).getStringValue(context, stream);
+    } else {
+      return String.valueOf(getDoubleValue(context, stream));
+    }
   }
 
   public List<INumberExpression> getExpressions() {
