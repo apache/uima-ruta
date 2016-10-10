@@ -58,6 +58,9 @@ public abstract class AbstractTreeNode implements ITreeNode {
 
   @Override
   public ITreeNode[] getChildren() {
+    if(children == null) {
+      return emptyArray;
+    }
     return children.toArray(emptyArray);
   }
   
