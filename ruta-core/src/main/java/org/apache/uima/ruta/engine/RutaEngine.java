@@ -414,6 +414,16 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       "uima.tcas.Annotation" })
   private String[] reindexOnly;
 
+  
+  /**
+   * Option to extend the datapath by the descriptorPaths
+   */
+  public static final String PARAM_MODIFY_DATAPATH = "modifyDataPath";
+
+  @ConfigurationParameter(name = PARAM_MODIFY_DATAPATH, mandatory = false, defaultValue = "false")
+  private boolean modifyDataPath;
+
+  
   private UimaContext context;
 
   private RutaModule script;
@@ -452,10 +462,11 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     // reinitialize analysis engines if this one is configured
     analysisEnginesAlreadyInitialized = false;
 
+    initializeResourceManager();
     handleDataPath();
-
-    scriptRutaResourceLoader = new RutaResourceLoader(scriptPaths);
-    descriptorRutaResourceLoader = new RutaResourceLoader(descriptorPaths);
+    
+    scriptRutaResourceLoader = new RutaResourceLoader(scriptPaths, resourceManager.getExtensionClassLoader());
+    descriptorRutaResourceLoader = new RutaResourceLoader(descriptorPaths, resourceManager.getExtensionClassLoader());
 
     if (!factory.isInitialized()) {
       initializeExtensionWithClassPath();
@@ -516,6 +527,19 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
   }
 
+  private void initializeResourceManager() {
+    if (context instanceof UimaContextAdmin) {
+      UimaContextAdmin uca = (UimaContextAdmin) context;
+      ResourceManager rm = uca.getResourceManager();
+      if (rm != null) {
+        resourceManager = rm;
+      }
+    }
+    if (resourceManager == null) {
+      resourceManager = UIMAFramework.newDefaultResourceManager();
+    }
+  }
+  
   private void handleDataPath() throws ResourceInitializationException {
     String dataPath = context.getDataPath();
     String[] singleDataPaths = dataPath.split(File.pathSeparator);
@@ -530,17 +554,11 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       descriptorPaths = ArrayUtils.addAll(descriptorPaths, singleDataPaths);
       resourcePaths = ArrayUtils.addAll(resourcePaths, singleDataPaths);
     }
-    if (context instanceof UimaContextAdmin) {
-      UimaContextAdmin uca = (UimaContextAdmin) context;
-      ResourceManager rm = uca.getResourceManager();
-      if (rm != null) {
-        resourceManager = rm;
+    
+    if (modifyDataPath && clonedDescriptorPath != null) {
+      if(!dataPath.endsWith(File.pathSeparator)) {
+        dataPath += File.pathSeparator;
       }
-    }
-    if (resourceManager == null) {
-      resourceManager = UIMAFramework.newDefaultResourceManager();
-    }
-    if (clonedDescriptorPath != null) {
       for (String path : clonedDescriptorPath) {
         dataPath += path + File.pathSeparator;
       }

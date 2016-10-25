@@ -805,6 +805,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.modifyDataPath'>modifyDataPath</link>
+                  </entry>
+                  <entry>Option to extend the datapath by the descriptorPaths
+                  </entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.strictImports'>strictImports</link>
                   </entry>
                   <entry>Option to restrict short type names resolution to those in the declared typesystems.
@@ -1036,6 +1044,13 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
             The value of this parameter needs only be adapted for performance optimization in pipelines that 
             contains several ruta analysis engines.
             Default value is uima.tcas.Annotation
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.modifyDataPath">
+          <title>modifyDataPath</title>
+          <para>
+            This parameter specifies whether the datapath of the ResourceManager is extended by the values of the configuration parameter <code>descriptorPaths</code>.
+            The default value is set to false.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.strictImports">
