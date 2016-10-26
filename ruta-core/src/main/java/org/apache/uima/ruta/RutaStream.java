@@ -123,7 +123,6 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   private Annotation documentEndAnchor;
 
-
   public RutaStream(CAS cas, Type basicType, FilterManager filter, boolean lowMemoryProfile,
           boolean simpleGreedyForComposed, InferenceCrowd crowd) {
     super();
@@ -141,7 +140,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       documentAnnotationType = getCas().getDocumentAnnotation().getType();
       basicIt.moveToFirst();
       documentBeginAnchor = new RutaOptional(getJCas(), 0, 0);
-      documentEndAnchor = new RutaOptional(getJCas(), documentAnnotation.getEnd(), documentAnnotation.getEnd());
+      documentEndAnchor = new RutaOptional(getJCas(), documentAnnotation.getEnd(),
+              documentAnnotation.getEnd());
     } else {
       documentAnnotation = additionalWindow;
       documentAnnotationType = filter.getWindowType();
@@ -201,7 +201,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
           annotationIndex = cas.getAnnotationIndex(type);
         }
         for (AnnotationFS a : annotationIndex) {
-          if (a.getBegin() != a.getEnd()) {
+          if (a.getBegin() != a.getEnd() || a.equals(cas.getDocumentAnnotation())) {
             allAnnotations.add(a);
           }
         }
@@ -214,13 +214,12 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         anchors.add(a.getBegin());
         anchors.add(a.getEnd());
       }
-      if (anchors.size() == 1) {
+      if (anchors.size() == 0) {
+        // empty document
+        createRutaBasic(0, 0);
+      } else if (anchors.size() == 1) {
         Integer first = anchors.pollFirst();
-        RutaBasic newTMB = new RutaBasic(getJCas(), first, first);
-        newTMB.setLowMemoryProfile(lowMemoryProfile);
-        beginAnchors.put(first, newTMB);
-        endAnchors.put(first, newTMB);
-        cas.addFsToIndexes(newTMB);
+        createRutaBasic(first, first);
       } else {
         while (true) {
           Integer first = anchors.pollFirst();
@@ -229,11 +228,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
           }
           Integer second = anchors.first();
           if (first < second) {
-            RutaBasic newTMB = new RutaBasic(getJCas(), first, second);
-            newTMB.setLowMemoryProfile(lowMemoryProfile);
-            beginAnchors.put(first, newTMB);
-            endAnchors.put(second, newTMB);
-            cas.addFsToIndexes(newTMB);
+            createRutaBasic(first, second);
           }
         }
       }
@@ -275,6 +270,15 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         }
       }
     }
+  }
+
+  private RutaBasic createRutaBasic(int begin, int end) {
+    RutaBasic newTMB = new RutaBasic(getJCas(), begin, end);
+    newTMB.setLowMemoryProfile(lowMemoryProfile);
+    beginAnchors.put(0, newTMB);
+    endAnchors.put(0, newTMB);
+    cas.addFsToIndexes(newTMB);
+    return newTMB;
   }
 
   public void addAnnotation(AnnotationFS annotation, boolean addToIndex,
@@ -964,8 +968,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
   }
 
-  public void assignFeatureValue(FeatureStructure annotation, Feature feature, IRutaExpression value,
-          MatchContext context) {
+  public void assignFeatureValue(FeatureStructure annotation, Feature feature,
+          IRutaExpression value, MatchContext context) {
     if (feature == null) {
       throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
     }
@@ -990,14 +994,18 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         StringArrayFS array = FSCollectionFactory.createStringArray(cas, new String[] { string });
         annotation.setFeatureValue(feature, array);
       }
-    } else if (rangeName.equals(UIMAConstants.TYPE_INTEGER) || rangeName.equals(UIMAConstants.TYPE_LONG)
-            || rangeName.equals(UIMAConstants.TYPE_SHORT) || rangeName.equals(UIMAConstants.TYPE_BYTE)) {
+    } else if (rangeName.equals(UIMAConstants.TYPE_INTEGER)
+            || rangeName.equals(UIMAConstants.TYPE_LONG)
+            || rangeName.equals(UIMAConstants.TYPE_SHORT)
+            || rangeName.equals(UIMAConstants.TYPE_BYTE)) {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         int v = numberExpr.getIntegerValue(context, this);
-        if (annotation instanceof AnnotationFS && StringUtils.equals(feature.getShortName(), CAS.FEATURE_BASE_NAME_BEGIN)) {
+        if (annotation instanceof AnnotationFS
+                && StringUtils.equals(feature.getShortName(), CAS.FEATURE_BASE_NAME_BEGIN)) {
           changeBegin((AnnotationFS) annotation, v, context.getRuleMatch());
-        } else if(annotation instanceof AnnotationFS && StringUtils.equals(feature.getShortName(), CAS.FEATURE_BASE_NAME_END)) {
+        } else if (annotation instanceof AnnotationFS
+                && StringUtils.equals(feature.getShortName(), CAS.FEATURE_BASE_NAME_END)) {
           changeEnd((AnnotationFS) annotation, v, context.getRuleMatch());
         } else {
           annotation.setIntValue(feature, v);
@@ -1082,10 +1090,11 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       }
     } else if (value instanceof IAnnotationExpression && !range.isPrimitive()) {
       IAnnotationExpression ae = (IAnnotationExpression) value;
-      boolean rangeSubsumesAnnotation = cas.getTypeSystem().subsumes(cas.getAnnotationType(), range);
-      
+      boolean rangeSubsumesAnnotation = cas.getTypeSystem().subsumes(cas.getAnnotationType(),
+              range);
+
       FeatureStructure a = null;
-      if(rangeSubsumesAnnotation) {
+      if (rangeSubsumesAnnotation) {
         a = ae.getAnnotation(context, this);
       } else {
         a = ae.getFeatureStructure(context, this);
@@ -1214,7 +1223,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   public List<AnnotationFS> getBestGuessedAnnotationsAt(AnnotationFS window, Type type) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    if(window == null) {
+    if (window == null) {
       return result;
     }
     TypeSystem typeSystem = getCas().getTypeSystem();
@@ -1232,12 +1241,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return result;
   }
 
-  public void changeOffsets(AnnotationFS annotation, int begin, int end, AbstractRuleMatch<? extends AbstractRule> modifikator) {
-    if(!(annotation instanceof Annotation)) {
+  public void changeOffsets(AnnotationFS annotation, int begin, int end,
+          AbstractRuleMatch<? extends AbstractRule> modifikator) {
+    if (!(annotation instanceof Annotation)) {
       return;
     }
     Annotation a = (Annotation) annotation;
-    if(annotation.getBegin() == begin && annotation.getEnd() == end) {
+    if (annotation.getBegin() == begin && annotation.getEnd() == end) {
       return;
     }
     // TODO implement incremental reindexing
@@ -1246,20 +1256,22 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     a.setEnd(end);
     addAnnotation(a, true, modifikator);
   }
-  
-  public void changeBegin(AnnotationFS annotation, int begin, AbstractRuleMatch<? extends AbstractRule> modifikator) {
+
+  public void changeBegin(AnnotationFS annotation, int begin,
+          AbstractRuleMatch<? extends AbstractRule> modifikator) {
     changeOffsets(annotation, begin, annotation.getEnd(), modifikator);
   }
-  
-  public void changeEnd(AnnotationFS annotation, int end, AbstractRuleMatch<? extends AbstractRule> modifikator) {
+
+  public void changeEnd(AnnotationFS annotation, int end,
+          AbstractRuleMatch<? extends AbstractRule> modifikator) {
     changeOffsets(annotation, annotation.getBegin(), end, modifikator);
   }
 
   public AnnotationFS getVeryFirstBeforeWindow(boolean direction) {
-    if(direction) {
+    if (direction) {
       RutaBasic firstBasicOfAll = getFirstBasicOfAll();
       int begin = firstBasicOfAll.getBegin();
-      if(begin == 0) {
+      if (begin == 0) {
         return documentBeginAnchor;
       } else {
         return getEndAnchor(begin);
@@ -1267,7 +1279,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     } else {
       RutaBasic lastBasicOfAll = getLastBasicOfAll();
       int end = lastBasicOfAll.getEnd();
-      if(end == cas.getDocumentAnnotation().getEnd()) {
+      if (end == cas.getDocumentAnnotation().getEnd()) {
         return documentEndAnchor;
       } else {
         return getBeginAnchor(end);
