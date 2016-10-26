@@ -49,7 +49,7 @@ public class EmptyDocumentTest {
     FSIterator<AnnotationFS> iterator = null;
 
     ai = cas.getAnnotationIndex();
-    assertEquals(1, ai.size());
+    assertEquals(2, ai.size());
     iterator = ai.iterator();
     assertEquals("", iterator.next().getCoveredText());
 
