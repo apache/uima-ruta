@@ -651,7 +651,7 @@ public class RutaEnvironment {
 		}
 		if (result == null) {
 			if (list.endsWith("txt") || list.endsWith("twl") || list.endsWith("mtwl")) {
-				ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths());
+				ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths(), resourceManager.getExtensionClassLoader());
 				Resource resource = resourceLoader.getResource(list);
 				if (resource.exists()) {
 					try {
@@ -685,7 +685,7 @@ public class RutaEnvironment {
 		RutaTable result = tables.get(table);
 		if (result == null) {
 			if (table.endsWith("csv") || table.endsWith("txt") || table.endsWith("tsv")) {
-				ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths());
+				ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths(), resourceManager.getExtensionClassLoader());
 				Resource resource = resourceLoader.getResource(table);
 				if (resource.exists()) {
 					try {
