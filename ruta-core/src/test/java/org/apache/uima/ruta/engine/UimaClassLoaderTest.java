@@ -70,5 +70,36 @@ public class UimaClassLoaderTest {
     Collection<FalsePositive> select = JCasUtil.select(jcas, FalsePositive.class);
     Assert.assertTrue(!select.isEmpty());
   }
+  
+  @Test
+  public void testResource() throws Exception {
+    URL url = UimaClassLoaderTest.class
+            .getResource("/org/apache/uima/ruta/action/MarkFastTestList.txt");
+    final File cpDir = new File(url.toURI()).getParentFile();
+
+    ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
+
+      @Override
+      public ResourceManager newResourceManager() throws ResourceInitializationException {
+        ResourceManager resourceManager = null;
+        try {
+          resourceManager = UIMAFramework.newDefaultResourceManager();
+          resourceManager.setExtensionClassPath(this.getClass().getClassLoader(), cpDir.getAbsolutePath(), true);
+          resourceManager.setDataPath("datapath");
+        } catch (MalformedURLException e) {
+          throw new ResourceInitializationException(e);
+        }
+        return resourceManager;
+      }
+    });
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
+            RutaEngine.PARAM_RULES, "WORDLIST list1 = 'MarkFastTestList.txt';MARKFAST(FalsePositive, list1, false, 0, true);");
+    JCas jcas = ae.newJCas();
+    jcas.setDocumentText("1 0 0");
+    ae.process(jcas);
+    Collection<FalsePositive> select = JCasUtil.select(jcas, FalsePositive.class);
+    Assert.assertTrue(!select.isEmpty());
+  }
 
 }
