@@ -451,25 +451,11 @@ under the License.
            modes="run,debug"
            name="UIMA Ruta"
            public="true"
-           sourceLocatorId="rutaSourceLocator"
-           sourcePathComputerId="rutaSourcePathComputer">
+           sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+           sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
      </launchConfigurationType>
   </extension>
-  <extension
-        point="org.eclipse.debug.core.sourcePathComputers">
-     <sourcePathComputer
-           class="org.apache.uima.ruta.ide.launching.RutaSourcePathComputer"
-           id="rutaSourcePathComputer">
-     </sourcePathComputer>
-  </extension>
-  <extension
-        point="org.eclipse.debug.core.sourceLocators">
-     <sourceLocator
-           class="org.apache.uima.ruta.ide.launching.RutaSourceLookupDirector"
-           id="rutaSourceLocator"
-           name="org.apache.uima.ruta.ide.launching.rutaSourceLocator">
-     </sourceLocator>
-  </extension>
+
   <extension
         point="org.eclipse.dltk.launching.debuggingEngine">
      <engineContribution
