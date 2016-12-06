@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.TreeSet;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -36,8 +35,6 @@ import org.apache.uima.ruta.type.RutaBasic;
 
 public class RutaAnnotationMatcher implements RutaMatcher {
 
-  protected AnnotationComparator comparator;
-
   private IAnnotationExpression annotationExpression;
 
   private IAnnotationListExpression annotationListExpression;
@@ -45,13 +42,11 @@ public class RutaAnnotationMatcher implements RutaMatcher {
   public RutaAnnotationMatcher(IAnnotationExpression expression) {
     super();
     this.annotationExpression = expression;
-    this.comparator = new AnnotationComparator();
   }
 
   public RutaAnnotationMatcher(IAnnotationListExpression expression) {
     super();
     this.annotationListExpression = expression;
-    this.comparator = new AnnotationComparator();
   }
 
   @Override
@@ -59,12 +54,11 @@ public class RutaAnnotationMatcher implements RutaMatcher {
     // TODO what about the matching direction?
     MatchContext context = new MatchContext(parent);
     if (annotationExpression != null) {
-      Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comparator);
       AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
-      if (annotation != null) {
-        annotations.add(annotation);
+      if (annotation == null) {
+        return Collections.emptyList();
       }
-      return annotations;
+      return Collections.singletonList(annotation);
     } else if (annotationListExpression != null) {
       return annotationListExpression.getAnnotationList(context, stream);
     }

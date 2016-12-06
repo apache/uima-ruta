@@ -48,9 +48,9 @@ public class ForEachBlock extends RutaBlock {
   private boolean anchorsSet = false;
 
   private IBooleanExpression direction;
-  
-  public ForEachBlock(String varName, IBooleanExpression direction, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
-          String defaultNamespace) {
+
+  public ForEachBlock(String varName, IBooleanExpression direction, RutaRule rule,
+          List<RutaStatement> elements, RutaBlock parent, String defaultNamespace) {
     super(varName, rule, elements, parent, defaultNamespace,
             parent != null ? parent.getContext() : null);
     this.direction = direction;
@@ -64,13 +64,13 @@ public class ForEachBlock extends RutaBlock {
     setRuleElementAnchor();
 
     boolean leftToRight = true;
-    if(direction != null) {
+    if (direction != null) {
       leftToRight = direction.getBooleanValue(new MatchContext(getParent()), stream);
     }
-    
+
     RuleApply apply = rule.apply(stream, crowd, true);
     List<AbstractRuleMatch<? extends AbstractRule>> list = apply.getList();
-    if(!leftToRight) {
+    if (!leftToRight) {
       Collections.reverse(list);
     }
     for (AbstractRuleMatch<? extends AbstractRule> eachMatch : list) {
@@ -125,7 +125,7 @@ public class ForEachBlock extends RutaBlock {
               && matcher.getExpression() instanceof AnnotationVariableExpression) {
         AnnotationVariableExpression expr = (AnnotationVariableExpression) matcher.getExpression();
         boolean equals = StringUtils.equals(name, expr.getVar());
-        if(equals) {
+        if (equals) {
           ruleElement.setStartAnchor(equals);
         }
         return equals;
@@ -134,7 +134,7 @@ public class ForEachBlock extends RutaBlock {
       List<RuleElement> ruleElements = ((ComposedRuleElement) ruleElement).getRuleElements();
       for (RuleElement eachInnerRuleElement : ruleElements) {
         boolean set = setRuleElementAnchorRecursively(eachInnerRuleElement);
-        if(set) {
+        if (set) {
           return set;
         }
       }

@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.TreeSet;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -42,24 +41,20 @@ public class RutaTypeMatcher implements RutaMatcher {
 
   private FeatureExpression featureExpression;
 
-  protected AnnotationComparator comparator;
-
   public RutaTypeMatcher(FeatureExpression expression) {
     super();
     this.featureExpression = expression;
-    this.comparator = new AnnotationComparator();
   }
 
   public RutaTypeMatcher(ITypeExpression expression) {
     super();
     this.typeExpression = expression;
-    this.comparator = new AnnotationComparator();
   }
 
   @Override
   public Collection<? extends AnnotationFS> getMatchingAnnotations(RutaBlock parent, RutaStream stream) {
     // TODO what about the matching direction?
-    Collection<AnnotationFS> annotations = new TreeSet<AnnotationFS>(comparator);
+    Collection<AnnotationFS> annotations = new ArrayList<>();
     List<Type> types = getTypes(parent, stream);
     for (Type type : types) {
       if (type == null) {
@@ -121,7 +116,7 @@ public class RutaTypeMatcher implements RutaMatcher {
         }
       }
       List<Type> reTypes = getTypes(parent, stream);
-      Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(comparator);
+      Collection<AnnotationFS> anchors = new ArrayList<>();
       for (Type eachMatchType : reTypes) {
         Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(eachMatchType);
         if (beginAnchors != null) {
@@ -169,7 +164,7 @@ public class RutaTypeMatcher implements RutaMatcher {
         }
       }
       List<Type> reTypes = getTypes(parent, stream);
-      Collection<AnnotationFS> anchors = new TreeSet<AnnotationFS>(comparator);
+      Collection<AnnotationFS> anchors = new ArrayList<>();
       for (Type eachMatchType : reTypes) {
         Collection<AnnotationFS> endAnchors = nextBasic.getEndAnchors(eachMatchType);
         if (endAnchors != null) {

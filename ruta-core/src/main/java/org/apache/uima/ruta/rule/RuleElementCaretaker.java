@@ -69,6 +69,12 @@ public class RuleElementCaretaker implements RuleElementContainer {
     for (RuleElement ruleElement : ruleElements) {
       if (ruleElement.isStartAnchor()) {
         return ruleElement;
+      } 
+      if(ruleElement instanceof ComposedRuleElement) {
+         RuleElement anchoringRuleElement = ((ComposedRuleElement) ruleElement).getAnchoringRuleElement(stream);
+         if(anchoringRuleElement.isStartAnchor()) {
+           return ruleElement;
+         }
       }
     }
 
