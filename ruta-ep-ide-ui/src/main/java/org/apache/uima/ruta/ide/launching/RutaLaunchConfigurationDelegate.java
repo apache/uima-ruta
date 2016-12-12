@@ -82,7 +82,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     boolean addSDI = preferenceStore.getBoolean(RutaCorePreferences.ADD_SDI);
     String defaultFormat = preferenceStore
             .getString(RutaCorePreferences.DEFAULT_CAS_SERIALIZATION_FORMAT);
-    if (defaultFormat == null) {
+    if (StringUtils.isBlank(defaultFormat)) {
       defaultFormat = SerialFormat.XMI.name();
     }
 
@@ -108,27 +108,27 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     if (StringUtils.isBlank(output)) {
       output = outputDirPath.toPortableString();
     }
-    String engine = configuration.getAttribute(RutaLaunchConstants.ARG_DESCRIPTOR,
+    String engine = configuration.getAttribute(RutaLaunchConstants.DESCRIPTOR,
             engineDefaultMethod);
     if (StringUtils.isBlank(engine)) {
       engine = engineDefaultMethod;
     }
 
     try {
-      cmdline.append(RutaLaunchConstants.ARG_DESCRIPTOR + " ");
+      cmdline.append(RutaLaunchConstants.DESCRIPTOR + " ");
       cmdline.append(URLEncoder.encode(engine, RutaLauncher.URL_ENCODING) + " ");
 
-      cmdline.append(RutaLaunchConstants.ARG_INPUT_FOLDER + " ");
+      cmdline.append(RutaLaunchConstants.INPUT_FOLDER + " ");
       cmdline.append(
               URLEncoder.encode(makeAbsolute(input, configuration), RutaLauncher.URL_ENCODING)
                       + " ");
 
-      cmdline.append(RutaLaunchConstants.ARG_OUTPUT_FOLDER + " ");
+      cmdline.append(RutaLaunchConstants.OUTPUT_FOLDER + " ");
       cmdline.append(
               URLEncoder.encode(makeAbsolute(output, configuration), RutaLauncher.URL_ENCODING)
                       + " ");
       // do not add the complete classpath as argument
-      // cmdline.append(RutaLaunchConstants.ARG_CLASSPATH + " ");
+      // cmdline.append(RutaLaunchConstants.CLASSPATH + " ");
       // cmdline.append(URLEncoder.encode(StringUtils.join(classPath, File.pathSeparatorChar),
       // RutaLauncher.URL_ENCODING) + " ");
 
@@ -136,22 +136,22 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
       throw new CoreException(
               new Status(IStatus.ERROR, RutaIdeUIPlugin.PLUGIN_ID, "Unsupported Encoding"));
     }
-    cmdline.append(RutaLaunchConstants.ARG_MODE + " ");
+    cmdline.append(RutaLaunchConstants.MODE + " ");
     cmdline.append(mode + " ");
 
-    cmdline.append(RutaLaunchConstants.ARG_ENCODING + " ");
+    cmdline.append(RutaLaunchConstants.ENCODING + " ");
     cmdline.append(encoding + " ");
 
-    cmdline.append(RutaLaunchConstants.ARG_VIEW + " ");
+    cmdline.append(RutaLaunchConstants.VIEW + " ");
     cmdline.append(view + " ");
 
-    cmdline.append(RutaLaunchConstants.ARG_RECURSIVE + " ");
+    cmdline.append(RutaLaunchConstants.RECURSIVE + " ");
     cmdline.append(recursive + " ");
 
-    cmdline.append(RutaLaunchConstants.ARG_ADD_SDI + " ");
+    cmdline.append(RutaLaunchConstants.ADD_SDI + " ");
     cmdline.append(addSDI + " ");
 
-    cmdline.append(RutaLaunchConstants.ARG_FORMAT + " ");
+    cmdline.append(RutaLaunchConstants.FORMAT + " ");
     cmdline.append(defaultFormat + " ");
     
     return cmdline.toString();
@@ -316,7 +316,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     IScriptProject proj = AbstractScriptLaunchConfigurationDelegate.getScriptProject(configuration);
     IPath projectPath = proj.getResource().getLocation();
     IPath outputDirPath = projectPath.append(RutaProjectUtils.getDefaultOutputLocation());
-    String outputFolderPath = configuration.getAttribute(RutaLaunchConstants.ARG_OUTPUT_FOLDER, "");
+    String outputFolderPath = configuration.getAttribute(RutaLaunchConstants.OUTPUT_FOLDER, "");
     if (StringUtils.isBlank(outputFolderPath)) {
       outputFolderPath = configuration.getAttribute(RutaLaunchConstants.OUTPUT_FOLDER,
               outputDirPath.toPortableString());

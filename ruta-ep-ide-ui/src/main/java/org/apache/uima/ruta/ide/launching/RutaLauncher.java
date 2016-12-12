@@ -77,72 +77,100 @@ public class RutaLauncher {
 
   private static String classPath = null;
 
-  private static boolean parseCmdLineArgs(String[] args) throws UnsupportedEncodingException {
+  private static void parseCmdLineArgs(String[] args)  {
     int index = 0;
-    int count = 0;
+    
     while (index < args.length) {
       String each = args[index++];
-      if (RutaLaunchConstants.ARG_INPUT_FOLDER.equals(each)) {
+      if (RutaLaunchConstants.INPUT_FOLDER.equals(each)) {
         if (index >= args.length) {
-          return false;
+          throwException("Not enough arguments! Value of input folder is missing", args, null);
         }
-        count++;
-        inputFolder = new File(URLDecoder.decode(args[index++], URL_ENCODING));
-      } else if (RutaLaunchConstants.ARG_OUTPUT_FOLDER.equals(each)) {
-        if (index >= args.length) {
-          return false;
+        String in = args[index++];
+        try {
+          inputFolder = new File(URLDecoder.decode(in, URL_ENCODING));
+        } catch (UnsupportedEncodingException e) {
+          throwException("Unable to decode input folder argument: " + in, args, e);
         }
-        outputFolder = new File(URLDecoder.decode(args[index++], URL_ENCODING));
-      } else if (RutaLaunchConstants.ARG_DESCRIPTOR.equals(each)) {
+      } else if (RutaLaunchConstants.OUTPUT_FOLDER.equals(each)) {
         if (index >= args.length) {
-          return false;
+          throwException("Not enough arguments! Value of output folder is missing", args, null);
         }
-        count++;
-        descriptor = new File(URLDecoder.decode(args[index++], URL_ENCODING));
-      } else if (RutaLaunchConstants.ARG_RECURSIVE.equals(each)) {
+        String out = args[index++];
+        try {
+          outputFolder = new File(URLDecoder.decode(out, URL_ENCODING));
+        } catch (UnsupportedEncodingException e) {
+          throwException("Unable to decode output folder argument: " + out, args, e);
+        }
+      } else if (RutaLaunchConstants.DESCRIPTOR.equals(each)) {
         if (index >= args.length) {
-          return false;
+          throwException("Not enough arguments! Value of descriptor is missing", args, null);
+        }
+        String desc = args[index++];
+        try {
+          descriptor = new File(URLDecoder.decode(desc, URL_ENCODING));
+        } catch (UnsupportedEncodingException e) {
+          throwException("Unable to decode descriptor argument: " + desc, args, e);
+        }
+      } else if (RutaLaunchConstants.RECURSIVE.equals(each)) {
+        if (index >= args.length) {
+          throwException("Not enough arguments! Value of recursive folder structure is missing", args, null);
         }
         inputRecursive = Boolean.parseBoolean(args[index++]);
-      } else if (RutaLaunchConstants.ARG_ADD_SDI.equals(each)) {
+      } else if (RutaLaunchConstants.ADD_SDI.equals(each)) {
         if (index >= args.length) {
-          return false;
+          throwException("Not enough arguments! Value of adding source document information is missing", args, null);
         }
         addSDI = Boolean.parseBoolean(args[index++]);
-      } else if (RutaLaunchConstants.ARG_ENCODING.equals(each)) {
+      } else if (RutaLaunchConstants.ENCODING.equals(each)) {
         if (index >= args.length) {
-          return false;
+          throwException("Not enough arguments! Value of encoding is missing", args, null);
         }
         inputEncoding = args[index++];
-      } else if (RutaLaunchConstants.ARG_MODE.equals(each)) {
+      } else if (RutaLaunchConstants.MODE.equals(each)) {
         if (index >= args.length) {
-          return false;
+          throwException("Not enough arguments! Value of run mode is missing", args, null);
         }
         launchMode = args[index++];
-      } else if (RutaLaunchConstants.ARG_VIEW.equals(each)) {
+      } else if (RutaLaunchConstants.VIEW.equals(each)) {
         if (index >= args.length) {
-          return false;
+          throwException("Not enough arguments! Value of CAS view is missing", args, null);
         }
         view = args[index++];
-      } else if (RutaLaunchConstants.ARG_FORMAT.equals(each)) {
+      } else if (RutaLaunchConstants.FORMAT.equals(each)) {
         if (index >= args.length) {
-          return false;
+          throwException("Not enough arguments! Value of serialization format is missing", args, null);
         }
         defaultFormat = args[index++];
-      } else if (RutaLaunchConstants.ARG_CLASSPATH.equals(each)) {
+      } else if (RutaLaunchConstants.CLASSPATH.equals(each)) {
         if (index >= args.length) {
-          return false;
+          throwException("Not enough arguments! Value of classpath is missing", args, null);
         }
-        classPath =  URLDecoder.decode(args[index++], URL_ENCODING);
+        String cp = args[index++];
+        try {
+          classPath =  URLDecoder.decode(cp, URL_ENCODING);
+        } catch (UnsupportedEncodingException e) {
+          throwException("Unable to decode classpath argument: " + cp, args, e);
+        }
       }
     }
-    return count == 2;
+    if(inputFolder == null) {
+      throwException("Argument for input folder is missing", args, null);
+    }
+    if(descriptor == null) {
+      throwException("Argument for descriptor is missing", args, null);
+    }
+  }
+
+  private static void throwException(String message, String[] args, Exception e) {
+    if(e != null) {
+      throw new IllegalArgumentException(message + " - Arguments: " + Arrays.toString(args), e);
+    }
+    throw new IllegalArgumentException(message + " - Arguments: " + Arrays.toString(args));
   }
 
   public static void main(String[] args) throws Exception {
-    if (!parseCmdLineArgs(args)) {
-      throw new IllegalArgumentException("Passed arguments are invalid!");
-    }
+    parseCmdLineArgs(args);
 
     ResourceManager resourceManager = null;
     if (classPath != null) {

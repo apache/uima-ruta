@@ -21,32 +21,25 @@ package org.apache.uima.ruta.ide.launching;
 
 public class RutaLaunchConstants {
 
-  public static final String ARG_INPUT_FOLDER = "-inputFolder";
+  public static final String INPUT_FOLDER = "inputFolder";
 
-  public static final String ARG_OUTPUT_FOLDER = "-outputFolder";
+  public static final String OUTPUT_FOLDER = "outputFolder";
 
-  public static final String ARG_DESCRIPTOR = "-descriptor";
+  public static final String DESCRIPTOR = "descriptor";
 
-  public static final String ARG_RECURSIVE = "-inputRecursive";
+  public static final String RECURSIVE = "inputRecursive";
 
-  public static final String ARG_MODE = "-mode";
+  public static final String MODE = "mode";
 
-  public static final String ARG_VIEW = "-view";
+  public static final String VIEW = "view";
 
-  public static final String ARG_ENCODING = "-encoding";
+  public static final String ENCODING = "encoding";
 
-  public static final String INPUT_FOLDER = "org.apache.uima.ruta.ide.launching.inputFolder";
+  public static final String ADD_SDI = "addsdi";
+  
+  public static final String FORMAT = "serialFormat";
+  
+  public static final String CLASSPATH = "classPath";
 
-  public static final String OUTPUT_FOLDER = "org.apache.uima.ruta.ide.launching.outputFolder";
-
-  public static final String RECURSIVE = "org.apache.uima.ruta.ide.launching.recursive";
-
-  public static final String VIEW = "org.apache.uima.ruta.ide.launching.view";
-
-  public static final String ARG_ADD_SDI = "org.apache.uima.ruta.ide.launching.addsdi";
-
-  public static final String ARG_FORMAT = "org.apache.uima.ruta.ide.launching.defaultFormat";
-
-  public static final String ARG_CLASSPATH = "org.apache.uima.ruta.ide.launching.classPath";
 
 }
