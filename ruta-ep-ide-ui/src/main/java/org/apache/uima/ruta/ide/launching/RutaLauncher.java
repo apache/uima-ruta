@@ -36,6 +36,7 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
@@ -107,6 +108,9 @@ public class RutaLauncher {
           throwException("Not enough arguments! Value of descriptor is missing", args, null);
         }
         String desc = args[index++];
+        if(StringUtils.equals(desc, "null")) {
+          throwException("Value for descriptor is missing", args, null);
+        }
         try {
           descriptor = new File(URLDecoder.decode(desc, URL_ENCODING));
         } catch (UnsupportedEncodingException e) {
@@ -154,11 +158,11 @@ public class RutaLauncher {
         }
       }
     }
-    if(inputFolder == null) {
-      throwException("Argument for input folder is missing", args, null);
-    }
     if(descriptor == null) {
       throwException("Argument for descriptor is missing", args, null);
+    }
+    if(inputFolder == null) {
+      throwException("Argument for input folder is missing", args, null);
     }
   }
 

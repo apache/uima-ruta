@@ -92,9 +92,8 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     IPath outputDirPath = projectPath.append(RutaProjectUtils.getDefaultOutputLocation());
     Collection<String> classPath = RutaProjectUtils.getClassPath(proj.getProject());
     ClassLoader classLoader = RutaProjectUtils.getClassLoader(classPath);
-    IPath analysisEngineDescriptorPath = RutaProjectUtils
-            .getAnalysisEngineDescriptorPath(member.getLocation(), proj.getProject(), classLoader);
-    String engineDefaultMethod = "";
+    IPath analysisEngineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(member.getLocation(), proj.getProject(), classLoader);
+    String engineDefaultMethod = "null";
     if (analysisEngineDescriptorPath != null) {
       engineDefaultMethod = analysisEngineDescriptorPath.toPortableString();
     }
