@@ -151,6 +151,11 @@ public class LanguageCheckerVisitor extends ASTVisitor {
    * Name of each block
    */
   private final Stack<String> blocks;
+  
+  /**
+   * each (inlined) rules
+   */
+  private final Stack<RutaRule> rules;
 
   /**
    * Caching the matched type of a rule element
@@ -214,6 +219,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     knownLocalVariables = new Stack<Map<String, Integer>>();
     knownLocalVariables.push(new HashMap<String, Integer>());
     blocks = new Stack<String>();
+    rules = new Stack<RutaRule>();
     packagePathString = "";
 
     initializePredefinedInformation();
@@ -438,7 +444,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       }
     }
     if (s instanceof RutaRule) {
-      collectAllLabels((RutaRule) s);
+      if(rules.isEmpty()) {
+        collectAllLabels((RutaRule) s);
+      }
+      rules.push((RutaRule) s);
     }
     return true;
   }
@@ -958,7 +967,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       checkPackage(null);
     }
     if (s instanceof RutaRule) {
-      currentLabels.clear();
+      rules.pop();
+      if(rules.isEmpty()) {
+        currentLabels.clear();
+      }
     }
 
     return super.endvisit(s);
