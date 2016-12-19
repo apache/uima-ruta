@@ -21,6 +21,7 @@ package org.apache.uima.ruta.descriptor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +31,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.antlr.runtime.RecognitionException;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.uima.UIMAFramework;
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.Type;
+import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.impl.ResourceManager_impl;
@@ -43,6 +50,7 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 
 public class GenerateDescriptorTest {
 
@@ -86,7 +94,9 @@ public class GenerateDescriptorTest {
             .getConfigurationParameterSettings();
 
     String mainScript = (String) cps.getParameterValue(RutaEngine.PARAM_MAIN_SCRIPT);
-    assertEquals("test.package.Anonymous", mainScript);
+    String rules = (String) cps.getParameterValue(RutaEngine.PARAM_RULES);
+    assertNull("mainScript param should be null", mainScript);
+    assertNotNull("rules param should not null", rules);
     
     String[] additionalEngines = (String[]) cps.getParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINES);
     assertNotNull(additionalEngines);
@@ -170,4 +180,23 @@ public class GenerateDescriptorTest {
 
   }
 
+  @Test
+  public void testScriptOnly() throws Exception {
+    String script = "DECLARE Type; CW{-> Type};";
+    
+    RutaDescriptorFactory rdf = new RutaDescriptorFactory(basicTSUrl, basicAEUrl);
+    RutaDescriptorInformation descriptorInformation = rdf.parseDescriptorInformation(script);
+    RutaBuildOptions options = new RutaBuildOptions();
+    Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = rdf.createDescriptions(null, null, descriptorInformation, options, null, null, null);
+    assertNotNull("Typesystem does not contain declaredtype!", descriptions.getValue().getType("Anonymous.Type"));
+    assertNotNull("AE typesystem does not contain declared type!", descriptions.getKey().getAnalysisEngineMetaData().getTypeSystem().getType("Anonymous.Type"));
+    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(descriptions.getKey());
+    CAS cas = ae.newCAS();
+    cas.setDocumentText("This is a test.");
+    ae.process(cas);
+    Type type = cas.getTypeSystem().getType("Anonymous.Type");
+    assertEquals(1, CasUtil.select(cas, type).size());
+    cas.release();
+  }
+  
 }

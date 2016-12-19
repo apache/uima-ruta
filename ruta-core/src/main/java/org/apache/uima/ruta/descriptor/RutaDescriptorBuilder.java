@@ -308,10 +308,12 @@ public class RutaDescriptorBuilder {
           String[] resourcePaths) throws InvalidXMLException, IOException {
     TypeSystemDescription aets = uimaFactory.createTypeSystemDescription();
     Import_impl import_impl = null;
+    boolean needToIncludeTypeSystemDescriptor = true;
     if (options.isImportByName()) {
       if (typeSystemDescription != null) {
         import_impl = new Import_impl();
         import_impl.setName(typeSystemDescription.getName());
+        needToIncludeTypeSystemDescriptor = false;
       }
     } else {
       if (typeSystemOutput != null) {
@@ -319,11 +321,15 @@ public class RutaDescriptorBuilder {
                 engineOutput);
         import_impl = new Import_impl();
         import_impl.setLocation(relativeLocation);
+        needToIncludeTypeSystemDescriptor = false;
       }
     }
 
-    return configureEngine(desc, engineOutput, options, scriptPaths, enginePaths, resourcePaths,
-            import_impl, aets);
+     AnalysisEngineDescription analysisEngineDescription = configureEngine(desc, engineOutput, options, scriptPaths, enginePaths, resourcePaths, import_impl, aets);
+     if(needToIncludeTypeSystemDescriptor) {
+       analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(typeSystemDescription);
+     }
+     return analysisEngineDescription;
   }
 
   @Deprecated
@@ -436,7 +442,8 @@ public class RutaDescriptorBuilder {
 
     AnalysisEngineDescription analysisEngineDescription = UIMAFramework.getXMLParser()
             .parseAnalysisEngineDescription(new XMLInputSource(defaultAnalysisEngine));
-    if (import_impl != null && (import_impl.getName() != null || import_impl.getLocation() != null)) {
+    if (import_impl != null
+            && (import_impl.getName() != null || import_impl.getLocation() != null)) {
       aets.setImports(new Import[] { import_impl });
     }
     analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(aets);
@@ -465,12 +472,17 @@ public class RutaDescriptorBuilder {
       analysisEngineDescription.getAnalysisEngineMetaData().setCapabilities(newArray);
     }
 
-    String mainScript = desc.getScriptName();
-    if (!StringUtils.isBlank(desc.getPackageString())) {
-      mainScript = desc.getPackageString().concat(".").concat(mainScript);
+    if (desc.getRules() != null) {
+      analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
+              .setParameterValue(RutaEngine.PARAM_RULES, desc.getRules());
+    } else {
+      String mainScript = desc.getScriptName();
+      if (!StringUtils.isBlank(desc.getPackageString())) {
+        mainScript = desc.getPackageString().concat(".").concat(mainScript);
+      }
+      analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
+              .setParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, mainScript);
     }
-    analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
-            .setParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, mainScript);
     if (scriptPaths != null) {
       analysisEngineDescription.getAnalysisEngineMetaData().getConfigurationParameterSettings()
               .setParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, scriptPaths);

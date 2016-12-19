@@ -171,6 +171,7 @@ public class RutaDescriptorFactory {
     String name = "Anonymous";
     descInfo.setScriptName(name);
     parser.file_input(name);
+    descInfo.setRules(script);
     return descInfo;
   }
 

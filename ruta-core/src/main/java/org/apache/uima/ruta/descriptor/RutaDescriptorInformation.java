@@ -48,6 +48,8 @@ public class RutaDescriptorInformation {
 
   private String packageString;
 
+  private String rules;
+
   public RutaDescriptorInformation() {
     super();
     typeShortNames = new ArrayList<String>();
@@ -155,6 +157,14 @@ public class RutaDescriptorInformation {
 
   public void setPackageString(String packageString) {
     this.packageString = packageString;
+  }
+
+  public String getRules() {
+    return rules;
+  }
+  
+  public void setRules(String rules) {
+    this.rules = rules;
   }
 
 }
