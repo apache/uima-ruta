@@ -25,15 +25,14 @@ import org.antlr.runtime.RecognitionException;
 import org.apache.uima.ruta.ide.core.extensions.IIDEBooleanFunctionExtension;
 import org.apache.uima.ruta.ide.core.extensions.IRutaCheckerProblemFactory;
 import org.apache.uima.ruta.ide.parser.ast.RutaFunction;
-import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 
 public class BooleanOperationsIDEExtension implements IIDEBooleanFunctionExtension {
-  private final String[] strings = new String[] { "contains", "endsWith",
-      "startsWith", "equals", "equalsIgnoreCase", "isEmpty" };
+  private final String[] strings = new String[] { "contains", "endsWith", "startsWith", "equals",
+      "equalsIgnoreCase", "isEmpty" };
 
   public String[] getKnownExtensions() {
     return strings;
@@ -51,12 +50,13 @@ public class BooleanOperationsIDEExtension implements IIDEBooleanFunctionExtensi
         rep.reportProblem(problem);
         ok = false;
       }
-      Expression expr = (Expression) childs.get(0);
-      if (expr.getKind() != RutaTypeConstants.RUTA_TYPE_S) {
-        IProblem problem = problemFactory.createWrongArgumentTypeProblem(expr, "TypeExpression");
-        rep.reportProblem(problem);
-        ok = false;
-      }
+      // all is a string expression
+      // Expression expr = (Expression) childs.get(0);
+      // if (expr.getKind() != RutaTypeConstants.RUTA_TYPE_S && expr.getKind() != -1) {
+      // IProblem problem = problemFactory.createWrongArgumentTypeProblem(expr, "StringExpression");
+      // rep.reportProblem(problem);
+      // ok = false;
+      // }
       return ok;
     }
     return false;

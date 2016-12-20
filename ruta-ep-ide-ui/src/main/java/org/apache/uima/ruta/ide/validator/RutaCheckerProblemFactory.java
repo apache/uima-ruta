@@ -31,6 +31,7 @@ import org.apache.uima.ruta.ide.parser.ast.RutaAction;
 import org.apache.uima.ruta.ide.parser.ast.RutaCondition;
 import org.apache.uima.ruta.ide.parser.ast.RutaFeatureDeclaration;
 import org.apache.uima.ruta.ide.parser.ast.RutaFunction;
+import org.apache.uima.ruta.ide.parser.ast.RutaTypeConstants;
 import org.apache.uima.ruta.ide.parser.ast.RutaVariableReference;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.dltk.ast.ASTListNode;
@@ -183,7 +184,8 @@ public class RutaCheckerProblemFactory implements IRutaCheckerProblemFactory {
   }
 
   public IProblem createWrongArgumentTypeProblem(Expression was, String expected) {
-    String message = "Wrong kind of argument: expected " + expected;
+    String present = RutaTypeConstants.typeStringOfInt.get(was.getKind());
+    String message = "Wrong kind of argument: expected " + expected +", but was " + present;
     return new RutaCheckerDefaultProblem(this.fileName, message, was, getLine(was));
   }
 
