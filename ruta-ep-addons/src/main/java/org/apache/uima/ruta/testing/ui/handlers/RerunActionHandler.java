@@ -294,7 +294,7 @@ public class RerunActionHandler implements IHandler {
         copy.setAttribute(RutaLaunchConstants.INPUT_FOLDER, inputDirPath);
         // do not use RutaLaunchConstants.ARG_OUTPUT_FOLDER here
         copy.setAttribute(RutaLaunchConstants.OUTPUT_FOLDER, outputDirPath);
-        copy.setAttribute(RutaLaunchConstants.ARG_DESCRIPTOR, descriptorAbsolutePath);
+        copy.setAttribute(RutaLaunchConstants.DESCRIPTOR, descriptorAbsolutePath);
         copy.setAttribute(RutaLaunchConfigurationConstants.ATTR_PROJECT_NAME, project.getName());
         ILaunchConfiguration lc = copy.doSave();
 
