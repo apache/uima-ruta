@@ -964,6 +964,10 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       IRutaExpression value = entry.getValue();
       String featureName = key.getStringValue(context, this);
       Feature feature = type.getFeatureByBaseName(featureName);
+      if (feature == null) {
+        throw new IllegalArgumentException("Not able to assign feature value for feature '"
+                + featureName + "'. Feature is not defined for type '" + type.getName() + "'");
+      }
       assignFeatureValue(annotation, feature, value, context);
     }
   }
