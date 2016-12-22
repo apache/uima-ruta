@@ -505,6 +505,50 @@ public class AnnotationLabelExpressionTest {
     cas.release();
   }
 
+  @Test
+  public void testLabelReset() throws Exception {
+    String script= "";
+    script += "W{->Struct1, Struct1.a = w} w:W?;";
+    script += "W{->Struct2, Struct2.a = c} c:(W ANY)?;";
+    
+    CAS cas = applyOnStruct4Cas(script);
+    
+    Type type1 = cas.getTypeSystem().getType("Struct1");
+    Feature feature1 = type1.getFeatureByBaseName("a");
+    
+    List<AnnotationFS> select1 = new ArrayList<>(CasUtil.select(cas, type1));
+    Assert.assertEquals(2, select1.size());
+    
+    AnnotationFS a11 = select1.get(0);
+    Assert.assertEquals("Some", a11.getCoveredText());
+    AnnotationFS featureValue11 = (AnnotationFS) a11.getFeatureValue(feature1);
+    Assert.assertEquals("text", featureValue11.getCoveredText());
+    
+    AnnotationFS a21 = select1.get(1);
+    Assert.assertEquals("text", a21.getCoveredText());
+    AnnotationFS featureValue21 = (AnnotationFS) a21.getFeatureValue(feature1);
+    Assert.assertNull(featureValue21);
+    
+    Type type2 = cas.getTypeSystem().getType("Struct2");
+    Feature feature2 = type2.getFeatureByBaseName("a");
+    
+    List<AnnotationFS> select2 = new ArrayList<>(CasUtil.select(cas, type2));
+    Assert.assertEquals(2, select2.size());
+    
+    AnnotationFS  a12 = select2.get(0);
+    Assert.assertEquals("Some", a12.getCoveredText());
+    AnnotationFS featureValue12 = (AnnotationFS) a12.getFeatureValue(feature2);
+    Assert.assertEquals("text.", featureValue12.getCoveredText());
+    
+    AnnotationFS  a22 = select2.get(1);
+    Assert.assertEquals("text", a22.getCoveredText());
+    AnnotationFS featureValue22 = (AnnotationFS) a22.getFeatureValue(feature2);
+    Assert.assertNull(featureValue22);
+    
+    
+  }
+  
+  
   private CAS applyOnStruct4Cas(String script) throws Exception {
     String document = "Some text.";
     Map<String, String> typeMap = new TreeMap<String, String>();

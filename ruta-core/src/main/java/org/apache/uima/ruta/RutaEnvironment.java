@@ -1090,21 +1090,6 @@ public class RutaEnvironment {
 		return namespaces;
 	}
 
-//  public void addAnnotationToVariable(AnnotationFS annotation, String var, RutaStream stream) {
-//    Class<?> variableType = getVariableType(var);
-//    if(List.class.equals(variableType) &&  AnnotationFS.class.equals(getVariableGenericType(var))) {
-//      @SuppressWarnings("unchecked")
-//      List<AnnotationFS> value = getVariableValue(var, List.class, stream);
-//      if(value == null) {
-//        value = new ArrayList<>();
-//        setVariableValue(var, value);
-//      }
-//      value.add(annotation);
-//    } else if(AnnotationFS.class.equals(variableType)) {
-//      setVariableValue(var, annotation);
-//    }
-//  }
-  
   public void addMatchToVariable(RuleMatch ruleMatch, RuleElement element, MatchContext context,  RutaStream stream) {
     String var = element.getLabel();
     if(StringUtils.isBlank(var)) {

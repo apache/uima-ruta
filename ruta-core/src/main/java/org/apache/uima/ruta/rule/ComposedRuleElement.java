@@ -540,6 +540,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           RutaStream stream, InferenceCrowd crowd) {
     List<AnnotationFS> textsMatched = match.getTextsMatched();
     if (textsMatched == null || textsMatched.isEmpty()) {
+      getParent().getEnvironment().addMatchToVariable(ruleMatch, this, new MatchContext(getParent()), stream);
       match.evaluateInnerMatches(true, stream);
       return;
     }

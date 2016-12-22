@@ -274,6 +274,7 @@ public class RutaRuleElement extends AbstractRuleElement {
     List<RuleElementMatch> matchInfo = getMatch(ruleMatch, containerMatch);
     MatchContext context = new MatchContext(this, ruleMatch, after);
     if (matchInfo == null) {
+      context.getParent().getEnvironment().addMatchToVariable(ruleMatch, this, context, stream);
       if (quantifier.isOptional(context, stream)) {
         result = continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply,
                 containerMatch, sideStepOrigin, entryPoint, stream, crowd);
