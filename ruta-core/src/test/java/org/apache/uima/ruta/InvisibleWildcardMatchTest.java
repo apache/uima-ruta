@@ -27,16 +27,11 @@ import org.junit.Test;
 public class InvisibleWildcardMatchTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String document = "Some text. ";
     String script = "PERIOD #{->T1};";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
 

@@ -32,6 +32,7 @@ import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.type.RutaOptional;
 
 public class RuleMatch extends AbstractRuleMatch<RutaRule> {
 
@@ -128,6 +129,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
       }
     }
 
+    // TODO rethink the reverse
     List<List<List<RuleElementMatch>>> reverseList = new ArrayList<List<List<RuleElementMatch>>>();
     for (Integer index : indexes) {
       if (index > container.getRuleElements().size()) {
@@ -149,27 +151,45 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     for (List<List<RuleElementMatch>> list : reverseList) {
       int begin = Integer.MAX_VALUE;
       int end = 0;
+      AnnotationFS singleAnnotation = null;
+      boolean mergingRequired = list.size() > 1;
       for (List<RuleElementMatch> list2 : list) {
         if (list2 != null) {
-          for (RuleElementMatch ruleElementMatch : list2) {
+          if(list2.size()>1) {
+            mergingRequired = true;
+          }
+          if (list2.size() == 1 && !mergingRequired) {
+            RuleElementMatch ruleElementMatch = list2.get(0);
             List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
-            if (textsMatched != null && !textsMatched.isEmpty()) {
-              AnnotationFS first = getFirstNormal(textsMatched);
-              if (first != null) {
-                begin = Math.min(first.getBegin(), begin);
-              }
-              AnnotationFS last = getLastNormal(textsMatched);
-              if (last != null) {
-                end = Math.max(last.getEnd(), end);
-              }
-              if (cas == null && first != null) {
-                cas = first.getCAS();
+            if (textsMatched != null && textsMatched.size() == 1) {
+              singleAnnotation = textsMatched.get(0);
+            } else {
+              mergingRequired = true;
+            }
+          }
+          if(mergingRequired) {
+            for (RuleElementMatch ruleElementMatch : list2) {
+              List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
+              if (textsMatched != null && !textsMatched.isEmpty()) {
+                AnnotationFS first = getFirstNormal(textsMatched);
+                if (first != null) {
+                  begin = Math.min(first.getBegin(), begin);
+                }
+                AnnotationFS last = getLastNormal(textsMatched);
+                if (last != null) {
+                  end = Math.max(last.getEnd(), end);
+                }
+                if (cas == null && first != null) {
+                  cas = first.getCAS();
+                }
               }
             }
           }
         }
       }
-      if (cas != null && end != 0) {
+      if (singleAnnotation != null && !(singleAnnotation instanceof RutaOptional)) {
+        result.add(singleAnnotation);
+      } else if (cas != null && end != 0) {
         AnnotationFS annotation = cas.createAnnotation(cas.getAnnotationType(), begin, end);
         result.add(annotation);
       }
@@ -309,7 +329,8 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     return getMatchInfo(rootMatch, element);
   }
 
-  public List<List<RuleElementMatch>> getMatchInfo(RuleElementMatch rootMatch, RuleElement element) {
+  public List<List<RuleElementMatch>> getMatchInfo(RuleElementMatch rootMatch,
+          RuleElement element) {
     List<List<RuleElementMatch>> result = new ArrayList<List<RuleElementMatch>>();
     RuleElement root = rootMatch.getRuleElement();
     if (element.equals(root)) {

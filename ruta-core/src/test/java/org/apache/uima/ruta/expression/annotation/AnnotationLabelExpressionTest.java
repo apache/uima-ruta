@@ -36,10 +36,13 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.util.CasUtil;
+import org.apache.uima.jcas.cas.FSArray;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
@@ -374,7 +377,7 @@ public class AnnotationLabelExpressionTest {
     script += "s:Struct1 SW{-> CREATE(Struct2, \"a\" = s)};\n";
     CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
     Ruta.apply(cas, script);
-    
+
     Type type1 = cas.getTypeSystem().getType("Struct1");
     Feature feature1 = type1.getFeatureByBaseName("a");
     Type type2 = cas.getTypeSystem().getType("Struct2");
@@ -387,18 +390,118 @@ public class AnnotationLabelExpressionTest {
     Assert.assertEquals("3", iterator.next().getFeatureValue(feature2).getStringValue(feature1));
     cas.release();
   }
-  
-  
+
   @Test
   public void testFeatureAssignment() throws Exception {
     String document = "Some text.";
-    
+
     String script = "CW{-> T1};\n";
     script += "t:T1{-> t.end = 10};\n";
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
-  
+
+    cas.release();
+  }
+
+  @Test
+  public void testLabelWithQuantifier() throws Exception {
+    String script ="";
+    script += "w:(W+) @PERIOD{->Struct1,Struct1.a=w,Struct1.as=w};\n";
+    script += "(w:W)+ @PERIOD{->Struct2,Struct2.a=w,Struct2.as=w};\n";
+    script += "w:W+ @PERIOD{->Struct3,Struct3.a=w,Struct3.as=w};\n";
+
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    typeMap.put("Struct1", "uima.tcas.Annotation");
+    typeMap.put("Struct2", "uima.tcas.Annotation");
+    typeMap.put("Struct3", "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put("Struct1", list);
+    featureMap.put("Struct2", list);
+    featureMap.put("Struct3", list);
+    list.add(new TestFeature("a", "", "uima.tcas.Annotation"));
+    list.add(new TestFeature("as", "", "uima.cas.FSArray"));
+
+    CAS cas = RutaTestUtils.getCAS("Some text.", typeMap, featureMap);
+    Ruta.apply(cas, script);
+
+    Type type = null;
+    Feature featureA = null;
+    Feature featureAS = null;
+    Iterator<AnnotationFS> iterator = null;
+    AnnotationFS next = null;
+    FeatureStructure featureValueA = null;
+    FeatureStructure featureValueAS = null;
+    Annotation a = null;
+    FSArray as = null;
+
+    type = cas.getTypeSystem().getType("Struct1");
+    featureA = type.getFeatureByBaseName("a");
+    featureAS = type.getFeatureByBaseName("as");
+    iterator = CasUtil.select(cas, type).iterator();
+    Assert.assertTrue(iterator.hasNext());
+    next = iterator.next();
+    Assert.assertFalse(iterator.hasNext());
+    featureValueA = next.getFeatureValue(featureA);
+    featureValueAS = next.getFeatureValue(featureAS);
+    Assert.assertNotNull(featureValueA);
+    Assert.assertNotNull(featureValueAS);
+    Assert.assertTrue(featureValueA instanceof Annotation);
+    Assert.assertTrue(featureValueAS instanceof FSArray);
+    a = (Annotation) featureValueA;
+    as = (FSArray) featureValueAS;
+    Assert.assertEquals("Some text", a.getCoveredText());
+    Assert.assertEquals("Annotation", a.getType().getShortName());
+    Assert.assertEquals(1, as.size());
+    Assert.assertEquals("Some text", ((AnnotationFS) as.get(0)).getCoveredText());
+    Assert.assertEquals("Annotation", as.get(0).getType().getShortName());
+    
+    type = cas.getTypeSystem().getType("Struct2");
+    featureA = type.getFeatureByBaseName("a");
+    featureAS = type.getFeatureByBaseName("as");
+    iterator = CasUtil.select(cas, type).iterator();
+    Assert.assertTrue(iterator.hasNext());
+    next = iterator.next();
+    Assert.assertFalse(iterator.hasNext());
+    featureValueA = next.getFeatureValue(featureA);
+    featureValueAS = next.getFeatureValue(featureAS);
+    Assert.assertNotNull(featureValueA);
+    Assert.assertNotNull(featureValueAS);
+    Assert.assertTrue(featureValueA instanceof Annotation);
+    Assert.assertTrue(featureValueAS instanceof FSArray);
+    a = (Annotation) featureValueA;
+    as = (FSArray) featureValueAS;
+    Assert.assertEquals("Some", a.getCoveredText());
+    Assert.assertEquals("CW", a.getType().getShortName());
+    Assert.assertEquals(2, as.size());
+    Assert.assertEquals("text", ((AnnotationFS) as.get(0)).getCoveredText());
+    Assert.assertEquals("Some", ((AnnotationFS) as.get(1)).getCoveredText());
+    Assert.assertEquals("SW", as.get(0).getType().getShortName());
+    Assert.assertEquals("CW", as.get(1).getType().getShortName());
+    
+    type = cas.getTypeSystem().getType("Struct3");
+    featureA = type.getFeatureByBaseName("a");
+    featureAS = type.getFeatureByBaseName("as");
+    iterator = CasUtil.select(cas, type).iterator();
+    Assert.assertTrue(iterator.hasNext());
+    next = iterator.next();
+    Assert.assertFalse(iterator.hasNext());
+    featureValueA = next.getFeatureValue(featureA);
+    featureValueAS = next.getFeatureValue(featureAS);
+    Assert.assertNotNull(featureValueA);
+    Assert.assertNotNull(featureValueAS);
+    Assert.assertTrue(featureValueA instanceof Annotation);
+    Assert.assertTrue(featureValueAS instanceof FSArray);
+    a = (Annotation) featureValueA;
+    as = (FSArray) featureValueAS;
+    Assert.assertEquals("Some text", a.getCoveredText());
+    Assert.assertEquals("Annotation", a.getType().getShortName());
+    Assert.assertEquals(1, as.size());
+    Assert.assertEquals("Some text", ((AnnotationFS) as.get(0)).getCoveredText());
+    Assert.assertEquals("Annotation", as.get(0).getType().getShortName());
+
     cas.release();
   }
 
@@ -422,6 +525,5 @@ public class AnnotationLabelExpressionTest {
     Ruta.apply(cas, script);
     return cas;
   }
-  
-  
+
 }
