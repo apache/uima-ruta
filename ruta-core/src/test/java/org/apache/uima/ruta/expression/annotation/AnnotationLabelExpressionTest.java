@@ -565,6 +565,15 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
   }
   
+  @Test
+  public void testInvalidLabelWithOptional() throws Exception {
+    String script= "";
+    script += "p:ANY{-> p.begin = a.begin, p.end = a.end} a:ANY;";
+    script += "PERIOD{-> T1};";
+    CAS cas = applyOnStruct4Cas(script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, ".");
+  }
+  
   
   private CAS applyOnStruct4Cas(String script) throws Exception {
     String document = "Some text.";
