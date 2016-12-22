@@ -63,7 +63,7 @@ public class QuestionReluctant extends AbstractRuleElementQuantifier {
       return false;
     }
 
-    RuleElement nextElement = ruleElement.getContainer().getNextElement(after, ruleElement);
+    RuleElement nextElement = getNextRuleElement(after, ruleElement);
     if (nextElement == null) {
       return false;
     }

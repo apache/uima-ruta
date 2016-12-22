@@ -109,7 +109,7 @@ public class MinMaxReluctant extends AbstractRuleElementQuantifier {
       }
     }
 
-    RuleElement nextElement = ruleElement.getContainer().getNextElement(after, ruleElement);
+    RuleElement nextElement = getNextRuleElement(after, ruleElement);
     if (nextElement == null) {
       return false;
     }

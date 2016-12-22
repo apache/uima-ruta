@@ -20,10 +20,12 @@
 package org.apache.uima.ruta;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
@@ -60,6 +62,13 @@ public class QuantifierTest {
     Assert.assertEquals("e.", Ruta.select(jcas, "\"e\" W[0,0] @PERIOD;").get(0).getCoveredText());
     
     jcas.release();
+  }
+  
+  @Test
+  public void testReluctantGreedyInComposed() throws Exception {
+    JCas jcas = RutaTestUtils.getCAS("a B B . a B . a .").getJCas();
+    List<Annotation> select = Ruta.select(jcas, "SW (CW+?) PERIOD;");
+    Assert.assertEquals(2, select.size());
   }
   
   

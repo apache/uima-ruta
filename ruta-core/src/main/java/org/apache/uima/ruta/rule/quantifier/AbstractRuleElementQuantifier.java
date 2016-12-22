@@ -21,7 +21,9 @@ package org.apache.uima.ruta.rule.quantifier;
 
 import java.util.List;
 
+import org.apache.uima.ruta.rule.ComposedRuleElement;
 import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RuleElementContainer;
 import org.apache.uima.ruta.rule.RuleElementMatch;
 import org.apache.uima.ruta.rule.RuleMatch;
 
@@ -48,4 +50,16 @@ public abstract class AbstractRuleElementQuantifier implements RuleElementQuanti
     return false;
   }
 
+  protected RuleElement getNextRuleElement(boolean after, RuleElement ruleElement) {
+    RuleElement nextElement = null;
+    RuleElementContainer container = ruleElement.getContainer();
+    RuleElement previousElement = ruleElement;
+    while(nextElement == null && container instanceof ComposedRuleElement) {
+      nextElement = container.getNextElement(after, previousElement);
+      previousElement = ((ComposedRuleElement)container);
+      container = ((ComposedRuleElement)container).getContainer();
+    }
+    return nextElement;
+  }
+  
 }

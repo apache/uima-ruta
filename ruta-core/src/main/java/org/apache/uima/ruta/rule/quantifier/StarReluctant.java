@@ -46,7 +46,8 @@ public class StarReluctant extends AbstractRuleElementQuantifier {
       // do not try to continue a match that totally failed
       return false;
     }
-    RuleElement nextElement = ruleElement.getContainer().getNextElement(after, ruleElement);
+    
+    RuleElement nextElement = getNextRuleElement(after, ruleElement);
     if (nextElement == null) {
       return false;
     }

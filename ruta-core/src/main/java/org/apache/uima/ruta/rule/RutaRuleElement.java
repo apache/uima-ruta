@@ -233,7 +233,7 @@ public class RutaRuleElement extends AbstractRuleElement {
           result.add(extendedMatch);
         } else if (extendedMatch.matched()) {
           context = new MatchContext(this, extendedMatch, after);
-          if (quantifier.continueMatch(after, context, annotation, extendedContainerMatch, stream,
+          if (quantifier.continueMatch(after, context, eachAnchor, extendedContainerMatch, stream,
                   crowd)) {
             List<RuleMatch> continueOwnMatch = continueOwnMatch(after, eachAnchor, extendedMatch,
                     ruleApply, extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);

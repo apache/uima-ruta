@@ -68,8 +68,8 @@ public class PlusReluctant extends AbstractRuleElementQuantifier {
     if (ownList == null || ownList.isEmpty()) {
       return true;
     }
-
-    RuleElement nextElement = ruleElement.getContainer().getNextElement(after, ruleElement);
+    
+    RuleElement nextElement = getNextRuleElement(after, ruleElement);
     if (nextElement == null) {
       return false;
     }
