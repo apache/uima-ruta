@@ -548,6 +548,23 @@ public class AnnotationLabelExpressionTest {
     
   }
   
+  @Test(expected = AnalysisEngineProcessException.class)
+  public void testInvalidLabelWithQuantifier1() throws Exception {
+    String script= "";
+    script += "w:ANY{->Struct1, Struct1.a = w};";
+    script += "s1:Struct1{PARTOF(CW)->T1} s2:Struct1*{s2.a.ct == \"text\"};";
+    applyOnStruct4Cas(script);
+  }
+  
+  @Test
+  public void testInvalidLabelWithQuantifier2() throws Exception {
+    String script= "";
+    script += "w:ANY{->Struct1, Struct1.a = w};";
+    script += "PERIOD{s.a.ct==\"text\" ->T2} s:Struct1*{s.a.ct == \"text\"};";
+    CAS cas = applyOnStruct4Cas(script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+  }
+  
   
   private CAS applyOnStruct4Cas(String script) throws Exception {
     String document = "Some text.";

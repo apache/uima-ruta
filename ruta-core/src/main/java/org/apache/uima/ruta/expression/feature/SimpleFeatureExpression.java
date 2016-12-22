@@ -87,8 +87,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
               || StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT_SHORT)) {
         if (type != null) {
           feature = type.getFeatureByBaseName(each);
-        }
-        if (feature == null) {
+        } else {
           // there is no explicit feature for coveredText
           feature = new CoveredTextFeature();
         }
