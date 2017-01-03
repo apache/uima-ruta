@@ -47,14 +47,14 @@ public class HtmlConverterXmlTest {
 
     URL urlA = HtmlAnnotator.class.getClassLoader().getResource("HtmlAnnotator.xml");
     if (urlA == null) {
-      urlA = HtmlAnnotator.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlAnnotator.xml");
+      urlA = HtmlAnnotator.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlAnnotator.xml");
     }
 
     URL urlC = HtmlAnnotator.class.getClassLoader().getResource("HtmlConverter.xml");
     if (urlC == null) {
-      urlC = HtmlAnnotator.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      urlC = HtmlAnnotator.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
 
     XMLInputSource inA = new XMLInputSource(urlA);
@@ -68,8 +68,8 @@ public class HtmlConverterXmlTest {
     AnalysisEngine aeC = UIMAFramework.produceAnalysisEngine(specifierC);
     aeC.setConfigParameterValue(HtmlConverter.PARAM_SKIP_WHITESPACES, false);
     aeC.setConfigParameterValue(HtmlConverter.PARAM_PROCESS_ALL, true);
-    aeC.setConfigParameterValue(HtmlConverter.PARAM_GAP_INDUCING_TAGS, new String[] { "child1",
-        "child2", "child3" });
+    aeC.setConfigParameterValue(HtmlConverter.PARAM_GAP_INDUCING_TAGS,
+            new String[] { "child1", "child2", "child3" });
     aeC.setConfigParameterValue(HtmlConverter.PARAM_GAP_TEXT, "$");
     aeC.reconfigure();
 
@@ -107,14 +107,14 @@ public class HtmlConverterXmlTest {
 
     URL urlA = HtmlAnnotator.class.getClassLoader().getResource("HtmlAnnotator.xml");
     if (urlA == null) {
-      urlA = HtmlAnnotator.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlAnnotator.xml");
+      urlA = HtmlAnnotator.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlAnnotator.xml");
     }
 
     URL urlC = HtmlAnnotator.class.getClassLoader().getResource("HtmlConverter.xml");
     if (urlC == null) {
-      urlC = HtmlAnnotator.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      urlC = HtmlAnnotator.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
 
     XMLInputSource inA = new XMLInputSource(urlA);
@@ -161,9 +161,11 @@ public class HtmlConverterXmlTest {
     next = iterator.next();
     boolean b2 = next.getBooleanValue(expandedFeature);
     assertEquals("More content.", next.getCoveredText());
-    // for one of these two annotation (with same offsets) the feature must be set to true 
+    // for one of these two annotation (with same offsets) the feature must be set to true
     assertEquals(true, b1 || b2);
 
     cas.release();
   }
+
+
 }

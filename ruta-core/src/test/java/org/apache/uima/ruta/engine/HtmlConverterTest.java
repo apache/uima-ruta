@@ -515,4 +515,34 @@ public class HtmlConverterTest {
     // fini
     cas.release();
   }
+  
+  @Test
+  public void testStyle() throws Exception {
+    String html = "<html><head>\n" + "<style>\n" + "/*  */\n" + ".test {\n" + "   text-align: left;\n" + "}\n"
+            + "</style>\n" + "</head><body>Hello world</body></html>";
+    URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
+    if (url == null) {
+      url = HtmlConverter.class.getClassLoader().getResource(
+              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+    }
+    XMLInputSource in = new XMLInputSource(url);
+    ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
+    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
+    CAS cas = ae.newCAS();
+
+    ae.setConfigParameterValue(HtmlConverter.PARAM_OUTPUT_VIEW, outputViewName);
+    ae.reconfigure();
+    cas.reset();
+    cas.setDocumentText(html);
+
+    ae.process(cas);
+
+    CAS modifiedView = cas.getView(outputViewName);
+    String text = modifiedView.getDocumentText();
+
+    String expectedText = "Hello world";
+    assertEquals(expectedText, text);
+
+    cas.release();
+  }
 }

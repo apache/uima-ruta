@@ -83,7 +83,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
    */
   public static final String PARAM_OUTPUT_VIEW = "outputView";
 
-  @ConfigurationParameter(name = PARAM_OUTPUT_VIEW, mandatory = false, defaultValue = DEFAULT_MODIFIED_VIEW)
+  @ConfigurationParameter(name = PARAM_OUTPUT_VIEW, mandatory = true, defaultValue = DEFAULT_MODIFIED_VIEW)
   private String modifiedViewName;
 
   /**
@@ -101,7 +101,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   public static final String PARAM_REPLACE_LINEBREAKS = "replaceLinebreaks";
 
   @ConfigurationParameter(name = PARAM_REPLACE_LINEBREAKS, mandatory = false, defaultValue = "true")
-  private Boolean replaceLinebreaks;
+  private boolean replaceLinebreaks;
 
   /**
    * This boolean parameter determines if the converter should skip whitespaces. Html documents
@@ -113,7 +113,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   public static final String PARAM_SKIP_WHITESPACES = "skipWhitespaces";
 
   @ConfigurationParameter(name = PARAM_SKIP_WHITESPACES, mandatory = false, defaultValue = "true")
-  private Boolean skipWhitespaces;
+  private boolean skipWhitespaces;
 
   /**
    * If this boolean parameter is set to true, then the tags of the complete document is processed
@@ -121,8 +121,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
    */
   public static final String PARAM_PROCESS_ALL = "processAll";
 
-  @ConfigurationParameter(name = PARAM_PROCESS_ALL, mandatory = false, defaultValue = "false")
-  private Boolean processAll;
+  @ConfigurationParameter(name = PARAM_PROCESS_ALL, mandatory = true, defaultValue = "false")
+  private boolean processAll;
 
   /**
    * If this boolean parameter is set to true, then zero-length annotation will not be dropped, but
@@ -131,8 +131,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
    */
   public static final String PARAM_EXPAND_OFFSETS = "expandOffsets";
 
-  @ConfigurationParameter(name = PARAM_EXPAND_OFFSETS, mandatory = false, defaultValue = "false")
-  private Boolean expandOffsets;
+  @ConfigurationParameter(name = PARAM_EXPAND_OFFSETS, mandatory = true, defaultValue = "false")
+  private boolean expandOffsets;
 
   /**
    * This string parameter determines the character sequence that replaces a linebreak. The default
@@ -165,11 +165,11 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
 
   /**
    * This string array parameter sets the names of the html tags that create additional text in the
-   * output view. The acutal string of the gap is defined by the parameter <code>gapText</code>.
+   * output view. The actual string of the gap is defined by the parameter <code>gapText</code>.
    */
   public static final String PARAM_GAP_INDUCING_TAGS = "gapInducingTags";
 
-  @ConfigurationParameter(name = PARAM_GAP_INDUCING_TAGS, mandatory = false)
+  @ConfigurationParameter(name = PARAM_GAP_INDUCING_TAGS, mandatory = true, defaultValue = {})
   private String[] gapInducingTags;
 
   /**
@@ -178,7 +178,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
    */
   public static final String PARAM_GAP_TEXT = "gapText";
 
-  @ConfigurationParameter(name = PARAM_GAP_TEXT, mandatory = false, defaultValue = "")
+  @ConfigurationParameter(name = PARAM_GAP_TEXT, mandatory = true, defaultValue = "")
   private String gapText;
 
   /**
@@ -186,8 +186,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
    */
   public static final String PARAM_USE_SPACE_GAP = "useSpaceGap";
 
-  @ConfigurationParameter(name = PARAM_USE_SPACE_GAP, mandatory = false, defaultValue = "")
-  private Boolean useSpaceGap;
+  @ConfigurationParameter(name = PARAM_USE_SPACE_GAP, mandatory = true, defaultValue = "false")
+  private boolean useSpaceGap;
 
   /**
    * This string array parameter can be used to apply custom conversions. It defaults to a list of
@@ -212,7 +212,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
    */
   public static final String PARAM_CONVERSION_POLICY = "conversionPolicy";
 
-  @ConfigurationParameter(name = PARAM_CONVERSION_POLICY, mandatory = false, defaultValue = "heuristic")
+  @ConfigurationParameter(name = PARAM_CONVERSION_POLICY, mandatory = true, defaultValue = "heuristic")
   private String conversionPolicy;
 
   /**
@@ -232,17 +232,6 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    inputViewName = (String) aContext.getConfigParameterValue(PARAM_INPUT_VIEW);
-    inputViewName = StringUtils.isBlank(inputViewName) ? null : inputViewName;
-    modifiedViewName = (String) aContext.getConfigParameterValue(PARAM_OUTPUT_VIEW);
-    modifiedViewName = StringUtils.isBlank(modifiedViewName) ? DEFAULT_MODIFIED_VIEW
-            : modifiedViewName;
-    replaceLinebreaks = (Boolean) aContext.getConfigParameterValue(PARAM_REPLACE_LINEBREAKS);
-    replaceLinebreaks = replaceLinebreaks == null ? true : replaceLinebreaks;
-    skipWhitespaces = (Boolean) aContext.getConfigParameterValue(PARAM_SKIP_WHITESPACES);
-    skipWhitespaces = skipWhitespaces == null ? true : skipWhitespaces;
-    processAll = (Boolean) aContext.getConfigParameterValue(PARAM_PROCESS_ALL);
-    processAll = processAll == null ? true : processAll;
     linebreakReplacement = (String) aContext.getConfigParameterValue(PARAM_LINEBREAK_REPLACEMENT);
     linebreakReplacement = linebreakReplacement == null ? "" : linebreakReplacement;
     String conversionPolicy = (String) aContext.getConfigParameterValue(PARAM_CONVERSION_POLICY);
@@ -254,22 +243,10 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
       throw new ResourceInitializationException("illegal conversionPolicy parameter value",
               new Object[0]);
     }
-    String[] nlTags = (String[]) aContext.getConfigParameterValue(PARAM_NEWLINE_INDUCING_TAGS);
-    if (nlTags == null) {
-      newlineInducingTags = new String[] { "br", "p", "div", "ul", "ol", "dl", "li", "h1", "h2",
-          "h3", "h4", "h5", "h6", "blockquote" };
-
-    }
     // check assertions
     if (modifiedViewName.equals(inputViewName)) {
       throw new ResourceInitializationException("input and output view names must differ!",
               new Object[0]);
-    }
-    conversionPatterns = (String[]) aContext.getConfigParameterValue(PARAM_CONVERSION_PATTERNS);
-    if (conversionPatterns == null) {
-      conversionPatterns = new String[] { "&nbsp;", "&laquo;", "&raquo;", "&quot;", "&amp;",
-          "&lt;", "&gt;", "&apos;", "&sect;", "&uml;", "&copy;", "&trade;", "&reg;", "&ouml;",
-          "&auml;", "&uuml;", "&#160;" };
     }
     conversionReplacements = (String[]) aContext
             .getConfigParameterValue(PARAM_CONVERSION_REPLACEMENTS);
@@ -282,24 +259,11 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
       }
     }
 
-    gapText = (String) aContext.getConfigParameterValue(PARAM_GAP_TEXT);
-    gapText = gapText == null ? "" : gapText;
-
-    useSpaceGap = (Boolean) aContext.getConfigParameterValue(PARAM_USE_SPACE_GAP);
-    useSpaceGap = useSpaceGap == null ? false : useSpaceGap;
 
     if (useSpaceGap) {
       gapText = " ";
     }
 
-    gapInducingTags = (String[]) aContext.getConfigParameterValue(PARAM_GAP_INDUCING_TAGS);
-    gapInducingTags = gapInducingTags == null ? new String[0] : gapInducingTags;
-
-    expandOffsets = (Boolean) aContext.getConfigParameterValue(PARAM_EXPAND_OFFSETS);
-    expandOffsets = expandOffsets == null ? false : expandOffsets;
-
-    newlineInducingTagRegExp = (String) aContext
-            .getConfigParameterValue(PARAM_NEWLINE_INDUCING_TAG_REGEXP);
   }
 
   @Override
