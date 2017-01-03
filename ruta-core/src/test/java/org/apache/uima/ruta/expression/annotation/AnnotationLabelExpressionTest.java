@@ -594,6 +594,15 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
   }
   
+  @Test
+  public void testStackedInCondition() throws Exception {
+    String script= "";
+    script += "w1:W{-> Struct1, Struct1.a = w2} w2:W;";
+    script += "s:Struct1{REGEXP(s.a.ct, \"text\") -> T1};";
+    CAS cas = applyOnStruct4Cas(script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
+  }
+  
   
   private CAS applyOnStruct4Cas(String script) throws Exception {
     String document = "Some text.";
