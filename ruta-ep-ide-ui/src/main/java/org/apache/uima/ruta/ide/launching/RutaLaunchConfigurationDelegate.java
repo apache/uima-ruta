@@ -334,16 +334,17 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
       clearOutputFolder(new File(ouputFolder.getLocation().toPortableString()), recursive);
     }
 
-    IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
-    boolean noVM = preferenceStore.getBoolean(RutaCorePreferences.NO_VM_IN_DEV_MODE);
-    if (noVM && Platform.inDevelopmentMode()) {
-      String[] args = getProgramArguments(configuration).split(" ");
-      try {
-        RutaLauncher.main(args);
-      } catch (Exception e1) {
-        RutaIdeUIPlugin.error(e1);
-      }
-    } else {
+//    IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
+    // may not be used anymore
+//    boolean noVM = preferenceStore.getBoolean(RutaCorePreferences.NO_VM_IN_DEV_MODE);
+//    if (noVM && Platform.inDevelopmentMode()) {
+//      String[] args = getProgramArguments(configuration).split(" ");
+//      try {
+//        RutaLauncher.main(args);
+//      } catch (Exception e1) {
+//        RutaIdeUIPlugin.error(e1);
+//      }
+//    } else {
       super.launch(configuration, mode, launch, monitor);
 
       while (!launch.isTerminated()) {
@@ -353,7 +354,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
           Thread.interrupted();
         }
       }
-    }
+//    }
     if (ouputFolder != null) {
       ouputFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
     }
