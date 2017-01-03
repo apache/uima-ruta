@@ -71,8 +71,8 @@ public class AnnotationTypeExpression extends RutaExpression
     } else if (annotationListExpression != null) {
       List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
       if (annotations != null && !annotations.isEmpty()) {
-        if(context.getDirection()) {
-          return annotations.get(annotations.size()-1);
+        if (context.getDirection()) {
+          return annotations.get(annotations.size() - 1);
         } else {
           return annotations.get(0);
         }
@@ -105,8 +105,7 @@ public class AnnotationTypeExpression extends RutaExpression
     }
     return getAnnotation(context, stream);
   }
-  
-  
+
   @Override
   public Type getType(MatchContext context, RutaStream stream) {
     if (!initialized) {
@@ -128,11 +127,14 @@ public class AnnotationTypeExpression extends RutaExpression
     if (!initialized) {
       initialize(context, stream);
     }
-    if (annotationExpression != null) {
+    if (annotationListExpression != null) {
+      return annotationListExpression.getStringValue(context, stream);
+    } else if (annotationExpression != null) {
       return annotationExpression.getStringValue(context, stream);
-    } else {
+    } else if (typeExpression != null) {
       return typeExpression.getStringValue(context, stream);
     }
+    return "";
   }
 
   @Override
@@ -187,6 +189,5 @@ public class AnnotationTypeExpression extends RutaExpression
   public FeatureExpression getFeatureExpression() {
     return featureExpression;
   }
-
 
 }
