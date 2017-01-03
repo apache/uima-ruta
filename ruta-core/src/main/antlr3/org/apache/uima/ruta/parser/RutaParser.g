@@ -2628,10 +2628,9 @@ List<IStringExpression> exprs = new ArrayList<IStringExpression>();
 	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createStringFeatureExpression(fe);}
 	//|(stringListExpression)=> sl = stringListExpression LBRACK index = numberExpression RBRACK {expr = ExpressionFactory.createStringListIndexExpression(sl, index);}
 	| e = simpleStringExpression {exprs.add(e);} 
-	((PLUS)=>PLUS (e1 = simpleStringExpression {exprs.add(e1);} 
-		| e2 = numberExpressionInPar {exprs.add(e2);}
-		| be = simpleBooleanExpression {exprs.add(be);}
-		| te = typeExpression {exprs.add(te);}
+	((PLUS)=>PLUS (
+		(numberExpressionInPar)=> e2 = numberExpressionInPar {exprs.add(e2);}
+		| arg = argument {if(arg instanceof IStringExpression) {exprs.add((IStringExpression)arg);}}
 		//| le = listExpression {exprs.add(le);}
 		))*
 	{expr = ExpressionFactory.createComposedStringExpression(exprs);}

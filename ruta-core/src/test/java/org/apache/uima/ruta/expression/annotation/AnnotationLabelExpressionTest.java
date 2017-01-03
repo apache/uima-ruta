@@ -574,6 +574,26 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, ".");
   }
   
+  @Test
+  public void testInComposedStringExpression() throws Exception {
+    String script= "";
+    script += "c:CW{-> Struct1, Struct1.s = \"<\"+c.ct+\">\" };";
+    script += "Struct1.s ==\"<Some>\"{-> T1};";
+    
+    String document = "Some text.";
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    typeMap.put("Struct1", "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put("Struct1", list);
+    list.add(new TestFeature("s", "", "uima.cas.String"));
+
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
+  }
+  
   
   private CAS applyOnStruct4Cas(String script) throws Exception {
     String document = "Some text.";
