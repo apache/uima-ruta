@@ -74,7 +74,7 @@ public class RutaLauncher {
 
   private static String view = null;
 
-  private static String defaultFormat = null;
+  private static String serialFormat = null;
 
   private static String classPath = null;
 
@@ -145,7 +145,7 @@ public class RutaLauncher {
         if (index >= args.length) {
           throwException("Not enough arguments! Value of serialization format is missing", args, null);
         }
-        defaultFormat = args[index++];
+        serialFormat = args[index++];
       } else if (RutaLaunchConstants.CLASSPATH.equals(each)) {
         if (index >= args.length) {
           throwException("Not enough arguments! Value of classpath is missing", args, null);
@@ -218,7 +218,7 @@ public class RutaLauncher {
 
     }
 
-    SerialFormat format = SerialFormat.valueOf(defaultFormat);
+    SerialFormat format = SerialFormat.valueOf(serialFormat);
     if (format == SerialFormat.UNKNOWN) {
       format = SerialFormat.XMI;
     }
@@ -228,7 +228,7 @@ public class RutaLauncher {
       cas.setDocumentText(document);
     } else {
       try {
-        format = CasIOUtils.load(file.toURI().toURL(), null, cas, true);
+        CasIOUtils.load(file.toURI().toURL(), null, cas, true);
       } catch (Exception e) {
         // no format? maybe really a plain text format?
         String document = FileUtils.file2String(file, inputEncoding);
