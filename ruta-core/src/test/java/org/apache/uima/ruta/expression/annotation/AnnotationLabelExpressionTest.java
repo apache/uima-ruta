@@ -603,6 +603,16 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
   }
   
+  @Test
+  public void testInUnmark() throws Exception {
+    String script= "";
+    script += "SW{-> T1};";
+    script += "w1:W{-> Struct1, Struct1.a = w2} w2:T1;";
+    script += "s:Struct1{-> UNMARK(s.a)};";
+    CAS cas = applyOnStruct4Cas(script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+  }
+  
   
   private CAS applyOnStruct4Cas(String script) throws Exception {
     String document = "Some text.";

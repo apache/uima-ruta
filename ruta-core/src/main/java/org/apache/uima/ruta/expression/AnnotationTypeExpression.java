@@ -67,10 +67,27 @@ public class AnnotationTypeExpression extends RutaExpression
       initialize(context, stream);
     }
     if (annotationExpression != null) {
-      return annotationExpression.getAnnotation(context, stream);
+      AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
+      if(featureExpression != null) {
+        List<AnnotationFS> annotations = new ArrayList<>(1);
+        annotations.add(annotation);
+        Collection<? extends AnnotationFS> result = featureExpression.getAnnotations(annotations , false, context, stream);
+        if(result!= null && !result.isEmpty()) {
+          return result.iterator().next();
+        }
+        return null;
+      } else {
+        return annotation;
+      }
     } else if (annotationListExpression != null) {
       List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
+      
       if (annotations != null && !annotations.isEmpty()) {
+        if(featureExpression != null) {
+          Collection<? extends AnnotationFS> result = featureExpression.getAnnotations(annotations, false, context, stream);
+          annotations = new ArrayList<>(result);
+        }        
+        
         if (context.getDirection()) {
           return annotations.get(annotations.size() - 1);
         } else {
@@ -143,11 +160,21 @@ public class AnnotationTypeExpression extends RutaExpression
       initialize(context, stream);
     }
     if (annotationListExpression != null) {
-      return annotationListExpression.getAnnotationList(context, stream);
+      List<AnnotationFS> result = annotationListExpression.getAnnotationList(context, stream);
+      if(featureExpression != null) {
+        return new ArrayList<>(featureExpression.getAnnotations(result, false, context, stream));
+      } else {
+        return result;
+      }
     } else if (annotationExpression != null) {
+      AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
       List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);
-      result.add(annotationExpression.getAnnotation(context, stream));
-      return result;
+      result.add(annotation);
+      if(featureExpression != null) {
+        return new ArrayList<>(featureExpression.getAnnotations(result, false, context, stream));
+      } else {
+        return result;
+      }
     } else {
 
       Type type = getType(context, stream);
