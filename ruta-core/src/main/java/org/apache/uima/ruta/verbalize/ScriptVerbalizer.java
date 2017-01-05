@@ -44,7 +44,6 @@ import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
-import org.apache.uima.ruta.rule.RutaTypeMatcher;
 import org.apache.uima.ruta.rule.WildCardRuleElement;
 import org.apache.uima.ruta.rule.quantifier.MinMaxGreedy;
 import org.apache.uima.ruta.rule.quantifier.MinMaxReluctant;
@@ -154,8 +153,7 @@ public class ScriptVerbalizer {
       RutaRuleElement tmre = (RutaRuleElement) re;
       RutaMatcher matcher = tmre.getMatcher();
       // action-only rule
-      if (matcher instanceof RutaTypeMatcher) {
-        IRutaExpression expression = ((RutaTypeMatcher) matcher).getExpression();
+        IRutaExpression expression = matcher.getExpression();
         if (expression != null) {
           result.append(verbalizer.verbalize(expression));
         } else {
@@ -168,9 +166,6 @@ public class ScriptVerbalizer {
             }
           }
         }
-      } else {
-        result.append(verbalizeMatcher(tmre));
-      }
     } else if (re instanceof WildCardRuleElement) {
       result.append("#");
     }

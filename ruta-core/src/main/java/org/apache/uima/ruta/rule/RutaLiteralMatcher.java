@@ -99,8 +99,8 @@ public class RutaLiteralMatcher implements RutaMatcher {
   }
 
   @Override
-  public List<Type> getTypes(RutaBlock parent, RutaStream stream) {
-    return new ArrayList<Type>();
+  public Type getType(RutaBlock parent, RutaStream stream) {
+    return stream.getCas().getAnnotationType();
   }
 
 }

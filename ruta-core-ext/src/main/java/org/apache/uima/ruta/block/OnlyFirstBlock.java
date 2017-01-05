@@ -61,10 +61,9 @@ public class OnlyFirstBlock extends RutaBlock {
           continue;
         }
         boolean stop = false;
-        List<Type> types = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher().getTypes(
-                getParent() == null ? this : getParent(), stream);
-        for (Type eachType : types) {
-          RutaStream window = stream.getWindowStream(each, eachType);
+        Type type = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher()
+                .getType(getParent() == null ? this : getParent(), stream);
+          RutaStream window = stream.getWindowStream(each, type);
           for (RutaStatement element : getElements()) {
             if (stop)
               break;
@@ -82,7 +81,6 @@ public class OnlyFirstBlock extends RutaBlock {
                 }
               }
             }
-          }
         }
       }
     }

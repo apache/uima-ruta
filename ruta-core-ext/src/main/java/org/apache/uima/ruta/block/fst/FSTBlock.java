@@ -42,8 +42,8 @@ public class FSTBlock extends RutaBlock {
 
   public FSTBlock(String name, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
           String defaultNamespace) {
-    super(name, rule, elements, parent, defaultNamespace, parent != null ? parent.getContext()
-            : null);
+    super(name, rule, elements, parent, defaultNamespace,
+            parent != null ? parent.getContext() : null);
   }
 
   @Override
@@ -62,12 +62,10 @@ public class FSTBlock extends RutaBlock {
         if (each == null) {
           continue;
         }
-        List<Type> types = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher().getTypes(
-                getParent() == null ? this : getParent(), stream);
-        for (Type eachType : types) {
-          RutaStream window = stream.getWindowStream(each, eachType);
-          auto.apply(window, crowd, this);
-        }
+        Type type = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher()
+                .getType(getParent() == null ? this : getParent(), stream);
+        RutaStream window = stream.getWindowStream(each, type);
+        auto.apply(window, crowd, this);
       }
     }
     crowd.endVisit(this, result);

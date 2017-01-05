@@ -31,6 +31,7 @@ import org.apache.uima.ruta.block.ForEachBlock;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.block.RutaScriptBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
@@ -48,6 +49,7 @@ import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementContainer;
 import org.apache.uima.ruta.rule.RuleElementIsolator;
 import org.apache.uima.ruta.rule.RutaAnnotationMatcher;
+import org.apache.uima.ruta.rule.RutaAnnotationTypeMatcher;
 import org.apache.uima.ruta.rule.RutaLiteralMatcher;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
@@ -159,7 +161,9 @@ public class RutaScriptFactory {
           RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
           List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
     RutaMatcher matcher = null;
-    if (expression instanceof ITypeExpression) {
+    if (expression instanceof AnnotationTypeExpression) {
+      matcher = new RutaAnnotationTypeMatcher((AnnotationTypeExpression) expression);
+    }  else if (expression instanceof ITypeExpression) {
       matcher = new RutaTypeMatcher((ITypeExpression) expression);
     } else if (expression instanceof FeatureExpression) {
       matcher = new RutaTypeMatcher((FeatureExpression) expression);

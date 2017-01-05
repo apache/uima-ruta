@@ -111,7 +111,8 @@ public class RutaAnnotationMatcher implements RutaMatcher {
           return result;
         }
       } else if (annotationListExpression != null) {
-        List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
+        List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context,
+                stream);
         Collection<AnnotationFS> result = new ArrayList<>();
         for (AnnotationFS each : annotations) {
           boolean beginsWith = nextBasic.getBegin() == each.getBegin();
@@ -160,7 +161,8 @@ public class RutaAnnotationMatcher implements RutaMatcher {
           return result;
         }
       } else if (annotationListExpression != null) {
-        List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
+        List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context,
+                stream);
         for (AnnotationFS each : annotations) {
           boolean endsWith = nextBasic.getEnd() == each.getEnd();
           if (endsWith) {
@@ -175,28 +177,27 @@ public class RutaAnnotationMatcher implements RutaMatcher {
   }
 
   @Override
-  public List<Type> getTypes(RutaBlock parent, RutaStream stream) {
+  public Type getType(RutaBlock parent, RutaStream stream) {
     MatchContext context = new MatchContext(parent);
-    if(annotationExpression != null) {
-      
-    AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
-    if (ref == null) {
-      return Collections.emptyList();
-    }
-    List<Type> result = new ArrayList<Type>(1);
-    result.add(ref.getType());
-    return result;
-    } else if(annotationListExpression != null) {
-      List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
-      List<Type> result = new ArrayList<Type>();
-      for (AnnotationFS each : annotations) {
-        result.add(each.getType());
+    if (annotationExpression != null) {
+      AnnotationFS ref = annotationExpression.getAnnotation(context, stream);
+      if (ref == null) {
+        return null;
       }
-      return result;
+      return ref.getType();
+    } else if (annotationListExpression != null) {
+      List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
+      List<Type> types = new ArrayList<Type>();
+      for (AnnotationFS each : annotations) {
+        types.add(each.getType());
+      }
+      return stream.getSharedParentType(types);
     }
-    return Collections.emptyList();
+    return null;
   }
 
+  
+  
   @Override
   public IRutaExpression getExpression() {
     if (annotationExpression != null) {
@@ -211,7 +212,7 @@ public class RutaAnnotationMatcher implements RutaMatcher {
   public long estimateAnchors(RutaBlock parent, RutaStream stream) {
     return 1;
   }
-  
+
   @Override
   public String toString() {
     IRutaExpression expression = getExpression();
@@ -221,6 +222,5 @@ public class RutaAnnotationMatcher implements RutaMatcher {
       return "";
     }
   }
-
 
 }

@@ -217,4 +217,8 @@ public class AnnotationTypeExpression extends RutaExpression
     return featureExpression;
   }
 
+  public String toString() {
+      return reference.toString();
+  }
+  
 }

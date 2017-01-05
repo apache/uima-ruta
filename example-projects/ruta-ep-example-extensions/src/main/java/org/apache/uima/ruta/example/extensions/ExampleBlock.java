@@ -63,17 +63,15 @@ public class ExampleBlock extends RutaBlock {
         if (each == null) {
           continue;
         }
-        List<Type> types = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher().getTypes(
-                getParent() == null ? this : getParent(), stream);
-        for (Type eachType : types) {
-          RutaStream window = stream.getWindowStream(each, eachType);
+        Type type = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher()
+                .getType(getParent() == null ? this : getParent(), stream);
+          RutaStream window = stream.getWindowStream(each, type);
           List<RutaStatement> elements = new ArrayList<RutaStatement>(getElements());
           Collections.reverse(elements);
           for (RutaStatement element : elements) {
             if (element != null) {
               element.apply(window, crowd);
             }
-          }
         }
       }
     }

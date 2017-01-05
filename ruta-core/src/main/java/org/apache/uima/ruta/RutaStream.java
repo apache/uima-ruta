@@ -1290,4 +1290,11 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       }
     }
   }
+
+  public Type getSharedParentType(List<Type> types) {
+    TypeSystem typeSystem = cas.getTypeSystem();
+    Type parentType = null;
+    // TODO 
+    return types.get(0);
+  }
 }

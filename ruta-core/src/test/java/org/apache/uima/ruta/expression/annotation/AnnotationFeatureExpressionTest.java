@@ -192,16 +192,16 @@ public class AnnotationFeatureExpressionTest {
     cas.addFsToIndexes(a2);
 
     StringBuilder script = new StringBuilder();
-    script.append("A1.fs.s==\"1\"{-> T1};");
-    script.append("A1.fs.s==\"2\"{-> T2};");
-    script.append("A1.fs{-> T3};");
-    script.append("A1.fss{-> T4};");
-    script.append("A1.fss.fs{-> T5};");
-    script.append("A1.fss.fs.fs{-> T6};");
-    script.append("A1.fss.fs.fs.s == \"1\"{-> T7};");
-    script.append("A1.fss.fss.s == \"1\"{-> T8};");
-    script.append("a:A1 {a.fss.fss.s == \"1\" -> T9};");
-    script.append("a:A1 {a.fs.s==\"1\" -> T10};");
+    script.append("A1.fs.s==\"1\"{-> T1};\n");
+    script.append("A1.fs.s==\"2\"{-> T2};\n");
+    script.append("A1.fs{-> T3};\n");
+    script.append("A1.fss{-> T4};\n");
+    script.append("A1.fss.fs{-> T5};\n");
+    script.append("A1.fss.fs.fs{-> T6};\n");
+    script.append("A1.fss.fs.fs.s == \"1\"{-> T7};\n");
+    script.append("A1.fss.fss.s == \"1\"{-> T8};\n");
+    script.append("a:A1 {a.fss.fss.s == \"1\" -> T9};\n");
+    script.append("a:A1 {a.fs.s==\"1\" -> T10};\n");
 
     Ruta.apply(cas, script.toString());
 

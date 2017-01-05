@@ -38,7 +38,8 @@ public class RutaScriptBlock extends RutaBlock {
 
   public RutaScriptBlock(String id, RutaRule rule, List<RutaStatement> elements, RutaBlock parent,
           String defaultNamespace) {
-    super(id, rule, elements, parent, defaultNamespace, parent != null ? parent.getContext() : null);
+    super(id, rule, elements, parent, defaultNamespace,
+            parent != null ? parent.getContext() : null);
   }
 
   @Override
@@ -57,14 +58,13 @@ public class RutaScriptBlock extends RutaBlock {
         if (each == null) {
           continue;
         }
-        List<Type> types = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher().getTypes(
-                getParent() == null ? this : getParent(), stream);
-        for (Type eachType : types) {
-          RutaStream window = stream.getWindowStream(each, eachType);
-          for (RutaStatement element : getElements()) {
-            if (element != null) {
-              element.apply(window, crowd);
-            }
+        // TODO refactor!!
+        Type type = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher()
+                .getType(getParent() == null ? this : getParent(), stream);
+        RutaStream window = stream.getWindowStream(each, type);
+        for (RutaStatement element : getElements()) {
+          if (element != null) {
+            element.apply(window, crowd);
           }
         }
       }

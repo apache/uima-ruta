@@ -85,7 +85,7 @@ public class PositionCondition extends TypeSentiveCondition {
     List<Type> targetTypes = new ArrayList<Type>();
     if (element instanceof RutaRuleElement) {
       RutaRuleElement re = (RutaRuleElement) element;
-      targetTypes.addAll(re.getMatcher().getTypes(element.getParent(), stream));
+      targetTypes.add(re.getMatcher().getType(element.getParent(), stream));
     } else {
       targetTypes.add(annotation.getType());
     }

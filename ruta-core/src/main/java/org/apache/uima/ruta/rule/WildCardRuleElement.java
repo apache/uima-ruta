@@ -35,6 +35,7 @@ import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.type.RutaFrame;
@@ -98,14 +99,19 @@ public class WildCardRuleElement extends AbstractRuleElement {
     } else if (nextElement instanceof RutaRuleElement) {
       RutaRuleElement re = (RutaRuleElement) nextElement;
       RutaMatcher matcher = re.getMatcher();
-      if (matcher instanceof RutaTypeMatcher) {
-        result = tryWithNextType(after, annotation, nextElement, null, ruleMatch, ruleApply,
-                containerMatch, nextDepth, sideStepOrigin, entryPoint, stream, crowd);
+      if (matcher instanceof RutaAnnotationTypeMatcher) {
+        result = tryWithNextAnnotationType(after, annotation, nextElement, null, ruleMatch,
+                ruleApply, containerMatch, nextDepth, sideStepOrigin, entryPoint, stream, crowd);
+      } else if (matcher instanceof RutaTypeMatcher) {
+        result = tryWithNextAnnotationType(after, annotation, nextElement, null, ruleMatch,
+                ruleApply, containerMatch, nextDepth, sideStepOrigin, entryPoint, stream, crowd);
+      } else if (matcher instanceof RutaAnnotationMatcher) {
+        result = tryWithNextAnnotationType(after, annotation, nextElement, null, ruleMatch,
+                ruleApply, containerMatch, nextDepth, sideStepOrigin, entryPoint, stream, crowd);
       } else if (matcher instanceof RutaLiteralMatcher) {
         result = tryWithNextLiteral(after, annotation, re, ruleMatch, ruleApply, containerMatch,
                 nextDepth, sideStepOrigin, stream, crowd);
       }
-
     } else if (nextElement instanceof ComposedRuleElement) {
       ComposedRuleElement cre = ((ComposedRuleElement) nextElement);
       result = tryWithNextComposed(after, annotation, cre, ruleMatch, ruleApply, containerMatch,
@@ -113,8 +119,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
     } else if (nextElement instanceof WildCardRuleElement) {
       // another wildcard? seriously? then just assume its an "Annotation" type
       CAS cas = stream.getCas();
-      result = tryWithNextType(after, annotation, nextElement, cas.getAnnotationType(), ruleMatch,
-              ruleApply, containerMatch, nextDepth, sideStepOrigin, entryPoint, stream, crowd);
+      result = tryWithNextAnnotationType(after, annotation, nextElement, cas.getAnnotationType(),
+              ruleMatch, ruleApply, containerMatch, nextDepth, sideStepOrigin, entryPoint, stream,
+              crowd);
     }
     return result;
   }
@@ -234,25 +241,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RutaStream stream, RuleElement element, AnnotationFS result) {
     RutaRuleElement re = (RutaRuleElement) element;
     RutaMatcher matcher = re.getMatcher();
-    if (matcher instanceof RutaTypeMatcher) {
-      FSIterator<AnnotationFS> iterator = getIterator(after, annotation, re, null, stream);
-      if (iterator == null) {
-        return null;
-      }
-      if (iterator.isValid()) {
-        result = iterator.get();
-        if (annotation != null && (after && result.getEnd() == annotation.getEnd())
-                || (!after && result.getBegin() == annotation.getBegin())) {
-          moveOn(after, iterator, stream);
-          if (iterator.isValid()) {
-            result = iterator.get();
-          } else {
-            result = null;
-          }
-        }
-
-      }
-    } else if (matcher instanceof RutaLiteralMatcher) {
+      
+    if (matcher instanceof RutaLiteralMatcher) {
       RutaLiteralMatcher lm = (RutaLiteralMatcher) matcher;
       IStringExpression expression = lm.getExpression();
       MatchContext context = new MatchContext(this, null, after);
@@ -266,6 +256,25 @@ public class WildCardRuleElement extends AbstractRuleElement {
         return null;
       } else {
         return stream.getAnchor(after, indexOf);
+      }
+    } else {
+      FSIterator<AnnotationFS> iterator = getIterator(after, annotation, re, null, stream);
+      if (iterator == null) {
+        return null;
+      }
+      
+      if (iterator.isValid()) {
+        result = iterator.get();
+        if (annotation != null && (after && result.getEnd() == annotation.getEnd())
+                || (!after && result.getBegin() == annotation.getBegin())) {
+          moveOn(after, iterator, stream);
+          if (iterator.isValid()) {
+            result = iterator.get();
+          } else {
+            result = null;
+          }
+        }
+
       }
     }
     return result;
@@ -289,7 +298,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     }
   }
 
-  private List<RuleMatch> tryWithNextType(boolean after, AnnotationFS annotation,
+  private List<RuleMatch> tryWithNextAnnotationType(boolean after, AnnotationFS annotation,
           RuleElement nextElement, Type defaultType, RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, int nextDepth, RutaRuleElement sideStepOrigin,
           RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
@@ -385,15 +394,29 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RuleElement nextElement, Type defaultType, RutaStream stream) {
     FSIterator<AnnotationFS> iterator = null;
     if (defaultType == null) {
+      MatchContext context = new MatchContext(nextElement.getParent());
       RutaRuleElement re = (RutaRuleElement) nextElement;
       RutaMatcher matcher = re.getMatcher();
-      if (matcher instanceof RutaTypeMatcher) {
-        RutaTypeMatcher typeMatcher = (RutaTypeMatcher) re.getMatcher();
-        List<Type> types = typeMatcher.getTypes(parent, stream);
-        Type type = types.get(0);
-        iterator = getIteratorOfType(after, type, annotation, stream);
+      if (matcher instanceof RutaAnnotationTypeMatcher) {
+        RutaAnnotationTypeMatcher atm = (RutaAnnotationTypeMatcher) matcher;
+        AnnotationTypeExpression expression = (AnnotationTypeExpression) atm.getExpression();
+        if (expression.getAnnotationExpression() != null
+                || expression.getAnnotationListExpression() != null) {
+          iterator = new AnnotationListFSIterator(expression.getAnnotationList(context, stream));
+          iterator.moveTo(annotation);
+        } else {
+          Type type = matcher.getType(parent, stream);
+          iterator = getIteratorOfType(after, type, annotation, stream);
+        }
+      } else if (matcher instanceof RutaAnnotationMatcher) {
+        RutaAnnotationMatcher am = (RutaAnnotationMatcher) matcher;
+        Collection<AnnotationFS> matchingAnnotations = am.getMatchingAnnotations(parent, stream);
+        iterator = new AnnotationListFSIterator(new ArrayList<>(matchingAnnotations));
+        iterator.moveTo(annotation);
       } else {
-        // should not happen
+        // fallback
+        Type type = matcher.getType(parent, stream);
+        iterator = getIteratorOfType(after, type, annotation, stream);
       }
     } else {
       iterator = getIteratorOfType(after, defaultType, annotation, stream);
@@ -649,7 +672,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
         EvaluatedCondition eval = condition.eval(context, stream, crowd);
         crowd.endVisit(condition, null);
         evaluatedConditions.add(eval);
-        if(!eval.isValue()) {
+        if (!eval.isValue()) {
           break;
         }
       }

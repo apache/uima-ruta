@@ -70,6 +70,7 @@ import org.apache.uima.ruta.RutaScriptFactory;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.block.RutaScriptBlock;
+import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
@@ -948,9 +949,7 @@ String label = null;
 	:
 	(l = Identifier {label = l.getText();} COLON)?
 	start = STARTANCHOR? (
-	rea = ruleElementAnnotation[container]{re = rea;}
-	| 
-	re1 = ruleElementType[container] {re = re1;}
+	re1 = ruleElementAnnotationType[container] {re = re1;}
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
 	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
@@ -1054,6 +1053,47 @@ ruleElementAnnotation [RuleElementContainer container] returns [RutaRuleElement 
     :
     (annotationExpression2)=>aExpr = annotationExpression2 
      {re = factory.createRuleElement(aExpr, null, null, null, container, $blockDeclaration::env);} 
+    q = quantifierPart? 
+        (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
+   {
+	if(q != null) {
+		re.setQuantifier(q);
+	}
+	if(c!= null) {
+		re.setConditions(c);
+	}
+	if(a != null) {
+		re.setActions(a);
+	}
+	}
+    ;
+    
+ ruleElementAnnotationType [RuleElementContainer container] returns [RutaRuleElement re = null]
+    :
+    (
+    (annotationExpression2)=>aExpr = annotationExpression2 
+     {re = factory.createRuleElement(aExpr, null, null, null, container, $blockDeclaration::env);} 
+     
+    |
+    (typeFunction)=> tf = typeFunction 
+    {re = factory.createRuleElement(tf, null, null, null, container, $blockDeclaration::env);}
+    
+    |
+     match = dottedIdWithIndex2 ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
+     {
+	     MatchReference mr = ExpressionFactory.createMatchReference(match);
+	     if(comp == null) {
+	     AnnotationTypeExpression ate = ExpressionFactory.createAnnotationTypeExpression(mr);
+	     re = factory.createRuleElement(ate, null, null, null, container, $blockDeclaration::env);
+	     } else {
+	     FeatureMatchExpression fme = ExpressionFactory.createFeatureMatchExpression(mr, comp, arg, $blockDeclaration::env);
+	     re = factory.createRuleElement(fme, null, null, null, container, $blockDeclaration::env);
+	     } 
+     }
+     
+     
+     )
+     
     q = quantifierPart? 
         (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
    {
@@ -2357,6 +2397,9 @@ annotationExpression2 returns [IRutaExpression expr = null]
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")}? 
 	id = Identifier {expr = ExpressionFactory.createAnnotationVariableExpression(id);} 
 	|
+	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")}? 
+	id = Identifier {expr = ExpressionFactory.createAnnotationListVariableExpression(id);} 
+	|
 	//(annotationListIndexExpression)=> alie = annotationListIndexExpression {expr = alie;}
 	//|
 	ale = annotationListExpression {expr = ale;}
@@ -2490,6 +2533,20 @@ dottedIdWithIndex returns [Token token = null ]
 	{token = ct; return token;}
 	;
 
+dottedIdWithIndex2 returns [Token token = null ]
+@init {CommonToken ct = null;}
+	:
+	id = Identifier {ct = new CommonToken(id);}
+	(
+	lb =  LBRACK {ct.setText(ct.getText() + lb.getText());}
+	index = DecimalLiteral {ct.setText(ct.getText() + index.getText());}
+	rb = RBRACK {ct.setStopIndex(getBounds(rb)[1]);ct.setText(ct.getText() + rb.getText());}
+	|
+	dot = DOT {ct.setText(ct.getText() + dot.getText());}
+	id = Identifier {ct.setStopIndex(getBounds(id)[1]);ct.setText(ct.getText() + id.getText());}
+	)*
+	{token = ct; return token;}
+	;
 
 annotationType returns [Token ref = null]
 	: 

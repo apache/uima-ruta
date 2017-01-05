@@ -370,6 +370,11 @@ public class ExpressionFactory {
     MatchReference match = new MatchReference(ref.getText());
     return new AnnotationTypeExpression(match);
   }
+  
+  
+  public static AnnotationTypeExpression createAnnotationTypeExpression(MatchReference mr) {
+    return new AnnotationTypeExpression(mr);
+  }
 
   public static IStringExpression createStringListIndexExpression(AbstractStringListExpression sl,
           INumberExpression index) {

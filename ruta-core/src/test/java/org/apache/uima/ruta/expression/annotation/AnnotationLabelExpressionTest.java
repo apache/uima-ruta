@@ -315,7 +315,7 @@ public class AnnotationLabelExpressionTest {
     Ruta.matches(cas.getJCas(), "a:W b:W{a.x == (b.y-1)-> T1};");
   }
 
-  @Test(expected = AnalysisEngineProcessException.class)
+  @Test
   public void testSequentialLabelSelfMatch() throws ResourceInitializationException,
           InvalidXMLException, IOException, AnalysisEngineProcessException, CASException {
     CAS cas = RutaTestUtils.getCAS("Some text.");
@@ -611,6 +611,17 @@ public class AnnotationLabelExpressionTest {
     script += "s:Struct1{-> UNMARK(s.a)};";
     CAS cas = applyOnStruct4Cas(script);
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+  }
+  
+  @Test
+  public void testInMatchCondition() throws Exception {
+    String script= "";
+    script += "CW{-> Struct1, Struct1.a=sw} sw:SW;\n";
+    script += "s:Struct1 s.a{-> T1};\n";
+//    script += "(s:Struct1 SW){->T2}<-{s W{REGEXP(\"text\")};};\n";
+    CAS cas = applyOnStruct4Cas(script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
+//    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Some text");
   }
   
   

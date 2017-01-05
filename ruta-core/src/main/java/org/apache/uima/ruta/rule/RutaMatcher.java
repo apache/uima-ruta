@@ -20,7 +20,6 @@
 package org.apache.uima.ruta.rule;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -32,7 +31,7 @@ public interface RutaMatcher {
 
   Collection<? extends AnnotationFS> getMatchingAnnotations(RutaBlock parent, RutaStream stream);
 
-  List<Type> getTypes(RutaBlock parent, RutaStream stream);
+  Type getType(RutaBlock parent, RutaStream stream);
 
   IRutaExpression getExpression();
 
