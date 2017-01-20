@@ -474,6 +474,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     if (!reloadScript) {
       try {
         initializeScript(CAS.NAME_DEFAULT_SOFA);
+        initialized = false;
       } catch (AnalysisEngineProcessException e) {
         throw new ResourceInitializationException(e);
       }

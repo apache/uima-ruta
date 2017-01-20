@@ -42,7 +42,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.analysis_engine.metadata.AnalysisEngineMetaData;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.impl.FeatureStructureImplC;
+import org.apache.uima.cas.impl.FeatureStructureImpl;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -208,26 +208,13 @@ public class Ruta {
     return sb.toString();
   }
 
-  public static String inject(String script, Annotation... annotations) {
+  public static String inject(String script, FeatureStructureImpl... annotations) {
     return inject(script, "$", getAddresses(annotations));
   }
   
 
-  public static String inject(String script, FeatureStructureImplC... annotations) {
-    return inject(script, "$", getAddresses(annotations));
-  }
 
-  
-  private static int[] getAddresses(FeatureStructureImplC[] annotations) {
-    int[] result = new int[annotations.length];
-    for (int i = 0; i < annotations.length; i++) {
-      result[i] = annotations[i].getAddress();
-      
-    }
-    return result;
-  }
-
-  private static int[] getAddresses(Annotation[] annotations) {
+  private static int[] getAddresses(FeatureStructureImpl[] annotations) {
     int[] result = new int[annotations.length];
     for (int i = 0; i < annotations.length; i++) {
       result[i] = annotations[i].getAddress();
