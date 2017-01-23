@@ -19,6 +19,7 @@
     <version>2.5.1-SNAPSHOT</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
+  
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
     <postNoticeText>${uniWueNoticeText}</postNoticeText>
