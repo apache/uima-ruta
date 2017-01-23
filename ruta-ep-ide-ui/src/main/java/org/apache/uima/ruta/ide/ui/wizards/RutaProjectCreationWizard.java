@@ -28,10 +28,17 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.uima.UIMAFramework;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.resource.metadata.Import;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.core.RutaNature;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.ide.ui.RutaImages;
+import org.apache.uima.util.InvalidXMLException;
+import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -52,6 +59,7 @@ import org.eclipse.dltk.ui.wizards.ProjectWizard;
 import org.eclipse.dltk.ui.wizards.ProjectWizardFirstPage;
 import org.eclipse.dltk.ui.wizards.ProjectWizardSecondPage;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
+import org.xml.sax.SAXException;
 
 public class RutaProjectCreationWizard extends ProjectWizard {
 
@@ -136,21 +144,24 @@ public class RutaProjectCreationWizard extends ProjectWizard {
       }
     }
     IBuildpathAttribute[] extraAttributes = new IBuildpathAttribute[1];
-    extraAttributes[0] = DLTKCore.newBuildpathAttribute(RutaProjectUtils.BUILDPATH_ATTRIBUTE_RUTA, RutaProjectUtils.BUILDPATH_ATTRIBUTE_SCRIPT);
-    IBuildpathEntry newSourceEntry = DLTKCore.newSourceEntry(srcFolder.getFullPath(),BuildpathEntry.INCLUDE_ALL,
-            BuildpathEntry.EXCLUDE_NONE, extraAttributes);
+    extraAttributes[0] = DLTKCore.newBuildpathAttribute(RutaProjectUtils.BUILDPATH_ATTRIBUTE_RUTA,
+            RutaProjectUtils.BUILDPATH_ATTRIBUTE_SCRIPT);
+    IBuildpathEntry newSourceEntry = DLTKCore.newSourceEntry(srcFolder.getFullPath(),
+            BuildpathEntry.INCLUDE_ALL, BuildpathEntry.EXCLUDE_NONE, extraAttributes);
     buildpathEntries.add(BPListElement.createFromExisting(newSourceEntry, scriptProject));
-    
+
     extraAttributes = new IBuildpathAttribute[1];
-    extraAttributes[0] = DLTKCore.newBuildpathAttribute(RutaProjectUtils.BUILDPATH_ATTRIBUTE_RUTA, RutaProjectUtils.BUILDPATH_ATTRIBUTE_DESCRIPTOR);
-    IBuildpathEntry newDescriptorEntry = DLTKCore.newSourceEntry(descFolder.getFullPath(),BuildpathEntry.INCLUDE_ALL,
-            BuildpathEntry.EXCLUDE_NONE, extraAttributes);
+    extraAttributes[0] = DLTKCore.newBuildpathAttribute(RutaProjectUtils.BUILDPATH_ATTRIBUTE_RUTA,
+            RutaProjectUtils.BUILDPATH_ATTRIBUTE_DESCRIPTOR);
+    IBuildpathEntry newDescriptorEntry = DLTKCore.newSourceEntry(descFolder.getFullPath(),
+            BuildpathEntry.INCLUDE_ALL, BuildpathEntry.EXCLUDE_NONE, extraAttributes);
     buildpathEntries.add(BPListElement.createFromExisting(newDescriptorEntry, scriptProject));
-    
+
     extraAttributes = new IBuildpathAttribute[1];
-    extraAttributes[0] = DLTKCore.newBuildpathAttribute(RutaProjectUtils.BUILDPATH_ATTRIBUTE_RUTA, RutaProjectUtils.BUILDPATH_ATTRIBUTE_RESOURCES);
-    IBuildpathEntry newResourcesEntry = DLTKCore.newSourceEntry(rsrcFolder.getFullPath(),BuildpathEntry.INCLUDE_ALL,
-            BuildpathEntry.EXCLUDE_NONE, extraAttributes);
+    extraAttributes[0] = DLTKCore.newBuildpathAttribute(RutaProjectUtils.BUILDPATH_ATTRIBUTE_RUTA,
+            RutaProjectUtils.BUILDPATH_ATTRIBUTE_RESOURCES);
+    IBuildpathEntry newResourcesEntry = DLTKCore.newSourceEntry(rsrcFolder.getFullPath(),
+            BuildpathEntry.INCLUDE_ALL, BuildpathEntry.EXCLUDE_NONE, extraAttributes);
     buildpathEntries.add(BPListElement.createFromExisting(newResourcesEntry, scriptProject));
 
     BuildpathsBlock.flush(buildpathEntries, scriptProject, monitor);
@@ -183,6 +194,35 @@ public class RutaProjectCreationWizard extends ProjectWizard {
     copy(utilsDir, "HtmlConverter.xml");
     copy(utilsDir, "Cutter.xml");
     copy(utilsDir, "ViewWriter.xml");
+
+    setImportsByLocation(descDir, "BasicEngine.xml");
+    setImportsByLocation(utilsDir, "HtmlAnnotator.xml");
+    setImportsByLocation(utilsDir, "PlainTextAnnotator.xml");
+
+  }
+
+  private static void setImportsByLocation(File dir, String descName) {
+    FileOutputStream fos = null;
+    try {
+      File file = new File(dir, descName);
+      AnalysisEngineDescription description = UIMAFramework.getXMLParser()
+              .parseAnalysisEngineDescription(new XMLInputSource(file));
+      Import[] imports = description.getAnalysisEngineMetaData().getTypeSystem().getImports();
+      for (Import each : imports) {
+        String name = each.getName();
+        String[] split = name.split("[.]");
+        String location = split[split.length - 1] + ".xml";
+        each.setName(null);
+        each.setLocation(location);
+      }
+      fos = new FileOutputStream(file);
+      description.toXML(fos);
+    } catch (InvalidXMLException | IOException | SAXException e) {
+      RutaIdeUIPlugin.error(e);
+    } finally {
+      IOUtils.closeQuietly(fos);
+    }
+
   }
 
   private static void copy(File dir, String fileName) {

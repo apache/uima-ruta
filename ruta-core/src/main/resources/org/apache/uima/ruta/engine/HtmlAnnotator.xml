@@ -44,7 +44,7 @@
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
-        <import location="HtmlTypeSystem.xml"/>
+        <import name="org.apache.uima.ruta.engine.HtmlTypeSystem"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>

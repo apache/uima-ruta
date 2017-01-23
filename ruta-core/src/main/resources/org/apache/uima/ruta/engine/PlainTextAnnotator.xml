@@ -31,7 +31,7 @@
     <configurationParameterSettings/>
     <typeSystemDescription>
       <imports>
-        <import location="PlainTextTypeSystem.xml"/>
+        <import name="org.apache.uima.ruta.engine.PlainTextTypeSystem"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>

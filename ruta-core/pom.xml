@@ -26,7 +26,14 @@
   <url>${uimaWebsiteUrl}</url>
   <description>The core implementation of the UIMA Ruta rule engine.</description>
   <name>Apache UIMA Ruta: ${project.artifactId}</name>
+  
+  
   <dependencies>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>ruta-typesystem</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
@@ -124,7 +131,6 @@
               <id>default-cli</id>
               <configuration>
                 <excludes>
-                  <exclude>src/main/java/org/apache/uima/ruta/type/*.java</exclude> <!-- jcasgen files -->
                   <exclude>src/main/antlr3/org/apache/uima/ruta/parser/RutaLexer.tokens</exclude> <!-- grammar tokens -->
                   <exclude>src/main/antlr3/org/apache/uima/ruta/parser/RutaParser.tokens</exclude> <!-- grammar tokens -->
                   <exclude>src/test/resources/org/apache/uima/ruta/*.txt</exclude> <!-- test data -->
@@ -167,29 +173,6 @@
             <goals>
               <goal>antlr</goal>
             </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>jcasgen-maven-plugin</artifactId>
-        <version>${uimaVersion}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <!-- runs in phase process-resources by default -->
-            <configuration>
-              <!-- one or more ant-like file patterns identifying top level descriptors -->
-              <typeSystemIncludes>
-                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/RutaInternalTypeSystem.xml</typeSystemInclude>
-                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/DefaultSeederTypeSystem.xml</typeSystemInclude>
-                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/HtmlTypeSystem.xml</typeSystemInclude>
-                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/PlainTextTypeSystem.xml</typeSystemInclude>
-              </typeSystemIncludes>
-              <limitToProject>true</limitToProject>
-            </configuration>
           </execution>
         </executions>
       </plugin>

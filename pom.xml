@@ -48,6 +48,11 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
+      <artifactId>ruta-typesystem</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
       <artifactId>ruta-core</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -95,6 +100,7 @@
   
   <modules>
     <module>ruta-parent</module>
+    <module>ruta-typesystem</module>
     <module>ruta-core</module>
     <module>ruta-core-ext</module>
 

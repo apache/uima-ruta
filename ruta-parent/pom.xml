@@ -128,6 +128,7 @@ This product contains icons developed by Mark James
 Creative Commons Attribution 3.0 License.
     </postNoticeText>
     <uimaVersion>2.9.0</uimaVersion>
+<!--     <uimaVersion>3.0.0</uimaVersion> -->
     <uimafit-version>2.2.0</uimafit-version>
         <!-- 
      BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+)
@@ -135,7 +136,7 @@ Creative Commons Attribution 3.0 License.
      NON_BACKWARD_COMPATIBLE         - major version (+.0.0)
      -->
     <compat.level>NON_BACKWARD_COMPATIBLE</compat.level>
-    <compat.previous.version>2.4.0</compat.previous.version>
+    <compat.previous.version>2.5.0</compat.previous.version>
  
   </properties>
   

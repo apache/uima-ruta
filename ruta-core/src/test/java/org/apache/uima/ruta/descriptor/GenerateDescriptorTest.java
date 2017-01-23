@@ -23,7 +23,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -60,13 +59,13 @@ public class GenerateDescriptorTest {
 
   @BeforeClass
   public static void setUpClass() {
-    basicAEUrl = HtmlAnnotator.class.getClassLoader().getResource("BasicEngine.xml");
+    basicAEUrl = GenerateDescriptorTest.class.getClassLoader().getResource("BasicEngine.xml");
     if (basicAEUrl == null) {
       basicAEUrl = HtmlAnnotator.class.getClassLoader().getResource(
               "org/apache/uima/ruta/engine/BasicEngine.xml");
     }
 
-    basicTSUrl = HtmlAnnotator.class.getClassLoader().getResource("BasicTypeSystem.xml");
+    basicTSUrl = GenerateDescriptorTest.class.getClassLoader().getResource("BasicTypeSystem.xml");
     if (basicTSUrl == null) {
       basicTSUrl = HtmlAnnotator.class.getClassLoader().getResource(
               "org/apache/uima/ruta/engine/BasicTypeSystem.xml");
@@ -85,7 +84,7 @@ public class GenerateDescriptorTest {
     RutaDescriptorFactory rdf = new RutaDescriptorFactory(basicTSUrl, basicAEUrl);
     RutaDescriptorInformation descriptorInformation = rdf.parseDescriptorInformation(script);
     RutaBuildOptions options = new RutaBuildOptions();
-    String typeSystemOutput = new File(basicTSUrl.toURI()).getAbsolutePath();
+    String typeSystemOutput = "target/temp/testCreateAnalysisEngineDescription_TypeSystem.xml";
     ClassLoader classLoader = GenerateDescriptorTest.class.getClassLoader();
     AnalysisEngineDescription aed = rdf.createAnalysisEngineDescription(typeSystemOutput,
             descriptorInformation, options, null, null, null, classLoader);
@@ -128,7 +127,7 @@ public class GenerateDescriptorTest {
     RutaDescriptorFactory rdf = new RutaDescriptorFactory(basicTSUrl, basicAEUrl);
     RutaDescriptorInformation descriptorInformation = rdf.parseDescriptorInformation(script);
     RutaBuildOptions options = new RutaBuildOptions();
-    String typeSystemOutput = new File(basicTSUrl.toURI()).getAbsolutePath();
+    String typeSystemOutput = "target/temp/testCreateTypeSystemDescription_TypeSystem.xml";
     ClassLoader classLoader = GenerateDescriptorTest.class.getClassLoader();
     TypeSystemDescription tsd = rdf.createTypeSystemDescription(typeSystemOutput,
             descriptorInformation, options, classLoader);

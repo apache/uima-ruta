@@ -263,7 +263,7 @@
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
-        <import location="BasicTypeSystem.xml"/>
+        <import name="org.apache.uima.ruta.engine.BasicTypeSystem"/>
       </imports>
     </typeSystemDescription>
     <typePriorities>
