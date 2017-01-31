@@ -1292,9 +1292,40 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public Type getSharedParentType(List<Type> types) {
+    if(types == null || types.isEmpty()) {
+      return cas.getAnnotationType();
+    }
+    if(types.size() == 1) {
+      return types.get(0);
+    }
     TypeSystem typeSystem = cas.getTypeSystem();
-    Type parentType = null;
-    // TODO 
-    return types.get(0);
+    Type parentType = types.get(0);
+    for (Type type : types) {
+      parentType = getSharedParentType(parentType, type, typeSystem);
+    }
+    return parentType;
+  }
+
+  private Type getSharedParentType(Type type1, Type type2, TypeSystem typeSystem) {
+    if(cas.getAnnotationType().equals(type1) || cas.getAnnotationType().equals(type2)) {
+      return cas.getAnnotationType();
+    }
+    if(type1.equals(type2)) {
+      return type1;
+    }
+    if(typeSystem.subsumes(type1, type2)) {
+      return type1;
+    }
+    if(typeSystem.subsumes(type2, type1)) {
+      return type2;
+    }
+    Type parentType = typeSystem.getParent(type1);
+    while (parentType != null && !cas.getAnnotationType().equals(parentType)) {
+      if(typeSystem.subsumes(parentType, type2)) {
+        return parentType;
+      }
+    }
+    
+    return cas.getAnnotationType();
   }
 }
