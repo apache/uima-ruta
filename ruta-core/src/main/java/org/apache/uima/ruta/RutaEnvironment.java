@@ -326,7 +326,7 @@ public class RutaEnvironment {
 	private void importDeclaredTypesystems(TypeSystem casTS) throws InvalidXMLException {
 		String[] descriptors = typesystems.toArray(new String[typesystems.size()]);
 		TypeSystemDescription ts = TypeSystemDescriptionFactory.createTypeSystemDescription(descriptors);
-		ts.resolveImports(resourceManager);
+		ts.resolveImports(getResourceManager());
 		for (TypeDescription td : ts.getTypes()) {
 			Type type = casTS.getType(td.getName());
 			if (type != null) {
@@ -651,7 +651,7 @@ public class RutaEnvironment {
 		}
 		if (result == null) {
 			if (list.endsWith("txt") || list.endsWith("twl") || list.endsWith("mtwl")) {
-				ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths(), resourceManager.getExtensionClassLoader());
+				ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths(), getResourceManager().getExtensionClassLoader());
 				Resource resource = resourceLoader.getResource(list);
 				if (resource.exists()) {
 					try {
@@ -685,7 +685,7 @@ public class RutaEnvironment {
 		RutaTable result = tables.get(table);
 		if (result == null) {
 			if (table.endsWith("csv") || table.endsWith("txt") || table.endsWith("tsv")) {
-				ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths(), resourceManager.getExtensionClassLoader());
+				ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths(), getResourceManager().getExtensionClassLoader());
 				Resource resource = resourceLoader.getResource(table);
 				if (resource.exists()) {
 					try {

@@ -99,4 +99,65 @@ public class WordTableStringExpressionTest {
 
   }
   
+  @Test
+  public void testInBlock() throws Exception {
+    String document = "Kluegl Schor Kottmann";
+
+    String script="STRING s = \"org/apache/uima/ruta/action/\";\n";
+    script +="BLOCK(block) Document{}{\n";
+    script +="WORDTABLE table = s + \"table.csv\";\n";
+    script +="MARKTABLE(Person, 1, table, true, 0, \"-.,\", 10, \"firstname\" = 2, \"system\" = 3);\n";
+    script +="}\n";
+    
+    Map<String, String> complexTypes = new TreeMap<String, String>();
+    String typeName = "org.apache.uima.Person";
+    complexTypes.put(typeName, "uima.tcas.Annotation");
+    
+    Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    features.put(typeName, list);
+    String fn1 = "firstname";
+    list.add(new TestFeature(fn1, "", "uima.cas.String"));
+    String fn2 = "system";
+    list.add(new TestFeature(fn2, "", "uima.cas.String"));
+    
+    CAS cas = RutaTestUtils.getCAS(document, complexTypes, features);
+    Ruta.apply(cas, script);
+    
+    Type t = null;
+    AnnotationIndex<AnnotationFS> ai = null;
+    FSIterator<AnnotationFS> iterator = null;
+    AnnotationFS next = null;
+    String v1 = null;
+    String v2 = null;
+    t = cas.getTypeSystem().getType(typeName);
+    Feature f1 = t.getFeatureByBaseName(fn1);
+    Feature f2 = t.getFeatureByBaseName(fn2);
+    ai = cas.getAnnotationIndex(t);
+    
+    assertEquals(3, ai.size());
+    iterator = ai.iterator();
+    
+    next = iterator.next();
+    v1 = next.getStringValue(f1);
+    v2 = next.getStringValue(f2);
+    assertEquals("Peter", v1);
+    assertEquals("Ruta", v2);
+    
+    next = iterator.next();
+    v1 = next.getStringValue(f1);
+    v2 = next.getStringValue(f2);
+    assertEquals("Marshall", v1);
+    assertEquals("UIMA", v2);
+    
+    next = iterator.next();
+    v1 = next.getStringValue(f1);
+    v2 = next.getStringValue(f2);
+    assertEquals("Joern", v1);
+    assertEquals("CAS Editor", v2);
+    
+    cas.release();    
+
+  }
+  
 }
