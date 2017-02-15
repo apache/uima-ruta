@@ -20,6 +20,7 @@
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   
+  
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
