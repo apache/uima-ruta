@@ -118,15 +118,19 @@ public class SimpleFeatureExpression extends FeatureExpression {
   @Override
   public Type getInitialType(MatchContext context, RutaStream stream) {
     ITypeExpression typeExpression = mr.getTypeExpression(context, stream);
-    if (typeExpression != null) {
+    IAnnotationExpression annotationExpression = mr.getAnnotationExpression(context, stream);
+    IAnnotationExpression annotationListExpression = mr.getAnnotationExpression(context, stream);
+    if (typeExpression!= null) {
       return typeExpression.getType(context, stream);
-    } else {
-      IAnnotationExpression annotationExpression = mr.getAnnotationExpression(context, stream);
-      if (annotationExpression != null) {
+    } else if(annotationExpression != null) {
         AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
         if (annotation != null) {
           return annotation.getType();
         }
+    } else if(annotationListExpression != null) {
+      AnnotationFS annotation = annotationListExpression.getAnnotation(context, stream);
+      if (annotation != null) {
+        return annotation.getType();
       }
     }
     return null;
