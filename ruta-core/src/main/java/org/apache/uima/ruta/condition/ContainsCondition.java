@@ -22,6 +22,7 @@ package org.apache.uima.ruta.condition;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
@@ -80,21 +81,32 @@ public class ContainsCondition extends TypeSentiveCondition {
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
 
+    boolean usePercentage = percent.getBooleanValue(context, stream);
+    int minIntValue = min.getIntegerValue(context, stream);
+    int maxIntValue = max.getIntegerValue(context, stream);
+
     int basicCount = 0;
     int anchorCount = 0;
     int totalCount = 0;
 
     if (type != null) {
       if (annotation != null) {
-        List<RutaBasic> annotations = stream.getBasicsInWindow(annotation);
-        for (RutaBasic each : annotations) {
-          totalCount++;
+        if (minIntValue == 1 && maxIntValue == Integer.MAX_VALUE && !usePercentage) {
+          // shortcut for simple CONTAINS(Type)
           Type t = type.getType(context, stream);
-          if (each.beginsWith(t) || stream.getCas().getTypeSystem().subsumes(t, each.getType())) {
-            anchorCount += each.getBeginAnchors(t).size();
-            basicCount++;
-          } else if (each.isPartOf(t)) {
-            basicCount++;
+          boolean annotationExsits = checkExistingAnnotation(t, annotation, stream);
+          return new EvaluatedCondition(this, annotationExsits);
+        } else {
+          List<RutaBasic> annotations = stream.getBasicsInWindow(annotation);
+          for (RutaBasic each : annotations) {
+            totalCount++;
+            Type t = type.getType(context, stream);
+            if (each.beginsWith(t) || stream.getCas().getTypeSystem().subsumes(t, each.getType())) {
+              anchorCount += each.getBeginAnchors(t).size();
+              basicCount++;
+            } else if (each.isPartOf(t)) {
+              basicCount++;
+            }
           }
         }
       }
@@ -102,10 +114,11 @@ public class ContainsCondition extends TypeSentiveCondition {
       List<?> list = argList.getList(context, stream);
       totalCount = list.size();
       Object sniff = null;
-      if(totalCount >0 ) {
+      if (totalCount > 0) {
         sniff = list.get(0);
       }
-      if (check(sniff, Boolean.class) && arg instanceof IBooleanExpression && argList instanceof IBooleanListExpression) {
+      if (check(sniff, Boolean.class) && arg instanceof IBooleanExpression
+              && argList instanceof IBooleanListExpression) {
         IBooleanExpression e = (IBooleanExpression) arg;
         IBooleanListExpression le = (IBooleanListExpression) argList;
         boolean v = e.getBooleanValue(context, stream);
@@ -113,7 +126,8 @@ public class ContainsCondition extends TypeSentiveCondition {
         while (l.remove(v)) {
           basicCount++;
         }
-      } else if (check(sniff, Number.class) &&arg instanceof INumberExpression && argList instanceof INumberListExpression) {
+      } else if (check(sniff, Number.class) && arg instanceof INumberExpression
+              && argList instanceof INumberListExpression) {
         INumberExpression e = (INumberExpression) arg;
         INumberListExpression le = (INumberListExpression) argList;
         Number v = e.getDoubleValue(context, stream);
@@ -121,7 +135,8 @@ public class ContainsCondition extends TypeSentiveCondition {
         while (l.remove(v)) {
           basicCount++;
         }
-      } else if (check(sniff, String.class) &&arg instanceof IStringExpression && argList instanceof IStringListExpression) {
+      } else if (check(sniff, String.class) && arg instanceof IStringExpression
+              && argList instanceof IStringListExpression) {
         IStringExpression e = (IStringExpression) arg;
         IStringListExpression le = (IStringListExpression) argList;
         String v = e.getStringValue(context, stream);
@@ -129,7 +144,8 @@ public class ContainsCondition extends TypeSentiveCondition {
         while (l.remove(v)) {
           basicCount++;
         }
-      } else if (check(sniff, Type.class) &&arg instanceof ITypeExpression && argList instanceof ITypeListExpression) {
+      } else if (check(sniff, Type.class) && arg instanceof ITypeExpression
+              && argList instanceof ITypeListExpression) {
         ITypeExpression e = (ITypeExpression) arg;
         ITypeListExpression le = (ITypeListExpression) argList;
         Type v = e.getType(context, stream);
@@ -137,7 +153,8 @@ public class ContainsCondition extends TypeSentiveCondition {
         while (l.remove(v)) {
           basicCount++;
         }
-      } else if (check(sniff, AnnotationFS.class) &&arg instanceof IAnnotationExpression && argList instanceof IAnnotationListExpression) {
+      } else if (check(sniff, AnnotationFS.class) && arg instanceof IAnnotationExpression
+              && argList instanceof IAnnotationListExpression) {
         IAnnotationExpression e = (IAnnotationExpression) arg;
         IAnnotationListExpression le = (IAnnotationListExpression) argList;
         AnnotationFS v = e.getAnnotation(context, stream);
@@ -148,7 +165,8 @@ public class ContainsCondition extends TypeSentiveCondition {
       }
       anchorCount = basicCount;
     }
-    if (percent.getBooleanValue(context, stream)) {
+    
+    if (usePercentage) {
       double percentValue = 0;
       if (totalCount != 0) {
         percentValue = (((double) basicCount) / ((double) totalCount)) * 100;
@@ -157,16 +175,60 @@ public class ContainsCondition extends TypeSentiveCondition {
               && percentValue <= max.getDoubleValue(context, stream);
       return new EvaluatedCondition(this, value);
     } else {
-      boolean value = anchorCount >= min.getIntegerValue(context, stream)
-              && anchorCount <= max.getIntegerValue(context, stream);
+      boolean value = anchorCount >= minIntValue && anchorCount <= maxIntValue;
       return new EvaluatedCondition(this, value);
     }
   }
 
+  private boolean checkExistingAnnotation(Type type, AnnotationFS annotation, RutaStream stream) {
+    int begin = annotation.getBegin();
+    int end = annotation.getEnd();
+    
+    FSIterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(type).iterator();
+    it.moveTo(annotation);
+    if (!it.isValid()) {
+      it.moveToLast();
+      if (!it.isValid()) {
+        return false;
+      }
+    }
+
+    boolean moved = false;
+    while (it.isValid() && (it.get()).getBegin() >= begin) {
+      it.moveToPrevious();
+      moved = true;
+    }
+    if (moved) {
+      it.moveToNext();
+    }
+    if (!it.isValid()) {
+      it.moveToFirst();
+    }
+    while (it.isValid() && (it.get()).getBegin() < begin) {
+      it.moveToNext();
+    }
+
+    while (it.isValid()) {
+      AnnotationFS a = it.get();
+      if (a.getBegin() > end) {
+        return false;
+      }
+      it.moveToNext();
+      if (a.getEnd() > end) {
+        continue;
+      }
+      if(stream.isVisible(a)) {
+        return true;
+      }
+
+    }
+    return false;
+  }
+
   private boolean check(Object sniff, Class<?> clazz) {
-    if(sniff == null) {
+    if (sniff == null) {
       return true;
-    } else if(clazz.isAssignableFrom(sniff.getClass())){
+    } else if (clazz.isAssignableFrom(sniff.getClass())) {
       return true;
     }
     return false;
