@@ -45,7 +45,7 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
  * 
  * @generated
  */
-public class RutaBasic extends Annotation {
+public class RutaBasic4 extends Annotation {
 
   private static final int INITIAL_CAPACITY = 2;
 
@@ -397,7 +397,7 @@ public class RutaBasic extends Annotation {
    * @generated
    * @ordered
    */
-  public final static int typeIndexID = JCasRegistry.register(RutaBasic.class);
+  public final static int typeIndexID = JCasRegistry.register(RutaBasic4.class);
 
   /**
    * @generated
@@ -416,7 +416,7 @@ public class RutaBasic extends Annotation {
    * 
    * @generated
    */
-  protected RutaBasic() {/* intentionally empty block */
+  protected RutaBasic4() {/* intentionally empty block */
   }
 
   /**
@@ -424,19 +424,19 @@ public class RutaBasic extends Annotation {
    * 
    * @generated
    */
-  public RutaBasic(int addr, TOP_Type type) {
+  public RutaBasic4(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
 
   /** @generated */
-  public RutaBasic(JCas jcas) {
+  public RutaBasic4(JCas jcas) {
     super(jcas);
     readObject();
   }
 
   /** @generated */
-  public RutaBasic(JCas jcas, int begin, int end) {
+  public RutaBasic4(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);

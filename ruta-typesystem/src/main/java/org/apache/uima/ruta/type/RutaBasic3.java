@@ -24,11 +24,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
-import org.apache.uima.cas.impl.FeatureStructureImpl;
-import org.apache.uima.cas.impl.LowLevelCAS;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
@@ -36,16 +33,15 @@ import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 import org.apache.uima.jcas.tcas.Annotation;
 
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap.Entry;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
 
 /**
  * 
  * @generated
  */
-public class RutaBasic extends Annotation {
+public class RutaBasic3 extends Annotation {
 
   private static final int INITIAL_CAPACITY = 2;
 
@@ -55,12 +51,11 @@ public class RutaBasic extends Annotation {
 
   private boolean lowMemoryProfile = false;
 
-  private Int2IntOpenHashMap partOf;
+  private Int2IntOpenHashMap partOf = new Int2IntOpenHashMap();
 
-  private Int2ObjectOpenHashMap<IntArrayList> beginMap;
-
-  private Int2ObjectOpenHashMap<IntArrayList> endMap;
-
+  private Int2ObjectOpenHashMap<Collection<?>> beginMap = new Int2ObjectOpenHashMap<>();
+  private Int2ObjectOpenHashMap<Collection<?>> endMap = new Int2ObjectOpenHashMap<>();
+  
   private boolean empty = true;
 
   public boolean isEmpty() {
@@ -81,9 +76,6 @@ public class RutaBasic extends Annotation {
   }
 
   private void addPartOf(int code) {
-    if (partOf == null) {
-      partOf = new Int2IntOpenHashMap();
-    }
     partOf.addTo(code, 1);
     if (!lowMemoryProfile) {
       int parentCode = getCAS().getTypeSystem().getLowLevelTypeSystem().ll_getParentType(code);
@@ -99,7 +91,7 @@ public class RutaBasic extends Annotation {
   }
 
   private void removePartOf(int code) {
-    if (partOf != null && partOf.get(code) != 0) {
+    if (partOf.get(code) != 0) {
       partOf.addTo(code, -1);
       if (!lowMemoryProfile) {
         int parentCode = getCAS().getTypeSystem().getLowLevelTypeSystem().ll_getParentType(code);
@@ -111,9 +103,6 @@ public class RutaBasic extends Annotation {
   }
 
   public boolean isPartOf(Type type) {
-    if (partOf == null) {
-      return false;
-    }
     int code = ((TypeImpl) type).getCode();
     int count = partOf.get(code);
     if (count > 0) {
@@ -141,69 +130,62 @@ public class RutaBasic extends Annotation {
   public Int2IntOpenHashMap getPartOf() {
     return partOf;
   }
-
+  
+  @SuppressWarnings("unchecked")
   public Collection<AnnotationFS> getBeginAnchors(Type type) {
-    if (beginMap == null) {
-      return Collections.emptyList();
-    }
     int code = ((TypeImpl) type).getCode();
-    IntArrayList list = beginMap.get(code);
+    Collection<AnnotationFS> set = (Collection<AnnotationFS>) beginMap.get(code);
     if (lowMemoryProfile) {
-      Collection<AnnotationFS> result = new ArrayList<AnnotationFS>(list.size());
-      if (list != null) {
-        result.addAll(adressToAnnotationList(list));
+      Collection<AnnotationFS> result = new ArrayList<AnnotationFS>();
+      if (set != null) {
+        result.addAll(set);
       }
       List<Type> subsumedTypes = getCAS().getTypeSystem().getProperlySubsumedTypes(type);
       for (Type each : subsumedTypes) {
         int parentCode = ((TypeImpl) each).getCode();
-        IntArrayList c = beginMap.get(parentCode);
+        Collection<?> c =  beginMap.get(parentCode);
         if (c != null) {
-          result.addAll(adressToAnnotationList(c));
+          result.addAll((Collection<? extends AnnotationFS>) c);
         }
       }
       return result;
     } else {
-      if (list == null) {
+      if (set == null) {
         return Collections.emptySet();
       } else {
-        return adressToAnnotationList(list);
+        return set;
       }
     }
   }
 
+  @SuppressWarnings("unchecked")
   public Collection<AnnotationFS> getEndAnchors(Type type) {
-    if (endMap == null) {
-      return Collections.emptyList();
-    }
     int code = ((TypeImpl) type).getCode();
-    IntArrayList list = endMap.get(code);
+    Collection<AnnotationFS> set = (Collection<AnnotationFS>) endMap.get(code);
     if (lowMemoryProfile) {
-      Collection<AnnotationFS> result = new ArrayList<AnnotationFS>(list.size());
-      if (list != null) {
-        result.addAll(adressToAnnotationList(list));
+      Collection<AnnotationFS> result = new ArrayList<AnnotationFS>();
+      if (set != null) {
+        result.addAll(set);
       }
       List<Type> subsumedTypes = getCAS().getTypeSystem().getProperlySubsumedTypes(type);
       for (Type each : subsumedTypes) {
         int parentCode = ((TypeImpl) each).getCode();
-        IntArrayList c = endMap.get(parentCode);
+        Collection<?> c = endMap.get(parentCode);
         if (c != null) {
-          result.addAll(adressToAnnotationList(c));
+          result.addAll((Collection<? extends AnnotationFS>) c);
         }
       }
       return result;
     } else {
-      if (list == null) {
+      if (set == null) {
         return Collections.emptySet();
       } else {
-        return adressToAnnotationList(list);
+        return set;
       }
     }
   }
 
   public boolean beginsWith(Type type) {
-    if (beginMap == null) {
-      return false;
-    }
     int code = ((TypeImpl) type).getCode();
     Collection<?> set = beginMap.get(code);
     boolean beginsWith = set != null && !set.isEmpty();
@@ -222,9 +204,6 @@ public class RutaBasic extends Annotation {
   }
 
   public boolean endsWith(Type type) {
-    if (endMap == null) {
-      return false;
-    }
     int code = ((TypeImpl) type).getCode();
     Collection<?> set = endMap.get(code);
     boolean endswith = set != null && !set.isEmpty();
@@ -242,18 +221,16 @@ public class RutaBasic extends Annotation {
     return false;
   }
 
+  @SuppressWarnings("unchecked")
   public void addBegin(AnnotationFS annotation, Type type) {
-    if (beginMap == null) {
-      beginMap = new Int2ObjectOpenHashMap<>();
-    }
     empty = false;
     int code = ((TypeImpl) type).getCode();
-    IntArrayList list = beginMap.get(code);
-    if (list == null) {
-      list = new IntArrayList(INITIAL_CAPACITY);
-      beginMap.put(code, list);
+    Collection<Object> set = (Collection<Object>) beginMap.get(code);
+    if (set == null) {
+      set = new ArrayList<Object>(INITIAL_CAPACITY);
+      beginMap.put(code, set);
     }
-    list.add(annotationToAddress(annotation));
+    set.add(annotation);
     if (!lowMemoryProfile && !type.getName().equals(ROOT_TYPE1)
             && !type.getName().equals(ROOT_TYPE2)) {
       TypeSystem typeSystem = getCAS().getTypeSystem();
@@ -264,18 +241,16 @@ public class RutaBasic extends Annotation {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void addEnd(AnnotationFS annotation, Type type) {
-    if (endMap == null) {
-      endMap = new Int2ObjectOpenHashMap<>();
-    }
     empty = false;
     int code = ((TypeImpl) type).getCode();
-    IntArrayList list = endMap.get(code);
-    if (list == null) {
-      list = new IntArrayList(INITIAL_CAPACITY);
-      endMap.put(code, list);
+    Collection<Object> set = (Collection<Object>) endMap.get(code);
+    if (set == null) {
+      set = new ArrayList<Object>(INITIAL_CAPACITY);
+      endMap.put(code, set);
     }
-    list.add(annotationToAddress(annotation));
+    set.add(annotation);
     if (!lowMemoryProfile && !type.getName().equals(ROOT_TYPE1)
             && !type.getName().equals(ROOT_TYPE2)) {
       TypeSystem typeSystem = getCAS().getTypeSystem();
@@ -286,15 +261,13 @@ public class RutaBasic extends Annotation {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void removeBegin(AnnotationFS annotation, Type type) {
-    if (beginMap == null) {
-      return;
-    }
     int code = ((TypeImpl) type).getCode();
-    IntArrayList list = beginMap.get(code);
-    if (list != null) {
-      list.removeInt(annotationToAddress(annotation));
-      if (list.isEmpty()) {
+    Collection<Object> set = (Collection<Object>) beginMap.get(code);
+    if (set != null) {
+      set.remove(annotation);
+      if (set.isEmpty()) {
         beginMap.remove(code);
       }
     }
@@ -307,15 +280,13 @@ public class RutaBasic extends Annotation {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void removeEnd(AnnotationFS annotation, Type type) {
-    if (endMap == null) {
-      return;
-    }
     int code = ((TypeImpl) type).getCode();
-    IntArrayList list = endMap.get(code);
-    if (list != null) {
-      list.removeInt(annotationToAddress(annotation));
-      if (list.isEmpty()) {
+    Collection<Object> set = (Collection<Object>) endMap.get(code);
+    if (set != null) {
+      set.remove(annotation);
+      if (set.isEmpty()) {
         endMap.remove(code);
       }
     }
@@ -328,17 +299,17 @@ public class RutaBasic extends Annotation {
     }
   }
 
-  public Int2ObjectOpenHashMap<IntArrayList> getBeginMap() {
+  public Int2ObjectOpenHashMap<Collection<?>> getBeginMap() {
     return beginMap;
   }
 
-  public Int2ObjectOpenHashMap<IntArrayList> getEndMap() {
+  public Int2ObjectOpenHashMap<Collection<?>> getEndMap() {
     return endMap;
   }
 
-  public void setBeginMap(Int2ObjectOpenHashMap<IntArrayList> beginMap) {
+  public void setBeginMap(Int2ObjectOpenHashMap<Collection<?>> beginMap) {
     this.beginMap = beginMap;
-    for (Entry<IntArrayList> entry : beginMap.int2ObjectEntrySet()) {
+    for (Entry<Collection<?>> entry : beginMap.int2ObjectEntrySet()) {
       Collection<?> value = entry.getValue();
       if (value != null && !value.isEmpty()) {
         this.empty = false;
@@ -347,9 +318,9 @@ public class RutaBasic extends Annotation {
     }
   }
 
-  public void setEndMap(Int2ObjectOpenHashMap<IntArrayList> endMap) {
+  public void setEndMap(Int2ObjectOpenHashMap<Collection<?>> endMap) {
     this.endMap = endMap;
-    for (Entry<IntArrayList> entry : endMap.int2ObjectEntrySet()) {
+    for (Entry<Collection<?>> entry : endMap.int2ObjectEntrySet()) {
       Collection<?> value = entry.getValue();
       if (value != null && !value.isEmpty()) {
         this.empty = false;
@@ -359,45 +330,25 @@ public class RutaBasic extends Annotation {
   }
 
   public void clearBeginMap() {
-    this.beginMap.clear();
+    this.beginMap.clear();;
   }
 
   public void clearEndMap() {
     this.endMap.clear();
-    if (beginMap != null) {
-      for (Entry<IntArrayList> entry : beginMap.int2ObjectEntrySet()) {
-        Collection<?> value = entry.getValue();
-        if (value != null && !value.isEmpty()) {
-          return;
-        }
+    for (Entry<Collection<?>> entry : beginMap.int2ObjectEntrySet()) {
+      Collection<?> value = entry.getValue();
+      if (value != null && !value.isEmpty()) {
+        return;
       }
     }
     this.empty = true;
-  }
-
-  private Collection<AnnotationFS> adressToAnnotationList(IntArrayList addressList) {
-    List<AnnotationFS> result = new ArrayList<>(addressList.size());
-    for (int value : addressList) {
-      result.add(addressToAnnotation(value));
-    }
-    return result;
-  }
-
-  private int annotationToAddress(AnnotationFS annotation) {
-    return ((FeatureStructureImpl) annotation).getAddress();
-  }
-
-  private AnnotationFS addressToAnnotation(int address) {
-    LowLevelCAS lowLevelCAS = getCASImpl().getLowLevelCAS();
-    FeatureStructure fs = lowLevelCAS.ll_getFSForRef(address);
-    return (AnnotationFS) fs;
   }
 
   /**
    * @generated
    * @ordered
    */
-  public final static int typeIndexID = JCasRegistry.register(RutaBasic.class);
+  public final static int typeIndexID = JCasRegistry.register(RutaBasic3.class);
 
   /**
    * @generated
@@ -416,7 +367,7 @@ public class RutaBasic extends Annotation {
    * 
    * @generated
    */
-  protected RutaBasic() {/* intentionally empty block */
+  protected RutaBasic3() {/* intentionally empty block */
   }
 
   /**
@@ -424,19 +375,19 @@ public class RutaBasic extends Annotation {
    * 
    * @generated
    */
-  public RutaBasic(int addr, TOP_Type type) {
+  public RutaBasic3(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
 
   /** @generated */
-  public RutaBasic(JCas jcas) {
+  public RutaBasic3(JCas jcas) {
     super(jcas);
     readObject();
   }
 
   /** @generated */
-  public RutaBasic(JCas jcas, int begin, int end) {
+  public RutaBasic3(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);

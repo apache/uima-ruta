@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.uima.cas.Type;
@@ -71,30 +72,30 @@ public class GetListAction extends AbstractRutaAction {
     for (AnnotationFS matched : matchedAnnotations) {
 
       if (TYPES_AT_BEGIN.equals(op)) {
-        RutaBasic beginAnchor = stream.getBeginAnchor(matched.getBegin());
-        Collection<?>[] beginMap = beginAnchor.getBeginMap();
-        Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
-        for (Collection<?> set : beginMap) {
-          if (set != null) {
-            aset.addAll((Collection<? extends AnnotationFS>) set);
-          }
-        }
-        for (AnnotationFS annotationFS : aset) {
-          list.add(annotationFS.getType());
-        }
+//        RutaBasic beginAnchor = stream.getBeginAnchor(matched.getBegin());
+//        Map<Integer, Collection<?>> beginMap = beginAnchor.getBeginMap();
+//        Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
+//        for (Collection<?> set : beginMap.values()) {
+//          if (set != null) {
+//            aset.addAll((Collection<? extends AnnotationFS>) set);
+//          }
+//        }
+//        for (AnnotationFS annotationFS : aset) {
+//          list.add(annotationFS.getType());
+//        }
       } else if (TYPES_AT_END.equals(op)) {
-        RutaBasic endAnchor = stream.getEndAnchor(matched.getEnd());
-        // Collection<Set<AnnotationFS>> values = endAnchor.getEndMap().values();
-        Collection<?>[] endMap = endAnchor.getEndMap();
-        Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
-        for (Collection<?> set : endMap) {
-          if (set != null) {
-            aset.addAll((Collection<? extends AnnotationFS>) set);
-          }
-        }
-        for (AnnotationFS annotationFS : aset) {
-          list.add(annotationFS.getType());
-        }
+//        RutaBasic endAnchor = stream.getEndAnchor(matched.getEnd());
+//        // Collection<Set<AnnotationFS>> values = endAnchor.getEndMap().values();
+//        Map<Integer, Collection<?>> endMap = endAnchor.getEndMap();
+//        Set<AnnotationFS> aset = new HashSet<AnnotationFS>();
+//        for (Collection<?> set : endMap.values()) {
+//          if (set != null) {
+//            aset.addAll((Collection<? extends AnnotationFS>) set);
+//          }
+//        }
+//        for (AnnotationFS annotationFS : aset) {
+//          list.add(annotationFS.getType());
+//        }
       } else if (TYPES.equals(op)) {
         Type annotationType = stream.getCas().getAnnotationType();
         List<AnnotationFS> inWindow = stream.getAnnotationsInWindow(matched, annotationType);
