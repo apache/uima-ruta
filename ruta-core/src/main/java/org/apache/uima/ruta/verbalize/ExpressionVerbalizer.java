@@ -105,6 +105,8 @@ public class ExpressionVerbalizer {
       return verbalize((IStringExpression) expression);
     } else if (expression instanceof MatchReference) {
       return verbalize((MatchReference) expression);
+    } else if(expression instanceof NullExpression) {
+      return "null";
     }
     return expression.getClass().getSimpleName();
   }
