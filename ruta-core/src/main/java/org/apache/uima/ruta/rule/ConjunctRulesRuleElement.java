@@ -50,7 +50,6 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
       List<RuleMatch> startMatch = each.startMatch(ruleMatch, null, composedMatch, each, stream,
               crowd);
       boolean oneMatched = false;
-      ;
       for (RuleMatch eachRuleMatch : startMatch) {
         boolean matched = eachRuleMatch.matched();
         if (matched) {
@@ -64,6 +63,7 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
 
     for (RuleMatch each : result) {
       if (!each.isApplied()) {
+        each.setMatched(allMatched);
         ruleApply.add(each);
         if (each.matched() && allMatched) {
           each.getRule().getRoot().applyRuleElements(each, stream, crowd);

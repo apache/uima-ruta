@@ -50,4 +50,37 @@ public class ConjunctRulesTest {
 
     cas.release();
   }
+  
+  @Test
+  public void testInlinedRules() throws Exception {
+    
+    String document = "This is a test.";
+    String script = "(CW # PERIOD) {-> T1};";
+    script += "T1{->T2}<-{SW % CW;};";
+    script += "T1{->T3}<-{COMMA % CW;};";
+    
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, document);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+  }
+  
+  @Test
+  public void testInlinedRulesWithLabels() throws Exception {
+    
+    String document = "This is a test.";
+    String script = "(CW # PERIOD) {-> T1};";
+    script += "T1{->T2}<-{s:W{s.ct==\"is\"} % c:W{c.ct==\"This\"};};";
+    script += "T1{->T3}<-{s:W{s.ct==\"missing\"} % c:W{c.ct==\"This\"};};";
+    
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, document);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+  }
+  
+  
+  
 }
