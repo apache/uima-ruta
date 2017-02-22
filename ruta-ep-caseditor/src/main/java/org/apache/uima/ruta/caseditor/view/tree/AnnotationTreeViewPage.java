@@ -58,7 +58,6 @@ import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -84,6 +83,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.ISelectionListener;
@@ -152,6 +153,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   private Map<Type, Image> icons = new HashMap<Type, Image>();
 
+  private Image rutaImage;
+  
   private Composite overlay;
 
   protected AnnotationEditor editor;
@@ -305,6 +308,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     editor.getCasDocumentProvider().getTypeSystemPreferenceStore(editor.getEditorInput())
             .addPropertyChangeListener(styleListener);
 
+    rutaImage = RutaCasEditorPlugin.getImageDescriptor("/icons/views.png").createImage();
+    
     getSite().getPage().addSelectionListener(this);
     getSite().setSelectionProvider(treeView);
 
@@ -320,8 +325,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
           IStatusLineManager statusLineManager) {
     //
     Action createActionCheckVisible = new CheckAllVisibleAction();
-    createActionCheckVisible
-            .setText("Set all types visible in the Annotation Browser to be highlighted in the CAS editor.");
+    createActionCheckVisible.setText(
+            "Set all types visible in the Annotation Browser to be highlighted in the CAS editor.");
     ImageDescriptor imageDescriptor = RutaCasEditorPlugin
             .getImageDescriptor("/icons/lightbulb_add.png");
     createActionCheckVisible.setImageDescriptor(imageDescriptor);
@@ -329,8 +334,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     //
     Action createActionUncheckAll = new UncheckAllAction();
     createActionUncheckAll.setText("Reset type highlighting. No type will be checked.");
-    createActionUncheckAll.setImageDescriptor(RutaCasEditorPlugin
-            .getImageDescriptor("/icons/lightbulb_off.png"));
+    createActionUncheckAll
+            .setImageDescriptor(RutaCasEditorPlugin.getImageDescriptor("/icons/lightbulb_off.png"));
     toolBarManager.add(createActionUncheckAll);
     if (!useSelection) {
       IAction showTypesWithoutAnnotations = new ShowTypesWithoutAnnotations();
@@ -385,6 +390,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     for (Image image : values) {
       image.dispose();
     }
+    rutaImage.dispose();
   }
 
   /*
@@ -419,13 +425,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
    */
   @Override
   public void doubleClick(DoubleClickEvent event) {
-    if (event.getSelection() != null && event.getSelection() instanceof ITreeSelection) {
-      Object treeNode = ((ITreeSelection) event.getSelection()).getFirstElement();
-      if (treeNode instanceof AnnotationTreeNode) {
-      } else if (treeNode instanceof TypeTreeNode) {
-        editor.setAnnotationMode(((TypeTreeNode) treeNode).getType());
-      }
-    }
+   
   }
 
   /*
@@ -511,6 +511,34 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
    */
   @Override
   public void mouseDown(final MouseEvent mouseEvent) {
+    if (mouseEvent.button == 3) {
+      Display display = Display.getCurrent();
+      Menu menu = new Menu(display.getActiveShell(), SWT.POP_UP);
+      MenuItem item = new MenuItem(menu, SWT.PUSH);
+      item.setText("Set Annotation Mode");
+      item.setImage(rutaImage);
+      item.addListener(SWT.Selection, new Listener() {
+        public void handleEvent(Event e) {
+          TreeItem item = treeView.getTree().getItem(new Point(mouseEvent.x, mouseEvent.y));
+          if (item != null && item.getData() instanceof AbstractTreeNode) {
+            Type type = ((AbstractTreeNode) item.getData()).getType();
+            if(type != null) {
+              getTreeViewer().setGrayed(new TypeTreeNode(null, type), false);
+              editor.setAnnotationMode(type);
+            }
+          }
+        }
+      });
+
+      menu.setVisible(true);
+
+      while (!menu.isDisposed() && menu.isVisible()) {
+        if (!display.readAndDispatch())
+          display.sleep();
+      }
+      menu.dispose();
+    }
+
   }
 
   /*
@@ -520,6 +548,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
    */
   @Override
   public void mouseUp(MouseEvent e) {
+
   }
 
   public Image getIcon(Type type) {
@@ -545,8 +574,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
   private Image updateIcon(Type type) {
     AnnotationStyle style = editor.getAnnotationStyle(type);
     Color fg = new Color(Display.getCurrent(), 0, 0, 0);
-    Color bg = new Color(Display.getCurrent(), style.getColor().getRed(), style.getColor()
-            .getGreen(), style.getColor().getBlue());
+    Color bg = new Color(Display.getCurrent(), style.getColor().getRed(),
+            style.getColor().getGreen(), style.getColor().getBlue());
 
     PaletteData paletteData = new PaletteData(new RGB[] { bg.getRGB(), fg.getRGB() });
     ImageData imageData = new ImageData(40, 40, 1, paletteData);
@@ -580,7 +609,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     return image;
   }
 
-  public IRootTreeNode getTypeOrderedTree(int pos, String manualTypeFilter, String manualTextFilter) {
+  public IRootTreeNode getTypeOrderedTree(int pos, String manualTypeFilter,
+          String manualTextFilter) {
     CAS cas = editor.getDocument().getCAS();
     TypeOrderedRootTreeNode root = new TypeOrderedRootTreeNode(cas);
     IPreferenceStore preferenceStore = RutaCasEditorPlugin.getDefault().getPreferenceStore();
@@ -603,12 +633,10 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     for (AnnotationFS annotationFS : annotationIndex) {
       boolean offsetConstraint = pos == -1
               || (annotationFS.getBegin() <= pos && annotationFS.getEnd() >= pos);
-      boolean typeConstraint = StringUtils.isEmpty(manualTypeFilter)
-              || annotationFS.getType().getName().toLowerCase()
-                      .indexOf(manualTypeFilter.toLowerCase()) != -1;
-      boolean textConstraint = StringUtils.isEmpty(manualTextFilter)
-              || annotationFS.getCoveredText().toLowerCase()
-                      .indexOf(manualTextFilter.toLowerCase()) != -1;
+      boolean typeConstraint = StringUtils.isEmpty(manualTypeFilter) || annotationFS.getType()
+              .getName().toLowerCase().indexOf(manualTypeFilter.toLowerCase()) != -1;
+      boolean textConstraint = StringUtils.isEmpty(manualTextFilter) || annotationFS
+              .getCoveredText().toLowerCase().indexOf(manualTextFilter.toLowerCase()) != -1;
       if (offsetConstraint && typeConstraint && textConstraint) {
         root.insertFS(annotationFS, cas, withParents);
       }
@@ -690,6 +718,13 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     } else if (element instanceof AnnotationTreeNode) {
       type = ((AnnotationTreeNode) element).getType();
     }
+    Type modeType = editor.getAnnotationMode();
+    if(!checked && modeType != null  && modeType.equals(type)) {
+      // reset mode to uima.tcas.Annotation if deselected
+      getTreeViewer().setGrayed(new TypeTreeNode(null, type), false);
+      Type annotationType = editor.getDocument().getCAS().getAnnotationType();
+      editor.setAnnotationMode(annotationType);
+    }
     if (type != null && !editor.getAnnotationMode().equals(type)) {
       editor.setShownAnnotationType(type, checked);
     }
@@ -716,9 +751,8 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   private boolean isTreeWithTypesWithoutAnnotations() {
     IPreferenceStore preferenceStore = RutaCasEditorPlugin.getDefault().getPreferenceStore();
-    return !useSelection
-            && preferenceStore
-                    .getBoolean(CasEditorViewsPreferenceConstants.SHOW_TYPES_WITHOUT_ANNOTATIONS);
+    return !useSelection && preferenceStore
+            .getBoolean(CasEditorViewsPreferenceConstants.SHOW_TYPES_WITHOUT_ANNOTATIONS);
   }
 
 }
