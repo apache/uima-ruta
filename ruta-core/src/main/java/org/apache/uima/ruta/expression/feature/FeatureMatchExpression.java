@@ -24,12 +24,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.UIMAConstants;
-import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.RutaExpression;
@@ -48,7 +47,7 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
 
   private String op;
 
-  public FeatureMatchExpression(MatchReference mr, String op, IRutaExpression arg, RutaBlock env) {
+  public FeatureMatchExpression(MatchReference mr, String op, IRutaExpression arg) {
     super(mr);
     this.op = op;
     this.arg = arg;
@@ -79,41 +78,41 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
           RutaStream stream) {
     String rn = null;
     if(feature instanceof CoveredTextFeature) {
-      rn = UIMAConstants.TYPE_STRING;
+      rn = CAS.TYPE_NAME_STRING;
     } else if (feature != null){
       rn = feature.getRange().getName();
     }
     
-    if (rn.equals(UIMAConstants.TYPE_BOOLEAN)) {
+    if (rn.equals(CAS.TYPE_NAME_BOOLEAN)) {
       Boolean v1 = fs.getBooleanValue(feature);
       if (getArg() instanceof IBooleanExpression) {
         IBooleanExpression expr = (IBooleanExpression) getArg();
         Boolean v2 = expr.getBooleanValue(context, stream);
         return compare(v1, v2);
       }
-    } else if (rn.equals(UIMAConstants.TYPE_INTEGER) || rn.equals(UIMAConstants.TYPE_BYTE)
-            || rn.equals(UIMAConstants.TYPE_SHORT) || rn.equals(UIMAConstants.TYPE_LONG)) {
+    } else if (rn.equals(CAS.TYPE_NAME_INTEGER) || rn.equals(CAS.TYPE_NAME_BYTE)
+            || rn.equals(CAS.TYPE_NAME_SHORT) || rn.equals(CAS.TYPE_NAME_LONG)) {
       Integer v1 = fs.getIntValue(feature);
       if (getArg() instanceof INumberExpression) {
         INumberExpression expr = (INumberExpression) getArg();
         Integer v2 = expr.getIntegerValue(context, stream);
         return compare(v1, v2);
       }
-    } else if (rn.equals(UIMAConstants.TYPE_DOUBLE)) {
+    } else if (rn.equals(CAS.TYPE_NAME_DOUBLE)) {
       Double v1 = fs.getDoubleValue(feature);
       if (getArg() instanceof INumberExpression) {
         INumberExpression expr = (INumberExpression) getArg();
         Double v2 = expr.getDoubleValue(context, stream);
         return compare(v1, v2);
       }
-    } else if (rn.equals(UIMAConstants.TYPE_FLOAT)) {
+    } else if (rn.equals(CAS.TYPE_NAME_FLOAT)) {
       Float v1 = fs.getFloatValue(feature);
       if (getArg() instanceof INumberExpression) {
         INumberExpression expr = (INumberExpression) getArg();
         Float v2 = expr.getFloatValue(context, stream);
         return compare(v1, v2);
       }
-    } else if (rn.equals(UIMAConstants.TYPE_STRING)) {
+    } else if (rn.equals(CAS.TYPE_NAME_STRING)) {
       String v1 = null;
       // null is possibly coveredText
       if(feature instanceof CoveredTextFeature && fs instanceof AnnotationFS) {

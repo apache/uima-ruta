@@ -824,8 +824,7 @@ level--;
 ruleElementWithCA[RuleElementContainer container] returns [RutaRuleElement re = null] 
     :
     
-    idRef=typeMatchExpression 
-    {re = factory.createRuleElement(idRef,null,null,null, container, $blockDeclaration::env);}
+          reMatch = ruleElementMatchPart[container] {re = reMatch;}
     q = quantifierPart? 
         LCURLY c = conditions? (THEN a = actions)? RCURLY
          {
@@ -1028,72 +1027,37 @@ scope {
 	}
 	;
 
-
-ruleElementType [RuleElementContainer container] returns [RutaRuleElement re = null]
-    :
-    
-    (typeMatchExpression)=>typeExpr = typeMatchExpression 
-     {re = factory.createRuleElement(typeExpr, null, null, null, container, $blockDeclaration::env);} 
-    q = quantifierPart? 
-        (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
-   {
-	if(q != null) {
-		re.setQuantifier(q);
-	}
-	if(c!= null) {
-		re.setConditions(c);
-	}
-	if(a != null) {
-		re.setActions(a);
-	}
-	}
-    ;
-
-ruleElementAnnotation [RuleElementContainer container] returns [RutaRuleElement re = null]
-    :
-    (annotationExpression2)=>aExpr = annotationExpression2 
-     {re = factory.createRuleElement(aExpr, null, null, null, container, $blockDeclaration::env);} 
-    q = quantifierPart? 
-        (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
-   {
-	if(q != null) {
-		re.setQuantifier(q);
-	}
-	if(c!= null) {
-		re.setConditions(c);
-	}
-	if(a != null) {
-		re.setActions(a);
-	}
-	}
-    ;
-    
- ruleElementAnnotationType [RuleElementContainer container] returns [RutaRuleElement re = null]
-    :
-    (
-    (annotationExpression2)=>aExpr = annotationExpression2 
-     {re = factory.createRuleElement(aExpr, null, null, null, container, $blockDeclaration::env);} 
+ruleElementMatchPart [RuleElementContainer container] returns [RutaRuleElement re = null]
+	:
+	(
+    (annotationAddressExpression)=>addressExpr = annotationAddressExpression 
+     {
+	     MatchReference mr = ExpressionFactory.createMatchReference(addressExpr);
+	     re = factory.createRuleElement(mr, container, $blockDeclaration::env);
+     } 
      
     |
     (typeFunction)=> tf = typeFunction 
-    {re = factory.createRuleElement(tf, null, null, null, container, $blockDeclaration::env);}
+    {
+    	MatchReference mr = ExpressionFactory.createMatchReference(tf);
+   	re = factory.createRuleElement(mr, container, $blockDeclaration::env);
+    }
     
     |
      match = dottedIdWithIndex2 ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
      {
-	     MatchReference mr = ExpressionFactory.createMatchReference(match);
-	     if(comp == null) {
-	     AnnotationTypeExpression ate = ExpressionFactory.createAnnotationTypeExpression(mr);
-	     re = factory.createRuleElement(ate, null, null, null, container, $blockDeclaration::env);
-	     } else {
-	     FeatureMatchExpression fme = ExpressionFactory.createFeatureMatchExpression(mr, comp, arg, $blockDeclaration::env);
-	     re = factory.createRuleElement(fme, null, null, null, container, $blockDeclaration::env);
-	     } 
+	     MatchReference mr = ExpressionFactory.createMatchReference(match, comp, arg);
+	     re = factory.createRuleElement(mr, container, $blockDeclaration::env);
      }
      
      
      )
-     
+	;
+    
+ ruleElementAnnotationType [RuleElementContainer container] returns [RutaRuleElement re = null]
+    :
+    
+     reMatch = ruleElementMatchPart[container] {re = reMatch;}
     q = quantifierPart? 
         (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
    {
@@ -2392,22 +2356,6 @@ annotationExpression returns [IRutaExpression expr = null]
 	ale = annotationLabelExpression {expr = ale;}
 	;
 
-annotationExpression2 returns [IRutaExpression expr = null]
-	:
-	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")}? 
-	id = Identifier {expr = ExpressionFactory.createAnnotationVariableExpression(id);} 
-	|
-	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")}? 
-	id = Identifier {expr = ExpressionFactory.createAnnotationListVariableExpression(id);} 
-	|
-	//(annotationListIndexExpression)=> alie = annotationListIndexExpression {expr = alie;}
-	//|
-	ale = annotationListExpression {expr = ale;}
-	|
-	aae = annotationAddressExpression {expr = aae;}
-	//|
-	//ale = annotationLabelExpression {expr = ale;}
-	;
 
 annotationListIndexExpression returns [IRutaExpression expr = null]
 	:

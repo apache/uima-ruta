@@ -260,12 +260,9 @@ public class RutaEnvironment {
 				importPackageAliases(cas.getTypeSystem());
 			}
 
-			// "Document" can be resolved to "uima.tcas.DocumentAnnotation" or
-			// "org.apache.uima.ruta.type.Document",
-			// we force it to the former
 			ambiguousTypeAlias.remove(DOCUMENT);
 			namespaces.remove(DOCUMENT);
-			Type documentType = cas.getTypeSystem().getType(UIMAConstants.TYPE_DOCUMENT);
+			Type documentType = cas.getTypeSystem().getType(CAS.TYPE_NAME_DOCUMENT_ANNOTATION);
 			addType(DOCUMENT, documentType);
 			addType(documentType.getShortName(), documentType);
 

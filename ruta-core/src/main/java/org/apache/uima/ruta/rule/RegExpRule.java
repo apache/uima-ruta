@@ -41,7 +41,6 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
@@ -197,16 +196,16 @@ public class RegExpRule extends AbstractRule {
             if (argExpr instanceof INumberExpression) {
               INumberExpression ne = (INumberExpression) argExpr;
               int cg = ne.getIntegerValue(context, stream);
-              if (range.getName().equals(UIMAConstants.TYPE_STRING)) {
+              if (range.getName().equals(CAS.TYPE_NAME_STRING)) {
                 String s = matchResult.group(cg);
                 afs.setStringValue(feature, s);
-              } else if (range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
-              } else if (range.getName().equals(UIMAConstants.TYPE_BYTE)) {
-              } else if (range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
-              } else if (range.getName().equals(UIMAConstants.TYPE_FLOAT)) {
-              } else if (range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
-              } else if (range.getName().equals(UIMAConstants.TYPE_LONG)) {
-              } else if (range.getName().equals(UIMAConstants.TYPE_SHORT)) {
+              } else if (range.getName().equals(CAS.TYPE_NAME_BOOLEAN)) {
+              } else if (range.getName().equals(CAS.TYPE_NAME_BYTE)) {
+              } else if (range.getName().equals(CAS.TYPE_NAME_DOUBLE)) {
+              } else if (range.getName().equals(CAS.TYPE_NAME_FLOAT)) {
+              } else if (range.getName().equals(CAS.TYPE_NAME_INTEGER)) {
+              } else if (range.getName().equals(CAS.TYPE_NAME_LONG)) {
+              } else if (range.getName().equals(CAS.TYPE_NAME_SHORT)) {
               } else {
                 if (typeSystem.subsumes(jcas.getCasType(FSArray.type), range)) {
                   // TODO add functionality for fsarrays
@@ -225,7 +224,7 @@ public class RegExpRule extends AbstractRule {
               }
             } else {
               if (argExpr instanceof ITypeExpression
-                      && range.getName().equals(UIMAConstants.TYPE_STRING)) {
+                      && range.getName().equals(CAS.TYPE_NAME_STRING)) {
                 ITypeExpression typeExpr = (ITypeExpression) argExpr;
                 List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(afs,
                         typeExpr.getType(context, stream));
@@ -234,33 +233,33 @@ public class RegExpRule extends AbstractRule {
                   afs.setStringValue(feature, annotation.getCoveredText());
                 }
               } else if (argExpr instanceof AbstractStringExpression
-                      && range.getName().equals(UIMAConstants.TYPE_STRING)) {
+                      && range.getName().equals(CAS.TYPE_NAME_STRING)) {
                 afs.setStringValue(feature,
                         ((AbstractStringExpression) argExpr).getStringValue(context, stream));
                 // numbers are reserved for capturing groups
                 //
                 // } else if (argExpr instanceof NumberExpression) {
-                // if (range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
+                // if (range.getName().equals(CAS.TYPE_NAME_INTEGER)) {
                 // afs.setIntValue(feature,
                 // ((NumberExpression) argExpr).getIntegerValue(getParent()));
-                // } else if (range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
+                // } else if (range.getName().equals(CAS.TYPE_NAME_DOUBLE)) {
                 // afs.setDoubleValue(feature,
                 // ((NumberExpression) argExpr).getDoubleValue(getParent()));
-                // } else if (range.getName().equals(UIMAConstants.TYPE_FLOAT)) {
+                // } else if (range.getName().equals(CAS.TYPE_NAME_FLOAT)) {
                 // afs.setFloatValue(feature,
                 // ((NumberExpression) argExpr).getFloatValue(getParent()));
-                // } else if (range.getName().equals(UIMAConstants.TYPE_BYTE)) {
+                // } else if (range.getName().equals(CAS.TYPE_NAME_BYTE)) {
                 // afs.setByteValue(feature,
                 // (byte) ((NumberExpression) argExpr).getIntegerValue(getParent()));
-                // } else if (range.getName().equals(UIMAConstants.TYPE_SHORT)) {
+                // } else if (range.getName().equals(CAS.TYPE_NAME_SHORT)) {
                 // afs.setShortValue(feature,
                 // (short) ((NumberExpression) argExpr).getIntegerValue(getParent()));
-                // } else if (range.getName().equals(UIMAConstants.TYPE_LONG)) {
+                // } else if (range.getName().equals(CAS.TYPE_NAME_LONG)) {
                 // afs.setLongValue(feature,
                 // (long) ((NumberExpression) argExpr).getIntegerValue(getParent()));
                 // }
               } else if (argExpr instanceof IBooleanExpression
-                      && range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
+                      && range.getName().equals(CAS.TYPE_NAME_BOOLEAN)) {
                 afs.setBooleanValue(feature,
                         ((IBooleanExpression) argExpr).getBooleanValue(context, stream));
               } else if (argExpr instanceof ITypeExpression) {

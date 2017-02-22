@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.DoubleArrayFS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -32,7 +33,6 @@ import org.apache.uima.cas.FloatArrayFS;
 import org.apache.uima.cas.IntArrayFS;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
@@ -90,9 +90,9 @@ public class NumberListFeatureExpression extends AbstractNumberListExpression {
 
   private boolean validType(Feature feature) {
     String name = feature.getRange().getName();
-    return StringUtils.equals(name, UIMAConstants.TYPE_INTARRAY)
-            || StringUtils.equals(name, UIMAConstants.TYPE_DOUBLEARRAY)
-            || StringUtils.equals(name, UIMAConstants.TYPE_FLOATARRAY);
+    return StringUtils.equals(name, CAS.TYPE_NAME_INTEGER_ARRAY)
+            || StringUtils.equals(name, CAS.TYPE_NAME_DOUBLE_ARRAY)
+            || StringUtils.equals(name, CAS.TYPE_NAME_FLOAT_ARRAY);
   }
 
   public FeatureExpression getFeatureExpression() {

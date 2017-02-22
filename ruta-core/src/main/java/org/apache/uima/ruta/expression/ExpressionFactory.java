@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.runtime.Token;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.annotation.AbstractAnnotationListExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationAddressExpression;
@@ -186,7 +187,7 @@ public class ExpressionFactory {
   }
 
   public static ITypeExpression createSimpleTypeExpression(Token typeToken, RutaBlock parent) {
-    String typeString = typeToken == null ? "uima.tcas.DocumentAnnotation" : typeToken.getText();
+    String typeString = typeToken == null ? CAS.TYPE_NAME_DOCUMENT_ANNOTATION : typeToken.getText();
     return new SimpleTypeExpression(typeString);
   }
 
@@ -283,12 +284,28 @@ public class ExpressionFactory {
     if(opToken != null) {
       op = opToken.getText();
     }
-    return new FeatureMatchExpression(mr, op, arg, env);
+    return new FeatureMatchExpression(mr, op, arg);
   }
 
   public static MatchReference createMatchReference(Token refToken) {
-    String match = refToken.getText();
-    return new MatchReference(match);
+    return createMatchReference(refToken, null, null);
+  }
+  
+  public static MatchReference createMatchReference(Token matchToken, Token comparatorToken, IRutaExpression argument) {
+    String match = matchToken.getText();
+    String comparator = null;
+    if(comparatorToken != null) {
+      comparator = comparatorToken.getText();
+    }
+    return new MatchReference(match, comparator, argument);
+  }
+  
+  public static MatchReference createMatchReference(ITypeExpression expression) {
+    return new MatchReference(expression);
+  }
+
+  public static MatchReference createMatchReference(IAnnotationExpression expression) {
+    return new MatchReference(expression);
   }
 
   public static INumberExpression createNumberFeatureExpression(FeatureExpression fe) {
@@ -400,5 +417,7 @@ public class ExpressionFactory {
           INumberExpression index) {
     return null;
   }
+
+ 
 
 }

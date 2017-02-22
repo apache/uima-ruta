@@ -21,12 +21,12 @@ package org.apache.uima.ruta.action;
 
 import java.util.List;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -71,31 +71,31 @@ public class GetFeatureAction extends AbstractRutaAction {
 
       String featName = featureByBaseName.getRange().getName();
       if (environment.getVariableType(variable).equals(String.class)
-              && featName.equals(UIMAConstants.TYPE_STRING)) {
+              && featName.equals(CAS.TYPE_NAME_STRING)) {
         Object value = annotationFS.getStringValue(featureByBaseName);
         environment.setVariableValue(variable, value);
       } else if (Number.class.isAssignableFrom(environment.getVariableType(variable))) {
         Number value = 0;
-        if (featName.equals(UIMAConstants.TYPE_INTEGER)) {
+        if (featName.equals(CAS.TYPE_NAME_INTEGER)) {
           value = annotationFS.getIntValue(featureByBaseName);
-        } else if (featName.equals(UIMAConstants.TYPE_DOUBLE)) {
+        } else if (featName.equals(CAS.TYPE_NAME_DOUBLE)) {
           value = annotationFS.getDoubleValue(featureByBaseName);
-        } else if (featName.equals(UIMAConstants.TYPE_FLOAT)) {
+        } else if (featName.equals(CAS.TYPE_NAME_FLOAT)) {
           value = annotationFS.getFloatValue(featureByBaseName);
-        } else if (featName.equals(UIMAConstants.TYPE_BYTE)) {
+        } else if (featName.equals(CAS.TYPE_NAME_BYTE)) {
           value = annotationFS.getByteValue(featureByBaseName);
-        } else if (featName.equals(UIMAConstants.TYPE_SHORT)) {
+        } else if (featName.equals(CAS.TYPE_NAME_SHORT)) {
           value = annotationFS.getShortValue(featureByBaseName);
-        } else if (featName.equals(UIMAConstants.TYPE_LONG)) {
+        } else if (featName.equals(CAS.TYPE_NAME_LONG)) {
           value = annotationFS.getLongValue(featureByBaseName);
         }
         environment.setVariableValue(variable, value);
       } else if (environment.getVariableType(variable).equals(Boolean.class)
-              && featName.equals(UIMAConstants.TYPE_BOOLEAN)) {
+              && featName.equals(CAS.TYPE_NAME_BOOLEAN)) {
         Object value = annotationFS.getBooleanValue(featureByBaseName);
         environment.setVariableValue(variable, value);
       } else if (environment.getVariableType(variable).equals(Type.class)
-              && featName.equals(UIMAConstants.TYPE_STRING)) {
+              && featName.equals(CAS.TYPE_NAME_STRING)) {
         Object value = annotationFS.getStringValue(featureByBaseName);
         Type t = stream.getCas().getTypeSystem().getType((String) value);
         if (t != null) {

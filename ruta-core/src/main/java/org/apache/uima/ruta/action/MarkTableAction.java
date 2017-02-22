@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -32,7 +33,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -154,27 +154,27 @@ public class MarkTableAction extends AbstractRutaAction {
       Type range = targetFeature.getRange();
       if (entryIndex != null && row.size() >= entryIndex) {
         String value = row.get(entryIndex - 1);
-        if (range.getName().equals(UIMAConstants.TYPE_STRING)) {
+        if (range.getName().equals(CAS.TYPE_NAME_STRING)) {
           structure.setStringValue(targetFeature, value);
-        } else if (range.getName().equals(UIMAConstants.TYPE_INTEGER)) {
+        } else if (range.getName().equals(CAS.TYPE_NAME_INTEGER)) {
           Integer integer = Integer.parseInt(value);
           structure.setIntValue(targetFeature, integer);
-        } else if (range.getName().equals(UIMAConstants.TYPE_DOUBLE)) {
+        } else if (range.getName().equals(CAS.TYPE_NAME_DOUBLE)) {
           Double d = Double.parseDouble(value);
           structure.setDoubleValue(targetFeature, d);
-        } else if (range.getName().equals(UIMAConstants.TYPE_FLOAT)) {
+        } else if (range.getName().equals(CAS.TYPE_NAME_FLOAT)) {
           Float d = Float.parseFloat(value);
           structure.setFloatValue(targetFeature, d);
-        } else if (range.getName().equals(UIMAConstants.TYPE_BYTE)) {
+        } else if (range.getName().equals(CAS.TYPE_NAME_BYTE)) {
           Byte d = Byte.parseByte(value);
           structure.setByteValue(targetFeature, d);
-        } else if (range.getName().equals(UIMAConstants.TYPE_SHORT)) {
+        } else if (range.getName().equals(CAS.TYPE_NAME_SHORT)) {
           Short d = Short.parseShort(value);
           structure.setShortValue(targetFeature, d);
-        } else if (range.getName().equals(UIMAConstants.TYPE_LONG)) {
+        } else if (range.getName().equals(CAS.TYPE_NAME_LONG)) {
           Long d = Long.parseLong(value);
           structure.setLongValue(targetFeature, d);
-        } else if (range.getName().equals(UIMAConstants.TYPE_BOOLEAN)) {
+        } else if (range.getName().equals(CAS.TYPE_NAME_BOOLEAN)) {
           Boolean b = Boolean.parseBoolean(value);
           structure.setBooleanValue(targetFeature, b);
         } else {

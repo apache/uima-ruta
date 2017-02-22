@@ -48,7 +48,7 @@ public class FeatureCondition extends AbstractRutaCondition {
     String typeWithFeature = annotation.getType().getName() + "."
             + featureStringExpression.getStringValue(context, stream);
     MatchReference mf = new MatchReference(typeWithFeature);
-    FeatureMatchExpression fme = new FeatureMatchExpression(mf, "==", argExpr, context.getParent());
+    FeatureMatchExpression fme = new FeatureMatchExpression(mf, "==", argExpr);
     boolean checkFeatureValue = fme.checkFeatureValue(annotation, context, stream);
     return new EvaluatedCondition(this, checkFeatureValue);
   }

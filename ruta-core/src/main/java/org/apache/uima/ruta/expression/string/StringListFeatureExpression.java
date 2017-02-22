@@ -25,12 +25,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.StringArrayFS;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
@@ -51,7 +51,7 @@ public class StringListFeatureExpression extends AbstractStringListExpression {
   public List<String> getList(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
     Feature feature = fe.getFeature(context, stream);
-    if(feature == null || !feature.getRange().isArray() || !StringUtils.equals(feature.getRange().getName(), UIMAConstants.TYPE_STRINGARRAY)) {
+    if(feature == null || !feature.getRange().isArray() || !StringUtils.equals(feature.getRange().getName(), CAS.TYPE_NAME_STRING_ARRAY)) {
       // throw runtime exception?
       return Collections.emptyList();
     }

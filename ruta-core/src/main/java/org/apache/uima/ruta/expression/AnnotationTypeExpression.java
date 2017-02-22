@@ -68,11 +68,12 @@ public class AnnotationTypeExpression extends RutaExpression
     }
     if (annotationExpression != null) {
       AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
-      if(featureExpression != null) {
+      if (featureExpression != null) {
         List<AnnotationFS> annotations = new ArrayList<>(1);
         annotations.add(annotation);
-        Collection<? extends AnnotationFS> result = featureExpression.getAnnotations(annotations , false, context, stream);
-        if(result!= null && !result.isEmpty()) {
+        Collection<? extends AnnotationFS> result = featureExpression.getAnnotations(annotations,
+                true, context, stream);
+        if (result != null && !result.isEmpty()) {
           return result.iterator().next();
         }
         return null;
@@ -81,18 +82,21 @@ public class AnnotationTypeExpression extends RutaExpression
       }
     } else if (annotationListExpression != null) {
       List<AnnotationFS> annotations = annotationListExpression.getAnnotationList(context, stream);
-      
+
       if (annotations != null && !annotations.isEmpty()) {
-        if(featureExpression != null) {
-          Collection<? extends AnnotationFS> result = featureExpression.getAnnotations(annotations, false, context, stream);
+        if (featureExpression != null) {
+          Collection<? extends AnnotationFS> result = featureExpression.getAnnotations(annotations,
+                  true, context, stream);
+          if(result.isEmpty()) {
+            return null;
+          }
           annotations = new ArrayList<>(result);
-        }        
-        
-        if (context.getDirection()) {
-          return annotations.get(annotations.size() - 1);
-        } else {
-          return annotations.get(0);
         }
+          if (context.getDirection()) {
+            return annotations.get(annotations.size() - 1);
+          } else {
+            return annotations.get(0);
+          }
       }
     } else {
       Type type = getType(context, stream);
@@ -161,8 +165,8 @@ public class AnnotationTypeExpression extends RutaExpression
     }
     if (annotationListExpression != null) {
       List<AnnotationFS> result = annotationListExpression.getAnnotationList(context, stream);
-      if(featureExpression != null) {
-        return new ArrayList<>(featureExpression.getAnnotations(result, false, context, stream));
+      if (featureExpression != null) {
+        return new ArrayList<>(featureExpression.getAnnotations(result, true, context, stream));
       } else {
         return result;
       }
@@ -170,8 +174,8 @@ public class AnnotationTypeExpression extends RutaExpression
       AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
       List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);
       result.add(annotation);
-      if(featureExpression != null) {
-        return new ArrayList<>(featureExpression.getAnnotations(result, false, context, stream));
+      if (featureExpression != null) {
+        return new ArrayList<>(featureExpression.getAnnotations(result, true, context, stream));
       } else {
         return result;
       }
@@ -218,7 +222,7 @@ public class AnnotationTypeExpression extends RutaExpression
   }
 
   public String toString() {
-      return reference.toString();
+    return reference.toString();
   }
-  
+
 }

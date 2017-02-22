@@ -34,7 +34,6 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.engine.RutaEngine;
 
 public class StringFeatureCasEvaluator extends AbstractCasEvaluator {
@@ -48,7 +47,7 @@ public class StringFeatureCasEvaluator extends AbstractCasEvaluator {
     List<Type> allTypes = test.getTypeSystem().getProperlySubsumedTypes(
             test.getTypeSystem().getTopType());
     List<Type> types = new ArrayList<Type>();
-    Type stringType = run.getTypeSystem().getType(UIMAConstants.TYPE_STRING);
+    Type stringType = run.getTypeSystem().getType(CAS.TYPE_NAME_STRING);
     Type basicType = run.getTypeSystem().getType(RutaEngine.BASIC_TYPE);
 
     TypeSystem typeSystem = test.getTypeSystem();
@@ -141,7 +140,7 @@ public class StringFeatureCasEvaluator extends AbstractCasEvaluator {
 //      CAS runCas = newFS.getCAS();
       TypeSystem testTS = testCas.getTypeSystem();
 //      TypeSystem runTS = runCas.getTypeSystem();
-      Type stringType = testTS.getType(UIMAConstants.TYPE_STRING);
+      Type stringType = testTS.getType(CAS.TYPE_NAME_STRING);
       List<Feature> features = fs.getType().getFeatures();
       for (Feature feature : features) {
         Type range = feature.getRange();
@@ -156,7 +155,7 @@ public class StringFeatureCasEvaluator extends AbstractCasEvaluator {
 
   private Collection<FeatureStructure> getFeatureStructures(List<Type> types, CAS cas) {
     TypeSystem typeSystem = cas.getTypeSystem();
-    Type stringType = typeSystem.getType(UIMAConstants.TYPE_STRING);
+    Type stringType = typeSystem.getType(CAS.TYPE_NAME_STRING);
     Collection<FeatureStructure> result = new HashSet<FeatureStructure>();
     AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex();
     for (AnnotationFS each : annotationIndex) {
@@ -194,7 +193,7 @@ public class StringFeatureCasEvaluator extends AbstractCasEvaluator {
     }
     CAS cas = a1.getCAS();
     TypeSystem typeSystem = cas.getTypeSystem();
-    Type stringType = typeSystem.getType(UIMAConstants.TYPE_STRING);
+    Type stringType = typeSystem.getType(CAS.TYPE_NAME_STRING);
     List<Feature> features1 = type1.getFeatures();
     boolean result = true;
     boolean allEmpty1 = true;

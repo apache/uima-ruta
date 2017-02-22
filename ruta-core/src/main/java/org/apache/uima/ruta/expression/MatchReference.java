@@ -33,6 +33,7 @@ import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
@@ -44,6 +45,10 @@ import org.apache.uima.ruta.utils.ParsingUtils;
 public class MatchReference extends RutaExpression {
 
   private String reference;
+
+  private String comparator;
+
+  private IRutaExpression argument;
 
   private ITypeExpression typeExpression;
 
@@ -58,8 +63,32 @@ public class MatchReference extends RutaExpression {
   private boolean initialized = false;
 
   public MatchReference(String reference) {
+    this(reference, null, null);
+  }
+
+  public MatchReference(String reference, String comparator, IRutaExpression argument) {
     super();
     this.reference = reference;
+    this.comparator = comparator;
+    this.argument = argument;
+  }
+
+  public MatchReference(ITypeExpression expression) {
+    super();
+    this.typeExpression = expression;
+    initialized = true;
+  }
+
+  public MatchReference(IAnnotationExpression expression) {
+    super();
+    this.annotationExpression = expression;
+    initialized = true;
+  }
+
+  public MatchReference(IAnnotationListExpression expression) {
+    super();
+    this.annotationListExpression = expression;
+    initialized = true;
   }
 
   private void resolve(MatchContext context, RutaStream stream) {
@@ -89,38 +118,45 @@ public class MatchReference extends RutaExpression {
         counter++;
       }
       if (tail != null) {
-        featureExpression = new SimpleFeatureExpression(this);
+        if (comparator != null && argument != null) {
+          featureExpression = new FeatureMatchExpression(this, comparator, argument);
+        } else {
+          featureExpression = new SimpleFeatureExpression(this);
+        }
         features = tail;
       }
     }
     initialized = true;
-    if (typeExpression == null && annotationExpression == null && annotationListExpression == null) {
-      throw new IllegalArgumentException("Not able to resolve annotation/type expression: "
-              + reference);
+    if (typeExpression == null && annotationExpression == null
+            && annotationListExpression == null) {
+      throw new IllegalArgumentException(
+              "Not able to resolve annotation/type expression: " + reference);
     }
   }
 
-  private boolean buildTypeOrAnnotationExpression(String candidate, RutaEnvironment e,
-        MatchContext context, RutaStream stream) {
-    
-    IndexedReference indexedReference = ParsingUtils.parseIndexedReference(candidate);    
+  private boolean buildTypeOrAnnotationExpression(String candidate, RutaEnvironment environment,
+          MatchContext context, RutaStream stream) {
+
+    IndexedReference indexedReference = ParsingUtils.parseIndexedReference(candidate);
     if (indexedReference.index >= 0) {
-      if (e.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST)) {
-        annotationExpression = new AnnotationListVariableIndexExpression(indexedReference.reference, indexedReference.index);
+      if (environment.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST)) {
+        annotationExpression = new AnnotationListVariableIndexExpression(indexedReference.reference,
+                indexedReference.index);
         return true;
       }
 
     } else {
-      if (e.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_TYPE)) {
+      if (environment.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_TYPE)) {
         typeExpression = new TypeVariableExpression(candidate);
         return true;
-      } else if (e.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_ANNOTATION)) {
+      } else if (environment.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_ANNOTATION)) {
         annotationExpression = new AnnotationVariableExpression(candidate);
         return true;
-      } else if (e.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST)) {
+      } else if (environment.isVariableOfType(candidate,
+              RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST)) {
         annotationListExpression = new AnnotationListVariableExpression(candidate);
         return true;
-      } else if (e.getType(candidate) != null) {
+      } else if (environment.getType(candidate) != null) {
         typeExpression = new SimpleTypeExpression(candidate);
         return true;
       }
@@ -151,7 +187,22 @@ public class MatchReference extends RutaExpression {
 
   @Override
   public String toString() {
-    return reference;
+    if (reference != null) {
+      if (comparator != null && argument != null) {
+        return reference + comparator + argument.toString();
+      }
+      return reference;
+    }
+    if (typeExpression != null) {
+      return typeExpression.toString();
+    }
+    if (annotationExpression != null) {
+      return annotationExpression.toString();
+    }
+    if (annotationListExpression != null) {
+      return annotationListExpression.toString();
+    }
+    return super.toString();
   }
 
   public String getMatch() {

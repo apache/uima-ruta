@@ -38,13 +38,13 @@ import java.util.TreeMap;
 import org.antlr.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.FeatureDescription;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.resource.metadata.impl.FeatureDescription_impl;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.core.IRutaKeywords;
 import org.apache.uima.ruta.ide.core.RutaCorePreferences;
@@ -1037,13 +1037,13 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       return true;
     }
     String t = f.getRangeTypeName();
-    if (t.equals(UIMAConstants.TYPE_BOOLEAN) && RutaTypeConstants.RUTA_TYPE_B == kind) {
+    if (t.equals(CAS.TYPE_NAME_BOOLEAN) && RutaTypeConstants.RUTA_TYPE_B == kind) {
       return true;
-    } else if (t.equals(UIMAConstants.TYPE_STRING) && RutaTypeConstants.RUTA_TYPE_S == kind) {
+    } else if (t.equals(CAS.TYPE_NAME_STRING) && RutaTypeConstants.RUTA_TYPE_S == kind) {
       return true;
-    } else if ((t.equals(UIMAConstants.TYPE_BYTE) || t.equals(UIMAConstants.TYPE_DOUBLE)
-            || t.equals(UIMAConstants.TYPE_FLOAT) || t.equals(UIMAConstants.TYPE_INTEGER)
-            || t.equals(UIMAConstants.TYPE_LONG) || t.equals(UIMAConstants.TYPE_SHORT))
+    } else if ((t.equals(CAS.TYPE_NAME_BYTE) || t.equals(CAS.TYPE_NAME_DOUBLE)
+            || t.equals(CAS.TYPE_NAME_FLOAT) || t.equals(CAS.TYPE_NAME_INTEGER)
+            || t.equals(CAS.TYPE_NAME_LONG) || t.equals(CAS.TYPE_NAME_SHORT))
             && RutaTypeConstants.RUTA_TYPE_N == kind) {
       return true;
     } else if (RutaTypeConstants.RUTA_TYPE_AT == kind) {
@@ -1334,9 +1334,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         for (String feat : split) {
           typeToCheck = expand(typeToCheck);
           typeToCheck = checkFSFeatureOfType(feat, typeToCheck);
-          if (StringUtils.contains(typeToCheck, UIMAConstants.TYPE_FSARRAY)) {
+          if (StringUtils.contains(typeToCheck, CAS.TYPE_NAME_FS_ARRAY)) {
             // stop here because we do not know the type
-            return UIMAConstants.TYPE_FSARRAY;
+            return CAS.TYPE_NAME_FS_ARRAY;
           }
           foundAll &= (typeToCheck != null);
           if (!foundAll) {
@@ -1365,10 +1365,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       if (name.equals(featureName)) {
         if (isFS) {
           return rangeTypeName;
-        } else if (StringUtils.equals(UIMAConstants.TYPE_FSARRAY, rangeTypeName)) {
+        } else if (StringUtils.equals(CAS.TYPE_NAME_FS_ARRAY, rangeTypeName)) {
           String elementType = featureDescription.getElementType();
           if (elementType == null) {
-            return UIMAConstants.TYPE_FSARRAY;
+            return CAS.TYPE_NAME_FS_ARRAY;
           } else {
             return elementType;
           }
@@ -1487,17 +1487,17 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (name.equals("Annotation")) {
       return "uima.tcas.Annotation";
     } else if (name.equals("STRING")) {
-      return UIMAConstants.TYPE_STRING;
+      return CAS.TYPE_NAME_STRING;
     } else if (name.equals("INT")) {
-      return UIMAConstants.TYPE_INTEGER;
+      return CAS.TYPE_NAME_INTEGER;
     } else if (name.equals("DOUBLE")) {
-      return UIMAConstants.TYPE_DOUBLE;
+      return CAS.TYPE_NAME_DOUBLE;
     } else if (name.equals("FLOAT")) {
-      return UIMAConstants.TYPE_FLOAT;
+      return CAS.TYPE_NAME_FLOAT;
     } else if (name.equals("BOOLEAN")) {
-      return UIMAConstants.TYPE_BOOLEAN;
+      return CAS.TYPE_NAME_BOOLEAN;
     } else if (name.equals("TYPE")) {
-      return UIMAConstants.TYPE_STRING;
+      return CAS.TYPE_NAME_STRING;
     }
     return name;
   }

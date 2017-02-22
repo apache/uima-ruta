@@ -42,7 +42,7 @@ public class FillTest {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     Map<String, String> complexTypes = new TreeMap<String, String>();
     String type = "org.apache.uima.LanguageStorage";
-    complexTypes.put(type, "uima.tcas.DocumentAnnotation");
+    complexTypes.put(type, CAS.TYPE_NAME_DOCUMENT_ANNOTATION);
     CAS cas = null;
     try {
       cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name

@@ -22,12 +22,12 @@ package org.apache.uima.ruta.expression.number;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
@@ -68,17 +68,17 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
       Feature feature = fe.getFeature(context, stream);
       Type range = feature.getRange();
       FeatureStructure next = featureStructures.iterator().next();
-      if (UIMAConstants.TYPE_BYTE.equals(range.getName())) {
+      if (CAS.TYPE_NAME_BYTE.equals(range.getName())) {
         result = next.getByteValue(feature);
-      } else if (UIMAConstants.TYPE_DOUBLE.equals(range.getName())) {
+      } else if (CAS.TYPE_NAME_DOUBLE.equals(range.getName())) {
         result = next.getDoubleValue(feature);
-      } else if (UIMAConstants.TYPE_FLOAT.equals(range.getName())) {
+      } else if (CAS.TYPE_NAME_FLOAT.equals(range.getName())) {
         result = next.getFloatValue(feature);
-      } else if (UIMAConstants.TYPE_INTEGER.equals(range.getName())) {
+      } else if (CAS.TYPE_NAME_INTEGER.equals(range.getName())) {
         result = next.getIntValue(feature);
-      } else if (UIMAConstants.TYPE_LONG.equals(range.getName())) {
+      } else if (CAS.TYPE_NAME_LONG.equals(range.getName())) {
         result = next.getLongValue(feature);
-      } else if (UIMAConstants.TYPE_SHORT.equals(range.getName())) {
+      } else if (CAS.TYPE_NAME_SHORT.equals(range.getName())) {
         result = next.getShortValue(feature);
       }
     }

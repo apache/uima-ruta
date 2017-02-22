@@ -37,12 +37,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -924,23 +924,23 @@ public class MultiTreeWordList implements RutaWordList {
     if (feature != null && o != null) {
       Type range = feature.getRange();
       String rangeName = range.getName();
-      if (rangeName.equals(UIMAConstants.TYPE_STRING) && o instanceof String) {
+      if (rangeName.equals(CAS.TYPE_NAME_STRING) && o instanceof String) {
         annotationFS.setStringValue(feature, (String) o);
-      } else if (rangeName.equals(UIMAConstants.TYPE_INTEGER) && o instanceof Number) {
+      } else if (rangeName.equals(CAS.TYPE_NAME_INTEGER) && o instanceof Number) {
         annotationFS.setIntValue(feature, ((Number) o).intValue());
-      } else if (rangeName.equals(UIMAConstants.TYPE_DOUBLE) && o instanceof Number) {
+      } else if (rangeName.equals(CAS.TYPE_NAME_DOUBLE) && o instanceof Number) {
         annotationFS.setDoubleValue(feature, ((Number) o).doubleValue());
-      } else if (rangeName.equals(UIMAConstants.TYPE_FLOAT) && o instanceof Number) {
+      } else if (rangeName.equals(CAS.TYPE_NAME_FLOAT) && o instanceof Number) {
         annotationFS.setFloatValue(feature, ((Number) o).floatValue());
-      } else if (rangeName.equals(UIMAConstants.TYPE_BYTE) && o instanceof Number) {
+      } else if (rangeName.equals(CAS.TYPE_NAME_BYTE) && o instanceof Number) {
         annotationFS.setByteValue(feature, ((Number) o).byteValue());
-      } else if (rangeName.equals(UIMAConstants.TYPE_SHORT) && o instanceof Number) {
+      } else if (rangeName.equals(CAS.TYPE_NAME_SHORT) && o instanceof Number) {
         annotationFS.setShortValue(feature, ((Number) o).shortValue());
-      } else if (rangeName.equals(UIMAConstants.TYPE_LONG) && o instanceof Number) {
+      } else if (rangeName.equals(CAS.TYPE_NAME_LONG) && o instanceof Number) {
         annotationFS.setLongValue(feature, ((Number) o).longValue());
-      } else if (rangeName.equals(UIMAConstants.TYPE_BOOLEAN) && o instanceof Boolean) {
+      } else if (rangeName.equals(CAS.TYPE_NAME_BOOLEAN) && o instanceof Boolean) {
         annotationFS.setBooleanValue(feature, (Boolean) o);
-      } else if (rangeName.equals(UIMAConstants.TYPE_STRING) & o instanceof Type) {
+      } else if (rangeName.equals(CAS.TYPE_NAME_STRING) & o instanceof Type) {
         annotationFS.setStringValue(feature, ((Type) o).getName());
       }
     } else {

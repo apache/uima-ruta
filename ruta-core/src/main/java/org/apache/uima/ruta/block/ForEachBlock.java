@@ -28,7 +28,9 @@ import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
-import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
+import org.apache.uima.ruta.expression.AnnotationTypeExpression;
+import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
@@ -37,7 +39,6 @@ import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleApply;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
-import org.apache.uima.ruta.rule.RutaAnnotationMatcher;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
@@ -121,10 +122,11 @@ public class ForEachBlock extends RutaBlock {
   private boolean setRuleElementAnchorRecursively(RuleElement ruleElement) {
     if (ruleElement instanceof RutaRuleElement) {
       RutaMatcher matcher = ((RutaRuleElement) ruleElement).getMatcher();
-      if (matcher instanceof RutaAnnotationMatcher
-              && matcher.getExpression() instanceof AnnotationVariableExpression) {
-        AnnotationVariableExpression expr = (AnnotationVariableExpression) matcher.getExpression();
-        boolean equals = StringUtils.equals(name, expr.getVar());
+      IRutaExpression expression = matcher.getExpression();
+      if (expression instanceof AnnotationTypeExpression) {
+        MatchReference reference = ((AnnotationTypeExpression) expression).getReference();
+        String match = reference.getMatch();
+        boolean equals = StringUtils.equals(name, match);
         if (equals) {
           ruleElement.setStartAnchor(equals);
         }

@@ -130,7 +130,7 @@ public class CallAction extends AbstractRutaAction {
           for (Type type : types) {
             Collection<AnnotationFS> beginAnchors = basic.getBeginAnchors(type);
             for (AnnotationFS a : beginAnchors) {
-              if (a != null && !a.getType().getName().equals("uima.tcas.DocumentAnnotation")
+              if (a != null && !a.getType().getName().equals(CAS.TYPE_NAME_DOCUMENT_ANNOTATION)
                       && !(a instanceof RutaBasic)) {
                 fsToAdd.add(a);
               }
@@ -210,7 +210,7 @@ public class CallAction extends AbstractRutaAction {
     CAS cas = stream.getCas();
     Type newType = cas.getTypeSystem().getType(each.getType().getName());
     if (newType != null && !fsToAdd.contains(each)
-            && !newType.getName().equals("uima.tcas.DocumentAnnotation")
+            && !newType.getName().equals(CAS.TYPE_NAME_DOCUMENT_ANNOTATION)
             && !(each instanceof RutaBasic)) {
 
       FeatureStructure newFS = null;

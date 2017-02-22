@@ -51,6 +51,7 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
     Collection<AnnotationFS> result = null;
     MatchContext context = new MatchContext(parent);
     // just for forcing expression top initialize
+    // TODO this is maybe a bit expensive sometimes
     expression.getType(context, stream);
     if (expression.getAnnotationExpression() != null) {
       result = new ArrayList<>(1);

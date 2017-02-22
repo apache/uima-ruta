@@ -20,36 +20,6 @@
 package org.apache.uima.ruta;
 
 public class UIMAConstants {
-
-  public static final String TYPE_INTEGER = "uima.cas.Integer";
-
-  public static final String TYPE_FLOAT = "uima.cas.Float";
-
-  public static final String TYPE_BOOLEAN = "uima.cas.Boolean";
-
-  public static final String TYPE_BYTE = "uima.cas.Byte";
-
-  public static final String TYPE_SHORT = "uima.cas.Short";
-
-  public static final String TYPE_LONG = "uima.cas.Long";
-
-  public static final String TYPE_DOUBLE = "uima.cas.Double";
-
-  public static final String TYPE_STRING = "uima.cas.String";
-
-  public static final String TYPE_DOCUMENT = "uima.tcas.DocumentAnnotation";
-
-  public static final String TYPE_FSARRAY = "uima.cas.FSArray";
-  
-  public static final String TYPE_STRINGARRAY = "uima.cas.StringArray";
-  
-  public static final String TYPE_BOOLEANARRAY = "uima.cas.BooleanArray";
-  
-  public static final String TYPE_INTARRAY = "uima.cas.IntArray";
-  
-  public static final String TYPE_DOUBLEARRAY = "uima.cas.DoubleArray";
-  
-  public static final String TYPE_FLOATARRAY = "uima.cas.FloatArray";
   
   public static final String FEATURE_COVERED_TEXT = "coveredText";
 

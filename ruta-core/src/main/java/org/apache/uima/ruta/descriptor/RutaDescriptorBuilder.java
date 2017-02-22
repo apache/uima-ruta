@@ -56,7 +56,6 @@ import org.apache.uima.resource.metadata.Import;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.resource.metadata.impl.Import_impl;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.apache.uima.util.CasCreationUtils;
@@ -419,18 +418,20 @@ public class RutaDescriptorBuilder {
     }
     if (name.equals("Annotation")) {
       return CAS.TYPE_NAME_ANNOTATION;
+    } else if (name.equals("ANNOTATION")) {
+      return CAS.TYPE_NAME_ANNOTATION;
     } else if (name.equals("STRING")) {
-      return UIMAConstants.TYPE_STRING;
+      return CAS.TYPE_NAME_STRING;
     } else if (name.equals("INT")) {
-      return UIMAConstants.TYPE_INTEGER;
+      return CAS.TYPE_NAME_INTEGER;
     } else if (name.equals("DOUBLE")) {
-      return UIMAConstants.TYPE_DOUBLE;
+      return CAS.TYPE_NAME_DOUBLE;
     } else if (name.equals("FLOAT")) {
-      return UIMAConstants.TYPE_FLOAT;
+      return CAS.TYPE_NAME_FLOAT;
     } else if (name.equals("BOOLEAN")) {
-      return UIMAConstants.TYPE_BOOLEAN;
+      return CAS.TYPE_NAME_BOOLEAN;
     } else if (name.equals("TYPE")) {
-      return UIMAConstants.TYPE_STRING;
+      return CAS.TYPE_NAME_STRING;
     }
     return name;
   }

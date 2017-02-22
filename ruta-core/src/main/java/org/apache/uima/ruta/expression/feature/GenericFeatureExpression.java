@@ -24,12 +24,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
@@ -183,15 +183,15 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
       return Collections.emptyList();
     }
     List<Object> result = new ArrayList<Object>();
-    if (StringUtils.equals(range.getName(), UIMAConstants.TYPE_FSARRAY)) {
+    if (StringUtils.equals(range.getName(), CAS.TYPE_NAME_FS_ARRAY)) {
       result.addAll(getAnnotationList(context, stream));
-    } else if (StringUtils.equals(range.getName(), UIMAConstants.TYPE_BOOLEANARRAY)) {
+    } else if (StringUtils.equals(range.getName(), CAS.TYPE_NAME_BOOLEAN_ARRAY)) {
       result.addAll(getBooleanList(context, stream));
-    } else if (StringUtils.equals(range.getName(), UIMAConstants.TYPE_STRINGARRAY)) {
+    } else if (StringUtils.equals(range.getName(), CAS.TYPE_NAME_STRING_ARRAY)) {
       result.addAll(getStringList(context, stream));
-    } else if (StringUtils.equals(range.getName(), UIMAConstants.TYPE_INTARRAY)
-            || StringUtils.equals(range.getName(), UIMAConstants.TYPE_DOUBLEARRAY)
-            || StringUtils.equals(range.getName(), UIMAConstants.TYPE_FLOATARRAY)) {
+    } else if (StringUtils.equals(range.getName(), CAS.TYPE_NAME_INTEGER_ARRAY)
+            || StringUtils.equals(range.getName(), CAS.TYPE_NAME_DOUBLE_ARRAY)
+            || StringUtils.equals(range.getName(), CAS.TYPE_NAME_FLOAT_ARRAY)) {
       result.addAll(getNumberList(context, stream));
     }
     return result;

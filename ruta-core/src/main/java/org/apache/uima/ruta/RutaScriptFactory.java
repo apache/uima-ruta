@@ -26,17 +26,17 @@ import java.util.TreeMap;
 
 import org.antlr.runtime.Token;
 import org.apache.uima.UimaContext;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.block.ForEachBlock;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.block.RutaScriptBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.expression.AnnotationTypeExpression;
+import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
-import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
+import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
@@ -48,13 +48,11 @@ import org.apache.uima.ruta.rule.RegExpRule;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementContainer;
 import org.apache.uima.ruta.rule.RuleElementIsolator;
-import org.apache.uima.ruta.rule.RutaAnnotationMatcher;
 import org.apache.uima.ruta.rule.RutaAnnotationTypeMatcher;
 import org.apache.uima.ruta.rule.RutaLiteralMatcher;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
-import org.apache.uima.ruta.rule.RutaTypeMatcher;
 import org.apache.uima.ruta.rule.WildCardRuleElement;
 import org.apache.uima.ruta.rule.quantifier.MinMaxGreedy;
 import org.apache.uima.ruta.rule.quantifier.MinMaxReluctant;
@@ -111,8 +109,8 @@ public class RutaScriptFactory {
     RutaScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace);
     List<RuleElement> ruleElements = new ArrayList<RuleElement>();
     RuleElementIsolator container = new RuleElementIsolator();
-    ruleElements.add(createRuleElement(new SimpleTypeExpression("uima.tcas.DocumentAnnotation"), null,
-            null, null, container, result));
+    MatchReference mr = ExpressionFactory.createMatchReference(new SimpleTypeExpression(CAS.TYPE_NAME_DOCUMENT_ANNOTATION));
+    ruleElements.add(createRuleElement(mr, container, result));
     RutaRule createRule = createRule(ruleElements, result);
     container.setContainer(createRule);
 
@@ -144,8 +142,9 @@ public class RutaScriptFactory {
 
   public RutaStatement createImplicitRule(List<AbstractRutaAction> actions, RutaBlock parent) {
     List<RuleElement> elements = new ArrayList<RuleElement>();
-    IRutaExpression documentExpression = new SimpleTypeExpression("Document");
-    RutaRuleElement element = createRuleElement(documentExpression, null, null, actions, null,
+    ITypeExpression documentExpression = new SimpleTypeExpression("Document");
+    MatchReference mr = ExpressionFactory.createMatchReference(documentExpression);
+    RutaRuleElement element = createRuleElement(mr, null, null, actions, null,
             parent);
     elements.add(element);
     RutaRule rule = createRule(elements, parent);
@@ -157,20 +156,22 @@ public class RutaScriptFactory {
     return new RutaRule(elements, parent, idCounter++);
   }
 
+  public RutaRuleElement createRuleElement(MatchReference matchReference, RuleElementContainer container, RutaBlock parent) {
+    return createRuleElement(matchReference, null, null, null, container, parent);
+  }
+  
+  public RutaRuleElement createRuleElement(MatchReference matchReference, RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
+          List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
+    AnnotationTypeExpression expression = ExpressionFactory.createAnnotationTypeExpression(matchReference);
+    return createRuleElement(expression, quantifier, conditions, actions, container, parent);
+  }
+  
   public RutaRuleElement createRuleElement(IRutaExpression expression,
           RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
           List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
     RutaMatcher matcher = null;
     if (expression instanceof AnnotationTypeExpression) {
       matcher = new RutaAnnotationTypeMatcher((AnnotationTypeExpression) expression);
-    }  else if (expression instanceof ITypeExpression) {
-      matcher = new RutaTypeMatcher((ITypeExpression) expression);
-    } else if (expression instanceof FeatureExpression) {
-      matcher = new RutaTypeMatcher((FeatureExpression) expression);
-    } else if (expression instanceof IAnnotationExpression) {
-      matcher = new RutaAnnotationMatcher((IAnnotationExpression) expression);
-    } else if (expression instanceof IAnnotationListExpression) {
-      matcher = new RutaAnnotationMatcher((IAnnotationListExpression) expression);
     } else if (expression instanceof IStringExpression) {
       matcher = new RutaLiteralMatcher((IStringExpression) expression);
     } else {

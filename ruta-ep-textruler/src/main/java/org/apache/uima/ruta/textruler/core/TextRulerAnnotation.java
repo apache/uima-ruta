@@ -23,10 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.UIMAConstants;
 
 /**
  * 
@@ -63,7 +63,7 @@ public class TextRulerAnnotation {
         Feature feature = afs.getType().getFeatureByBaseName(string);
         if (feature != null && feature.getRange().isPrimitive()) {
           String valueAsString = afs.getFeatureValueAsString(feature);
-          if(feature.getRange().getName().equals(UIMAConstants.TYPE_STRING)) {
+          if(feature.getRange().getName().equals(CAS.TYPE_NAME_STRING)) {
             valueAsString = "\""+valueAsString+"\"";
           }
           featureMap.put(string, valueAsString);

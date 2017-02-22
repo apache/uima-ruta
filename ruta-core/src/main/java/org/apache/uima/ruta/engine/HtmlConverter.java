@@ -43,7 +43,6 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.util.CasCopier;
 import org.apache.uima.util.Level;
 import org.htmlparser.Parser;
@@ -389,7 +388,7 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
     Set<Annotation> toExpand = new HashSet<Annotation>();
     AnnotationIndex<Annotation> annotationIndex = fromJcas.getAnnotationIndex();
     TypeSystem typeSystem = fromJcas.getTypeSystem();
-    Type docType = typeSystem.getType(UIMAConstants.TYPE_DOCUMENT);
+    Type docType = typeSystem.getType(CAS.TYPE_NAME_DOCUMENT_ANNOTATION);
     CasCopier casCopier = new CasCopier(fromJcas.getCas(), modview.getCas());
     for (Annotation annotation : annotationIndex) {
       // TODO be careful here, because some people inherit from DocumentAnnotation

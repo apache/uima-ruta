@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -36,10 +37,10 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
@@ -277,13 +278,13 @@ public class RutaTestUtils {
   public static void assertAnnotationsEquals(CAS cas, int typeId, int expectedCnt,
           String... expecteds) {
     Type t = getTestType(cas, typeId);
-    AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t);
-    if (ai.size() != expectedCnt) {
+    Collection<AnnotationFS> select = CasUtil.select(cas, t);
+    if (select.size() != expectedCnt) {
       throw new AssertionError("size of expected annotations (" + expectedCnt
-              + ") does not match with actual size (" + ai.size() + ").");
+              + ") does not match with actual size (" + select.size() + ").");
     }
     if (expecteds.length > 0) {
-      FSIterator<AnnotationFS> iterator = ai.iterator();
+      Iterator<AnnotationFS> iterator = select.iterator();
       for (String expected : expecteds) {
         String actual = iterator.next().getCoveredText();
         if (!actual.equals(expected)) {

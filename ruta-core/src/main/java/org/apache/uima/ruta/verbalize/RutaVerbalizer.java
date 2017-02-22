@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.action.AbstractRutaAction;
@@ -103,7 +104,7 @@ public class RutaVerbalizer {
   }
 
   public String verbalizeType(Type type) {
-    if (type.getName().equals("uima.tcas.DocumentAnnotation")) {
+    if (type.getName().equals(CAS.TYPE_NAME_DOCUMENT_ANNOTATION)) {
       return "Document";
     } else {
       return type.getShortName();

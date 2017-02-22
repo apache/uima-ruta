@@ -29,8 +29,6 @@ import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
-import org.apache.uima.ruta.expression.IRutaExpression;
-import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -40,7 +38,6 @@ import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
-import org.apache.uima.ruta.rule.RutaTypeMatcher;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 

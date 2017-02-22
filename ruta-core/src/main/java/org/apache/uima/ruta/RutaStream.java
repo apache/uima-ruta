@@ -384,7 +384,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public void removeAnnotation(AnnotationFS annotation, Type type) {
-    if (type.getName().equals(UIMAConstants.TYPE_DOCUMENT)) {
+    if (type.getName().equals(CAS.TYPE_NAME_DOCUMENT_ANNOTATION)) {
       // do not remove DocumentAnnotation
       return;
     }
@@ -980,13 +980,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     CAS cas = annotation.getCAS();
     Type range = feature.getRange();
     String rangeName = range.getName();
-    if (rangeName.equals(UIMAConstants.TYPE_STRING)) {
+    if (rangeName.equals(CAS.TYPE_NAME_STRING)) {
       if (value instanceof IStringExpression) {
         IStringExpression stringExpr = (IStringExpression) value;
         String string = stringExpr.getStringValue(context, this);
         annotation.setStringValue(feature, string);
       }
-    } else if (rangeName.equals(UIMAConstants.TYPE_STRINGARRAY)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_STRING_ARRAY)) {
       if (value instanceof IStringListExpression) {
         IStringListExpression stringListExpr = (IStringListExpression) value;
         List<String> stringList = stringListExpr.getStringList(context, this);
@@ -998,10 +998,10 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         StringArrayFS array = FSCollectionFactory.createStringArray(cas, new String[] { string });
         annotation.setFeatureValue(feature, array);
       }
-    } else if (rangeName.equals(UIMAConstants.TYPE_INTEGER)
-            || rangeName.equals(UIMAConstants.TYPE_LONG)
-            || rangeName.equals(UIMAConstants.TYPE_SHORT)
-            || rangeName.equals(UIMAConstants.TYPE_BYTE)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_INTEGER)
+            || rangeName.equals(CAS.TYPE_NAME_LONG)
+            || rangeName.equals(CAS.TYPE_NAME_SHORT)
+            || rangeName.equals(CAS.TYPE_NAME_BYTE)) {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         int v = numberExpr.getIntegerValue(context, this);
@@ -1015,7 +1015,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
           annotation.setIntValue(feature, v);
         }
       }
-    } else if (rangeName.equals(UIMAConstants.TYPE_INTARRAY)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_INTEGER_ARRAY)) {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         int v = numberExpr.getIntegerValue(context, this);
@@ -1027,13 +1027,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         IntArrayFS array = FSCollectionFactory.createIntArray(cas, RutaListUtils.toIntArray(list));
         annotation.setFeatureValue(feature, array);
       }
-    } else if (rangeName.equals(UIMAConstants.TYPE_DOUBLE)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_DOUBLE)) {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         double v = numberExpr.getDoubleValue(context, this);
         annotation.setDoubleValue(feature, v);
       }
-    } else if (rangeName.equals(UIMAConstants.TYPE_DOUBLEARRAY)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_DOUBLE_ARRAY)) {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         double v = numberExpr.getDoubleValue(context, this);
@@ -1046,13 +1046,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
                 RutaListUtils.toDoubleArray(list));
         annotation.setFeatureValue(feature, array);
       }
-    } else if (rangeName.equals(UIMAConstants.TYPE_FLOAT)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_FLOAT)) {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         float v = numberExpr.getFloatValue(context, this);
         annotation.setFloatValue(feature, v);
       }
-    } else if (rangeName.equals(UIMAConstants.TYPE_FLOATARRAY)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_FLOAT_ARRAY)) {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         float v = numberExpr.getFloatValue(context, this);
@@ -1065,13 +1065,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
                 RutaListUtils.toFloatArray(list));
         annotation.setFeatureValue(feature, array);
       }
-    } else if (rangeName.equals(UIMAConstants.TYPE_BOOLEAN)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_BOOLEAN)) {
       if (value instanceof IBooleanExpression) {
         IBooleanExpression expr = (IBooleanExpression) value;
         Boolean v = expr.getBooleanValue(context, this);
         annotation.setBooleanValue(feature, v);
       }
-    } else if (rangeName.equals(UIMAConstants.TYPE_BOOLEANARRAY)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_BOOLEAN_ARRAY)) {
       if (value instanceof IBooleanListExpression) {
         IBooleanListExpression expr = (IBooleanListExpression) value;
         List<Boolean> list = expr.getBooleanList(context, this);
