@@ -19,22 +19,12 @@
 
 package org.apache.uima.ruta.expression;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.apache.uima.cas.FeatureStructure;
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
-import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
-import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
-import org.apache.uima.ruta.expression.feature.FeatureExpression;
-import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
-import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
