@@ -27,7 +27,6 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.TypeUsageInformation;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
-import org.apache.uima.ruta.condition.AndCondition;
 import org.apache.uima.ruta.condition.ConditionFactory;
 import org.apache.uima.ruta.expression.annotation.AbstractAnnotationListExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationAddressExpression;
@@ -200,7 +199,7 @@ public class ExpressionFactory {
 
   public ITypeExpression createSimpleTypeExpression(Token typeToken, RutaBlock parent) {
     String typeString = typeToken == null ? CAS.TYPE_NAME_DOCUMENT_ANNOTATION : typeToken.getText();
-    return new SimpleTypeExpression(typeString);
+    return createSimpleTypeExpression(typeString, parent);
   }
 
   public ITypeExpression createReferenceTypeExpression(Token varToken) {
@@ -209,6 +208,9 @@ public class ExpressionFactory {
   }
 
   public ITypeExpression createSimpleTypeExpression(String typeString, RutaBlock parent) {
+    if(typeUsage != null) {
+      typeUsage.addMentionedType(typeString);
+    }
     return new SimpleTypeExpression(typeString);
   }
 
@@ -310,7 +312,9 @@ public class ExpressionFactory {
     if (comparatorToken != null) {
       comparator = comparatorToken.getText();
     }
-    // TODO , mentions in token?
+    if(typeUsage != null) {
+      addPossibleTypeMentions(match);
+    }
     return new MatchReference(match, comparator, argument);
   }
 
@@ -409,6 +413,16 @@ public class ExpressionFactory {
   public AnnotationTypeExpression createConditionedAnnotationTypeExpression(MatchReference mr, List<AbstractRutaCondition> conditions) {
     AbstractRutaCondition condition = ConditionFactory.createConditionAnd(conditions, null);
     return new ConditionedAnnotationTypeExpression(mr, condition);
+  }
+  
+  private void addPossibleTypeMentions(String match) {
+    String[] elements = match.split("[.]");
+    StringBuilder sb = new StringBuilder();
+    for (String each : elements) {
+      sb.append(each);
+      typeUsage.addMentionedType(sb.toString());
+      sb.append(".");
+    }
   }
 
   public IStringExpression createStringListIndexExpression(AbstractStringListExpression sl,

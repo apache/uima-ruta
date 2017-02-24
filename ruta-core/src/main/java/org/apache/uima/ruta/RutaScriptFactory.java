@@ -40,7 +40,6 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
-import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
 import org.apache.uima.ruta.rule.ConjunctRulesRuleElement;
@@ -72,13 +71,10 @@ public class RutaScriptFactory {
 
   private ExpressionFactory expressionFactory;
 
-  private TypeUsageInformation typeUsage;
-
-  public RutaScriptFactory(ExpressionFactory expressionFactory, TypeUsageInformation typeUsage) {
+  public RutaScriptFactory(ExpressionFactory expressionFactory) {
     super();
-    this.typeUsage = typeUsage;
     if (expressionFactory == null) {
-      this.expressionFactory = new ExpressionFactory(typeUsage);
+      this.expressionFactory = new ExpressionFactory();
     } else {
       this.expressionFactory = expressionFactory;
     }

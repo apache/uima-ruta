@@ -500,6 +500,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     boolean typeSystemChanged = lastTypeSystem != cas.getTypeSystem();
     if (!initialized || reloadScript || typeSystemChanged) {
       initializeTypes(script, cas, new ArrayList<String>());
+      if(typeUsageInformation!= null) {
+        typeUsageInformation.resolveTypes(script);
+      }
       initialized = true;
       lastTypeSystem = cas.getTypeSystem();
     }
@@ -942,7 +945,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     } else if (Boolean.class.equals(variableType)) {
       return Boolean.parseBoolean(value);
     } else if (Type.class.equals(variableType)) {
-      // TODO
+      if(typeUsageInformation!= null) {
+        typeUsageInformation.addMentionedType(value);
+      }
       return value;
     }  
     return null;
@@ -1013,7 +1018,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       typeUsageInformation = new TypeUsageInformation();
     }
     ExpressionFactory expressionFactory = new ExpressionFactory(typeUsageInformation);
-    RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory, typeUsageInformation);
+    RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory);
     scriptFactory.setContext(context);
     
     parser.setScriptFactory(scriptFactory);

@@ -137,7 +137,7 @@ public class RutaDescriptorFactory {
     parser.setDescriptorInformation(descInfo);
     
     ExpressionFactory expressionFactory = new ExpressionFactory();
-    RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory, null);
+    RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory);
     scriptFactory.setContext(null);
     ResourceManager rm = getResourceManager(options);
     
@@ -171,16 +171,17 @@ public class RutaDescriptorFactory {
     RutaParser parser = new RutaParser(tokens);
     RutaDescriptorInformation descInfo = new RutaDescriptorInformation();
     parser.setDescriptorInformation(descInfo);
-    // TODO no context?
+   
+    ExpressionFactory expressionFactory = new ExpressionFactory();
+    RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory);
+    
     parser.setContext(null);
-    parser.setScriptFactory(new RutaScriptFactory(null, null));
-    parser.setExpressionFactory(new ExpressionFactory());
+    parser.setScriptFactory(scriptFactory);
+    parser.setExpressionFactory(expressionFactory);
     parser.setExternalFactory(initializeExternalFactory(options));
-    // TODO no resource, avoid fail on missing resources while parsing
     parser.setResourcePaths(new String[0]);
     ResourceManager rm = getResourceManager(options);
     parser.setResourceManager(rm);
-    // TODO use constant
     String name = "Anonymous";
     descInfo.setScriptName(name);
     parser.file_input(name);
