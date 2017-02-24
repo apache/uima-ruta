@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.visitor;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
@@ -30,6 +31,8 @@ import org.apache.uima.ruta.rule.AbstractRuleMatch;
 
 public class InferenceCrowd implements RutaInferenceVisitor {
 
+  public static InferenceCrowd emptyCrowd = new InferenceCrowd(Collections.<RutaInferenceVisitor>emptyList());
+  
   private final List<RutaInferenceVisitor> visitors;
 
   public InferenceCrowd(List<RutaInferenceVisitor> visitors) {

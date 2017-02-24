@@ -24,7 +24,11 @@ import java.util.List;
 
 import org.antlr.runtime.Token;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.TypeUsageInformation;
 import org.apache.uima.ruta.block.RutaBlock;
+import org.apache.uima.ruta.condition.AbstractRutaCondition;
+import org.apache.uima.ruta.condition.AndCondition;
+import org.apache.uima.ruta.condition.ConditionFactory;
 import org.apache.uima.ruta.expression.annotation.AbstractAnnotationListExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationAddressExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationFeatureExpression;
@@ -94,10 +98,18 @@ import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 
 public class ExpressionFactory {
 
-  private ExpressionFactory() {
+  private TypeUsageInformation typeUsage;
+
+  public ExpressionFactory() {
+    this(null);
   }
 
-  public static INumberExpression createIntegerExpression(Token number, Token minus) {
+  public ExpressionFactory(TypeUsageInformation typeUsage) {
+    super();
+    this.typeUsage = typeUsage;
+  }
+
+  public INumberExpression createIntegerExpression(Token number, Token minus) {
     Integer valueOf = Integer.valueOf(number.getText());
     SimpleNumberExpression simpleNumberExpression = new SimpleNumberExpression(valueOf);
     if (minus != null) {
@@ -107,7 +119,7 @@ public class ExpressionFactory {
     }
   }
 
-  public static INumberExpression createDoubleExpression(Token number, Token minus) {
+  public INumberExpression createDoubleExpression(Token number, Token minus) {
     Double valueOf = Double.valueOf(number.getText());
     SimpleNumberExpression simpleNumberExpression = new SimpleNumberExpression(valueOf);
     if (minus != null) {
@@ -117,7 +129,7 @@ public class ExpressionFactory {
     }
   }
 
-  public static INumberExpression createReferenceNumberExpression(Token var, Token minus) {
+  public INumberExpression createReferenceNumberExpression(Token var, Token minus) {
     NumberVariableExpression simpleNumberExpression = new NumberVariableExpression(var.getText());
     if (minus != null) {
       return new NegativeNumberExpression(simpleNumberExpression);
@@ -126,8 +138,8 @@ public class ExpressionFactory {
     }
   }
 
-  public static INumberExpression createComposedNumberExpression(
-          List<INumberExpression> expressions, List<Token> opTokens) {
+  public INumberExpression createComposedNumberExpression(List<INumberExpression> expressions,
+          List<Token> opTokens) {
     List<String> ops = new ArrayList<String>();
     for (Token token : opTokens) {
       ops.add(token.getText());
@@ -135,7 +147,7 @@ public class ExpressionFactory {
     return new ComposedNumberExpression(expressions, ops);
   }
 
-  public static INumberExpression createComposedNumberExpression(INumberExpression expression,
+  public INumberExpression createComposedNumberExpression(INumberExpression expression,
           Token opToken) {
     List<String> ops = new ArrayList<String>();
     List<INumberExpression> exprList = new ArrayList<INumberExpression>();
@@ -144,7 +156,7 @@ public class ExpressionFactory {
     return new ComposedNumberExpression(exprList, ops);
   }
 
-  public static INumberExpression createComposedNumberExpression(INumberExpression expression1,
+  public INumberExpression createComposedNumberExpression(INumberExpression expression1,
           Token opToken, INumberExpression expression2) {
     List<String> ops = new ArrayList<String>();
     List<INumberExpression> exprList = new ArrayList<INumberExpression>();
@@ -154,270 +166,274 @@ public class ExpressionFactory {
     return new ComposedNumberExpression(exprList, ops);
   }
 
-  public static AbstractStringExpression createSimpleStringExpression(Token token) {
+  public AbstractStringExpression createSimpleStringExpression(Token token) {
     String text = token.getText();
     String substring = text.substring(1, text.length() - 1);
     return new SimpleStringExpression(substring);
   }
 
-  public static IStringExpression createComposedStringExpression(List<IStringExpression> expressions) {
+  public IStringExpression createComposedStringExpression(List<IStringExpression> expressions) {
     return new ComposedStringExpression(expressions);
   }
 
-  public static AbstractStringExpression createReferenceStringExpression(Token var) {
+  public AbstractStringExpression createReferenceStringExpression(Token var) {
     return new StringVariableExpression(var.getText());
   }
 
-  public static IBooleanExpression createBooleanNumberExpression(INumberExpression e1, Token op,
+  public IBooleanExpression createBooleanNumberExpression(INumberExpression e1, Token op,
           INumberExpression e2) {
     return new BooleanNumberExpression(e1, op.getText(), e2);
   }
-  
-  public static IBooleanExpression createBooleanStringExpression(IStringExpression e1, Token op,
+
+  public IBooleanExpression createBooleanStringExpression(IStringExpression e1, Token op,
           IStringExpression e2) {
     return new BooleanStringExpression(e1, op.getText(), e2);
   }
 
-  public static IBooleanExpression createSimpleBooleanExpression(Token v) {
+  public IBooleanExpression createSimpleBooleanExpression(Token v) {
     return new SimpleBooleanExpression(Boolean.valueOf(v.getText()));
   }
 
-  public static IBooleanExpression createReferenceBooleanExpression(Token id) {
+  public IBooleanExpression createReferenceBooleanExpression(Token id) {
     return new BooleanVariableExpression(id.getText());
   }
 
-  public static ITypeExpression createSimpleTypeExpression(Token typeToken, RutaBlock parent) {
+  public ITypeExpression createSimpleTypeExpression(Token typeToken, RutaBlock parent) {
     String typeString = typeToken == null ? CAS.TYPE_NAME_DOCUMENT_ANNOTATION : typeToken.getText();
     return new SimpleTypeExpression(typeString);
   }
 
-  public static ITypeExpression createReferenceTypeExpression(Token varToken) {
+  public ITypeExpression createReferenceTypeExpression(Token varToken) {
     String varString = varToken == null ? "" : varToken.getText();
     return new TypeVariableExpression(varString);
   }
 
-  public static ITypeExpression createSimpleTypeExpression(String typeString, RutaBlock parent) {
+  public ITypeExpression createSimpleTypeExpression(String typeString, RutaBlock parent) {
     return new SimpleTypeExpression(typeString);
   }
 
-  public static IBooleanExpression createBooleanFunction(Token op, IBooleanExpression e1,
+  public IBooleanExpression createBooleanFunction(Token op, IBooleanExpression e1,
           IBooleanExpression e2) {
     return new SimpleBooleanFunction(op.getText(), e1, e2);
   }
 
-  public static WordTableExpression createReferenceWordTableExpression(Token id) {
+  public WordTableExpression createReferenceWordTableExpression(Token id) {
     return new ReferenceWordTableExpression(id.getText());
   }
 
-  public static WordListExpression createReferenceWordListExpression(Token id) {
+  public WordListExpression createReferenceWordListExpression(Token id) {
     return new ReferenceWordListExpression(id.getText());
   }
 
-  public static WordListExpression createLiteralWordListExpression(Token path) {
+  public WordListExpression createLiteralWordListExpression(Token path) {
     return new LiteralWordListExpression(path.getText());
   }
 
-  public static WordTableExpression createLiteralWordTableExpression(Token path) {
+  public WordTableExpression createLiteralWordTableExpression(Token path) {
     return new LiteralWordTableExpression(path.getText());
   }
-  
-  public static WordListExpression createStringWordListExpression(IStringExpression expr) {
+
+  public WordListExpression createStringWordListExpression(IStringExpression expr) {
     return new StringWordListExpression(expr);
   }
 
-  public static WordTableExpression createStringWordTableExpression(IStringExpression expr) {
+  public WordTableExpression createStringWordTableExpression(IStringExpression expr) {
     return new StringWordTableExpression(expr);
   }
 
-  public static IBooleanExpression createBooleanTypeExpression(ITypeExpression e1, Token op,
+  public IBooleanExpression createBooleanTypeExpression(ITypeExpression e1, Token op,
           ITypeExpression e2) {
     return new BooleanTypeExpression(e1, op.getText(), e2);
   }
 
-  public static AbstractBooleanListExpression createReferenceBooleanListExpression(Token var) {
+  public AbstractBooleanListExpression createReferenceBooleanListExpression(Token var) {
     return new BooleanListVariableExpression(var.getText());
   }
 
-  public static AbstractStringListExpression createReferenceStringListExpression(Token var) {
+  public AbstractStringListExpression createReferenceStringListExpression(Token var) {
     return new StringListVariableExpression(var.getText());
   }
 
-  public static AbstractTypeListExpression createReferenceTypeListExpression(Token var) {
+  public AbstractTypeListExpression createReferenceTypeListExpression(Token var) {
     return new TypeListVariableExpression(var.getText());
   }
 
-  public static AbstractNumberListExpression createReferenceDoubleListExpression(Token var) {
+  public AbstractNumberListExpression createReferenceDoubleListExpression(Token var) {
     return new NumberListVariableExpression(var.getText());
   }
 
-  public static AbstractNumberListExpression createReferenceIntListExpression(Token var) {
+  public AbstractNumberListExpression createReferenceIntListExpression(Token var) {
     return new NumberListVariableExpression(var.getText());
   }
 
-  public static AbstractNumberListExpression createReferenceFloatListExpression(Token var) {
+  public AbstractNumberListExpression createReferenceFloatListExpression(Token var) {
     return new NumberListVariableExpression(var.getText());
   }
 
-  public static AbstractBooleanListExpression createBooleanListExpression(List<IBooleanExpression> list) {
+  public AbstractBooleanListExpression createBooleanListExpression(List<IBooleanExpression> list) {
     return new SimpleBooleanListExpression(list);
   }
 
-  public static AbstractNumberListExpression createNumberListExpression(List<INumberExpression> list) {
+  public AbstractNumberListExpression createNumberListExpression(List<INumberExpression> list) {
     return new SimpleNumberListExpression(list);
   }
 
-  public static AbstractTypeListExpression createTypeListExpression(List<ITypeExpression> list) {
+  public AbstractTypeListExpression createTypeListExpression(List<ITypeExpression> list) {
     return new SimpleTypeListExpression(list);
   }
 
-  public static AbstractStringListExpression createStringListExpression(List<IStringExpression> list) {
+  public AbstractStringListExpression createStringListExpression(List<IStringExpression> list) {
     return new SimpleStringListExpression(list);
   }
 
-  public static FeatureExpression createFeatureExpression(MatchReference mr, RutaBlock env) {
+  public FeatureExpression createFeatureExpression(MatchReference mr, RutaBlock env) {
     return new SimpleFeatureExpression(mr);
   }
 
-  public static FeatureMatchExpression createFeatureMatchExpression(MatchReference mr, Token opToken,
+  public FeatureMatchExpression createFeatureMatchExpression(MatchReference mr, Token opToken,
           IRutaExpression arg, RutaBlock env) {
     String op = "";
-    if(opToken != null) {
+    if (opToken != null) {
       op = opToken.getText();
     }
     return new FeatureMatchExpression(mr, op, arg);
   }
 
-  public static MatchReference createMatchReference(Token refToken) {
+  public MatchReference createMatchReference(Token refToken) {
     return createMatchReference(refToken, null, null);
   }
-  
-  public static MatchReference createMatchReference(Token matchToken, Token comparatorToken, IRutaExpression argument) {
+
+  public MatchReference createMatchReference(Token matchToken, Token comparatorToken,
+          IRutaExpression argument) {
     String match = matchToken.getText();
     String comparator = null;
-    if(comparatorToken != null) {
+    if (comparatorToken != null) {
       comparator = comparatorToken.getText();
     }
+    // TODO , mentions in token?
     return new MatchReference(match, comparator, argument);
   }
-  
-  public static MatchReference createMatchReference(ITypeExpression expression) {
+
+  public MatchReference createMatchReference(ITypeExpression expression) {
     return new MatchReference(expression);
   }
 
-  public static MatchReference createMatchReference(IAnnotationExpression expression) {
+  public MatchReference createMatchReference(IAnnotationExpression expression) {
     return new MatchReference(expression);
   }
 
-  public static INumberExpression createNumberFeatureExpression(FeatureExpression fe) {
+  public INumberExpression createNumberFeatureExpression(FeatureExpression fe) {
     return new NumberFeatureExpression(fe);
   }
 
-  public static AbstractStringExpression createStringFeatureExpression(FeatureExpression fe) {
+  public AbstractStringExpression createStringFeatureExpression(FeatureExpression fe) {
     return new StringFeatureExpression(fe);
   }
 
-  public static IBooleanExpression createBooleanFeatureExpression(FeatureExpression fe) {
+  public IBooleanExpression createBooleanFeatureExpression(FeatureExpression fe) {
     return new BooleanFeatureExpression(fe);
   }
 
-  public static GenericFeatureExpression createGenericFeatureExpression(FeatureExpression fe) {
+  public GenericFeatureExpression createGenericFeatureExpression(FeatureExpression fe) {
     return new GenericFeatureExpression(fe);
   }
 
-  public static ListExpression<Object> createUntypedListExpression(List<IRutaExpression> list) {
+  public ListExpression<Object> createUntypedListExpression(List<IRutaExpression> list) {
     return new UntypedListExpression(list);
   }
 
-  public static WordListExpression createExternalWordListExpression(Token name,
+  public WordListExpression createExternalWordListExpression(Token name,
           List<IStringExpression> args) {
     return new ExternalWordListExpression(name.getText(), args);
   }
 
-  public static WordTableExpression createExternalWordTableExpression(Token name,
+  public WordTableExpression createExternalWordTableExpression(Token name,
           List<IStringExpression> args) {
     return new ExternalWordTableExpression(name.getText(), args);
   }
 
-  public static IRutaExpression createNullExpression() {
+  public IRutaExpression createNullExpression() {
     return new NullExpression();
   }
 
-  public static IAnnotationExpression createAnnotationAddressExpression(Token address) {
+  public IAnnotationExpression createAnnotationAddressExpression(Token address) {
     return new AnnotationAddressExpression(address.getText());
   }
 
-  public static IRutaExpression createAnnotationLabelExpression(Token label) {
+  public IRutaExpression createAnnotationLabelExpression(Token label) {
     return new AnnotationLabelExpression(label.getText());
   }
 
-  public static IRutaExpression createAnnotationVariableExpression(Token var) {
+  public IRutaExpression createAnnotationVariableExpression(Token var) {
     return new AnnotationVariableExpression(var.getText());
   }
 
-  public static AbstractAnnotationListExpression createAnnotationListVariableExpression(Token var) {
+  public AbstractAnnotationListExpression createAnnotationListVariableExpression(Token var) {
     return new AnnotationListVariableExpression(var.getText());
   }
 
-  public static IAnnotationExpression createAnnotationFeatureExpression(
+  public IAnnotationExpression createAnnotationFeatureExpression(
           FeatureExpression featureExpression) {
     return new AnnotationFeatureExpression(featureExpression);
   }
-  
-  public static IAnnotationListExpression createAnnotationListFeatureExpression(
+
+  public IAnnotationListExpression createAnnotationListFeatureExpression(
           FeatureExpression featureExpression) {
     return new AnnotationListFeatureExpression(featureExpression);
   }
-  
-  public static IBooleanListExpression createBooleanListFeatureExpression(
+
+  public IBooleanListExpression createBooleanListFeatureExpression(
           FeatureExpression featureExpression) {
     return new BooleanListFeatureExpression(featureExpression);
   }
-  
-  public static INumberListExpression createNumberListFeatureExpression(
+
+  public INumberListExpression createNumberListFeatureExpression(
           FeatureExpression featureExpression) {
     return new NumberListFeatureExpression(featureExpression);
   }
-  
-  public static IStringListExpression createStringListFeatureExpression(
+
+  public IStringListExpression createStringListFeatureExpression(
           FeatureExpression featureExpression) {
     return new StringListFeatureExpression(featureExpression);
   }
 
-  public static IRutaExpression createGenericExpression(Token ref) {
+  public IRutaExpression createGenericExpression(Token ref) {
     MatchReference match = new MatchReference(ref.getText());
     return new AnnotationTypeExpression(match);
   }
-  
-  
-  public static AnnotationTypeExpression createAnnotationTypeExpression(MatchReference mr) {
+
+  public AnnotationTypeExpression createAnnotationTypeExpression(MatchReference mr) {
     return new AnnotationTypeExpression(mr);
   }
+  
+  public AnnotationTypeExpression createConditionedAnnotationTypeExpression(MatchReference mr, List<AbstractRutaCondition> conditions) {
+    AbstractRutaCondition condition = ConditionFactory.createConditionAnd(conditions, null);
+    return new ConditionedAnnotationTypeExpression(mr, condition);
+  }
 
-  public static IStringExpression createStringListIndexExpression(AbstractStringListExpression sl,
-          INumberExpression index) {
-    return null;
-  }
-  
-  public static IBooleanExpression createBooleanListIndexExpression(IBooleanListExpression bl,
-          INumberExpression index) {
-    return null;
-  }
-  
-  public static INumberExpression createNumberListIndexExpression(AbstractNumberListExpression nl,
-          INumberExpression index) {
-    return null;
-  }
-  
-  public static ITypeExpression createTypeListIndexExpression(AbstractTypeListExpression tl,
-          INumberExpression index) {
-    return null;
-  }
-  
-  public static IAnnotationExpression createAnnotationListIndexExpression(AbstractAnnotationListExpression al,
+  public IStringExpression createStringListIndexExpression(AbstractStringListExpression sl,
           INumberExpression index) {
     return null;
   }
 
- 
+  public IBooleanExpression createBooleanListIndexExpression(IBooleanListExpression bl,
+          INumberExpression index) {
+    return null;
+  }
+
+  public INumberExpression createNumberListIndexExpression(AbstractNumberListExpression nl,
+          INumberExpression index) {
+    return null;
+  }
+
+  public ITypeExpression createTypeListIndexExpression(AbstractTypeListExpression tl,
+          INumberExpression index) {
+    return null;
+  }
+
+  public IAnnotationExpression createAnnotationListIndexExpression(
+          AbstractAnnotationListExpression al, INumberExpression index) {
+    return null;
+  }
 
 }

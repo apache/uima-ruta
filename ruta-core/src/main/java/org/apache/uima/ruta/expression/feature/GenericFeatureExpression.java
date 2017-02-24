@@ -65,15 +65,18 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
 
   private IAnnotationListExpression annotationListExpression;
 
+  private ExpressionFactory expressionFactory;
+  
   public GenericFeatureExpression(FeatureExpression fe) {
     super();
     this.featureExpression = fe;
+    this.expressionFactory = new ExpressionFactory();
   }
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
     if (stringExpression == null) {
-      stringExpression = ExpressionFactory.createStringFeatureExpression(featureExpression);
+      stringExpression = expressionFactory.createStringFeatureExpression(featureExpression);
     }
     return stringExpression.getStringValue(context, stream);
   }
@@ -81,7 +84,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   @Override
   public boolean getBooleanValue(MatchContext context, RutaStream stream) {
     if (booleanExpression == null) {
-      booleanExpression = ExpressionFactory.createBooleanFeatureExpression(featureExpression);
+      booleanExpression = expressionFactory.createBooleanFeatureExpression(featureExpression);
     }
     return booleanExpression.getBooleanValue(context, stream);
   }
@@ -89,7 +92,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   @Override
   public int getIntegerValue(MatchContext context, RutaStream stream) {
     if (numberExpression == null) {
-      numberExpression = ExpressionFactory.createNumberFeatureExpression(featureExpression);
+      numberExpression = expressionFactory.createNumberFeatureExpression(featureExpression);
     }
     return numberExpression.getIntegerValue(context, stream);
   }
@@ -97,7 +100,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   @Override
   public double getDoubleValue(MatchContext context, RutaStream stream) {
     if (numberExpression == null) {
-      numberExpression = ExpressionFactory.createNumberFeatureExpression(featureExpression);
+      numberExpression = expressionFactory.createNumberFeatureExpression(featureExpression);
     }
     return numberExpression.getDoubleValue(context, stream);
   }
@@ -105,7 +108,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   @Override
   public float getFloatValue(MatchContext context, RutaStream stream) {
     if (numberExpression == null) {
-      numberExpression = ExpressionFactory.createNumberFeatureExpression(featureExpression);
+      numberExpression = expressionFactory.createNumberFeatureExpression(featureExpression);
     }
     return numberExpression.getFloatValue(context, stream);
   }
@@ -113,7 +116,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   @Override
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
     if (annotationExpression == null) {
-      annotationExpression = ExpressionFactory.createAnnotationFeatureExpression(featureExpression);
+      annotationExpression = expressionFactory.createAnnotationFeatureExpression(featureExpression);
     }
     return annotationExpression.getAnnotation(context, stream);
   }
@@ -121,7 +124,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   @Override
   public FeatureStructure getFeatureStructure(MatchContext context, RutaStream stream) {
     if (annotationExpression == null) {
-      annotationExpression = ExpressionFactory.createAnnotationFeatureExpression(featureExpression);
+      annotationExpression = expressionFactory.createAnnotationFeatureExpression(featureExpression);
     }
     return annotationExpression.getFeatureStructure(context, stream);
   }
@@ -144,7 +147,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   @Override
   public List<String> getStringList(MatchContext context, RutaStream stream) {
     if (stringListExpression == null) {
-      stringListExpression = ExpressionFactory.createStringListFeatureExpression(featureExpression);
+      stringListExpression = expressionFactory.createStringListFeatureExpression(featureExpression);
     }
     return stringListExpression.getStringList(context, stream);
   }
@@ -152,7 +155,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   @Override
   public List<Number> getNumberList(MatchContext context, RutaStream stream) {
     if (numberListExpression == null) {
-      numberListExpression = ExpressionFactory.createNumberListFeatureExpression(featureExpression);
+      numberListExpression = expressionFactory.createNumberListFeatureExpression(featureExpression);
     }
     return numberListExpression.getNumberList(context, stream);
   }
@@ -160,7 +163,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   @Override
   public List<Boolean> getBooleanList(MatchContext context, RutaStream stream) {
     if (booleanListExpression == null) {
-      booleanListExpression = ExpressionFactory
+      booleanListExpression = expressionFactory
               .createBooleanListFeatureExpression(featureExpression);
     }
     return booleanListExpression.getBooleanList(context, stream);
@@ -169,7 +172,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   @Override
   public List<AnnotationFS> getAnnotationList(MatchContext context, RutaStream stream) {
     if (annotationListExpression == null) {
-      annotationListExpression = ExpressionFactory
+      annotationListExpression = expressionFactory
               .createAnnotationListFeatureExpression(featureExpression);
     }
     return annotationListExpression.getAnnotationList(context, stream);

@@ -217,5 +217,26 @@ public class AnnotationFeatureExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 10, 1, "Some");
 
   }
+  
+  @Test
+  public void testFeatureMatch() throws Exception {
+    String document = "This is a test.";
+    String script = "";
+    script += "Document{-> CREATE(Struct1, \"a\" = SW.begin == 8)};\n";
+    script += "Struct1.a{-> T1};\n";
+    
+    Map<String, String> complexTypes = new TreeMap<String, String>();
+    complexTypes.put("Struct1", "uima.tcas.Annotation");
+    Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    features.put("Struct1", list);
+    list.add(new TestFeature("a", "", "uima.tcas.Annotation"));
+    list.add(new TestFeature("as", "", "uima.cas.FSArray"));
+    
+    CAS cas = RutaTestUtils.getCAS(document, complexTypes, features);
+    Ruta.apply(cas, script);    
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "a");
+  }
 
 }

@@ -39,7 +39,9 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.RutaScriptFactory;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
 import org.apache.uima.ruta.parser.RutaLexer;
@@ -128,15 +130,24 @@ public class RutaDescriptorFactory {
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     RutaParser parser = new RutaParser(tokens);
+    
     RutaDescriptorInformation descInfo = new RutaDescriptorInformation();
+    
+    
     parser.setDescriptorInformation(descInfo);
-    // TODO no context?
-    parser.setContext(null);
-    parser.setExternalFactory(initializeExternalFactory(options));
-    // TODO no resource, avoid fail on missing resources while parsing
-    parser.setResourcePaths(new String[0]);
+    
+    ExpressionFactory expressionFactory = new ExpressionFactory();
+    RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory, null);
+    scriptFactory.setContext(null);
     ResourceManager rm = getResourceManager(options);
+    
+    parser.setScriptFactory(scriptFactory);
+    parser.setExpressionFactory(expressionFactory);
+    parser.setExternalFactory(initializeExternalFactory(options));
+    parser.setContext(null);
+    parser.setResourcePaths(new String[0]);
     parser.setResourceManager(rm);
+    
     String name = scriptFile.getName();
     int lastIndexOf = name.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
     if (lastIndexOf != -1) {
@@ -162,6 +173,8 @@ public class RutaDescriptorFactory {
     parser.setDescriptorInformation(descInfo);
     // TODO no context?
     parser.setContext(null);
+    parser.setScriptFactory(new RutaScriptFactory(null, null));
+    parser.setExpressionFactory(new ExpressionFactory());
     parser.setExternalFactory(initializeExternalFactory(options));
     // TODO no resource, avoid fail on missing resources while parsing
     parser.setResourcePaths(new String[0]);

@@ -413,6 +413,21 @@ Entity{-> MentionedAfter, MentionedAfter.first = firstPerson};]]></programlistin
     </para>
 
     <para>
+      Expressions for annoations can be extended by a feature match and also conditions. This does also apply for type expressions
+      that represent annoations. This functionality is illustrated with a simple example:
+    </para>
+    <programlisting><![CDATA[Sentence{-> CREATE(EmplRelation, "employeeRef" = 
+Employee.ct=="Peter"{ENDSWITH(Sentence)})};]]></programlisting>
+    
+    <para>
+      Here, an annotation of the type <code>EmplRelation</code> ios created for each sentence.
+      The feature <code>employeeRef</code> is filled with one <code>Employee</code> annotation.
+      This annotation is specified by its type <code>Employee</code>. The first annotation
+      of this type within the matched sentence, which coveres the text <quote>Peter</quote> and also
+      ends with a <code>Sentence</code> annotation, is selected.
+    </para>
+    
+    <para>
       In the last examples, the values of features were defined as annotation types. However, also primitive 
       types can be used, as will be shown in the next example, together with a short introduction of variables.
     </para>

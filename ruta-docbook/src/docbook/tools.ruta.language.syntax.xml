@@ -125,9 +125,10 @@ RuleElements           -> RuleElement+
 RuleElement            -> (Identifier ":")? "@"? 
                         RuleElementType | RuleElementLiteral
                         | RuleElementComposed | RuleElementWildCard
-RuleElementType        ->  MatchReference OptionalRuleElementPart
-RuleElementWithCA      ->  MatchReference ("{" Conditions?  Actions? "}")?
-MatchReference         -> TypeExpression | FeatureMatchExpression
+RuleElementType        ->  AnnotationTypeExpr OptionalRuleElementPart
+RuleElementWithCA      ->  AnnotationTypeExpr ("{" Conditions?  Actions? "}")?
+AnnotationTypeExpr     -> (TypeExpression | AnnotationExpression) 
+                          (Operator)? Expression ("{" Conditions "}")?
 FeatureMatchExpression -> TypeExpression ( "." Feature)+ 
                           ( Operator (Expression | "null"))?
 RuleElementLiteral     ->  SimpleStringExpression OptionalRuleElementPart

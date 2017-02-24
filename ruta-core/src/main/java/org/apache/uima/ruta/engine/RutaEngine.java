@@ -61,8 +61,11 @@ import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.FilterManager;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaModule;
+import org.apache.uima.ruta.RutaScriptFactory;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.TypeUsageInformation;
 import org.apache.uima.ruta.block.RutaBlock;
+import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
 import org.apache.uima.ruta.parser.RutaLexer;
@@ -428,7 +431,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private RutaModule script;
 
-  private RutaExternalFactory factory;
+  private RutaExternalFactory externalFactory;
 
   private RutaVerbalizer verbalizer;
 
@@ -438,6 +441,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private List<Type> seedTypes;
 
+  private TypeUsageInformation typeUsageInformation;
+  
   private TypeSystem lastTypeSystem;
 
   private ResourceManager resourceManager = null;
@@ -455,8 +460,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
     this.context = aContext;
 
-    factory = new RutaExternalFactory();
-    factory.setContext(aContext);
+    externalFactory = new RutaExternalFactory();
+    externalFactory.setContext(aContext);
     verbalizer = new RutaVerbalizer();
 
     // reinitialize analysis engines if this one is configured
@@ -468,7 +473,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     scriptRutaResourceLoader = new RutaResourceLoader(scriptPaths, resourceManager.getExtensionClassLoader());
     descriptorRutaResourceLoader = new RutaResourceLoader(descriptorPaths, resourceManager.getExtensionClassLoader());
 
-    if (!factory.isInitialized()) {
+    if (!externalFactory.isInitialized()) {
       initializeExtensionWithClassPath();
     }
     if (!reloadScript) {
@@ -630,7 +635,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           IRutaExtension extension = (IRutaExtension) forName.newInstance();
           verbalizer.addExternalVerbalizers(extension);
           for (String name : extension.getKnownExtensions()) {
-            factory.addExtension(name, extension);
+            externalFactory.addExtension(name, extension);
           }
         }
       } catch (Exception e) {
@@ -937,6 +942,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     } else if (Boolean.class.equals(variableType)) {
       return Boolean.parseBoolean(value);
     } else if (Type.class.equals(variableType)) {
+      // TODO
       return value;
     }  
     return null;
@@ -981,35 +987,51 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
   }
 
-  private RutaModule loadScriptByString(String rules) throws RecognitionException {
+  protected RutaModule loadScriptByString(String rules) throws RecognitionException {
     CharStream st = new ANTLRStringStream(rules);
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
-    RutaParser parser = new RutaParser(tokens);
-    parser.setContext(context);
-    parser.setExternalFactory(factory);
-    parser.setResourcePaths(resourcePaths);
-    parser.setResourceManager(resourceManager);
+    RutaParser parser = createParser(tokens);
     RutaModule script = parser.file_input("Anonymous");
     return script;
   }
 
-  private RutaModule loadScript(Resource scriptResource, String name)
+  protected RutaModule loadScript(Resource scriptResource, String name)
           throws IOException, RecognitionException {
     InputStream scriptInputStream = scriptResource.getInputStream();
     CharStream st = new ANTLRInputStream(scriptInputStream, scriptEncoding);
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
-    RutaParser parser = new RutaParser(tokens);
-    parser.setExternalFactory(factory);
-    parser.setContext(context);
-    parser.setResourcePaths(resourcePaths);
+    RutaParser parser = createParser(tokens);
     RutaModule script = parser.file_input(name);
     return script;
   }
 
-  public RutaExternalFactory getFactory() {
-    return factory;
+  private RutaParser createParser(CommonTokenStream tokens) {
+    RutaParser parser = new RutaParser(tokens);
+    if(typeUsageInformation == null) {
+      typeUsageInformation = new TypeUsageInformation();
+    }
+    ExpressionFactory expressionFactory = new ExpressionFactory(typeUsageInformation);
+    RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory, typeUsageInformation);
+    scriptFactory.setContext(context);
+    
+    parser.setScriptFactory(scriptFactory);
+    parser.setExpressionFactory(expressionFactory);
+    parser.setExternalFactory(externalFactory);
+    parser.setContext(context);
+    parser.setResourcePaths(resourcePaths);
+    parser.setResourceManager(resourceManager);
+    
+    return parser;
+  }
+  
+  protected RutaExternalFactory getFactory() {
+    return externalFactory;
+  }
+  
+  protected TypeUsageInformation getTypeUsageInfomation() {
+    return typeUsageInformation;
   }
 
   @Override

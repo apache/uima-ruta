@@ -439,6 +439,19 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return new NullExpression(bounds[0], bounds[1]);
   }
 
+  public static Expression createConditionedAnnotationTypeExpression(Token match, Token comp,
+          Expression arg, List<RutaCondition> cs) {
+    int bounds[] = getBounds(match);
+    int end = bounds[1];
+    if(cs != null && !cs.isEmpty()) {
+      end = cs.get(cs.size()-1).sourceEnd();
+    } else if(arg != null) {
+      end = arg.sourceEnd();
+    }
+    FeatureMatchExpression reference =  new FeatureMatchExpression(bounds[0], end, match, comp, arg);
+    return new ConditionedAnnotationTypeExpression(bounds[0], end , reference, arg, cs);
+  }
+
   
 
  

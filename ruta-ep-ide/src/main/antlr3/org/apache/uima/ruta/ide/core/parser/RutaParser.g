@@ -2257,26 +2257,42 @@ varArgumentList returns [List<Expression> args = new ArrayList<Expression>()]
 	arg = argument {args.add(arg);} (COMMA arg = argument {args.add(arg);})*
 	;
 
-//changed but unknown statuslistExpression
-argument returns [Expression expr = null] //SimpleReference arg1 = null]
-//options {
-//	backtrack = true;
-//}
+
+argument returns [Expression expr = null] 
 	:
-	(nullExpression) => a5 = nullExpression {expr = a5;}
+	(conditionedAnnotationType)=>cat = conditionedAnnotationType{expr = cat;		}
+	| (nullExpression) => a5 = nullExpression {expr = a5;}
 	| (featureExpression)=> fe = featureExpression {expr = fe;}
 	| (booleanExpression)=> a2 = booleanExpression {expr = a2;}
 	| (numberExpression)=> a3 = numberExpression {expr = a3;}
 	| (stringExpression)=> a4 = stringExpression {expr = a4;}
 	| (listExpression)=> l = listExpression {expr = l;}
 	| a1 = typeExpression {expr = a1;}
-	//token = (
-	//(booleanExpression[par]) => booleanExpression[par]
-	//| (numberExpression[par]) => numberExpression[par]
-	//| (stringExpression[par]) => stringExpression[par]
-	//| (typeExpression[par]) => typeExpression[par]
-	//)
-	//{arg = token;}
+	;
+
+conditionedAnnotationType returns [Expression expr = null]
+options {
+	backtrack = true;
+}
+:
+	match = dottedIdWithIndex (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument LCURLY cs = conditions RCURLY
+	{expr = ExpressionFactory.createConditionedAnnotationTypeExpression(match, comp, arg, cs);}
+	| match = dottedIdWithIndex LCURLY cs = conditions RCURLY
+	{expr = ExpressionFactory.createConditionedAnnotationTypeExpression(match, comp, arg, cs);}
+	| match = dottedIdWithIndex (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument 
+	{expr = ExpressionFactory.createConditionedAnnotationTypeExpression(match, comp, arg, cs);}
+	;
+
+
+simpleArgument returns [Expression expr = null] 
+	:
+	 (nullExpression) => a5 = nullExpression {expr = a5;}
+	| (featureExpression)=> fe = featureExpression {expr = fe;}
+	| (booleanExpression)=> a2 = booleanExpression {expr = a2;}
+	| (numberExpression)=> a3 = numberExpression {expr = a3;}
+	| (stringExpression)=> a4 = stringExpression {expr = a4;}
+	| (listExpression)=> l = listExpression {expr = l;}
+	| a1 = typeExpression {expr = a1;}
 	;
 
 nullExpression returns [Expression expr = null]

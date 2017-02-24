@@ -70,8 +70,18 @@ public class RutaScriptFactory {
 
   private UimaContext context;
 
-  public RutaScriptFactory() {
+  private ExpressionFactory expressionFactory;
+
+  private TypeUsageInformation typeUsage;
+
+  public RutaScriptFactory(ExpressionFactory expressionFactory, TypeUsageInformation typeUsage) {
     super();
+    this.typeUsage = typeUsage;
+    if (expressionFactory == null) {
+      this.expressionFactory = new ExpressionFactory(typeUsage);
+    } else {
+      this.expressionFactory = expressionFactory;
+    }
   }
 
   public RutaScriptBlock createScriptBlock(Token id, RutaRuleElement ruleElement,
@@ -109,7 +119,9 @@ public class RutaScriptFactory {
     RutaScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace);
     List<RuleElement> ruleElements = new ArrayList<RuleElement>();
     RuleElementIsolator container = new RuleElementIsolator();
-    MatchReference mr = ExpressionFactory.createMatchReference(new SimpleTypeExpression(CAS.TYPE_NAME_DOCUMENT_ANNOTATION));
+    ITypeExpression documentExpression = expressionFactory
+            .createSimpleTypeExpression(CAS.TYPE_NAME_DOCUMENT_ANNOTATION, null);
+    MatchReference mr = expressionFactory.createMatchReference(documentExpression);
     ruleElements.add(createRuleElement(mr, container, result));
     RutaRule createRule = createRule(ruleElements, result);
     container.setContainer(createRule);
@@ -119,21 +131,23 @@ public class RutaScriptFactory {
     return result;
   }
 
-  public RutaBlock createForEachBlock(Token varToken, IBooleanExpression direction, RutaRuleElement ruleElement, List<RutaStatement> body, RutaBlock parent) {
-    
-    if(varToken== null) {
-      throw new IllegalArgumentException("A FOREACH block requires that the annotation variable is named.");
+  public RutaBlock createForEachBlock(Token varToken, IBooleanExpression direction,
+          RutaRuleElement ruleElement, List<RutaStatement> body, RutaBlock parent) {
+
+    if (varToken == null) {
+      throw new IllegalArgumentException(
+              "A FOREACH block requires that the annotation variable is named.");
     }
-    
+
     String varName = varToken.getText();
     RutaRule rule = null;
-    if(ruleElement != null) {
+    if (ruleElement != null) {
       rule = createRule(ruleElement, parent);
     }
-    String namespace = parent.getNamespace()+ "." + varName;
+    String namespace = parent.getNamespace() + "." + varName;
     return new ForEachBlock(varName, direction, rule, body, parent, namespace);
   }
-  
+
   public RutaRule createRule(RuleElement element, RutaBlock parent) {
     List<RuleElement> elements = new ArrayList<RuleElement>();
     elements.add(element);
@@ -142,10 +156,10 @@ public class RutaScriptFactory {
 
   public RutaStatement createImplicitRule(List<AbstractRutaAction> actions, RutaBlock parent) {
     List<RuleElement> elements = new ArrayList<RuleElement>();
-    ITypeExpression documentExpression = new SimpleTypeExpression("Document");
-    MatchReference mr = ExpressionFactory.createMatchReference(documentExpression);
-    RutaRuleElement element = createRuleElement(mr, null, null, actions, null,
+    ITypeExpression documentExpression = expressionFactory.createSimpleTypeExpression("Document",
             parent);
+    MatchReference mr = expressionFactory.createMatchReference(documentExpression);
+    RutaRuleElement element = createRuleElement(mr, null, null, actions, null, parent);
     elements.add(element);
     RutaRule rule = createRule(elements, parent);
     element.setContainer(rule.getRoot());
@@ -156,16 +170,19 @@ public class RutaScriptFactory {
     return new RutaRule(elements, parent, idCounter++);
   }
 
-  public RutaRuleElement createRuleElement(MatchReference matchReference, RuleElementContainer container, RutaBlock parent) {
+  public RutaRuleElement createRuleElement(MatchReference matchReference,
+          RuleElementContainer container, RutaBlock parent) {
     return createRuleElement(matchReference, null, null, null, container, parent);
   }
-  
-  public RutaRuleElement createRuleElement(MatchReference matchReference, RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
+
+  public RutaRuleElement createRuleElement(MatchReference matchReference,
+          RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
           List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
-    AnnotationTypeExpression expression = ExpressionFactory.createAnnotationTypeExpression(matchReference);
+    AnnotationTypeExpression expression = expressionFactory
+            .createAnnotationTypeExpression(matchReference);
     return createRuleElement(expression, quantifier, conditions, actions, container, parent);
   }
-  
+
   public RutaRuleElement createRuleElement(IRutaExpression expression,
           RuleElementQuantifier quantifier, List<AbstractRutaCondition> conditions,
           List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
@@ -175,7 +192,8 @@ public class RutaScriptFactory {
     } else if (expression instanceof IStringExpression) {
       matcher = new RutaLiteralMatcher((IStringExpression) expression);
     } else {
-      throw new RuntimeException(expression.getClass().getSimpleName() + " is not a valid expression for a matching condition.");
+      throw new RuntimeException(expression.getClass().getSimpleName()
+              + " is not a valid expression for a matching condition.");
     }
     return new RutaRuleElement(matcher, quantifier, conditions, actions, container, parent);
   }
@@ -294,7 +312,5 @@ public class RutaScriptFactory {
   public void setContext(UimaContext context) {
     this.context = context;
   }
-
-  
 
 }

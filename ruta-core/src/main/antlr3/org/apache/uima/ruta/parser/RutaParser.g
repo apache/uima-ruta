@@ -106,7 +106,6 @@ import org.apache.uima.ruta.rule.quantifier.RuleElementQuantifier;
 @parser::members {
 private List vars = new ArrayList();	
 private int level = 0;
-private RutaScriptFactory factory = new RutaScriptFactory();
 private RutaExternalFactory external;
 private String namespace;
 private String moduleName;
@@ -114,7 +113,16 @@ private ResourceManager resourceManager;
 private UimaContext context;
 
 private RutaDescriptorInformation descInfo;
+private ExpressionFactory expressionFactory;
+private RutaScriptFactory factory;
 
+public void setScriptFactory(RutaScriptFactory factory) {
+	this.factory = factory;
+}
+
+public void setExpressionFactory(ExpressionFactory factory) {
+	this.expressionFactory = factory;
+}
 
 public void setDescriptorInformation(RutaDescriptorInformation descInfo) {
   this.descInfo = descInfo;  
@@ -133,7 +141,6 @@ public void setExternalFactory(RutaExternalFactory factory) {
 }
 	public void setContext(UimaContext context){
 	    this.context = context;
-	    factory.setContext(context);
 	}
 
 	public void emitErrorMessage(String msg) {
@@ -1032,21 +1039,21 @@ ruleElementMatchPart [RuleElementContainer container] returns [RutaRuleElement r
 	(
     (annotationAddressExpression)=>addressExpr = annotationAddressExpression 
      {
-	     MatchReference mr = ExpressionFactory.createMatchReference(addressExpr);
+	     MatchReference mr = expressionFactory.createMatchReference(addressExpr);
 	     re = factory.createRuleElement(mr, container, $blockDeclaration::env);
      } 
      
     |
     (typeFunction)=> tf = typeFunction 
     {
-    	MatchReference mr = ExpressionFactory.createMatchReference(tf);
+    	MatchReference mr = expressionFactory.createMatchReference(tf);
    	re = factory.createRuleElement(mr, container, $blockDeclaration::env);
     }
     
     |
      match = dottedIdWithIndex2 ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
      {
-	     MatchReference mr = ExpressionFactory.createMatchReference(match, comp, arg);
+	     MatchReference mr = expressionFactory.createMatchReference(match, comp, arg);
 	     re = factory.createRuleElement(mr, container, $blockDeclaration::env);
      }
      
@@ -1110,7 +1117,7 @@ rawActions returns [List<AbstractRutaAction> actions = new ArrayList<AbstractRut
 
 listExpression returns [ListExpression expr = null]
 	:
-	(featureExpression)=>fe = featureExpression {expr = ExpressionFactory.createGenericFeatureExpression(fe);}
+	(featureExpression)=>fe = featureExpression {expr = expressionFactory.createGenericFeatureExpression(fe);}
 	| (booleanListExpression)=> bl = booleanListExpression {expr = bl;}
 	| (intListExpression)=> il = intListExpression {expr = il;}
 	| (doubleListExpression)=> dl = doubleListExpression {expr = dl;}
@@ -1138,7 +1145,7 @@ untypedListExpression returns [ListExpression expr = null]
 	List<IRutaExpression> list = new ArrayList<IRutaExpression>();
 }	:
 	LCURLY (e = argument {list.add(e);} (COMMA e = argument {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createUntypedListExpression(list);}
+	{expr = expressionFactory.createUntypedListExpression(list);}
 	;
 
 booleanListExpression returns [AbstractBooleanListExpression expr = null]
@@ -1151,10 +1158,10 @@ simpleBooleanListExpression returns [AbstractBooleanListExpression expr = null]
 	List<IBooleanExpression> list = new ArrayList<IBooleanExpression>();
 }	:
 	LCURLY (e = simpleBooleanExpression {list.add(e);} (COMMA e = simpleBooleanExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createBooleanListExpression(list);}
+	{expr = expressionFactory.createBooleanListExpression(list);}
 	|
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "BOOLEANLIST")}? var = Identifier 
-	{expr = ExpressionFactory.createReferenceBooleanListExpression(var);}
+	{expr = expressionFactory.createReferenceBooleanListExpression(var);}
 	;
 
 
@@ -1168,10 +1175,10 @@ simpleIntListExpression returns [AbstractNumberListExpression expr = null]
 	List<INumberExpression> list = new ArrayList<INumberExpression>();
 }	:
 	LCURLY (e = simpleNumberExpression {list.add(e);} (COMMA e = simpleNumberExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createNumberListExpression(list);}
+	{expr = expressionFactory.createNumberListExpression(list);}
 	|
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "INTLIST")}? var = Identifier 
-	{expr = ExpressionFactory.createReferenceIntListExpression(var);}
+	{expr = expressionFactory.createReferenceIntListExpression(var);}
 	;
 
 
@@ -1194,10 +1201,10 @@ simpleDoubleListExpression returns [AbstractNumberListExpression expr = null]
 	List<INumberExpression> list = new ArrayList<INumberExpression>();
 }	:
 	LCURLY (e = simpleNumberExpression {list.add(e);} (COMMA e = simpleNumberExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createNumberListExpression(list);}
+	{expr = expressionFactory.createNumberListExpression(list);}
 	|
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "DOUBLELIST")}? var = Identifier 
-	{expr = ExpressionFactory.createReferenceDoubleListExpression(var);}
+	{expr = expressionFactory.createReferenceDoubleListExpression(var);}
 	;
 
 	
@@ -1211,10 +1218,10 @@ simpleFloatListExpression returns [AbstractNumberListExpression expr = null]
 	List<INumberExpression> list = new ArrayList<INumberExpression>();
 }	:
 	LCURLY (e = simpleNumberExpression {list.add(e);} (COMMA e = simpleNumberExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createNumberListExpression(list);}
+	{expr = expressionFactory.createNumberListExpression(list);}
 	|
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "FLOATLIST")}? var = Identifier 
-	{expr = ExpressionFactory.createReferenceFloatListExpression(var);}
+	{expr = expressionFactory.createReferenceFloatListExpression(var);}
 	;
 
 stringListExpression returns [AbstractStringListExpression expr = null]
@@ -1227,10 +1234,10 @@ simpleStringListExpression returns [AbstractStringListExpression expr = null]
 	List<IStringExpression> list = new ArrayList<IStringExpression>();
 }	:
 	LCURLY (e = simpleStringExpression {list.add(e);} (COMMA e = simpleStringExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createStringListExpression(list);}	
+	{expr = expressionFactory.createStringListExpression(list);}	
 	|
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "STRINGLIST")}? var = Identifier 
-	{expr = ExpressionFactory.createReferenceStringListExpression(var);}
+	{expr = expressionFactory.createReferenceStringListExpression(var);}
 	;
 
 
@@ -1244,10 +1251,10 @@ simpleTypeListExpression returns [AbstractTypeListExpression expr = null]
 	List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }	:
 	LCURLY (e = simpleTypeExpression {list.add(e);} (COMMA e = simpleTypeExpression {list.add(e);})*)?  RCURLY
-	{expr = ExpressionFactory.createTypeListExpression(list);}
+	{expr = expressionFactory.createTypeListExpression(list);}
 	|
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "TYPELIST")}? var = Identifier 
-	{expr = ExpressionFactory.createReferenceTypeListExpression(var);}
+	{expr = expressionFactory.createReferenceTypeListExpression(var);}
 	;
 
 typeMatchExpression returns [IRutaExpression expr = null]
@@ -1263,7 +1270,7 @@ options {
 matchReference returns [MatchReference mr = null]
 	:
 	ref = dottedId 
-	{mr = ExpressionFactory.createMatchReference(ref);}
+	{mr = expressionFactory.createMatchReference(ref);}
 	;
 
 typeExpression returns [ITypeExpression type = null]
@@ -1272,7 +1279,7 @@ options {
 }
 	:
 	tf = typeFunction {type = tf;}
-	//| tl = typeListExpression LBRACK index = numberExpression RBRACK {type = ExpressionFactory.createTypeListIndexExpression(tl, index);}
+	//| tl = typeListExpression LBRACK index = numberExpression RBRACK {type = expressionFactory.createTypeListIndexExpression(tl, index);}
 	| st = simpleTypeExpression {type = st;}
 	;
 	
@@ -1297,17 +1304,17 @@ externalTypeFunction returns [ITypeExpression expr = null]
 simpleTypeExpression returns [ITypeExpression type = null]
 	:
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "TYPE")}? var = Identifier 
-	{type = ExpressionFactory.createReferenceTypeExpression(var);}
+	{type = expressionFactory.createReferenceTypeExpression(var);}
 	|
 	at = annotationType
-	{type = ExpressionFactory.createSimpleTypeExpression(at, $blockDeclaration::env);}
+	{type = expressionFactory.createSimpleTypeExpression(at, $blockDeclaration::env);}
 	;
 
 
 matchExpression returns [FeatureExpression feat = null]
 	:
 	match = dottedId
-	{MatchReference mr = ExpressionFactory.createMatchReference(match);}
+	{MatchReference mr = expressionFactory.createMatchReference(match);}
 	;
 
 featureExpression returns [FeatureExpression feat = null]
@@ -1318,8 +1325,8 @@ ITypeExpression te = null;
 	:
 	match = dottedIdWithIndex 
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match);
-	feat = ExpressionFactory.createFeatureExpression(mr, $blockDeclaration::env);
+	MatchReference mr = expressionFactory.createMatchReference(match);
+	feat = expressionFactory.createFeatureExpression(mr, $blockDeclaration::env);
 	}
 	;
 
@@ -1327,11 +1334,11 @@ featureMatchExpression returns [FeatureExpression fme = null]
 	:
 	match = dottedIdWithIndex ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match);
+	MatchReference mr = expressionFactory.createMatchReference(match);
 	if(comp != null) {
-	fme = ExpressionFactory.createFeatureMatchExpression(mr, comp, arg, $blockDeclaration::env);
+	fme = expressionFactory.createFeatureMatchExpression(mr, comp, arg, $blockDeclaration::env);
 	} else {
-	fme = ExpressionFactory.createFeatureExpression(mr, $blockDeclaration::env);
+	fme = expressionFactory.createFeatureExpression(mr, $blockDeclaration::env);
 	}
 	}
 	;
@@ -1340,8 +1347,8 @@ featureMatchExpression2 returns [FeatureMatchExpression fme = null]
 	:
 	match = dottedIdWithIndex (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match);
-	fme = ExpressionFactory.createFeatureMatchExpression(mr, comp, arg, $blockDeclaration::env);}
+	MatchReference mr = expressionFactory.createMatchReference(match);
+	fme = expressionFactory.createFeatureMatchExpression(mr, comp, arg, $blockDeclaration::env);}
 	;
 
 
@@ -1349,8 +1356,8 @@ featureAssignmentExpression returns [FeatureMatchExpression fme = null]
 	:
 	match = dottedIdWithIndex op = ASSIGN_EQUAL arg = argument
 	{
-	MatchReference mr = ExpressionFactory.createMatchReference(match);
-	fme = ExpressionFactory.createFeatureMatchExpression(mr, op, arg, $blockDeclaration::env);
+	MatchReference mr = expressionFactory.createMatchReference(match);
+	fme = expressionFactory.createFeatureMatchExpression(mr, op, arg, $blockDeclaration::env);
 	}
 	;
 	
@@ -1384,14 +1391,14 @@ listVariable returns [Token var = null]
 //@init {List<ITypeExpression> exprs = new ArrayList<ITypeExpression>();}
 //	:
 //	LBRACK e = typeExpressionAnd{exprs.add(e);} ( COMMA e = typeExpressionAnd{exprs.add(e);} )* RBRACK
-//	{type = ExpressionFactory.createOrTypeExpression(exprs);}
+//	{type = expressionFactory.createOrTypeExpression(exprs);}
 //	;
 
 //typeExpressionAnd returns [ITypeExpression type = null]
 //@init {List<ITypeExpression> exprs = new ArrayList<ITypeExpression>();}
 //	:
 //	LBRACK e = simpleTypeExpression{exprs.add(e);} ( SEMI e = simpleTypeExpression{exprs.add(e);} )* RBRACK
-//	{type = ExpressionFactory.createAndTypeExpression(exprs);}
+//	{type = expressionFactory.createAndTypeExpression(exprs);}
 //	;
 
 quantifierPart returns [RuleElementQuantifier quantifier = null]
@@ -2315,20 +2322,46 @@ options {
 	backtrack = true;
 }
 	:
-	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createGenericFeatureExpression(fe);}
+	match = dottedIdWithIndex2 (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument LCURLY cs = conditions RCURLY
+	{MatchReference mr = expressionFactory.createMatchReference(match, comp, arg);
+	expr = expressionFactory.createConditionedAnnotationTypeExpression(mr,cs);}
+	| match = dottedIdWithIndex2 LCURLY cs = conditions RCURLY
+	{MatchReference mr = expressionFactory.createMatchReference(match);
+	expr = expressionFactory.createConditionedAnnotationTypeExpression(mr,cs);}
+	| match = dottedIdWithIndex2 (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument
+	{MatchReference mr = expressionFactory.createMatchReference(match, comp, arg);
+	expr = expressionFactory.createAnnotationTypeExpression(mr);}
+
+	| (featureExpression)=> fe = featureExpression {expr = expressionFactory.createGenericFeatureExpression(fe);}
 	| a2 = booleanExpression {expr = a2;}
 	| a3 = numberExpression {expr = a3;}
 	| a4 = stringExpression {expr = a4;}
 	| (listExpression)=> l = listExpression {expr = l;}
 	| a5 = nullExpression {expr = a5;}
 	| a6 = annotationOrTypeExpression {expr = a6;}
-	//| a1 = typeExpression {expr = a1;}
+	//| match = dottedIdWithIndex2 ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
+	//{MatchReference mr = expressionFactory.createMatchReference(match, comp, arg);
+	//expr = expressionFactory.createAnnotationTypeExpression(mr);}
 	
 	//(a2 = booleanExpression)=> a2 = booleanExpression {expr = a2;}
 	//| (a3 = numberExpression)=> a3 = numberExpression {expr = a3;}
 	//| (a4 = stringExpression)=> a4 = stringExpression {expr = a4;}
 	//| (a1 = typeExpression)=> a1 = typeExpression {expr = a1;}
 	;
+
+simpleArgument returns [IRutaExpression expr = null]
+options {
+	backtrack = true;
+}
+	:
+	(featureExpression)=> fe = featureExpression {expr = expressionFactory.createGenericFeatureExpression(fe);}
+	| a2 = booleanExpression {expr = a2;}
+	| a3 = numberExpression {expr = a3;}
+	| a4 = stringExpression {expr = a4;}
+	| (listExpression)=> l = listExpression {expr = l;}
+	| a5 = nullExpression {expr = a5;}
+	;
+
 
 annotationOrTypeExpression returns [IRutaExpression expr = null]
 	:
@@ -2338,14 +2371,17 @@ annotationOrTypeExpression returns [IRutaExpression expr = null]
 	|
 	af = annotationFunction {expr = af;}	
 	|
-	ref = dottedId
-	{expr = ExpressionFactory.createGenericExpression(ref);}
+	match = dottedIdWithIndex2 ((comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument)?
+	{MatchReference mr = expressionFactory.createMatchReference(match, comp, arg);
+	expr = expressionFactory.createAnnotationTypeExpression(mr);}
+	//ref = dottedId
+	//{expr = expressionFactory.createGenericExpression(ref);}
 	;
 
 annotationExpression returns [IRutaExpression expr = null]
 	:
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATION")	}? 
-	id = Identifier {expr = ExpressionFactory.createAnnotationVariableExpression(id);} 
+	id = Identifier {expr = expressionFactory.createAnnotationVariableExpression(id);} 
 	|
 	//(annotationListIndexExpression)=> alie = annotationListIndexExpression {expr = alie;}
 	//|
@@ -2359,24 +2395,24 @@ annotationExpression returns [IRutaExpression expr = null]
 
 annotationListIndexExpression returns [IRutaExpression expr = null]
 	:
-	al = annotationListExpression LBRACK index = numberExpression RBRACK {expr = ExpressionFactory.createAnnotationListIndexExpression(al, index);}
+	al = annotationListExpression LBRACK index = numberExpression RBRACK {expr = expressionFactory.createAnnotationListIndexExpression(al, index);}
 	;
 
 annotationListExpression returns [AbstractAnnotationListExpression expr = null]
 	:
 	{isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "ANNOTATIONLIST")}? 
-	id = Identifier {expr = ExpressionFactory.createAnnotationListVariableExpression(id);} 
+	id = Identifier {expr = expressionFactory.createAnnotationListVariableExpression(id);} 
 	;
 	
 
 annotationAddressExpression returns [IAnnotationExpression expr = null]
 	:
-	ADDRESS_PREFIX address = DecimalLiteral {expr = ExpressionFactory.createAnnotationAddressExpression(address);}
+	ADDRESS_PREFIX address = DecimalLiteral {expr = expressionFactory.createAnnotationAddressExpression(address);}
 	;
 	
 annotationLabelExpression returns [IRutaExpression expr = null]
 	:
-	label = Identifier {expr = ExpressionFactory.createAnnotationLabelExpression(label);}
+	label = Identifier {expr = expressionFactory.createAnnotationLabelExpression(label);}
 	;
 
 annotationFunction returns [IAnnotationExpression expr = null]
@@ -2396,7 +2432,7 @@ externalAnnotationFunction returns [IAnnotationExpression expr = null]
 
 nullExpression returns [IRutaExpression expr = null]
 	:
-	NULL {expr = ExpressionFactory.createNullExpression();}
+	NULL {expr = expressionFactory.createNullExpression();}
 	;
 
 
@@ -2510,19 +2546,19 @@ List<IStringExpression> args = new ArrayList<IStringExpression>();
 }
 	:
 	RESOURCE LPAREN name = dottedId (COMMA arg = stringExpression {args.add(arg);} )* RPAREN
-	{expr = ExpressionFactory.createExternalWordListExpression(name, args);}
+	{expr = expressionFactory.createExternalWordListExpression(name, args);}
 	|
 	path = RessourceLiteral
-	{expr = ExpressionFactory.createLiteralWordListExpression(path);}
+	{expr = expressionFactory.createLiteralWordListExpression(path);}
 	|
 	id = Identifier
-	{expr = ExpressionFactory.createReferenceWordListExpression(id);}
+	{expr = expressionFactory.createReferenceWordListExpression(id);}
 	;
 
 wordListOrStringExpression returns [WordListExpression expr = null]
 	:
 	(stringExpression)=> string = stringExpression
-	{expr = ExpressionFactory.createStringWordListExpression(string);}
+	{expr = expressionFactory.createStringWordListExpression(string);}
 	|	
 	e = wordListExpression
 	{expr = e;}
@@ -2534,19 +2570,19 @@ List<IStringExpression> args = new ArrayList<IStringExpression>();
 }
 	:
 	RESOURCE LPAREN name = dottedId (COMMA arg = stringExpression {args.add(arg);} )* RPAREN
-	{expr = ExpressionFactory.createExternalWordTableExpression(name, args);}
+	{expr = expressionFactory.createExternalWordTableExpression(name, args);}
 	|
 	path = RessourceLiteral
-	{expr = ExpressionFactory.createLiteralWordTableExpression(path);}
+	{expr = expressionFactory.createLiteralWordTableExpression(path);}
 	|
 	id = Identifier
-	{expr = ExpressionFactory.createReferenceWordTableExpression(id);}
+	{expr = expressionFactory.createReferenceWordTableExpression(id);}
 	;
 
 wordTableOrStringExpression returns [WordTableExpression expr = null]
 	:
 	(stringExpression)=>string = stringExpression
-	{expr = ExpressionFactory.createStringWordTableExpression(string);}
+	{expr = expressionFactory.createStringWordTableExpression(string);}
 	|	
 	e = wordTableExpression
 	{expr = e;}
@@ -2557,10 +2593,10 @@ wordTableOrStringExpression returns [WordTableExpression expr = null]
 numberFunction returns [INumberExpression expr = null]
 	:
 	(op=(EXP | LOGN | SIN | COS | TAN ) numExprP=numberExpressionInPar)
-	{expr = ExpressionFactory.createComposedNumberExpression(numExprP,op);}
+	{expr = expressionFactory.createComposedNumberExpression(numExprP,op);}
 	| op = POW LPAREN n1 = numberExpression COMMA n2 = numberExpression RPAREN
-	{expr = ExpressionFactory.createComposedNumberExpression(n1,op, n2);}
-	//| {root = ExpressionFactory.createNumberFunction(numExprP,op)}
+	{expr = expressionFactory.createComposedNumberExpression(n1,op, n2);}
+	//| {root = expressionFactory.createNumberFunction(numExprP,op)}
 	| (e = externalNumberFunction)=> e = externalNumberFunction {expr = e;}
 	;
 
@@ -2589,7 +2625,7 @@ additiveExpression returns [INumberExpression expr = null]
 	List<Token> ops = new ArrayList<Token>();}
 	:   
 	e = multiplicativeExpression{exprs.add(e);} ((PLUS | MINUS)=> op = (PLUS | MINUS){ops.add(op);} e = multiplicativeExpression{exprs.add(e);} )*
-	{expr = ExpressionFactory.createComposedNumberExpression(exprs,ops);}
+	{expr = expressionFactory.createComposedNumberExpression(exprs,ops);}
 	;
 
 multiplicativeExpression returns [INumberExpression expr = null]
@@ -2597,8 +2633,8 @@ multiplicativeExpression returns [INumberExpression expr = null]
 	List<Token> ops = new ArrayList<Token>();}
 	:	
 	(e = simpleNumberExpression{exprs.add(e);} (( STAR | SLASH | PERCENT )=> op = ( STAR | SLASH | PERCENT ){ops.add(op);} e = simpleNumberExpression{exprs.add(e);} )*	
-	{expr = ExpressionFactory.createComposedNumberExpression(exprs,ops);}
-	//| nl = numberListExpression LBRACK index = numberExpression RBRACK {expr = ExpressionFactory.createNumberListIndexExpression(nl, index);}
+	{expr = expressionFactory.createComposedNumberExpression(exprs,ops);}
+	//| nl = numberListExpression LBRACK index = numberExpression RBRACK {expr = expressionFactory.createNumberListIndexExpression(nl, index);}
 	|   e1 = numberFunction {expr = e1;})
 	;
 
@@ -2614,11 +2650,11 @@ numberExpressionInPar returns [INumberExpression expr = null]
 
 simpleNumberExpression returns [INumberExpression expr = null]
 	:
-	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createNumberFeatureExpression(fe);}	
-	| m = MINUS? lit = DecimalLiteral {expr = ExpressionFactory.createIntegerExpression(lit,m);} 
+	(featureExpression)=> fe = featureExpression {expr = expressionFactory.createNumberFeatureExpression(fe);}	
+	| m = MINUS? lit = DecimalLiteral {expr = expressionFactory.createIntegerExpression(lit,m);} 
 	// TODO what about float numbers?
-	| m = MINUS? lit = FloatingPointLiteral {expr = ExpressionFactory.createDoubleExpression(lit,m);}
-	| m = MINUS? var = numberVariable {expr = ExpressionFactory.createReferenceNumberExpression(var,m);}
+	| m = MINUS? lit = FloatingPointLiteral {expr = expressionFactory.createDoubleExpression(lit,m);}
+	| m = MINUS? var = numberVariable {expr = expressionFactory.createReferenceNumberExpression(var,m);}
 	| e = numberExpressionInPar {expr = e;}
 	;
 	
@@ -2630,15 +2666,15 @@ options {
 List<IStringExpression> exprs = new ArrayList<IStringExpression>();
 }
 	:
-	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createStringFeatureExpression(fe);}
-	//|(stringListExpression)=> sl = stringListExpression LBRACK index = numberExpression RBRACK {expr = ExpressionFactory.createStringListIndexExpression(sl, index);}
+	(featureExpression)=> fe = featureExpression {expr = expressionFactory.createStringFeatureExpression(fe);}
+	//|(stringListExpression)=> sl = stringListExpression LBRACK index = numberExpression RBRACK {expr = expressionFactory.createStringListIndexExpression(sl, index);}
 	| e = simpleStringExpression {exprs.add(e);} 
 	((PLUS)=>PLUS (
 		(numberExpressionInPar)=> e2 = numberExpressionInPar {exprs.add(e2);}
-		| arg = argument {if(arg instanceof IStringExpression) {exprs.add((IStringExpression)arg);}}
+		| arg = simpleArgument {if(arg instanceof IStringExpression) {exprs.add((IStringExpression)arg);}}
 		//| le = listExpression {exprs.add(le);}
 		))*
-	{expr = ExpressionFactory.createComposedStringExpression(exprs);}
+	{expr = expressionFactory.createComposedStringExpression(exprs);}
 	|(e = stringFunction)=> e = stringFunction{expr = e;} 
 	;
 
@@ -2665,24 +2701,24 @@ externalStringFunction returns [IStringExpression expr = null]
 
 simpleStringExpression returns [IStringExpression expr = null]
 	: 
-	lit = StringLiteral {expr = ExpressionFactory.createSimpleStringExpression(lit);} 
-	| {isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "STRING")}? id = Identifier {expr = ExpressionFactory.createReferenceStringExpression(id);} 
+	lit = StringLiteral {expr = expressionFactory.createSimpleStringExpression(lit);} 
+	| {isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "STRING")}? id = Identifier {expr = expressionFactory.createReferenceStringExpression(id);} 
 	;
 
 
 booleanExpression returns [IBooleanExpression expr = null]
 	:
-	(featureExpression)=> fe = featureExpression {expr = ExpressionFactory.createBooleanFeatureExpression(fe);}
+	(featureExpression)=> fe = featureExpression {expr = expressionFactory.createBooleanFeatureExpression(fe);}
 	| (e = composedBooleanExpression)=> e = composedBooleanExpression {expr = e;}
 	|sbE =  simpleBooleanExpression {expr = sbE;}
-	//| bl = booleanListExpression LBRACK index = numberExpression RBRACK {expr = ExpressionFactory.createBooleanListIndexExpression(bl, index);}
+	//| bl = booleanListExpression LBRACK index = numberExpression RBRACK {expr = expressionFactory.createBooleanListIndexExpression(bl, index);}
 	;
 
 simpleBooleanExpression returns [IBooleanExpression expr = null]
 	:
 	 e = literalBooleanExpression {expr = e;}
 	| {isVariableOfType($blockDeclaration::env,input.LT(1).getText(), "BOOLEAN")}? 
-	id = Identifier {expr = ExpressionFactory.createReferenceBooleanExpression(id);} 
+	id = Identifier {expr = expressionFactory.createReferenceBooleanExpression(id);} 
 	;
 
 // not checked
@@ -2702,7 +2738,7 @@ booleanFunction returns [IBooleanExpression expr = null]
 
 	:
 	(op = XOR LPAREN e1 = booleanExpression COMMA e2 = booleanExpression RPAREN)
-	{expr = ExpressionFactory.createBooleanFunction(op,e1,e2);}
+	{expr = expressionFactory.createBooleanFunction(op,e1,e2);}
 	| (e = externalBooleanFunction)=> e = externalBooleanFunction {expr = e;}
 	;
 
@@ -2721,14 +2757,14 @@ externalBooleanFunction returns [IBooleanExpression expr = null]
 booleanCompare returns [IBooleanExpression expr = null]
 	:
 	(e1 = simpleBooleanExpression op = (EQUAL | NOTEQUAL) e2 = booleanExpression)
-	{expr = ExpressionFactory.createBooleanFunction(op,e1,e2);}
+	{expr = expressionFactory.createBooleanFunction(op,e1,e2);}
 	;
 
 
 literalBooleanExpression returns  [IBooleanExpression expr = null]
 	:
-	v = TRUE {expr = ExpressionFactory.createSimpleBooleanExpression(v);} 
-	| v = FALSE {expr = ExpressionFactory.createSimpleBooleanExpression(v);}
+	v = TRUE {expr = expressionFactory.createSimpleBooleanExpression(v);} 
+	| v = FALSE {expr = expressionFactory.createSimpleBooleanExpression(v);}
 	;
 
 
@@ -2738,14 +2774,14 @@ booleanTypeExpression  returns  [IBooleanExpression expr = null]
 	e1 = typeExpression
 	op = (EQUAL | NOTEQUAL)
 	e2 = typeExpression
-	{expr = ExpressionFactory.createBooleanTypeExpression(e1,op,e2);}
+	{expr = expressionFactory.createBooleanTypeExpression(e1,op,e2);}
 	;
 booleanStringExpression  returns  [IBooleanExpression expr = null]
 	:
 	e1 = stringExpression
 	op = (EQUAL | NOTEQUAL)
 	e2 = stringExpression
-	{expr = ExpressionFactory.createBooleanStringExpression(e1,op,e2);}
+	{expr = expressionFactory.createBooleanStringExpression(e1,op,e2);}
 	;
 
 booleanNumberExpression  returns  [IBooleanExpression expr = null]
@@ -2755,6 +2791,6 @@ booleanNumberExpression  returns  [IBooleanExpression expr = null]
 	op = (LESS | GREATER | GREATEREQUAL | LESSEQUAL | EQUAL | NOTEQUAL)//{ops.add(op);} 
 	e2 = numberExpression//{exprs.add(e);}
 	//RPAREN
-	{expr = ExpressionFactory.createBooleanNumberExpression(e1,op,e2);}
+	{expr = expressionFactory.createBooleanNumberExpression(e1,op,e2);}
 	;
 	
