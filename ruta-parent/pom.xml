@@ -128,16 +128,19 @@ This product contains icons developed by Mark James
 Creative Commons Attribution 3.0 License.
     </postNoticeText>
     <uimaVersion>2.9.0</uimaVersion>
-<!--     <uimaVersion>3.0.0</uimaVersion> -->
     <uimafit-version>2.2.0</uimafit-version>
-        <!-- 
+     <!-- 
      BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+)
      BACKWARD_COMPATIBLE_USER        - minor version (=.+.0)
      NON_BACKWARD_COMPATIBLE         - major version (+.0.0)
      -->
+     
     <compat.level>NON_BACKWARD_COMPATIBLE</compat.level>
     <compat.previous.version>2.5.0</compat.previous.version>
- 
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <api_check_oldVersion>2.5.0</api_check_oldVersion>
   </properties>
   
   <dependencyManagement>
@@ -238,8 +241,8 @@ Creative Commons Attribution 3.0 License.
         </file>
       </activation>
       <build>
-        <pluginManagement>
-          <plugins>
+        <!-- https://issues.apache.org/jira/browse/UIMA-5307
+        
             <plugin>
               <artifactId>maven-enforcer-plugin</artifactId>
               <dependencies>
@@ -262,18 +265,96 @@ Creative Commons Attribution 3.0 License.
                         <previousVersion>${compat.previous.version}</previousVersion>
                         <dumpDetails>true</dumpDetails>
                         <compatibilityType>${compat.level}</compatibilityType>
-                        <includes>
-                          <include>org/apache/uima/ruta/engine/**/*</include>
-                          <include>org/apache/uima/ruta/descriptor/**/*</include>
-                        </includes>
+                        <excludes>
+                          <exclude>**/impl/**/*</exclude>
+                          <exclude>**/internal/**/*</exclude>
+                          <exclude>org/apache/uima/cas/CASRuntimeException</exclude>
+                          <exclude>org/apache/uima/cas/SerialFormat</exclude>
+                          <exclude>org/apache/uima/util/CasIOUtils</exclude>
+                          <exclude>org/apache/uima/util/CasLoadMode</exclude>
+                        </excludes>
                       </requireBackwardCompatibility>
                     </rules>
                   </configuration>
                 </execution>
               </executions>
             </plugin>
+        -->
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.rat</groupId>
+              <artifactId>apache-rat-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>default-cli</id>
+                  <configuration >
+                    <excludes combine.children="append">
+                      <exclude>**/api-change-report/**/*.*</exclude>>
+                    </excludes>
+                  </configuration>
+                </execution>
+            </executions>
+            </plugin>
           </plugins>
-        </pluginManagement>
+        </pluginManagement> 
+        
+        <plugins>
+          <!-- https://siom79.github.io/japicmp/MavenPlugin.html -->
+          <plugin>              
+            <groupId>com.github.siom79.japicmp</groupId>
+            <artifactId>japicmp-maven-plugin</artifactId>
+            <version>0.9.3</version>
+            <configuration>
+              <oldVersion>
+                <dependency>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>${project.artifactId}</artifactId>
+                  <version>${api_check_oldVersion}</version>
+                </dependency>
+              </oldVersion>
+              <parameter>
+                <onlyModified>true</onlyModified>
+                <!-- filter out classes with impl in their package or class name -->
+<!--                 <postAnalysisScript>${project.basedir}/src/main/groovy/api-report.groovy</postAnalysisScript>                   -->
+              </parameter>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>cmp</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          
+          <!-- This copy is to have the api change report included in the source distribution -->
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-API-change-report</id>
+                <phase>install</phase>  <!-- must follow verify -->
+                <goals><goal>run</goal></goals>
+                <configuration>
+                  <target>
+                    <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />
+                    <if>
+                      <available file="${project.build.directory}/japicmp/" />
+                      <then>
+                        <copy toDir="${basedir}/api-change-report">
+                          <fileset dir="${project.build.directory}/japicmp"/>
+                        </copy>
+                      </then>
+                    </if>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+            
+          </plugin>
+        </plugins>
       </build>
     </profile>
   </profiles>
