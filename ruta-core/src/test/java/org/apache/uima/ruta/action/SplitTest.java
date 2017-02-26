@@ -74,7 +74,7 @@ public class SplitTest {
     t = cas.getTypeSystem().getType(typeName);
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
-       
+
     assertEquals(3, ai.size());
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
@@ -100,7 +100,7 @@ public class SplitTest {
     }
 
   }
-  
+
   @Test
   public void testAddBegin() {
     String document = "Some text. More text , with 1 , and more. even more text.";
@@ -134,7 +134,7 @@ public class SplitTest {
     t = cas.getTypeSystem().getType(typeName);
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
-       
+
     assertEquals(3, ai.size());
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
@@ -160,7 +160,7 @@ public class SplitTest {
     }
 
   }
-  
+
   @Test
   public void testAddEnd() {
     String document = "Some text. More text , with 1 , and more. even more text.";
@@ -194,7 +194,7 @@ public class SplitTest {
     t = cas.getTypeSystem().getType(typeName);
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
-       
+
     assertEquals(3, ai.size());
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
@@ -220,9 +220,9 @@ public class SplitTest {
     }
 
   }
-  
+
   @Test
-  public void testAddBoth() {
+  public void testAddBoth() throws Exception {
     String document = "Some text. More text , with 1 , and more. even more text.";
     String script = "PERIOD #{-> T1} PERIOD;";
     script += " #{-> T1} PERIOD;";
@@ -239,13 +239,8 @@ public class SplitTest {
     String fn = "number";
     list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -254,7 +249,7 @@ public class SplitTest {
     t = cas.getTypeSystem().getType(typeName);
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
-       
+
     assertEquals(3, ai.size());
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
@@ -280,7 +275,7 @@ public class SplitTest {
     }
 
   }
-  
+
   @Test
   public void testBoundarySplit() {
     String document = "Some text. More text , with 1 , and more. even more text.";
@@ -316,7 +311,7 @@ public class SplitTest {
     t = cas.getTypeSystem().getType(typeName);
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
-       
+
     assertEquals(3, ai.size());
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
@@ -342,21 +337,16 @@ public class SplitTest {
     }
 
   }
-  
+
   @Test
-  public void testBoundary() {
+  public void testBoundary() throws Exception {
     String document = "Some text. More text , with 1 , and more. even more text.";
     String script = "PERIOD #{-> T1} PERIOD;";
     script += "#{-> T1} PERIOD;";
     script += "T1{-> SPLIT(PERIOD, true, false, true)};";
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -364,7 +354,7 @@ public class SplitTest {
 
     t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
-       
+
     assertEquals(3, ai.size());
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
@@ -381,5 +371,5 @@ public class SplitTest {
     }
 
   }
-  
+
 }

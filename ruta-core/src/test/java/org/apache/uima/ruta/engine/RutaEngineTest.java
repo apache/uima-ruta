@@ -44,36 +44,43 @@ public class RutaEngineTest {
     script += "org.apache.uima.ruta.type.FalseNegative;\n";
     script += "BLOCK(block) Document{}{\n";
     script += "DECLARE Type2;\n";
-    script += "SW.ct==\"a\";\n";
+    script += "SW.ct==\"a\"{-> CREATE(RutaAnnotation, \"score\"= W.begin)};\n";
     script += "}\n";
     AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
             RutaEngine.PARAM_VAR_NAMES, new String[] { "typeVar" }, RutaEngine.PARAM_VAR_VALUES,
-            new String[] { "TruePositive" }, RutaEngine.PARAM_RULES, script);
+            new String[] { "TruePositive" }, RutaEngine.PARAM_RULES, script,
+            RutaEngine.PARAM_INDEX_ONLY_MENTIONED_TYPES, true, RutaEngine.PARAM_INDEX_ADDITONALLY,
+            new String[] { "COMMA" });
     RutaEngine engine = (RutaEngine) FieldUtils.readField(ae, "mAnalysisComponent", true);
 
-    
     TypeUsageInformation typeUsageInformation = (TypeUsageInformation) FieldUtils.readField(engine,
             "typeUsageInformation", true);
 
     List<String> mentionedTypes = typeUsageInformation.getMentionedTypes();
     Collections.sort(mentionedTypes);
-    Assert.assertEquals(Arrays.asList("CW", "Document", "Document", "FalsePositive", "SW", "SW.ct",
-            "TruePositive","WS", "org", "org.apache", "org.apache.uima", "org.apache.uima.ruta",
-            "org.apache.uima.ruta.type", "org.apache.uima.ruta.type.FalseNegative", 
-            "uima.tcas.DocumentAnnotation"), mentionedTypes);
+    Assert.assertEquals(
+            Arrays.asList("COMMA", "CW", "Document", "Document", "SW", "SW.ct", "TruePositive", "W",
+                    "W.begin", "WS", "org", "org.apache", "org.apache.uima", "org.apache.uima.ruta",
+                    "org.apache.uima.ruta.type", "org.apache.uima.ruta.type.BREAK",
+                    "org.apache.uima.ruta.type.FalseNegative", "org.apache.uima.ruta.type.MARKUP",
+                    "org.apache.uima.ruta.type.SPACE", "uima.tcas.DocumentAnnotation"),
+            mentionedTypes);
 
     CAS cas = RutaTestUtils.getCAS("This is a test.");
     JCas jcas = cas.getJCas();
     ae.process(jcas);
-    
+
     Collection<String> usedTypes = typeUsageInformation.getUsedTypes();
     List<String> usedTypesList = new ArrayList<>(usedTypes);
-    Collections.sort(usedTypesList);;
-    Assert.assertEquals(Arrays.asList("org.apache.uima.ruta.type.CW",
-            "org.apache.uima.ruta.type.FalseNegative", "org.apache.uima.ruta.type.FalsePositive",
-            "org.apache.uima.ruta.type.SW", "org.apache.uima.ruta.type.TruePositive",
+    Collections.sort(usedTypesList);
+    ;
+    Assert.assertEquals(Arrays.asList("org.apache.uima.ruta.type.BREAK",
+            "org.apache.uima.ruta.type.COMMA", "org.apache.uima.ruta.type.CW",
+            "org.apache.uima.ruta.type.FalseNegative", "org.apache.uima.ruta.type.MARKUP",
+            "org.apache.uima.ruta.type.SPACE", "org.apache.uima.ruta.type.SW",
+            "org.apache.uima.ruta.type.TruePositive", "org.apache.uima.ruta.type.W",
             "org.apache.uima.ruta.type.WS", "uima.tcas.DocumentAnnotation"), usedTypesList);
-    
+
   }
 
 }

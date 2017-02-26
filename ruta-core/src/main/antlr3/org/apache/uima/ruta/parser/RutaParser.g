@@ -115,6 +115,8 @@ private UimaContext context;
 private RutaDescriptorInformation descInfo;
 private ExpressionFactory expressionFactory;
 private RutaScriptFactory factory;
+private ActionFactory actionFactory;
+private ConditionFactory conditionFactory;
 
 public void setScriptFactory(RutaScriptFactory factory) {
 	this.factory = factory;
@@ -122,6 +124,14 @@ public void setScriptFactory(RutaScriptFactory factory) {
 
 public void setExpressionFactory(ExpressionFactory factory) {
 	this.expressionFactory = factory;
+}
+
+public void setActionFactory(ActionFactory factory) {
+	this.actionFactory = factory;
+}
+
+public void setConditionFactory(ConditionFactory factory) {
+	this.conditionFactory = factory;
 }
 
 public void setDescriptorInformation(RutaDescriptorInformation descInfo) {
@@ -1365,7 +1375,7 @@ variableAssignmentAction returns [AbstractRutaAction a = null]
 	:
 	var = variable op = ASSIGN_EQUAL arg = argument
 	{
-	a = ActionFactory.createImplicitVariableAssignmentAction(var, op, arg, $blockDeclaration::env);
+	a = actionFactory.createImplicitVariableAssignmentAction(var, op, arg, $blockDeclaration::env);
 	}
 	;
 	
@@ -1458,8 +1468,8 @@ condition  returns [AbstractRutaCondition result = null]
 	| c = conditionPartOfNeq
 	| c = conditionSize	
 	
-	| (featureMatchExpression2)=> f = featureMatchExpression2 {c = ConditionFactory.createImplicitCondition(f);}
-	| (booleanExpression)=> b = booleanExpression {c = ConditionFactory.createImplicitCondition(b);}
+	| (featureMatchExpression2)=> f = featureMatchExpression2 {c = conditionFactory.createImplicitCondition(f);}
+	| (booleanExpression)=> b = booleanExpression {c = conditionFactory.createImplicitCondition(b);}
 	| (c = externalCondition)=> c = externalCondition
 	| (c = macroCondition)=> c = macroCondition
 	) {result = c;}
@@ -1480,13 +1490,13 @@ macroCondition returns [AbstractRutaCondition condition = null]
 	{isMacroCondition(input.LT(1).getText(), $blockDeclaration::env)}? 
 	id = Identifier LPAREN args = varArgumentList?	RPAREN
 	{
-		condition = ConditionFactory.createMacroCondition(id, args, $blockDeclaration::env);
+		condition = conditionFactory.createMacroCondition(id, args, $blockDeclaration::env);
 	}
 	;
 conditionAnd returns [AbstractRutaCondition cond = null]
     :   
     AND LPAREN conds = conditions RPAREN 
-    {cond = ConditionFactory.createConditionAnd(conds, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionAnd(conds, $blockDeclaration::env);}
     ;
     
 conditionContains returns [AbstractRutaCondition cond = null]
@@ -1505,16 +1515,16 @@ List<IRutaExpression> args = new ArrayList<>();
     //(type = typeExpression | list = plainListExpression COMMA a = argument) 
     //(COMMA min = numberExpression COMMA max = numberExpression (COMMA percent = booleanExpression)?)? RPAREN
     {
-    cond = ConditionFactory.createConditionContains(args, $blockDeclaration::env);
-    //if(type != null) {cond = ConditionFactory.createConditionContains(type, min, max, percent,$blockDeclaration::env);}
-    //else if(list != null) {cond = ConditionFactory.createConditionContains(list, a, min, max, percent, $blockDeclaration::env);}
+    cond = conditionFactory.createConditionContains(args, $blockDeclaration::env);
+    //if(type != null) {cond = conditionFactory.createConditionContains(type, min, max, percent,$blockDeclaration::env);}
+    //else if(list != null) {cond = conditionFactory.createConditionContains(list, a, min, max, percent, $blockDeclaration::env);}
     }
     ;
 conditionContextCount returns [AbstractRutaCondition cond = null]
     :   
     CONTEXTCOUNT LPAREN type = typeExpression (COMMA min = numberExpression COMMA max = numberExpression)? 
     (COMMA var = numberVariable)? RPAREN
-    {cond = ConditionFactory.createConditionContextCount(type, min, max, var, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionContextCount(type, min, max, var, $blockDeclaration::env);}
     ;
 conditionCount returns [AbstractRutaCondition cond = null]
  options {
@@ -1523,23 +1533,23 @@ conditionCount returns [AbstractRutaCondition cond = null]
     :   
     COUNT LPAREN type = listExpression COMMA a = argument (COMMA min = numberExpression COMMA max = numberExpression)? 
     (COMMA var = numberVariable)? RPAREN
-    {cond = ConditionFactory.createConditionCount(type, a, min, max, var,$blockDeclaration::env);}
+    {cond = conditionFactory.createConditionCount(type, a, min, max, var,$blockDeclaration::env);}
     |
     COUNT LPAREN list = typeExpression (COMMA min = numberExpression COMMA max = numberExpression)? 
     (COMMA var = numberVariable)? RPAREN
-    {cond = ConditionFactory.createConditionCount(list, min, max, var,$blockDeclaration::env);}   
+    {cond = conditionFactory.createConditionCount(list, min, max, var,$blockDeclaration::env);}   
     ;
 conditionTotalCount returns [AbstractRutaCondition cond = null]
     :   
     TOTALCOUNT LPAREN type = typeExpression (COMMA min = numberExpression COMMA max = numberExpression)?
     (COMMA var = numberVariable)? RPAREN
-    {cond = ConditionFactory.createConditionTotalCount(type, min, max, var, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionTotalCount(type, min, max, var, $blockDeclaration::env);}
     ;
 conditionCurrentCount returns [AbstractRutaCondition cond = null]
     :   
     CURRENTCOUNT LPAREN type = typeExpression (COMMA min = numberExpression COMMA max = numberExpression)? 
     (COMMA var = numberVariable)? RPAREN
-    {cond = ConditionFactory.createConditionCurrentCount(type, min, max, var,$blockDeclaration::env);}
+    {cond = conditionFactory.createConditionCurrentCount(type, min, max, var,$blockDeclaration::env);}
     ;
     
 conditionInList returns [AbstractRutaCondition cond = null]
@@ -1551,54 +1561,54 @@ conditionInList returns [AbstractRutaCondition cond = null]
     (COMMA arg = stringExpression)?
     //(COMMA dist = numberExpression (COMMA rel = booleanExpression)?)? 
     RPAREN
-    {if(list1 != null) {cond = ConditionFactory.createConditionInList(list1, arg,$blockDeclaration::env);}
-    else {cond = ConditionFactory.createConditionInList(list2, arg,$blockDeclaration::env);};}
+    {if(list1 != null) {cond = conditionFactory.createConditionInList(list1, arg,$blockDeclaration::env);}
+    else {cond = conditionFactory.createConditionInList(list2, arg,$blockDeclaration::env);};}
     ;
 
     
 conditionLast returns [AbstractRutaCondition cond = null]
     :   
     LAST LPAREN type = typeExpression RPAREN
-    {cond = ConditionFactory.createConditionLast(type, $blockDeclaration::env);}    
+    {cond = conditionFactory.createConditionLast(type, $blockDeclaration::env);}    
     ;
     
     
 conditionMofN returns [AbstractRutaCondition cond = null]
     :   
     MOFN LPAREN min = numberExpression COMMA max = numberExpression COMMA conds = conditions RPAREN
-    {cond = ConditionFactory.createConditionMOfN(conds, min, max, $blockDeclaration::env);} 
+    {cond = conditionFactory.createConditionMOfN(conds, min, max, $blockDeclaration::env);} 
     ;
 
 conditionNear returns [AbstractRutaCondition cond = null]
     :   
     NEAR LPAREN type = typeExpression COMMA min = numberExpression COMMA max = numberExpression (COMMA direction = booleanExpression (COMMA filtered = booleanExpression)?)? RPAREN
-    {cond = ConditionFactory.createConditionNear(type, min, max, direction, filtered, $blockDeclaration::env);} 
+    {cond = conditionFactory.createConditionNear(type, min, max, direction, filtered, $blockDeclaration::env);} 
     ;
 conditionNot returns [AbstractRutaCondition cond = null]
     :   
     ((MINUS c = condition) |  (NOT LPAREN c = condition RPAREN))
-    {cond = ConditionFactory.createConditionNot(c, $blockDeclaration::env);}    
+    {cond = conditionFactory.createConditionNot(c, $blockDeclaration::env);}    
     ;
 conditionOr returns [AbstractRutaCondition cond = null]
     :   
     OR LPAREN conds = conditions RPAREN
-    {cond = ConditionFactory.createConditionOr(conds, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionOr(conds, $blockDeclaration::env);}
     ;
 conditionPartOf returns [AbstractRutaCondition cond = null]
     :
     PARTOF LPAREN (type1 = typeExpression|type2 = typeListExpression) RPAREN
-    {cond = ConditionFactory.createConditionPartOf(type1, type2, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionPartOf(type1, type2, $blockDeclaration::env);}
     ;
 conditionPartOfNeq returns [AbstractRutaCondition cond = null]
     :
     PARTOFNEQ LPAREN (type1 = typeExpression|type2 = typeListExpression) RPAREN
-    {cond = ConditionFactory.createConditionPartOfNeq(type1, type2, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionPartOfNeq(type1, type2, $blockDeclaration::env);}
     ;
 
 conditionPosition returns [AbstractRutaCondition cond = null]
     :   
     POSITION LPAREN type = typeExpression COMMA pos = numberExpression (COMMA rel = booleanExpression)? RPAREN
-    {cond = ConditionFactory.createConditionPosition(type, pos, rel, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionPosition(type, pos, rel, $blockDeclaration::env);}
     ;
 conditionRegExp returns [AbstractRutaCondition cond = null]
     :
@@ -1607,33 +1617,33 @@ conditionRegExp returns [AbstractRutaCondition cond = null]
     | pattern = stringExpression
     )
     (COMMA caseSensitive = booleanExpression)? RPAREN
-    {cond = ConditionFactory.createConditionRegExp(v, pattern, caseSensitive, $blockDeclaration::env);}    
+    {cond = conditionFactory.createConditionRegExp(v, pattern, caseSensitive, $blockDeclaration::env);}    
     ;
 
 conditionScore returns [AbstractRutaCondition cond = null]
     :
     SCORE LPAREN min = numberExpression (COMMA max = numberExpression
     (COMMA var = numberVariable)?)?  RPAREN
-    {cond = ConditionFactory.createConditionScore(min, max, var, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionScore(min, max, var, $blockDeclaration::env);}
     ;
 
 
 conditionVote returns [AbstractRutaCondition cond = null]
     :   
     VOTE LPAREN type1 = typeExpression COMMA type2 = typeExpression RPAREN
-    {cond = ConditionFactory.createConditionVote(type1, type2, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionVote(type1, type2, $blockDeclaration::env);}
     ;
     
 conditionIf returns [AbstractRutaCondition cond = null]
     :   
     IF LPAREN e = booleanExpression RPAREN
-    {cond = ConditionFactory.createConditionIf(e, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionIf(e, $blockDeclaration::env);}
     ;
 
 conditionFeature returns [AbstractRutaCondition cond = null]
     :   
     FEATURE LPAREN se = stringExpression COMMA v = argument RPAREN
-    {cond = ConditionFactory.createConditionFeature(se, v, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionFeature(se, v, $blockDeclaration::env);}
     ;   
 
 conditionParse returns [AbstractRutaCondition cond = null]
@@ -1641,43 +1651,43 @@ conditionParse returns [AbstractRutaCondition cond = null]
     PARSE LPAREN {isVariable($blockDeclaration::env,input.LT(1).getText())}? id = Identifier 
     (COMMA locale = stringExpression)?
     RPAREN
-    {cond = ConditionFactory.createConditionParse(id, locale, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionParse(id, locale, $blockDeclaration::env);}
     ;
 
 conditionIs returns [AbstractRutaCondition cond = null]
     :
     IS LPAREN (type1 = typeExpression|type2 = typeListExpression) RPAREN
-    {cond = ConditionFactory.createConditionIs(type1, type2, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionIs(type1, type2, $blockDeclaration::env);}
     ;
 
 conditionBefore returns [AbstractRutaCondition cond = null]
     :
     BEFORE LPAREN (type1 = typeExpression|type2 = typeListExpression) RPAREN
-    {cond = ConditionFactory.createConditionBefore(type1,type2, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionBefore(type1,type2, $blockDeclaration::env);}
     ;
 
 conditionAfter returns [AbstractRutaCondition cond = null]
     :
     AFTER LPAREN (type1 = typeExpression|type2 = typeListExpression) RPAREN
-    {cond = ConditionFactory.createConditionAfter(type1,type2,$blockDeclaration::env);}
+    {cond = conditionFactory.createConditionAfter(type1,type2,$blockDeclaration::env);}
     ;
 
 conditionStartsWith returns [AbstractRutaCondition cond = null]
     :
     STARTSWITH LPAREN (type1 = typeExpression|type2 = typeListExpression) RPAREN
-    {cond = ConditionFactory.createConditionStartsWith(type1,type2, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionStartsWith(type1,type2, $blockDeclaration::env);}
     ;
 
 conditionEndsWith returns [AbstractRutaCondition cond = null]
     :
     ENDSWITH LPAREN (type1 = typeExpression|type2 = typeListExpression) RPAREN
-    {cond = ConditionFactory.createConditionEndsWith(type1,type2,$blockDeclaration::env);}
+    {cond = conditionFactory.createConditionEndsWith(type1,type2,$blockDeclaration::env);}
     ;
 
 conditionSize returns [AbstractRutaCondition cond = null]
     :
     SIZE LPAREN list = listExpression (COMMA min = numberExpression COMMA max = numberExpression)? (COMMA var = numberVariable)? RPAREN
-    {cond = ConditionFactory.createConditionSize(list, min, max, var,$blockDeclaration::env);}
+    {cond = conditionFactory.createConditionSize(list, min, max, var,$blockDeclaration::env);}
     ;
 
 action  returns [AbstractRutaAction result = null]
@@ -1729,8 +1739,8 @@ action  returns [AbstractRutaAction result = null]
 	| (variableAssignmentAction)=> vae = variableAssignmentAction {a = vae;}
 	| (externalAction)=> a = externalAction
 	| (macroAction)=> a = macroAction
-	| (featureAssignmentExpression)=> fae = featureAssignmentExpression {a = ActionFactory.createAction(fae);}
-	| (typeExpression)=> te = typeExpression {a = ActionFactory.createAction(te);}
+	| (featureAssignmentExpression)=> fae = featureAssignmentExpression {a = actionFactory.createAction(fae);}
+	| (typeExpression)=> te = typeExpression {a = actionFactory.createAction(te);}
 	
 //	| a = variableAction
 	) {result = a;}
@@ -1804,7 +1814,7 @@ macroAction returns [AbstractRutaAction action = null]
 	{isMacroAction(input.LT(1).getText(), $blockDeclaration::env)}? 
 	id = Identifier LPAREN args = varArgumentList?	RPAREN
 	{
-		action = ActionFactory.createMacroAction(id, args, $blockDeclaration::env);
+		action = actionFactory.createMacroAction(id, args, $blockDeclaration::env);
 	}
 	;
 
@@ -1821,7 +1831,7 @@ actionCreate returns [AbstractRutaAction action = null]
     (fname = stringExpression ASSIGN_EQUAL obj1 = argument {map.put(fname,obj1);} 
     (COMMA fname = stringExpression ASSIGN_EQUAL obj1 = argument {map.put(fname,obj1);})*)?
     )? RPAREN
-    {action = ActionFactory.createCreateAction(structure, map, indexes, $blockDeclaration::env);}
+    {action = actionFactory.createCreateAction(structure, map, indexes, $blockDeclaration::env);}
     ;
 
 
@@ -1844,7 +1854,7 @@ actionMarkTable returns [AbstractRutaAction action = null]
     RPAREN
 
 
-    {action = ActionFactory.createMarkTableAction(structure, index, table, map, ignoreCase, ignoreLength, ignoreChar, maxIgnoreChar,$blockDeclaration::env);}
+    {action = actionFactory.createMarkTableAction(structure, index, table, map, ignoreCase, ignoreLength, ignoreChar, maxIgnoreChar,$blockDeclaration::env);}
     ;
  
 actionGather returns [AbstractRutaAction action = null]
@@ -1859,7 +1869,7 @@ actionGather returns [AbstractRutaAction action = null]
     (fname = stringExpression ASSIGN_EQUAL (obj1 = numberExpression | obj2 = numberListExpression) {map.put(fname,obj1 != null? obj1 : obj2);} 
     (COMMA fname = stringExpression ASSIGN_EQUAL (obj1 = numberExpression | obj2 = numberListExpression) {map.put(fname,obj1 != null? obj1 : obj2);})*)?
     )? RPAREN
-    {action = ActionFactory.createGatherAction(structure, map, indexes, $blockDeclaration::env);}
+    {action = actionFactory.createGatherAction(structure, map, indexes, $blockDeclaration::env);}
     ;  
 
   
@@ -1874,7 +1884,7 @@ Map<IStringExpression, IRutaExpression> map = new HashMap<IStringExpression, IRu
     obj1 = argument{map.put(fname,obj1);} 
     )
     )+ RPAREN
-    {action = ActionFactory.createFillAction(type, map, $blockDeclaration::env);}
+    {action = actionFactory.createFillAction(type, map, $blockDeclaration::env);}
     ;
     
 actionColor returns [AbstractRutaAction action = null]
@@ -1888,19 +1898,19 @@ actionColor returns [AbstractRutaAction action = null]
     (COMMA
     selected = booleanExpression)?)?
     RPAREN
-    {action = ActionFactory.createColorAction(type, bgcolor, fgcolor, selected, $blockDeclaration::env);}
+    {action = actionFactory.createColorAction(type, bgcolor, fgcolor, selected, $blockDeclaration::env);}
     ;
 
 actionDel returns [AbstractRutaAction action = null]
     :   
     DEL
-    {action = ActionFactory.createDelAction($blockDeclaration::env);}
+    {action = actionFactory.createDelAction($blockDeclaration::env);}
     ;
         
 actionLog returns [AbstractRutaAction action = null]
     :   
     LOG LPAREN lit = stringExpression (COMMA log = LogLevel)? RPAREN
-    {action = ActionFactory.createLogAction(lit, log, $blockDeclaration::env);}
+    {action = actionFactory.createLogAction(lit, log, $blockDeclaration::env);}
     ;
 
 actionMark returns [AbstractRutaAction action = null]
@@ -1916,7 +1926,7 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
     )*
      RPAREN
     
-    {action = ActionFactory.createMarkAction(null, type, list, $blockDeclaration::env);}
+    {action = actionFactory.createMarkAction(null, type, list, $blockDeclaration::env);}
     ;
 
 actionSplit returns [AbstractRutaAction action = null]
@@ -1935,7 +1945,7 @@ actionSplit returns [AbstractRutaAction action = null]
 	)?
 	)? 
 	RPAREN
-	{action = ActionFactory.createSplitAction(type, complete, appendToBegin, appendToEnd, $blockDeclaration::env);}
+	{action = actionFactory.createSplitAction(type, complete, appendToBegin, appendToEnd, $blockDeclaration::env);}
 	;
 	
 actionShift returns [AbstractRutaAction action = null]
@@ -1950,7 +1960,7 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
     (COMMA (all=booleanExpression)=> all= booleanExpression)?
     RPAREN
     
-    {action = ActionFactory.createShiftAction(type, list, all, $blockDeclaration::env);}
+    {action = actionFactory.createShiftAction(type, list, all, $blockDeclaration::env);}
     ;
 
 
@@ -1968,7 +1978,7 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
     )*
      RPAREN
     
-    {action = ActionFactory.createMarkAction(score, type, list, $blockDeclaration::env);}
+    {action = actionFactory.createMarkAction(score, type, list, $blockDeclaration::env);}
     ;
 
 actionMarkOnce returns [AbstractRutaAction action = null]
@@ -1982,7 +1992,7 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
         {list.add(index);}
     )* RPAREN
     
-    {action = ActionFactory.createMarkOnceAction(score, type, list,$blockDeclaration::env);}
+    {action = actionFactory.createMarkOnceAction(score, type, list,$blockDeclaration::env);}
     ;
 
 actionMarkFast returns [AbstractRutaAction action = null]
@@ -1990,9 +2000,9 @@ actionMarkFast returns [AbstractRutaAction action = null]
     MARKFAST LPAREN type = typeExpression COMMA (list1 = wordListExpression | list2 = stringListExpression) 
     (COMMA ignore = booleanExpression (COMMA ignoreLength = numberExpression (COMMA ignoreWS = booleanExpression)?)?)? RPAREN
     {if(list1 != null) {
-     action = ActionFactory.createMarkFastAction(type, list1, ignore, ignoreLength, ignoreWS, $blockDeclaration::env);
+     action = actionFactory.createMarkFastAction(type, list1, ignore, ignoreLength, ignoreWS, $blockDeclaration::env);
     } else {
-     action = ActionFactory.createMarkFastAction(type, list2, ignore, ignoreLength, ignoreWS, $blockDeclaration::env);
+     action = actionFactory.createMarkFastAction(type, list2, ignore, ignoreLength, ignoreWS, $blockDeclaration::env);
     }
     }
     ;
@@ -2000,19 +2010,19 @@ actionMarkFast returns [AbstractRutaAction action = null]
 actionMarkLast returns [AbstractRutaAction action = null]
     :   
     MARKLAST LPAREN type = typeExpression RPAREN
-    {action = ActionFactory.createMarkLastAction(type, $blockDeclaration::env);}
+    {action = actionFactory.createMarkLastAction(type, $blockDeclaration::env);}
     ;
     
 actionMarkFirst returns [AbstractRutaAction action = null]
     :   
     MARKFIRST LPAREN type = typeExpression RPAREN
-    {action = ActionFactory.createMarkFirstAction(type, $blockDeclaration::env);}
+    {action = actionFactory.createMarkFirstAction(type, $blockDeclaration::env);}
     ;
 
 actionReplace returns [AbstractRutaAction action = null]
     :   
     REPLACE LPAREN lit = stringExpression RPAREN
-    {action = ActionFactory.createReplaceAction(lit, $blockDeclaration::env);}
+    {action = actionFactory.createReplaceAction(lit, $blockDeclaration::env);}
     ;
     
   
@@ -2023,7 +2033,7 @@ List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :   
     RETAINTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)?
-    {action = ActionFactory.createRetainTypeAction(list, $blockDeclaration::env);}
+    {action = actionFactory.createRetainTypeAction(list, $blockDeclaration::env);}
     ;   
     
  
@@ -2034,13 +2044,13 @@ List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :   
     FILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)?
-    {action = ActionFactory.createFilterTypeAction(list,$blockDeclaration::env);}
+    {action = actionFactory.createFilterTypeAction(list,$blockDeclaration::env);}
     ;       
 
 actionCall returns [AbstractRutaAction action = null]
     :
     CALL LPAREN ns = dottedIdentifier RPAREN
-    {action = ActionFactory.createCallAction(ns, $blockDeclaration::env);}
+    {action = actionFactory.createCallAction(ns, $blockDeclaration::env);}
     ;
 
 
@@ -2055,14 +2065,14 @@ actionConfigure returns [AbstractRutaAction action = null]
    fname = stringExpression ASSIGN_EQUAL obj1 = argument {map.put(fname,obj1);} 
     (COMMA fname = stringExpression ASSIGN_EQUAL obj1 = argument {map.put(fname,obj1);})*
     RPAREN
-    {action = ActionFactory.createConfigureAction(ns, map, $blockDeclaration::env);}
+    {action = actionFactory.createConfigureAction(ns, map, $blockDeclaration::env);}
     ;
 
 
 actionExec returns [AbstractRutaAction action = null]
     :
     EXEC LPAREN ((stringExpression)=> view = stringExpression COMMA)? ns = dottedIdentifier (COMMA tl = typeListExpression)? RPAREN
-    {action = ActionFactory.createExecAction(ns, tl, view, $blockDeclaration::env);}
+    {action = actionFactory.createExecAction(ns, tl, view, $blockDeclaration::env);}
     ;    
     
 actionAssign returns [AbstractRutaAction action = null]
@@ -2073,41 +2083,41 @@ actionAssign returns [AbstractRutaAction action = null]
     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "ANNOTATIONLIST")||
     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPE")}? 
         nv = Identifier COMMA ea = annotationOrTypeExpression 
-        {action = ActionFactory.createAssignAction(nv, ea,$blockDeclaration::env);}
+        {action = actionFactory.createAssignAction(nv, ea,$blockDeclaration::env);}
     |
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "BOOLEAN")}? 
         nv = Identifier COMMA e2 = booleanExpression 
-        {action = ActionFactory.createAssignAction(nv, e2,$blockDeclaration::env);}
+        {action = actionFactory.createAssignAction(nv, e2,$blockDeclaration::env);}
     |
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "STRING")}? 
         nv = Identifier COMMA e3 = stringExpression 
-        {action = ActionFactory.createAssignAction(nv, e3,$blockDeclaration::env);}
+        {action = actionFactory.createAssignAction(nv, e3,$blockDeclaration::env);}
     |
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "INT")}? 
         nv = Identifier COMMA e4 = numberExpression 
-        {action = ActionFactory.createAssignAction(nv, e4,$blockDeclaration::env);}
+        {action = actionFactory.createAssignAction(nv, e4,$blockDeclaration::env);}
     |
      {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "FLOAT")}? 
         nv = Identifier COMMA e6 = numberExpression 
-        {action = ActionFactory.createAssignAction(nv, e6,$blockDeclaration::env);}
+        {action = actionFactory.createAssignAction(nv, e6,$blockDeclaration::env);}
     |
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "DOUBLE")}? 
         nv = Identifier COMMA e5 = numberExpression 
-        {action = ActionFactory.createAssignAction(nv, e5,$blockDeclaration::env);}
+        {action = actionFactory.createAssignAction(nv, e5,$blockDeclaration::env);}
     ) RPAREN
     ;
 
 actionSetFeature returns [AbstractRutaAction action = null]
     :   
     name = SETFEATURE LPAREN f = stringExpression COMMA v = argument RPAREN
-    {action = ActionFactory.createSetFeatureAction(f, v, $blockDeclaration::env);}
+    {action = actionFactory.createSetFeatureAction(f, v, $blockDeclaration::env);}
     ;
 
 
 actionGetFeature returns [AbstractRutaAction action = null]
     :   
     name = GETFEATURE LPAREN f = stringExpression COMMA v = variable RPAREN
-    {action = ActionFactory.createGetFeatureAction(f, v, $blockDeclaration::env);}
+    {action = actionFactory.createGetFeatureAction(f, v, $blockDeclaration::env);}
     ;
 
 //unknown
@@ -2116,14 +2126,14 @@ actionDynamicAnchoring returns [AbstractRutaAction action = null]
     name = DYNAMICANCHORING LPAREN active = booleanExpression 
     (COMMA penalty = numberExpression 
     (COMMA factor = numberExpression)?)? 
-    {action = ActionFactory.createDynamicAnchoringAction(active, penalty, factor, $blockDeclaration::env);}
+    {action = actionFactory.createDynamicAnchoringAction(active, penalty, factor, $blockDeclaration::env);}
     RPAREN
     ;
 
 actionGreedyAnchoring returns [AbstractRutaAction action = null]
     :
     name = GREEDYANCHORING LPAREN active = booleanExpression (COMMA active2 = booleanExpression )?
-    {action = ActionFactory.createGreedyAnchoringAction(active, active2, $blockDeclaration::env);}
+    {action = actionFactory.createGreedyAnchoringAction(active, active2, $blockDeclaration::env);}
     RPAREN
     ;
 
@@ -2139,7 +2149,7 @@ actionTrim returns [AbstractRutaAction action = null]
     t1 = typeExpression {types.add(t1);} (COMMA t2 = typeExpression {types.add(t2);})*
     )
     
-    {action = ActionFactory.createTrimAction(types, typeList, $blockDeclaration::env);}
+    {action = actionFactory.createTrimAction(types, typeList, $blockDeclaration::env);}
     RPAREN
     ;
 
@@ -2167,9 +2177,9 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
     ) 
     )
      RPAREN
-    {action = ActionFactory.createUnmarkAction(f, list, b,$blockDeclaration::env);}
+    {action = actionFactory.createUnmarkAction(f, list, b,$blockDeclaration::env);}
     |
-    (annotationOrTypeExpression)=>a = annotationOrTypeExpression RPAREN {action = ActionFactory.createUnmarkAction(a, $blockDeclaration::env);}
+    (annotationOrTypeExpression)=>a = annotationOrTypeExpression RPAREN {action = actionFactory.createUnmarkAction(a, $blockDeclaration::env);}
     
     )
     ;
@@ -2179,13 +2189,13 @@ actionUnmarkAll returns [AbstractRutaAction action = null]
     :
     name = UNMARKALL LPAREN f = typeExpression 
     (COMMA list = typeListExpression)? RPAREN
-    {action = ActionFactory.createUnmarkAllAction(f, list, $blockDeclaration::env);}
+    {action = actionFactory.createUnmarkAllAction(f, list, $blockDeclaration::env);}
     ;
 
 actionTransfer returns [AbstractRutaAction action = null]
     :
     name = TRANSFER LPAREN f = typeExpression RPAREN
-    {action = ActionFactory.createTransferAction(f, $blockDeclaration::env);}
+    {action = actionFactory.createTransferAction(f, $blockDeclaration::env);}
     ;
 
 actionTrie returns [AbstractRutaAction action = null]
@@ -2206,7 +2216,7 @@ Map<IStringExpression, IRutaExpression> map = new HashMap<IStringExpression, IRu
     COMMA ignoreChar = stringExpression
     RPAREN
     //TODO cost parameter
-    {action = ActionFactory.createTrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar,$blockDeclaration::env);}
+    {action = actionFactory.createTrieAction(list, map, ignoreCase, ignoreLength, edit, distance, ignoreChar,$blockDeclaration::env);}
     ;
 
 actionAdd returns [AbstractRutaAction action = null]
@@ -2215,7 +2225,7 @@ actionAdd returns [AbstractRutaAction action = null]
 } 
     :
     name = ADD LPAREN f = listVariable (COMMA a = argument {list.add(a);})+ RPAREN
-    {action = ActionFactory.createAddAction(f, list, $blockDeclaration::env);}
+    {action = actionFactory.createAddAction(f, list, $blockDeclaration::env);}
     ;
 
 actionRemove returns [AbstractRutaAction action = null]
@@ -2224,13 +2234,13 @@ actionRemove returns [AbstractRutaAction action = null]
 } 
     :
     name = REMOVE LPAREN f = listVariable (COMMA a = argument {list.add(a);})+ RPAREN
-    {action = ActionFactory.createRemoveAction(f, list, $blockDeclaration::env);}
+    {action = actionFactory.createRemoveAction(f, list, $blockDeclaration::env);}
     ;
  
 actionRemoveDuplicate returns [AbstractRutaAction action = null]
     :
     name = REMOVEDUPLICATE LPAREN f = listVariable RPAREN
-    {action = ActionFactory.createRemoveDuplicateAction(f,$blockDeclaration::env);}
+    {action = actionFactory.createRemoveDuplicateAction(f,$blockDeclaration::env);}
     ; 
     
 actionMerge returns [AbstractRutaAction action = null]
@@ -2239,19 +2249,19 @@ actionMerge returns [AbstractRutaAction action = null]
 } 
     :
     name = MERGE LPAREN join = booleanExpression COMMA t = listVariable COMMA f = listExpression {list.add(f);} (COMMA f = listExpression {list.add(f);})+ RPAREN
-    {action = ActionFactory.createMergeAction(join, t, list,$blockDeclaration::env);}
+    {action = actionFactory.createMergeAction(join, t, list,$blockDeclaration::env);}
     ;
 
 actionGet returns [AbstractRutaAction action = null]
     :
     name = GET LPAREN f = listExpression COMMA var = variable COMMA op = stringExpression RPAREN
-    {action = ActionFactory.createGetAction(f, var, op,$blockDeclaration::env);}
+    {action = actionFactory.createGetAction(f, var, op,$blockDeclaration::env);}
     ;
 
 actionGetList returns [AbstractRutaAction action = null]
     :
     name = GETLIST LPAREN var = listVariable COMMA op = stringExpression RPAREN
-    {action = ActionFactory.createGetListAction(var, op,$blockDeclaration::env);}
+    {action = actionFactory.createGetListAction(var, op,$blockDeclaration::env);}
     ;
 
 actionMatchedText returns [AbstractRutaAction action = null]
@@ -2267,13 +2277,13 @@ List<INumberExpression> list = new ArrayList<INumberExpression>();
     )*
      RPAREN
     
-    {action = ActionFactory.createMatchedTextAction(var, list, $blockDeclaration::env);}
+    {action = actionFactory.createMatchedTextAction(var, list, $blockDeclaration::env);}
     ;
 
 actionClear returns [AbstractRutaAction action = null]
     :
     name = CLEAR LPAREN var = listVariable RPAREN
-    {action = ActionFactory.createClearAction(var, $blockDeclaration::env);}
+    {action = actionFactory.createClearAction(var, $blockDeclaration::env);}
     ;
 
 actionAddRetainType returns [AbstractRutaAction action = null]
@@ -2282,7 +2292,7 @@ List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     ADDRETAINTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
-    {action = ActionFactory.createAddRetainTypeAction(list,$blockDeclaration::env);}
+    {action = actionFactory.createAddRetainTypeAction(list,$blockDeclaration::env);}
     ;     
 
 actionRemoveRetainType returns [AbstractRutaAction action = null]
@@ -2291,7 +2301,7 @@ List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     REMOVERETAINTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
-    {action = ActionFactory.createRemoveRetainTypeAction(list,$blockDeclaration::env);}
+    {action = actionFactory.createRemoveRetainTypeAction(list,$blockDeclaration::env);}
     ;   
 
 actionAddFilterType returns [AbstractRutaAction action = null]
@@ -2300,7 +2310,7 @@ List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     ADDFILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
-    {action = ActionFactory.createAddFilterTypeAction(list,$blockDeclaration::env);}
+    {action = actionFactory.createAddFilterTypeAction(list,$blockDeclaration::env);}
     ;   
 
 actionRemoveFilterType returns [AbstractRutaAction action = null]
@@ -2309,7 +2319,7 @@ List<ITypeExpression> list = new ArrayList<ITypeExpression>();
 }
     :
     REMOVEFILTERTYPE (LPAREN id = typeExpression {list.add(id);} (COMMA id = typeExpression {list.add(id);})* RPAREN)
-    {action = ActionFactory.createRemoveFilterTypeAction(list,$blockDeclaration::env);}
+    {action = actionFactory.createRemoveFilterTypeAction(list,$blockDeclaration::env);}
     ;     
 
 varArgumentList returns [List args = new ArrayList()]

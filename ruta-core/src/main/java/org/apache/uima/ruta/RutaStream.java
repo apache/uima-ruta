@@ -20,8 +20,10 @@
 package org.apache.uima.ruta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -113,6 +115,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   private InferenceCrowd crowd;
 
+  private TypeUsageInformation typeUsage;
+
   private Boolean greedyRuleElement;
 
   private Boolean greedyRule;
@@ -123,14 +127,19 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   private Annotation documentEndAnchor;
 
+  private boolean emptyIsInvisible;
+
   public RutaStream(CAS cas, Type basicType, FilterManager filter, boolean lowMemoryProfile,
-          boolean simpleGreedyForComposed, InferenceCrowd crowd) {
+          boolean simpleGreedyForComposed, boolean emptyIsInvisible, TypeUsageInformation typeUsage,
+          InferenceCrowd crowd) {
     super();
     this.cas = cas;
     this.filter = filter;
     this.basicType = basicType;
     this.lowMemoryProfile = lowMemoryProfile;
     this.simpleGreedyForComposed = simpleGreedyForComposed;
+    this.emptyIsInvisible = emptyIsInvisible;
+    this.typeUsage = typeUsage;
     this.crowd = crowd;
     AnnotationFS additionalWindow = filter.getWindowAnnotation();
     updateIterators(cas, basicType, filter, additionalWindow);
@@ -150,7 +159,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   protected RutaStream(CAS cas, Type basicType, NavigableMap<Integer, RutaBasic> beginAnchors,
           NavigableMap<Integer, RutaBasic> endAnchors, FilterManager filter,
-          boolean lowMemoryProfile, boolean simpleGreedyForComposed, InferenceCrowd crowd) {
+          boolean lowMemoryProfile, boolean simpleGreedyForComposed, boolean emptyIsInvisible,
+          TypeUsageInformation typeUsage, InferenceCrowd crowd) {
     super();
     this.cas = cas;
     this.beginAnchors = beginAnchors;
@@ -159,6 +169,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     this.basicType = basicType;
     this.lowMemoryProfile = lowMemoryProfile;
     this.simpleGreedyForComposed = simpleGreedyForComposed;
+    this.emptyIsInvisible = emptyIsInvisible;
+    this.typeUsage = typeUsage;
     this.crowd = crowd;
     AnnotationFS additionalWindow = filter.getWindowAnnotation();
     updateIterators(cas, basicType, filter, additionalWindow);
@@ -187,23 +199,27 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     currentIt = filter.createFilteredIterator(cas, basicType);
   }
 
-  public void initalizeBasics(String[] reindexOnly) {
+  public void initalizeBasics(String[] reindexOnly, boolean reindexOnlyMentionedTypes) {
     AnnotationIndex<AnnotationFS> basicIndex = cas.getAnnotationIndex(basicType);
 
+    Collection<Type> reindexTypeList;
+    if (reindexOnlyMentionedTypes) {
+      reindexTypeList = removeSubsumedTypes(typeUsage.getUsedTypes(), cas.getTypeSystem());
+    } else {
+      reindexTypeList = removeSubsumedTypes(Arrays.asList(reindexOnly), cas.getTypeSystem());
+    }
+
     final List<AnnotationFS> allAnnotations = new LinkedList<AnnotationFS>();
-    for (String eachTypeName : reindexOnly) {
-      Type type = cas.getTypeSystem().getType(eachTypeName);
-      if (type != null) {
-        AnnotationIndex<AnnotationFS> annotationIndex = null;
-        if (StringUtils.equals(eachTypeName, CAS.TYPE_NAME_ANNOTATION)) {
-          annotationIndex = cas.getAnnotationIndex();
-        } else {
-          annotationIndex = cas.getAnnotationIndex(type);
-        }
-        for (AnnotationFS a : annotationIndex) {
-          if (a.getBegin() != a.getEnd() || a.equals(cas.getDocumentAnnotation())) {
-            allAnnotations.add(a);
-          }
+    for (Type type : reindexTypeList) {
+      AnnotationIndex<AnnotationFS> annotationIndex = null;
+      if (StringUtils.equals(type.getName(), CAS.TYPE_NAME_ANNOTATION)) {
+        annotationIndex = cas.getAnnotationIndex();
+      } else {
+        annotationIndex = cas.getAnnotationIndex(type);
+      }
+      for (AnnotationFS a : annotationIndex) {
+        if (a.getBegin() != a.getEnd() || a.equals(cas.getDocumentAnnotation())) {
+          allAnnotations.add(a);
         }
       }
     }
@@ -272,6 +288,25 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
   }
 
+  private Collection<Type> removeSubsumedTypes(Collection<String> typeNames, TypeSystem typeSystem) {
+    Collection<Type> allTypes = new HashSet<>();
+    for (String each : typeNames) {
+      Type type = typeSystem.getType(each);
+      if(type != null) {
+        allTypes.add(type);
+      }
+    }
+    List<Type> rootTypes = new ArrayList<>(allTypes);
+    for (Type type1 : allTypes) {
+      for (Type type2 : allTypes) {
+        if(type1!= type2 && typeSystem.subsumes(type1, type2)) {
+          rootTypes.remove(type2);
+        }
+      }
+    }
+    return rootTypes;
+  }
+
   private RutaBasic createRutaBasic(int begin, int end) {
     RutaBasic newTMB = new RutaBasic(getJCas(), begin, end);
     newTMB.setLowMemoryProfile(lowMemoryProfile);
@@ -297,26 +332,39 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     if (type.equals(basicType)) {
       return;
     }
-    boolean modified = checkSpan(annotation);
-    if (modified && updateInternal) {
-      updateIterators(filter.getWindowAnnotation());
-    }
-    RutaBasic beginAnchor = getBeginAnchor(annotation.getBegin());
-    RutaBasic endAnchor = getEndAnchor(annotation.getEnd());
-    if (beginAnchor != null) {
-      beginAnchor.addBegin(annotation, type);
-    }
-    if (endAnchor != null) {
-      endAnchor.addEnd(annotation, type);
-    }
-    Collection<RutaBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
-    for (RutaBasic basic : basicAnnotationsInWindow) {
-      basic.addPartOf(type);
+    if (indexType(annotation.getType())) {
+      boolean modified = checkSpan(annotation);
+      if (modified && updateInternal) {
+        updateIterators(filter.getWindowAnnotation());
+      }
+      RutaBasic beginAnchor = getBeginAnchor(annotation.getBegin());
+      RutaBasic endAnchor = getEndAnchor(annotation.getEnd());
+      if (beginAnchor != null) {
+        beginAnchor.addBegin(annotation, type);
+      }
+      if (endAnchor != null) {
+        endAnchor.addEnd(annotation, type);
+      }
+      Collection<RutaBasic> basicAnnotationsInWindow = getAllBasicsInWindow(annotation);
+      for (RutaBasic basic : basicAnnotationsInWindow) {
+        basic.addPartOf(type);
+      }
     }
     if (addToIndex) {
       cas.addFsToIndexes(annotation);
     }
     crowd.annotationAdded(annotation, creator);
+  }
+
+  private boolean indexType(Type type) {
+    if (typeUsage != null) {
+      boolean contains = typeUsage.getUsedTypesWithSubTypes().contains(type.getName());
+      // if(!contains) {
+      // System.out.println(type.getShortName());
+      // }
+      return contains;
+    }
+    return true;
   }
 
   private boolean checkSpan(AnnotationFS annotation) {
@@ -421,7 +469,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
     FilterManager filterManager = new FilterManager(filter.getDefaultFilterTypes(),
             filter.getCurrentFilterTypes(), filter.getCurrentRetainTypes(), windowAnnotation,
-            windowType, cas);
+            windowType, emptyIsInvisible, cas);
 
     // NavigableMap<Integer, RutaBasic> newBeginAnchors = beginAnchors.subMap(
     // windowAnnotation.getBegin(), true, windowAnnotation.getEnd(), false);
@@ -430,7 +478,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     // false, windowAnnotation.getEnd(), true);
 
     RutaStream stream = new RutaStream(cas, basicType, beginAnchors, endAnchors, filterManager,
-            lowMemoryProfile, simpleGreedyForComposed, crowd);
+            lowMemoryProfile, simpleGreedyForComposed, emptyIsInvisible, typeUsage, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
     stream.setGreedyRule(greedyRule);
@@ -440,7 +488,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   @Override
   public FSIterator<AnnotationFS> copy() {
     RutaStream stream = new RutaStream(cas, basicType, beginAnchors, endAnchors, filter,
-            lowMemoryProfile, simpleGreedyForComposed, crowd);
+            lowMemoryProfile, simpleGreedyForComposed, emptyIsInvisible, typeUsage, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
     stream.setGreedyRule(greedyRule);
@@ -998,10 +1046,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         StringArrayFS array = FSCollectionFactory.createStringArray(cas, new String[] { string });
         annotation.setFeatureValue(feature, array);
       }
-    } else if (rangeName.equals(CAS.TYPE_NAME_INTEGER)
-            || rangeName.equals(CAS.TYPE_NAME_LONG)
-            || rangeName.equals(CAS.TYPE_NAME_SHORT)
-            || rangeName.equals(CAS.TYPE_NAME_BYTE)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_INTEGER) || rangeName.equals(CAS.TYPE_NAME_LONG)
+            || rangeName.equals(CAS.TYPE_NAME_SHORT) || rangeName.equals(CAS.TYPE_NAME_BYTE)) {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         int v = numberExpr.getIntegerValue(context, this);
@@ -1292,10 +1338,10 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public Type getSharedParentType(List<Type> types) {
-    if(types == null || types.isEmpty()) {
+    if (types == null || types.isEmpty()) {
       return cas.getAnnotationType();
     }
-    if(types.size() == 1) {
+    if (types.size() == 1) {
       return types.get(0);
     }
     TypeSystem typeSystem = cas.getTypeSystem();
@@ -1307,25 +1353,25 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   private Type getSharedParentType(Type type1, Type type2, TypeSystem typeSystem) {
-    if(cas.getAnnotationType().equals(type1) || cas.getAnnotationType().equals(type2)) {
+    if (cas.getAnnotationType().equals(type1) || cas.getAnnotationType().equals(type2)) {
       return cas.getAnnotationType();
     }
-    if(type1.equals(type2)) {
+    if (type1.equals(type2)) {
       return type1;
     }
-    if(typeSystem.subsumes(type1, type2)) {
+    if (typeSystem.subsumes(type1, type2)) {
       return type1;
     }
-    if(typeSystem.subsumes(type2, type1)) {
+    if (typeSystem.subsumes(type2, type1)) {
       return type2;
     }
     Type parentType = typeSystem.getParent(type1);
     while (parentType != null && !cas.getAnnotationType().equals(parentType)) {
-      if(typeSystem.subsumes(parentType, type2)) {
+      if (typeSystem.subsumes(parentType, type2)) {
         return parentType;
       }
     }
-    
+
     return cas.getAnnotationType();
   }
 }

@@ -27,19 +27,14 @@ import org.junit.Test;
 public class ManualAnchoringTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String document = "A, B and C.";
     String script = "";
     script += "CW{-> T1};\n";
     script += "\"and\"{-> T2};\n";
     script += "T1 (COMMA T1)* @T2 T1 {->MARK(T3,1,4)};\n";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "A, B and C");
 

@@ -64,7 +64,9 @@ import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaScriptFactory;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.TypeUsageInformation;
+import org.apache.uima.ruta.action.ActionFactory;
 import org.apache.uima.ruta.block.RutaBlock;
+import org.apache.uima.ruta.condition.ConditionFactory;
 import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
@@ -87,7 +89,7 @@ import org.springframework.core.io.Resource;
 public class RutaEngine extends JCasAnnotator_ImplBase {
 
   public static final String SCRIPT_FILE_EXTENSION = ".ruta";
-  
+
   public static final String SEPARATOR_VAR_VALUES = ",";
 
   public static final String SOURCE_DOCUMENT_INFORMATION = "org.apache.uima.examples.SourceDocumentInformation";
@@ -406,8 +408,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private String[] varValues;
 
   /**
-   * This parameter specifies the annotation types which should be reindex for ruta's internal
-   * annotations All annotation types that changed since the last call of a ruta script need to be
+   * This parameter specifies the annotation types which should be reindexed for ruta's internal
+   * annotations. All annotation types that changed since the last call of a ruta script need to be
    * listed here. The value of this parameter needs only be adapted for performance optimization in
    * pipelines that contains several ruta analysis engines. Default value is uima.tcas.Annotation
    */
@@ -417,7 +419,49 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       "uima.tcas.Annotation" })
   private String[] reindexOnly;
 
-  
+  /**
+   * If this parameter is activated, then only annotations of types are internally reindexed at
+   * beginning that are mentioned with in the rules. This parameter overrides the values of the parameter
+   * 'reindexOnly' with the types that are mentioned in the rules.
+   */
+  public static final String PARAM_REINDEX_ONLY_MENTIONED_TYPES = "reindexOnlyMentionedTypes";
+
+  @ConfigurationParameter(name = PARAM_REINDEX_ONLY_MENTIONED_TYPES, mandatory = true, defaultValue = "false")
+  private boolean reindexOnlyMentionedTypes;
+
+  /**
+   * If this parameter is activated, then only annotations of types are internally indexed that are
+   * mentioned with in the rules. This optimization of the internal indexing can improve the speed
+   * and reduce the memory footprint. However, several features of the rule matching require the
+   * indexing of types that are not mentioned in the rules, e.g., literal rule matches, wildcards
+   * and actions like MARKFAST, MARKTABLE, TRIE.
+   */
+  public static final String PARAM_INDEX_ONLY_MENTIONED_TYPES = "indexOnlyMentionedTypes";
+
+  @ConfigurationParameter(name = PARAM_INDEX_ONLY_MENTIONED_TYPES, mandatory = true, defaultValue = "false")
+  private boolean indexOnlyMentionedTypes;
+
+  /**
+   * This parameter specifies annotation types (resolvable mentions are also supported) that should
+   * be index additionally to types mentioned in the rules. This parameter is only used if the
+   * parameter 'indexOnlyMentionedTypes' is activated.
+   * 
+   */
+  public static final String PARAM_INDEX_ADDITONALLY = "indexAdditionally";
+
+  @ConfigurationParameter(name = PARAM_INDEX_ADDITONALLY, mandatory = false, defaultValue = {})
+  private String[] indexAdditionally;
+
+  /**
+   * This parameter determines positions as invisible if the internal indexing of the corresponding
+   * RutaBasic annotation is empty.
+   */
+  public static final String PARAM_EMPTY_IS_INVISIBLE = "emptyIsInvisible";
+
+  @ConfigurationParameter(name = PARAM_EMPTY_IS_INVISIBLE, mandatory = false, defaultValue = {
+      "true" })
+  private boolean emptyIsInvisible;
+
   /**
    * Option to extend the datapath by the descriptorPaths
    */
@@ -426,7 +470,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   @ConfigurationParameter(name = PARAM_MODIFY_DATAPATH, mandatory = false, defaultValue = "false")
   private boolean modifyDataPath;
 
-  
   private UimaContext context;
 
   private RutaModule script;
@@ -442,7 +485,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private List<Type> seedTypes;
 
   private TypeUsageInformation typeUsageInformation;
-  
+
   private TypeSystem lastTypeSystem;
 
   private ResourceManager resourceManager = null;
@@ -469,9 +512,11 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
     initializeResourceManager();
     handleDataPath();
-    
-    scriptRutaResourceLoader = new RutaResourceLoader(scriptPaths, resourceManager.getExtensionClassLoader());
-    descriptorRutaResourceLoader = new RutaResourceLoader(descriptorPaths, resourceManager.getExtensionClassLoader());
+
+    scriptRutaResourceLoader = new RutaResourceLoader(scriptPaths,
+            resourceManager.getExtensionClassLoader());
+    descriptorRutaResourceLoader = new RutaResourceLoader(descriptorPaths,
+            resourceManager.getExtensionClassLoader());
 
     if (!externalFactory.isInitialized()) {
       initializeExtensionWithClassPath();
@@ -500,8 +545,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     boolean typeSystemChanged = lastTypeSystem != cas.getTypeSystem();
     if (!initialized || reloadScript || typeSystemChanged) {
       initializeTypes(script, cas, new ArrayList<String>());
-      if(typeUsageInformation!= null) {
-        typeUsageInformation.resolveTypes(script);
+      if (typeUsageInformation != null) {
+        typeUsageInformation.resolveTypes(script, cas.getTypeSystem());
       }
       initialized = true;
       lastTypeSystem = cas.getTypeSystem();
@@ -548,7 +593,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       resourceManager = UIMAFramework.newDefaultResourceManager();
     }
   }
-  
+
   private void handleDataPath() throws ResourceInitializationException {
     String dataPath = context.getDataPath();
     String[] singleDataPaths = dataPath.split(File.pathSeparator);
@@ -563,9 +608,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       descriptorPaths = ArrayUtils.addAll(descriptorPaths, singleDataPaths);
       resourcePaths = ArrayUtils.addAll(resourcePaths, singleDataPaths);
     }
-    
+
     if (modifyDataPath && clonedDescriptorPath != null) {
-      if(!dataPath.endsWith(File.pathSeparator)) {
+      if (!dataPath.endsWith(File.pathSeparator)) {
         dataPath += File.pathSeparator;
       }
       for (String path : clonedDescriptorPath) {
@@ -675,13 +720,13 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         filterTypes.add(type);
       }
     }
-    FilterManager filter = new FilterManager(filterTypes, cas);
+    FilterManager filter = new FilterManager(filterTypes, typeUsageInformation == null, cas);
     Type basicType = typeSystem.getType(BASIC_TYPE);
     seedTypes = seedAnnotations(cas);
     RutaStream stream = new RutaStream(cas, basicType, filter, lowMemoryProfile,
-            simpleGreedyForComposed, crowd);
+            simpleGreedyForComposed, emptyIsInvisible, typeUsageInformation, crowd);
 
-    stream.initalizeBasics(reindexOnly);
+    stream.initalizeBasics(reindexOnly, reindexOnlyMentionedTypes);
     return stream;
   }
 
@@ -838,8 +883,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
                           + StringUtils.join(scriptPaths, ',')));
         }
         try {
-          AnalysisEngine eachEngine = Ruta.wrapAnalysisEngine(descriptorResource.getURL(),
-                  viewName, resourceManager);
+          AnalysisEngine eachEngine = Ruta.wrapAnalysisEngine(descriptorResource.getURL(), viewName,
+                  resourceManager);
           addAnalysisEngineToMap(additionalDescriptorEngineMap, eachEngineLocation, eachEngine);
         } catch (Exception e) {
           throw new AnalysisEngineProcessException(e);
@@ -912,19 +957,21 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
       Object valueObj = null;
       Class<?> variableType = environment.getVariableType(shortName);
-      
-      if(variableType == null) {
-          throw new IllegalArgumentException("Variable "+shortName+" is not known in block: " + blockName);
+
+      if (variableType == null) {
+        throw new IllegalArgumentException(
+                "Variable " + shortName + " is not known in block: " + blockName);
       }
-      
-      if(List.class.equals(variableType)) {
+
+      if (List.class.equals(variableType)) {
         valueObj = getListVariableValueFromString(value, shortName, environment);
       } else {
         valueObj = getVariableValueFromString(value, variableType);
       }
-      
-      if(value == null) {
-        throw new IllegalArgumentException("Cannot determine value "+ value +" of variable "+shortName+"  in block: " + blockName + ". Null values are not allowed");
+
+      if (value == null) {
+        throw new IllegalArgumentException("Cannot determine value " + value + " of variable "
+                + shortName + "  in block: " + blockName + ". Null values are not allowed");
       }
 
       environment.setVariableValue(shortName, valueObj);
@@ -933,7 +980,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   }
 
   private Object getVariableValueFromString(String value, Class<?> variableType) {
-     
+
     if (Integer.class.equals(variableType)) {
       return Integer.parseInt(value);
     } else if (Double.class.equals(variableType)) {
@@ -945,15 +992,16 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     } else if (Boolean.class.equals(variableType)) {
       return Boolean.parseBoolean(value);
     } else if (Type.class.equals(variableType)) {
-      if(typeUsageInformation!= null) {
+      if (typeUsageInformation != null) {
         typeUsageInformation.addMentionedType(value);
       }
       return value;
-    }  
+    }
     return null;
   }
 
-  private List<?> getListVariableValueFromString(String value, String shortName, RutaEnvironment environment) {
+  private List<?> getListVariableValueFromString(String value, String shortName,
+          RutaEnvironment environment) {
     List<Object> result = new ArrayList<>();
     Class<?> genericType = environment.getVariableGenericType(shortName);
     String[] split = StringUtils.split(value, RutaEngine.SEPARATOR_VAR_VALUES);
@@ -1014,27 +1062,46 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   private RutaParser createParser(CommonTokenStream tokens) {
     RutaParser parser = new RutaParser(tokens);
-    if(typeUsageInformation == null) {
-      typeUsageInformation = new TypeUsageInformation();
-    }
+    initializeTypeUsageInformation();
+    ActionFactory actionFactory = new ActionFactory(typeUsageInformation);
+    ConditionFactory conditionFactory = new ConditionFactory(typeUsageInformation);
     ExpressionFactory expressionFactory = new ExpressionFactory(typeUsageInformation);
-    RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory);
+    RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory,
+            typeUsageInformation);
     scriptFactory.setContext(context);
-    
+
     parser.setScriptFactory(scriptFactory);
     parser.setExpressionFactory(expressionFactory);
+    parser.setActionFactory(actionFactory);
+    parser.setConditionFactory(conditionFactory);
     parser.setExternalFactory(externalFactory);
     parser.setContext(context);
     parser.setResourcePaths(resourcePaths);
     parser.setResourceManager(resourceManager);
-    
+
     return parser;
   }
-  
+
+  private void initializeTypeUsageInformation() {
+    if (typeUsageInformation == null && indexOnlyMentionedTypes) {
+      typeUsageInformation = new TypeUsageInformation();
+      if (defaultFilteredTypes != null) {
+        for (String typeName : defaultFilteredTypes) {
+          typeUsageInformation.addMentionedType(typeName);
+        }
+      }
+      if (indexAdditionally != null) {
+        for (String typeName : indexAdditionally) {
+          typeUsageInformation.addMentionedType(typeName);
+        }
+      }
+    }
+  }
+
   protected RutaExternalFactory getFactory() {
     return externalFactory;
   }
-  
+
   protected TypeUsageInformation getTypeUsageInfomation() {
     return typeUsageInformation;
   }

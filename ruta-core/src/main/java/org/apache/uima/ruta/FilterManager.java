@@ -56,9 +56,11 @@ public class FilterManager {
 
   private Set<Type> currentHiddenTypes;
 
-  public FilterManager(Collection<Type> filterTypes, CAS cas) {
+  private boolean emptyIsInvisible;
+
+  public FilterManager(Collection<Type> defaultFilterTypes, boolean emptyIsInvisible, CAS cas) {
     super();
-    this.defaultFilterTypes = filterTypes;
+    this.defaultFilterTypes = defaultFilterTypes;
 
     currentFilterTypes = new ArrayList<Type>();
     currentRetainTypes = new ArrayList<Type>();
@@ -68,12 +70,14 @@ public class FilterManager {
     this.windowAnnotation = null;
     this.windowType = null;
     this.additionalWindow = null;
+    this.emptyIsInvisible = emptyIsInvisible;
 
     this.cas = cas;
   }
 
   public FilterManager(Collection<Type> defaultFilterTypes, Collection<Type> filterTypes,
-          Collection<Type> retainTypes, AnnotationFS windowAnnotation, Type windowType, CAS cas) {
+          Collection<Type> retainTypes, AnnotationFS windowAnnotation, Type windowType,
+          boolean emptyIsInvisible, CAS cas) {
     super();
     this.defaultFilterTypes = defaultFilterTypes;
 
@@ -85,6 +89,7 @@ public class FilterManager {
     this.windowAnnotation = windowAnnotation;
     this.windowType = windowType;
     this.additionalWindow = createWindowConstraint(windowAnnotation, cas);
+    this.emptyIsInvisible = emptyIsInvisible;
 
     this.cas = cas;
   }
@@ -135,7 +140,7 @@ public class FilterManager {
   }
 
   private FSMatchConstraint createTypeConstraint(Collection<Type> types) {
-    BasicTypeConstraint result = new BasicTypeConstraint(types);
+    BasicTypeConstraint result = new BasicTypeConstraint(types, emptyIsInvisible);
     return result;
   }
 
@@ -189,8 +194,8 @@ public class FilterManager {
 
   public FSIterator<AnnotationFS> createFilteredIterator(CAS cas, Type basicType) {
     if (windowAnnotation != null) {
-      FSIterator<AnnotationFS> windowIt = cas.getAnnotationIndex(basicType).subiterator(
-              windowAnnotation);
+      FSIterator<AnnotationFS> windowIt = cas.getAnnotationIndex(basicType)
+              .subiterator(windowAnnotation);
       FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(windowIt,
               createCurrentConstraint(false));
       return iterator;

@@ -40,6 +40,8 @@ import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.RutaScriptFactory;
+import org.apache.uima.ruta.action.ActionFactory;
+import org.apache.uima.ruta.condition.ConditionFactory;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.ExpressionFactory;
 import org.apache.uima.ruta.extensions.IRutaExtension;
@@ -137,12 +139,16 @@ public class RutaDescriptorFactory {
     parser.setDescriptorInformation(descInfo);
     
     ExpressionFactory expressionFactory = new ExpressionFactory();
+    ActionFactory actionFactory = new ActionFactory();
+    ConditionFactory conditionFactory = new ConditionFactory();
     RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory);
     scriptFactory.setContext(null);
     ResourceManager rm = getResourceManager(options);
     
     parser.setScriptFactory(scriptFactory);
     parser.setExpressionFactory(expressionFactory);
+    parser.setActionFactory(actionFactory);
+    parser.setConditionFactory(conditionFactory);
     parser.setExternalFactory(initializeExternalFactory(options));
     parser.setContext(null);
     parser.setResourcePaths(new String[0]);
@@ -173,11 +179,15 @@ public class RutaDescriptorFactory {
     parser.setDescriptorInformation(descInfo);
    
     ExpressionFactory expressionFactory = new ExpressionFactory();
+    ActionFactory actionFactory = new ActionFactory();
+    ConditionFactory conditionFactory = new ConditionFactory();
     RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory);
     
     parser.setContext(null);
     parser.setScriptFactory(scriptFactory);
     parser.setExpressionFactory(expressionFactory);
+    parser.setActionFactory(actionFactory);
+    parser.setConditionFactory(conditionFactory);
     parser.setExternalFactory(initializeExternalFactory(options));
     parser.setResourcePaths(new String[0]);
     ResourceManager rm = getResourceManager(options);

@@ -55,36 +55,33 @@ public class WSDictionaryTest {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 9, "Peter Kluegl", "Marshall Schor", "Joern Kottmann", "PeterKluegl",
-            "MarshallSchor", "JoernKottmann", "Peter<x>Kluegl", "Marshall<x>Schor", "Joern<x>Kottmann");
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 9, "Peter Kluegl", "Marshall Schor",
+            "Joern Kottmann", "PeterKluegl", "MarshallSchor", "JoernKottmann", "Peter<x>Kluegl",
+            "Marshall<x>Schor", "Joern<x>Kottmann");
 
     cas.release();
   }
-  
+
   @Test
-  public void testDictRemoveWS() {
+  public void testDictRemoveWS() throws Exception {
     String document = "Peter Kluegl, Marshall Schor, Joern Kottmann\n";
     document += "PeterKluegl, MarshallSchor, JoernKottmann\n";
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
     String script = "WORDLIST list = 'org/apache/uima/ruta/WSDictionaryTestList.txt';";
     script += "MARKFAST(T1, list, true, 0, false);";
-    CAS cas = null;
-    Map<String,Object> map = new HashMap<String, Object>();
+    Map<String, Object> map = new HashMap<String, Object>();
     map.put(RutaEngine.PARAM_DICT_REMOVE_WS, true);
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script, map);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script, map);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 9, "Peter Kluegl", "Marshall Schor", "Joern Kottmann", "PeterKluegl",
-            "MarshallSchor", "JoernKottmann", "Peter<x>Kluegl", "Marshall<x>Schor", "Joern<x>Kottmann");
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 9, "Peter Kluegl", "Marshall Schor",
+            "Joern Kottmann", "PeterKluegl", "MarshallSchor", "JoernKottmann", "Peter<x>Kluegl",
+            "Marshall<x>Schor", "Joern<x>Kottmann");
 
     cas.release();
   }
-  
+
   @Test
   public void testTableWithWS() {
     String document = "Peter Kluegl, Marshall Schor, Joern Kottmann\n";
@@ -92,11 +89,11 @@ public class WSDictionaryTest {
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
     String script = "WORDTABLE table = 'org/apache/uima/ruta/table2.csv';";
     script += "MARKTABLE(Struct, 1, table, true, 0, \"-.,\", 10, \"name\" = 1, \"system\" = 2);";
-    
+
     Map<String, String> complexTypes = new TreeMap<String, String>();
     String typeName = "org.apache.uima.Struct";
     complexTypes.put(typeName, "uima.tcas.Annotation");
-    
+
     Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
     List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
     features.put(typeName, list);
@@ -122,58 +119,58 @@ public class WSDictionaryTest {
     Feature f1 = t.getFeatureByBaseName(fn1);
     Feature f2 = t.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(t);
-    
+
     assertEquals(9, ai.size());
     iterator = ai.iterator();
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Peter Kluegl", v1);
     assertEquals("UIMA Ruta", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Marshall Schor", v1);
     assertEquals("UIMA Core", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Joern Kottmann", v1);
     assertEquals("CAS Editor", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Peter Kluegl", v1);
     assertEquals("UIMA Ruta", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Marshall Schor", v1);
     assertEquals("UIMA Core", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Joern Kottmann", v1);
     assertEquals("CAS Editor", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Peter Kluegl", v1);
     assertEquals("UIMA Ruta", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Marshall Schor", v1);
     assertEquals("UIMA Core", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);

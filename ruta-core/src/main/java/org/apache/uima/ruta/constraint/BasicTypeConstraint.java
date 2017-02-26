@@ -33,12 +33,15 @@ public class BasicTypeConstraint implements FSTypeConstraint {
 
   private final Collection<Type> types;
 
-  public BasicTypeConstraint(Collection<Type> types) {
+  private final boolean matchOnEmpty;
+  
+  public BasicTypeConstraint(Collection<Type> types, boolean matchOnEmpty) {
     super();
     this.types = types;
+    this.matchOnEmpty = matchOnEmpty;
   }
 
-  public BasicTypeConstraint(Type type) {
+  public BasicTypeConstraint(Type type, boolean matchOnEmpty) {
     super();
     if (type != null) {
       this.types = new ArrayList<Type>();
@@ -46,6 +49,7 @@ public class BasicTypeConstraint implements FSTypeConstraint {
     } else {
       this.types = null;
     }
+    this.matchOnEmpty = matchOnEmpty;
   }
 
   @Override
@@ -64,7 +68,7 @@ public class BasicTypeConstraint implements FSTypeConstraint {
     if (fs instanceof RutaBasic) {
       RutaBasic tmb = (RutaBasic) fs;
       if (tmb.isEmpty()) {
-        return true;
+        return matchOnEmpty;
       }
       if (types != null) {
         for (Type each : types) {

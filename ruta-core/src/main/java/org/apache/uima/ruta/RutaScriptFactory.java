@@ -70,14 +70,22 @@ public class RutaScriptFactory {
   private UimaContext context;
 
   private ExpressionFactory expressionFactory;
-
-  public RutaScriptFactory(ExpressionFactory expressionFactory) {
+  
+  @SuppressWarnings("unused")
+  private TypeUsageInformation typeUsage;
+  
+  public RutaScriptFactory(ExpressionFactory expressionFactory, TypeUsageInformation typeUsage) {
     super();
     if (expressionFactory == null) {
       this.expressionFactory = new ExpressionFactory();
     } else {
       this.expressionFactory = expressionFactory;
     }
+    this.typeUsage = typeUsage;
+  }
+  
+  public RutaScriptFactory(ExpressionFactory expressionFactory) {
+   this(expressionFactory, null);
   }
 
   public RutaScriptBlock createScriptBlock(Token id, RutaRuleElement ruleElement,

@@ -27,7 +27,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.TypeUsageInformation;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
-import org.apache.uima.ruta.condition.ConditionFactory;
+import org.apache.uima.ruta.condition.AndCondition;
 import org.apache.uima.ruta.expression.annotation.AbstractAnnotationListExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationAddressExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationFeatureExpression;
@@ -208,7 +208,7 @@ public class ExpressionFactory {
   }
 
   public ITypeExpression createSimpleTypeExpression(String typeString, RutaBlock parent) {
-    if(typeUsage != null) {
+    if (typeUsage != null) {
       typeUsage.addMentionedType(typeString);
     }
     return new SimpleTypeExpression(typeString);
@@ -312,7 +312,7 @@ public class ExpressionFactory {
     if (comparatorToken != null) {
       comparator = comparatorToken.getText();
     }
-    if(typeUsage != null) {
+    if (typeUsage != null) {
       addPossibleTypeMentions(match);
     }
     return new MatchReference(match, comparator, argument);
@@ -409,12 +409,13 @@ public class ExpressionFactory {
   public AnnotationTypeExpression createAnnotationTypeExpression(MatchReference mr) {
     return new AnnotationTypeExpression(mr);
   }
-  
-  public AnnotationTypeExpression createConditionedAnnotationTypeExpression(MatchReference mr, List<AbstractRutaCondition> conditions) {
-    AbstractRutaCondition condition = ConditionFactory.createConditionAnd(conditions, null);
+
+  public AnnotationTypeExpression createConditionedAnnotationTypeExpression(MatchReference mr,
+          List<AbstractRutaCondition> conditions) {
+    AbstractRutaCondition condition = new AndCondition(conditions);
     return new ConditionedAnnotationTypeExpression(mr, condition);
   }
-  
+
   private void addPossibleTypeMentions(String match) {
     String[] elements = match.split("[.]");
     StringBuilder sb = new StringBuilder();
