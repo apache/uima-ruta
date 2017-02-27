@@ -210,6 +210,36 @@
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
     </configurationParameter>
+    <configurationParameter>
+        <name>reindexOnlyMentionedTypes</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>indexOnlyMentionedTypes</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>indexAdditionally</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>emptyIsInvisible</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>modifyDataPath</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -258,6 +288,12 @@
         <name>createdBy</name>
         <value>
           <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>emptyIsInvisible</name>
+        <value>
+          <boolean>true</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

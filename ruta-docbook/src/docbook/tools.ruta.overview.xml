@@ -820,6 +820,38 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.reindexOnlyMentionedTypes'>reindexOnlyMentionedTypes</link>
+                  </entry>
+                  <entry>Option to reindex only mentioned types internally in ruta.
+                  </entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.indexOnlyMentionedTypes'>indexOnlyMentionedTypes</link>
+                  </entry>
+                  <entry>Option to index only mentioned types internally in ruta.
+                  </entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.indexAdditionally'>indexAdditionally</link>
+                  </entry>
+                  <entry>Option to index types additional to the mentioned ones internally in ruta.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.emptyIsInvisible'>emptyIsInvisible</link>
+                  </entry>
+                  <entry>Option to define empty text positions as invisible.
+                  </entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.modifyDataPath'>modifyDataPath</link>
                   </entry>
                   <entry>Option to extend the datapath by the descriptorPaths
@@ -1059,6 +1091,39 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
             The value of this parameter needs only be adapted for performance optimization in pipelines that 
             contains several ruta analysis engines.
             Default value is uima.tcas.Annotation
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.reindexOnlyMentionedTypes">
+          <title>reindexOnlyMentionedTypes</title>
+          <para>
+           If this parameter is activated, then only annotations of types are internally reindexed at
+           beginning that are mentioned with in the rules. This parameter overrides the values of the parameter
+           'reindexOnly' with the types that are mentioned in the rules. Default value is false.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.indexOnlyMentionedTypes">
+          <title>indexOnlyMentionedTypes</title>
+          <para>
+           If this parameter is activated, then only annotations of types are internally indexed that are
+           mentioned with in the rules. This optimization of the internal indexing can improve the speed
+           and reduce the memory footprint. However, several features of the rule matching require the
+           indexing of types that are not mentioned in the rules, e.g., literal rule matches, wildcards
+           and actions like MARKFAST, MARKTABLE, TRIE. Default value is false.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.indexAdditionally">
+          <title>indexAdditionally</title>
+          <para>
+           This parameter specifies annotation types (resolvable mentions are also supported) that should
+           be index additionally to types mentioned in the rules. This parameter is only used if the
+           parameter 'indexOnlyMentionedTypes' is activated.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.emptyIsInvisible">
+          <title>emptyIsInvisible</title>
+          <para>
+           This parameter determines positions as invisible if the internal indexing of the corresponding
+           RutaBasic annotation is empty. Default value is true.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.modifyDataPath">
