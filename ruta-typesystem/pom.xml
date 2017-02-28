@@ -28,7 +28,14 @@
   <url>${uimaWebsiteUrl}</url>
   <description>The type systems provided by ruta-core.</description>
   <name>Apache UIMA Ruta: ${project.artifactId}</name>
+  
   <dependencies>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>ruta-basic-type</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
