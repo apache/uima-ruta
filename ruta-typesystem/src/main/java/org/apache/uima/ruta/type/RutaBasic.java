@@ -293,7 +293,8 @@ public class RutaBasic extends Annotation {
     int code = ((TypeImpl) type).getCode();
     IntArrayList list = beginMap.get(code);
     if (list != null) {
-      list.removeInt(annotationToAddress(annotation));
+      int indexOf = list.indexOf(annotationToAddress(annotation));
+      list.removeInt(indexOf);
       if (list.isEmpty()) {
         beginMap.remove(code);
       }
@@ -314,7 +315,8 @@ public class RutaBasic extends Annotation {
     int code = ((TypeImpl) type).getCode();
     IntArrayList list = endMap.get(code);
     if (list != null) {
-      list.removeInt(annotationToAddress(annotation));
+      int indexOf = list.indexOf(annotationToAddress(annotation));
+      list.removeInt(indexOf);
       if (list.isEmpty()) {
         endMap.remove(code);
       }
