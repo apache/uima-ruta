@@ -165,8 +165,8 @@ Creative Commons Attribution 3.0 License.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
-            <source>1.7</source>
-            <target>1.7</target>
+            <source>${maven.compiler.source}</source>
+            <target>${maven.compiler.target}</target>
           </configuration>
         </plugin>
         <plugin>
@@ -176,12 +176,12 @@ Creative Commons Attribution 3.0 License.
             <execution>
               <id>attach-javadocs</id>
               <configuration>
-                <source>7</source>
+                <source>${maven.compiler.source}</source>
               </configuration> 
             </execution>
           </executions>
           <configuration>
-            <source>7</source>
+            <source>${maven.compiler.source}</source>
           </configuration>  
         </plugin>
       </plugins>
@@ -198,7 +198,7 @@ Creative Commons Attribution 3.0 License.
                   <version>3.0</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>1.7</version>
+                  <version>${maven.compiler.target}</version>
                 </requireJavaVersion>
               </rules>
             </configuration>
