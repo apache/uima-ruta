@@ -527,7 +527,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
     </para>  
     
     <programlisting><![CDATA[mvn archetype:generate -DarchetypeGroupId=org.apache.uima 
-    -DarchetypeArtifactId=ruta-maven-archetype -DarchetypeVersion=2.5.1
+    -DarchetypeArtifactId=ruta-maven-archetype -DarchetypeVersion=2.6.0
     -DgroupId=my.domain -DartifactId=my-ruta-project]]></programlisting>
     
     <para>
