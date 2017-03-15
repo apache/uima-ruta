@@ -21,6 +21,7 @@ package org.apache.uima.ruta.expression;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.cas.FeatureStructure;
@@ -230,7 +231,7 @@ public class AnnotationTypeExpression extends RutaExpression
         }
       }
     }
-    return null;
+    return Collections.emptyList();
   }
 
   public MatchReference getReference() {
