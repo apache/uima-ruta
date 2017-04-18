@@ -21,34 +21,36 @@ package org.apache.uima.ruta.example.extensions;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
 public class ExampleNumberFunctionTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/test.txt", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
+    Map<String, Object> parameters = new HashMap<>();
+    parameters.put(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
+            new String[] { ExampleNumberFunctionExtension.class.getName(), });
+    CAS cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+            namespace + "/test.txt", parameters, 50);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
-    
+
     t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(1, ai.size());
-    
+
     if (cas != null) {
       cas.release();
     }
