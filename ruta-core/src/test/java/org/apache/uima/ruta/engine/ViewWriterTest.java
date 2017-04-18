@@ -119,7 +119,7 @@ public class ViewWriterTest {
     FileUtils.saveString2File(scriptSB.toString(), scriptFile, "UTF-8");
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/TestEngine.xml");
+      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
     }
     URL urlDesc = RutaEngine.class.getClassLoader().getResource("ViewWriter.xml");
     if (urlDesc == null) {

@@ -285,7 +285,7 @@
             <imports>
                 <import location="TS1.xml"/>
                 <import location="TS2.xml"/>
-                <import location="BasicTypeSystem.xml"/>
+                <import name="org.apache.uima.ruta.engine.BasicTypeSystem"/>
             </imports>
             <types>
                 <typeDescription>

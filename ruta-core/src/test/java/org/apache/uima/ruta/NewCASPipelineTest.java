@@ -59,7 +59,7 @@ public class NewCASPipelineTest {
   private AnalysisEngine createAE(String script) throws ResourceInitializationException,
           IOException, InvalidXMLException {
     final TypeSystemDescription tsd = TypeSystemDescriptionFactory
-            .createTypeSystemDescription("org.apache.uima.ruta.BasicTypeSystem");
+            .createTypeSystemDescription("org.apache.uima.ruta.engine.BasicTypeSystem");
     final AnalysisEngineDescription ruta = AnalysisEngineFactory.createEngineDescription(
             "org.apache.uima.ruta.engine.BasicEngine", RutaEngine.PARAM_MAIN_SCRIPT, script);
 

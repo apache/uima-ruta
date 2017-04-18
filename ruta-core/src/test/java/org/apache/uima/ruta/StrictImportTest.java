@@ -71,7 +71,7 @@ public class StrictImportTest {
    */
   private AnalysisEngine createAE(String script, boolean strictImport) throws ResourceInitializationException, IOException, InvalidXMLException {
     final TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(
-            "org.apache.uima.ruta.BasicTypeSystem",
+            "org.apache.uima.ruta.engine.BasicTypeSystem",
             "org.apache.uima.ruta.StrictImportTestTypeSystem");
     final AnalysisEngineDescription ruta = AnalysisEngineFactory.createEngineDescription(
             "org.apache.uima.ruta.engine.BasicEngine",

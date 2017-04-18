@@ -290,7 +290,7 @@
         <typeSystemDescription>
             <name>SimpleTypeSystem</name>
             <imports>
-                <import location="../BasicTypeSystem.xml"/>
+                <import name="org.apache.uima.ruta.engine.BasicTypeSystem"/>
             </imports>
             <types>
                 <typeDescription>

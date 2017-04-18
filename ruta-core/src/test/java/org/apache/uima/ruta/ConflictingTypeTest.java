@@ -47,7 +47,7 @@ public class ConflictingTypeTest {
    */
   private AnalysisEngine createAE(String script) throws ResourceInitializationException, IOException, InvalidXMLException {
     final TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(
-            "org.apache.uima.ruta.BasicTypeSystem",
+            "org.apache.uima.ruta.engine.BasicTypeSystem",
             "org.apache.uima.ruta.ConflictingTypeSystem");
     final AnalysisEngineDescription ruta = AnalysisEngineFactory.createEngineDescription(
             "org.apache.uima.ruta.engine.BasicEngine",

@@ -21,7 +21,7 @@
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
     <name>org.apache.uima.ruta.AdditionalTypeSystem</name>
     <imports>
-        <import location="BasicTypeSystem.xml"/>
+        <import name="org.apache.uima.ruta.engine.BasicTypeSystem"/>
     </imports>
     <types>
         <typeDescription>
