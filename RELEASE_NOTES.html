@@ -21,10 +21,10 @@
    -->
 
 <head>
-  <title>Apache UIMA Ruta v2.6.0 Release Notes</title>
+  <title>Apache UIMA Ruta v2.6.1 Release Notes</title>
 </head>
 <body>
-<h1>Apache UIMA Ruta&#8482; v2.6.0 Release Notes</h1>
+<h1>Apache UIMA Ruta&#8482; v2.6.1 Release Notes</h1>
 
 <h2>Contents</h2>
 <p>
@@ -50,30 +50,13 @@
 <p>
   <p>UIMA Ruta Language and Analysis Engine:</p>
   <ul>
-    <li>Annotation expressions can be restricted using feature matches and conditions</li>
-    <li>Several new configuration parameters for RutaEngine</li>
-    <li>Experimental features to optimize internal indexing (for experienced users)</li>
-    <li>Minimal support of feature structures in feature match expressions</li>
-    <li>API change report for ruta-core</li>
-    <li>Typesystem descriptors with JCasGen classes are located in separate artifact</li>
-    <li>Implementation of RutaBasic is located in separate artifact</li>
-    <li>Many bug fixes and improvements, especially for label expressions</li>
+    <li>Fixed problem with empty annotation list expressions</li>
+    <li>Fixed false positive match in conjunct rules</li>
   </ul>
   <p>UIMA Ruta Workbench:</p>
   <ul>
-    <li>Direct debugging of launched scripts in Java is supported</li>
-    <li>Improved error messages in launcher</li>
-    <li>Removed restriction of classpath size causing problems in launcher</li>
-    <li>Deactivated noVM preference</li>
-    <li>Changed UI to set annotation mode in views</li>
-    <li>Launcher uses project encoding</li>
-    <li>Bug fixes</li>
+    <li>Fixed Query View</li>
   </ul>
-  <p>
-    This release requires an update of script projects and its descriptors in the UIMA Ruta Workbench. 
-    There are several ways to achieve this. The recommended way is to right-click on the UIMA Ruta project and select "UIMA Ruta -> Convert to UIMA Ruta project", which will update all provided descriptors.
-    Then, select the project and press "Project -> Clean..." in the menu, which will regenerate all descriptors of your scripts based on the new templates.
-  </p>  
 </p>
  
   
