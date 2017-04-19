@@ -34,18 +34,13 @@ import org.junit.Test;
 public class EmptyDocumentTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String name = RuleInference1Test.class.getSimpleName();
-    String namespace = RuleInference1Test.class.getPackage().getName().replaceAll("\\.", "/");
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
-              namespace + "/" + "EmptyDocumentTest.txt", 50);
+    String namespace1 = RuleInference1Test.class.getPackage().getName().replaceAll("\\.", "/");
+    String namespace2 = EmptyDocumentTest.class.getPackage().getName().replaceAll("\\.", "/");
+    CAS cas  = RutaTestUtils.process(namespace1 + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+            namespace2 + "/" + "EmptyDocumentTest.txt", 50);
 
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 

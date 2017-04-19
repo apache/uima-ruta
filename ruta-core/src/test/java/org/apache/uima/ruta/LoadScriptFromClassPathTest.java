@@ -31,38 +31,38 @@ import org.junit.Test;
 public class LoadScriptFromClassPathTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String document = "Peter, Jochen, Flo und Georg.";
-    String script = "SCRIPT org.apache.uima.ruta.RuleInference1Test;\n";
+    String script = "SCRIPT org.apache.uima.ruta.rule.RuleInference1Test;\n";
     script += "CALL(RuleInference1Test);\n";
 
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(RutaEngine.PARAM_ADDITIONAL_SCRIPTS,
-            new String[] { "org.apache.uima.ruta.RuleInference1Test" });
+            new String[] { "org.apache.uima.ruta.rule.RuleInference1Test" });
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script, parameters);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script, parameters);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 4, "Peter", "Jochen", "Flo", "Georg");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "und");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
-    RutaTestUtils.assertAnnotationsEquals(cas, 4, 5, "Peter", "Jochen", "Flo und Georg", "und Georg", "Georg");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 5, "Peter", "Jochen", "Flo und Georg",
+            "und Georg", "Georg");
     RutaTestUtils.assertAnnotationsEquals(cas, 5, 2, ",", ",");
     RutaTestUtils.assertAnnotationsEquals(cas, 6, 2, "Peter, Jochen,", "Jochen,");
     RutaTestUtils.assertAnnotationsEquals(cas, 7, 5, "Peter", "Jochen", "Flo", "und", "Georg");
-    RutaTestUtils.assertAnnotationsEquals(cas, 8, 5, "Peter", "Jochen", "Flo und Georg", "und Georg", "Georg");
+    RutaTestUtils.assertAnnotationsEquals(cas, 8, 5, "Peter", "Jochen", "Flo und Georg",
+            "und Georg", "Georg");
     RutaTestUtils.assertAnnotationsEquals(cas, 9, 2, "Peter, Jochen, Flo", "Jochen, Flo");
-    RutaTestUtils.assertAnnotationsEquals(cas, 10, 3, "Peter, Jochen, Flo und", "Jochen, Flo und", "Flo und");
-    RutaTestUtils.assertAnnotationsEquals(cas, 11, 3, "Peter, Jochen, Flo und Georg.", "Jochen, Flo und Georg.",
-            "Flo und Georg.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 10, 3, "Peter, Jochen, Flo und", "Jochen, Flo und",
+            "Flo und");
+    RutaTestUtils.assertAnnotationsEquals(cas, 11, 3, "Peter, Jochen, Flo und Georg.",
+            "Jochen, Flo und Georg.", "Flo und Georg.");
     RutaTestUtils.assertAnnotationsEquals(cas, 12, 6, ",", ",", ",", "und", "und", "und");
-    RutaTestUtils.assertAnnotationsEquals(cas, 13, 6, "Peter,", "Jochen,", "Jochen,", "Flo und", "Flo und", "Flo und");
-    RutaTestUtils.assertAnnotationsEquals(cas, 14, 3, "Peter, Jochen, Flo und", "Jochen, Flo und", "Flo und");
+    RutaTestUtils.assertAnnotationsEquals(cas, 13, 6, "Peter,", "Jochen,", "Jochen,", "Flo und",
+            "Flo und", "Flo und");
+    RutaTestUtils.assertAnnotationsEquals(cas, 14, 3, "Peter, Jochen, Flo und", "Jochen, Flo und",
+            "Flo und");
     RutaTestUtils.assertAnnotationsEquals(cas, 15, 1, "Peter, Jochen");
     RutaTestUtils.assertAnnotationsEquals(cas, 16, 1, "Georg.");
     RutaTestUtils.assertAnnotationsEquals(cas, 17, 1, "Flo und Georg.");
