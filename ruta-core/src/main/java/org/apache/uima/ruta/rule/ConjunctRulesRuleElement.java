@@ -58,7 +58,13 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
         }
       }
       allMatched &= oneMatched;
-      result.addAll(startMatch);
+      
+      // only the matches that actually matched successfully
+      for (RuleMatch eachRuleMatch : startMatch) {
+        if(eachRuleMatch.matched()) {
+          result.add(eachRuleMatch);
+        }
+      }
     }
 
     for (RuleMatch each : result) {

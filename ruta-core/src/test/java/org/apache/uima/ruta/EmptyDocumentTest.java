@@ -28,6 +28,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.ruta.rule.RuleInference1Test;
 import org.junit.Test;
 
 public class EmptyDocumentTest {
