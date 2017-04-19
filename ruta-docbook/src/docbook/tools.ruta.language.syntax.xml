@@ -126,7 +126,8 @@ RuleElement            -> (Identifier ":")? "@"?
                         RuleElementType | RuleElementLiteral
                         | RuleElementComposed | RuleElementWildCard
 RuleElementType        ->  AnnotationTypeExpr OptionalRuleElementPart
-RuleElementWithCA      ->  AnnotationTypeExpr ("{" Conditions?  Actions? "}")?
+RuleElementWithCA      ->  AnnotationTypeExpr ("{" Conditions?  
+                           Actions? "}")?
 AnnotationTypeExpr     -> (TypeExpression | AnnotationExpression) 
                           (Operator)? Expression ("{" Conditions "}")?
 FeatureMatchExpression -> TypeExpression ( "." Feature)+ 
