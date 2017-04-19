@@ -40,6 +40,11 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+      <scope>test</scope>
+    </dependency>
 	</dependencies>
 	<scm>
 		<url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-core-ext</url>
