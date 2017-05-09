@@ -28,17 +28,16 @@ public class TrieXMLEventHandler extends DefaultHandler {
 
   private Stack<MultiTextNode> stack;
 
-  // boolean listeningState;
+  private boolean inContent;
 
-  boolean inContent;
+  private boolean inType;
 
-  boolean inType;
+  private StringBuilder type = new StringBuilder();
 
   public TrieXMLEventHandler(MultiTextNode root) {
     super();
     this.stack = new Stack<MultiTextNode>();
     stack.add(root);
-    // this.listeningState = false;
   }
 
   @Override
@@ -53,11 +52,7 @@ public class TrieXMLEventHandler extends DefaultHandler {
   public void startElement(String namespaceURI, String localName, String qualifiedName,
           Attributes atts) {
     if ("n".equals(localName) || "n".equals(qualifiedName)) {
-      // char c = atts.getValue("c").charAt(0);
-      // boolean e = Boolean.valueOf(atts.getValue("e"));
       MultiTextNode newNode = new MultiTextNode();
-      // newNode.setWordEnd(e);
-      // stack.peek().addChild(newNode);
       stack.add(newNode);
       inContent = false;
       inType = false;
@@ -67,7 +62,6 @@ public class TrieXMLEventHandler extends DefaultHandler {
       inContent = false;
     }
     if ("c".equals(localName) || "c".equals(qualifiedName)) {
-      // listeningState = true;
       inType = false;
       inContent = true;
     }
@@ -80,6 +74,8 @@ public class TrieXMLEventHandler extends DefaultHandler {
       stack.peek().addChild(pop);
     }
     if ("t".equals(localName) || "t".equals(qualifiedName)) {
+      stack.peek().addType(type.toString());
+      type.setLength(0);
       inType = false;
     }
     if ("c".equals(localName) || "c".equals(qualifiedName)) {
@@ -94,11 +90,7 @@ public class TrieXMLEventHandler extends DefaultHandler {
     }
     MultiTextNode peek = stack.peek();
     if (inType) {
-      StringBuilder type = new StringBuilder();
-      for (int i = start; i < start + length; i++) {
-        type.append(String.valueOf(ch[i]));
-      }
-      peek.addType(type.toString());
+      type.append(ch, start, length);
       peek.setWordEnd(true);
     } else if (inContent) {
       if (ch.length > 0) {
