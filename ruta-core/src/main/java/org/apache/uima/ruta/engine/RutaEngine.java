@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -625,19 +626,28 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   }
 
   private void resetEnvironments(CAS cas) {
-    resetEnvironment(script, cas);
-    Collection<RutaModule> scripts = script.getScripts().values();
-    for (RutaModule module : scripts) {
-      resetEnvironment(module, cas);
-    }
+    resetEnvironment(script, cas, new HashSet<RutaModule>());
   }
 
-  private void resetEnvironment(RutaModule module, CAS cas) {
+  private void resetEnvironment(RutaModule module, CAS cas, Collection<RutaModule> alreadyResetted) {
+    if(alreadyResetted.contains(module)) {
+      // avoid loop in recursion
+      return;
+    }
+    alreadyResetted.add(module);
+    
+    // reset all blocks
     RutaBlock block = module.getBlock(null);
     block.getEnvironment().reset(cas);
     Collection<RutaBlock> blocks = module.getBlocks().values();
     for (RutaBlock each : blocks) {
       each.getEnvironment().reset(cas);
+    }
+    
+    // reset imported scripts
+    Collection<RutaModule> scripts = module.getScripts().values();
+    for (RutaModule eachModule : scripts) {
+      resetEnvironment(eachModule, cas, alreadyResetted);
     }
   }
 
