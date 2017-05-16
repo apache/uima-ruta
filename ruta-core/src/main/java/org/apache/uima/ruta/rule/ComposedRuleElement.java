@@ -517,7 +517,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       ComposedRuleElement parentElement = (ComposedRuleElement) parentContainer;
       result = parentElement.fallbackContinue(after, failed, annotation, ruleMatch, ruleApply,
               containerMatch, sideStepOrigin, entryPoint, stream, crowd);
-    } else if (sideStepOrigin != null) {
+    } else if (sideStepOrigin != null && !failed) {
       result = sideStepOrigin.continueSideStep(after, ruleMatch, ruleApply, containerMatch,
               entryPoint, stream, crowd);
     } else {
