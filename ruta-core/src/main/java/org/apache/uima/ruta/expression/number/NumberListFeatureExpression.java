@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -51,18 +51,23 @@ public class NumberListFeatureExpression extends AbstractNumberListExpression {
 
   @Override
   public List<Number> getList(MatchContext context, RutaStream stream) {
+
     AnnotationFS annotation = context.getAnnotation();
-    Feature feature = fe.getFeature(context, stream);
-    if (feature == null || !feature.getRange().isArray() || !validType(feature)) {
+    Feature feature = this.fe.getFeature(context, stream);
+    if (feature == null || !feature.getRange().isArray() || !this.validType(feature)) {
       // throw runtime exception?
       return Collections.emptyList();
     }
-    List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<? extends FeatureStructure> featureStructures = fe.getFeatureStructures(list, false, context,
-            stream);
+    List<AnnotationFS> list = this.getTargetAnnotation(annotation, this.fe, context, stream);
+    Collection<? extends FeatureStructure> featureStructures = this.fe.getFeatureStructures(list,
+            false, context, stream);
     List<Number> result = new ArrayList<>();
 
     for (FeatureStructure each : featureStructures) {
+      if (each instanceof AnnotationFS && !each.getType().equals(annotation.getType())) {
+        feature = this.fe.getFeature(new MatchContext((AnnotationFS) each, context.getElement(),
+                context.getRuleMatch(), context.getDirection()), stream);
+      }
       FeatureStructure featureValue = each.getFeatureValue(feature);
       if (featureValue instanceof IntArrayFS) {
         IntArrayFS array = (IntArrayFS) featureValue;
@@ -89,6 +94,7 @@ public class NumberListFeatureExpression extends AbstractNumberListExpression {
   }
 
   private boolean validType(Feature feature) {
+
     String name = feature.getRange().getName();
     return StringUtils.equals(name, CAS.TYPE_NAME_INTEGER_ARRAY)
             || StringUtils.equals(name, CAS.TYPE_NAME_DOUBLE_ARRAY)
@@ -96,10 +102,12 @@ public class NumberListFeatureExpression extends AbstractNumberListExpression {
   }
 
   public FeatureExpression getFeatureExpression() {
-    return fe;
+
+    return this.fe;
   }
 
   public void setFeatureExpression(FeatureExpression fe) {
+
     this.fe = fe;
   }
 

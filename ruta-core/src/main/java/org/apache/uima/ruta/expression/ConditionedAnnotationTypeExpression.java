@@ -41,11 +41,11 @@ public class ConditionedAnnotationTypeExpression extends AnnotationTypeExpressio
 
   @Override
   public AnnotationFS getAnnotation(MatchContext context, RutaStream stream) {
-   List<AnnotationFS> annotationList = getAnnotationList(context, stream);
-   if(!annotationList.isEmpty()) {
-     return annotationList.get(0);
-   }
-   return null;
+    List<AnnotationFS> annotationList = getAnnotationList(context, stream);
+    if (!annotationList.isEmpty()) {
+      return annotationList.get(0);
+    }
+    return null;
   }
 
   @Override
@@ -53,7 +53,7 @@ public class ConditionedAnnotationTypeExpression extends AnnotationTypeExpressio
     List<AnnotationFS> annotationList = super.getAnnotationList(context, stream);
     List<AnnotationFS> result = new ArrayList<>();
     for (AnnotationFS annotation : annotationList) {
-      if(evalulate(context, stream, annotation)) {
+      if (evalulate(context, stream, annotation)) {
         result.add(annotation);
       }
     }
@@ -61,9 +61,10 @@ public class ConditionedAnnotationTypeExpression extends AnnotationTypeExpressio
   }
 
   private boolean evalulate(MatchContext context, RutaStream stream, AnnotationFS annotation) {
-    MatchContext localContext = new MatchContext(annotation, context.getElement(), context.getRuleMatch(), context.getDirection());
+    MatchContext localContext = new MatchContext(annotation, context.getElement(),
+            context.getRuleMatch(), context.getDirection());
     EvaluatedCondition eval = condition.eval(localContext, stream, InferenceCrowd.emptyCrowd);
     return eval.isValue();
   }
-  
+
 }

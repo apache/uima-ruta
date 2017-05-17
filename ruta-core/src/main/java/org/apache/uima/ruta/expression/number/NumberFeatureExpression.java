@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -42,32 +42,40 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
 
   @Override
   public int getIntegerValue(MatchContext context, RutaStream stream) {
-    Number v = getNumberValue(context, stream);
+
+    Number v = this.getNumberValue(context, stream);
     return v == null ? 0 : v.intValue();
   }
 
   @Override
   public double getDoubleValue(MatchContext context, RutaStream stream) {
-    Number v = getNumberValue(context, stream);
+
+    Number v = this.getNumberValue(context, stream);
     return v == null ? 0 : v.doubleValue();
   }
 
   @Override
   public float getFloatValue(MatchContext context, RutaStream stream) {
-    Number v = getNumberValue(context, stream);
+
+    Number v = this.getNumberValue(context, stream);
     return v == null ? 0 : v.floatValue();
   }
 
   private Number getNumberValue(MatchContext context, RutaStream stream) {
+
     AnnotationFS annotation = context.getAnnotation();
     Number result = null;
-    List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<? extends FeatureStructure> featureStructures = fe.getFeatureStructures(list, false, context,
-            stream);
+    List<AnnotationFS> list = this.getTargetAnnotation(annotation, this.fe, context, stream);
+    Collection<? extends FeatureStructure> featureStructures = this.fe.getFeatureStructures(list,
+            false, context, stream);
     if (!featureStructures.isEmpty()) {
-      Feature feature = fe.getFeature(context, stream);
+      Feature feature = this.fe.getFeature(context, stream);
       Type range = feature.getRange();
       FeatureStructure next = featureStructures.iterator().next();
+      if (next instanceof AnnotationFS && !next.getType().equals(annotation.getType())) {
+        feature = this.fe.getFeature(new MatchContext((AnnotationFS) next, context.getElement(),
+                context.getRuleMatch(), context.getDirection()), stream);
+      }
       if (CAS.TYPE_NAME_BYTE.equals(range.getName())) {
         result = next.getByteValue(feature);
       } else if (CAS.TYPE_NAME_DOUBLE.equals(range.getName())) {
@@ -87,14 +95,17 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
-    return "" + getNumberValue(context, stream);
+
+    return "" + this.getNumberValue(context, stream);
   }
 
   public FeatureExpression getFe() {
-    return fe;
+
+    return this.fe;
   }
 
   public void setFe(FeatureExpression fe) {
+
     this.fe = fe;
   }
 

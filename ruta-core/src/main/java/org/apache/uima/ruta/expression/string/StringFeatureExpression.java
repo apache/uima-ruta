@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -41,12 +41,18 @@ public class StringFeatureExpression extends AbstractStringExpression {
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
+
     AnnotationFS annotation = context.getAnnotation();
-    Feature feature = fe.getFeature(context, stream);
-    List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
-    Collection<? extends FeatureStructure> featureStructures = fe.getFeatureStructures(list, false, context, stream);
+    Feature feature = this.fe.getFeature(context, stream);
+    List<AnnotationFS> list = this.getTargetAnnotation(annotation, this.fe, context, stream);
+    Collection<? extends FeatureStructure> featureStructures = this.fe.getFeatureStructures(list,
+            false, context, stream);
     if (!featureStructures.isEmpty()) {
       FeatureStructure next = featureStructures.iterator().next();
+      if (next instanceof AnnotationFS && !next.getType().equals(annotation.getType())) {
+        feature = this.fe.getFeature(new MatchContext((AnnotationFS) next, context.getElement(),
+                context.getRuleMatch(), context.getDirection()), stream);
+      }
       if (next instanceof AnnotationFS && feature instanceof CoveredTextFeature) {
         return ((AnnotationFS) next).getCoveredText();
       } else {
@@ -57,10 +63,12 @@ public class StringFeatureExpression extends AbstractStringExpression {
   }
 
   public FeatureExpression getFe() {
-    return fe;
+
+    return this.fe;
   }
 
   public void setFe(FeatureExpression fe) {
+
     this.fe = fe;
   }
 

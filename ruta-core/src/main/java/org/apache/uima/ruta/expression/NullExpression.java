@@ -33,7 +33,8 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public class NullExpression extends FeatureExpression implements IStringExpression, ITypeExpression, IAnnotationExpression {
+public class NullExpression extends FeatureExpression
+        implements IStringExpression, ITypeExpression, IAnnotationExpression {
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
@@ -41,17 +42,19 @@ public class NullExpression extends FeatureExpression implements IStringExpressi
   }
 
   @Override
-  public Collection<AnnotationFS> getAnnotations(Collection<? extends FeatureStructure> featureStructures, boolean checkOnFeatureValue,
+  public Collection<AnnotationFS> getAnnotations(
+          Collection<? extends FeatureStructure> featureStructures, boolean checkOnFeatureValue,
           MatchContext context, RutaStream stream) {
     return null;
   }
-  
+
   @Override
-  public Collection<? extends FeatureStructure> getFeatureStructures(Collection<? extends FeatureStructure> featureStructures, boolean checkOnFeatureValue,
+  public Collection<? extends FeatureStructure> getFeatureStructures(
+          Collection<? extends FeatureStructure> featureStructures, boolean checkOnFeatureValue,
           MatchContext context, RutaStream stream) {
     return null;
   }
-  
+
   @Override
   public Type getType(MatchContext context, RutaStream stream) {
     return null;
@@ -87,5 +90,4 @@ public class NullExpression extends FeatureExpression implements IStringExpressi
     return null;
   }
 
- 
 }
