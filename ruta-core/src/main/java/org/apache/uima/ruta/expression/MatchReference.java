@@ -213,4 +213,12 @@ public class MatchReference extends RutaExpression {
     return features;
   }
 
+  public IRutaExpression getArgument() {
+    return argument;
+  }
+
+  public String getComparator() {
+    return comparator;
+  }
+
 }

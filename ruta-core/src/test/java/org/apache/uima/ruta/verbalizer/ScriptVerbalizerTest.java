@@ -67,9 +67,5 @@ public class ScriptVerbalizerTest {
     Ruta.removeDebugInformation(jcas);
   }
   
-  @Test
-  public void testScriptBlockVerbalization() throws Exception{
-    
-  }
   
 }

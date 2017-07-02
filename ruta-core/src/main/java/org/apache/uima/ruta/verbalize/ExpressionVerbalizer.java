@@ -21,6 +21,8 @@ package org.apache.uima.ruta.verbalize;
 
 import java.util.Iterator;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
@@ -299,7 +301,19 @@ public class ExpressionVerbalizer {
   }
   
   public String verbalize(MatchReference expression) {
-    return expression.getMatch();
+    String match = expression.getMatch();
+    if(match == null) {
+      String string = expression.toString();
+      if(StringUtils.equals(string, CAS.TYPE_NAME_DOCUMENT_ANNOTATION)) {
+        return "Document";
+      } else {
+        return string;
+      }
+    }
+    if(expression.getArgument() != null) {
+     return  match + expression.getComparator() + verbalizer.verbalize(expression.getArgument());
+    }
+    return match;
   }
   
   public String verbalize(AnnotationTypeExpression expression) {
