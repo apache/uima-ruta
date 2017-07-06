@@ -22,6 +22,7 @@ package org.apache.uima.ruta.engine;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.type.CW;
 import org.apache.uima.ruta.type.SW;
@@ -88,10 +89,35 @@ public class ParamVarTest {
         SW.class.getName() + RutaEngine.SEPARATOR_VAR_VALUES + CW.class.getName() });
 
     CAS cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script, params);
+    Ruta.apply(cas, script, params);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "Some", "text");
     
     cas.release();
   }
+  
+  @Test(expected = AnalysisEngineProcessException.class)
+  public void testWithStrictImport() throws Exception {
+    String document = "Some text.";
+    String script = "";
+    script += "TYPE t1;";
+    script += "TYPE t2;";
+    script += "TYPELIST tl;";
+    script += "CW{ -> t1};";
+    script += "SW{ -> t2};";
+    script += "ANY{PARTOF(tl) -> T3};";
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put(RutaEngine.PARAM_STRICT_IMPORTS, true);
+    params.put(RutaEngine.PARAM_VAR_NAMES, new String[] { "t1", "t2", "tl" });
+    params.put(RutaEngine.PARAM_VAR_VALUES, new String[] {"org.apache.uima.T1", "org.apache.uima.T2", 
+        "org.apache.uima.T1,org.apache.uima.T2"  });
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script, params);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "Some", "text");
+    
+    cas.release();
+  }
+  
 }

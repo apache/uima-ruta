@@ -48,7 +48,12 @@ public class TypeListVariableExpression extends AbstractTypeListExpression {
       } else if (each instanceof Type) {
         result.add((Type) each);
       } else if(each instanceof String) {
-        result.add(parent.getEnvironment().getType((String) each));
+        Type type = parent.getEnvironment().getType((String) each);
+        if(type != null) {
+          result.add(type);
+        } else {
+          throw new IllegalArgumentException("Not able to resolve type: " + each);
+        }
       }
     }
     return result;
