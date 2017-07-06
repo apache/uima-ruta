@@ -208,6 +208,24 @@ public class ForEachBlockTest {
     cas.release();
   }
   
+  @Test
+  public void testWithContainingBlock() throws Exception {
+    String script = "";
+    script += "FOREACH(num) NUM{} {\n";
+    script += "BLOCK(onlyNum) num{}{\n";
+    script += "(num NUM){-> T1};\n";
+    script += "num{-> T2};\n";
+    script += "}\n";
+    script += "}\n";
+
+    CAS cas = RutaTestUtils.getCAS("1 22 333");
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "1", "22", "333");
+    cas.release();
+  }
+  
   
   
 }
