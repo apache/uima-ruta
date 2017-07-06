@@ -87,5 +87,19 @@ public class RutaScriptBlockTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "1");
     cas.release();
   }
-  
+
+  @Test
+  public void testWindow() throws Exception {
+    String script = "NUM{->T1};";
+    script += "BLOCK(num) NUM{} {\n";
+    script += "NUM{-> T2};";
+    script += "}";
+
+    CAS cas = RutaTestUtils.getCAS("1 22 333");
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "1", "22", "333");
+    cas.release();
+  }
+
 }
