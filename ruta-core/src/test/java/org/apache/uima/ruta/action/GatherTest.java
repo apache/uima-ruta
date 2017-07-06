@@ -88,7 +88,7 @@ public class GatherTest {
   }
 
   @Test
-  public void testOptionalMatch() {
+  public void testOptionalMatch() throws Exception {
     String document = "A X C";
     String script = "";
     script += "W{REGEXP(\"A\")->MARK(T1)};";
@@ -105,13 +105,8 @@ public class GatherTest {
     list.add(new TestFeature(fn1, "", "uima.tcas.Annotation"));
     String fn2 = "b";
     list.add(new TestFeature(fn2, "", "uima.tcas.Annotation"));
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, complexTypes, features);
+    CAS cas  = RutaTestUtils.getCAS(document, complexTypes, features);
       Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;

@@ -20,7 +20,9 @@
 package org.apache.uima.ruta.engine;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,11 +34,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.SerialFormat;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -47,6 +51,7 @@ import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.CasCreationUtils;
+import org.apache.uima.util.CasIOUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
@@ -314,5 +319,20 @@ public class RutaTestUtils {
       throw new RuntimeException(e);
     }
     return cas;
+  }
+  
+  
+  public static void storeCas(CAS cas, String name) {
+    File file = new File("input/" + name + ".xmi");
+    file.getParentFile().mkdirs();
+    OutputStream fos = null;
+    try {
+      fos = new FileOutputStream(file);
+      CasIOUtils.save(cas, fos , SerialFormat.XMI);
+    } catch (IOException e) {
+      throw new IllegalArgumentException(e);
+    } finally {
+      IOUtils.closeQuietly(fos);
+    }
   }
 }
