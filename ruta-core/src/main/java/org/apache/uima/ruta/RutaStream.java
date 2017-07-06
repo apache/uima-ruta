@@ -1231,6 +1231,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
       double v = ((INumberExpression) expression).getDoubleValue(context, this);
       environment.setVariableValue(var, v);
+    } else if (clazz.equals(Float.class) && expression instanceof INumberExpression) {
+      float v = (float)((INumberExpression) expression).getDoubleValue(context, this);
+      environment.setVariableValue(var, v);
     } else if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
       int v = ((INumberExpression) expression).getIntegerValue(context, this);
       environment.setVariableValue(var, v);
