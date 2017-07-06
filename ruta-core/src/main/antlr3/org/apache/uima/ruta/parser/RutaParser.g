@@ -2440,7 +2440,7 @@ externalAnnotationFunction returns [IAnnotationExpression expr = null]
 	}
 	;
 
-nullExpression returns [IRutaExpression expr = null]
+nullExpression returns [IStringExpression expr = null]
 	:
 	NULL {expr = expressionFactory.createNullExpression();}
 	;
@@ -2790,7 +2790,10 @@ booleanStringExpression  returns  [IBooleanExpression expr = null]
 	:
 	e1 = stringExpression
 	op = (EQUAL | NOTEQUAL)
+	(
 	e2 = stringExpression
+	| e2 = nullExpression
+	)
 	{expr = expressionFactory.createBooleanStringExpression(e1,op,e2);}
 	;
 

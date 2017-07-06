@@ -366,7 +366,7 @@ public class ExpressionFactory {
     return new ExternalWordTableExpression(name.getText(), args);
   }
 
-  public IRutaExpression createNullExpression() {
+  public IStringExpression createNullExpression() {
     return new NullExpression();
   }
 
