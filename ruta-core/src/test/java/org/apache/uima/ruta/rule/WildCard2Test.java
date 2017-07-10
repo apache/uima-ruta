@@ -19,9 +19,16 @@
 
 package org.apache.uima.ruta.rule;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class WildCard2Test {
@@ -118,6 +125,49 @@ public class WildCard2Test {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "(A)", "(1 C)", "(a C)");
+    cas.release();
+  }
+
+  @Test
+  public void testMultipleAndQuantifier() throws Exception {
+    String document = "1 A ...... 1 X 2 B ...... 2";
+    String script = "";
+    script += "PM{->T1};\n";
+    // optional elements are not optional after wildcard UIMA-5484
+    script += "NUM #{-> T2} T1* NUM;\n";
+    script += "PM{->T1};\n";
+    script += "NUM #{-> T3} T1* NUM;\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "A", "X 2 B", "B");
+    Assert.assertEquals(1008,
+            cas.getAnnotationIndex(cas.getTypeSystem().getType(RutaTestUtils.TYPE + "3")).size());
+    cas.release();
+  }
+
+  @Test
+  public void testCheckInIterator() throws Exception {
+    String document = "1 a b c 2 d e f 3";
+    String script = "";
+    script += "NUM #{-> T1} NUM;\n";
+    script += "SW{-> Struct};\n";
+    script += "T1->{# s2:Struct.a==null{-> s2.a=SW};};\n";
+    script += "T1->{s1:Struct.a!=null # s2:@Struct.a==null{-> s2.a=s1.a};};\n";
+    script += "s:Struct{REGEXP(s.a.ct, \"[ad]\") -> T2};\n";
+
+    Map<String, String> complexType = new HashMap<>();
+    complexType.put("Struct", CAS.TYPE_NAME_ANNOTATION);
+    Map<String, List<TestFeature>> featureMap = new HashMap<>();
+    List<TestFeature> list = new ArrayList<>();
+    list.add(new TestFeature("a", "", CAS.TYPE_NAME_ANNOTATION));
+    featureMap.put("Struct", list);
+    CAS cas = RutaTestUtils.getCAS(document, complexType, featureMap);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "a b c", "d e f");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 6, "a", "b", "c", "d", "e", "f");
     cas.release();
   }
 
