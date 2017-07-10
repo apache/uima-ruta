@@ -288,18 +288,19 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
   }
 
-  private Collection<Type> removeSubsumedTypes(Collection<String> typeNames, TypeSystem typeSystem) {
+  private Collection<Type> removeSubsumedTypes(Collection<String> typeNames,
+          TypeSystem typeSystem) {
     Collection<Type> allTypes = new HashSet<>();
     for (String each : typeNames) {
       Type type = typeSystem.getType(each);
-      if(type != null) {
+      if (type != null) {
         allTypes.add(type);
       }
     }
     List<Type> rootTypes = new ArrayList<>(allTypes);
     for (Type type1 : allTypes) {
       for (Type type2 : allTypes) {
-        if(type1!= type2 && typeSystem.subsumes(type1, type2)) {
+        if (type1 != type2 && typeSystem.subsumes(type1, type2)) {
           rootTypes.remove(type2);
         }
       }
@@ -409,8 +410,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       toSplit.setEnd(anchor);
       RutaBasic newRB = new RutaBasic(getJCas(), anchor, newEnd);
       newRB.setLowMemoryProfile(lowMemoryProfile);
-      newRB.setEndMap(toSplit.getEndMap());
-      newRB.setPartOf(toSplit.getPartOf());
+      newRB.setEndMap(toSplit.getEndMap().clone());
+      newRB.setPartOf(toSplit.getPartOf().clone());
       toSplit.clearEndMap();
       cas.addFsToIndexes(toSplit);
       cas.addFsToIndexes(newRB);
@@ -1230,6 +1231,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     Class<?> clazz = environment.getVariableType(var);
     if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
       double v = ((INumberExpression) expression).getDoubleValue(context, this);
+      environment.setVariableValue(var, v);
+    } else if (clazz.equals(Float.class) && expression instanceof INumberExpression) {
+      float v = (float) ((INumberExpression) expression).getDoubleValue(context, this);
       environment.setVariableValue(var, v);
     } else if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
       int v = ((INumberExpression) expression).getIntegerValue(context, this);

@@ -135,8 +135,64 @@ Dr.JoachimBaumeister
     </para>
 
   </section>
+
+  <section id="ugr.tools.ruta.language.wildcard">
+    <title>Wildcard #</title>
+    <para>
+      The wildcard <code>#</code> is a special matching condition of a rule element, 
+      which does not match itself but uses the next rule element to determine its match.
+      It's behavior is similar to a generic rule element with a reluctant, not restricted quantifier like
+      <code>ANY+?</code> but it much more efficient since no additional annotations have to be matched.
+      The functionality of the wildcard is illustrated with following examples:
+      
+      <programlisting><![CDATA[PERIOD #{-> Sentence} PERIOD;]]></programlisting>
+      
+      In this example, everything in beteen two periods is annotated with an annotation of the type
+      <code>Sentence</code>. This rule is much more efficient than a rule like 
+      <code>PERIOD ANY+{-PARTOF(PERIOD)} PERIOD;</code> since it only navigated in the index of PERIOD annotations 
+      and does not match on all tokens.
+      
+      The wildcard is a normal matching condition and can be used as any other matching condition. If the sentence 
+      should include the period, the rule would look like:
+      
+      <programlisting><![CDATA[PERIOD (# PERIOD){-> Sentence};]]></programlisting>
+      
+      This rule creates only annotations after a period. If the wildcard is used as an anchor of the rule, 
+      e.g., is the first rule element and no manual anchor is specified, then it starts to match at the beginning 
+      of the doucment or current window.
+      
+      <programlisting><![CDATA[(# PERIOD){-> Sentence};]]></programlisting>
+      
+      This rule creates a Sentence annotation starting at the begin of the document ending with the first period.
+      If the rule lements are swicthed, the result is quite different because of the starting anchor of the rule:
+      
+      <programlisting><![CDATA[(PERIOD #){-> Sentence};]]></programlisting>
+      
+      Here, one annotation of the type Sentence is create for each PERIOD annotation starting with the period and 
+      ending at the end of the document.
+      
+      Currently, optional rule elements after wildcards are not optional.
+    </para>
+  </section>
   
-  
+  <section id="ugr.tools.ruta.language.labels">
+    <title>Label expressions</title>
+    <para>
+      Rule elements can be extended with labels, which introduce a new local variable storing one or 
+      multiple annotations - the annotations matched by the matching condition of the rule element. 
+      The name of the variable is the short identifier before the colon in front of the matching condition, e.g., 
+      in <code>sw:SW</code>, <code>SW</code> is the matching condition and <code>sw</code> is the name of the local variable.
+      The variable will be assigned when the rule element tries to match (also when it fails afterall) 
+      and can be utilzed in all other language elements afterwards.
+      The functionality of the label expressions is illustrated with following examples:
+      
+      <programlisting><![CDATA[sw1:SW sw2:SW{sw1.end=sw2.begin};]]></programlisting>
+      
+      This rule matches on two consecutive small-written words, but matches only if there is no space inbetween them.
+      
+      Label expression can also be used across <xref linkend='ugr.tools.ruta.language.inlined' />.
+    </para>
+  </section>
   
   <section id="ugr.tools.ruta.language.blocks">
     <title>Blocks</title>
@@ -1104,12 +1160,7 @@ SW{INLIST(sl) -> T1};]]></programlisting>
       <section>
         <title>contains(IStringExpression expr,IStringExpression contains)
         </title>
-        <programlisting><![CDATA[STRING s;
-BOOLEAN a ;
-BLOCK(forEACH) W{}{
-    W{->MATCHEDTEXT(s), ASSIGN(a,contains(s,"er"))};
-    W{a ->Test};
-}]]></programlisting>
+        <programlisting><![CDATA[w:W{contains(w.ct, "er")-> Test};]]></programlisting>
         <para>
           If you want to find all words that contain a given charactersequence.
           Assume again you
@@ -1126,14 +1177,9 @@ BLOCK(forEACH) W{}{
       <section>
         <title>endsWith(IStringExpression expr,IStringExpression expr)
         </title>
-        <programlisting><![CDATA[STRING s;
-BOOLEAN a;
-BLOCK(forEACH) W{}{
-    W{->MATCHEDTEXT(s), ASSIGN(a,endsWith(s,"str."))};
-    W{a ->Test};
-}]]></programlisting>
+        <programlisting><![CDATA[w:W{endsWith(w.ct, "str")-> Test};]]></programlisting>
         <para>
-          Assume you found the suffix "str." as a strong indicator whether a given
+          Assume you found the suffix "str" as a strong indicator whether a given
           token
           represents
           location (a street) by using this function you can now easily identify all
@@ -1146,18 +1192,12 @@ BLOCK(forEACH) W{}{
       <section>
         <title>startsWith(IStringExpression expr,IStringExpression expr)
         </title>
-        <programlisting><![CDATA[STRING s;
-BOOLEAN a ;
-BLOCK(forEACH) W{}{
-    W{->MATCHEDTEXT(s), ASSIGN(a,startsWith(s,"sprech"))};
-    W{a ->Test};
-}]]></programlisting>
+        <programlisting><![CDATA[w:W{startsWith(w.ct, "sprech")-> Test};]]></programlisting>
         <para>
           Given a stem of a word you want to mark every instance that was possibly derived from that stem.
           If you decide to use that function you can detect all those words in 1 line and in a next step
           mark all
           of them as an Annotationtype of choice.
-
         </para>
       </section>
 

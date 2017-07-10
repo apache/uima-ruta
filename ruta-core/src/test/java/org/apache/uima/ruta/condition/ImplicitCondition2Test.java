@@ -63,11 +63,27 @@ public class ImplicitCondition2Test {
   
   @Test
   public void testStringCompare() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, CASException {
-    CAS cas = RutaTestUtils.getCAS("a b. a b.");
+    String document = "a b. a b.";
+    CAS cas = RutaTestUtils.getCAS(document);
     Assert.assertTrue(Ruta.matches(cas.getJCas(), "(w:W # W{W.ct==w.ct}){->T1};"));
     Assert.assertTrue(Ruta.matches(cas.getJCas(), "STRING s1 = \"a\"; (w:W W{s1==w.ct}){->T2};"));
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "a b. a", "b. a b");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "a b", "a b");
+  }
+  
+  @Test
+  public void testStringCompareNull() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, CASException {
+    String document = "a b. a b.";
+    CAS cas = RutaTestUtils.getCAS(document);
+    
+    String rules = "STRING s2;\n";
+    rules += "Document{s2 == \"\" -> T10};\n";
+    rules += "Document{s2 == null -> T11};\n";
+    Assert.assertTrue(Ruta.matches(cas.getJCas(), rules));
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 10, 1, document);
+    RutaTestUtils.assertAnnotationsEquals(cas, 11, 0);
+    
   }
   
   

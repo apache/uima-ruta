@@ -154,9 +154,16 @@ public class ScriptVerbalizer {
       RutaMatcher matcher = tmre.getMatcher();
       // action-only rule
         IRutaExpression expression = matcher.getExpression();
-        if (expression != null) {
-          result.append(verbalizer.verbalize(expression));
-        } else {
+        boolean actionOnlyRule = expression == null;
+        if(expression != null) {
+          String verbalize = verbalizer.verbalize(expression);
+          if(StringUtils.isBlank(verbalize)) {
+            actionOnlyRule = true;
+          } else {
+            result.append(verbalize);
+          }
+        }
+        if (actionOnlyRule) {
           Iterator<AbstractRutaAction> ait = actions.iterator();
           while (ait.hasNext()) {
             AbstractRutaAction each = ait.next();
@@ -165,6 +172,7 @@ public class ScriptVerbalizer {
               result.append(",");
             }
           }
+          return result.toString();
         }
     } else if (re instanceof WildCardRuleElement) {
       result.append("#");

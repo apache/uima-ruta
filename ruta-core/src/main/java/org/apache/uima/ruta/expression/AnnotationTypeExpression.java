@@ -109,7 +109,7 @@ public class AnnotationTypeExpression extends RutaExpression
         if (featureExpression instanceof FeatureMatchExpression) {
           // allow more matches for feature matches
           bestGuessedAnnotations = stream.getAnnotationsByTypeInContext(type, context);
-        } else if(featureExpression != null) {
+        } else if (featureExpression != null) {
           bestGuessedAnnotations = stream.getBestGuessedAnnotationsAt(context.getAnnotation(),
                   type);
         } else {
@@ -207,14 +207,14 @@ public class AnnotationTypeExpression extends RutaExpression
         if (featureExpression instanceof FeatureMatchExpression) {
           // allow more matches for feature matches
           bestGuessedAnnotations = stream.getAnnotationsByTypeInContext(type, context);
-        } else if(featureExpression != null) {
+        } else if (featureExpression != null) {
           bestGuessedAnnotations = stream.getBestGuessedAnnotationsAt(context.getAnnotation(),
                   type);
           if (bestGuessedAnnotations.isEmpty()) {
-            bestGuessedAnnotations =stream.getAnnotationsByTypeInContext(type, context);
+            bestGuessedAnnotations = stream.getAnnotationsByTypeInContext(type, context);
           }
         } else {
-            bestGuessedAnnotations =stream.getAnnotationsByTypeInContext(type, context);
+          bestGuessedAnnotations = stream.getAnnotationsByTypeInContext(type, context);
         }
 
         if (featureExpression != null) {

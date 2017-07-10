@@ -1,0 +1,3 @@
+SCRIPT script3;
+
+Document{->CALL(script3)};

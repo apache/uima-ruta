@@ -75,9 +75,9 @@ public class RutaExpression extends RutaElement implements IRutaExpression {
         return result;
       }
     }
-    
+
     return stream.getBestGuessedAnnotationsAt(matchedAnnotation, type);
-    
+
   }
 
 }

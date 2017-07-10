@@ -304,7 +304,12 @@ public class ExpressionFactory {
   public MatchReference createMatchReference(Token refToken) {
     return createMatchReference(refToken, null, null);
   }
-
+  
+  public MatchReference createMatchReference(String reference) {
+    return createMatchReference(reference, null, null);
+  }
+  
+  
   public MatchReference createMatchReference(Token matchToken, Token comparatorToken,
           IRutaExpression argument) {
     String match = matchToken.getText();
@@ -312,10 +317,15 @@ public class ExpressionFactory {
     if (comparatorToken != null) {
       comparator = comparatorToken.getText();
     }
+    return createMatchReference(match, comparator, argument);
+  }
+  
+  public MatchReference createMatchReference(String matchString, String comparatorString,
+          IRutaExpression argument) {
     if (typeUsage != null) {
-      addPossibleTypeMentions(match);
+      addPossibleTypeMentions(matchString);
     }
-    return new MatchReference(match, comparator, argument);
+    return new MatchReference(matchString, comparatorString, argument);
   }
 
   public MatchReference createMatchReference(ITypeExpression expression) {
@@ -356,7 +366,7 @@ public class ExpressionFactory {
     return new ExternalWordTableExpression(name.getText(), args);
   }
 
-  public IRutaExpression createNullExpression() {
+  public IStringExpression createNullExpression() {
     return new NullExpression();
   }
 

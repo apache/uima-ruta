@@ -32,6 +32,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
@@ -40,10 +41,10 @@ import org.junit.Test;
 public class RegExpRuleTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    CAS cas = null;
+
     Map<String, String> complexTypes = new HashMap<String, String>();
     Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
     String typeName = "org.apache.uima.Complex";
@@ -56,14 +57,9 @@ public class RegExpRuleTest {
     list.add(new TestFeature(fn2, "", "uima.cas.Boolean"));
     String fn3 = "s";
     list.add(new TestFeature(fn3, "", "uima.cas.String"));
-    
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50, false,false,complexTypes,features, null);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
+
+    CAS cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+            namespace + "/" + name + ".txt", 50, false, false, complexTypes, features, null);
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
@@ -73,7 +69,7 @@ public class RegExpRuleTest {
     assertEquals(1, ai.size());
     iterator = ai.iterator();
     assertEquals(28, iterator.next().getCoveredText().length());
-   
+
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
@@ -94,7 +90,7 @@ public class RegExpRuleTest {
     String stringValue = null;
     Boolean booleanValue = null;
     AnnotationFS afs = null;
-    
+
     next = iterator.next();
     assertEquals("y", next.getCoveredText());
     stringValue = next.getStringValue(t.getFeatureByBaseName(fn3));
@@ -103,7 +99,7 @@ public class RegExpRuleTest {
     assertEquals(true, booleanValue);
     afs = (AnnotationFS) next.getFeatureValue(t.getFeatureByBaseName(fn1));
     assertEquals("B", afs.getCoveredText());
-    
+
     next = iterator.next();
     assertEquals("B", next.getCoveredText());
     stringValue = next.getStringValue(t.getFeatureByBaseName(fn3));
@@ -112,7 +108,7 @@ public class RegExpRuleTest {
     assertEquals(false, booleanValue);
     afs = (AnnotationFS) next.getFeatureValue(t.getFeatureByBaseName(fn1));
     assertEquals("y", afs.getCoveredText());
-    
+
     next = iterator.next();
     assertEquals("z", next.getCoveredText());
     stringValue = next.getStringValue(t.getFeatureByBaseName(fn3));
@@ -121,7 +117,7 @@ public class RegExpRuleTest {
     assertEquals(true, booleanValue);
     afs = (AnnotationFS) next.getFeatureValue(t.getFeatureByBaseName(fn1));
     assertEquals("B", afs.getCoveredText());
-    
+
     next = iterator.next();
     assertEquals("B", next.getCoveredText());
     stringValue = next.getStringValue(t.getFeatureByBaseName(fn3));
@@ -130,7 +126,7 @@ public class RegExpRuleTest {
     assertEquals(false, booleanValue);
     afs = (AnnotationFS) next.getFeatureValue(t.getFeatureByBaseName(fn1));
     assertEquals("z", afs.getCoveredText());
-    
+
     next = iterator.next();
     assertEquals("B", next.getCoveredText());
     stringValue = next.getStringValue(t.getFeatureByBaseName(fn3));
@@ -140,4 +136,15 @@ public class RegExpRuleTest {
 
     cas.release();
   }
+
+  @Test
+  public void testSegments() throws Exception {
+    String document = "bla concepta bla";
+    String script = "\"(concept)([a-z])\"-> 1 = T1, 2 = T2;\n";
+    script += "T1{-PARTOF(T2)-> T2};";
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "concept", "a");
+  }
+
 }

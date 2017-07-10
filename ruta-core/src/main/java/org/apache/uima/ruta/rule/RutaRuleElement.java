@@ -276,7 +276,7 @@ public class RutaRuleElement extends AbstractRuleElement {
     if (matchInfo == null) {
       context.getParent().getEnvironment().addMatchToVariable(ruleMatch, this, context, stream);
       if (quantifier.isOptional(context, stream)) {
-        result = continueMatchSomewhereElse(after, true, annotation, ruleMatch, ruleApply,
+        result = continueMatchSomewhereElse(after, false, annotation, ruleMatch, ruleApply,
                 containerMatch, sideStepOrigin, entryPoint, stream, crowd);
       } else if (getContainer() instanceof ComposedRuleElement) {
         ComposedRuleElement cre = (ComposedRuleElement) getContainer();

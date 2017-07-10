@@ -75,10 +75,10 @@ public class RutaVerbalizer {
       return conditionVerbalizer.verbalize((AbstractRutaCondition) element);
     } else if (element instanceof IRutaExpression) {
       return expressionVerbalizer.verbalize((RutaExpression) element);
-    } else if (element instanceof RutaElement) {
-      return scriptVerbalizer.verbalize((RutaElement) element);
     } else if (element instanceof RutaBlock) {
       return verbalize((RutaBlock) element, false);
+    } else if (element instanceof RutaElement) {
+      return scriptVerbalizer.verbalize((RutaElement) element);
     } else {
       return element.getClass().getSimpleName();
     }

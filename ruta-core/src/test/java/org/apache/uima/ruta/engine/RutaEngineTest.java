@@ -73,7 +73,6 @@ public class RutaEngineTest {
     Collection<String> usedTypes = typeUsageInformation.getUsedTypes();
     List<String> usedTypesList = new ArrayList<>(usedTypes);
     Collections.sort(usedTypesList);
-    ;
     Assert.assertEquals(Arrays.asList("org.apache.uima.ruta.type.BREAK",
             "org.apache.uima.ruta.type.COMMA", "org.apache.uima.ruta.type.CW",
             "org.apache.uima.ruta.type.FalseNegative", "org.apache.uima.ruta.type.MARKUP",

@@ -96,7 +96,7 @@ public class Ruta {
 
     File scriptFile = File.createTempFile("Ruta", RutaEngine.SCRIPT_FILE_EXTENSION);
     scriptFile.deleteOnExit();
-    FileUtils.saveString2File(script, scriptFile);
+    FileUtils.saveString2File(script, scriptFile, "UTF-8");
     ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile
             .getParentFile().getAbsolutePath() });
     String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);

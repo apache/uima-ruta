@@ -68,6 +68,7 @@ import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaScriptFactory;
 import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.block.ForEachBlock;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.block.RutaScriptBlock;
 import org.apache.uima.ruta.expression.AnnotationTypeExpression;
@@ -519,7 +520,7 @@ statement returns [RutaStatement stmt = null]
 	| stmtAM = macroActionDeclaration {stmt = stmtAM;}
 	| stmtRule = simpleStatement {stmt = stmtRule;}
 	| stmtBlock = blockDeclaration {stmt = stmtBlock;}
-	| stmtBlock = forEachDeclaration {stmt = stmtBlock;}
+	//| stmtBlock = forEachDeclaration {stmt = stmtBlock;}
 	| stmtExternal = externalBlock {stmt = stmtExternal;}
 	)
 	;
@@ -727,6 +728,7 @@ scope {
 	RutaBlock env;
 }
 @init{
+Map<String,String> def = new LinkedHashMap<>();
 RutaRuleElement re = null;
 RuleElementIsolator container = null;
 level++;
@@ -736,11 +738,23 @@ level--;
 }
 
 	:
-	type = BlockString 
+	((
+	type = (BlockString) 
 	LPAREN
 	id = Identifier 
 	RPAREN
 	{block = factory.createScriptBlock(id, re, body, $blockDeclaration[level - 1]::env);}
+	)
+	|
+	(
+	type = ForEachString 
+	LPAREN
+	id = Identifier (COMMA direction = booleanExpression)?
+	RPAREN
+	{block = factory.createForEachBlock(id, direction, re, body, $blockDeclaration[level - 1]::env);}
+	))
+	
+	
 	{$blockDeclaration::env = block;
 	container = new RuleElementIsolator();}
 	re1 = ruleElementWithCA[container]
@@ -748,13 +762,17 @@ level--;
 	{RutaRule rule = factory.createRule(re, block);
 	block.setRule(rule);
 	container.setContainer(rule);
-	}
+	}	
+	{if(block instanceof ForEachBlock) def.put(id.getText(),RutaConstants.RUTA_VARIABLE_ANNOTATION);}
+	{if(block instanceof ForEachBlock) addTemporaryVariables(def);}
 	LCURLY body = statements RCURLY
+	{if(block instanceof ForEachBlock) removeTemporaryVariables(def);}
+	
 	{block.setElements(body);
 	$blockDeclaration::env.getScript().addBlock(id.getText(),block);
 	}	
 	;
-
+/*
 forEachDeclaration returns [RutaBlock block = null]
 options {
 	backtrack = true;
@@ -780,6 +798,8 @@ level--;
 	RPAREN
 	{block = factory.createForEachBlock(id, direction, re, body, $blockDeclaration[level - 1]::env);}
 	{$blockDeclaration::env = block;
+	//$blockDeclaration::env = block;
+	
 	container = new RuleElementIsolator();}
 	re1 = ruleElementWithCA[container]
 	 {re = re1;	 }
@@ -795,6 +815,7 @@ level--;
 	{$blockDeclaration::env = block.getParent();}
 	}	
 	;
+	*/
 
 externalBlock returns [RutaBlock block = null]
 options {
@@ -2440,7 +2461,7 @@ externalAnnotationFunction returns [IAnnotationExpression expr = null]
 	}
 	;
 
-nullExpression returns [IRutaExpression expr = null]
+nullExpression returns [IStringExpression expr = null]
 	:
 	NULL {expr = expressionFactory.createNullExpression();}
 	;
@@ -2790,7 +2811,10 @@ booleanStringExpression  returns  [IBooleanExpression expr = null]
 	:
 	e1 = stringExpression
 	op = (EQUAL | NOTEQUAL)
+	(
 	e2 = stringExpression
+	| e2 = nullExpression
+	)
 	{expr = expressionFactory.createBooleanStringExpression(e1,op,e2);}
 	;
 
