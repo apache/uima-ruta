@@ -1104,12 +1104,7 @@ SW{INLIST(sl) -> T1};]]></programlisting>
       <section>
         <title>contains(IStringExpression expr,IStringExpression contains)
         </title>
-        <programlisting><![CDATA[STRING s;
-BOOLEAN a ;
-BLOCK(forEACH) W{}{
-    W{->MATCHEDTEXT(s), ASSIGN(a,contains(s,"er"))};
-    W{a ->Test};
-}]]></programlisting>
+        <programlisting><![CDATA[w:W{contains(w.ct, "er")-> Test};]]></programlisting>
         <para>
           If you want to find all words that contain a given charactersequence.
           Assume again you
@@ -1126,14 +1121,9 @@ BLOCK(forEACH) W{}{
       <section>
         <title>endsWith(IStringExpression expr,IStringExpression expr)
         </title>
-        <programlisting><![CDATA[STRING s;
-BOOLEAN a;
-BLOCK(forEACH) W{}{
-    W{->MATCHEDTEXT(s), ASSIGN(a,endsWith(s,"str."))};
-    W{a ->Test};
-}]]></programlisting>
+        <programlisting><![CDATA[w:W{endsWith(w.ct, "str")-> Test};]]></programlisting>
         <para>
-          Assume you found the suffix "str." as a strong indicator whether a given
+          Assume you found the suffix "str" as a strong indicator whether a given
           token
           represents
           location (a street) by using this function you can now easily identify all
@@ -1146,18 +1136,12 @@ BLOCK(forEACH) W{}{
       <section>
         <title>startsWith(IStringExpression expr,IStringExpression expr)
         </title>
-        <programlisting><![CDATA[STRING s;
-BOOLEAN a ;
-BLOCK(forEACH) W{}{
-    W{->MATCHEDTEXT(s), ASSIGN(a,startsWith(s,"sprech"))};
-    W{a ->Test};
-}]]></programlisting>
+        <programlisting><![CDATA[w:W{startsWith(w.ct, "sprech")-> Test};]]></programlisting>
         <para>
           Given a stem of a word you want to mark every instance that was possibly derived from that stem.
           If you decide to use that function you can detect all those words in 1 line and in a next step
           mark all
           of them as an Annotationtype of choice.
-
         </para>
       </section>
 
