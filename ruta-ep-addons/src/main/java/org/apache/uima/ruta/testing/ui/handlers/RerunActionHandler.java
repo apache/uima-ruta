@@ -44,7 +44,9 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.FsIndexDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
@@ -109,6 +111,7 @@ public class RerunActionHandler implements IHandler {
     public void done(IJobChangeEvent event) {
       if (event.getResult().isOK()) {
         page.getControl().getDisplay().asyncExec(new Runnable() {
+          @Override
           public void run() {
             page.updateInfoPanel();
           }
@@ -158,8 +161,10 @@ public class RerunActionHandler implements IHandler {
       IPath typeSystemDescriptorPath = null;
       try {
         ClassLoader classLoader = RutaProjectUtils.getClassLoader(project);
-        engineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(r.getLocation(), project, classLoader);
-        typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(fScript.getLocation(), project, classLoader);
+        engineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(r.getLocation(),
+                project, classLoader);
+        typeSystemDescriptorPath = RutaProjectUtils
+                .getTypeSystemDescriptorPath(fScript.getLocation(), project, classLoader);
       } catch (CoreException e) {
         RutaAddonsPlugin.error(e);
       }
@@ -177,8 +182,11 @@ public class RerunActionHandler implements IHandler {
         IStatus status = evalRutaOnlyScript(monitor, testPageView, debugPage, fScript, project,
                 engineDescriptorPath, testCasData);
         if (status.getSeverity() == IStatus.ERROR) {
-          Shell shell = Display.getCurrent().getActiveShell();
-          MessageDialog.openWarning(shell, "Error", status.getMessage());
+          Display current = Display.getCurrent();
+          if (current != null) {
+            Shell shell = current.getActiveShell();
+            MessageDialog.openWarning(shell, "Error", status.getMessage());
+          }
         }
         return status;
       } else {
@@ -216,6 +224,9 @@ public class RerunActionHandler implements IHandler {
         // * for each (goldFile, runFile)-pair:
         XMLInputSource in = new XMLInputSource(typeSystemDescriptorPath.toPortableString());
         TypeSystemDescription tsd = UIMAFramework.getXMLParser().parseTypeSystemDescription(in);
+        ClassLoader classLoader = RutaProjectUtils.getClassLoader(project);
+        ResourceManager resourceManager = new ResourceManager_impl(classLoader);
+        tsd.resolveImports(resourceManager);
         CAS runCas = CasCreationUtils.createCas(tsd, null, null);
         CAS goldCas = CasCreationUtils.createCas(tsd, null, null);
         for (TestCasData td : testCasData) {
@@ -231,8 +242,8 @@ public class RerunActionHandler implements IHandler {
           goldCas = goldCas.getView(viewCasName);
           // ** create TP, FP, FN annotations
           // ** collect results and gather eval data
-          evalLogicAndUpdateGUI(monitor, testPageView, debugPage, fScript, project, runCas,
-                  goldCas, td);
+          evalLogicAndUpdateGUI(monitor, testPageView, debugPage, fScript, project, runCas, goldCas,
+                  td);
           if (monitor.isCanceled()) {
             return Status.CANCEL_STATUS;
           }
@@ -258,8 +269,8 @@ public class RerunActionHandler implements IHandler {
      */
     private void runWithJVM(IProgressMonitor monitor, IFile scriptFile, IPath cleanInputPath,
             IPath runOutputPath) {
-      monitor.setTaskName(String.format("Processing script \"%s\" [w classpatch ext.].",
-              scriptFile.getName()));
+      monitor.setTaskName(
+              String.format("Processing script \"%s\" [w classpatch ext.].", scriptFile.getName()));
 
       IProject project = scriptFile.getProject();
 
@@ -281,15 +292,15 @@ public class RerunActionHandler implements IHandler {
 
       try {
         ClassLoader classLoader = RutaProjectUtils.getClassLoader(project);
-        IPath descriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(scriptFile.getLocation(),
-                project, classLoader);
+        IPath descriptorPath = RutaProjectUtils
+                .getAnalysisEngineDescriptorPath(scriptFile.getLocation(), project, classLoader);
         String descriptorAbsolutePath = descriptorPath.toFile().getAbsolutePath();
         ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
         ILaunchConfigurationType type = mgr
                 .getLaunchConfigurationType(RutaLaunchConfigurationConstants.ID_RUTA_SCRIPT);
 
-        ILaunchConfigurationWorkingCopy copy = type.newInstance(null, scriptFile.getName()
-                + ".Testing");
+        ILaunchConfigurationWorkingCopy copy = type.newInstance(null,
+                scriptFile.getName() + ".Testing");
         // do not use RutaLaunchConstants.ARG_INPUT_FOLDER here
         copy.setAttribute(RutaLaunchConstants.INPUT_FOLDER, inputDirPath);
         // do not use RutaLaunchConstants.ARG_OUTPUT_FOLDER here
@@ -324,8 +335,8 @@ public class RerunActionHandler implements IHandler {
     private void clearFolder(final IProject project, final IPath folderPath) {
       FileUtils.deleteAllFiles(folderPath.toFile()); // clear folder
       try {
-        project.getFolder(folderPath.makeRelativeTo(project.getLocation())).refreshLocal(
-                IResource.DEPTH_INFINITE, new NullProgressMonitor());
+        project.getFolder(folderPath.makeRelativeTo(project.getLocation()))
+                .refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
       } catch (CoreException e1) {
         e1.printStackTrace();
       }
@@ -361,7 +372,9 @@ public class RerunActionHandler implements IHandler {
         // create CAS:
         XMLInputSource in = new XMLInputSource(tsDescriptorPath.toPortableString());
         TypeSystemDescription tsd = UIMAFramework.getXMLParser().parseTypeSystemDescription(in);
-
+        ClassLoader classLoader = RutaProjectUtils.getClassLoader(project);
+        ResourceManager resourceManager = new ResourceManager_impl(classLoader);
+        tsd.resolveImports(resourceManager);
         CAS cleanCas = getEmptyCas(tsd);
 
         for (TestCasData td : testCasData) {
@@ -393,8 +406,8 @@ public class RerunActionHandler implements IHandler {
         }
 
         cleanCas.release();
-        project.getFolder(cleanInputPath.makeRelativeTo(project.getLocation())).refreshLocal(
-                IResource.DEPTH_INFINITE, new NullProgressMonitor());
+        project.getFolder(cleanInputPath.makeRelativeTo(project.getLocation()))
+                .refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
       } catch (Exception e) {
         RutaAddonsPlugin.error(e);
       }
@@ -468,8 +481,8 @@ public class RerunActionHandler implements IHandler {
 
           // process run cas and evaluate it
           ae.process(runCas);
-          evalLogicAndUpdateGUI(monitor, testPageView, debugPage, fScript, project, runCas,
-                  testCas, td);
+          evalLogicAndUpdateGUI(monitor, testPageView, debugPage, fScript, project, runCas, testCas,
+                  td);
           if (monitor.isCanceled()) {
             ae.destroy();
             return Status.CANCEL_STATUS;
@@ -544,22 +557,22 @@ public class RerunActionHandler implements IHandler {
 
       monitor.setTaskName("Actually evaluating " + td.getPath().lastSegment());
 
-      IPath estimatedTestPath = project.getFullPath().append(
-              RutaProjectUtils.getDefaultTestLocation());
+      IPath estimatedTestPath = project.getFullPath()
+              .append(RutaProjectUtils.getDefaultTestLocation());
       IPath path2recource = fScript.getFullPath();
       IPath projectRelativePath2Script = path2recource.removeFirstSegments(2);
-      IPath estimatedTestFolderPath = estimatedTestPath.append(projectRelativePath2Script
-              .removeFileExtension());
+      IPath estimatedTestFolderPath = estimatedTestPath
+              .append(projectRelativePath2Script.removeFileExtension());
 
       IPath path2Result = path2Test.append(TestCasData.RESULT_FOLDER);
-      IPath path2ResultFile = path2Result.append(td.getPath().removeFileExtension().lastSegment()
-              + ".result.xmi");
+      IPath path2ResultFile = path2Result
+              .append(td.getPath().removeFileExtension().lastSegment() + ".result.xmi");
 
       if (!path2Test.toOSString().contains(estimatedTestFolderPath.toOSString())) {
         path2Result = project.getLocation().append(RutaProjectUtils.getDefaultTestLocation())
                 .append(RutaProjectUtils.getDefaultTempTestLocation());
-        path2ResultFile = path2Result.append(td.getPath().removeFileExtension().lastSegment()
-                + ".result.xmi");
+        path2ResultFile = path2Result
+                .append(td.getPath().removeFileExtension().lastSegment() + ".result.xmi");
       }
 
       File resultFile = new File(path2ResultFile.toPortableString());
@@ -571,20 +584,21 @@ public class RerunActionHandler implements IHandler {
       EvalDataProcessor.calculateEvaluatData(td, resultCas);
 
       testPageView.getDefaultPage().getControl().getDisplay().asyncExec(new Runnable() {
+        @Override
         public void run() {
           debugPage.getViewer().refresh();
         }
       });
       monitor.worked(1);
-      project.getFolder(path2Result.makeRelativeTo(project.getLocation())).refreshLocal(
-              IResource.DEPTH_INFINITE, new NullProgressMonitor());
+      project.getFolder(path2Result.makeRelativeTo(project.getLocation()))
+              .refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
       runCas.release();
       goldCas.release();
       resultCas.release();
     }
 
-    private CAS getEmptyCas(Object descriptor) throws ResourceInitializationException,
-            InvalidXMLException {
+    private CAS getEmptyCas(Object descriptor)
+            throws ResourceInitializationException, InvalidXMLException {
       CAS testCas = null;
       if (descriptor instanceof AnalysisEngineDescription) {
         testCas = CasCreationUtils.createCas((AnalysisEngineDescription) descriptor);
@@ -597,14 +611,17 @@ public class RerunActionHandler implements IHandler {
     }
   }
 
+  @Override
   public void addHandlerListener(IHandlerListener handlerListener) {
 
   }
 
+  @Override
   public void dispose() {
 
   }
 
+  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
     TestPageBookView debugView = (TestPageBookView) HandlerUtil.getActivePart(event);
     if (!(debugView.getCurrentPage() instanceof TestViewPage)) {
@@ -641,14 +658,17 @@ public class RerunActionHandler implements IHandler {
     }
   }
 
+  @Override
   public boolean isEnabled() {
     return true;
   }
 
+  @Override
   public boolean isHandled() {
     return true;
   }
 
+  @Override
   public void removeHandlerListener(IHandlerListener handlerListener) {
 
   }
@@ -687,7 +707,7 @@ public class RerunActionHandler implements IHandler {
       Type originalType = original.getType();
 
       if (map.containsKey(originalType.getName())) {
-        TypeEvalData element = (TypeEvalData) map.get(originalType.getName());
+        TypeEvalData element = map.get(originalType.getName());
         int oldCount = element.getTruePositives();
         element.setTruePositives(oldCount + 1);
       } else {
@@ -705,7 +725,7 @@ public class RerunActionHandler implements IHandler {
       Type originalType = original.getType();
 
       if (map.containsKey(originalType.getName())) {
-        TypeEvalData element = (TypeEvalData) map.get(originalType.getName());
+        TypeEvalData element = map.get(originalType.getName());
         int oldCount = element.getFalsePositives();
         element.setFalsePositives(oldCount + 1);
       } else {
@@ -723,7 +743,7 @@ public class RerunActionHandler implements IHandler {
       Type originalType = original.getType();
 
       if (map.containsKey(originalType.getName())) {
-        TypeEvalData element = (TypeEvalData) map.get(originalType.getName());
+        TypeEvalData element = map.get(originalType.getName());
         int oldCount = element.getFalseNegatives();
         element.setFalseNegatives(oldCount + 1);
       } else {
