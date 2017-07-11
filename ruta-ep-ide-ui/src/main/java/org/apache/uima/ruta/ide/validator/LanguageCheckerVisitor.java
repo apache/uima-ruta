@@ -151,7 +151,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
    * Name of each block
    */
   private final Stack<String> blocks;
-  
+
   /**
    * each (inlined) rules
    */
@@ -313,8 +313,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
             if (file != null) {
               // script in other project? use that if the file was found in the workspace
               referredProject = file.getProject();
-              IPath typeSystemDescriptorPath = RutaProjectUtils
-                      .getTypeSystemDescriptorPath(file.getLocation(), referredProject, classLoader);
+              IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
+                      file.getLocation(), referredProject, classLoader);
               TypeSystemDescription tsDesc = importCompleteTypeSystem(typeSystemDescriptorPath,
                       url);
 
@@ -444,7 +444,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       }
     }
     if (s instanceof RutaRule) {
-      if(rules.isEmpty()) {
+      if (rules.isEmpty()) {
         collectAllLabels((RutaRule) s);
       }
       rules.push((RutaRule) s);
@@ -566,7 +566,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       StringBuilder sb = new StringBuilder();
       Iterator<IFolder> iterator = folders.iterator();
       while (iterator.hasNext()) {
-        IFolder iFolder = (IFolder) iterator.next();
+        IFolder iFolder = iterator.next();
         sb.append(iFolder.getLocation().toPortableString());
         if (iterator.hasNext()) {
           sb.append(System.getProperty("path.separator"));
@@ -623,8 +623,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         return false;
       }
       RutaVariableReference ref = (RutaVariableReference) s;
-      if(ref.getType() == RutaTypeConstants.RUTA_TYPE_WT || ref.getType() == RutaTypeConstants.RUTA_TYPE_WL) {
-        if(StringUtils.isBlank(ref.getName())) {
+      if (ref.getType() == RutaTypeConstants.RUTA_TYPE_WT
+              || ref.getType() == RutaTypeConstants.RUTA_TYPE_WL) {
+        if (StringUtils.isBlank(ref.getName())) {
           // declaration with a string expression: do not check
           return false;
         }
@@ -643,12 +644,11 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           return false;
         }
         if (namespaces.keySet().contains(name) || namespaces.values().contains(name)
-                || allLongTypeNames.contains(name)
-                 ) {
+                || allLongTypeNames.contains(name)) {
           return false;
         }
         Integer variableType = getVariableType(name);
-        if(variableType != null && (variableType == RutaTypeConstants.RUTA_TYPE_AT
+        if (variableType != null && (variableType == RutaTypeConstants.RUTA_TYPE_AT
                 || variableType == RutaTypeConstants.RUTA_TYPE_UA
                 || variableType == RutaTypeConstants.RUTA_TYPE_UAL)) {
           return false;
@@ -802,8 +802,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       if (conditionName.equals("CONTAINS")) {
         List<?> args = cond.getChilds();
         boolean valid = checkContainsArguments(args);
-        if(!valid) {
-          IProblem problem = problemFactory.createWrongArgumentTypeProblem(cond, "different combination of arguments.");
+        if (!valid) {
+          IProblem problem = problemFactory.createWrongArgumentTypeProblem(cond,
+                  "different combination of arguments.");
           pr.reportProblem(problem);
         }
       }
@@ -882,7 +883,19 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   }
 
   private boolean isLabel(String name) {
-    return currentLabels.contains(name);
+
+    if (currentLabels.contains(name)) {
+      return true;
+    }
+
+    if (name.contains(".")) {
+      String[] split = name.split("[.]");
+      if (split.length > 0) {
+        return currentLabels.contains(split[0]);
+      }
+    }
+
+    return false;
   }
 
   private String expand(String shortName) {
@@ -912,8 +925,10 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     String match = isFeatureMatch(aref);
     Integer variableType1 = getVariableType(aref);
     Integer variableType2 = getVariableType(bref);
-    if (match == null && variableType1 != null && variableType2 != null && (variableType1 == RutaTypeConstants.RUTA_TYPE_AT
-            || variableType2 == RutaTypeConstants.RUTA_TYPE_AT|| variableType1 == RutaTypeConstants.RUTA_TYPE_UA)) {
+    if (match == null && variableType1 != null && variableType2 != null
+            && (variableType1 == RutaTypeConstants.RUTA_TYPE_AT
+                    || variableType2 == RutaTypeConstants.RUTA_TYPE_AT
+                    || variableType1 == RutaTypeConstants.RUTA_TYPE_UA)) {
       // do not check on variables!
       return;
     }
@@ -957,7 +972,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (s instanceof RutaDeclareDeclarationsStatement) {
       parentTypeInDeclaration = null;
     }
-    if(s instanceof ForEachBlock) {
+    if (s instanceof ForEachBlock) {
       knownLocalVariables.pop();
     }
     if (s instanceof RutaMacroDeclaration) {
@@ -968,7 +983,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     }
     if (s instanceof RutaRule) {
       rules.pop();
-      if(rules.isEmpty()) {
+      if (rules.isEmpty()) {
         currentLabels.clear();
       }
     }
@@ -991,7 +1006,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       RutaBlock b = (RutaBlock) s;
       String name = b.getName();
       HashMap<String, Integer> map = new HashMap<String, Integer>();
-      if(b instanceof ForEachBlock) {
+      if (b instanceof ForEachBlock) {
         map.put(name, RutaTypeConstants.RUTA_TYPE_UA);
       }
       knownLocalVariables.push(map);
@@ -1451,7 +1466,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   private TypeSystemDescription getTypeSystemOfScript()
           throws InvalidXMLException, IOException, CoreException {
     IPath descriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(
-            sourceModule.getResource().getLocation(), sourceModule.getScriptProject().getProject(), classLoader);
+            sourceModule.getResource().getLocation(), sourceModule.getScriptProject().getProject(),
+            classLoader);
     if (descriptorPath == null) {
       return null;
     }
