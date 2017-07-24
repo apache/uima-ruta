@@ -27,7 +27,7 @@ a command for updating old projects. Please right-click on a project and select 
 -------------------------------------
 
 The UIMA Ruta analysis engine requires type priorities for the correct execution of rules. 
-If a CAS is created using the CASCreationUtils, please provide the type priorities, e.g., by:
+If a CAS is created using the CasCreationUtils, please provide the type priorities, e.g., by:
 
     URL tpUrl = this.getClass().getResource("/org/apache/uima/ruta/engine/TypePriorities.xml");
     TypePriorities typePriorities = UIMAFramework.getXMLParser().parseTypePriorities(
@@ -41,12 +41,12 @@ internal UIMA Ruta types (overwriting the implementation of RutaBasic). Dependin
 of the type system descriptors, the plugin should be configured to be limited on the project, 
 or the UIMA Ruta type system descriptors should explicitly be excluded:
 
-    <configuration>
-      <typeSystemExcludes>
-        <typeSystemExclude>/**/BasicTypeSystem.xml</typeSystemExclude>
-        <typeSystemExclude>/**/InternalTypeSystem.xml</typeSystemExclude>
-      </typeSystemExcludes>
-    </configuration>
+<configuration>
+  <typeSystemExcludes>
+    <typeSystemExclude>/**/BasicTypeSystem.xml</typeSystemExclude>
+    <typeSystemExclude>/**/InternalTypeSystem.xml</typeSystemExclude>
+  </typeSystemExcludes>
+</configuration>
 
 -------------------------------------
 
@@ -55,16 +55,16 @@ as a standalone annotator you have to exclude the generated UIMA Ruta basic
 type files from the build, e.g., by adding:
 
 
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-compiler-plugin</artifactId>
-    <version>3.0</version>
-    <configuration>
-         <excludes>
-             <exclude>org/apache/uima/ruta/type/*.java</exclude>
-         </excludes>
-    </configuration>
-   </plugin> 
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <version>3.0</version>
+  <configuration>
+    <excludes>
+      <exclude>org/apache/uima/ruta/type/*.java</exclude>
+    </excludes>
+  </configuration>
+</plugin> 
 
 
 
