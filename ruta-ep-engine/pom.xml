@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>2.6.2-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <properties>
@@ -176,6 +176,13 @@ licensed under the Common Public License.
       <version>3.1.2.RELEASE</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.24</version>
+      <scope>compile</scope>
+    </dependency>
+    
   </dependencies>
   <scm>
     <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-ep-engine</url>
@@ -257,7 +264,8 @@ licensed under the Common Public License.
                   org.apache.commons.io.*,
                   org.apache.uima.fit.*,
                   org.apache.commons.math3.*,
-                  org.springframework.*
+                  org.springframework.*,
+                  org.slf4j.*
                 </_exportcontents>
 
                 <Import-Package>
@@ -287,7 +295,7 @@ licensed under the Common Public License.
                   !org.joda.*, !org.jruby.*, !org.omg.CORBA,
                   !org.springframework.instrument,
                   !org.w3c.dom, !org.xml.sax, !org.xml.sax.ext, !org.xml.sax.helpers,
-                  !org.aopalliance.*, !org.springframework.aop.*
+                  !org.aopalliance.*, !org.springframework.aop.*, !org.slf4j.*
                 </Import-Package>
                 <!-- -->
                 <Require-Bundle> org.apache.uima.runtime </Require-Bundle>
