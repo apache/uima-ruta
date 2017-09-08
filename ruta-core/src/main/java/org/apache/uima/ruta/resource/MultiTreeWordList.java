@@ -798,7 +798,7 @@ public class MultiTreeWordList implements RutaWordList {
 
     Collection<AnnotationFS> results = new HashSet<AnnotationFS>();
     stream.moveToFirst();
-    FSIterator<AnnotationFS> streamPointer = stream.copy();
+    FSIterator<AnnotationFS> streamPointer = stream.copy().getCurrentIt();
 
     while (stream.isValid()) {
       RutaBasic anchorBasic = (RutaBasic) stream.get();

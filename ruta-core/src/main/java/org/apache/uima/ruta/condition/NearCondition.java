@@ -59,7 +59,7 @@ public class NearCondition extends TypeSentiveCondition {
     int minValue = min.getIntegerValue(context, stream);
     boolean forwardValue = forward.getBooleanValue(context, stream);
 
-    FSIterator<AnnotationFS> it = filtered.getBooleanValue(context, stream) ? stream : stream
+    FSIterator<AnnotationFS> it = filtered.getBooleanValue(context, stream) ? stream.getCurrentIt() : stream
             .getUnfilteredBasicIterator();
     AnnotationFS pointer = null;
     if (forwardValue) {

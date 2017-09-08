@@ -310,7 +310,7 @@ public class TreeWordList implements RutaWordList {
           char[] ignoreChars, int maxIgnoredChars, boolean ignoreWS) {
     ArrayList<AnnotationFS> results = new ArrayList<AnnotationFS>();
     stream.moveToFirst();
-    FSIterator<AnnotationFS> streamPointer = stream.copy();
+    FSIterator<AnnotationFS> streamPointer = stream.copy().getCurrentIt();
     while (stream.isValid()) {
       RutaBasic anchorBasic = (RutaBasic) stream.get();
       streamPointer.moveTo(anchorBasic);

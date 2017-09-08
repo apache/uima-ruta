@@ -18,13 +18,17 @@
  */
 package org.apache.uima.ruta.rule;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.FSIteratorImplBase;
+import org.apache.uima.cas.impl.LowLevelIndex;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.jcas.cas.TOP;
 
 public class AnnotationListFSIterator extends FSIteratorImplBase<AnnotationFS> {
 
@@ -87,6 +91,96 @@ public class AnnotationListFSIterator extends FSIteratorImplBase<AnnotationFS> {
   public FSIterator<AnnotationFS> copy() {
     
     return new AnnotationListFSIterator(list);
+  }
+
+  @Override
+  public int ll_indexSizeMaybeNotCurrent() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public LowLevelIndex<AnnotationFS> ll_getIndex() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public int ll_maxAnnotSpan() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public boolean isIndexesHaveBeenUpdated() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public boolean maybeReinitIterator() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public void moveToFirstNoReinit() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public void moveToLastNoReinit() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public void moveToNoReinit(FeatureStructure fs) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public Comparator<TOP> getComparator() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public AnnotationFS getNvc() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public void moveToNextNvc() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public void moveToPreviousNvc() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public boolean hasPrevious() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public AnnotationFS previous() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public int nextIndex() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public int previousIndex() {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public void set(AnnotationFS e) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public void add(AnnotationFS e) {
+    throw new NotImplementedException();
   }
 
 }

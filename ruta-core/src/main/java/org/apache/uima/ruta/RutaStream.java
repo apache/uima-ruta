@@ -50,7 +50,6 @@ import org.apache.uima.cas.IntArrayFS;
 import org.apache.uima.cas.StringArrayFS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
-import org.apache.uima.cas.impl.FSIteratorImplBase;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.util.FSCollectionFactory;
@@ -83,7 +82,7 @@ import org.apache.uima.ruta.utils.RutaListUtils;
 import org.apache.uima.ruta.utils.UIMAUtils;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
+public class RutaStream  {
 
   private final CAS cas;
 
@@ -486,8 +485,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return stream;
   }
 
-  @Override
-  public FSIterator<AnnotationFS> copy() {
+  public RutaStream copy() {
     RutaStream stream = new RutaStream(cas, basicType, beginAnchors, endAnchors, filter,
             lowMemoryProfile, simpleGreedyForComposed, emptyIsInvisible, typeUsage, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
@@ -496,17 +494,14 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return stream;
   }
 
-  @Override
   public AnnotationFS get() throws NoSuchElementException {
     return currentIt.get();
   }
 
-  @Override
   public boolean isValid() {
     return currentIt.isValid();
   }
 
-  @Override
   public void moveTo(FeatureStructure fs) {
     try {
       currentIt.moveTo(fs);
@@ -515,22 +510,18 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
   }
 
-  @Override
   public void moveToFirst() {
     currentIt.moveToFirst();
   }
 
-  @Override
   public void moveToLast() {
     currentIt.moveToLast();
   }
 
-  @Override
   public void moveToNext() {
     currentIt.moveToNext();
   }
 
-  @Override
   public void moveToPrevious() {
     currentIt.moveToPrevious();
   }
@@ -1378,4 +1369,10 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
     return cas.getAnnotationType();
   }
+
+  public FSIterator<AnnotationFS> getCurrentIt() {
+    return currentIt;
+  }
+
+
 }
