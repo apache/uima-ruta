@@ -422,8 +422,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   /**
    * If this parameter is activated, then only annotations of types are internally reindexed at
-   * beginning that are mentioned with in the rules. This parameter overrides the values of the parameter
-   * 'reindexOnly' with the types that are mentioned in the rules.
+   * beginning that are mentioned with in the rules. This parameter overrides the values of the
+   * parameter 'reindexOnly' with the types that are mentioned in the rules.
    */
   public static final String PARAM_REINDEX_ONLY_MENTIONED_TYPES = "reindexOnlyMentionedTypes";
 
@@ -629,13 +629,14 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     resetEnvironment(script, cas, new HashSet<RutaModule>());
   }
 
-  private void resetEnvironment(RutaModule module, CAS cas, Collection<RutaModule> alreadyResetted) {
-    if(alreadyResetted.contains(module)) {
+  private void resetEnvironment(RutaModule module, CAS cas,
+          Collection<RutaModule> alreadyResetted) {
+    if (alreadyResetted.contains(module)) {
       // avoid loop in recursion
       return;
     }
     alreadyResetted.add(module);
-    
+
     // reset all blocks
     RutaBlock block = module.getBlock(null);
     block.getEnvironment().reset(cas);
@@ -643,7 +644,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     for (RutaBlock each : blocks) {
       each.getEnvironment().reset(cas);
     }
-    
+
     // reset imported scripts
     Collection<RutaModule> scripts = module.getScripts().values();
     for (RutaModule eachModule : scripts) {
@@ -688,7 +689,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
     for (String each : additionalExtensions) {
       try {
-        Class<?> forName = Class.forName(each);
+        Class<?> forName = getClassLoader().loadClass(each);
         if (IRutaExtension.class.isAssignableFrom(forName)) {
           IRutaExtension extension = (IRutaExtension) forName.newInstance();
           verbalizer.addExternalVerbalizers(extension);
@@ -697,9 +698,18 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           }
         }
       } catch (Exception e) {
-        getLogger().log(Level.WARNING, "Failed to initialze extension " + each);
+        getLogger().log(Level.WARNING, "Failed to initialize extension " + each);
       }
     }
+  }
+
+  private ClassLoader getClassLoader() {
+    ClassLoader extensionClassLoader = resourceManager.getExtensionClassLoader();
+    if (extensionClassLoader == null) {
+      return this.getClass().getClassLoader();
+    }
+    return extensionClassLoader;
+
   }
 
   private InferenceCrowd initializeCrowd() {
@@ -746,7 +756,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       for (String seederClass : seeders) {
         Class<?> loadClass = null;
         try {
-          loadClass = Class.forName(seederClass);
+          loadClass = getClassLoader().loadClass(seederClass);
         } catch (ClassNotFoundException e) {
           throw new AnalysisEngineProcessException(e);
         }
@@ -916,8 +926,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     AnalysisEngine eachEngine = null;
     try {
       @SuppressWarnings("unchecked")
-      Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
-              .forName(eachUimafitEngine);
+      Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) getClassLoader().loadClass(eachUimafitEngine);
       List<String> configurationData = script.getConfigurationData(eachUimafitEngine);
       AnalysisEngineDescription aed = AnalysisEngineFactory.createEngineDescription(uimafitClass,
               configurationData.toArray());
