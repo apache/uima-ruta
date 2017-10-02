@@ -36,9 +36,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.uima.cas.FSIterator;
@@ -46,11 +44,11 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.type.RutaBasic;
+import org.apache.uima.ruta.utils.XmlUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 public class TreeWordList implements RutaWordList {
@@ -380,25 +378,16 @@ public class TreeWordList implements RutaWordList {
       InputStreamReader streamReader = new InputStreamReader(is, encoding);
       this.root = new TextNode();
       XMLEventHandler handler = new XMLEventHandler(root);
-      SAXParserFactory factory = SAXParserFactory.newInstance();
-      SAXParser parser = factory.newSAXParser();
+      SAXParser parser = XmlUtils.createSaxParser();
       XMLReader reader = parser.getXMLReader();
-      // XMLReader reader = XMLReaderFactory.createXMLReader();
+      reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
+      reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+      reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
       reader.setContentHandler(handler);
       reader.setErrorHandler(handler);
       reader.parse(new InputSource(streamReader));
-    } catch (SAXParseException spe) {
-      StringBuffer sb = new StringBuffer(spe.toString());
-      sb.append("\n  Line number: " + spe.getLineNumber());
-      sb.append("\n Column number: " + spe.getColumnNumber());
-      sb.append("\n Public ID: " + spe.getPublicId());
-      sb.append("\n System ID: " + spe.getSystemId() + "\n");
-      System.out.println(sb.toString());
-    } catch (SAXException se) {
-      System.out.println("loadDOM threw " + se);
-      se.printStackTrace(System.out);
-    } catch (ParserConfigurationException e) {
-      e.printStackTrace();
+    } catch (SAXException  e) {
+     throw new IllegalStateException(e);
     }
   }
 

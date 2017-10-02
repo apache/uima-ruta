@@ -32,10 +32,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.uima.ruta.utils.XmlUtils;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -90,18 +89,16 @@ public class MultiTreeWordListPersistence {
       }
       InputStreamReader streamReader = new InputStreamReader(is, encoding);
       TrieXMLEventHandler handler = new TrieXMLEventHandler(root);
-      SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-      SAXParser saxParser = saxParserFactory.newSAXParser();
+      SAXParser saxParser = XmlUtils.createSaxParser();
       XMLReader reader = saxParser.getXMLReader();
-      // was:
-      // XMLReader reader = XMLReaderFactory.createXMLReader();
+      reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
+      reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+      reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
       reader.setContentHandler(handler);
       reader.setErrorHandler(handler);
       reader.parse(new InputSource(streamReader));
     } catch (SAXException e) {
-      e.printStackTrace();
-    } catch (ParserConfigurationException e) {
-      e.printStackTrace();
+     throw new IllegalStateException(e);
     }
   }
 

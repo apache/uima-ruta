@@ -28,9 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.uima.ruta.utils.XmlUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -90,16 +90,13 @@ public class RutaPageFolder {
     // Do the parsing and obtain the top-level node
     Element config = null;
     try {
-      DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+      DocumentBuilder parser = XmlUtils.createDocumentBuilder();
       parser.setErrorHandler(new DefaultHandler());
       config = parser.parse(new InputSource(stream)).getDocumentElement();
     } catch (SAXException e) {
       throw new IOException("Bad XML format");
-    } catch (ParserConfigurationException e) {
-      stream.close();
-      throw new IOException("Bad XML format");
     } finally {
-      stream.close();
+      IOUtils.closeQuietly(stream);
     }
 
     if (!config.getNodeName().equalsIgnoreCase("manPages")) {

@@ -33,9 +33,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -45,6 +44,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.uima.ruta.ide.ui.RutaPreferenceConstants;
+import org.apache.uima.ruta.utils.XmlUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -141,14 +141,7 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
       return null;
 
     // Create the Document and the top-level node
-    DocumentBuilderFactory dfactory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder docBuilder;
-    try {
-      docBuilder = dfactory.newDocumentBuilder();
-    } catch (ParserConfigurationException e1) {
-      e1.printStackTrace();
-      return null;
-    }
+    DocumentBuilder docBuilder = XmlUtils.createDocumentBuilder();
     Document doc = docBuilder.newDocument();
 
     Element topElement = doc.createElement("manPages");
@@ -173,8 +166,9 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
 
     try {
       TransformerFactory factory = TransformerFactory.newInstance();
-      Transformer transformer;
-      transformer = factory.newTransformer();
+      factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+      factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+      Transformer transformer = factory.newTransformer();
       transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
       transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
 

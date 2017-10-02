@@ -22,7 +22,6 @@ package org.apache.uima.ruta.engine;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +30,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.FSIterator;
@@ -41,6 +37,7 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.ruta.type.RutaColoring;
+import org.apache.uima.ruta.utils.XmlUtils;
 import org.apache.uima.tools.stylemap.ColorParser;
 import org.apache.uima.tools.stylemap.StyleMapEntry;
 import org.apache.uima.tools.stylemap.StyleMapXmlParser;
@@ -257,33 +254,13 @@ public class StyleMapFactory {
 
     File styleMapFile = new File(styleFileString);
     Document parse = null;
-    try {
-      DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-      FileInputStream stream = new FileInputStream(styleMapFile);
+   
+    try (FileInputStream stream = new FileInputStream(styleMapFile)) { 
+      DocumentBuilder db = XmlUtils.createDocumentBuilder();
       parse = db.parse(stream);
-      stream.close();
-
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-      return null;
-
-    } catch (ParserConfigurationException e) {
-      e.printStackTrace();
-      return null;
-
-    } catch (FactoryConfigurationError e) {
-      e.printStackTrace();
-      return null;
-
-    } catch (SAXException e) {
-      e.printStackTrace();
-      return null;
-
-    } catch (IOException e) {
-      e.printStackTrace();
-      return null;
-    }
-
+    } catch (SAXException | IOException e) {
+      throw new IllegalStateException(e);
+    } 
     final Node root = parse.getDocumentElement();
     final NodeList nodeList = root.getChildNodes();
 

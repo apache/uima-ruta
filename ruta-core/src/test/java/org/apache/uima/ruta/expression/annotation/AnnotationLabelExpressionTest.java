@@ -654,6 +654,9 @@ public class AnnotationLabelExpressionTest {
     script += "s1:Struct{IS(PERIOD), s1.a.b -> T8};";
     CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
     Ruta.apply(cas, script);
+    
+    RutaTestUtils.storeCas(cas, "testStackedReinitLazyFeature");
+    
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");

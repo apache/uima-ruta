@@ -279,7 +279,7 @@ licensed under the Common Public License.
                   !javax.xml.stream.events, !javax.xml.stream.util,
                   !javax.xml.transform, !javax.xml.transform.sax,
                   !javax.xml.transform.stax,
-                  !javax.xml.ws, !joptsimple, !net.sf.cglib.*, !net.sf.ehcache.*,
+                  !javax.xml.ws, !javax.xml.*, !joptsimple, !net.sf.cglib.*, !net.sf.ehcache.*,
                   !org.antlr.stringtemplate,
                   !org.apache.avalon.framework.logger,
                   !org.apache.log, !org.apache.log4j, !org.apache.log4j.xml,
