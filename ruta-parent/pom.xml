@@ -127,7 +127,7 @@ This product contains icons developed by Mark James
 (http://www.famfamfam.com/lab/icons/silk/), licensed under the 
 Creative Commons Attribution 3.0 License.
     </postNoticeText>
-    <uimaVersion>3.0.0-beta-SNAPSHOT</uimaVersion>
+    <uimaVersion>3.0.0-beta</uimaVersion>
     <uimafit-version>3.0.0-SNAPSHOT</uimafit-version>
      <!-- 
      BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+)
