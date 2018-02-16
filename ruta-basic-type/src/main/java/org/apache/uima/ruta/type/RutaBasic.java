@@ -1,36 +1,27 @@
 /* First created by JCasGen Wed Apr 16 17:01:16 CEST 2008 */
 package org.apache.uima.ruta.type;
 
+import java.lang.invoke.CallSite;
+import java.lang.invoke.MethodHandle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
+import org.apache.uima.cas.impl.CASImpl;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.impl.TypeSystemImpl;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.cas.impl.CASImpl;
-import org.apache.uima.cas.impl.TypeImpl;
-import org.apache.uima.cas.impl.TypeSystemImpl;
 
-/**
- * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012 XML source:
- * D:/work/workspace-uima6/uimaj-ruta/src
- * /main/java/org/apache/uima/ruta/engine/InternalTypeSystem.xml
- * 
- * @generated
- */
-/**
- * Updated by JCasGen Thu Jul 12 10:42:33 CEST 2012 XML source:
- * D:/work/workspace-uima6/uimaj-ruta/src
- * /main/java/org/apache/uima/ruta/engine/InternalTypeSystem.xml
- * 
- * @generated
- */
+/** 
+ * Updated by JCasGen Fri Feb 16 11:29:59 CET 2018
+ * XML source: C:/work/ws/ws-uima-ruta/ruta-v3/ruta-typesystem/target/jcasgen/typesystem.xml
+ * @generated */
 public class RutaBasic extends Annotation {
 
     private static final int INITIAL_CAPACITY = 2;
@@ -328,120 +319,103 @@ public class RutaBasic extends Annotation {
         this.empty = true;
     }
 
-    /**
-   * @generated
-   * @ordered
-   */
-    /**
-   * @generated
-   * @ordered
-   */
-    public static final int typeIndexID = JCasRegistry.register(RutaBasic.class);
-
-    /**
-   * @generated
-   * @ordered
-   */
-    /**
-   * @generated
-   * @ordered
-   */
-    public static final int type = typeIndexID;
-
-    /** @generated */
-    /** @generated */
+    /** @generated
+     * @ordered 
+     */
+    @SuppressWarnings ("hiding")
+    public final static String _TypeName = "org.apache.uima.ruta.type.RutaBasic";
+    
+    /** @generated
+     * @ordered 
+     */
+    @SuppressWarnings ("hiding")
+    public final static int typeIndexID = JCasRegistry.register(RutaBasic.class);
+    /** @generated
+     * @ordered 
+     */
+    @SuppressWarnings ("hiding")
+    public final static int type = typeIndexID;
+    /** @generated
+     * @return index of the type  
+     */
     @Override
-    public int getTypeIndexID() {
-        return typeIndexID;
-    }
+    public              int getTypeIndexID() {return typeIndexID;}
+   
+   
+    /* *******************
+     *   Feature Offsets *
+     * *******************/ 
+     
+    public final static String _FeatName_replacement = "replacement";
 
-    public static final int _FI_replacement = TypeSystemImpl.getAdjustedFeatureOffset("replacement");
 
-    /**
-   * Never called. Disable default constructor
-   * 
-   * @generated
-   */
-    /**
-   * Never called. Disable default constructor
-   * 
-   * @generated
-   */
-    protected RutaBasic() {
-    /* intentionally empty block */
-    }
+    /* Feature Adjusted Offsets */
+    private final static CallSite _FC_replacement = TypeSystemImpl.createCallSite(RutaBasic.class, "replacement");
+    private final static MethodHandle _FH_replacement = _FC_replacement.dynamicInvoker();
 
-    /**
-   * Internal - constructor used by generator
-   * 
-   * @generated
-   */
-    /**
-   * Internal - constructor used by generator
-   * 
-   * @generated
-   */
+     
+    /** Never called.  Disable default constructor
+     * @generated */
+    protected RutaBasic() {/* intentionally empty block */}
+      
+    /** Internal - constructor used by generator 
+     * @generated
+     * @param casImpl the CAS this Feature Structure belongs to
+     * @param type the type of this Feature Structure 
+     */
     public RutaBasic(TypeImpl type, CASImpl casImpl) {
-        super(type, casImpl);
-        readObject();
+      super(type, casImpl);
+      readObject();
     }
-
-    /** @generated */
-    /** @generated */
+    
+    /** @generated
+     * @param jcas JCas to which this Feature Structure belongs 
+     */
     public RutaBasic(JCas jcas) {
-        super(jcas);
-        readObject();
-    }
+      super(jcas);
+      readObject();   
+    } 
 
-    /** @generated */
-    /** @generated */
+
+    /** @generated
+     * @param jcas JCas to which this Feature Structure belongs
+     * @param begin offset to the begin spot in the SofA
+     * @param end offset to the end spot in the SofA 
+    */  
     public RutaBasic(JCas jcas, int begin, int end) {
-        super(jcas);
-        setBegin(begin);
-        setEnd(end);
-        readObject();
-    }
+      super(jcas);
+      setBegin(begin);
+      setEnd(end);
+      readObject();
+    }   
 
-    /**
-   * <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
-   * 
-   * @generated modifiable
-   */
-    /**
-   * <!-- begin-user-doc --> Write your own initialization here <!-- end-user-doc -->
-   * 
-   * @generated modifiable
-   */
-    private void readObject() {
-    }
+    /** 
+     * <!-- begin-user-doc -->
+     * Write your own initialization here
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable 
+     */
+    private void readObject() {/*default - does nothing empty block */}
+       
+   
+      
+    //*--------------*
+    //* Feature: replacement
 
-    // *--------------*
-    // * Feature: Replacement
-    /**
-   * getter for Replacement - gets
-   * 
-   * @generated
-   */
-    /**
-   * getter for Replacement - gets
-   * 
-   * @generated
-   */
-    public String getReplacement() {
-        return _getStringValueNc(_FI_replacement);
-    }
-
-    /**
-   * setter for Replacement - sets
-   * 
-   * @generated
-   */
-    /**
-   * setter for Replacement - sets
-   * 
-   * @generated
-   */
+    /** getter for replacement - gets 
+     * @generated
+     * @return value of the feature 
+     */
+    public String getReplacement() { return _getStringValueNc(wrapGetIntCatchException(_FH_replacement));}
+      
+    /** setter for replacement - sets  
+     * @generated
+     * @param v value to set into the feature 
+     */
     public void setReplacement(String v) {
-        _setStringValueNfc(_FI_replacement, v);
-    }
+      _setStringValueNfc(wrapGetIntCatchException(_FH_replacement), v);
+    }    
+      
+
 }
