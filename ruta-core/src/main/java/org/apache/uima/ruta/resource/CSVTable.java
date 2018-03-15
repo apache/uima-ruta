@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.engine.RutaEngine;
@@ -36,18 +37,25 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
 public class CSVTable implements RutaTable {
+  public static final String DEFAULT_CSV_SEPARATOR = ";";
 
   private List<List<String>> tableData;
 
   private Map<Integer, RutaWordList> columnWordLists = new HashMap<Integer, RutaWordList>(2);
 
+  private final String separator;
+
   /**
    * @param table
    *          A CSV table.
+   * @param selectedSeparator
+   *         The separator that should be used to splitup between columns in the CSV file
+   *
    * @throws IOException
    *           When there is a problem opening, reading or closing the table.
    */
-  public CSVTable(Resource table) throws IOException {
+  public CSVTable(Resource table, String selectedSeparator) throws IOException {
+    separator = selectedSeparator;
     InputStream stream = null;
     try {
       stream = table.getInputStream();
@@ -59,12 +67,13 @@ public class CSVTable implements RutaTable {
     }
   }
 
-  public CSVTable(String location) throws IOException {
-    this(new FileSystemResource(location));
+  public CSVTable(String location, String selectedSeparator) throws IOException {
+    this(new FileSystemResource(location), selectedSeparator);
   }
 
-  public CSVTable(InputStream stream) throws IOException {
+  public CSVTable(InputStream stream, String selectedSeparator) throws IOException {
     super();
+    separator = selectedSeparator;
     buildTable(stream);
   }
 
@@ -74,8 +83,11 @@ public class CSVTable implements RutaTable {
     tableData = new ArrayList<List<String>>();
     while (sc.hasNext()) {
       String line = sc.next().trim();
-      line = line.replaceAll(";;", "; ;");
-      String[] lineElements = line.split(";");
+      // Quote separator to ignore special characters in regex
+      String quotedSeparator = Pattern.quote(separator);
+      // add spacer between 2 followed separators without any other characters
+      line = line.replaceAll(quotedSeparator + quotedSeparator, separator + " " + separator);
+      String[] lineElements = line.split(quotedSeparator);
       List<String> row = Arrays.asList(lineElements);
       tableData.add(row);
     }

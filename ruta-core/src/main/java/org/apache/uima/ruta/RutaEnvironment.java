@@ -679,6 +679,8 @@ public class RutaEnvironment {
 	}
 
 	public RutaTable getWordTable(String table) {
+		UimaContext context = owner.getContext();
+
 		RutaTable result = tables.get(table);
 		if (result == null) {
 			if (table.endsWith("csv") || table.endsWith("txt") || table.endsWith("tsv")) {
@@ -686,7 +688,7 @@ public class RutaEnvironment {
 				Resource resource = resourceLoader.getResource(table);
 				if (resource.exists()) {
 					try {
-						tables.put(table, new CSVTable(resource));
+						tables.put(table, new CSVTable(resource, getCsvSeparator(context)));
 					} catch (IOException e) {
 						Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
 								"Error reading csv table " + table, e);
@@ -696,7 +698,7 @@ public class RutaEnvironment {
 				}
 			} else {
 				try {
-					RutaTable rutaTable = (RutaTable) owner.getContext().getResourceObject(table);
+					RutaTable rutaTable = (RutaTable) context.getResourceObject(table);
 					tables.put(table, rutaTable);
 				} catch (ResourceAccessException e) {
 					Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
@@ -706,6 +708,16 @@ public class RutaEnvironment {
 		}
 
 		return tables.get(table);
+	}
+
+	private String getCsvSeparator(UimaContext context) {
+		if (context != null) {
+            String cvsSeparator = (String) context.getConfigParameterValue(RutaEngine.PARAM_CSV_SEPARATOR);
+            if (cvsSeparator != null) {
+               return cvsSeparator;
+            }
+        }
+		return CSVTable.DEFAULT_CSV_SEPARATOR;
 	}
 
 	private void addVariable(String name, Class<?> type, Class<?> generic) {

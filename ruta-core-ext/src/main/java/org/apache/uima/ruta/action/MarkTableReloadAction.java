@@ -129,7 +129,7 @@ public class MarkTableReloadAction extends AbstractRutaAction {
                 Logger.getLogger(this.getClass().getName()).info("Creating Table Word List from resource: " + tableNameValue);
 
                 try {
-                    table = new CSVTable(resource);
+                    table = new CSVTable(resource, CSVTable.DEFAULT_CSV_SEPARATOR);
                 } catch (IOException e) {
                     Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Unable to load CSV file: " + tableNameValue, e);
                 }

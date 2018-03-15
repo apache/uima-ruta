@@ -73,6 +73,7 @@ import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
 import org.apache.uima.ruta.parser.RutaLexer;
 import org.apache.uima.ruta.parser.RutaParser;
+import org.apache.uima.ruta.resource.CSVTable;
 import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.apache.uima.ruta.seed.RutaAnnotationSeeder;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -381,6 +382,15 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(name = PARAM_DICT_REMOVE_WS, mandatory = false, defaultValue = "false")
   private Boolean dictRemoveWS = false;
+
+  /**
+   * If this parameter is set to any String value then this String/token is used to split columns in
+   * CSV tables
+   */
+  public static final String PARAM_CSV_SEPARATOR = "csvSeparator";
+
+  @ConfigurationParameter(name = PARAM_CSV_SEPARATOR, mandatory = false, defaultValue = CSVTable.DEFAULT_CSV_SEPARATOR)
+  private String csvSeparator = CSVTable.DEFAULT_CSV_SEPARATOR;
 
   /**
    * This parameter specifies the names of variables and is used in combination with the parameter
