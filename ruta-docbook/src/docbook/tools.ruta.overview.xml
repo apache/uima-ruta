@@ -956,6 +956,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                   </entry>
                   <entry>Single Boolean</entry>
                 </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.csvSeparator'>csvSeparator</link>
+                  </entry>
+                  <entry>String/token to be used to split columns in CSV tables.
+                  </entry>
+                  <entry>Single String</entry>
+                </row>
               </tbody>
             </tgroup>
           </table>
@@ -1233,6 +1241,13 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <title>dictRemoveWS</title>
           <para>
             If this parameter is set to true, then whitespaces are removed when dictionaries are loaded.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.csvSeparator">
+          <title>csvSeparator</title>
+          <para>
+            If this parameter is set to any String value then this String/token is used to split columns in CSV tables.
+            The default is set to ';'.
           </para>
         </section>
       </section>
