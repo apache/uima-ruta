@@ -240,6 +240,12 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
     </configurationParameter>
+    <configurationParameter>
+        <name>csvSeparator</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
