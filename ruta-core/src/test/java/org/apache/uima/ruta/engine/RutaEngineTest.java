@@ -18,6 +18,7 @@
  */
 package org.apache.uima.ruta.engine;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,10 +27,13 @@ import java.util.List;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.TypeUsageInformation;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -49,7 +53,7 @@ public class RutaEngineTest {
     AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
             RutaEngine.PARAM_VAR_NAMES, new String[] { "typeVar" }, RutaEngine.PARAM_VAR_VALUES,
             new String[] { "TruePositive" }, RutaEngine.PARAM_RULES, script,
-            RutaEngine.PARAM_INDEX_ONLY_MENTIONED_TYPES, true, RutaEngine.PARAM_INDEX_ADDITONALLY,
+            RutaEngine.PARAM_INDEX_ONLY_MENTIONED_TYPES, Boolean.valueOf(true), RutaEngine.PARAM_INDEX_ADDITONALLY,
             new String[] { "COMMA" });
     RutaEngine engine = (RutaEngine) FieldUtils.readField(ae, "mAnalysisComponent", true);
 
@@ -80,6 +84,23 @@ public class RutaEngineTest {
             "org.apache.uima.ruta.type.TruePositive", "org.apache.uima.ruta.type.W",
             "org.apache.uima.ruta.type.WS", "uima.tcas.DocumentAnnotation"), usedTypesList);
 
+  }
+  
+  @Test
+  public void testInitializeVariableValues() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException{
+    
+    String document = "Some text.";
+    String script = "BOOLEAN var4 = false;";
+    script +="(CW SW) {var4 -> T1};";
+    
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
+            RutaEngine.PARAM_RULES, script,
+            RutaEngine.PARAM_VAR_NAMES, new String[] {"var1", "var2", "var3", "var4"},
+            RutaEngine.PARAM_VAR_VALUES, new String[] {"false", "false", "false", "true"});
+    
+    CAS cas = RutaTestUtils.getCAS(document);
+    ae.process(cas);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1);
   }
 
 }

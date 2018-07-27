@@ -977,12 +977,12 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
       RutaBlock block = script.getBlock(blockName);
       if (block == null) {
-        return;
+        continue;
       }
 
       RutaEnvironment environment = block.getEnvironment();
       if (!environment.ownsVariable(shortName)) {
-        return;
+        continue;
       }
       Object valueObj = null;
       Class<?> variableType = environment.getVariableType(shortName);
