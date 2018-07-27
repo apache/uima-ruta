@@ -51,16 +51,10 @@ public class ScoreCondition extends TerminalRutaCondition {
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
     RuleElement element = context.getElement();
-    Type heuristicType = stream.getJCas().getCasType(RutaAnnotation.type);
-    List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation,
-            heuristicType);
     double score = 0;
-    if (!annotationsInWindow.isEmpty()) {
-      RutaAnnotation heuristicAnnotation = (RutaAnnotation) stream.getCas().createAnnotation(
-              heuristicType, annotation.getBegin(), annotation.getEnd());
-      heuristicAnnotation.setAnnotation((Annotation) annotation);
-      RutaAnnotation tma = stream.getCorrectTMA(annotationsInWindow, heuristicAnnotation);
-      score = tma.getScore();
+    RutaAnnotation rutaAnnotation =  stream.getRutaAnnotationFor(annotation, false, stream);
+    if(rutaAnnotation != null) {
+      score = rutaAnnotation.getScore();
     }
     if (var != null) {
       element.getParent().getEnvironment().setVariableValue(var, score);

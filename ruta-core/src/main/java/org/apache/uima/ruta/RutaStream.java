@@ -53,6 +53,7 @@ import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.impl.FSIteratorImplBase;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -596,51 +597,17 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return result;
   }
 
-  private List<AnnotationFS> getAnnotationsInWindow2(AnnotationFS windowAnnotation, Type type) {
-    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    windowAnnotation = cas.createAnnotation(type, windowAnnotation.getBegin(),
-            windowAnnotation.getEnd() + 1);
-    FSIterator<AnnotationFS> completeIt = getCas().getAnnotationIndex(type).iterator();
-    if (getDocumentAnnotation().getEnd() < windowAnnotation.getEnd()) {
-      completeIt.moveToLast();
-    } else {
-      completeIt.moveTo(windowAnnotation);
-    }
-    while (completeIt.isValid()
-            && ((Annotation) completeIt.get()).getBegin() >= windowAnnotation.getBegin()) {
-      completeIt.moveToPrevious();
-    }
-
-    if (completeIt.isValid()) {
-      completeIt.moveToNext();
-    } else {
-      completeIt.moveToFirst();
-    }
-
-    while (completeIt.isValid()
-            && ((Annotation) completeIt.get()).getBegin() < windowAnnotation.getBegin()) {
-      completeIt.moveToNext();
-    }
-
-    while (completeIt.isValid()
-            && ((Annotation) completeIt.get()).getBegin() >= windowAnnotation.getBegin()) {
-      Annotation annotation = (Annotation) completeIt.get();
-      if (getCas().getTypeSystem().subsumes(type, annotation.getType())
-              && annotation.getEnd() <= windowAnnotation.getEnd()) {
-        result.add(annotation);
-      }
-      completeIt.moveToNext();
-    }
-    return result;
-  }
-
   public List<AnnotationFS> getAnnotationsInWindow(AnnotationFS windowAnnotation, Type type) {
+    
     if (windowAnnotation == null || type == null) {
       return Collections.emptyList();
     }
+    TypeSystem typeSystem = this.getCas().getTypeSystem();
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    List<AnnotationFS> inWindow = getAnnotationsInWindow2(windowAnnotation, type);
-    result = inWindow;
+    if (typeSystem.subsumes(type, windowAnnotation.getType())) {
+      result.add(windowAnnotation);
+    }
+    result.addAll(CasUtil.selectCovered(this.cas, type, windowAnnotation));
     return result;
   }
 
@@ -757,21 +724,6 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   public AnnotationFS getDocumentAnnotation() {
     return documentAnnotation;
-  }
-
-  public RutaAnnotation getCorrectTMA(List<AnnotationFS> annotationsInWindow,
-          RutaAnnotation heuristicAnnotation) {
-    for (AnnotationFS annotation : annotationsInWindow) {
-      if (annotation instanceof RutaAnnotation) {
-        RutaAnnotation tma = (RutaAnnotation) annotation;
-        if (tma.getBegin() == heuristicAnnotation.getBegin()
-                && tma.getEnd() == heuristicAnnotation.getEnd() && tma.getAnnotation().getType()
-                        .equals(heuristicAnnotation.getAnnotation().getType())) {
-          return tma;
-        }
-      }
-    }
-    return null;
   }
 
   public void retainTypes(List<Type> list) {
@@ -1377,5 +1329,25 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
 
     return cas.getAnnotationType();
+  }
+  
+  public RutaAnnotation getRutaAnnotationFor(AnnotationFS annotation, boolean create,
+          RutaStream stream) {
+    Type heuristicType = this.cas.getTypeSystem().getType(RutaAnnotation.class.getName());
+    List<AnnotationFS> ras = CasUtil.selectAt(this.cas, heuristicType, annotation.getBegin(),
+            annotation.getEnd());
+    for (AnnotationFS each : ras) {
+      if (((RutaAnnotation) each).getAnnotation() == annotation) {
+        return (RutaAnnotation) each;
+      }
+    }
+    if (create) {
+      JCas jCas = stream.getJCas();
+      RutaAnnotation result = new RutaAnnotation(jCas, annotation.getBegin(), annotation.getEnd());
+      result.setAnnotation((Annotation) annotation);
+      result.addToIndexes();
+      return result;
+    }
+    return null;
   }
 }

@@ -20,9 +20,8 @@
 package org.apache.uima.ruta.action;
 
 import java.util.List;
-
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -68,35 +67,29 @@ public class MarkAction extends AbstractMarkAction {
 
   protected void updateHeuristicAnnotation(MatchContext context, RutaStream stream,
           AnnotationFS matchedAnnotation, double deltaScore) {
-    Type heuristicType = stream.getJCas().getCasType(RutaAnnotation.type);
-    RutaAnnotation heuristicAnnotation = (RutaAnnotation) stream.getCas().createAnnotation(
-            heuristicType, matchedAnnotation.getBegin(), matchedAnnotation.getEnd());
-    Annotation newAnnotation = (Annotation) stream.getCas().createAnnotation(
-            type.getType(context, stream), heuristicAnnotation.getBegin(),
-            heuristicAnnotation.getEnd());
-    heuristicAnnotation.setScore(deltaScore);
-    heuristicAnnotation.setAnnotation(newAnnotation);
-    List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(heuristicAnnotation,
-            heuristicType);
+    
+    Annotation targetAnnotation = null;
 
-    if (annotationsInWindow.isEmpty()) {
-      heuristicAnnotation.addToIndexes();
-      newAnnotation.addToIndexes();
-      stream.addAnnotation(newAnnotation, context.getRuleMatch());
+    List<AnnotationFS> annotationsInSpan = CasUtil.selectAt(stream.getCas(),
+            this.type.getType(context, stream), matchedAnnotation.getBegin(),
+            matchedAnnotation.getEnd());
+    if (annotationsInSpan.isEmpty()) {
+      targetAnnotation = this.createAnnotation(matchedAnnotation, context, stream);
     } else {
-      RutaAnnotation tma = stream.getCorrectTMA(annotationsInWindow, heuristicAnnotation);
-      if (tma != null) {
-        tma.removeFromIndexes();
-        double newScore = tma.getScore() + deltaScore;
-        tma.setScore(newScore);
-        tma.addToIndexes();
-      } else {
-        heuristicAnnotation.addToIndexes();
-        newAnnotation.addToIndexes();
-        stream.addAnnotation(newAnnotation, context.getRuleMatch());
-      }
+      targetAnnotation = (Annotation) annotationsInSpan.get(0);
+      
     }
 
+    if (targetAnnotation == null) {
+      return;
+    }
+
+    RutaAnnotation rutaAnnotation = stream.getRutaAnnotationFor(targetAnnotation, true, stream);
+    stream.removeAnnotation(rutaAnnotation);
+    double newScore = rutaAnnotation.getScore() + deltaScore;
+    rutaAnnotation.setScore(newScore);
+    rutaAnnotation.addToIndexes();
+    stream.addAnnotation(rutaAnnotation, context.getRuleMatch());
   }
 
   public INumberExpression getScore() {
