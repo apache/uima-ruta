@@ -72,5 +72,23 @@ public class ContainsTest {
     
   }
   
+  @Test
+  public void testContainsOverlappingAnnotations() throws ResourceInitializationException, 
+      InvalidXMLException, IOException, AnalysisEngineProcessException, 
+      ResourceConfigurationException, URISyntaxException {
   
+  String document = "1 2 3 4 5 6 7 8";
+  
+  String script = "(\"1\" # \"5\") {-> T1};";
+  script += "(\"3\" # \"8\") {-> T1};";
+  script += "(\"3\" # \"4\") {-> T1};";
+  script += "(\"3\" # \"5\") {-> T2};";
+  script += "T2{CONTAINS(T1,1,1)-> T3};";
+  
+  CAS cas = RutaTestUtils.getCAS(document);
+  Ruta.apply(cas, script);
+  
+  RutaTestUtils.assertAnnotationsEquals(cas, 3, 1);
+  
+  }
 }

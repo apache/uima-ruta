@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.condition;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.FSIterator;
@@ -89,9 +90,11 @@ public class ContainsCondition extends TypeSentiveCondition {
     int anchorCount = 0;
     int totalCount = 0;
 
+    boolean usePredefinedBoundaries = minIntValue == 1 && maxIntValue == Integer.MAX_VALUE ? false : true;
+    
     if (type != null) {
       if (annotation != null) {
-        if (minIntValue == 1 && maxIntValue == Integer.MAX_VALUE && !usePercentage) {
+        if (!usePredefinedBoundaries && !usePercentage) {
           // shortcut for simple CONTAINS(Type)
           Type t = type.getType(context, stream);
           boolean annotationExsits = checkExistingAnnotation(t, annotation, stream);
@@ -102,7 +105,9 @@ public class ContainsCondition extends TypeSentiveCondition {
             totalCount++;
             Type t = type.getType(context, stream);
             if (each.beginsWith(t) || stream.getCas().getTypeSystem().subsumes(t, each.getType())) {
-              anchorCount += each.getBeginAnchors(t).size();
+              Collection<AnnotationFS> beginAnchors = each.getBeginAnchors(t);
+              anchorCount = incrementAnchorsWithinStrictBoundaries(annotation, anchorCount,
+                      beginAnchors);
               basicCount++;
             } else if (each.isPartOf(t)) {
               basicCount++;
@@ -178,6 +183,16 @@ public class ContainsCondition extends TypeSentiveCondition {
       boolean value = anchorCount >= minIntValue && anchorCount <= maxIntValue;
       return new EvaluatedCondition(this, value);
     }
+  }
+
+  private int incrementAnchorsWithinStrictBoundaries(AnnotationFS annotation, int anchorCount,
+          Collection<AnnotationFS> beginAnchors) {
+    for (AnnotationFS eachBegin : beginAnchors) {
+      if (eachBegin.getEnd() <= annotation.getEnd()) {
+        anchorCount++;
+      }
+    }
+    return anchorCount;
   }
 
   private boolean checkExistingAnnotation(Type type, AnnotationFS annotation, RutaStream stream) {
