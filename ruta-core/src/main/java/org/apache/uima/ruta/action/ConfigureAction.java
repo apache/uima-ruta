@@ -65,7 +65,7 @@ public class ConfigureAction extends AbstractRutaAction {
     RutaModule thisScript = parent.getScript();
     AnalysisEngine targetEngine = thisScript.getEngine(namespace);
     if(targetEngine == null) {
-      throw new IllegalArgumentException("Analysis Engine with name '"+namespace+"' is unknown.");
+      throw new IllegalArgumentException("Analysis Engine with name '"+namespace+"' is unknown in script " + context.getParent().getName() + ".");
     }
     ConfigurationParameterDeclarations configurationParameterDeclarations = targetEngine
             .getAnalysisEngineMetaData().getConfigurationParameterDeclarations();

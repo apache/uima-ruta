@@ -140,7 +140,7 @@ public class RutaRule extends AbstractRule {
         } else if(variableType != null && variableType.isAssignableFrom(AnnotationFS.class)) {
         } else {
           String type = variableType== null ? "unknown" : variableType.getSimpleName();
-          throw new RuntimeException("Overriding global variable '"+label+"' of type '"+ type+ "' with a local label variable is not allowed!");
+          throw new RuntimeException("Overriding global variable '"+label+"' of type '"+ type+ "' with a local label variable is not allowed (in script " + context.getParent().getName() + ")!");
         }
       } else {
         environment.addVariable(label, RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST);

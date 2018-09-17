@@ -48,7 +48,7 @@ public class ActionFactory {
   private TypeUsageInformation typeUsage;
 
   private RutaVerbalizer verbalizer;
-  
+
   public ActionFactory(TypeUsageInformation typeUsage) {
     super();
     this.typeUsage = typeUsage;
@@ -180,7 +180,8 @@ public class ActionFactory {
     if (a instanceof AnnotationTypeExpression) {
       return new UnmarkAction((AnnotationTypeExpression) a);
     }
-    throw new IllegalArgumentException("Expression " + a + " is nto a valid argument for UNMARK.");
+    throw new IllegalArgumentException("Expression " + a
+            + " is not a valid argument for UNMARK in script " + env.getName() + ".");
   }
 
   public AbstractRutaAction createUnmarkAllAction(ITypeExpression f,
@@ -322,18 +323,19 @@ public class ActionFactory {
     List<AbstractRutaAction> actions = macroActionDefinition.getMiddle();
     Set<String> vars = macroActionDefinition.getRight();
     if (definition.size() != argSize) {
-      throw new RutaParseRuntimeException("Arguments of macro action '" + name
-              + "' do not match its definition: " + definition.values());
+      throw new RutaParseRuntimeException(
+              "Arguments of macro action '" + name + "' do not match its definition: "
+                      + definition.values() + " (in script " + env.getName() + ")");
     }
 
     return new MacroAction(name, definition, actions, vars, args);
   }
 
   private void removeMention(ITypeExpression type) {
-    if(typeUsage != null) {
+    if (typeUsage != null) {
       String verbalize = verbalizer.verbalize(type);
       typeUsage.removeMentionedType(verbalize);
     }
   }
-  
+
 }

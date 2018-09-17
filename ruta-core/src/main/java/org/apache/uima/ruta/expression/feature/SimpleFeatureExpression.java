@@ -98,12 +98,12 @@ public class SimpleFeatureExpression extends FeatureExpression {
         }
       } else if (type == null || type.isArray()) {
         // lazy check of range
-        feature = new LazyFeature(each);
+        feature = new LazyFeature(each, context.getParent());
       } else {
         feature = type.getFeatureByBaseName(each);
         if (feature == null) {
           // type maybe not specific enough
-          feature = new LazyFeature(each);
+          feature = new LazyFeature(each, context.getParent());
         }
       }
       result.add(feature);
@@ -208,7 +208,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
         Feature delegate = lazyFeature.initialize(featureStructure);
         if (delegate == null) {
           throw new RuntimeException("Invalid feature! Feature '" + lazyFeature.getFeatureName()
-                  + "' is not defined for type '" + featureStructure.getType() + "'.");
+                  + "' is not defined for type '" + featureStructure.getType() + "' in script " + context.getParent().getName() + ".");
         } else {
           currentFeature = delegate;
         }
