@@ -967,7 +967,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       Feature feature = type.getFeatureByBaseName(featureName);
       if (feature == null) {
         throw new IllegalArgumentException("Not able to assign feature value for feature '"
-                + featureName + "'. Feature is not defined for type '" + type.getName() + "'");
+                + featureName + "'. Feature is not defined for type '" + type.getName() + "'" 
+                + " in script " +context.getParent().getName());
       }
       assignFeatureValue(annotation, feature, value, context);
     }
@@ -976,7 +977,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   public void assignFeatureValue(FeatureStructure annotation, Feature feature,
           IRutaExpression value, MatchContext context) {
     if (feature == null) {
-      throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
+      throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText) in script " +context.getParent().getName());
     }
     CAS cas = annotation.getCAS();
     Type range = feature.getRange();

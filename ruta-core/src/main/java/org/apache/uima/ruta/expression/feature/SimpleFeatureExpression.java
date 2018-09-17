@@ -81,7 +81,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
           feature = new IndexedFeature(delegate, indexedReference.index);
         } else {
           throw new IllegalArgumentException(
-                  "Not able to access feature " + each + " of type " + type.getName());
+                  "Not able to access feature " + each + " of type " + type.getName() + 
+                  "in script " + context.getParent().getName());
         }
       } else if (StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT)
               || StringUtils.equals(each, UIMAConstants.FEATURE_COVERED_TEXT_SHORT)) {

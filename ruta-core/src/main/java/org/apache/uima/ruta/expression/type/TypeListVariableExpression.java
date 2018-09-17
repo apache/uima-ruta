@@ -52,7 +52,8 @@ public class TypeListVariableExpression extends AbstractTypeListExpression {
         if(type != null) {
           result.add(type);
         } else {
-          throw new IllegalArgumentException("Not able to resolve type: " + each);
+          throw new IllegalArgumentException("Not able to resolve type: " + each + 
+                  " in script " +context.getParent().getName());
         }
       }
     }

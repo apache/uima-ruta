@@ -130,7 +130,8 @@ public class MatchReference extends RutaExpression {
     if (typeExpression == null && annotationExpression == null
             && annotationListExpression == null) {
       throw new IllegalArgumentException(
-              "Not able to resolve annotation/type expression: " + reference);
+              "Not able to resolve annotation/type expression: " + reference + 
+              " in script " +context.getParent().getName());
     }
   }
 
