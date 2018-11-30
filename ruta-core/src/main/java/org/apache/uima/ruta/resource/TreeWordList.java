@@ -263,10 +263,10 @@ public class TreeWordList implements RutaWordList {
         result |= recursiveContains(pointer, text, next, ignoreCase, fragment, ignoreChars,
                 maxIgnoreChars, ignoreWS);
       } else {
-        result |= recursiveContains(childNodeL, text, next, ignoreCase, fragment, ignoreChars,
-                maxIgnoreChars, ignoreWS)
-                | recursiveContains(childNodeU, text, next, ignoreCase, fragment, ignoreChars,
-                        maxIgnoreChars, ignoreWS);
+        result |= recursiveContains(childNodeL, text, next, ignoreCase, fragment, ignoreChars, maxIgnoreChars, ignoreWS);
+        if (childNodeL != childNodeU) {  // Do not go into the same tree.
+          result |= recursiveContains(childNodeU, text, next, ignoreCase, fragment, ignoreChars, maxIgnoreChars, ignoreWS);
+        }
       }
     } else {
       TextNode wsNode = pointer.getChildNode(' ');
