@@ -129,22 +129,23 @@ public class CSVTable implements RutaTable {
   }
 
   @Override
-  public List<String> getRowWhere(int column, String value) {
+  public List<String> getRowWhere(int column, String lookupValue, boolean ignoreCase) {
     List<String> columnData = getColumnData(column);
     int i = 0;
-    for (String string : columnData) {
-      if (string.toLowerCase().equals(value.toLowerCase())) {
+    for (String tableValue : columnData) {
+      if (ignoreCase ? tableValue.equalsIgnoreCase(lookupValue) : tableValue.equals(lookupValue)) {
         return tableData.get(i);
       }
       i++;
     }
     i = 0;
-    for (String string : columnData) {
-      if (string.toLowerCase().replaceAll("\\s", "").equals(value.toLowerCase())) {
+    for (String tableValue : columnData) {
+      String tableValueWithoutSpacers = tableValue.replaceAll("\\s", "");
+      if (ignoreCase ? tableValueWithoutSpacers.equalsIgnoreCase(lookupValue) : tableValueWithoutSpacers.equals(lookupValue)) {
         return tableData.get(i);
       }
       i++;
     }
-    return new ArrayList<String>();
+    return new ArrayList<>();
   }
 }

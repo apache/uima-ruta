@@ -123,10 +123,10 @@ public class MarkTableAction extends AbstractRutaAction {
           candidate = candidate.replaceFirst("[" + ignoreCharValue + "]", "");
         }
       }
-      List<String> rowWhere = table.getRowWhere(index - 1, candidate);
+      List<String> rowWhere = table.getRowWhere(index - 1, candidate, false);
       if (rowWhere.isEmpty() && ignoreCaseValue && candidate.length() > ignoreLengthValue) {
         // TODO: does not cover all variants
-        rowWhere = table.getRowWhere(index - 1, candidate.toLowerCase());
+        rowWhere = table.getRowWhere(index - 1, candidate, true);
       }
       FeatureStructure newFS = stream.getCas().createFS(type);
       if (newFS instanceof Annotation) {

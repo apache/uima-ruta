@@ -29,6 +29,6 @@ public interface RutaTable {
 
   String getEntry(int row, int column);
 
-  List<String> getRowWhere(int column, String value);
+  List<String> getRowWhere(int column, String value, boolean ignoreCase);
 
 }
