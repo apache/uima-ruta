@@ -33,6 +33,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -64,7 +65,7 @@ public class MarkTableAction extends AbstractRutaAction {
 
   private final INumberExpression maxIgnoreChar;
 
-  private IBooleanExpression ignoreWS = new SimpleBooleanExpression(true);
+  private IBooleanExpression ignoreWS;
 
   public MarkTableAction(ITypeExpression typeExpr, INumberExpression indexExpr,
           WordTableExpression tableExpr, Map<IStringExpression, INumberExpression> featureMap,
@@ -109,7 +110,7 @@ public class MarkTableAction extends AbstractRutaAction {
     String ignoreCharValue = ignoreChar != null ? ignoreChar.getStringValue(context, stream) : "";
     int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(context, stream)
             : 0;
-    boolean ignoreWSValue = ignoreWS != null ? ignoreWS.getBooleanValue(context, stream) : false;
+    boolean ignoreWSValue = ignoreWS != null ? ignoreWS.getBooleanValue(context, stream) : getDictWSParamValue(context);
 
     RutaWordList wordList = table.getWordList(index, element.getParent());
     Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue,
@@ -141,6 +142,10 @@ public class MarkTableAction extends AbstractRutaAction {
         newStructure.addToIndexes();
       }
     }
+  }
+
+  private boolean getDictWSParamValue(MatchContext context) {
+    return (Boolean) context.getParent().getContext().getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
   }
 
   private void fillFeatures(TOP structure, Map<String, Integer> map, AnnotationFS annotationFS,

@@ -181,6 +181,8 @@ public class RutaTestUtils {
       name = name.substring(0, name.length() - 5);
     }
 
+    ae.setConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS, false);
+
     for (Map.Entry<String, Object> parameter : parameters.entrySet()) {
       ae.setConfigParameterValue(parameter.getKey(), parameter.getValue());
     }
