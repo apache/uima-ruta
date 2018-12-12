@@ -993,8 +993,9 @@ public class RutaEnvironment {
 		Set<Entry<String, Object>> entrySet = variableValues.entrySet();
 		for (Entry<String, Object> entry : entrySet) {
 			String key = entry.getKey();
+			Class<?> variableType = variableTypes.get(key);
 			Object initialValue = getInitialValue(key, variableTypes.get(key));
-			if (initialValue != null) {
+			if ((!variableType.equals(RutaTable.class) && !variableType.equals(RutaWordList.class) ) || initialValue != null) {
 				// not for word lists
 				entry.setValue(initialValue);
 			}
