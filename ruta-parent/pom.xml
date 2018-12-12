@@ -30,7 +30,7 @@
 
   <artifactId>ruta-parent</artifactId>
   <packaging>pom</packaging>
-  <version>2.6.2-SNAPSHOT</version>
+  <version>2.7.0-SNAPSHOT</version>
   <name>Apache UIMA Ruta: ${project.artifactId}</name>
   <url>${uimaWebsiteUrl}</url>
   <inceptionYear>2011</inceptionYear>
@@ -325,6 +325,8 @@ Creative Commons Attribution 3.0 License.
                    <exclude>org.apache.uima.ruta.type</exclude>
                    <exclude>org.apache.uima.ruta.parser.RutaParser</exclude>
                 </excludes>
+                <!-- filter out classes with impl in their package or class name -->
+                <postAnalysisScript>${project.basedir}/../ruta-parent/src/main/groovy/api-report.groovy</postAnalysisScript>                  
               </parameter>
             </configuration>
             <executions>
