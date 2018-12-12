@@ -168,6 +168,7 @@ public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
 
       DebugScriptApply debugScriptApply = debugFactory.createDebugScriptApply(rootApply, stream,
               false, withMatches, timeInfo);
+      debugScriptApply.setTimestamp(System.currentTimeMillis());
       debugScriptApply.addToIndexes();
     }
   }

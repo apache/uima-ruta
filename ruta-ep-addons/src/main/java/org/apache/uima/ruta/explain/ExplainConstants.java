@@ -69,8 +69,10 @@ public class ExplainConstants {
   public static final String RULE_ANCHOR = "ruleAnchor";
 
   public static final String TIME = "time";
-  
+
+  public static final String TIME_STAMP = "timestamp";
+
   public static final String ID = "id";
-  
+
   public static final String SCRIPT = "script";
 }
