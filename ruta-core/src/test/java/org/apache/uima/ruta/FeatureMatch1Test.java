@@ -19,25 +19,33 @@
 
 package org.apache.uima.ruta;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.resource.ResourceConfigurationException;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class FeatureMatch1Test {
 
   @Test
-  public void test() {
+  public void test() throws AnalysisEngineProcessException, InvalidXMLException,
+          ResourceInitializationException, ResourceConfigurationException, URISyntaxException,
+          IOException {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    CAS cas = null;
+
     Map<String, String> complexTypes = new HashMap<String, String>();
     Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
     String typeNameA = "org.apache.uima.ruta.FeatureMatchTest.A";
@@ -69,13 +77,8 @@ public class FeatureMatch1Test {
     String fnds = "ds";
     listD.add(new TestFeature(fnds, "", "uima.cas.String"));
 
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
-              namespace + "/" + name + ".txt", 50, false, false, complexTypes, features, null);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
+    CAS cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+            namespace + "/" + name + ".txt", 50, false, false, complexTypes, features, null);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Marshall");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Marshall");
@@ -93,8 +96,10 @@ public class FeatureMatch1Test {
     RutaTestUtils.assertAnnotationsEquals(cas, 14, 3, "Kluegl", "Kottmann", "Schor");
     RutaTestUtils.assertAnnotationsEquals(cas, 15, 3, "Peter", "Joern", "Marshall");
     RutaTestUtils.assertAnnotationsEquals(cas, 16, 1, "Peter Kluegl, Joern Kottmann, Marshall");
-    RutaTestUtils.assertAnnotationsEquals(cas, 17, 1, "Peter Kluegl, Joern Kottmann, Marshall Schor");
-    RutaTestUtils.assertAnnotationsEquals(cas, 18, 1, "Peter Kluegl, Joern Kottmann, Marshall Schor");
+    RutaTestUtils.assertAnnotationsEquals(cas, 17, 1,
+            "Peter Kluegl, Joern Kottmann, Marshall Schor");
+    RutaTestUtils.assertAnnotationsEquals(cas, 18, 1,
+            "Peter Kluegl, Joern Kottmann, Marshall Schor");
 
     cas.release();
   }

@@ -598,7 +598,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public List<AnnotationFS> getAnnotationsInWindow(AnnotationFS windowAnnotation, Type type) {
-    
+
     if (windowAnnotation == null || type == null) {
       return Collections.emptyList();
     }
@@ -967,8 +967,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       Feature feature = type.getFeatureByBaseName(featureName);
       if (feature == null) {
         throw new IllegalArgumentException("Not able to assign feature value for feature '"
-                + featureName + "'. Feature is not defined for type '" + type.getName() + "'" 
-                + " in script " +context.getParent().getName());
+                + featureName + "'. Feature is not defined for type '" + type.getName() + "'"
+                + " in script " + context.getParent().getName());
       }
       assignFeatureValue(annotation, feature, value, context);
     }
@@ -977,12 +977,16 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   public void assignFeatureValue(FeatureStructure annotation, Feature feature,
           IRutaExpression value, MatchContext context) {
     if (feature == null) {
-      throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText) in script " +context.getParent().getName());
+      throw new IllegalArgumentException(
+              "Not able to assign feature value (e.g., coveredText) in script "
+                      + context.getParent().getName());
     }
     CAS cas = annotation.getCAS();
+    TypeSystem typeSystem = cas.getTypeSystem();
     Type range = feature.getRange();
     String rangeName = range.getName();
-    if (rangeName.equals(CAS.TYPE_NAME_STRING)) {
+
+    if (typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_STRING), range)) {
       if (value instanceof IStringExpression) {
         IStringExpression stringExpr = (IStringExpression) value;
         String string = stringExpr.getStringValue(context, this);
@@ -1331,7 +1335,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
     return cas.getAnnotationType();
   }
-  
+
   public RutaAnnotation getRutaAnnotationFor(AnnotationFS annotation, boolean create,
           RutaStream stream) {
     Type heuristicType = this.cas.getTypeSystem().getType(RutaAnnotation.class.getName());

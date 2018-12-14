@@ -41,6 +41,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -66,7 +67,9 @@ public class MultiTreeWordList implements RutaWordList {
 
   /**
    * Default constructor.
-   * @throws IOException - should not happen but required by called constructor
+   * 
+   * @throws IOException
+   *           - should not happen but required by called constructor
    */
   public MultiTreeWordList() throws IOException {
     this(new String[] {}, null);
@@ -80,7 +83,7 @@ public class MultiTreeWordList implements RutaWordList {
    * @param base
    *          the relative base
    * @throws IOException
-   *          When there is a problem reading pathname.
+   *           When there is a problem reading pathname.
    */
   public MultiTreeWordList(String pathname, File base) throws IOException {
     this(new FileSystemResource(pathname));
@@ -143,7 +146,8 @@ public class MultiTreeWordList implements RutaWordList {
    * 
    * @param pathnames
    *          path of the file to create a TextWordList from
-   * @param base - the relative base
+   * @param base
+   *          - the relative base
    * @throws IOException
    *           When there is a problem reading a path.
    */
@@ -157,9 +161,12 @@ public class MultiTreeWordList implements RutaWordList {
   }
 
   /**
-   * @param files - the input files
-   * @param base - the relative base
-   * @throws IOException - When there is a problem reading the files.
+   * @param files
+   *          - the input files
+   * @param base
+   *          - the relative base
+   * @throws IOException
+   *           - When there is a problem reading the files.
    */
   public MultiTreeWordList(List<File> files, File base) throws IOException {
     this.root = new MultiTextNode();
@@ -215,7 +222,8 @@ public class MultiTreeWordList implements RutaWordList {
       } else if (name.endsWith(".mtwl")) {
         persistence.readMTWL(root, stream, "UTF-8");
       } else {
-        throw new IllegalArgumentException("File name should end with .mtwl or .txt, found " + name);
+        throw new IllegalArgumentException(
+                "File name should end with .mtwl or .txt, found " + name);
       }
     } finally {
       IOUtils.closeQuietly(stream);
@@ -225,8 +233,10 @@ public class MultiTreeWordList implements RutaWordList {
   /**
    * Creates a new Tree in the existing treeWordList from a file with path pathname
    * 
-   * @param stream - Input stream for the file containing the words for the treeWordList
-   * @param name - Associated name for the file
+   * @param stream
+   *          - Input stream for the file containing the words for the treeWordList
+   * @param name
+   *          - Associated name for the file
    * @throws IOException
    *           When there is a problem reading the inputstream.
    */
@@ -573,8 +583,8 @@ public class MultiTreeWordList implements RutaWordList {
     Map<String, Set<String>> resultMap = null;
 
     if (!edit) {
-      return recursiveContains2(root, string, 0, ignoreCase && string.length() > ignoreLength,
-              true, ignoreToken.toCharArray(), ignoreLength);
+      return recursiveContains2(root, string, 0, ignoreCase && string.length() > ignoreLength, true,
+              ignoreToken.toCharArray(), ignoreLength);
     } else {
       if (string.length() >= ignoreLength && ignoreCase) {
         resultMap = editDistance(string, (int) distance, true, ignoreToken, true);
@@ -823,8 +833,8 @@ public class MultiTreeWordList implements RutaWordList {
           }
           List<String> types = null;
           if (!skip) {
-            types = containsFragment(candidate.toString(), ignoreCase, ignoreLength, edit,
-                    distance, ignoreToken);
+            types = containsFragment(candidate.toString(), ignoreCase, ignoreLength, edit, distance,
+                    ignoreToken);
           }
           if (skip || types != null) {
             streamPointer.moveToNext();
@@ -909,7 +919,7 @@ public class MultiTreeWordList implements RutaWordList {
               int end = basicsToAdd.get(basicsToAdd.size() - 1).getEnd();
               AnnotationFS newFS = stream.getCas().createAnnotation(type, begin, end);
               Feature feature = type.getFeatureByBaseName(featureString);
-              setFeatureValue(newFS, feature, value);
+              setFeatureValue(newFS, feature, value, stream);
               results.add(newFS);
             }
           }
@@ -920,11 +930,14 @@ public class MultiTreeWordList implements RutaWordList {
     }
   }
 
-  private void setFeatureValue(AnnotationFS annotationFS, Feature feature, Object o) {
+  private void setFeatureValue(AnnotationFS annotationFS, Feature feature, Object o,
+          RutaStream stream) {
+    TypeSystem typeSystem = stream.getCas().getTypeSystem();
     if (feature != null && o != null) {
       Type range = feature.getRange();
       String rangeName = range.getName();
-      if (rangeName.equals(CAS.TYPE_NAME_STRING) && o instanceof String) {
+      if (typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_STRING), range)
+              && o instanceof String) {
         annotationFS.setStringValue(feature, (String) o);
       } else if (rangeName.equals(CAS.TYPE_NAME_INTEGER) && o instanceof Number) {
         annotationFS.setIntValue(feature, ((Number) o).intValue());
@@ -940,12 +953,13 @@ public class MultiTreeWordList implements RutaWordList {
         annotationFS.setLongValue(feature, ((Number) o).longValue());
       } else if (rangeName.equals(CAS.TYPE_NAME_BOOLEAN) && o instanceof Boolean) {
         annotationFS.setBooleanValue(feature, (Boolean) o);
-      } else if (rangeName.equals(CAS.TYPE_NAME_STRING) & o instanceof Type) {
+      } else if (typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_STRING), range)
+              & o instanceof Type) {
         annotationFS.setStringValue(feature, ((Type) o).getName());
       }
     } else {
-      throw new IllegalArgumentException("Not able to assign feature value: " + o + " -> "
-              + feature);
+      throw new IllegalArgumentException(
+              "Not able to assign feature value: " + o + " -> " + feature);
     }
   }
 
@@ -953,8 +967,10 @@ public class MultiTreeWordList implements RutaWordList {
    * Returns a map with all strings with a specified edit distance to the string query as keys and
    * the files they belong to as values.
    * 
-   * @param query - The query string.
-   * @param distance - The specified edit distance.
+   * @param query
+   *          - The query string.
+   * @param distance
+   *          - The specified edit distance.
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
@@ -966,10 +982,14 @@ public class MultiTreeWordList implements RutaWordList {
    * Returns a map with all strings with a specified edit distance to the string query as keys and
    * the files they belong to as values.
    * 
-   * @param query - The query string.
-   * @param distance - The specified edit distance.
-   * @param ignoreCase - Indicates whether we search case sensitive or not.
-   * @param ignoreToken - Indicates the characters to ignore
+   * @param query
+   *          - The query string.
+   * @param distance
+   *          - The specified edit distance.
+   * @param ignoreCase
+   *          - Indicates whether we search case sensitive or not.
+   * @param ignoreToken
+   *          - Indicates the characters to ignore
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
@@ -982,11 +1002,16 @@ public class MultiTreeWordList implements RutaWordList {
    * Returns a map with all strings with a specified edit distance to the string query as keys and
    * the files they belong to as values.
    * 
-   * @param query - The query string.
-   * @param distance - The specified edit distance.
-   * @param ignoreCase - Indicates whether we search case sensitive or not.
-   * @param ignoreToken - the characters to ignore
-   * @param fragment - Indicates whether we search for fragments of the query string or not.
+   * @param query
+   *          - The query string.
+   * @param distance
+   *          - The specified edit distance.
+   * @param ignoreCase
+   *          - Indicates whether we search case sensitive or not.
+   * @param ignoreToken
+   *          - the characters to ignore
+   * @param fragment
+   *          - Indicates whether we search for fragments of the query string or not.
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
@@ -1013,7 +1038,8 @@ public class MultiTreeWordList implements RutaWordList {
       result = editDistanceClever(root, query.toLowerCase(), "", distance, 0, true, fragment, edcm,
               false, false);
     } else {
-      result = editDistanceClever(root, query, "", distance, 0, false, fragment, edcm, false, false);
+      result = editDistanceClever(root, query, "", distance, 0, false, fragment, edcm, false,
+              false);
     }
 
     // Restoring of the old insert costs.
@@ -1028,16 +1054,26 @@ public class MultiTreeWordList implements RutaWordList {
    * Returns a map with all strings with a specified edit distance to the string query as keys and
    * the files they belong to as values.
    * 
-   * @param node - The MultiTextNode which is under consideration at the moment.
-   * @param query - The query string.
-   * @param result - The result which matched until now.
-   * @param distance - The remaining edit distance.
-   * @param index - The index of the query string at the moment.
-   * @param ignoreCase - Indicates whether we search case sensitive or not.
-   * @param fragment - Indicates whether we search for fragments of the query string or not.
-   * @param edm - The edit distance cost map we are using.
-   * @param lastActionInsert - Indicates whether the last action was an insert action.
-   * @param lastActionDelete - Indicates whether the last action was a delete action.
+   * @param node
+   *          - The MultiTextNode which is under consideration at the moment.
+   * @param query
+   *          - The query string.
+   * @param result
+   *          - The result which matched until now.
+   * @param distance
+   *          - The remaining edit distance.
+   * @param index
+   *          - The index of the query string at the moment.
+   * @param ignoreCase
+   *          - Indicates whether we search case sensitive or not.
+   * @param fragment
+   *          - Indicates whether we search for fragments of the query string or not.
+   * @param edm
+   *          - The edit distance cost map we are using.
+   * @param lastActionInsert
+   *          - Indicates whether the last action was an insert action.
+   * @param lastActionDelete
+   *          - Indicates whether the last action was a delete action.
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
@@ -1094,8 +1130,8 @@ public class MultiTreeWordList implements RutaWordList {
 
       if (index < query.length()) {
         if (ignoreCase) {
-          if (Character.toLowerCase(tempNode.getValue()) == Character.toLowerCase(query
-                  .charAt(index))) {
+          if (Character.toLowerCase(tempNode.getValue()) == Character
+                  .toLowerCase(query.charAt(index))) {
             resultMap.putAll(editDistanceClever(tempNode, query, result + tempNode.getValue(),
                     distance, index + 1, ignoreCase, fragment, edm, false, false));
           }
@@ -1110,9 +1146,9 @@ public class MultiTreeWordList implements RutaWordList {
       if (distance - edm.getReplaceCosts(node.getValue(), tempNode.getValue()) >= 0) {
 
         // Substitute.
-        resultMap.putAll(editDistanceClever(tempNode, query, result + tempNode.getValue(), distance
-                - edm.getReplaceCosts(node.getValue(), tempNode.getValue()), index + 1, ignoreCase,
-                fragment, edm, false, false));
+        resultMap.putAll(editDistanceClever(tempNode, query, result + tempNode.getValue(),
+                distance - edm.getReplaceCosts(node.getValue(), tempNode.getValue()), index + 1,
+                ignoreCase, fragment, edm, false, false));
       }
 
       if (!lastActionDelete) {
@@ -1131,19 +1167,27 @@ public class MultiTreeWordList implements RutaWordList {
   /**
    * Checks if a string is contained by the MultiTreeWordList.
    * 
-   * @param node - The MultiTextNode which is under consideration at the moment.
-   * @param query - The query string.
-   * @param result - The result which matched until now.
-   * @param distance - The remaining edit distance.
-   * @param index - The index of the query string at the moment.
-   * @param ignoreCase - Indicates whether we search case sensitive or not.
-   * @param fragment - Indicates whether we search for fragments of the query string or not.
-   * @param edm - The edit distance cost map we are using.
+   * @param node
+   *          - The MultiTextNode which is under consideration at the moment.
+   * @param query
+   *          - The query string.
+   * @param result
+   *          - The result which matched until now.
+   * @param distance
+   *          - The remaining edit distance.
+   * @param index
+   *          - The index of the query string at the moment.
+   * @param ignoreCase
+   *          - Indicates whether we search case sensitive or not.
+   * @param fragment
+   *          - Indicates whether we search for fragments of the query string or not.
+   * @param edm
+   *          - The edit distance cost map we are using.
    * @return A map with all strings with a specified edit distance to the string query as keys and
    *         the files they belong to as values.
    */
-  private boolean editDistanceBool(MultiTextNode node, String query, String result,
-          double distance, int index, boolean ignoreCase, boolean fragment, EditDistanceCostMap edm) {
+  private boolean editDistanceBool(MultiTextNode node, String query, String result, double distance,
+          int index, boolean ignoreCase, boolean fragment, EditDistanceCostMap edm) {
 
     boolean deletion = false;
     boolean insertion = false;
@@ -1188,8 +1232,8 @@ public class MultiTreeWordList implements RutaWordList {
 
       if (index < query.length()) {
         if (ignoreCase) {
-          if (Character.toLowerCase(tempNode.getValue()) == Character.toLowerCase(query
-                  .charAt(index))) {
+          if (Character.toLowerCase(tempNode.getValue()) == Character
+                  .toLowerCase(query.charAt(index))) {
             noop = editDistanceBool(tempNode, query, result + tempNode.getValue(), distance,
                     index + 1, ignoreCase, fragment, edm);
           }
@@ -1208,9 +1252,9 @@ public class MultiTreeWordList implements RutaWordList {
       if (distance - edm.getReplaceCosts(node.getValue(), tempNode.getValue()) >= 0) {
 
         // Substitute.
-        substitution = editDistanceBool(tempNode, query, result + tempNode.getValue(), distance
-                - edm.getReplaceCosts(node.getValue(), tempNode.getValue()), index + 1, ignoreCase,
-                fragment, edm);
+        substitution = editDistanceBool(tempNode, query, result + tempNode.getValue(),
+                distance - edm.getReplaceCosts(node.getValue(), tempNode.getValue()), index + 1,
+                ignoreCase, fragment, edm);
 
         if (substitution) {
           return true;
@@ -1232,7 +1276,6 @@ public class MultiTreeWordList implements RutaWordList {
 
     return false;
   }
-
 
   @Override
   public int hashCode() {

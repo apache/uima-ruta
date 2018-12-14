@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
@@ -64,14 +65,17 @@ public class GetFeatureAction extends AbstractRutaAction {
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotations) {
       if (annotationFS.getType().getFeatureByBaseName(stringValue) == null) {
+        // TODO replace syso by logger
         System.out.println("Can't access feature " + stringValue
                 + ", because it's not defined in the matched type: " + annotationFS.getType());
         return;
       }
 
-      String featName = featureByBaseName.getRange().getName();
+      TypeSystem typeSystem = stream.getCas().getTypeSystem();
+      Type range = featureByBaseName.getRange();
+      String featName = range.getName();
       if (environment.getVariableType(variable).equals(String.class)
-              && featName.equals(CAS.TYPE_NAME_STRING)) {
+              && typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_STRING), range)) {
         Object value = annotationFS.getStringValue(featureByBaseName);
         environment.setVariableValue(variable, value);
       } else if (Number.class.isAssignableFrom(environment.getVariableType(variable))) {
@@ -95,7 +99,7 @@ public class GetFeatureAction extends AbstractRutaAction {
         Object value = annotationFS.getBooleanValue(featureByBaseName);
         environment.setVariableValue(variable, value);
       } else if (environment.getVariableType(variable).equals(Type.class)
-              && featName.equals(CAS.TYPE_NAME_STRING)) {
+              && typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_STRING), range)) {
         Object value = annotationFS.getStringValue(featureByBaseName);
         Type t = stream.getCas().getTypeSystem().getType((String) value);
         if (t != null) {
