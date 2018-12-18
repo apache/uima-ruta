@@ -235,7 +235,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RutaStream stream, RuleElement element, AnnotationFS result) {
     RutaRuleElement re = (RutaRuleElement) element;
     RutaMatcher matcher = re.getMatcher();
-      
+
     if (matcher instanceof RutaLiteralMatcher) {
       RutaLiteralMatcher lm = (RutaLiteralMatcher) matcher;
       IStringExpression expression = lm.getExpression();
@@ -256,7 +256,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
       if (iterator == null) {
         return null;
       }
-      
+
       if (iterator.isValid()) {
         result = iterator.get();
         if (annotation != null && (after && result.getEnd() == annotation.getEnd())
@@ -424,10 +424,10 @@ public class WildCardRuleElement extends AbstractRuleElement {
     if (stream.getDocumentAnnotation().equals(cas.getDocumentAnnotation())) {
       // no windowing needed
       if (annotation == null) {
-        result = cas.getAnnotationIndex(type).iterator();
+        result = cas.getAnnotationIndex(type).withSnapshotIterators().iterator();
       } else {
         AnnotationFS pointer = stream.getAnchor(after, annotation);
-        result = cas.getAnnotationIndex(type).iterator(pointer);
+        result = cas.getAnnotationIndex(type).withSnapshotIterators().iterator(pointer);
         if (!result.isValid()) {
           if (after) {
             // result.moveToFirst();

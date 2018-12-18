@@ -171,4 +171,16 @@ public class WildCard2Test {
     cas.release();
   }
 
+  @Test
+  public void testWildCardBetweenSameTypeWithAction() throws Exception {
+    String document = "1 a b c 2 d e f 3";
+    String script = "NUM{->T1,T1};";
+    script += "T1 # t:T1{-> UNMARK(t)};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "1", "1");
+  }
+
 }
