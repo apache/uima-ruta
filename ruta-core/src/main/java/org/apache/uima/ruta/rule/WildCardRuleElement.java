@@ -359,9 +359,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
         // TODO match and containermatch should be on the correct level!
         result = nextElement.continueMatch(after, anchor, extendedMatch, ruleApply,
                 nextContainerMatch, sideStepOrigin, nextElement, stream, crowd);
-        List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(nextElement);
-        if (nextList == null || nextList.isEmpty()
-                || !nextList.get(nextList.size() - 1).matched()) {
+//        List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(nextElement);
+        if (result == null || result.isEmpty() || !result.get(result.size() - 1).matched()) {
           moveOn(after, iterator, stream);
         } else {
           doneHere = true;

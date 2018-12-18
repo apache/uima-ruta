@@ -142,7 +142,7 @@ public class WildCard2Test {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "A", "X 2 B", "B");
-    Assert.assertEquals(1008,
+    Assert.assertEquals(192,
             cas.getAnnotationIndex(cas.getTypeSystem().getType(RutaTestUtils.TYPE + "3")).size());
     cas.release();
   }
@@ -181,6 +181,18 @@ public class WildCard2Test {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "1", "1");
+  }
+
+  @Test
+  public void testDuplicateAnnotation() throws Exception {
+    String document = "x x x 1 a b c 2 d e f 3";
+    String script = "NUM{->T1, T1};";
+    script += "# t:T1{-> T2};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "1", "1");
   }
 
 }
