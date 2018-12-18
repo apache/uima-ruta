@@ -23,10 +23,11 @@ import java.util.List;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public interface ITypeListExpression {
-  
+public interface ITypeListExpression extends IStringExpression {
+
   List<Type> getTypeList(MatchContext context, RutaStream stream);
-  
+
 }

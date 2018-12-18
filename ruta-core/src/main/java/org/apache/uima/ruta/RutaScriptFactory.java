@@ -50,6 +50,7 @@ import org.apache.uima.ruta.rule.RuleElementIsolator;
 import org.apache.uima.ruta.rule.RutaAnnotationTypeMatcher;
 import org.apache.uima.ruta.rule.RutaLiteralMatcher;
 import org.apache.uima.ruta.rule.RutaMatcher;
+import org.apache.uima.ruta.rule.RutaOptionalRuleElement;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.rule.WildCardRuleElement;
@@ -70,10 +71,10 @@ public class RutaScriptFactory {
   private UimaContext context;
 
   private ExpressionFactory expressionFactory;
-  
+
   @SuppressWarnings("unused")
   private TypeUsageInformation typeUsage;
-  
+
   public RutaScriptFactory(ExpressionFactory expressionFactory, TypeUsageInformation typeUsage) {
     super();
     if (expressionFactory == null) {
@@ -83,9 +84,9 @@ public class RutaScriptFactory {
     }
     this.typeUsage = typeUsage;
   }
-  
+
   public RutaScriptFactory(ExpressionFactory expressionFactory) {
-   this(expressionFactory, null);
+    this(expressionFactory, null);
   }
 
   public RutaScriptBlock createScriptBlock(Token id, RutaRuleElement ruleElement,
@@ -205,6 +206,12 @@ public class RutaScriptFactory {
   public AbstractRuleElement createWildCardRuleElement(List<AbstractRutaCondition> conditions,
           List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
     return new WildCardRuleElement(conditions, actions, container, parent);
+  }
+
+  public AbstractRuleElement createOptionalRuleElement(List<AbstractRutaCondition> conditions,
+          List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
+
+    return new RutaOptionalRuleElement(conditions, actions, container, parent);
   }
 
   public ComposedRuleElement createComposedRuleElement(List<RuleElement> res,

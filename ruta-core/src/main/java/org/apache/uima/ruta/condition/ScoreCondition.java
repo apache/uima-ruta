@@ -19,11 +19,7 @@
 
 package org.apache.uima.ruta.condition;
 
-import java.util.List;
-
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
@@ -52,8 +48,8 @@ public class ScoreCondition extends TerminalRutaCondition {
     AnnotationFS annotation = context.getAnnotation();
     RuleElement element = context.getElement();
     double score = 0;
-    RutaAnnotation rutaAnnotation =  stream.getRutaAnnotationFor(annotation, false, stream);
-    if(rutaAnnotation != null) {
+    RutaAnnotation rutaAnnotation = stream.getRutaAnnotationFor(annotation, false, stream);
+    if (rutaAnnotation != null) {
       score = rutaAnnotation.getScore();
     }
     if (var != null) {

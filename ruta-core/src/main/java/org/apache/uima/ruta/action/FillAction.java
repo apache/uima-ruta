@@ -39,7 +39,8 @@ public class FillAction extends AbstractStructureAction {
 
   private ITypeExpression structureType;
 
-  public FillAction(ITypeExpression structureType, Map<IStringExpression, IRutaExpression> features) {
+  public FillAction(ITypeExpression structureType,
+          Map<IStringExpression, IRutaExpression> features) {
     super();
     this.structureType = structureType;
     this.features = features;
@@ -77,6 +78,7 @@ public class FillAction extends AbstractStructureAction {
         context.setAnnotation(matchedAnnotation);
         stream.assignFeatureValues(annotationFS, features, context);
         stream.getCas().addFsToIndexes(annotationFS);
+        addAnnotationToLabel(annotationFS, context);
       }
     }
 

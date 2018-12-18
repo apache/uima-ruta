@@ -20,9 +20,13 @@
 package org.apache.uima.ruta.action;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -30,6 +34,8 @@ import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public abstract class AbstractRutaAction extends RutaElement {
+
+  private String label;
 
   public AbstractRutaAction() {
     super();
@@ -42,7 +48,8 @@ public abstract class AbstractRutaAction extends RutaElement {
     return getClass().getSimpleName();
   }
 
-  protected List<Integer> getIndexList(List<INumberExpression> indexes, MatchContext context, RutaStream stream) {
+  protected List<Integer> getIndexList(List<INumberExpression> indexes, MatchContext context,
+          RutaStream stream) {
     RuleElement element = context.getElement();
     List<Integer> indexList = new ArrayList<Integer>();
     if (indexes == null || indexes.isEmpty()) {
@@ -61,5 +68,28 @@ public abstract class AbstractRutaAction extends RutaElement {
     }
     return indexList;
   }
-  
+
+  public void setLabel(String label) {
+    this.label = label;
+  }
+
+  public String getLabel() {
+    return this.label;
+  }
+
+  protected void addAnnotationToLabel(AnnotationFS annotation, MatchContext context) {
+    if (StringUtils.isBlank(label)) {
+      return;
+    }
+    RutaEnvironment environment = context.getParent().getEnvironment();
+
+    Class<?> variableType = environment.getVariableType(label);
+    if (List.class.equals(variableType)
+            && AnnotationFS.class.equals(environment.getVariableGenericType(label))) {
+      environment.setVariableValue(label, Arrays.asList(annotation));
+    } else if (AnnotationFS.class.equals(variableType)) {
+      environment.setVariableValue(label, annotation);
+    }
+  }
+
 }

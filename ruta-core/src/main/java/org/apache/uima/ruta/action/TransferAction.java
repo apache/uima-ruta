@@ -55,6 +55,7 @@ public class TransferAction extends TypeSensitiveAction {
           copyFeatures(annotationFS, createFS, cas);
           if (createFS instanceof AnnotationFS) {
             stream.addAnnotation((AnnotationFS) createFS, match);
+            addAnnotationToLabel((AnnotationFS) createFS, context);
           }
           cas.addFsToIndexes(createFS);
         }

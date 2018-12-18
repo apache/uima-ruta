@@ -210,7 +210,12 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     return false;
   }
 
-  private boolean isAlreadyCovered(AnnotationFS eachAnchor, RuleApply ruleApply, RutaStream stream) {
+  private boolean isAlreadyCovered(AnnotationFS eachAnchor, RuleApply ruleApply,
+          RutaStream stream) {
+    if (eachAnchor == null) {
+      return false;
+    }
+
     List<AbstractRuleMatch<? extends AbstractRule>> list = ruleApply.getList();
     Collections.reverse(list);
     for (AbstractRuleMatch<? extends AbstractRule> each : list) {

@@ -65,6 +65,9 @@ public class PartOfCondition extends TypeSentiveCondition {
   }
 
   private boolean check(Type t, AnnotationFS annotation, RuleElement element, RutaStream stream) {
+    if (annotation == null) {
+      return false;
+    }
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
     if (beginAnchor != null && beginAnchor.isPartOf(t)) {
       return true;

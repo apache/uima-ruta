@@ -633,45 +633,43 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public RutaBasic getBasicNextTo(boolean before, AnnotationFS annotation) {
+
     if (annotation == null) {
-      return beginAnchors.get(0);
+      return null;
     }
+
     if (before) {
-      RutaBasic pointer = beginAnchors.get(annotation.getBegin());
-      moveTo(pointer);
-      if (isVisible(pointer) || !isValid()) {
-        moveToPrevious();
-      }
-      if (!isValid()) {
-        moveToLast();
-      }
-      if (isValid()) {
-        RutaBasic nextBasic = (RutaBasic) get();
-        // TODO HOTFIX for annotation of length 0
-        while (isValid() && nextBasic.getEnd() > annotation.getBegin()) {
-          moveToPrevious();
-          if (isValid()) {
-            nextBasic = (RutaBasic) get();
-          }
+
+      RutaBasic pointer = endAnchors.get(annotation.getBegin());
+      while (pointer != null && pointer.getBegin() >= documentAnnotation.getBegin()) {
+
+        if (isVisible(pointer)) {
+          return pointer;
         }
-        return nextBasic;
+
+        Entry<Integer, RutaBasic> lowerEntry = endAnchors.lowerEntry(pointer.getEnd());
+        if (lowerEntry != null) {
+          pointer = lowerEntry.getValue();
+        } else {
+          pointer = null;
+        }
       }
+
     } else {
-      RutaBasic pointer = endAnchors.get(annotation.getEnd());
-      moveTo(pointer);
-      if (isVisible(pointer)) {
-        moveToNext();
-      }
-      if (isValid()) {
-        RutaBasic nextBasic = (RutaBasic) get();
-        // TODO HOTFIX for annotation of length 0
-        while (isValid() && nextBasic.getBegin() < annotation.getEnd()) {
-          moveToNext();
-          if (isValid()) {
-            nextBasic = (RutaBasic) get();
-          }
+
+      RutaBasic pointer = beginAnchors.get(annotation.getEnd());
+      while (pointer != null && pointer.getEnd() <= documentAnnotation.getEnd()) {
+
+        if (isVisible(pointer)) {
+          return pointer;
         }
-        return nextBasic;
+
+        Entry<Integer, RutaBasic> higherEntry = beginAnchors.higherEntry(pointer.getBegin());
+        if (higherEntry != null) {
+          pointer = higherEntry.getValue();
+        } else {
+          pointer = null;
+        }
       }
     }
     return null;

@@ -990,6 +990,7 @@ String label = null;
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
 	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
+	| (ruleElementOptional[null])=> re5 = ruleElementOptional[container] {re = re5;}
 	)
 	{
 	re.setLabel(label);
@@ -1026,6 +1027,21 @@ ruleElementWildCard [RuleElementContainer container] returns [AbstractRuleElemen
 	}
     ;
 
+ruleElementOptional [RuleElementContainer container] returns [AbstractRuleElement re = null]
+    :
+    
+    w = OPTIONAL 
+     {re = factory.createOptionalRuleElement(null, null, container, $blockDeclaration::env);} 
+        (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
+   {
+	if(c!= null) {
+		re.setConditions(c);
+	}
+	if(a != null) {
+		re.setActions(a);
+	}
+	}
+    ;
 
 
 ruleElementComposed [RuleElementContainer container] returns [ComposedRuleElement re = null]
@@ -1712,7 +1728,11 @@ conditionSize returns [AbstractRutaCondition cond = null]
     ;
 
 action  returns [AbstractRutaAction result = null]
+@init{
+  String label = null;
+}
 	:
+	(l = Identifier {label = l.getText();} COLON)?
 	(
 	a = actionColor
 	| a = actionDel
@@ -1764,7 +1784,11 @@ action  returns [AbstractRutaAction result = null]
 	| (typeExpression)=> te = typeExpression {a = actionFactory.createAction(te);}
 	
 //	| a = variableAction
-	) {result = a;}
+	) 
+	{
+	result = a;
+	result.setLabel(label);
+	}
 	;
 		
 	

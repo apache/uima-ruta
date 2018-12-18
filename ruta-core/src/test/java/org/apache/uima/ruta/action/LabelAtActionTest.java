@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.apache.uima.ruta.rule;
+package org.apache.uima.ruta.action;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -31,20 +30,28 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
-public class SidestepInComposedTest {
+public class LabelAtActionTest {
 
   @Test
   public void test() throws ResourceInitializationException, InvalidXMLException, IOException,
           AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
-    String document = "15. Mai 2005";
-    String script = "\"Mai\" -> T1;";
-    script += "NUM{->T2} PERIOD @T1 NUM;\n";
+
+    String document = "This is a test.";
+    String script = "CW{-> t:T1}->{t{->T2};};";
+    script += "SW.ct == \"is\"{-> t:MARK(T3)}->{t{->T4};};";
+    script += "SW.ct == \"a\"{-> t:CREATE(T5)}->{t{->T6};};";
+    script += "SW.ct == \"test\"{-> t:GATHER(T7)}->{t{->T8};};";
+    script += "Document{-> t:MARKFIRST(T9)}->{t{->T10};};";
+    script += "Document{-> t:MARKLAST(T11)}->{t{->T12};};";
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "15");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "This");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "is");
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 1, "a");
+    RutaTestUtils.assertAnnotationsEquals(cas, 8, 1, "test");
 
-    cas.release();
   }
+
 }

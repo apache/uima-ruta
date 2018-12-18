@@ -21,7 +21,6 @@ package org.apache.uima.ruta.expression;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.cas.FeatureStructure;
@@ -33,6 +32,7 @@ import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeListExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class AnnotationTypeExpression extends RutaExpression
@@ -41,6 +41,8 @@ public class AnnotationTypeExpression extends RutaExpression
   private MatchReference reference;
 
   private ITypeExpression typeExpression;
+
+  private ITypeListExpression typeListExpression;
 
   private IAnnotationExpression annotationExpression;
 
@@ -60,6 +62,7 @@ public class AnnotationTypeExpression extends RutaExpression
     annotationListExpression = reference.getAnnotationListExpression(context, stream);
     featureExpression = reference.getFeatureExpression(context, stream);
     typeExpression = reference.getTypeExpression(context, stream);
+    typeListExpression = reference.getTypeListExpression(context, stream);
     initialized = true;
   }
 
@@ -101,37 +104,48 @@ public class AnnotationTypeExpression extends RutaExpression
         }
       }
     } else {
-      Type type = getType(context, stream);
-      if (type != null) {
 
-        List<AnnotationFS> bestGuessedAnnotations = null;
+      List<Type> types = null;
+      if (typeListExpression != null) {
+        types = typeListExpression.getTypeList(context, stream);
+      } else {
+        Type type = getType(context, stream);
+        types = new ArrayList<>(1);
+        types.add(type);
+      }
+      for (Type type : types) {
 
-        if (featureExpression instanceof FeatureMatchExpression) {
-          // allow more matches for feature matches
-          bestGuessedAnnotations = stream.getAnnotationsByTypeInContext(type, context);
-        } else if (featureExpression != null) {
-          bestGuessedAnnotations = stream.getBestGuessedAnnotationsAt(context.getAnnotation(),
-                  type);
-        } else {
-          bestGuessedAnnotations = stream.getBestGuessedAnnotationsAt(context.getAnnotation(),
-                  type);
-          if (bestGuessedAnnotations.isEmpty()) {
-            bestGuessedAnnotations = new ArrayList<>(1);
-            bestGuessedAnnotations.add(stream.getSingleAnnotationByTypeInContext(type, context));
+        if (type != null) {
+
+          List<AnnotationFS> bestGuessedAnnotations = null;
+
+          if (featureExpression instanceof FeatureMatchExpression) {
+            // allow more matches for feature matches
+            bestGuessedAnnotations = stream.getAnnotationsByTypeInContext(type, context);
+          } else if (featureExpression != null) {
+            bestGuessedAnnotations = stream.getBestGuessedAnnotationsAt(context.getAnnotation(),
+                    type);
+          } else {
+            bestGuessedAnnotations = stream.getBestGuessedAnnotationsAt(context.getAnnotation(),
+                    type);
+            if (bestGuessedAnnotations.isEmpty()) {
+              bestGuessedAnnotations = new ArrayList<>(1);
+              bestGuessedAnnotations.add(stream.getSingleAnnotationByTypeInContext(type, context));
+            }
           }
-        }
 
-        if (featureExpression != null) {
-          Collection<AnnotationFS> annotations = new ArrayList<>();
-          annotations.addAll(bestGuessedAnnotations);
-          Collection<? extends AnnotationFS> featureAnnotations = featureExpression
-                  .getAnnotations(annotations, true, context, stream);
-          if (featureAnnotations != null && !featureAnnotations.isEmpty()) {
-            return featureAnnotations.iterator().next();
+          if (featureExpression != null) {
+            Collection<AnnotationFS> annotations = new ArrayList<>();
+            annotations.addAll(bestGuessedAnnotations);
+            Collection<? extends AnnotationFS> featureAnnotations = featureExpression
+                    .getAnnotations(annotations, true, context, stream);
+            if (featureAnnotations != null && !featureAnnotations.isEmpty()) {
+              return featureAnnotations.iterator().next();
+            }
           }
-        }
-        if (bestGuessedAnnotations != null && !bestGuessedAnnotations.isEmpty()) {
-          return bestGuessedAnnotations.get(0);
+          if (bestGuessedAnnotations != null && !bestGuessedAnnotations.isEmpty()) {
+            return bestGuessedAnnotations.get(0);
+          }
         }
       }
     }
@@ -171,6 +185,8 @@ public class AnnotationTypeExpression extends RutaExpression
       return annotationListExpression.getStringValue(context, stream);
     } else if (annotationExpression != null) {
       return annotationExpression.getStringValue(context, stream);
+    } else if (typeListExpression != null) {
+      return typeListExpression.getStringValue(context, stream);
     } else if (typeExpression != null) {
       return typeExpression.getStringValue(context, stream);
     }
@@ -199,39 +215,51 @@ public class AnnotationTypeExpression extends RutaExpression
         return result;
       }
     } else {
-      Type type = getType(context, stream);
-      if (type != null) {
 
-        List<AnnotationFS> bestGuessedAnnotations = null;
+      List<Type> types = null;
+      if (typeListExpression != null) {
+        types = typeListExpression.getTypeList(context, stream);
+      } else {
+        Type type = getType(context, stream);
+        types = new ArrayList<>(1);
+        types.add(type);
+      }
 
-        if (featureExpression instanceof FeatureMatchExpression) {
-          // allow more matches for feature matches
-          bestGuessedAnnotations = stream.getAnnotationsByTypeInContext(type, context);
-        } else if (featureExpression != null) {
-          bestGuessedAnnotations = stream.getBestGuessedAnnotationsAt(context.getAnnotation(),
-                  type);
-          if (bestGuessedAnnotations.isEmpty()) {
+      List<AnnotationFS> annotations = new ArrayList<>();
+
+      for (Type type : types) {
+        if (type != null) {
+
+          List<AnnotationFS> bestGuessedAnnotations = null;
+
+          if (featureExpression instanceof FeatureMatchExpression) {
+            // allow more matches for feature matches
+            bestGuessedAnnotations = stream.getAnnotationsByTypeInContext(type, context);
+          } else if (featureExpression != null) {
+            bestGuessedAnnotations = stream.getBestGuessedAnnotationsAt(context.getAnnotation(),
+                    type);
+            if (bestGuessedAnnotations.isEmpty()) {
+              bestGuessedAnnotations = stream.getAnnotationsByTypeInContext(type, context);
+            }
+          } else {
             bestGuessedAnnotations = stream.getAnnotationsByTypeInContext(type, context);
           }
-        } else {
-          bestGuessedAnnotations = stream.getAnnotationsByTypeInContext(type, context);
-        }
 
-        if (featureExpression != null) {
-          Collection<AnnotationFS> annotations = new ArrayList<>();
-          annotations.addAll(bestGuessedAnnotations);
-          Collection<? extends AnnotationFS> featureAnnotations = featureExpression
-                  .getAnnotations(annotations, true, context, stream);
-          if (featureAnnotations != null && !featureAnnotations.isEmpty()) {
-            return new ArrayList<>(featureAnnotations);
+          if (featureExpression != null) {
+            Collection<? extends AnnotationFS> featureAnnotations = featureExpression
+                    .getAnnotations(bestGuessedAnnotations, true, context, stream);
+            if (featureAnnotations != null && !featureAnnotations.isEmpty()) {
+              annotations.addAll(featureAnnotations);
+            }
+          }
+          if (bestGuessedAnnotations != null && !bestGuessedAnnotations.isEmpty()) {
+            annotations.addAll(bestGuessedAnnotations);
           }
         }
-        if (bestGuessedAnnotations != null && !bestGuessedAnnotations.isEmpty()) {
-          return bestGuessedAnnotations;
-        }
       }
+
+      return annotations;
     }
-    return Collections.emptyList();
   }
 
   public MatchReference getReference() {
@@ -246,6 +274,10 @@ public class AnnotationTypeExpression extends RutaExpression
     return typeExpression;
   }
 
+  public ITypeListExpression getTypeListExpression() {
+    return typeListExpression;
+  }
+
   public IAnnotationExpression getAnnotationExpression() {
     return annotationExpression;
   }
@@ -258,6 +290,7 @@ public class AnnotationTypeExpression extends RutaExpression
     return featureExpression;
   }
 
+  @Override
   public String toString() {
     return reference.toString();
   }

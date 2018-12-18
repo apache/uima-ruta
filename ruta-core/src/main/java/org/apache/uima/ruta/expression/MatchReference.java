@@ -36,7 +36,9 @@ import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeListExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
+import org.apache.uima.ruta.expression.type.TypeListVariableExpression;
 import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.utils.IndexedReference;
@@ -51,6 +53,8 @@ public class MatchReference extends RutaExpression {
   private IRutaExpression argument;
 
   private ITypeExpression typeExpression;
+
+  private ITypeListExpression typeListExpression;
 
   private IAnnotationExpression annotationExpression;
 
@@ -76,6 +80,12 @@ public class MatchReference extends RutaExpression {
   public MatchReference(ITypeExpression expression) {
     super();
     this.typeExpression = expression;
+    initialized = true;
+  }
+
+  public MatchReference(ITypeListExpression expression) {
+    super();
+    this.typeListExpression = expression;
     initialized = true;
   }
 
@@ -127,11 +137,10 @@ public class MatchReference extends RutaExpression {
       }
     }
     initialized = true;
-    if (typeExpression == null && annotationExpression == null
+    if (typeExpression == null && typeListExpression == null && annotationExpression == null
             && annotationListExpression == null) {
-      throw new IllegalArgumentException(
-              "Not able to resolve annotation/type expression: " + reference + 
-              " in script " +context.getParent().getName());
+      throw new IllegalArgumentException("Not able to resolve annotation/type expression: "
+              + reference + " in script " + context.getParent().getName());
     }
   }
 
@@ -149,6 +158,9 @@ public class MatchReference extends RutaExpression {
     } else {
       if (environment.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_TYPE)) {
         typeExpression = new TypeVariableExpression(candidate);
+        return true;
+      } else if (environment.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_TYPE_LIST)) {
+        typeListExpression = new TypeListVariableExpression(candidate);
         return true;
       } else if (environment.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_ANNOTATION)) {
         annotationExpression = new AnnotationVariableExpression(candidate);
@@ -168,6 +180,11 @@ public class MatchReference extends RutaExpression {
   public ITypeExpression getTypeExpression(MatchContext context, RutaStream stream) {
     resolve(context, stream);
     return typeExpression;
+  }
+
+  public ITypeListExpression getTypeListExpression(MatchContext context, RutaStream stream) {
+    resolve(context, stream);
+    return typeListExpression;
   }
 
   public IAnnotationExpression getAnnotationExpression(MatchContext context, RutaStream stream) {
@@ -196,6 +213,9 @@ public class MatchReference extends RutaExpression {
     }
     if (typeExpression != null) {
       return typeExpression.toString();
+    }
+    if (typeListExpression != null) {
+      return typeListExpression.toString();
     }
     if (annotationExpression != null) {
       return annotationExpression.toString();

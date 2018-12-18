@@ -52,7 +52,7 @@ public class ShiftAction extends MarkAction {
     RuleMatch match = context.getRuleMatch();
     RuleElement element = context.getElement();
     Type targetType = type.getType(context, stream);
-    
+
     List<Integer> indexList = getIndexList(context, list, stream);
     List<AnnotationFS> destinationAnnotationSpans = match.getMatchedAnnotations(indexList,
             element.getContainer());
@@ -62,7 +62,7 @@ public class ShiftAction extends MarkAction {
             destinationAnnotationSpans.size());
 
     boolean expandAll = all == null ? false : all.getBooleanValue(context, stream);
-    
+
     RutaBasic firstBasicOfAll = stream.getFirstBasicOfAll();
     RutaBasic lastBasicOfAll = stream.getLastBasicOfAll();
     int windowBegin = firstBasicOfAll == null ? 0 : firstBasicOfAll.getBegin();
@@ -72,22 +72,23 @@ public class ShiftAction extends MarkAction {
       AnnotationFS eachDestination = destinationAnnotationSpans.get(i);
       Set<AnnotationFS> allAnchoredAnnotations = new TreeSet<AnnotationFS>(
               new AnnotationComparator());
-      
-      if(expandAll) {
-      Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(eachMatched.getBegin())
-              .getBeginAnchors(targetType);
-      Collection<AnnotationFS> endAnchors = stream.getEndAnchor(eachMatched.getEnd())
-              .getEndAnchors(targetType);
-      allAnchoredAnnotations.addAll(beginAnchors);
-      allAnchoredAnnotations.addAll(endAnchors);
+
+      if (expandAll) {
+        Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(eachMatched.getBegin())
+                .getBeginAnchors(targetType);
+        Collection<AnnotationFS> endAnchors = stream.getEndAnchor(eachMatched.getEnd())
+                .getEndAnchors(targetType);
+        allAnchoredAnnotations.addAll(beginAnchors);
+        allAnchoredAnnotations.addAll(endAnchors);
       } else {
         allAnchoredAnnotations.addAll(stream.getBestGuessedAnnotationsAt(eachMatched, targetType));
       }
-      
+
       for (AnnotationFS eachAnchored : allAnchoredAnnotations) {
         if (eachAnchored.getBegin() >= windowBegin && eachAnchored.getEnd() <= windowEnd) {
           Annotation a = (Annotation) eachAnchored;
           stream.changeOffsets(a, eachDestination.getBegin(), eachDestination.getEnd(), match);
+          addAnnotationToLabel(a, context);
         }
       }
     }

@@ -73,6 +73,7 @@ public class CreateAction extends AbstractStructureAction {
         context.setAnnotation(matchedAnnotation);
         stream.assignFeatureValues(annotation, features, context);
         stream.addAnnotation(a, true, match);
+        addAnnotationToLabel(a, context);
       }
     }
   }

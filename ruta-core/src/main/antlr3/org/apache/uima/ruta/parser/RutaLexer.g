@@ -389,6 +389,8 @@ ADDRESS_PREFIX
 
 STARTANCHOR 
 	:	 '@';
+	
+OPTIONAL	: '_' ;
 
 HexLiteral : '0' ('x'|'X') HexDigit+ IntegerTypeSuffix? ;
 
@@ -547,6 +549,8 @@ GREATEREQUAL	: '>=' ;
 
 
 WILDCARD	: '#' ;
+
+
 
 WS  :  (' '|'\r'|'\t'|'\u000C'|'\n') {$channel=HIDDEN;}
     ;

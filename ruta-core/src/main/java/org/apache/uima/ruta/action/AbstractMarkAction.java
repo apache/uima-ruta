@@ -50,6 +50,7 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
       return null;
     }
     stream.addAnnotation(newAnnotation, context.getRuleMatch());
+    addAnnotationToLabel(newAnnotation, context);
     return newAnnotation;
   }
 

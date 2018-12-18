@@ -125,10 +125,12 @@ RuleElements           -> RuleElement+
 RuleElement            -> (Identifier ":")? "@"? 
                         RuleElementType | RuleElementLiteral
                         | RuleElementComposed | RuleElementWildCard
+                        | RuleElementOptional
 RuleElementType        ->  AnnotationTypeExpr OptionalRuleElementPart
 RuleElementWithCA      ->  AnnotationTypeExpr ("{" Conditions?  
                            Actions? "}")?
-AnnotationTypeExpr     -> (TypeExpression | AnnotationExpression) 
+AnnotationTypeExpr     -> (TypeExpression | AnnotationExpression
+						   TypeListExpression | AnnotationListExpression) 
                           (Operator)? Expression ("{" Conditions "}")?
 FeatureMatchExpression -> TypeExpression ( "." Feature)+ 
                           ( Operator (Expression | "null"))?
@@ -142,11 +144,13 @@ OptionalRuleElementPart-> QuantifierPart? ("{" Conditions?  Actions? "}")?
 InlinedRules           ->  ("<-" "{" SimpleStatement+ "}")?
                            ("->"  "{" SimpleStatement+ "}")?
 RuleElementWildCard    -> "#"("{" Conditions?  Actions? }")? InlinedRules?
+RuleElementOptional    -> "_"("{" Conditions?  Actions? }")? InlinedRules?
 QuantifierPart         -> "*" | "*?" | "+" | "+?" | "?" | "??"
                         | "[" NumberExpression "," NumberExpression "]"
                         | "[" NumberExpression "," NumberExpression "]?"
 Conditions             -> Condition ( "," Condition )*
-Actions                -> "->" Action ( "," Action)*
+Actions                -> "->" (Identifier ":")? Action 
+                         ( "," (Identifier ":")? Action)*
 ]]></programlisting>
     Since each condition and each action has its own syntax, conditions
     and actions are described in their own section. For conditions see

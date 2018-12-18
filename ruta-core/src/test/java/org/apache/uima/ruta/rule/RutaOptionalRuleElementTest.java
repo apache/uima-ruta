@@ -16,35 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.uima.ruta.rule;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
-public class SidestepInComposedTest {
+public class RutaOptionalRuleElementTest {
 
   @Test
-  public void test() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
-    String document = "15. Mai 2005";
-    String script = "\"Mai\" -> T1;";
-    script += "NUM{->T2} PERIOD @T1 NUM;\n";
+  public void test() throws Exception {
+    String document = "This is a Test";
+    String script = "_{-PARTOF(CW)} @W{-> T1};\n";
+    script += "@W{-> T2} _{-PARTOF(CW)};\n";
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "15");
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "This", "a", "Test");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "This", "is", "Test");
 
-    cas.release();
   }
+
 }

@@ -53,8 +53,8 @@ public class RutaEngineTest {
     AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
             RutaEngine.PARAM_VAR_NAMES, new String[] { "typeVar" }, RutaEngine.PARAM_VAR_VALUES,
             new String[] { "TruePositive" }, RutaEngine.PARAM_RULES, script,
-            RutaEngine.PARAM_INDEX_ONLY_MENTIONED_TYPES, Boolean.valueOf(true), RutaEngine.PARAM_INDEX_ADDITONALLY,
-            new String[] { "COMMA" });
+            RutaEngine.PARAM_INDEX_ONLY_MENTIONED_TYPES, Boolean.valueOf(true),
+            RutaEngine.PARAM_INDEX_ADDITONALLY, new String[] { "COMMA" });
     RutaEngine engine = (RutaEngine) FieldUtils.readField(ae, "mAnalysisComponent", true);
 
     TypeUsageInformation typeUsageInformation = (TypeUsageInformation) FieldUtils.readField(engine,
@@ -85,19 +85,19 @@ public class RutaEngineTest {
             "org.apache.uima.ruta.type.WS", "uima.tcas.DocumentAnnotation"), usedTypesList);
 
   }
-  
+
   @Test
-  public void testInitializeVariableValues() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException{
-    
+  public void testInitializeVariableValues() throws ResourceInitializationException,
+          InvalidXMLException, IOException, AnalysisEngineProcessException {
+
     String document = "Some text.";
     String script = "BOOLEAN var4 = false;";
-    script +="(CW SW) {var4 -> T1};";
-    
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
-            RutaEngine.PARAM_RULES, script,
-            RutaEngine.PARAM_VAR_NAMES, new String[] {"var1", "var2", "var3", "var4"},
-            RutaEngine.PARAM_VAR_VALUES, new String[] {"false", "false", "false", "true"});
-    
+    script += "(CW SW) {var4 -> T1};";
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
+            script, RutaEngine.PARAM_VAR_NAMES, new String[] { "var1", "var2", "var3", "var4" },
+            RutaEngine.PARAM_VAR_VALUES, new String[] { "false", "false", "false", "true" });
+
     CAS cas = RutaTestUtils.getCAS(document);
     ae.process(cas);
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1);

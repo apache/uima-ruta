@@ -85,6 +85,7 @@ public class GatherAction extends AbstractStructureAction {
         a.setBegin(matchedAnnotation.getBegin());
         a.setEnd(matchedAnnotation.getEnd());
         stream.addAnnotation(a, match);
+        addAnnotationToLabel(a, context);
       }
       TOP newStructure = null;
       if (newFS instanceof TOP) {
@@ -144,8 +145,8 @@ public class GatherAction extends AbstractStructureAction {
               // search for
               Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(fs.getBegin())
                       .getBeginAnchors(range);
-              Collection<AnnotationFS> endAnchors = stream.getEndAnchor(fs.getEnd()).getEndAnchors(
-                      range);
+              Collection<AnnotationFS> endAnchors = stream.getEndAnchor(fs.getEnd())
+                      .getEndAnchors(range);
               @SuppressWarnings("unchecked")
               Collection<AnnotationFS> intersection = CollectionUtils.intersection(beginAnchors,
                       endAnchors);
@@ -208,7 +209,6 @@ public class GatherAction extends AbstractStructureAction {
     }
     return result;
   }
-
 
   public ITypeExpression getStructureType() {
     return structureType;

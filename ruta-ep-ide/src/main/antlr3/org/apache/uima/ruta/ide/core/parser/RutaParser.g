@@ -816,7 +816,7 @@ String label = null;
 	re1 = ruleElementType {re = re1;}
 	| re2 = ruleElementLiteral {re = re2;}
 	| re3 = ruleElementComposed {re = re3;}
-	| re4 = ruleElementWildCard {re = re4;}
+	| re4 = ruleElementSpecial {re = re4;}
 	)
 	{re.setLabel(label);}
 	(t = THEN2 LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 
@@ -825,12 +825,12 @@ String label = null;
 	RCURLY {re.setInlinedRules(innerRules);re.setInlineMode(t == null ? null : t.getText());})?
 	;
 
-ruleElementWildCard returns [RutaRuleElement re = null] 
+ruleElementSpecial returns [RutaRuleElement re = null] 
 @init{
 List<RutaCondition> dummyConds = new ArrayList<RutaCondition>();
 }
   :
-    	w = WILDCARD
+    	w = (WILDCARD | OPTIONAL)
         (LCURLY 
         {
         
@@ -848,6 +848,7 @@ List<RutaCondition> dummyConds = new ArrayList<RutaCondition>();
         re = scriptFactory.createRuleElement(w,c,a,end);}
 
     ;
+
 
 	
 ruleElementComposed returns [ComposedRuleElement re = null] 
@@ -1548,8 +1549,10 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 action returns [RutaAction result = null]
 @init {
 result = ActionFactory.createEmptyAction(input.LT(1));
+String label = null;
 }
 	:
+	(l = Identifier {label = l.getText();} COLON)?
 	(
 	a = actionColor
 	| a = actionDel
@@ -1600,7 +1603,7 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| (typeExpression)=> te = typeExpression {a = ActionFactory.createAction(te);}
 	
 	// | a = variableAction
-	) {result = a;}
+	) {result = a; result.setLabel(label);}
 	;
 
 
