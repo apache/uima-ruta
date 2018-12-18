@@ -18,22 +18,20 @@
  */
 package org.apache.uima.ruta.engine;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.TypeUsageInformation;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -86,21 +84,24 @@ public class RutaEngineTest {
 
   }
 
-  @Test
-  public void testInitializeVariableValues() throws ResourceInitializationException,
-          InvalidXMLException, IOException, AnalysisEngineProcessException {
+  @Test(expected = NotImplementedException.class)
+  public void testInferenceVisitors() throws Throwable {
 
     String document = "Some text.";
-    String script = "BOOLEAN var4 = false;";
-    script += "(CW SW) {var4 -> T1};";
+    String script = "CW;";
 
     AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
-            script, RutaEngine.PARAM_VAR_NAMES, new String[] { "var1", "var2", "var3", "var4" },
-            RutaEngine.PARAM_VAR_VALUES, new String[] { "false", "false", "false", "true" });
+            script, RutaEngine.PARAM_INFERENCE_VISITORS,
+            new String[] { TestRutaInferenceVisitor.class.getName() });
 
     CAS cas = RutaTestUtils.getCAS(document);
-    ae.process(cas);
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1);
+
+    try {
+      ae.process(cas);
+    } catch (AnalysisEngineProcessException e) {
+      Throwable cause = e.getCause();
+      throw cause;
+    }
   }
 
 }

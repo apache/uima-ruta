@@ -964,6 +964,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                   </entry>
                   <entry>Single String</entry>
                 </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.inferenceVisitors'>inferenceVisitors</link>
+                  </entry>
+                  <entry>List of factory classes for additional inference visitors.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
               </tbody>
             </tgroup>
           </table>
@@ -1248,6 +1256,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <para>
             If this parameter is set to any String value then this String/token is used to split columns in CSV tables.
             The default is set to ';'.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.inferenceVisitors">
+          <title>inferenceVisitors</title>
+          <para>
+            This parameter specifies optional class names implementing the interface
+    		<code>org.apache.uima.ruta.visitor.RutaInferenceVisitor</code>, which will be notified during
+   			applying the rules.
           </para>
         </section>
       </section>

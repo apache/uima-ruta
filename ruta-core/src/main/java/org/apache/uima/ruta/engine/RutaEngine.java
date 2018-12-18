@@ -481,6 +481,17 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   @ConfigurationParameter(name = PARAM_MODIFY_DATAPATH, mandatory = false, defaultValue = "false")
   private boolean modifyDataPath;
 
+  /**
+   * This parameter specifies optional class names implementing the interface
+   * <code>org.apache.uima.ruta.visitor.RutaInferenceVisitor</code>, which will be notified during
+   * applying the rules.
+   * 
+   */
+  public static final String PARAM_INFERENCE_VISITORS = "inferenceVisitors";
+
+  @ConfigurationParameter(name = PARAM_INFERENCE_VISITORS, mandatory = false, defaultValue = {})
+  private String[] inferenceVisitors;
+
   private UimaContext context;
 
   private RutaModule script;
@@ -737,6 +748,20 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     if (createdBy) {
       visitors.add(new CreatedByVisitor(verbalizer));
     }
+    if (inferenceVisitors != null && inferenceVisitors.length != 0) {
+      for (String eachClassName : inferenceVisitors) {
+        try {
+          Class<?> forName = getClassLoader().loadClass(eachClassName);
+          if (RutaInferenceVisitor.class.isAssignableFrom(forName)) {
+            RutaInferenceVisitor visitor = (RutaInferenceVisitor) forName.newInstance();
+            visitors.add(visitor);
+          }
+        } catch (Exception e) {
+          getLogger().log(Level.WARNING, "Failed to initialize inference visitor " + eachClassName);
+        }
+      }
+    }
+
     return new InferenceCrowd(visitors);
   }
 
@@ -936,7 +961,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     AnalysisEngine eachEngine = null;
     try {
       @SuppressWarnings("unchecked")
-      Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) getClassLoader().loadClass(eachUimafitEngine);
+      Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) getClassLoader()
+              .loadClass(eachUimafitEngine);
       List<String> configurationData = script.getConfigurationData(eachUimafitEngine);
       AnalysisEngineDescription aed = AnalysisEngineFactory.createEngineDescription(uimafitClass,
               configurationData.toArray());
