@@ -81,7 +81,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   protected void doneMatching(RuleMatch ruleMatch, RuleApply ruleApply, RutaStream stream,
           InferenceCrowd crowd) {
     if (!ruleMatch.isApplied()) {
-      ruleApply.add(ruleMatch);
+      ruleApply.add(ruleMatch, stream);
       if (ruleMatch.matchedCompletely()) {
         ruleMatch.getRule().getRoot().applyRuleElements(ruleMatch, stream, crowd);
       }

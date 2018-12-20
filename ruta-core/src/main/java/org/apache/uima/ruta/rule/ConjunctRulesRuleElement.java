@@ -58,10 +58,10 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
         }
       }
       allMatched &= oneMatched;
-      
+
       // only the matches that actually matched successfully
       for (RuleMatch eachRuleMatch : startMatch) {
-        if(eachRuleMatch.matched()) {
+        if (eachRuleMatch.matched()) {
           result.add(eachRuleMatch);
         }
       }
@@ -70,7 +70,7 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
     for (RuleMatch each : result) {
       if (!each.isApplied()) {
         each.setMatched(allMatched);
-        ruleApply.add(each);
+        ruleApply.add(each, stream);
         if (each.matched() && allMatched) {
           each.getRule().getRoot().applyRuleElements(each, stream, crowd);
         }

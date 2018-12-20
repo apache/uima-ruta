@@ -29,6 +29,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaProcessRuntimeException;
 import org.apache.uima.ruta.RutaStream;
 
 public class ComposedRuleElementMatch extends RuleElementMatch {
@@ -79,6 +80,11 @@ public class ComposedRuleElementMatch extends RuleElementMatch {
       innerMatches.put(ruleElement, list);
     }
     list.add(ruleElementMatch);
+
+    if (list.size() > stream.getMaxRuleElementMatches()) {
+      throw new RutaProcessRuntimeException("Rule element exceeded the allowed amount of matches ("
+              + stream.getMaxRuleElementMatches() + "): " + ruleElement.toString());
+    }
     evaluateInnerMatches(included, stream);
     enforceUpdate();
   }

@@ -100,7 +100,7 @@ public class RegExpRule extends AbstractRule {
       }
       List<AnnotationFS> matchedAnnotationsOfRoot = ruleMatch.getMatchedAnnotationsOfRoot();
       if (matchedAnnotationsOfRoot != null && !matchedAnnotationsOfRoot.isEmpty()) {
-        ruleApply.add(ruleMatch);
+        ruleApply.add(ruleMatch, stream);
       }
     }
 

@@ -492,6 +492,24 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   @ConfigurationParameter(name = PARAM_INFERENCE_VISITORS, mandatory = false, defaultValue = {})
   private String[] inferenceVisitors;
 
+  /**
+   * Maximum amount of allowed matches of a single rule.
+   */
+  public static final String PARAM_MAX_RULE_MATCHES = "maxRuleMatches";
+
+  @ConfigurationParameter(name = PARAM_MAX_RULE_MATCHES, mandatory = false, defaultValue = ""
+          + Integer.MAX_VALUE)
+  private int maxRuleMatches;
+
+  /**
+   * Maximum amount of allowed matches of a single rule element.
+   */
+  public static final String PARAM_MAX_RULE_ELEMENT_MATCHES = "maxRuleElementMatches";
+
+  @ConfigurationParameter(name = PARAM_MAX_RULE_ELEMENT_MATCHES, mandatory = false, defaultValue = ""
+          + Integer.MAX_VALUE)
+  private int maxRuleElementMatches;
+
   private UimaContext context;
 
   private RutaModule script;
@@ -578,6 +596,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
     stream.setGreedyRule(greedyRule);
+    stream.setMaxRuleMatches(maxRuleMatches);
+    stream.setMaxRuleElementMatches(maxRuleElementMatches);
     try {
       script.apply(stream, crowd);
     } catch (Throwable e) {

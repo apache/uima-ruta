@@ -22,7 +22,9 @@ package org.apache.uima.ruta.rule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.ruta.RutaProcessRuntimeException;
 import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 
 public class RuleApply extends ScriptApply {
@@ -45,13 +47,17 @@ public class RuleApply extends ScriptApply {
     return list;
   }
 
-  public void add(AbstractRuleMatch<? extends AbstractRule> match) {
+  public void add(AbstractRuleMatch<? extends AbstractRule> match, RutaStream stream) {
     if (match.matchedCompletely()) {
       applied++;
     }
     tried++;
     if (acceptMatches) {
       list.add(match);
+    }
+    if (tried > stream.getMaxRuleMatches()) {
+      throw new RutaProcessRuntimeException("Rule exceeded the allowed amount of matches ("
+              + stream.getMaxRuleMatches() + "): " + match.getRule().toString());
     }
   }
 
@@ -71,9 +77,9 @@ public class RuleApply extends ScriptApply {
     this.acceptMatches = acceptMatches;
   }
 
-  public void addAll(List<RuleMatch> matches) {
+  public void addAll(List<RuleMatch> matches, RutaStream stream) {
     for (RuleMatch ruleMatch : matches) {
-      add(ruleMatch);
+      add(ruleMatch, stream);
     }
   }
 

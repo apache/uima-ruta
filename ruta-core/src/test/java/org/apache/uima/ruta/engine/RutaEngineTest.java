@@ -31,6 +31,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.ruta.RutaProcessRuntimeException;
 import org.apache.uima.ruta.TypeUsageInformation;
 import org.junit.Assert;
 import org.junit.Test;
@@ -102,6 +103,52 @@ public class RutaEngineTest {
       Throwable cause = e.getCause();
       throw cause;
     }
+  }
+
+  @Test
+  public void testMaxRuleMatches() throws Throwable {
+
+    String document = "This is some text.";
+    String script = "W;";
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
+            script, RutaEngine.PARAM_MAX_RULE_MATCHES, Long.valueOf(2));
+
+    CAS cas = RutaTestUtils.getCAS(document);
+
+    try {
+      ae.process(cas);
+    } catch (AnalysisEngineProcessException e) {
+      Throwable cause = e.getCause();
+      Assert.assertTrue(cause instanceof RutaProcessRuntimeException);
+      String message = cause.getMessage();
+      Assert.assertTrue(message.startsWith("Rule exceeded the allowed amount of matches"));
+      return;
+    }
+    Assert.fail("expected RutaProcessRuntimeException");
+  }
+
+  @Test
+  public void testMaxRuleElementMatches() throws Throwable {
+
+    String document = "This is some text.";
+    String script = "W+;";
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
+            script, RutaEngine.PARAM_MAX_RULE_ELEMENT_MATCHES, Long.valueOf(2));
+
+    CAS cas = RutaTestUtils.getCAS(document);
+
+    try {
+      ae.process(cas);
+    } catch (AnalysisEngineProcessException e) {
+      Throwable cause = e.getCause();
+      Assert.assertTrue(cause instanceof RutaProcessRuntimeException);
+      String message = cause.getMessage();
+      Assert.assertTrue(message.startsWith("Rule element exceeded the allowed amount of matches"));
+      return;
+    }
+    Assert.fail("expected RutaProcessRuntimeException");
   }
 
 }

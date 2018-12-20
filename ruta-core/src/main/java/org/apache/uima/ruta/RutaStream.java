@@ -130,6 +130,10 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   private boolean emptyIsInvisible;
 
+  private long maxRuleMatches;
+
+  private long maxRuleElementMatches;
+
   public RutaStream(CAS cas, Type basicType, FilterManager filter, boolean lowMemoryProfile,
           boolean simpleGreedyForComposed, boolean emptyIsInvisible, TypeUsageInformation typeUsage,
           InferenceCrowd crowd) {
@@ -484,6 +488,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
     stream.setGreedyRule(greedyRule);
+    stream.setMaxRuleMatches(maxRuleMatches);
+    stream.setMaxRuleElementMatches(maxRuleElementMatches);
     return stream;
   }
 
@@ -494,6 +500,8 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
     stream.setGreedyRule(greedyRule);
+    stream.setMaxRuleMatches(maxRuleMatches);
+    stream.setMaxRuleElementMatches(maxRuleElementMatches);
     return stream;
   }
 
@@ -1352,5 +1360,21 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       return result;
     }
     return null;
+  }
+
+  public void setMaxRuleMatches(long maxRuleMatches) {
+    this.maxRuleMatches = maxRuleMatches;
+  }
+
+  public void setMaxRuleElementMatches(long maxRuleElementMatches) {
+    this.maxRuleElementMatches = maxRuleElementMatches;
+  }
+
+  public long getMaxRuleMatches() {
+    return this.maxRuleMatches;
+  }
+
+  public long getMaxRuleElementMatches() {
+    return this.maxRuleElementMatches;
   }
 }

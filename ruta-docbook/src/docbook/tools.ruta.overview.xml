@@ -972,6 +972,23 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                   </entry>
                   <entry>Multi String</entry>
                 </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.maxRuleMatches'>maxRuleMatches</link>
+                  </entry>
+                  <entry>Maximum amount of allowed matches of a single rule.
+                  </entry>
+                  <entry>Single Integer</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.maxRuleMatches'>maxRuleElementMatches</link>
+                  </entry>
+                  <entry>Maximum amount of allowed matches of a single rule element.
+                  </entry>
+                  <entry>Single Integer</entry>
+                </row>
+                
               </tbody>
             </tgroup>
           </table>
@@ -1264,6 +1281,18 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
             This parameter specifies optional class names implementing the interface
     		<code>org.apache.uima.ruta.visitor.RutaInferenceVisitor</code>, which will be notified during
    			applying the rules.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.maxRuleMatches">
+          <title>maxRuleMatches</title>
+          <para>
+             Maximum amount of allowed matches of a single rule.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.maxRuleElementMatches">
+          <title>maxRuleElementMatches</title>
+          <para>
+             Maximum amount of allowed matches of a single rule element.
           </para>
         </section>
       </section>
