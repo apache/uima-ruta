@@ -112,7 +112,7 @@ public class RutaEngineTest {
     String script = "W;";
 
     AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
-            script, RutaEngine.PARAM_MAX_RULE_MATCHES, Long.valueOf(2));
+            script, RutaEngine.PARAM_MAX_RULE_MATCHES, Integer.valueOf(2));
 
     CAS cas = RutaTestUtils.getCAS(document);
 
@@ -135,7 +135,7 @@ public class RutaEngineTest {
     String script = "W+;";
 
     AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
-            script, RutaEngine.PARAM_MAX_RULE_ELEMENT_MATCHES, Long.valueOf(2));
+            script, RutaEngine.PARAM_MAX_RULE_ELEMENT_MATCHES, Integer.valueOf(2));
 
     CAS cas = RutaTestUtils.getCAS(document);
 
