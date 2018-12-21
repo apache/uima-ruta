@@ -217,14 +217,14 @@ public class AnnotationFeatureExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 10, 1, "Some");
 
   }
-  
+
   @Test
   public void testFeatureMatch() throws Exception {
     String document = "This is a test.";
     String script = "";
     script += "Document{-> CREATE(Struct1, \"a\" = SW.begin == 8)};\n";
     script += "Struct1.a{-> T1};\n";
-    
+
     Map<String, String> complexTypes = new TreeMap<String, String>();
     complexTypes.put("Struct1", "uima.tcas.Annotation");
     Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
@@ -232,11 +232,35 @@ public class AnnotationFeatureExpressionTest {
     features.put("Struct1", list);
     list.add(new TestFeature("a", "", "uima.tcas.Annotation"));
     list.add(new TestFeature("as", "", "uima.cas.FSArray"));
-    
+
     CAS cas = RutaTestUtils.getCAS(document, complexTypes, features);
-    Ruta.apply(cas, script);    
-    
+    Ruta.apply(cas, script);
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "a");
+  }
+
+  @Test
+  public void testPartofOnNullMatch() throws Exception {
+    String document = "Some text.";
+    String script = "";
+    script += "W{-> CREATE(Struct)};\n";
+    script += "Struct.a{PARTOF(CW)-> T1};\n";
+
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    String typeName1 = "Struct";
+    typeMap.put(typeName1, "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put(typeName1, list);
+    String fn1 = "a";
+    list.add(new TestFeature(fn1, "", "uima.tcas.Annotation"));
+
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
+
   }
 
 }

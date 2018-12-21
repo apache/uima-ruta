@@ -65,6 +65,7 @@ public class StartsWithCondition extends TypeSentiveCondition {
   }
 
   private boolean check(AnnotationFS annotation, Type t, RutaStream stream) {
+
     if (annotation == null) {
       return false;
     }

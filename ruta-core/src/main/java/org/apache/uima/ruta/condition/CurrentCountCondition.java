@@ -52,14 +52,16 @@ public class CurrentCountCondition extends TypeSentiveCondition {
     RuleElement element = context.getElement();
 
     int count = 0;
-    Iterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(type.getType(context, stream))
-            .iterator();
-    while (it.hasNext()) {
-      AnnotationFS next = it.next();
-      if (next.getBegin() < annotation.getBegin()) {
-        count++;
-      } else {
-        break;
+    if (annotation != null) {
+      Iterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(type.getType(context, stream))
+              .iterator();
+      while (it.hasNext()) {
+        AnnotationFS next = it.next();
+        if (next.getBegin() < annotation.getBegin()) {
+          count++;
+        } else {
+          break;
+        }
       }
     }
     if (var != null) {

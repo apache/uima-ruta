@@ -46,6 +46,11 @@ public class ScoreCondition extends TerminalRutaCondition {
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
+
+    if (annotation == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
     RuleElement element = context.getElement();
     double score = 0;
     RutaAnnotation rutaAnnotation = stream.getRutaAnnotationFor(annotation, false, stream);

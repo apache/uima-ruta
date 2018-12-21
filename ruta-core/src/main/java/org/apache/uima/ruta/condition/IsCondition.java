@@ -45,10 +45,15 @@ public class IsCondition extends TypeSentiveCondition {
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
+
+    if (annotation == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
     if (!isWorkingOnList()) {
-      Collection<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(type.getType(context,
-              stream));
+      Collection<AnnotationFS> beginAnchors = beginAnchor
+              .getBeginAnchors(type.getType(context, stream));
       boolean result = false;
       if (beginAnchors != null) {
         for (AnnotationFS annotationFS : beginAnchors) {

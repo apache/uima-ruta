@@ -68,27 +68,30 @@ public class ContextCountCondition extends TypeSentiveCondition {
     }
     List<AnnotationFS> overlappingContexts = new ArrayList<AnnotationFS>();
     for (AnnotationFS eachContext : visibleContexts) {
-      if (eachContext.getBegin() <= annotation.getBegin()
+      if (annotation != null && eachContext.getBegin() <= annotation.getBegin()
               && eachContext.getEnd() >= annotation.getEnd()) {
         overlappingContexts.add(eachContext);
       }
     }
 
     boolean result = false;
+
     for (AnnotationFS eachContext : overlappingContexts) {
       int index = 0;
       int counter = 0;
-      List<RutaBasic> basicsInWindow = stream.getBasicsInWindow(eachContext);
-      for (RutaBasic eachBasic : basicsInWindow) {
-        Collection<AnnotationFS> beginAnchors = eachBasic.getBeginAnchors(annotation.getType());
-        if (beginAnchors != null) {
-          for (AnnotationFS each : beginAnchors) {
-            counter++;
-            if (each.getBegin() == annotation.getBegin()
-                    && each.getEnd() == annotation.getEnd()
-                    && (each.getType().equals(annotation.getType()) || stream.getCas()
-                            .getTypeSystem().subsumes(annotation.getType(), each.getType()))) {
-              index = counter;
+
+      if (annotation != null) {
+        List<RutaBasic> basicsInWindow = stream.getBasicsInWindow(eachContext);
+        for (RutaBasic eachBasic : basicsInWindow) {
+          Collection<AnnotationFS> beginAnchors = eachBasic.getBeginAnchors(annotation.getType());
+          if (beginAnchors != null) {
+            for (AnnotationFS each : beginAnchors) {
+              counter++;
+              if (each.getBegin() == annotation.getBegin() && each.getEnd() == annotation.getEnd()
+                      && (each.getType().equals(annotation.getType()) || stream.getCas()
+                              .getTypeSystem().subsumes(annotation.getType(), each.getType()))) {
+                index = counter;
+              }
             }
           }
         }

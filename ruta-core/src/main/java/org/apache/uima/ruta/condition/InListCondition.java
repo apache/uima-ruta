@@ -54,6 +54,11 @@ public class InListCondition extends TerminalRutaCondition {
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
+
+    if (annotation == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
     String text = annotation.getCoveredText();
     if (arg != null) {
       text = arg.getStringValue(context, stream);
@@ -64,7 +69,7 @@ public class InListCondition extends TerminalRutaCondition {
     if (stringList == null) {
       RutaWordList wordList = listExpr.getList(context, stream);
       boolean contains = false;
-      if(wordList != null) {
+      if (wordList != null) {
         contains = wordList.contains(text, false, 0, null, 0, true);
       }
       return new EvaluatedCondition(this, contains);

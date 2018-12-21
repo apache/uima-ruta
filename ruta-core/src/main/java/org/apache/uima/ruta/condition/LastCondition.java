@@ -37,6 +37,11 @@ public class LastCondition extends TypeSentiveCondition {
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
+
+    if (annotation == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
     RutaBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
     Type t = type.getType(context, stream);
     boolean result = endAnchor.beginsWith(t) && endAnchor.endsWith(t);

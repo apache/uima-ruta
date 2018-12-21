@@ -53,6 +53,11 @@ public class RegExpCondition extends TerminalRutaCondition {
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
+
+    if (annotation == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
     Matcher matcher = null;
     boolean ignore = ignoreCase == null ? false : ignoreCase.getBooleanValue(context, stream);
     String stringValue = pattern.getStringValue(context, stream);
