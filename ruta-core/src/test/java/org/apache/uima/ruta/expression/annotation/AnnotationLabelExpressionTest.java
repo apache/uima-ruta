@@ -748,4 +748,20 @@ public class AnnotationLabelExpressionTest {
 //    RutaTestUtils.assertAnnotationsEquals(cas, 8, 3, "a 1", "a a 1", "a a 1");
   }
 
+  @Test
+  public void testRemoveFailedMatch() throws Exception {
+
+    String document = "a b c d";
+
+    String script = "W.begin==0{-> T1};\n";
+    script += "T1 a:ANY{REGEXP(\"c\")}->{a{-> T2};};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "a");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+
+  }
+
 }
