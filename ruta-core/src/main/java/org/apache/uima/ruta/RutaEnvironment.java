@@ -666,11 +666,16 @@ public class RutaEnvironment {
         }
       } else {
         try {
-          RutaWordList rutaTable = (RutaWordList) context.getResourceObject(list);
-          wordLists.put(list, rutaTable);
+          RutaWordList rutaList = (RutaWordList) context.getResourceObject(list);
+          if (rutaList != null) {
+            wordLists.put(list, rutaList);
+          } else {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                    "Can't find external resource list" + list);
+          }
         } catch (ResourceAccessException e) {
           Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
-                  "Can't find external resource table" + list, e);
+                  "Can't find external resource list" + list, e);
         }
       }
     }
