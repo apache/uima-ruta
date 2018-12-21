@@ -56,6 +56,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.internal.ResourceManagerFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
@@ -623,7 +624,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
   }
 
-  private void initializeResourceManager() {
+  private void initializeResourceManager() throws ResourceInitializationException {
     if (context instanceof UimaContextAdmin) {
       UimaContextAdmin uca = (UimaContextAdmin) context;
       ResourceManager rm = uca.getResourceManager();
@@ -632,7 +633,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
     }
     if (resourceManager == null) {
-      resourceManager = UIMAFramework.newDefaultResourceManager();
+      resourceManager = ResourceManagerFactory.newResourceManager();
     }
   }
 

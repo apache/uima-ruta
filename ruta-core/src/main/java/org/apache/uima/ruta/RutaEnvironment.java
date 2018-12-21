@@ -46,7 +46,9 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
+import org.apache.uima.fit.internal.ResourceManagerFactory;
 import org.apache.uima.resource.ResourceAccessException;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -1021,6 +1023,13 @@ public class RutaEnvironment {
       }
     }
     // at least return default resource manager
+    try {
+      resourceManager = ResourceManagerFactory.newResourceManager();
+      return resourceManager;
+    } catch (ResourceInitializationException e) {
+      UIMAFramework.getLogger(getClass()).log(SEVERE,
+              "Failed to initialize fallback ResourceManager.", e);
+    }
     return UIMAFramework.newDefaultResourceManager();
   }
 

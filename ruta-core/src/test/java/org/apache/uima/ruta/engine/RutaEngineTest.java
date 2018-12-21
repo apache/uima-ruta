@@ -30,7 +30,11 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.internal.ResourceManagerFactory;
+import org.apache.uima.fit.internal.ResourceManagerFactory.ResourceManagerCreator;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.RutaProcessRuntimeException;
 import org.apache.uima.ruta.TypeUsageInformation;
 import org.junit.Assert;
@@ -149,6 +153,30 @@ public class RutaEngineTest {
       return;
     }
     Assert.fail("expected RutaProcessRuntimeException");
+  }
+
+  @Test
+  public void testResourceManagerWithUimaFITInEXEC() throws Throwable {
+
+    final ResourceManager resourceManager = ResourceManagerFactory.newResourceManager();
+    ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
+
+      @Override
+      public ResourceManager newResourceManager() throws ResourceInitializationException {
+        return resourceManager;
+      }
+    });
+
+    String document = "This is some text.";
+    String script = "UIMAFIT org.apache.uima.ruta.engine.DummyAnnotator;";
+    script += "EXEC(DummyAnnotator);";
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
+            script, RutaEngine.PARAM_ADDITIONAL_UIMAFIT_ENGINES,
+            new String[] { DummyAnnotator.class.getName() });
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    ae.process(cas);
   }
 
 }

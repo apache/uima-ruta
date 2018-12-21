@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.action;
 
+import static org.apache.uima.util.Level.SEVERE;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,9 +69,9 @@ public class ExecAction extends CallAction {
   }
 
   @Override
-  protected void callEngine(MatchContext context, InferenceCrowd crowd,
-          AnalysisEngine targetEngine, RutaStream stream) throws ResourceInitializationException,
-          AnalysisEngineProcessException {
+  protected void callEngine(MatchContext context, InferenceCrowd crowd, AnalysisEngine targetEngine,
+          RutaStream stream)
+          throws ResourceInitializationException, AnalysisEngineProcessException {
     CAS cas = stream.getCas();
     if (view != null) {
       String viewName = view.getStringValue(context, stream);
@@ -79,13 +81,14 @@ public class ExecAction extends CallAction {
         try {
           String sourceUrlString = metaData.getSourceUrlString();
           if (sourceUrlString != null) {
-            AnalysisEngineDescription aed = (AnalysisEngineDescription) UIMAFramework
-                    .getXMLParser().parseResourceSpecifier(new XMLInputSource(sourceUrlString));
+            AnalysisEngineDescription aed = (AnalysisEngineDescription) UIMAFramework.getXMLParser()
+                    .parseResourceSpecifier(new XMLInputSource(sourceUrlString));
             AnalysisEngine createEngine = AnalysisEngineFactory.createEngine(aed, viewName);
             targetEngine = createEngine;
           }
         } catch (Exception e) {
-          e.printStackTrace();
+          UIMAFramework.getLogger(getClass()).log(SEVERE, "Failed to initialize AnalysisEngine.",
+                  e);
         }
       }
     }
