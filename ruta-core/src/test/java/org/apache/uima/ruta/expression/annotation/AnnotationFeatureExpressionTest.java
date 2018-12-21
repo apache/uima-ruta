@@ -259,8 +259,6 @@ public class AnnotationFeatureExpressionTest {
     CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
     Ruta.apply(cas, script);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
-
   }
 
 }
