@@ -1117,6 +1117,15 @@ public class RutaEnvironment {
       return;
     }
     List<AnnotationFS> annotations = ruleMatch.getMatchedAnnotationsOfElement(element);
+    addAnnotationsToVariable(annotations, var, context);
+  }
+
+  public void addAnnotationsToVariable(List<AnnotationFS> annotations, String var,
+          MatchContext context) {
+    if (StringUtils.isBlank(var)) {
+      return;
+    }
+
     Class<?> variableType = getVariableType(var);
     if (List.class.equals(variableType) && AnnotationFS.class.equals(getVariableGenericType(var))) {
       setVariableValue(var, annotations);

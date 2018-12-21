@@ -41,6 +41,7 @@ public class QuestionReluctant extends AbstractRuleElementQuantifier {
     }
     if (!result) {
       matches.remove(0);
+      updateLabelAssignment(matches, context, stream);
       result = true;
     }
     if (result) {

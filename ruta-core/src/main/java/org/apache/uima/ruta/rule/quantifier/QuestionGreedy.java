@@ -40,11 +40,12 @@ public class QuestionGreedy extends AbstractRuleElementQuantifier {
       return Collections.emptyList();
     }
     for (RuleElementMatch match : matches) {
-      result &= match.matched()
-              || (!(match instanceof ComposedRuleElementMatch) && match.getTextsMatched().isEmpty());
+      result &= match.matched() || (!(match instanceof ComposedRuleElementMatch)
+              && match.getTextsMatched().isEmpty());
     }
     if (!result) {
       matches.remove(0);
+      updateLabelAssignment(matches, context, stream);
       result = true;
     }
     if (result) {

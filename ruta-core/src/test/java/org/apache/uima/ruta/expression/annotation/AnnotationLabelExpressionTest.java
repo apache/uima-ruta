@@ -654,9 +654,9 @@ public class AnnotationLabelExpressionTest {
     script += "s1:Struct{IS(PERIOD), s1.a.b -> T8};";
     CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
     Ruta.apply(cas, script);
-    
+
     RutaTestUtils.storeCas(cas, "testStackedReinitLazyFeature");
-    
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");
@@ -710,6 +710,42 @@ public class AnnotationLabelExpressionTest {
     CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
     Ruta.apply(cas, script);
     return cas;
+  }
+
+  @Test
+  public void testLabelAssignmentInFailedQuantifier() throws Exception {
+
+    String document = "a 1 a a 1 a a 1 a";
+
+    String script = "NUM{-> T1, T2, T3, T4, T7, T8};\n";
+    script += "SW{-> T5, T6};\n";
+
+    script += "ps:T1{-> ps.end = a.end} a:ANY[1,10]{-PARTOF(T1)};\n";
+    script += "a:ANY[1,10]{-PARTOF(T2)} ps:@T2{-> ps.begin = a.begin};\n";
+
+    script += "ps:T3{-> ps.end = a.end} a:ANY+{-PARTOF(T3)};\n";
+    script += "a:ANY+{-PARTOF(T4)} ps:@T4{-> ps.begin = a.begin};\n";
+
+//    script += "ps:T5{-> ps.end = a.end} a:ANY?{-PARTOF(T5)};\n";
+//    script += "a:ANY?{-PARTOF(T6)} ps:@T6{-> ps.begin = a.begin};\n";
+
+//    script += "ps:T7{-> ps.end = a.end} a:ANY*?{-PARTOF(T7)};\n";
+//    script += "a:ANY*?{-PARTOF(T8)} ps:@T8{-> ps.begin = a.begin};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 a a", "1 a a", "1 a");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "a 1", "a a 1", "a a 1");
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "1 a a", "1 a a", "1 a");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 3, "a 1", "a a 1", "a a 1");
+
+//    RutaTestUtils.assertAnnotationsEquals(cas, 5, 6, "a 1", "a", "a 1", "a", "a 1", "a");
+//    RutaTestUtils.assertAnnotationsEquals(cas, 6, 6, "a", "1 a", "a", "1 a", "a", "1 a");
+
+//    RutaTestUtils.assertAnnotationsEquals(cas, 7, 3, "1 a a", "1 a a", "1 a");
+//    RutaTestUtils.assertAnnotationsEquals(cas, 8, 3, "a 1", "a a 1", "a a 1");
   }
 
 }
