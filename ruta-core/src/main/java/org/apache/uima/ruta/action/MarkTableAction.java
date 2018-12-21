@@ -97,6 +97,11 @@ public class MarkTableAction extends AbstractRutaAction {
     }
     int index = indexExpr.getIntegerValue(context, stream);
     Type type = typeExpr.getType(context, stream);
+
+    if (type == null) {
+      return;
+    }
+
     Map<String, Integer> map = new HashMap<String, Integer>();
     for (IStringExpression each : featureMap.keySet()) {
       map.put(each.getStringValue(context, stream),

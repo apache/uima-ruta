@@ -47,6 +47,11 @@ public class MarkOnceAction extends MarkAction {
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
     Type targetType = type.getType(context, stream);
+
+    if (targetType == null) {
+      return;
+    }
+
     for (AnnotationFS matchedAnnotation : matchedAnnotations) {
       boolean partof = false;
       List<RutaBasic> basicsInWindow = stream.getBasicsInWindow(matchedAnnotation);

@@ -20,6 +20,8 @@
 package org.apache.uima.ruta.action;
 
 import java.util.List;
+
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -38,7 +40,8 @@ public class MarkAction extends AbstractMarkAction {
 
   protected final List<INumberExpression> list;
 
-  public MarkAction(ITypeExpression type, INumberExpression scoreValue, List<INumberExpression> list) {
+  public MarkAction(ITypeExpression type, INumberExpression scoreValue,
+          List<INumberExpression> list) {
     super(type);
     this.score = scoreValue;
     this.list = list;
@@ -67,17 +70,21 @@ public class MarkAction extends AbstractMarkAction {
 
   protected void updateHeuristicAnnotation(MatchContext context, RutaStream stream,
           AnnotationFS matchedAnnotation, double deltaScore) {
-    
+
     Annotation targetAnnotation = null;
 
-    List<AnnotationFS> annotationsInSpan = CasUtil.selectAt(stream.getCas(),
-            this.type.getType(context, stream), matchedAnnotation.getBegin(),
-            matchedAnnotation.getEnd());
+    Type t = this.type.getType(context, stream);
+
+    if (t == null) {
+      return;
+    }
+    List<AnnotationFS> annotationsInSpan = CasUtil.selectAt(stream.getCas(), t,
+            matchedAnnotation.getBegin(), matchedAnnotation.getEnd());
     if (annotationsInSpan.isEmpty()) {
       targetAnnotation = this.createAnnotation(matchedAnnotation, context, stream);
     } else {
       targetAnnotation = (Annotation) annotationsInSpan.get(0);
-      
+
     }
 
     if (targetAnnotation == null) {

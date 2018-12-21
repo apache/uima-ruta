@@ -90,20 +90,20 @@ public class ContainsCondition extends TypeSentiveCondition {
     int anchorCount = 0;
     int totalCount = 0;
 
-    boolean usePredefinedBoundaries = minIntValue == 1 && maxIntValue == Integer.MAX_VALUE ? false : true;
-    
+    boolean usePredefinedBoundaries = minIntValue == 1 && maxIntValue == Integer.MAX_VALUE ? false
+            : true;
+
     if (type != null) {
-      if (annotation != null) {
+      Type t = type.getType(context, stream);
+      if (annotation != null && t != null) {
         if (!usePredefinedBoundaries && !usePercentage) {
           // shortcut for simple CONTAINS(Type)
-          Type t = type.getType(context, stream);
           boolean annotationExsits = checkExistingAnnotation(t, annotation, stream);
           return new EvaluatedCondition(this, annotationExsits);
         } else {
           List<RutaBasic> annotations = stream.getBasicsInWindow(annotation);
           for (RutaBasic each : annotations) {
             totalCount++;
-            Type t = type.getType(context, stream);
             if (each.beginsWith(t) || stream.getCas().getTypeSystem().subsumes(t, each.getType())) {
               Collection<AnnotationFS> beginAnchors = each.getBeginAnchors(t);
               anchorCount = incrementAnchorsWithinStrictBoundaries(annotation, anchorCount,
@@ -170,7 +170,7 @@ public class ContainsCondition extends TypeSentiveCondition {
       }
       anchorCount = basicCount;
     }
-    
+
     if (usePercentage) {
       double percentValue = 0;
       if (totalCount != 0) {
@@ -198,7 +198,7 @@ public class ContainsCondition extends TypeSentiveCondition {
   private boolean checkExistingAnnotation(Type type, AnnotationFS annotation, RutaStream stream) {
     int begin = annotation.getBegin();
     int end = annotation.getEnd();
-    
+
     FSIterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(type).iterator();
     it.moveTo(annotation);
     if (!it.isValid()) {
@@ -232,7 +232,7 @@ public class ContainsCondition extends TypeSentiveCondition {
       if (a.getEnd() > end) {
         continue;
       }
-      if(stream.isVisible(a)) {
+      if (stream.isVisible(a)) {
         return true;
       }
 

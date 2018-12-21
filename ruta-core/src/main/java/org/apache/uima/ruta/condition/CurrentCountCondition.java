@@ -21,6 +21,7 @@ package org.apache.uima.ruta.condition;
 
 import java.util.Iterator;
 
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -51,10 +52,14 @@ public class CurrentCountCondition extends TypeSentiveCondition {
     AnnotationFS annotation = context.getAnnotation();
     RuleElement element = context.getElement();
 
+    Type t = type.getType(context, stream);
+    if (t == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
     int count = 0;
     if (annotation != null) {
-      Iterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(type.getType(context, stream))
-              .iterator();
+      Iterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(t).iterator();
       while (it.hasNext()) {
         AnnotationFS next = it.next();
         if (next.getBegin() < annotation.getBegin()) {

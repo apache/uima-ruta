@@ -84,7 +84,7 @@ public class ImplicitCondition extends AbstractRutaCondition {
   private List<AnnotationFS> getAnnotationsToCheck(AnnotationFS annotation, Type type,
           FeatureMatchExpression fme, RutaStream stream) {
 
-    if (annotation == null) {
+    if (annotation == null || type == null) {
       return Collections.emptyList();
     }
 

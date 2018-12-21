@@ -57,6 +57,11 @@ public class ContextCountCondition extends TypeSentiveCondition {
     RuleElement element = context.getElement();
 
     Type contextType = type.getType(context, stream);
+
+    if (contextType == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
     stream.moveToFirst();
     List<AnnotationFS> visibleContexts = new ArrayList<AnnotationFS>();
     while (stream.isValid()) {

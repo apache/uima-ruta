@@ -82,6 +82,11 @@ public class UnmarkAction extends TypeSensitiveAction {
 
   private void removeTypeBased(MatchContext context, RutaStream stream, RuleMatch match,
           RuleElement element, Type t) {
+
+    if (t == null) {
+      return;
+    }
+
     boolean allAtAnchor = false;
     if (allAnchor != null) {
       allAtAnchor = allAnchor.getBooleanValue(context, stream);

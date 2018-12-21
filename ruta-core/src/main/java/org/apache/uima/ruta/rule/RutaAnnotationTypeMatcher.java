@@ -67,7 +67,9 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
       } else {
         Type type = getType(context.getParent(), stream);
         types = new ArrayList<>(1);
-        types.add(type);
+        if (type != null) {
+          types.add(type);
+        }
       }
       result = new ArrayList<>();
       for (Type type : types) {

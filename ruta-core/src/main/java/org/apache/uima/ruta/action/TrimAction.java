@@ -114,7 +114,10 @@ public class TrimAction extends AbstractRutaAction {
     List<Type> result = new ArrayList<Type>();
     if (types != null) {
       for (ITypeExpression each : types) {
-        result.add(each.getType(context, stream));
+        Type type = each.getType(context, stream);
+        if (type != null) {
+          result.add(type);
+        }
       }
     } else if (typeList != null) {
       result = typeList.getList(context, stream);

@@ -30,7 +30,6 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class FilterTypeAction extends AbstractRutaAction {
 
-
   public FilterTypeAction(List<ITypeExpression> list) {
     super();
     this.list = list;
@@ -41,7 +40,10 @@ public class FilterTypeAction extends AbstractRutaAction {
     context.getElement();
     List<Type> types = new ArrayList<Type>();
     for (ITypeExpression each : list) {
-      types.add(each.getType(context, stream));
+      Type type = each.getType(context, stream);
+      if (type != null) {
+        types.add(type);
+      }
     }
     stream.filterTypes(types);
   }
@@ -49,7 +51,7 @@ public class FilterTypeAction extends AbstractRutaAction {
   public List<ITypeExpression> getList() {
     return list;
   }
-  
+
   private List<ITypeExpression> list;
 
 }

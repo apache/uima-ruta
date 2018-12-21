@@ -1240,7 +1240,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   public List<AnnotationFS> getBestGuessedAnnotationsAt(AnnotationFS window, Type type) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    if (window == null) {
+    if (window == null || type == null) {
       return result;
     }
     TypeSystem typeSystem = getCas().getTypeSystem();

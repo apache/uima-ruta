@@ -62,7 +62,7 @@ public class AfterCondition extends TypeSentiveCondition {
   }
 
   private boolean check(AnnotationFS annotation, RutaStream stream, Type t) {
-    if (annotation == null) {
+    if (annotation == null || t == null) {
       return false;
     }
     boolean result = false;

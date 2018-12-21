@@ -64,8 +64,9 @@ public class ConfigureAction extends AbstractRutaAction {
     RutaBlock parent = element.getParent();
     RutaModule thisScript = parent.getScript();
     AnalysisEngine targetEngine = thisScript.getEngine(namespace);
-    if(targetEngine == null) {
-      throw new IllegalArgumentException("Analysis Engine with name '"+namespace+"' is unknown in script " + context.getParent().getName() + ".");
+    if (targetEngine == null) {
+      throw new IllegalArgumentException("Analysis Engine with name '" + namespace
+              + "' is unknown in script " + context.getParent().getName() + ".");
     }
     ConfigurationParameterDeclarations configurationParameterDeclarations = targetEngine
             .getAnalysisEngineMetaData().getConfigurationParameterDeclarations();
@@ -102,7 +103,9 @@ public class ConfigureAction extends AbstractRutaAction {
             } else if (value instanceof ITypeExpression) {
               ITypeExpression te = (ITypeExpression) value;
               Type t = te.getType(context, stream);
-              targetEngine.setConfigParameterValue(stringValue, t.getName());
+              if (t != null) {
+                targetEngine.setConfigParameterValue(stringValue, t.getName());
+              }
             }
           }
         } else if (type.equals("Float")) {

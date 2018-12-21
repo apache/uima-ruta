@@ -80,7 +80,9 @@ public class TrieAction extends AbstractRutaAction {
       IRutaExpression expression = map.get(eachKey);
       if (expression instanceof ITypeExpression) {
         Type typeValue = ((ITypeExpression) expression).getType(context, stream);
-        typeMap.put(stringValue, typeValue);
+        if (typeValue != null) {
+          typeMap.put(stringValue, typeValue);
+        }
       } else if (expression instanceof UntypedListExpression) {
         List<Object> innerList = ((UntypedListExpression) expression).getList(context, stream);
         typeMap.put(stringValue, innerList);

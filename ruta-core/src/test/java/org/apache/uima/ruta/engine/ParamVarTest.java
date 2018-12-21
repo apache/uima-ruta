@@ -92,10 +92,10 @@ public class ParamVarTest {
     Ruta.apply(cas, script, params);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "Some", "text");
-    
+
     cas.release();
   }
-  
+
   @Test(expected = AnalysisEngineProcessException.class)
   public void testWithStrictImport() throws Exception {
     String document = "Some text.";
@@ -109,15 +109,44 @@ public class ParamVarTest {
     Map<String, Object> params = new HashMap<String, Object>();
     params.put(RutaEngine.PARAM_STRICT_IMPORTS, true);
     params.put(RutaEngine.PARAM_VAR_NAMES, new String[] { "t1", "t2", "tl" });
-    params.put(RutaEngine.PARAM_VAR_VALUES, new String[] {"org.apache.uima.T1", "org.apache.uima.T2", 
-        "org.apache.uima.T1,org.apache.uima.T2"  });
+    params.put(RutaEngine.PARAM_VAR_VALUES, new String[] { "org.apache.uima.T1",
+        "org.apache.uima.T2", "org.apache.uima.T1,org.apache.uima.T2" });
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script, params);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "Some", "text");
-    
+
     cas.release();
   }
-  
+
+  @Test
+  public void testKnownVariableValue() throws Exception {
+    String document = "Some text.";
+    String script = "";
+    script += "TYPE tvar;";
+    script += "tvar{ -> T1};";
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put(RutaEngine.PARAM_VAR_NAMES, new String[] { "tvar" });
+    params.put(RutaEngine.PARAM_VAR_VALUES, new String[] { "some.UnknownType" });
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script, params);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+  }
+
+  @Test
+  public void testMissingVariableValue() throws Exception {
+    String document = "Some text.";
+    String script = "";
+    script += "TYPE tvar;";
+    script += "tvar{ -> T1};";
+    Map<String, Object> params = new HashMap<String, Object>();
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script, params);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+  }
 }

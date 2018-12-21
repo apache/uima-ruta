@@ -760,11 +760,7 @@ public class RutaEnvironment {
     } else if (Boolean.class.equals(type)) {
       return false;
     } else if (Type.class.equals(type)) {
-      if (cas == null) {
-        return annotationTypeDummy;
-      } else {
-        return cas.getAnnotationType();
-      }
+      return null;
     } else if (List.class.equals(type)) {
       return new ArrayList<Object>();
     }

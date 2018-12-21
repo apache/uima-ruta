@@ -65,6 +65,11 @@ public class SplitAction extends AbstractRutaAction {
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
     element.getParent();
     Type typeToSplit = splitOnType.getType(context, stream);
+
+    if (typeToSplit == null) {
+      return;
+    }
+
     boolean splitOnCompleteAnnotation = complete.getBooleanValue(context, stream);
     boolean addToBegin = appendToBegin.getBooleanValue(context, stream);
     boolean addToEnd = appendToEnd.getBooleanValue(context, stream);
@@ -81,11 +86,11 @@ public class SplitAction extends AbstractRutaAction {
     if (annotation instanceof Annotation) {
 
       if (splitOnCompleteAnnotation) {
-        splitAnnotationOnComplete((Annotation) annotation, typeToSplit, addToBegin, addToEnd,
-                match, stream);
+        splitAnnotationOnComplete((Annotation) annotation, typeToSplit, addToBegin, addToEnd, match,
+                stream);
       } else {
-        splitAnnotationOnBoundary((Annotation) annotation, typeToSplit, addToBegin, addToEnd,
-                match, stream);
+        splitAnnotationOnBoundary((Annotation) annotation, typeToSplit, addToBegin, addToEnd, match,
+                stream);
       }
     }
   }

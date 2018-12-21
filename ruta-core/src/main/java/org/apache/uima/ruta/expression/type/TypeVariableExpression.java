@@ -53,10 +53,6 @@ public class TypeVariableExpression extends AbstractTypeExpression {
   public Type getType(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
     Type type = parent.getEnvironment().getVariableValue(var, Type.class, stream);
-    if (type == null) {
-      throw new IllegalArgumentException("Not able to resolve type variable: " + var + 
-              " in script " +context.getParent().getName());
-    }
     return type;
   }
 

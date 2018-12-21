@@ -59,6 +59,10 @@ public class GetFeatureAction extends AbstractRutaAction {
     if (element instanceof RutaRuleElement) {
       type = ((RutaRuleElement) element).getMatcher().getType(parent, stream);
     }
+    if (type == null) {
+      return;
+    }
+
     String stringValue = featureStringExpression.getStringValue(context, stream);
     Feature featureByBaseName = type.getFeatureByBaseName(stringValue);
     RutaEnvironment environment = parent.getEnvironment();

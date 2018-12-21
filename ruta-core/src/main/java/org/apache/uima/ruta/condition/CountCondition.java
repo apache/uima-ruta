@@ -62,8 +62,8 @@ public class CountCondition extends TypeSentiveCondition {
     this.var = var;
   }
 
-  public CountCondition(@SuppressWarnings("rawtypes") ListExpression list, IRutaExpression a, INumberExpression min,
-          INumberExpression max, String var) {
+  public CountCondition(@SuppressWarnings("rawtypes") ListExpression list, IRutaExpression a,
+          INumberExpression min, INumberExpression max, String var) {
     super((ITypeExpression) null);
     this.list = list;
     this.arg = a;
@@ -78,8 +78,12 @@ public class CountCondition extends TypeSentiveCondition {
     RuleElement element = context.getElement();
 
     if (arg == null) {
-      List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation,
-              type.getType(context, stream));
+      Type t = type.getType(context, stream);
+      if (t == null) {
+        return new EvaluatedCondition(this, false);
+      }
+
+      List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation, t);
       int count = annotationsInWindow.size();
       if (var != null) {
         element.getParent().getEnvironment().setVariableValue(var, count);

@@ -53,6 +53,10 @@ public class ShiftAction extends MarkAction {
     RuleElement element = context.getElement();
     Type targetType = type.getType(context, stream);
 
+    if (targetType == null) {
+      return;
+    }
+
     List<Integer> indexList = getIndexList(context, list, stream);
     List<AnnotationFS> destinationAnnotationSpans = match.getMatchedAnnotations(indexList,
             element.getContainer());
