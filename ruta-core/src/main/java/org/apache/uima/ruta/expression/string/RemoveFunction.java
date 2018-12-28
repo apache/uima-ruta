@@ -44,9 +44,11 @@ public class RemoveFunction extends StringFunctionExpression {
     String value = parent.getEnvironment().getVariableValue(var, String.class, stream);
     for (IStringExpression each : list) {
       String string = each.getStringValue(context, stream);
-      String[] split = value.split(string);
-      for (String r : split) {
-        result.append(r);
+      if (string != null) {
+        String[] split = value.split(string);
+        for (String r : split) {
+          result.append(r);
+        }
       }
     }
     return result.toString();

@@ -61,6 +61,11 @@ public class RegExpCondition extends TerminalRutaCondition {
     Matcher matcher = null;
     boolean ignore = ignoreCase == null ? false : ignoreCase.getBooleanValue(context, stream);
     String stringValue = pattern.getStringValue(context, stream);
+
+    if (stringValue == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
     if (variable == null) {
       String coveredText = annotation.getCoveredText();
       Pattern regularExpPattern = null;

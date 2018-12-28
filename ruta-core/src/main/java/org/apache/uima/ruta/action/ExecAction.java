@@ -75,7 +75,7 @@ public class ExecAction extends CallAction {
     CAS cas = stream.getCas();
     if (view != null) {
       String viewName = view.getStringValue(context, stream);
-      if (!viewName.equals(CAS.NAME_DEFAULT_SOFA)) {
+      if (viewName != null && !viewName.equals(CAS.NAME_DEFAULT_SOFA)) {
         cas = cas.getView(viewName);
         AnalysisEngineMetaData metaData = targetEngine.getAnalysisEngineMetaData();
         try {

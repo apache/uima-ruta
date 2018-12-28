@@ -756,7 +756,7 @@ public class RutaEnvironment {
     } else if (Float.class.equals(type)) {
       return 0f;
     } else if (String.class.equals(type)) {
-      return "";
+      return null;
     } else if (Boolean.class.equals(type)) {
       return false;
     } else if (Type.class.equals(type)) {

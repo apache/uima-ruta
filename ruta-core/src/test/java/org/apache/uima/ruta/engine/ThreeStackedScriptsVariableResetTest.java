@@ -52,25 +52,27 @@ public class ThreeStackedScriptsVariableResetTest {
     RutaBuildOptions options = new RutaBuildOptions();
     RutaDescriptorInformation rdi = factory
             .parseDescriptorInformation(new File(path + "script1.ruta"), options);
-    Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = factory.createDescriptions(null, Paths.get(path).toFile().getAbsolutePath(), rdi, options, new String[] { path }, new String[] { path }, null);
+    Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = factory
+            .createDescriptions(null, Paths.get(path).toFile().getAbsolutePath(), rdi, options,
+                    new String[] { path }, new String[] { path }, null);
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(descriptions.getKey());
     JCas jcas = JCasFactory.createJCas(descriptions.getValue());
-    
+
     jcas.setDocumentText(input1);
     ae.process(jcas);
     checkFeatureValue(jcas);
-    
+
     jcas.reset();
     jcas.setDocumentText(input2);
     ae.process(jcas);
     checkFeatureValue(jcas);
-    
+
     jcas.reset();
     jcas.setDocumentText(input3);
     ae.process(jcas);
     checkFeatureValue(jcas);
-    
+
   }
 
   private void checkFeatureValue(JCas jcas) {
@@ -79,7 +81,7 @@ public class ThreeStackedScriptsVariableResetTest {
     Feature feature = type.getFeatureByBaseName("value");
     FeatureStructure fs = CasUtil.selectSingle(cas, type);
     String stringValue = fs.getStringValue(feature);
-    Assert.assertEquals("", stringValue);
+    Assert.assertNull(stringValue);
   }
 
 }

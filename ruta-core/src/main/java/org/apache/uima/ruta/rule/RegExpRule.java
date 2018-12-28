@@ -72,6 +72,12 @@ public class RegExpRule extends AbstractRule {
     crowd.beginVisit(this, ruleApply);
     MatchContext context = new MatchContext(getParent());
     String regexpString = regexpExpr.getStringValue(context, stream);
+
+    if (regexpString == null) {
+      crowd.endVisit(this, ruleApply);
+      return ruleApply;
+    }
+
     AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
     String document = documentAnnotation.getCoveredText();
     int delta = documentAnnotation.getBegin();
