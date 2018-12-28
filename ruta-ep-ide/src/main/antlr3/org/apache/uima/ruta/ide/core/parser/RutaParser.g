@@ -2661,6 +2661,8 @@ composedBooleanExpression returns [Expression expr = null]
 	(e2 = booleanCompare)=> e2 = booleanCompare {expr = e2;}
 	| (bne = booleanNumberExpression)=> bne = booleanNumberExpression{expr = bne;}
 	| (bse = booleanStringExpression)=> bse = booleanStringExpression{expr = bse;}
+	| (booleanAnnotationListExpression)=> bale = booleanAnnotationListExpression {expr = bale;}
+	| (booleanAnnotationExpression)=> bae = booleanAnnotationExpression {expr = bae;}
 	| (bte = booleanTypeExpression)=> bte = booleanTypeExpression{expr = bte;}
 	| e1 = booleanFunction {expr = e1;}
 	| LPAREN ep = booleanExpression RPAREN {expr = ep;}
@@ -2700,6 +2702,22 @@ literalBooleanExpression returns  [BooleanLiteral expr = null]
 	(value = TRUE 
 	| value = FALSE)
 	{expr = ExpressionFactory.createSimpleBooleanExpression(value);}
+	;
+	
+booleanAnnotationExpression  returns  [Expression expr = null]
+	:
+	e1 = annotationExpression
+	op = (EQUAL | NOTEQUAL)
+	e2 = annotationExpression
+	{expr = ExpressionFactory.createBooleanAnnotationExpression(e1,op,e2);}
+	;
+
+booleanAnnotationListExpression  returns  [Expression expr = null]
+	:
+	e1 = annotationListExpression
+	op = (EQUAL | NOTEQUAL)
+	e2 = annotationListExpression
+	{expr = ExpressionFactory.createBooleanAnnotationListExpression(e1,op,e2);}
 	;
 
 //not checked

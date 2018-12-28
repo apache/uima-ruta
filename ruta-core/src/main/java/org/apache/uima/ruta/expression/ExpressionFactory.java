@@ -38,6 +38,8 @@ import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.AbstractBooleanListExpression;
+import org.apache.uima.ruta.expression.bool.BooleanAnnotationExpression;
+import org.apache.uima.ruta.expression.bool.BooleanAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.BooleanFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanListFeatureExpression;
 import org.apache.uima.ruta.expression.bool.BooleanListVariableExpression;
@@ -248,6 +250,18 @@ public class ExpressionFactory {
     return new BooleanTypeExpression(e1, op.getText(), e2);
   }
 
+  public IBooleanExpression createBooleanAnnotationExpression(IRutaExpression e1, Token op,
+          IRutaExpression e2) {
+    return new BooleanAnnotationExpression((IAnnotationExpression) e1, op.getText(),
+            (IAnnotationExpression) e2);
+  }
+
+  public IBooleanExpression createBooleanAnnotationListExpression(IRutaExpression e1, Token op,
+          IRutaExpression e2) {
+    return new BooleanAnnotationListExpression((IAnnotationListExpression) e1, op.getText(),
+            (IAnnotationListExpression) e2);
+  }
+
   public AbstractBooleanListExpression createReferenceBooleanListExpression(Token var) {
     return new BooleanListVariableExpression(var.getText());
   }
@@ -304,12 +318,11 @@ public class ExpressionFactory {
   public MatchReference createMatchReference(Token refToken) {
     return createMatchReference(refToken, null, null);
   }
-  
+
   public MatchReference createMatchReference(String reference) {
     return createMatchReference(reference, null, null);
   }
-  
-  
+
   public MatchReference createMatchReference(Token matchToken, Token comparatorToken,
           IRutaExpression argument) {
     String match = matchToken.getText();
@@ -319,7 +332,7 @@ public class ExpressionFactory {
     }
     return createMatchReference(match, comparator, argument);
   }
-  
+
   public MatchReference createMatchReference(String matchString, String comparatorString,
           IRutaExpression argument) {
     if (typeUsage != null) {

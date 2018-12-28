@@ -21,9 +21,11 @@ package org.apache.uima.ruta.expression.feature;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.uima.cas.ArrayFS;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -34,6 +36,8 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -128,13 +132,27 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
         String v2 = expr.getStringValue(context, stream);
         return compare(v1, v2);
       }
-    } else if (!feature.getRange().isPrimitive() && getArg() instanceof FeatureExpression) {
-      FeatureExpression fe = (FeatureExpression) getArg();
-      List<FeatureStructure> list = new ArrayList<>(1);
-      list.add(fs);
-      Collection<? extends FeatureStructure> featureAnnotations = fe.getFeatureStructures(list,
-              false, context, stream);
-      return compare(fs.getFeatureValue(feature), featureAnnotations);
+    } else {
+      FeatureStructure featureValue = fs.getFeatureValue(feature);
+      if (!feature.getRange().isPrimitive() && getArg() instanceof FeatureExpression) {
+        FeatureExpression fe = (FeatureExpression) getArg();
+        List<FeatureStructure> list = new ArrayList<>(1);
+        list.add(fs);
+        Collection<? extends FeatureStructure> featureAnnotations = fe.getFeatureStructures(list,
+                false, context, stream);
+        return compare(featureValue, featureAnnotations);
+      } else if (!feature.getRange().isPrimitive() && getArg() instanceof IAnnotationExpression) {
+        IAnnotationExpression ae = (IAnnotationExpression) getArg();
+        AnnotationFS compareAnnotation = ae.getAnnotation(context, stream);
+        return compare(featureValue, compareAnnotation);
+      } else if (!feature.getRange().isPrimitive()
+              && typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_FS_ARRAY), featureRangeType)
+              && getArg() instanceof IAnnotationListExpression) {
+        ArrayFS fsArray = (ArrayFS) featureValue;
+        IAnnotationListExpression ale = (IAnnotationListExpression) getArg();
+        List<AnnotationFS> annotationList = ale.getAnnotationList(context, stream);
+        return compare(Arrays.asList(fsArray.toArray()), annotationList);
+      }
     }
     return false;
   }

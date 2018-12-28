@@ -261,4 +261,74 @@ public class AnnotationFeatureExpressionTest {
 
   }
 
+  @Test
+  public void testAnnotationComparison() throws Exception {
+    String document = "Some text for testing.";
+    String t40String = "for testing.";
+
+    String script = "ANNOTATION a;\n";
+    script += "ANNOTATIONLIST as;\n";
+    script += "ANNOTATION a2;\n";
+    script += "ANNOTATIONLIST as2;\n";
+    script += "Document{-> a = CW};\n";
+    script += "Document{-> as = SW};\n";
+    script += "(W W @PERIOD){-> T40};\n";
+    script += "T40{-> a2 = PERIOD};\n";
+    script += "T40{-> as2 = SW};\n";
+    script += "Document{-> CREATE(Struct1, \"a\" = CW, \"as\" = SW  )};\n";
+    script += "T40{-> CREATE(Struct2, \"a\" = PERIOD, \"as\" = SW )};\n";
+
+    script += "Document{Struct1.a == a -> T1};\n";
+    script += "Document{Struct1.as == as -> T2};\n";
+    script += "Document{Struct1.a != a -> T3};\n";
+    script += "Document{Struct1.as != as -> T4};\n";
+    script += "Struct1.a == a { -> T5};\n";
+    script += "Struct1.as == as { -> T6};\n";
+
+    script += "T40{Struct2.a == a2 -> T7};\n";
+    script += "T40{Struct2.as == as2 -> T8};\n";
+    script += "T40{Struct2.a != a2 -> T9};\n";
+    script += "T40{Struct2.as != as2 -> T10};\n";
+    script += "Struct2.a == a2 { -> T11};\n";
+    script += "Struct2.as == as2 { -> T12};\n";
+
+    script += "Document{a != a2 -> T13};\n";
+    script += "Document{as != as2 -> T14};\n";
+
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    String typeName1 = "Struct1";
+    typeMap.put(typeName1, "uima.tcas.Annotation");
+    String typeName2 = "Struct2";
+    typeMap.put(typeName2, "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put(typeName1, list);
+    featureMap.put(typeName2, list);
+    String fn1 = "a";
+    list.add(new TestFeature(fn1, "", "uima.tcas.Annotation"));
+    String fn2 = "as";
+    list.add(new TestFeature(fn2, "", "uima.cas.FSArray"));
+
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, document);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, document);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, document);
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 1, document);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 1, t40String);
+    RutaTestUtils.assertAnnotationsEquals(cas, 8, 1, t40String);
+    RutaTestUtils.assertAnnotationsEquals(cas, 9, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 10, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 11, 1, t40String);
+    RutaTestUtils.assertAnnotationsEquals(cas, 12, 1, t40String);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 13, 1, document);
+    RutaTestUtils.assertAnnotationsEquals(cas, 14, 1, document);
+  }
+
 }
