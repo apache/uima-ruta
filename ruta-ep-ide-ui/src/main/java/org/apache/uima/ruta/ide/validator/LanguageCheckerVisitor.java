@@ -942,6 +942,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           kind = RutaTypeConstants.RUTA_TYPE_S;
         } else if (fme.getValue() instanceof NumericLiteral) {
           kind = RutaTypeConstants.RUTA_TYPE_N;
+        } else if (fme.getValue() instanceof RutaVariableReference) {
+          kind = ((RutaVariableReference) fme.getValue()).getType();
         } else if (fme.getValue() instanceof RutaFunction) {
           // check on function deactivates, requires correct parsing of AST with external factory
           kind = -1;

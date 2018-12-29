@@ -145,6 +145,14 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return newVariableReference(atRef, RutaTypeConstants.RUTA_TYPE_AT);
   }
 
+  public static VariableReference createAnnotationVariableReference(Token atRef) {
+    return newVariableReference(atRef, RutaTypeConstants.RUTA_TYPE_UA);
+  }
+
+  public static VariableReference createAnnotationListVariableReference(Token atRef) {
+    return newVariableReference(atRef, RutaTypeConstants.RUTA_TYPE_UAL);
+  }
+
   public static Expression createAnnotationTypeConstantReference(Token atBasic) {
     int bounds[] = getBounds(atBasic);
     return new RutaVariableReference(bounds[0], bounds[1], atBasic.getText(),
