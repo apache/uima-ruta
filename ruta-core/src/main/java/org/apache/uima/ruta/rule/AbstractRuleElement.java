@@ -137,20 +137,21 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   }
 
   protected boolean matchInnerRules(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
-    boolean inlinedRulesMatched = true;
+
     List<ScriptApply> list = processInlinedConditionRules(ruleMatch, stream, crowd);
-    if (list != null) {
-      inlinedRulesMatched = false;
-      for (ScriptApply scriptApply : list) {
-        if (scriptApply instanceof RuleApply) {
-          RuleApply ra = (RuleApply) scriptApply;
-          if (ra.applied > 0) {
-            inlinedRulesMatched = true;
-          }
+    if (list == null) {
+      return true;
+    }
+
+    for (ScriptApply scriptApply : list) {
+      if (scriptApply instanceof RuleApply) {
+        RuleApply ra = (RuleApply) scriptApply;
+        if (ra.applied > 0) {
+          return true;
         }
       }
     }
-    return inlinedRulesMatched;
+    return false;
   }
 
   protected List<RuleElementMatch> getMatch(RuleMatch ruleMatch,

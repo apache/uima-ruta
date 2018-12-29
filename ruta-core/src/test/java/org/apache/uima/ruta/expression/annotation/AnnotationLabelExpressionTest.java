@@ -755,12 +755,14 @@ public class AnnotationLabelExpressionTest {
 
     String script = "W.begin==0{-> T1};\n";
     script += "T1 a:ANY{REGEXP(\"c\")}->{a{-> T2};};\n";
+    script += "T1 a:ANY{REGEXP(\"c\")}<-{a{-> T3};};\n";
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "a");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
 
   }
 

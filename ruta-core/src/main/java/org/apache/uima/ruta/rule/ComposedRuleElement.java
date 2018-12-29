@@ -567,8 +567,10 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     }
     match.setConditionInfo(evaluatedConditions);
     match.evaluateInnerMatches(true, stream);
-    boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
-    match.setInlinedRulesMatched(inlinedRulesMatched);
+    if (match.matched()) {
+      boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
+      match.setInlinedRulesMatched(inlinedRulesMatched);
+    }
   }
 
   @Override

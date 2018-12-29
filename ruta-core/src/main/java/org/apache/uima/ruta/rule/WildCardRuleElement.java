@@ -666,6 +666,10 @@ public class WildCardRuleElement extends AbstractRuleElement {
       }
     }
     result.setConditionInfo(base, evaluatedConditions);
+    if (result.matched()) {
+      boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
+      result.setInlinedRulesMatched(inlinedRulesMatched);
+    }
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
   }
 

@@ -195,4 +195,17 @@ public class WildCard2Test {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "1", "1");
   }
 
+  @Test
+  public void testInlinedRulesAtWildcard() throws Exception {
+    String document = "1 a a a 1";
+    String script = "NUM #{->T1}<-{PERIOD;} NUM;\n";
+    script += "NUM #{->T2}<-{SW;} NUM;\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "a a a");
+  }
+
 }
