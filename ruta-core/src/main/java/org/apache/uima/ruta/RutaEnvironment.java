@@ -1142,10 +1142,12 @@ public class RutaEnvironment {
     } else if (AnnotationFS.class.equals(variableType)) {
       if (context.getDirection()) {
         AnnotationFS annotation = null;
-        if (context.getDirection()) {
-          annotation = annotations.get(annotations.size() - 1);
-        } else {
-          annotation = annotations.get(0);
+        if (annotations != null) {
+          if (context.getDirection()) {
+            annotation = annotations.get(annotations.size() - 1);
+          } else {
+            annotation = annotations.get(0);
+          }
         }
         setVariableValue(var, annotation);
       }

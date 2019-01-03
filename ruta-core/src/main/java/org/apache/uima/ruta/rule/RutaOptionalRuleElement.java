@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaProcessRuntimeException;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
@@ -72,7 +73,8 @@ public class RutaOptionalRuleElement extends RutaRuleElement {
     }
     // already set the matched text and inform others
     result.setMatchInfo(base, textsMatched, stream);
-    context.getParent().getEnvironment().addMatchToVariable(ruleMatch, this, context, stream);
+    RutaEnvironment environment = context.getParent().getEnvironment();
+    environment.addMatchToVariable(ruleMatch, this, context, stream);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {
         crowd.beginVisit(condition, null);
@@ -88,6 +90,9 @@ public class RutaOptionalRuleElement extends RutaRuleElement {
     if (result.matched()) {
       boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
       result.setInlinedRulesMatched(inlinedRulesMatched);
+    } else {
+      // update label for failed match after evaluating conditions
+      environment.addAnnotationsToVariable(null, getLabel(), context);
     }
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
   }

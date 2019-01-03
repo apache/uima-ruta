@@ -30,6 +30,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.block.RutaBlock;
@@ -653,7 +654,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       textsMatched.add(annotation);
     }
     result.setMatchInfo(base, textsMatched, stream);
-    context.getParent().getEnvironment().addMatchToVariable(ruleMatch, this, context, stream);
+    RutaEnvironment environment = context.getParent().getEnvironment();
+    environment.addMatchToVariable(ruleMatch, this, context, stream);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {
         crowd.beginVisit(condition, null);
@@ -669,6 +671,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
     if (result.matched()) {
       boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
       result.setInlinedRulesMatched(inlinedRulesMatched);
+    } else {
+      // update label for failed match after evaluating conditions
+      environment.addAnnotationsToVariable(null, getLabel(), context);
     }
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
   }

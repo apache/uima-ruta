@@ -753,9 +753,11 @@ public class AnnotationLabelExpressionTest {
 
     String document = "a b c d";
 
-    String script = "W.begin==0{-> T1};\n";
+    String script = "";
+    script += "W.begin==0{-> T1};\n";
     script += "T1 a:ANY{REGEXP(\"c\")}->{a{-> T2};};\n";
     script += "T1 a:ANY{REGEXP(\"c\")}<-{a{-> T3};};\n";
+    script += "d:Document{-> T4}<-{a:d{STARTSWITH(CW)};b:d{STARTSWITH(W)};}->{a{->T5};};\n";
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
@@ -763,6 +765,8 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "a");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, document);
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 0);
 
   }
 
