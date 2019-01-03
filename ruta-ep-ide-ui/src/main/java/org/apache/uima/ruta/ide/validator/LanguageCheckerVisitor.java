@@ -665,6 +665,11 @@ public class LanguageCheckerVisitor extends ASTVisitor {
                   || StringUtils.equals(split[split.length - 1], "coveredText")) {
             return false;
           }
+          Integer prefixType = getVariableType(split[0]);
+          if (prefixType == RutaTypeConstants.RUTA_TYPE_UA
+                  || prefixType == RutaTypeConstants.RUTA_TYPE_UAL) {
+            return false;
+          }
         }
 
         pr.reportProblem(problemFactory.createTypeProblem(ref, sourceModule));
@@ -930,6 +935,12 @@ public class LanguageCheckerVisitor extends ASTVisitor {
                     || variableType2 == RutaTypeConstants.RUTA_TYPE_AT
                     || variableType1 == RutaTypeConstants.RUTA_TYPE_UA)) {
       // do not check on variables!
+      return;
+    }
+
+    // match expression against local annotation variables cannot be checked
+    if (variableType2 == RutaTypeConstants.RUTA_TYPE_UA
+            || variableType2 == RutaTypeConstants.RUTA_TYPE_UAL) {
       return;
     }
 
