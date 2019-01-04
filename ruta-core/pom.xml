@@ -144,10 +144,13 @@
                   <exclude>src/test/resources/org/apache/uima/ruta/**/*.ruta</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/action/*.*</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/table2.csv</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/resource/test_csvfile.csv</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/engine/*.html</exclude> <!-- test data -->
                   <exclude>src/test/resources/META-INF/org.apache.uima.fit/types.txt</exclude> <!-- test data -->
                   <exclude>src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude>
                   <exclude>issuesFixed/**</exclude> <!-- generated -->
+                  <exclude>input/**</exclude> <!-- temp test data -->
+                  <exclude>TypeSystem.xml</exclude> <!-- temp test data -->
                   <exclude>marker-file-identifying-*</exclude>
                 </excludes>
               </configuration>
