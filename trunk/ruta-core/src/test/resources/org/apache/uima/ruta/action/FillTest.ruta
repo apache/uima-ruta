@@ -1,0 +1,6 @@
+PACKAGE org.apache.uima;
+
+DECLARE Document LanguageStorage(STRING language);
+
+MARK(LanguageStorage);
+LanguageStorage{-> FILL(LanguageStorage, "language" = "en")};

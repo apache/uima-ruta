@@ -1,0 +1,9 @@
+PACKAGE org.apache.uima;
+
+TYPELIST types = {COMMA, PERIOD};
+
+DECLARE T1, T2, T3;
+
+W+{BEFORE(COMMA), -PARTOF(T1) -> MARK(T1)};
+W+{BEFORE(types), -PARTOF(T2) -> MARK(T2)};
+W+{BEFORE({COMMA, PERIOD}), -PARTOF(T3) -> MARK(T3)};

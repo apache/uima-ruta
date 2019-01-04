@@ -1,0 +1,1357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/ruta/language/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. 
+  See the NOTICE file distributed with this work for additional information regarding copyright ownership. 
+  The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not 
+  use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+  Unless required by applicable law or agreed to in writing, software distributed under the License is 
+  distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+  See the License for the specific language governing permissions and limitations under the License. -->
+
+<chapter id="ugr.tools.ruta.language.language">
+  <title>Apache UIMA Ruta Language</title>
+  <para>
+    This chapter provides a complete description of the Apache UIMA Ruta
+    language.
+  </para>
+
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.language.syntax.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.language.anchoring.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.language.basic_annotations.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.language.quantifier.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.language.declarations.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.language.expressions.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.language.conditions.xml" />
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.language.actions.xml" />
+
+
+  <section id="ugr.tools.ruta.language.filtering">
+    <title>Robust extraction using filtering</title>
+    <para>
+      Rule based or pattern based information extraction systems often
+      suffer from unimportant
+      fill words, additional whitespace and
+      unexpected markup. The UIMA Ruta System enables the
+      knowledge
+      engineer to filter and to hide all possible combinations of
+      predefined and new types
+      of annotations. The
+      visibility of tokens and annotations is modified by the actions of
+      rule
+      elements and can be conditioned using the complete
+      expressiveness of the language.
+      Therefore the
+      UIMA Ruta system
+      supports a robust approach to
+      information extraction and simplifies
+      the creation
+      of new rules since
+      the knowledge engineer can focus on
+      important textual features.
+    </para>
+    <note>
+      <para>
+        The visibility of types is calculated using three lists:
+        A list
+        <quote>default</quote>
+        for the initially filtered types,
+        which is specified in the configuration parameters of the analysis engine, the list
+        <quote>filtered</quote>
+        , which is
+        specified by the FILTERTYPE action, and the list
+        <quote>retained</quote>
+        , which is specified by the RETAINTYPE action.
+        For determining the actual visibility of
+        types, list
+        <quote>filtered</quote>
+        is added to list
+        <quote>default</quote>
+        and then all elements of list
+        <quote>retained</quote>
+        are removed. The annotations of the types in the resulting list are not visible.
+        Please note
+        that the actions FILTERTYPE and RETAINTYPE replace all elements of the respective lists and
+        that RETAINTYPE
+        overrides FILTERTYPE.
+      </para>
+    </note>
+    <para>
+      If no rule action changed the
+      configuration of the filtering settings, then
+      the default
+      filtering
+      configuration ignores whitespaces and markup.
+      Look at the following rule:
+      <programlisting><![CDATA["Dr" PERIOD CW CW;
+]]></programlisting>
+      Using the default
+      setting, this rule matches on all four lines
+      of this
+      input document:
+      <programlisting><![CDATA[Dr. Joachim Baumeister
+Dr . Joachim      Baumeister
+Dr. <b><i>Joachim</i> Baumeister</b>
+Dr.JoachimBaumeister
+]]></programlisting>
+    </para>
+    <para>
+      To change the default setting, use the
+      <quote>FILTERTYPE</quote>
+      or
+      <quote>RETAINTYPE</quote>
+      action. For example if markups should no longer be ignored, try
+      the following example on the
+      above mentioned input document:
+      <programlisting><![CDATA[Document{->RETAINTYPE(MARKUP)};
+"Dr" PERIOD CW CW;
+]]></programlisting>
+      You will see that the third line of the previous input example
+      will no longer be matched.
+    </para>
+    <para>
+      To filter types, try the following rules on the input document:
+      <programlisting><![CDATA[Document{->FILTERTYPE(PERIOD)};
+"Dr" CW CW;
+]]></programlisting>
+      Since periods are ignored here, the rule will match on all four
+      lines of the example.
+    </para>
+    <para>
+      Notice that using a filtered annotation type within a
+      rule prevents this rule from being
+      executed. Try the following:
+      <programlisting><![CDATA[Document{->FILTERTYPE(PERIOD)};
+"Dr" PERIOD CW CW;
+]]></programlisting>
+      You will see that this matches on no line of the input document
+      since the second rule uses the
+      filtered type PERIOD and is therefore not
+      executed.
+    </para>
+
+  </section>
+
+  <section id="ugr.tools.ruta.language.wildcard">
+    <title>Wildcard #</title>
+    <para>
+      The wildcard <code>#</code> is a special matching condition of a rule element, 
+      which does not match itself but uses the next rule element to determine its match.
+      It's behavior is similar to a generic rule element with a reluctant, not restricted quantifier like
+      <code>ANY+?</code> but it much more efficient since no additional annotations have to be matched.
+      The functionality of the wildcard is illustrated with following examples:
+      
+      <programlisting><![CDATA[PERIOD #{-> Sentence} PERIOD;]]></programlisting>
+      
+      In this example, everything in between two periods is annotated with an annotation of the type
+      <code>Sentence</code>. This rule is much more efficient than a rule like 
+      <code>PERIOD ANY+{-PARTOF(PERIOD)} PERIOD;</code> since it only navigated in the index of PERIOD annotations 
+      and does not match on all tokens.
+      
+      The wildcard is a normal matching condition and can be used as any other matching condition. If the sentence 
+      should include the period, the rule would look like:
+      
+      <programlisting><![CDATA[PERIOD (# PERIOD){-> Sentence};]]></programlisting>
+      
+      This rule creates only annotations after a period. If the wildcard is used as an anchor of the rule, 
+      e.g., is the first rule element and no manual anchor is specified, then it starts to match at the beginning 
+      of the document or current window.
+      
+      <programlisting><![CDATA[(# PERIOD){-> Sentence};]]></programlisting>
+      
+      This rule creates a Sentence annotation starting at the begin of the document ending with the first period.
+      If the rule elements are switched, the result is quite different because of the starting anchor of the rule:
+      
+      <programlisting><![CDATA[(PERIOD #){-> Sentence};]]></programlisting>
+      
+      Here, one annotation of the type Sentence is create for each PERIOD annotation starting with the period and 
+      ending at the end of the document.
+      
+      Currently, optional rule elements after wildcards are not optional.
+    </para>
+  </section>
+  
+  <section id="ugr.tools.ruta.language.optional">
+    <title>Optional match _</title>
+    <para>
+      The optional match <code>_</code> is a special matching condition of a rule element, 
+      which does not require any annotations or a textual span in general to match.
+      The functionality of the optional match is illustrated with following examples:
+      
+      <programlisting><![CDATA[PERIOD{-> SentenceEnd} _{-PARTOF(CW)};]]></programlisting>
+      
+      In this example, an annotation of the type <code>SentenceEnd</code> is created for each <code>PERIOD</code> annotation, 
+      if it is followed by something that is not part of a <code>CW</code>. This is also fulfilled for the last <code>PERIOD</code> annotation
+      in a document that ends with a period.
+    </para>
+  </section>
+  
+  <section id="ugr.tools.ruta.language.labels">
+    <title>Label expressions</title>
+    <para>
+      Rule elements can be extended with labels, which introduce a new local variable storing one or 
+      multiple annotations - the annotations matched by the matching condition of the rule element. 
+      The name of the variable is the short identifier before the colon in front of the matching condition, e.g., 
+      in <code>sw:SW</code>, <code>SW</code> is the matching condition and <code>sw</code> is the name of the local variable.
+      The variable will be assigned when the rule element tries to match (also when it fails after all) 
+      and can be utilized in all other language elements afterwards.
+      The functionality of the label expressions is illustrated with following examples:
+      
+      <programlisting><![CDATA[sw1:SW sw2:SW{sw1.end=sw2.begin};]]></programlisting>
+      
+      This rule matches on two consecutive small-written words, but matches only if there is no space in between them.
+      
+      Label expression can also be used across <xref linkend='ugr.tools.ruta.language.inlined' />.
+    </para>
+  </section>
+  
+  <section id="ugr.tools.ruta.language.blocks">
+    <title>Blocks</title>
+
+    <para>
+      There are different types of blocks in UIMA Ruta. Blocks aggregate rules or
+      even other blocks and may serve as more complex control structures.
+      They are even able to change the rule behavior of the contained rules.
+    </para>
+    <section id="ugr.tools.ruta.language.blocks.block">
+      <title>BLOCK</title>
+      <para>
+        BLOCK provides a simple control structure in the UIMA Ruta language:
+      </para>
+      <para>
+        <orderedlist numeration="arabic">
+          <listitem>
+            <para>
+              Conditioned statements
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Loops with restriction of the matching window
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Procedures
+            </para>
+          </listitem>
+        </orderedlist>
+      </para>
+      <para>
+        Declaration of a block:
+        <programlisting><![CDATA[BlockDeclaration   -> "BLOCK" "(" Identifier ")" RuleElementWithCA
+                                            "{" Statements "}"
+RuleElementWithCA      ->  TypeExpression QuantifierPart?
+                                            "{" Conditions?  Actions? "}"]]></programlisting>
+        A block declaration always starts with the keyword
+        <quote>BLOCK</quote>
+        , followed by the identifier of the block within parentheses. The
+        <quote>RuleElementType</quote>
+        -element
+        is a UIMA Ruta rule that consists of exactly one rule
+        element. The rule element has to be a declared annotation type.
+        <note>
+          <para>
+            The rule element in the definition of a block has to define
+            a condition/action part, even if that part is empty (
+            <quote>{}</quote>
+            ).
+          </para>
+        </note>
+      </para>
+      <para>
+        Through the rule element a new local document is defined, whose
+        scope
+        is the related block. So if you use
+        <literal>Document</literal>
+        within a block, this always refers to the locally limited
+        document.
+        <programlisting><![CDATA[BLOCK(ForEach) Paragraph{} {
+    Document{COUNT(CW)}; // Here "Document" is limited to a Paragraph;
+               // therefore the rule only counts the CW annotations
+               // within the Paragraph
+}
+]]></programlisting>
+      </para>
+      <para>
+        A block is always executed when the UIMA Ruta interpreter
+        reaches its
+        declaration. But a block may also be called from another
+        position of
+        the script. See
+        <xref linkend='ugr.tools.ruta.language.blocks.block.procedure' />
+      </para>
+      <section id="ugr.tools.ruta.language.blocks.block.condition">
+        <title>Conditioned statements</title>
+        <para>
+          A block can use common UIMA Ruta conditions to condition the
+          execution of its containing rules.
+        </para>
+        <para>
+          Examples:
+          <programlisting><![CDATA[DECLARE Month;
+
+BLOCK(EnglishDates) Document{FEATURE("language", "en")} {
+    Document{->MARKFAST(Month,'englishMonthNames.txt')};
+    //...
+}
+
+BLOCK(GermanDates) Document{FEATURE("language", "de")} {
+    Document{->MARKFAST(Month,'germanMonthNames.txt')};
+    //...
+}
+]]></programlisting>
+          The example is explained in detail in
+          <xref linkend='ugr.tools.ruta.overview.examples' />
+          .
+        </para>
+      </section>
+      <section id="ugr.tools.ruta.language.blocks.block.foreach">
+        <title>
+          Loops with restriction of the matching window
+        </title>
+        <para>
+          A block can be used to execute the containing rules on a
+          sequence of
+          similar text passages, therefore representing a
+          <quote>foreach</quote>
+          like loop.
+        </para>
+        <para>
+          Examples:
+          <programlisting><![CDATA[DECLARE SentenceWithNoLeadingNP;
+BLOCK(ForEach) Sentence{} {
+    Document{-STARTSWITH(NP) -> MARK(SentenceWithNoLeadingNP)};
+}
+]]></programlisting>
+          The example is explained in detail in
+          <xref linkend='ugr.tools.ruta.overview.examples' />
+          .
+        </para>
+        <para>
+          This construction is especially useful, if you have a set of
+          rules,
+          which has to be executed continuously on the same part of an input
+          document. Let us assume that you have already annotated your document
+          with
+          Paragraph annotations. Now you want to count the number of words
+          within each paragraph and, if the number of words exceeds 500,
+          annotate it as BigParagraph. Therefore, you wrote the following
+          rules:
+          <programlisting><![CDATA[DECLARE BigParagraph;
+INT numberOfWords;
+Paragraph{COUNT(W,numberOfWords)};
+Paragraph{IF(numberOfWords > 500) -> MARK(BigParagraph)};
+]]></programlisting>
+          This will not work. The reason for this is that the rule, which counts the
+          number of words within a Paragraph is executed on all Paragraphs
+          before the last rule which marks the Paragraph as BigParagraph
+          is
+          even executed once. When reaching the last rule in this
+          example, the variable
+          <literal>numberOfWords</literal>
+          holds the
+          number of words of the last Paragraph in the input
+          document,
+          thus, annotating all Paragraphs either as BigParagraph or
+          not.
+        </para>
+        <para>
+          To solve this problem, use a block to tie the
+          execution of this rules
+          together for each Paragraph:
+          <programlisting><![CDATA[DECLARE BigParagraph;
+INT numberOfWords;
+BLOCK(IsBig) Paragraph{} {
+  Document{COUNT(W,numberOfWords)};
+  Document{IF(numberOfWords > 500) -> MARK(BigParagraph)};
+}
+]]></programlisting>
+          Since the scope of the Document is limited to a Paragraph within
+          the
+          block, the rule, which counts the words is only executed once
+          before
+          the second rule decides, if the Paragraph is a BigParagraph.
+          Of course,
+          this is done for every Paragraph in the whole document.
+        </para>
+      </section>
+      <section id="ugr.tools.ruta.language.blocks.block.procedure">
+        <title>Procedures</title>
+        <para>
+          Blocks can be used to introduce procedures to the UIMA Ruta
+          scripts.
+          To do this, declare a block as before. Let us assume, you want to
+          simulate a procedure
+          <programlisting><![CDATA[public int countAmountOfTypesInDocument(Type type){
+    int amount = 0;
+    for(Token token : Document) {
+      if(token.isType(type)){
+        amount++;
+      }
+    }
+    return amount;
+} 
+
+public static void main() {
+  int amount = countAmountOfTypesInDocument(Paragraph));
+}            
+]]></programlisting>
+          which counts the number of the passed type within the document
+          and
+          returns the counted number. This can be done in the following
+          way:
+          <programlisting><![CDATA[BOOLEAN executeProcedure = false;
+TYPE type;
+INT amount;
+
+BLOCK(countNumberOfTypesInDocument) Document{IF(executeProcedure)} {
+    Document{COUNT(type, amount)};
+}
+
+Document{->ASSIGN(executeProcedure, true)};
+Document{->ASSIGN(type, Paragraph)};
+Document{->CALL(MyScript.countNumberOfTypesInDocument)};
+]]></programlisting>
+          The boolean variable
+          <literal>executeProcedure</literal>
+          is used to prohibit the execution of the block when the
+          interpreter
+          first reaches the block since this is no procedure call. The block
+          can be called
+          by referring to it with its name, preceded by the name
+          of the script
+          the
+          block is defined in. In this example, the script is
+          called MyScript.ruta.
+        </para>
+      </section>
+
+    </section>
+    <section id="ugr.tools.ruta.language.blocks.foreach">
+    <title>FOREACH</title>
+    <para>
+      The syntax of the FOREACH block is very similar to the common BLOCK construct, 
+      but the execution of the contained rules can lead to other results.
+      the execution of the rules is, however, different. 
+      Here, all contained rules are applied on each matched annotation consecutively. 
+      In a BLOCK construct,
+      each rule is applied within the window of each matched annotation.
+      The differences can be summarized with: 
+    </para>
+    <para>
+        <orderedlist numeration="arabic">
+          <listitem>
+            <para>
+              The FOREACH does not restrict the window for the contained rules. 
+              The rules are able to match on the complete document, or at least 
+              within the window defined by previous BLOCK definitions.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              The Identifier of the FORACH block (the part within the parentheses) declares a new local annotation variable.
+              The match annotations of the head rule are assign to this variable for each loop.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              It is expected that the local variable is part of each rule within the FOREACH block.
+              The start anchor of each rule is set to the rule element that contains the annotation as a matching condition.
+              If not another start anchor is defined before the variable.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              An additional optional boolean parameter specifies the direction of the matching process. 
+              With the default value <code>true</code>, the loop will start with the first annotation continuing with the following annotations. 
+              If set to false, the loop will start with the last annotation continuing with the previous annotations.
+            </para>
+          </listitem>
+        </orderedlist>
+      </para>
+    
+      <para>
+        The following example illustrates the syntax and semantic of the FOREACH block:
+      </para>
+      <programlisting><![CDATA[FOREACH(num, true) NUM{}{
+    num{-> SpecialNum} CW;
+    SW{-> T5} num{-> SpecialNum};
+}]]></programlisting>   
+    </section>
+    <para>
+    The first line specifies that the FOREACH block iterates over all annotations of the type NUM and assigns
+    each matched annotation to a new local variable named <code>num</code>. The block contains two rules.
+    Both rules start their matching process with the rule element with the matching condition <code>num</code>, 
+    meaning that they match directly on the annotation match by the head rule. While the first rule validates 
+    if there is a capitalized word following the number, the second rule validates that the is a small written word before the number.
+    Thus, this construct annotates number efficiently with annotations of the type <code>SpecialNum</code> dependent on their surrounding.
+    </para>
+  </section>
+
+  <section id="ugr.tools.ruta.language.inlined">
+    <title>Inlined rules</title>
+    <para>
+      A rule element can have a few optional parts, e.g., the quantifier or the curly brackets with
+      conditions and actions.
+      After the part with the conditions and actions, the rule element can
+      also contain an optional part with inlined rules.
+      These rules are applied in the context of the
+      rule element similar to the rules within a block construct: The rules
+      will try to match within the window specified by the current match of the rule element. There are two
+      types of inlined rules.
+      If the curly brackets start with the symbol
+      <quote>-></quote>
+      , the inlined rules will only be applied for successful matches of the surrounding rule.
+      This
+      behavior is very similar to the block construct. However, there are also some differences,
+      e.g., inlined rules do not specify a
+      namespace, may not contain declarations and cannot be called by other rules.
+      If the curly brackets start
+      with the symbol
+      <quote>&lt;-</quote>
+      ,
+      then the inlined rules are interpreted as some sort of condition. The surrounding rules will
+      only match, if one of the inlined rules was successfully applied.
+      The functionality introduced
+      by inlined rules is illustrated with a few examples:
+    </para>
+    <programlisting><![CDATA[Sentence{} -> {NUM{-> NumBeforeWord} W;};
+Sentence{-> SentenceWithNumBeforeWord} <- {NUM W;};
+]]></programlisting>
+    <para>
+      The first rule in this example matches on each
+      <quote>Sentence</quote>
+      annotation and applies the inlined rule within each matched sentence. The inlined rule
+      matches on numbers followed by a word and annotates the number with an annotation of the type
+      <quote>NumBeforeWord</quote>
+      . The second rule matches on each sentence
+      and applies the inlined rule within each sentence. Note that the inlined rule contains no actions.
+      The rule matches only successfully on a sentence if one of the inlined rules was
+      successfully
+      applied. In this case, the sentence is only annotated with an annotation of the type
+      <quote>SentenceWithNumBeforeWord</quote>
+      , if the
+      sentence contains a number followed by a word.
+    </para>
+
+    <programlisting><![CDATA[Document.language == "en"{} -> {
+  PERIOD #{} <- {
+      COLON COLON % COMMA COMMA;
+    }
+    PERIOD{-> SpecialPeriod};
+}    
+]]></programlisting>
+    <para>
+      This examples combines both types of inlined rules. First, the rule matches on document
+      annotations with the language feature set to
+      <quote>en</quote>
+      . Only for those documents,
+      the first inner rule is applied. The inner rule matches on
+      everything between two period, but only if the text span between the period fulfills two
+      conditions: There must be two
+      successive colons and two successive commas within the window of the matched part of the wildcard. Only if
+      these constraints are fulfilled, then the last period is annotated with the type
+      <quote>SpecialPeriod</quote>
+      .
+    </para>
+  </section>
+
+  <section id="ugr.tools.ruta.language.macro">
+    <title>Macros for conditions and actions</title>
+    <para>
+      UIMA Ruta supports the specification of macros for conditions and action.
+      Macros allow the aggregation of these elements. Rule can then refer to the name of the macro in order
+      to
+      include the aggregated conditions or actions. The syntax of macros is specified in
+      <xref linkend='ugr.tools.ruta.language.syntax' />
+      . The functionality is illustrated with the following example:
+    </para>
+    <programlisting><![CDATA[CONDITION CWorPERIODor(TYPE t) = OR(IS(CW),IS(PERIOD),IS(t));    
+ACTION INC(VAR INT i, INT inc) = ASSIGN(i,i+inc);
+INT counter = 0;
+ANY{CWorPERIODor(Bold)->INC(counter,1)};]]></programlisting>
+    <para>
+      The first line in this example declares a new macro condition with the name
+      <quote>CWorPERIODor</quote>
+      with one annotation type argument named
+      <quote>t</quote>
+      . The condition is fulfilled if the matched text is either
+      a CW annotation, a PERIOD annotation
+      or an annotation of the given type t. The second line declares a new macro action
+      with the name
+      <quote>INC</quote>
+      and two integer arguments
+      <quote>i</quote>
+      and
+      <quote>inc</quote>
+      .
+      The keyword
+      <quote>VAR</quote>
+      indicated that the first argument should be treated as a variable meaning that
+      the actions of the macro can assign new values to the given argument. Else only the value of the
+      argument
+      would be accessible to the actions. The action itself just contains an ASSIGN action, which add the
+      second argument to the variable
+      given in the first argument. The rule in line 4 finally matches
+      on each annotation of the type ANY and validates if
+      the matched position is either a CW, a
+      PERIOD or an annotation of the type Bold. If this is the case, then value of
+      the variable counter defined in line 3 is incremented by 1.
+    </para>
+  </section>
+
+  <section id="ugr.tools.ruta.language.score">
+    <title>Heuristic extraction using scoring rules</title>
+    <para>
+      Diagnostic scores are a well known and successfully applied
+      knowledge
+      formalization pattern for
+      diagnostic problems. Single known
+      findings
+      valuate a possible solution by adding or subtracting
+      points
+      on an
+      account of that solution. If the sum exceeds a given threshold,
+      then
+      the solution is
+      derived. One of the advantages of this pattern
+      is the
+      robustness against missing or false
+      findings, since a high
+      number of
+      findings is used to derive a solution.
+
+      The UIMA Ruta system
+      tries to
+      transfer this diagnostic problem
+      solution strategy to the
+      information
+      extraction problem.
+      In addition to a
+      normal creation of a new
+      annotation, a MARKSCORE action can add positive
+      or
+      negative scoring
+      points to the text fragments matched by the rule
+      elements. The current
+      value of
+      heuristic points of an annotation can
+      be evaluated by the
+      SCORE condition, which can be used in
+      an
+      additional rule to create
+      another annotation.
+      In the following, the heuristic extraction using
+      scoring rules is demonstrated by a short example:
+
+      <programlisting><![CDATA[Paragraph{CONTAINS(W,1,5)->MARKSCORE(5,Headline)};
+Paragraph{CONTAINS(W,6,10)->MARKSCORE(2,Headline)};
+Paragraph{CONTAINS(Emph,80,100,true)->MARKSCORE(7,Headline)};
+Paragraph{CONTAINS(Emph,30,80,true)->MARKSCORE(3,Headline)};
+Paragraph{CONTAINS(CW,50,100,true)->MARKSCORE(7,Headline)};
+Paragraph{CONTAINS(W,0,0)->MARKSCORE(-50,Headline)};
+Headline{SCORE(10)->MARK(Realhl)};
+Headline{SCORE(5,10)->LOG("Maybe a headline")};]]></programlisting>
+
+
+      In the first part of this rule set, annotations of the type
+      paragraph
+      receive scoring points for
+      a headline annotation, if they
+      fulfill
+      certain CONTAINS conditions. The first condition, for
+      example,
+      evaluates to true, if the paragraph contains one word up to
+      five
+      words, whereas the
+      fourth conditions is fulfilled, if the
+      paragraph
+      contains thirty up to eighty percent of emph
+      annotations.
+      The last two
+      rules finally execute their actions, if the score of a
+      headline
+      annotation exceeds ten points, or lies in the interval of
+      five to ten
+      points, respectively.
+    </para>
+  </section>
+  <section id="ugr.tools.ruta.language.modification">
+    <title>Modification</title>
+    <para>
+      There are different actions that can modify the input document,
+      like DEL, COLOR and
+      REPLACE. However, the input document itself can not be
+      modified directly. A separate engine,
+      the Modifier.xml, has to be
+      called in order to create another CAS view with the (default) name
+      "modified".
+      In that document, all modifications are executed.
+    </para>
+    <para>
+      The following example shows how to import and call the
+      Modifier.xml engine. The example is
+      explained in detail in
+      <xref linkend='ugr.tools.ruta.overview.examples' />
+      .
+    </para>
+    <programlisting><![CDATA[ENGINE utils.Modifier;
+Date{-> DEL};
+MoneyAmount{-> REPLACE("<MoneyAmount/>")};
+Document{-> COLOR(Headline, "green")};
+Document{-> EXEC(Modifier)};
+]]></programlisting>
+
+  </section>
+
+  <section id="ugr.tools.ruta.language.external_resources">
+    <title>External resources</title>
+    <para>
+      Imagine you have a set of documents containing many different
+      first names. (as example we use a
+      short list, containing the first
+      names
+      <quote>Frank</quote>
+      ,
+      <quote>Peter</quote>
+      ,
+      <quote>Jochen</quote>
+      and
+      <quote>Martin</quote>
+      )
+      If you like to annotate all of them with a
+      <quote>FirstName</quote>
+      annotation, then you could write a script using the rule
+      <literal>("Frank" | "Peter" | "Jochen" |
+        "Martin"){->MARK(FirstName)};
+      </literal>
+      .
+      This does exactly what you want, but not very handy.
+      If you like to add new first names to the
+      list of recognized first
+      names you have to change the rule itself every time. Moreover, writing
+      rules with possibly hundreds of first names
+      is not really practically realizable and definitely
+      not efficient, if you have
+      the list of first names already as a simple text file. Using this
+      text file directly
+      would reduce the effort.
+    </para>
+    <para>
+      UIMA Ruta provides, therefore, two kinds of external resources to
+      solve such tasks more
+      easily: WORDLISTs and WORDTABLEs.
+    </para>
+    <section>
+      <title>WORDLISTs</title>
+      <para>
+        A WORDLIST is a list of text items. There are three
+        different possibilities of how to
+        provide a WORDLIST to the UIMA Ruta system.
+      </para>
+      <para>
+        The first possibility is the use of simple text files, which
+        contain exactly one list item
+        per line. For example, a list "FirstNames.txt"
+        of first names could look like this:
+        <programlisting><![CDATA[Frank
+Peter
+Jochen
+Martin
+]]></programlisting>
+        First names within a document containing any number of these
+        listed
+        names, could be annotated
+        by using
+        <literal>Document{->MARKFAST(FirstName, 'FirstNames.txt')};</literal>
+        , assuming
+        an already declared type FirstName. To make this rule
+        recognizing more first names,
+        add
+        them to the external list.
+        You could also use a WORLIST variable to do the same thing as
+        follows, which is preferable:
+        <programlisting><![CDATA[WORDLIST FirstNameList = 'FirstNames.txt';
+DECLARE FirstName;
+Document{->MARKFAST(FirstName, FirstNameList)};
+]]></programlisting>
+
+
+      </para>      
+      <para>
+        Another possibility compared to the plain text files to provide WORDLISTs is the use of compiled
+        <quote>tree word list</quote>
+        s. The file ending for this is
+        <quote>.twl</quote>
+        A tree word list is similar to a trie. It is a XML-file that contains
+        a tree-like structure
+        with a node for each character. The nodes
+        themselves refer to child nodes that represent all
+        characters that
+        succeed the character of the parent node. For single word entries the
+        resulting complexity is O(m*log(n)) instead of O(m*n) for simple text
+        files. Here m is the
+        amount of basic annotations in the document and
+        n is the amount of entries in the dictionary.
+        To generate a tree word
+        list, see
+        <xref linkend='section.ugr.tools.ruta.workbench.create_dictionaries' />
+        .
+        A tree word list is used in the same way as simple word lists,
+        for example
+        <literal>Document{->MARKFAST(FirstName, 'FirstNames.twl')};</literal>
+        .
+      </para>
+      <para>
+        A third kind of usable WORDLISTs are
+        <quote>multi tree word list</quote>
+        s.
+        The file ending for this is
+        <quote>.mtwl</quote>
+        . It is generated from
+        several ordinary WORDLISTs given as simple text files. It contains
+        special
+        nodes that provide additional information about the original file. These
+        kind of
+        WORDLIST is useful, if several different WORDLISTs are used within
+        a UIMA Ruta script. Using
+        five different lists results in five rules using
+        the MARKFAST action. The documents to
+        annotate are thus searched five
+        times resulting in a complexity of 5*O(m*log(n)) With a multi
+        tree
+        word list this can be reduced to about O(m*log(5*n)). To
+        generate a multi tree word list,
+        see
+        <xref linkend='section.ugr.tools.ruta.workbench.create_dictionaries' />
+        To use a multi tree word list UIMA Ruta provides the action
+        TRIE. If for example two word
+        lists
+        <quote>FirstNames.txt</quote>
+        and
+        <quote>LastNames.txt</quote>
+        have been merged in the multi tree word list
+        <quote>Names.mtwl</quote>
+        , then the following rule annotates all
+        first names and last names in the whole document:
+        <programlisting><![CDATA[WORDLIST Names = 'Names.mtwl';
+Declare FirstName, LastName;
+Document{->TRIE("FirstNames.txt" = FirstName, "LastNames.txt" = LastName,
+    Names, false, 0, false, 0, "")};]]></programlisting>
+      </para>
+      <para>
+              Only if the wordlist is explicitly declared with WORDLIST, then also a StringExpression including variables can be applied to specify the file:
+        <programlisting><![CDATA[STRING package ="my/package/";
+WORDLIST FirstNameList = "" + package + "FirstNames.txt';
+DECLARE FirstName;
+Document{->MARKFAST(FirstName, FirstNameList)};
+]]></programlisting>
+      </para>
+      
+    </section>
+    <section>
+      <title>WORDTABLEs</title>
+      <para>
+        WORDLISTs have been used to annotate all occurrences of any list
+        item in a document with a
+        certain type. Imagine now that each annotation
+        has features that should be filled with values
+        dependent on the list item
+        that matched. This can be achieved with WORDTABLEs. Let us, for
+        example,
+        assume we want to annotate all US presidents within a document.
+        Moreover, each
+        annotation should contain the party of the president as well as the
+        year of his inauguration.
+        Therefore we use an annotation type
+        <literal>DECLARE Annotation PresidentOfUSA(STRING party, INT
+          yearOfInauguration)
+        </literal>
+        . To achieve this, it is recommended to use WORDTABLEs.
+      </para>
+      <para>
+        A WORDTABLE is simply a comma-separated file (.csv), which actually uses semicolons for
+        separation of the entries.
+        For our example, such a file named
+        <quote>presidentsOfUSA.csv</quote>
+        could look like this:
+        <programlisting><![CDATA[Bill Clinton;democrats;1993
+George W. Bush;republicans;2001
+Barack Obama;democrats;2009
+]]></programlisting>
+        To annotate our documents we could use the following set of
+        rules:
+        <programlisting><![CDATA[WORDTABLE presidentsOfUSA = 'presidentsOfUSA.csv';
+DECLARE Annotation PresidentOfUSA(STRING party, INT yearOfInauguration);
+Document{->MARKTABLE(PresidentOfUSA, 1, presidentsOfUSA, "party" = 2, 
+		"yearOfInauguration" = 3)};]]></programlisting>
+      </para>
+      <para>
+              Only if the wordtable is explicitly declared with WORDTABLE, then also a StringExpression including variables can be applied to specify the file:
+        <programlisting><![CDATA[STRING package ="my/package/";
+WORDTABLE presidentsOfUSA = "" + package + "presidentsOfUSA.csv";
+]]></programlisting>
+      </para>
+    </section>
+  </section>
+  <section id="ugr.tools.ruta.language.regexprule">
+    <title>Simple Rules based on Regular Expressions</title>
+    <para>
+      The UIMA Ruta language includes, additionally to the normal rules, a simplified rule syntax
+      for processing regular expressions.
+      These simple rules consist of two parts separated by
+      <quote>-></quote>
+      : The left part is the regular expression
+      (flags: DOTALL and MULTILINE), which may contain capturing groups. The right part defines, which kind of
+      annotations
+      should be created for each match of the regular expression. If a type is given without a group index,
+      then an annotation of that type is
+      created for the complete regular expression match, which
+      corresponds to group 0. Each type can be extended with additional feature assignments,
+      which store the value of the given expression in the feature specified by the given StringExpression.
+      However, if the expression
+      refers to a number (NumberExpression), then the match of the corresponding capturing group is applied.
+      These simple rules can be restricted to match only within
+      certain annotations using the BLOCK
+      construct, and ignore all filtering settings.
+    </para>
+
+    <programlisting><![CDATA[RegExpRule        -> StringExpression "->" GroupAssignment 
+                     ("," GroupAssignment)* ";"
+GroupAssignment   -> TypeExpression FeatureAssignment?
+                     | NumberEpxression "=" TypeExpression 
+                       FeatureAssignment?
+FeatureAssignment -> "(" StringExpression "=" Expression 
+                      ("," StringExpression "=" Expression)* ")"
+]]></programlisting>
+
+    <para>
+      The following example contains a simple rule, which is able to create annotations of two
+      different types. It creates an annotation
+      of the type
+      <quote>T1</quote>
+      for each match of the complete regular expression and an annotation
+      of the type
+      <quote>T2</quote>
+      for each match of the first capturing group.
+    </para>
+
+    <programlisting><![CDATA["A(.*?)C" -> T1, 1 = T2;]]></programlisting>
+
+
+  </section>
+  <section id="ugr.tools.ruta.language.extensions">
+    <title>Language Extensions</title>
+    <para>
+      The UIMA Ruta language can be extended with external blocks, actions, conditions,
+      type functions, boolean functions, string functions and number functions.
+      The block constructs are able to introduce new rule matching paradigms.
+      The other extensions provide atomic elements to the language, e.g., a condition that evaluates
+      project-specific properties.
+      An exemplary implementation of each kind of extension can be found
+      in the project
+      <quote>ruta-ep-example-extensions</quote>
+      and a simple UIMA Ruta project, which uses these extensions, is located at
+      <quote>ExtensionsExample</quote>
+      . Both projects are part of the source release of UIMA ruta and are located in the
+      <quote>example-projects</quote>
+      folder.
+    </para>
+    <section id="ugr.tools.ruta.language.extensions.core-ext">
+      <title>Provided Extensions</title>
+      <para>
+        The UIMA Ruta language already provides extensions besides the exemplary elements.
+        The project ruta-core-ext contains the implementation for the analysis engine and the project
+        ruta-ep-core-ext contains the integration in the UIMA Ruta Workbench.
+      </para>
+
+      <section id="ugr.tools.ruta.language.extensions.core-ext.documentblock">
+        <title>DOCUMENTBLOCK</title>
+        <para>
+          This additional block construct applies the contained statements/rules on
+          the complete document independent of previous windows and restrictions.
+          It resets the matching context, but otherwise behaves like a normal BLOCK.
+        </para>
+        <programlisting><![CDATA[BLOCK(ex) NUM{}{
+  DOCUMENTBLOCK W{}{
+    // do something with the words
+  }
+}]]></programlisting>
+        <para>
+          The example contains two blocks. The first block iterates over all numbers (NUM).
+          The second block resets the match context and matches on all words (W), for every previously
+          matched number.
+        </para>
+      </section>
+      <section id="ugr.tools.ruta.language.extensions.core-ext.onlyfirst">
+        <title>ONLYFIRST</title>
+        <para>
+          This additional block construct applies the contained statements/rules only until
+          the first one was successfully applied. The following example provides an overview of the syntax:
+        </para>
+        <programlisting><![CDATA[ONLYFIRST Document{}{
+  Document{CONTAINS(Keyword1) -> Doc1};
+  Document{CONTAINS(Keyword2) -> Doc2};
+  Document{CONTAINS(Keyword3) -> Doc3};
+}]]></programlisting>
+        <para>
+          The block contains three rules each evaluating if the document contains a specific annotation of
+          the type Keyword1/2/3.
+          If the first rule is able to match, then the other two rules will not try to apply.
+          Straightforwardly, if the first rule failed to match and
+          the second rules is able to match, then the third rule will not try to be applied.
+        </para>
+      </section>
+    <section id="ugr.tools.ruta.language.extensions.core-ext.onlyonce">
+      <title>ONLYONCE</title>
+      <para>
+        Rules within this block construct will stop after the first successful match.
+        The
+        following example provides an overview of the syntax:
+      </para>
+      <programlisting><![CDATA[ONLYONCE Document{}{
+  CW{-> FirstCW};
+  NUM+{-> FirstNumList};
+}]]></programlisting>
+      <para>
+        The block contains two rules.
+        The first rule will annotate the first capitalized word of the document with the type FirstCW.
+        All
+        further possible matches will be skipped.
+        The second rule will annotate the first sequence of
+        numbers with the type FirstNumList.
+        The greedy behavior of the quantifiers is not changed by
+        the ONLYONCE block.
+      </para>
+    </section>
+    <section id="ugr.tools.ruta.language.extensions.core-ext.stringfunctions">
+      <title>Stringfunctions</title>
+      <para>
+        In order to manipulate Strings in variables a bunch of Stringfunctions
+        have been added.
+        They will all be presented with a short example demonstrating their use.
+      </para>
+      <section>
+        <title>firstCharToUpperCase(IStringExpression expr)</title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+SW{-> MATCHEDTEXT(s), ADD(sl, firstCharToUpperCase(s))};
+CW{INLIST(sl) -> Test};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. Afterwards for every
+          small-written
+          word,
+          the according word with a capital first Character is added to the
+          STRINGLIST.
+          This
+          might be helpful in German Named-Entity-Recognition where you will
+          encounter "der blonde
+          Junge..." and "der Blonde",
+          both map to the same entity. Applied to the word "blonde" you
+          can then
+          also track the second appearance of that Person.
+          In the last line a rule marks all
+          words in the STRINGLIST as a Test
+          Annotation.
+        </para>
+      </section>
+      <section>
+        <title>replaceFirst(IStringExpression expr, IStringExpression
+          searchTerm,
+          IStringExpression
+          replacement)
+        </title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+CW{-> MATCHEDTEXT(s), ADD(sl, replaceFirst(s,"e","o"))};
+CW{INLIST(sl) -> Test};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. Next every capital
+          Word CW is added
+          to
+          the STRINGLIST, however the first "e" is going to be replaced by
+          "o". Afterwards all
+          instances of the STRINGLIST are matched with all present CWs and
+          annotated as a Test
+          Annotation if a match occurs.
+        </para>
+      </section>
+      <section>
+        <title>replaceAll(IStringExpression expr, IStringExpression
+          searchTerm,
+          IStringExpression
+          replacement)
+        </title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+CW{-> MATCHEDTEXT(s), ADD(sl, replaceAll(s,"e","o"))};
+CW{INLIST(sl) -> Test};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. Next every capital
+          Word CW is added
+          to
+          the STRINGLIST, however similar to the above example at first
+          there is going to be a
+          replacement.
+          This time all "e"`s are going to be replaced by "o"`s. Afterwards all
+          instances of the STRINGLIST are matched with all present CWs and
+          annotated as a Test
+          Annotation if a match occurs.
+        </para>
+      </section>
+
+      <section>
+        <title>substring(IStringExpression expr, INumberExpression from,
+          INumberExpression to)
+        </title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+CW{-> MATCHEDTEXT(s), ADD(sl, substring(s,0,9))};
+SW{INLIST(sl) -> Test};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. Imagine you found the
+          word
+          "Alexanderplatz" but
+          you only want to continue with the word "Alexander". This snippet
+          shows how this can be done by
+          using the Stringfunctions in RUTA. If a word has less
+          character than
+          specified in the arguments,
+          nothing will be executed.
+
+        </para>
+      </section>
+
+      <section>
+        <title>toLowerCase(IStringExpression expr)</title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+CW{-> MATCHEDTEXT(s), ADD(sl, toLowerCase(s))};
+SW{INLIST(sl) -> Test};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. A problem you might
+          encounter is that
+          you
+          want to know whether the first word of a sentence is really a
+          noun.(Again more or less
+          german related)
+          By using this function you could add all words that start a
+          sentence(which
+          usually means a capitalized word) to a list
+          as in this example. Then test if it also
+          appears within the text but
+          this time as lowercase. As a result you could change its
+          POS-Tag.
+
+        </para>
+      </section>
+      <section>
+        <title>toUpperCase(IStringExpression expr)</title>
+        <programlisting><![CDATA[STRING s;
+STRINGLIST sl;
+CW{-> MATCHEDTEXT(s), ADD(sl, toUpperCase(s))};
+SW{INLIST(sl) -> T1};]]></programlisting>
+        <para>
+          This example declares a STRING and a STRINGLIST. A typical scenario for
+          its use might
+          be
+          Named-Entity-Recognition. This time you want to find all organizations given an input
+          document.
+          At first you might track-down all fully capitalized words. As a
+          second step you
+          can use this function
+          and iterate over all CW insances and compare the found instance with
+          all the uppercase organizations that were
+          found before.
+        </para>
+      </section>
+
+
+      <section>
+        <title>contains(IStringExpression expr,IStringExpression contains)
+        </title>
+        <programlisting><![CDATA[w:W{contains(w.ct, "er")-> Test};]]></programlisting>
+        <para>
+          If you want to find all words that contain a given charactersequence.
+          Assume again you
+          are in a NER-Task
+          you found the token "Alexanderplatz" using this function you can track
+          down the names that are part of a given token.
+          This example uses a BLOCK to iterate over
+          each word and then assigns
+          whether the text of that word contains the given char-sequence.
+          If so it is annotated as a Test annotation.
+        </para>
+      </section>
+
+      <section>
+        <title>endsWith(IStringExpression expr,IStringExpression expr)
+        </title>
+        <programlisting><![CDATA[w:W{endsWith(w.ct, "str")-> Test};]]></programlisting>
+        <para>
+          Assume you found the suffix "str" as a strong indicator whether a given
+          token
+          represents
+          location (a street) by using this function you can now easily identify all
+          of
+          those words, given
+          a valid suffix.
+        </para>
+      </section>
+
+      <section>
+        <title>startsWith(IStringExpression expr,IStringExpression expr)
+        </title>
+        <programlisting><![CDATA[w:W{startsWith(w.ct, "sprech")-> Test};]]></programlisting>
+        <para>
+          Given a stem of a word you want to mark every instance that was possibly derived from that stem.
+          If you decide to use that function you can detect all those words in 1 line and in a next step
+          mark all
+          of them as an Annotationtype of choice.
+        </para>
+      </section>
+
+      <section>
+        <title>equals(IStringExpression expr,IStringExpression expr) and equalsIgnoreCase(expr,expr)
+        </title>
+        <programlisting><![CDATA[STRING s;
+STRING s2 = "Kenny";
+BOOLEAN a;
+BLOCK(forEACH) W{}{
+    W{->MATCHEDTEXT(s), ASSIGN(a,equals(s,s2))};
+    W{->MATCHEDTEXT(s), ASSIGN(a,equalsIgnoreCase(s,s2))};
+    W{a ->Test};
+}]]></programlisting>
+        <para>
+          These functions check whether both arguments are equal in terms of the
+          text of the token that they contain.
+
+
+        </para>
+      </section>
+
+      <section>
+        <title>isEmpty(IStringExpression expr) and equalsIgnoreCase(expr,expr)
+        </title>
+        <programlisting><![CDATA[STRING s;
+BOOLEAN a;
+BLOCK(forEACH) W{}{
+    W{->MATCHEDTEXT(s), ASSIGN(a,isEmpty(s))};
+    W{a ->Test};
+}]]></programlisting>
+        <para>
+          An equivalent function to the Java Stringlibrary. It checks whether or not a given variable
+          contains
+          an empty Stringliteral "" or not.
+
+        </para>
+      </section>
+    </section>
+    <section id="ugr.tools.ruta.language.extensions.core-ext.typefunctions">
+      <title>typeFromString</title>
+      <para>
+        This function takes a string expression and tries to find the corresponding type.
+        Short names are supported but need to be unambiguous.
+      </para>
+      <programlisting><![CDATA[CW{-> typeFromString("Person")}]]></programlisting>
+      <para>
+        In this example, each <code>CW</code> annotation is 
+        annotated with an annotation of the type <code>Person</code>.
+      </para>
+    </section>
+    </section>
+    <section id="ugr.tools.ruta.language.extensions.new">
+      <title>Adding new Language Elements</title>
+      <para>
+        The extension of the UIMA Ruta language is illustrated using an example on how to add a new
+        condition.
+        Other language elements can be specified straightforwardly by using the corresponding interfaces and
+        extensions.
+      </para>
+      <para>
+        Three classes need to be implemented for adding a new condition that also is resolved in the UIMA
+        Ruta Workbench:
+      </para>
+      <para>
+        <orderedlist numeration="arabic">
+          <listitem>
+            <para>
+              An implementation of the condition extending AbstractRutaCondition.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              An implementation of IRutaConditionExtension, which provides the condition implementation to
+              the engine.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              An implementation of IIDEConditionExtension, which provides the condition for the UIMA Ruta
+              Workench.
+            </para>
+          </listitem>
+        </orderedlist>
+      </para>
+      <para>
+        The exemplary project provides implementation of all possible language elements.
+        This project contains the implementations for the analysis engine and also the implementation
+        for the UIMA Ruta Workbench, and is therefore an Eclipse plugin (mind the pom file).
+      </para>
+      <para>
+        Concerning the ExampleCondition condition extension, there are four important spots/classes:
+      </para>
+      <para>
+        <orderedlist numeration="arabic">
+          <listitem>
+            <para>
+              ExampleCondition.java provides the implementation of the new condition, which evaluates dates.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              ExampleConditionExtension.java provides the extension for the analysis engine.
+              It knows the name of the condition, its implementation, can create new instances
+              of that condition, and is able to verbalize the condition for the explanation components.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              ExampleConditionIDEExtension provides the syntax check for the editor and the keyword for syntax coloring.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              The plugin.xml defines the extension for the Workbench:
+            </para>
+          </listitem>
+        </orderedlist>
+        <programlisting><![CDATA[<extension point="org.apache.uima.ruta.ide.conditionExtension">
+  <condition
+    class="org.apache.uima.ruta.example.extensions.
+      ExampleConditionIDEExtension"
+    engine="org.apache.uima.ruta.example.extensions.
+      ExampleConditionExtension">
+  </condition>
+</extension>]]></programlisting>
+      </para>
+      <para>
+        If the UIMA Ruta Workbench is not used or the rules are only applied in UIMA pipelines,
+        only the ExampleCondition and ExampleConditionExtension are needed, and
+        org.apache.uima.ruta.example.extensions.ExampleConditionExtension
+        needs to be added to the additionalExtensions parameter of your UIMA Ruta analysis engine
+        (descriptor).
+      </para>
+      <para>
+        Adding new conditions using Java projects in the same workspace has not been tested yet,
+        but at least the Workbench support will be missing due to the inclusion of extensions
+        using the extension point mechanism of Eclipse.
+      </para>
+    </section>
+  </section>
+</chapter>

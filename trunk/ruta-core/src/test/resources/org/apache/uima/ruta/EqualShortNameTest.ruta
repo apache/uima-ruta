@@ -1,0 +1,17 @@
+PACKAGE org.apache.uima;
+
+DECLARE T1, T2, T3, T4;
+DECLARE NUM;
+
+TYPE NUM_Ruta = org.apache.uima.ruta.type.NUM;
+TYPE NUM_Test = org.apache.uima.EqualShortNameTest.NUM;
+
+
+CW { -> MARK(org.apache.uima.EqualShortNameTest.NUM)};
+SW { -> MARK(NUM_Test)};
+
+org.apache.uima.EqualShortNameTest.NUM{-> MARK(T1)};
+NUM_Test{-> MARK(T2)};
+
+org.apache.uima.ruta.type.NUM {-> MARK(T3)};
+NUM_Ruta {-> MARK(T4)};

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>  
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="CWEngine">
+      <import location="CWEngine.xml"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SWEngine">
+      <import location="SWEngine.xml"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SimpleEngine">
+      <import location="SimpleEngine.xml"/>
+    </delegateAnalysisEngine>
+  <delegateAnalysisEngine key="ModifierCW">
+      <import location="ModifierCW.xml"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ModifierSW">
+      <import location="ModifierSW.xml"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>AAE</name>
+    <description/>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>CWEngine</node>
+        <node>ModifierCW</node>
+        <node>SWEngine</node>
+        <node>ModifierSW</node>
+        <node>SimpleEngine</node>
+      </fixedFlow>
+    </flowConstraints>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <inputSofas>
+          <sofaName>global1</sofaName>
+        </inputSofas>
+        <outputSofas>
+          <sofaName>global2</sofaName>
+          <sofaName>global3</sofaName>
+        </outputSofas>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+  <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>true</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+<sofaMappings>
+    <sofaMapping>
+      <componentKey>ModifierCW</componentKey>
+      <componentSofaName>modified</componentSofaName>
+      <aggregateSofaName>global2</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>ModifierSW</componentKey>
+      <aggregateSofaName>global2</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>SWEngine</componentKey>
+      <aggregateSofaName>global2</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>ModifierSW</componentKey>
+      <componentSofaName>modified</componentSofaName>
+      <aggregateSofaName>global3</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>SimpleEngine</componentKey>
+      <aggregateSofaName>global3</aggregateSofaName>
+    </sofaMapping>
+    <sofaMapping>
+      <componentKey>CWEngine</componentKey>
+      <aggregateSofaName>global1</aggregateSofaName>
+    </sofaMapping>
+  <sofaMapping>
+      <componentKey>ModifierCW</componentKey>
+      <aggregateSofaName>global1</aggregateSofaName>
+    </sofaMapping>
+  </sofaMappings>
+</analysisEngineDescription>

@@ -1,0 +1,3 @@
+NOT-Condition:
+
+To negate the meaning of a condition, simply write "-" before it.

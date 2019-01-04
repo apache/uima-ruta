@@ -1,0 +1,5 @@
+DECLARE Value(STRING value);
+
+STRING value; // or = "dog";
+
+W{-> CREATE(Value, "value" = value), ASSIGN(value, W.ct)};

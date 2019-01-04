@@ -1,0 +1,7 @@
+PACKAGE org.apache.uima;
+
+WORDLIST list1 = 'trie.mtwl';
+
+TRIE("FirstNames.txt" = {A, "a", "first"}, "LastNames.txt" = {B, "b", true},
+    "CompleteNames.txt" = {C, "c", 6},
+	list1, true, 4, false, 0, ":");

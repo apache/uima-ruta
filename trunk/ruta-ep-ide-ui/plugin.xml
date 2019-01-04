@@ -1,0 +1,1224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<?eclipse version="3.4"?>
+<plugin
+>
+  <extension-point id="rutaCommandProcessor" name="rutaCommandProcessor" schema="schema/rutaCommandProcessor.exsd"/>
+   <extension-point id="rutaCommandDetector" name="rutaCommandDetector" schema="schema/rutaCommandDetector.exsd"/>
+   <extension-point id="rutakeywords" name="rutakeywords" schema="schema/rutakeywords.exsd"/>
+   <extension-point id="rutaExtension" name="rutaExtension" schema="schema/rutaExtension.exsd"/>
+   <extension-point id="conditionExtension" name="conditionExtension" schema="schema/conditionExtension.exsd"/>
+   <extension-point id="actionExtension" name="actionExtension" schema="schema/actionExtension.exsd"/>
+   <extension-point id="engineExtension" name="engineExtension" schema="schema/engineExtension.exsd"/>
+   <extension-point id="booleanFunctionExtension" name="booleanFunctionExtension" schema="schema/booleanFunctionExtension.exsd"/>
+   <extension-point id="typeFunctionExtension" name="typeFunctionExtension" schema="schema/typeFunctionExtension.exsd"/>
+   <extension-point id="numberFunctionExtension" name="numberFunctionExtension" schema="schema/numberFunctionExtension.exsd"/>
+   <extension-point id="stringFunctionExtension" name="stringFunctionExtension" schema="schema/stringFunctionExtension.exsd"/>
+   <extension-point id="rutaSemanticHighlighting" name="rutaSemanticHighlighting" schema="schema/rutaSemanticHighlighting.exsd"/>
+   <extension-point id="rutaTestEngine" name="rutaTestEngine" schema="schema/rutaTestEngine.exsd"/>
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.uima.ruta.ide.debug.RutaDebugPreferenceInitializer">
+      </initializer>
+      <initializer
+            class="org.apache.uima.ruta.ide.ui.preferences.RutaConsolePreferenceInitializer">
+      </initializer>
+      <initializer
+            class="org.apache.uima.ruta.ide.ui.RutaUIPreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.debug.scriptDebugModel">
+      <debugModel
+            debugModelId="org.eclipse.dltk.debug.rutaModel"
+            natureId="org.apache.uima.ruta.ide.core.RutaNature"
+            typeFactory="org.apache.uima.ruta.ide.debug.RutaTypeFactory">
+      </debugModel>
+   </extension>
+  
+  <extension point="org.eclipse.ui.viewActions">
+    <viewContribution
+      targetID="org.eclipse.debug.ui.VariableView"
+      id="org.eclipse.jdt.debug.ui.VariableViewActions">
+      <action
+        style="toggle"
+        id="org.eclipse.jdt.debug.ui.variableViewActions.ShowStatic"
+        class="org.apache.uima.ruta.ide.ui.console.ShowFunctionsAction"
+        helpContextId="show_functions_context"
+        icon="icons/ruta.png"
+        label="%showStaticAction.label"
+        menubarPath="org.apache.uima.ruta.ide.debug.ui.menu.VariableView/ruta"
+        tooltip="%showStaticAction.tooltip">
+      </action>
+    </viewContribution>
+  </extension>
+  
+  <extension point="org.eclipse.dltk.ui.editorTextHovers">
+    <hover
+      label="%RutaVariableHoverLabel"
+      description="%RutaVariableHoverDescription"
+      class="org.apache.uima.ruta.ide.debug.ui.RutaDebugHover"
+      id="org.apache.uima.ruta.ide.debug.ui.RutaDebugHover">
+    </hover>
+  </extension>
+
+  <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+      type="org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationType"
+      class="org.apache.uima.ruta.ide.debug.ui.launchConfiguration.RutaTabGroup"
+      id="org.apache.uima.ruta.ide.debug.ui.launchConfiguration.RutaTabGroup">
+      <launchMode
+        mode="debug"
+        perspective="org.eclipse.debug.ui.DebugPerspective"
+        description="Debug Ruta">
+      </launchMode>
+      <launchMode
+        mode="run"
+        description="Run Ruta">
+      </launchMode>
+    </launchConfigurationTabGroup>
+  </extension>
+
+
+  <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+      icon="icons/ruta.png"
+      configTypeID="org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationType"
+      id="org.apache.uima.ruta.ide.debug.ui.launchConfigurationTypeImage.localRutaScript">
+    </launchConfigurationTypeImage>
+    <!--launchConfigurationTypeImage
+      configTypeID="org.apache.uima.ruta.ide.launching.RutaRemoteLaunchConfigurationType"
+      icon="icons/ruta.png"
+      id="org.apache.uima.ruta.ide.debug.ui.launchConfigurationTypeImage.remoteRutaScript">
+      </launchConfigurationTypeImage-->
+  </extension>
+
+  <extension point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+      class="org.apache.uima.ruta.ide.debug.ui.launcher.RutaLaunchShortcut"
+      icon="icons/ruta.png"
+      id="org.apache.uima.ruta.ide.debug.ui.launchShortcut"
+      label="UIMA Ruta"
+      modes="run, debug">
+      <contextualLaunch>
+        <enablement>
+          <with variable="selection">
+            <count value="1" />
+            <iterate>
+              <or>
+                <test
+                  property="org.eclipse.dltk.launching.hasProjectNature"
+                  args="org.apache.uima.ruta.ide.nature" />
+              </or>
+            </iterate>
+          </with>
+        </enablement>
+      </contextualLaunch>
+      <perspective id="org.apache.uima.ruta.ide.ui.RutaPerspective">
+      </perspective>
+      <perspective id="org.eclipse.debug.ui.DebugPerspective"></perspective>
+    </shortcut>
+  </extension>
+
+  <extension point="org.eclipse.ui.popupMenus">
+    <objectContribution
+      adaptable="false"
+      id="org.apache.uima.ruta.ide.ui.console.objectContribution1"
+      nameFilter="*"
+      objectClass="org.eclipse.dltk.core.ISourceModule">
+      <action
+        class="org.apache.uima.ruta.ide.ui.console.PasteRutaToConsole"
+        id="org.apache.uima.ruta.ide.ui.console.PasteRutaTextToConsoleAction"
+        label="%RutaConsole.Actions.PasteToRutaConsole" />
+    </objectContribution>
+
+    <viewerContribution
+      id="org.apache.uima.ruta.ide.debug.ui.viewerContribution1"
+      targetID="#RutaEditorContext">
+      <!--action
+        class="org.eclipse.dltk.debug.ui.actions.WatchExpressionAction"
+        id="org.apache.uima.ruta.ide.debug.ui.WatchExpressionAction"
+        label="%WatchVariable"
+        menubarPath="additions"/-->
+      <action
+        id="org.apache.uima.ruta.ide.ui.console.PasteToRutaConsoleAction"
+        label="%RutaConsole.Actions.PasteToRutaConsole"
+        menubarPath="additions"
+        class="org.apache.uima.ruta.ide.ui.console.PasteRutaTextToConsoleAction">
+      </action>
+    </viewerContribution>
+    <viewerContribution
+      id="org.apache.uima.ruta.ide.debug.ui.rulerContribution"
+      targetID="#RutaRulerContext">
+      <action
+        class="org.eclipse.dltk.debug.ui.actions.RulerToggleWatchPointActionDelegate"
+        icon="icons/jwatch_obj.gif"
+        id="ruta.doubleClickWatchPointAction"
+        label="Toggle Watchpoint"
+        menubarPath="debug"
+        style="push">
+      </action>
+      <action
+        label="%EnableDisableBreakpoint.label"
+        id="org.apache.uima.ruta.ide.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+        class="org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+        menubarPath="debug">
+      </action>
+
+      <action
+        label="%ToggleBreakpoint.label"
+        id="org.apache.uima.ruta.ide.ui.actions.RulerToggleBreakpointActionDelegate"
+        class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+        menubarPath="debug">
+      </action>
+
+      <action
+        class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
+        id="org.apache.uima.ruta.ide.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
+        label="%BreakpointProperties.label"
+        menubarPath="group.properties" />
+    </viewerContribution>
+    
+    <viewerContribution
+      targetID="#RutaEditorContext"
+      id="org.eclipse.dltk.debug.ui.DebugPopupActions">
+      <visibility>
+        <and>
+          <systemProperty
+            name="org.eclipse.dltk.debug.ui.debuggerActive"
+            value="true">
+          </systemProperty>
+          <objectClass name="org.eclipse.jface.text.ITextSelection">
+          </objectClass>
+        </and>
+      </visibility>
+      <action
+        label="%ScriptWatch.label"
+        icon="/icons/watch_exp.gif"
+        class="org.eclipse.dltk.internal.debug.ui.actions.ScriptWatchAction"
+        menubarPath="additions"
+        id="org.apache.uima.ruta.ide.debug.ui.ScriptWatch">
+      </action>
+      <action
+        label="%ScriptInspect.label"
+        icon="/icons/insp_sbook.gif"
+        definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptInspect"
+        class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptInspectAction"
+        menubarPath="additions"
+        id="org.apache.uima.ruta.ide.debug.ui.ScriptInspect">
+      </action>
+      <action
+        label="%ScriptDisplay.label"
+        icon="/icons/disp_sbook.gif"
+        definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptDisplay"
+        class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptDisplayAction"
+        menubarPath="additions"
+        id="org.apache.uima.ruta.ide.debug.ui.ScriptDisplay">
+      </action>
+    </viewerContribution>
+  </extension>
+
+  <extension point="org.eclipse.ui.actionSetPartAssociations">
+    <actionSetPartAssociation
+      targetID="org.eclipse.debug.ui.launchActionSet">
+      <part id="org.apache.uima.ruta.ide.ui.editor.RutaEditor"></part>
+    </actionSetPartAssociation>
+  </extension>
+  <extension point="org.eclipse.ui.actionSetPartAssociations">
+    <actionSetPartAssociation
+      targetID="org.eclipse.debug.ui.launchActionSet">
+      <part id="org.eclipse.dltk.ui.ScriptExplorer"></part>
+      <part id="org.apache.uima.ruta.ide.ui.editor.RutaEditor"></part>
+    </actionSetPartAssociation>
+  </extension>
+  <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
+    <consolePatternMatchListener
+      class="org.apache.uima.ruta.ide.ui.console.RutaConsoleTracker"
+      regex="\(file &quot;.*&quot; line .*\)"
+      id="org.apache.uima.ruta.ide.debug.ui.RutaConsoleTracker">
+      <enablement>
+        <or>
+          <test
+            property="org.eclipse.debug.ui.processTypeTest"
+            value="rutaInterpreter" />
+        </or>
+      </enablement>
+    </consolePatternMatchListener>
+
+  </extension>
+  <!--extension
+    point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+    type="org.apache.uima.ruta.ide.launching.localRutaApplication"
+    class="org.apache.uima.ruta.ide.debug.ui.launchConfiguration.RutaTabGroup"
+    id="org.apache.uima.ruta.ide.debug.ui.RutaTabGroup">
+    <launchMode 
+    mode="debug"
+    perspective="org.eclipse.debug.ui.DebugPerspective"
+    description="Debug">
+    </launchMode>
+    </launchConfigurationTabGroup>
+    </extension-->   
+
+  <extension point="org.eclipse.ui.editorActions">
+    <editorContribution
+      targetID="org.apache.uima.ruta.ide.ui.editor.RutaEditor"
+      id="org.apache.uima.ruta.ide.debug.RutaEditor.BreakpointRulerActions">
+
+      <action
+        label="Toggle Breakpoint"
+        class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+        style="push"
+        actionID="RulerDoubleClick"
+        id="ruta.doubleClickBreakpointAction" />
+
+
+    </editorContribution>
+  </extension>
+  <extension point="org.eclipse.ui.console.consoleFactories">
+    <consoleFactory
+      class="org.apache.uima.ruta.ide.ui.console.RutaConsoleFactory"
+      label="%RutaConsole.Console" />
+  </extension>
+
+  <extension point="org.eclipse.dltk.console.ui.scriptConsole">
+    <scriptConsole
+      class="org.apache.uima.ruta.ide.ui.console.RutaConsoleFactory"
+      natureID="org.apache.uima.ruta.ide.nature" />
+  </extension>
+  <extension point="org.eclipse.dltk.ui.buildpathContainerPage">
+    <buildpathContainerPath
+      class="org.apache.uima.ruta.ide.debug.ui.interpreters.RutaInterpreterContainerWizardPage"
+      id="org.apache.uima.ruta.ide.launching.INTERPRETER_CONTAINER"
+      name="UIMA Ruta Interpreter Libraries"
+      nature="org.apache.uima.ruta.ide.nature" />
+  </extension>
+  <extension point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+      targetID="org.apache.uima.ruta.ide.ui.RutaPerspective">
+      <actionSet id="org.eclipse.debug.ui.breakpointActionSet"></actionSet>
+    </perspectiveExtension>
+  </extension>
+
+  <extension point="org.eclipse.debug.ui.debugModelPresentations">
+    <debugModelPresentation
+      class="org.apache.uima.ruta.ide.debug.ui.RutaDebugModelPresentation"
+      id="org.eclipse.dltk.debug.rutaModel" />
+  </extension>
+
+  <extension point="org.eclipse.debug.core.watchExpressionDelegates">
+    <watchExpressionDelegate
+      debugModel="org.eclipse.dltk.debug.rutaModel"
+      delegateClass="org.eclipse.dltk.debug.internal.core.model.ScriptWatchExpressionDelegate">
+    </watchExpressionDelegate>
+  </extension>
+
+  <extension point="org.eclipse.debug.ui.debugModelContextBindings">
+    <modelContextBinding
+      contextId="org.eclipse.dltk.debug.ui.debugging"
+      debugModelId="org.eclipse.dltk.debug.rutaModel" />
+  </extension>
+
+  <extension point="org.eclipse.core.runtime.adapters">
+    <factory
+      adaptableType="org.apache.uima.ruta.ide.ui.editor.RutaEditor"
+      class="org.apache.uima.ruta.ide.debug.ui.RutaEditorDebugAdapterFactory">
+      <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget" />
+      <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget" />
+    </factory>
+  </extension>
+
+  <extension point="org.eclipse.ui.commands">
+    <command
+      id="org.apache.uima.ruta.ide.debug.ui.commands.toggleGlobalVariables"
+      description="%showGlobalVarsCommand.name"
+      name="%showGlobalVarsCommand.description" />
+    <command
+      id="org.apache.uima.ruta.ide.debug.ui.commands.toggleClassVariables"
+      description="%showClassVarsCommand.name"
+      name="%showClassVarsCommand.description" />
+    <command
+      id="org.apache.uima.ruta.ide.debug.ui.commands.toggleLocalVariables"
+      description="%showLocalVarsCommand.name"
+      name="%showLocalVarsCommand.description" />      
+  </extension>
+
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="menu:org.eclipse.debug.ui.VariableView">
+      <menu
+        label="%variablesViewMenu.name"
+        id="org.apache.uima.ruta.ide.debug.ui.menu.VariableView" />
+    </menuContribution>
+    <menuContribution locationURI="menu:org.apache.uima.ruta.ide.debug.ui.menu.VariableView">
+      <command 
+        commandId="org.apache.uima.ruta.ide.debug.ui.commands.toggleGlobalVariables"
+        tooltip="%showGlobalVarsCommand.tooltip"     
+        style="toggle" />
+      <command 
+        commandId="org.apache.uima.ruta.ide.debug.ui.commands.toggleClassVariables"
+        tooltip="%showClassVarsCommand.tooltip"      
+        style="toggle" />       
+      <command 
+        commandId="org.apache.uima.ruta.ide.debug.ui.commands.toggleLocalVariables"
+        tooltip="%showLocalVarsCommand.tooltip" 
+        style="toggle" />                      
+    </menuContribution>  
+  </extension>
+
+  <extension point="org.eclipse.ui.handlers">
+    <handler 
+      commandId="org.apache.uima.ruta.ide.debug.ui.commands.toggleGlobalVariables"
+      class="org.apache.uima.ruta.ide.debug.ui.handlers.ToggleGlobalVariablesHandler" />
+    <handler 
+      commandId="org.apache.uima.ruta.ide.debug.ui.commands.toggleClassVariables"
+      class="org.apache.uima.ruta.ide.debug.ui.handlers.ToggleClassVariablesHandler" />
+    <handler 
+      commandId="org.apache.uima.ruta.ide.debug.ui.commands.toggleLocalVariables"
+      class="org.apache.uima.ruta.ide.debug.ui.handlers.ToggleLocalVariablesHandler" />      
+  </extension>
+  <extension point="org.eclipse.dltk.launching.debuggingEngine">
+    <engineContribution natureId="org.apache.uima.ruta.ide.nature">
+      <engine
+        class="org.apache.uima.ruta.ide.debugger.RutaDebuggerRunnerFactory"
+        description="%DebuggingEngine.description"
+        id="org.apache.uima.ruta.ide.debugger"
+        name="%DebuggingEngine.name"
+        priority="0"
+        propertyPageId="org.apache.uima.ruta.ide.propertyPage.debug.engines.debugger"
+        preferencePageId="org.apache.uima.ruta.ide.preferences.debug.engines.debugger">
+      </engine>
+    </engineContribution>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.launching.interpreterInstallTypes">
+     <interpreterInstallType
+           class="org.apache.uima.ruta.ide.launching.GenericRutaInstallType"
+           id="org.apache.uima.ruta.ide.debug.ui.launcher.GenericRutaInstallType">
+     </interpreterInstallType>
+  </extension>
+  <!--
+  <extension
+        point="org.eclipse.debug.core.launchDelegates">
+     <launchDelegate
+           delegate="org.apache.uima.ruta.ide.launching.JavaLocalApplicationLaunchConfigurationDelegate"
+           id="com.Instantiations.profiler.localJavaApplicationDelegate"
+           modes="debug"
+           name="Debugging with Ruta debug support"
+           type="org.eclipse.jdt.launching.localJavaApplication">
+     </launchDelegate>
+  </extension>
+  -->
+  <extension
+        point="org.eclipse.dltk.console.scriptInterpreter">
+     <scriptInterpreter
+           class="org.apache.uima.ruta.ide.ui.console.RutaInterpreter"
+           natureID="org.apache.uima.ruta.ide.nature">
+     </scriptInterpreter>
+  </extension>
+  <extension
+        point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+     <launchConfigurationTypeImage
+           configTypeID="org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationType"
+           icon="$nl$/icons/ruta.png"
+           id="org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationTypeImage">
+     </launchConfigurationTypeImage>
+  </extension>
+  <extension
+        point="org.eclipse.debug.core.launchConfigurationTypes">
+     <launchConfigurationType
+           delegate="org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationDelegate"
+           id="org.apache.uima.ruta.ide.launching.RutaLaunchConfigurationType"
+           modes="run,debug"
+           name="UIMA Ruta"
+           public="true"
+           sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+           sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+     </launchConfigurationType>
+  </extension>
+
+  <extension
+        point="org.eclipse.dltk.launching.debuggingEngine">
+     <engineContribution
+           natureId="org.apache.uima.ruta.ide.nature">
+        <selector
+              class="org.apache.uima.ruta.ide.launching.RutaDebuggingEngineSelector">
+        </selector>
+     </engineContribution>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.launching.interpreterInstalls">
+     <interpreterInstall
+           home="${eclipse_home}"
+           id="org.apache.uima.ruta.ide.launching.embeddedRuta"
+           interpreterInstallType="org.apache.uima.ruta.ide.debug.ui.launcher.GenericRutaInstallType"
+           name="UIMA Ruta Interpreter">
+     </interpreterInstall>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.preferences">
+     <initializer
+           class="org.apache.uima.ruta.ide.formatter.RutaFormatterPreferenceInitializer">
+     </initializer>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.ui.formatterFactory">
+     <engineContribution
+           natureId="org.apache.uima.ruta.ide.nature">
+        <formatterFactory
+              class="org.apache.uima.ruta.ide.formatter.RutaFormatterFactory"
+              description="Default Ruta formatter providing whitespace control and line wrapping"
+              id="org.apache.uima.ruta.ide.formatter.formatterFactory"
+              name="Default Ruta Formatter"
+              priority="10">
+        </formatterFactory>
+     </engineContribution>
+  </extension>
+  <extension
+        id="org.apache.uima.ruta.ide.ui.editor.DocumentSetupParticipant"
+        name="%documentSetupParticipantName"
+        point="org.eclipse.core.filebuffers.documentSetup">
+     <participant
+           class="org.apache.uima.ruta.ide.ui.editor.RutaDocumentSetupParticipant">
+     </participant>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.adapters">
+     <factory
+           adaptableType="org.apache.uima.ruta.ide.ui.navigation.ElementsView$ElementList"
+           class="org.apache.uima.ruta.ide.ui.navigation.ElementListAdapterFactory">
+        <adapter
+              type="org.eclipse.dltk.core.IModelElement">
+        </adapter>
+     </factory>
+  </extension>
+  <extension
+        point="org.eclipse.search.searchPages">
+     <page
+           canSearchEnclosingProjects="true"
+           class="org.apache.uima.ruta.ide.ui.search.RutaSearchPage"
+           enabled="true"
+           extensions="ruta:90, exp:30"
+           icon="$nl$/icons/search_obj.png"
+           id="org.eclipse.dltk.ui.RutaSearchPage"
+           label="%RutaSearchPage.label"
+           showScopeSection="true"
+           sizeHint="460,160">
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.ui.contexts">
+     <context
+           description="%RutaEditContext.description"
+           id="org.apache.uima.ruta.ide.ui.rutaEditorScope"
+           name="%RutaEditContext.name"
+           parentId="org.eclipse.dltk.ui.scriptEditorScope">
+     </context>
+  </extension>
+  <extension
+        point="org.eclipse.ui.perspectives">
+     <perspective
+           class="org.apache.uima.ruta.ide.ui.RutaPerspective"
+           icon="$nl$/icons/ruta_persp.png"
+           id="org.apache.uima.ruta.ide.ui.RutaPerspective"
+           name="%RutaPerspective.name">
+     </perspective>
+     <perspective
+           class="org.apache.uima.ruta.ide.ui.ExplainPerspective"
+           icon="icons/explain.png"
+           id="org.apache.uima.ruta.ide.ui.explainPerspective"
+           name="UIMA Ruta Explain">
+     </perspective>
+  </extension>
+  <extension
+        point="org.eclipse.ui.perspectiveExtensions">
+     <perspectiveExtension
+           targetID="org.eclipse.ui.resourcePerspective">
+        <perspectiveShortcut
+              id="org.apache.uima.ruta.ide.ui.RutaPerspective">
+        </perspectiveShortcut>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.apache.uima.ruta.ide.ui.RutaPerspective">
+        <perspectiveShortcut
+              id="org.apache.uima.ruta.ide.ui.RutaPerspective">
+        </perspectiveShortcut>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.apache.uima.ruta.ide.ui.RutaPerspective">
+        <perspectiveShortcut
+              id="org.eclipse.debug.ui.DebugPerspective">
+        </perspectiveShortcut>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.eclipse.debug.ui.DebugPerspective">
+        <perspectiveShortcut
+              id="org.apache.uima.ruta.ide.ui.RutaPerspective">
+        </perspectiveShortcut>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.eclipse.debug.ui.DebugPerspective">
+        <actionSet
+              id="org.eclipse.dltk.ui.DLTKActionSet">
+        </actionSet>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.apache.uima.ruta.ide.ui.RutaPerspective">
+        <showInPart
+              id="org.eclipse.dltk.ui.ScriptExplorer">
+        </showInPart>
+     </perspectiveExtension>
+     <perspectiveExtension
+           targetID="org.eclipse.debug.ui.DebugPerspective">
+        <showInPart
+              id="org.eclipse.dltk.ui.ScriptExplorer">
+        </showInPart>
+     </perspectiveExtension>
+  </extension>
+  <extension
+        point="org.eclipse.ui.newWizards">
+     <category
+           id="org.apache.uima.ruta.ide.ui"
+           name="%RutaWizardsCategory.name">
+     </category>
+     <wizard
+           category="org.apache.uima.ruta.ide.ui"
+           class="org.apache.uima.ruta.ide.ui.wizards.RutaProjectCreationWizard"
+           finalPerspective="org.apache.uima.ruta.ide.ui.RutaPerspective"
+           icon="$nl$/icons/newprj_wiz.png"
+           id="org.apache.uima.ruta.ide.ui.wizards.RutaProjectWizard"
+           name="UIMA Ruta Project"
+           preferredPerspectives="org.apache.uima.ruta.ide.ui.RutaPerspective"
+           project="true">
+        <description>
+           Creates new Ruta project.
+        </description>
+     </wizard>
+     <wizard
+           category="org.apache.uima.ruta.ide.ui"
+           class="org.apache.uima.ruta.ide.ui.wizards.RutaPackageCreationWizard"
+           icon="icons/newpack_wiz.gif"
+           id="org.apache.uima.ruta.ide.ui.wizards.NewPackageCreationWizard"
+           name="%NewRutaPackage.label">
+        <description>
+           %NewRutaPackage.description
+        </description>
+     </wizard>
+     <wizard
+           category="org.apache.uima.ruta.ide.ui"
+           class="org.apache.uima.ruta.ide.ui.wizards.RutaFileCreationWizard"
+           icon="$nl$/icons/newfile_wiz.png"
+           id="org.apache.uima.ruta.ide.ui.wizards.RutaFileCreationWizard"
+           name="%NewRutaFile.label">
+        <description></description>
+     </wizard>
+  </extension>
+  <extension
+        point="org.eclipse.ui.editors">
+     <editor
+           class="org.apache.uima.ruta.ide.ui.editor.RutaEditor"
+           contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
+           default="true"
+           extensions="ruta"
+           icon="$nl$/icons/ruta_obj.png"
+           id="org.apache.uima.ruta.ide.ui.editor.RutaEditor"
+           name="%RutaEditor.name">
+        <contentTypeBinding
+              contentTypeId="org.apache.uima.ruta.ide.rutaContentType">
+        </contentTypeBinding>
+     </editor>
+  </extension>
+  <extension
+        point="org.eclipse.ui.editors.templates">
+     <contextType
+           class="org.apache.uima.ruta.ide.ui.templates.RutaUniversalTemplateContextType"
+           id="rutaUniversalTemplateContextType"
+           name="%RutaTemplateContext.name">
+     </contextType>
+     <include
+           file="templates/templates.xml">
+     </include>
+  </extension>
+  <extension
+        point="org.eclipse.ui.views">
+     <category
+           id="org.apache.uima.ruta.ide.ui"
+           name="%RutaViewsCategory.name">
+     </category>
+     <view
+           category="org.apache.uima.ruta.ide.ui"
+           class="org.apache.uima.ruta.ide.ui.infoviews.RutaDocumentationView"
+           icon="$nl$/icons/rutadoc.png"
+           id="org.apache.uima.ruta.ide.ui.RutaDocumentationView"
+           name="%RutaDocumentationView.name">
+     </view>
+  </extension>
+  <extension
+        point="org.eclipse.ui.actionSets">
+     <actionSet
+           description="%RutaActionSet.description"
+           id="org.apache.uima.ruta.ide.ui.RutaActionSet"
+           label="%RutaActionSet.label"
+           visible="false">
+        <action
+              class="org.apache.uima.ruta.ide.ui.actions.RutaOpenTypeAction"
+              definitionId="org.apache.uima.ruta.ide.ui.navigate.open.type"
+              icon="icons/opentype.gif"
+              id="openType"
+              label="%OpenTypeAction.label"
+              menubarPath="navigate/open.ext2"
+              toolbarPath="org.eclipse.search.searchActionSet/Search"
+              tooltip="%OpenTypeAction.tooltip">
+        </action>
+        <action
+              class="org.apache.uima.ruta.ide.ui.actions.RutaOpenTypeInHierarchyAction"
+              definitionId="org.apache.uima.ruta.ide.ui.navigate.open.type.in.hierarchy"
+              id="openTypeInHierarchy"
+              label="%OpenTypeInHierarchyAction.label"
+              menubarPath="navigate/open.ext2"
+              tooltip="%OpenTypeInHierarchyAction.tooltip">
+        </action>
+     </actionSet>
+  </extension>
+  <extension
+        point="org.eclipse.ui.actionSets">
+     <actionSet
+           description="%RutaSearchActionSet.description"
+           id="org.apache.uima.ruta.ide.ui.SearchActionSet"
+           label="%RutaSearchActionSet.label"
+           visible="false">
+        <menu
+              id="org.eclipse.search.menu"
+              label="%SearchMenu.label"
+              path="navigate">
+           <groupMarker
+                 name="dialogRutaGroup">
+           </groupMarker>
+        </menu>
+        <action
+              class="org.apache.uima.ruta.ide.ui.actions.OpenRutaSearchPageAction"
+              icon="$nl$/icons/search_obj.png"
+              id="org.apache.uima.ruta.ide.ui.actions.OpenRutaSearchPage"
+              label="%OpenRutaSearchPageAction.label"
+              menubarPath="org.eclipse.search.menu/dialogRutaGroup">
+        </action>
+     </actionSet>
+  </extension>
+  <extension
+        point="org.eclipse.ui.bindings">
+     <key
+           commandId="org.apache.uima.ruta.ide.ui.navigate.open.type"
+           contextId="org.apache.uima.ruta.ide.ui.rutaEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="M1+M2+T">
+     </key>
+     <key
+           commandId="org.eclipse.dltk.ui.edit.text.script.format"
+           contextId="org.apache.uima.ruta.ide.ui.rutaEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="M1+M2+F">
+     </key>
+     <key
+           commandId="org.eclipse.dltk.ui.edit.text.script.format"
+           contextId="org.apache.uima.ruta.ide.ui.rutaEditorScope"
+           platform="gtk"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="ESC CTRL+F">
+     </key>
+  </extension>
+  <extension
+        point="org.eclipse.ui.decorators">
+     <decorator
+           adaptable="false"
+           class="org.apache.uima.ruta.ide.ui.RutaProjectDecorator"
+           id="org.apache.uima.ruta.ide.decorators.projectdecorator"
+           label="%RutaProjectDecorator.name"
+           lightweight="true"
+           location="TOP_LEFT"
+           state="true">
+        <enablement>
+           <or>
+              <objectClass
+                    name="org.eclipse.core.resources.IProject">
+              </objectClass>
+              <objectClass
+                    name="org.eclipse.dltk.core.IScriptProject">
+              </objectClass>
+           </or>
+        </enablement>
+     </decorator>
+  </extension>
+  <extension
+        point="org.eclipse.ui.commands">
+     <command
+           categoryId="org.eclipse.ui.category.navigate"
+           description="%ActionDefinition.OpenType.description"
+           id="org.apache.uima.ruta.ide.ui.navigate.open.type"
+           name="%ActionDefinition.OpenType.name">
+     </command>
+  </extension>
+  <extension
+        point="org.eclipse.ui.menus">
+     <menuContribution
+           locationURI="menu:org.eclipse.dltk.ui.source.menu?after=editGroup">
+        <command
+              commandId="org.eclipse.dltk.ui.edit.text.script.format">
+           <visibleWhen>
+              <with
+                    variable="activeContexts">
+                 <iterate
+                       operator="or">
+                    <equals
+                          value="org.apache.uima.ruta.ide.ui.rutaEditorScope">
+                    </equals>
+                 </iterate>
+              </with>
+           </visibleWhen>
+        </command>
+     </menuContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.actionSetPartAssociations">
+     <actionSetPartAssociation
+           targetID="org.eclipse.ui.edit.text.actionSet.presentation">
+        <part
+              id="org.apache.uima.ruta.ide.ui.editor.RutaEditor">
+        </part>
+     </actionSetPartAssociation>
+     <actionSetPartAssociation
+           targetID="org.eclipse.dltk.ui.A_OpenActionSet">
+        <part
+              id="org.apache.uima.ruta.ide.ui.editor.RutaEditor">
+        </part>
+     </actionSetPartAssociation>
+     <actionSetPartAssociation
+           targetID="org.eclipse.dltk.ui.ScriptCodingActionSet">
+        <part
+              id="org.apache.uima.ruta.ide.ui.editor.RutaEditor">
+        </part>
+     </actionSetPartAssociation>
+  </extension>
+  <extension
+        id="RutaScriptNoTypeCompletionProposalComputer"
+        point="org.eclipse.dltk.ui.scriptCompletionProposalComputer">
+     <scriptCompletionProposalComputer
+           categoryId="org.eclipse.dltk.ui.scriptNoTypeProposalCategory"
+           class="org.apache.uima.ruta.ide.ui.text.completion.RutaNoTypeCompletionProposalComputer"
+           toolkitId="org.apache.uima.ruta.ide.nature">
+        <partition
+              type="__dftl_partition_content_type">
+        </partition>
+        <partition
+              type="__ruta_string">
+        </partition>
+     </scriptCompletionProposalComputer>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.ui.scriptDocumentationProviders">
+     <provider
+           class="org.apache.uima.ruta.ide.ui.documentation.RutaCommentDocumentationProvider"
+           id="org.apache.uima.ruta.ide.ui.RutaCommentDocumentationProvider"
+           nature="org.apache.uima.ruta.ide.nature">
+     </provider>
+     <provider
+           class="org.apache.uima.ruta.ide.ui.documentation.RutaPagesDocumentationProvider"
+           id="org.apache.uima.ruta.ide.ruta.ui.RutaPagesDocumentationProvider"
+           nature="org.apache.uima.ruta.ide.nature">
+     </provider>
+     <provider
+           class="org.apache.uima.ruta.ide.ui.documentation.RutaActionDocumentationProvider"
+           id="org.apache.uima.ruta.ide.ui.RutaActionDocumentationProvider"
+           nature="org.apache.uima.ruta.ide.nature">
+     </provider>
+     <provider
+           class="org.apache.uima.ruta.ide.ui.documentation.RutaConditionDocumentationProvider"
+           id="org.apache.uima.ruta.ide.ui.RutaConditionDocumentationProvider"
+           nature="org.apache.uima.ruta.ide.nature">
+     </provider>
+     <provider
+           class="org.apache.uima.ruta.ide.ui.documentation.DescriptorDocumentationProvider"
+           id="org.apache.uima.ruta.ide.ui.DescriptorDocumentationProvider"
+           nature="org.apache.uima.ruta.ide.nature">
+     </provider>
+     <provider
+           class="org.apache.uima.ruta.ide.ui.documentation.RutaFunctionDocumentationProvider"
+           id="org.apache.uima.ruta.ide.ui.RutaFunctionDocumentationProvider"
+           nature="org.apache.uima.ruta.ide.nature">
+     </provider>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.ui.language">
+     <language
+           class="org.apache.uima.ruta.ide.ui.RutaUILanguageToolkit"
+           nature="org.apache.uima.ruta.ide.nature">
+     </language>
+  </extension>
+  <extension
+        point="org.eclipse.ui.actionSetPartAssociations">
+     <actionSetPartAssociation
+           targetID="org.apache.uima.ruta.ide.ui.SearchActionSet">
+        <part
+              id="org.eclipse.dltk.ui.ScriptExplorer">
+        </part>
+        <part
+              id="org.apache.uima.ruta.ide.ui.editor.RutaEditor">
+        </part>
+        <part
+              id="org.eclipse.search.SearchResultView">
+        </part>
+     </actionSetPartAssociation>
+  </extension>
+  <extension
+        point="org.eclipse.ui.ide.markerResolution">
+     <markerResolutionGenerator
+           class="org.apache.uima.ruta.ide.ui.text.RutaRequireMarkerResolutionGenerator"
+           markerType="org.eclipse.dltk.core.problem">
+     </markerResolutionGenerator>
+  </extension>
+  <extension
+        point="org.eclipse.ui.editorActions">
+     <editorContribution
+           id="org.apache.uima.ruta.ide.ui.RutaEditor.ruler.actions"
+           targetID="org.apache.uima.ruta.ide.ui.editor.RutaEditor">
+        <action
+              actionID="RulerClick"
+              class="org.apache.uima.ruta.ide.ui.actions.RutaSelectRulerAction"
+              id="org.apache.uima.ruta.ide.ui.rutaeditor.RutaSelectRulerAction"
+              label="UIMA Ruta Selection Ruler action">
+        </action>
+     </editorContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.commands">
+     <command
+           categoryId="org.eclipse.dltk.ui.category.source"
+           description="%ActionDefinition.addBlockComment.description"
+           id="org.eclipse.dltk.ui.edit.text.script.add.block.comment"
+           name="%ActionDefinition.addBlockComment.name">
+     </command>
+     <command
+           categoryId="org.eclipse.dltk.ui.category.source"
+           description="%ActionDefinition.removeBlockComment.description"
+           id="org.eclipse.dltk.ui.edit.text.script.remove.block.comment"
+           name="%ActionDefinition.removeBlockComment.name">
+     </command>
+     <command
+           categoryId="org.eclipse.dltk.ui.category.source"
+           description="%ActionDefinition.indent.description"
+           id="org.eclipse.dltk.ui.edit.text.script.indent"
+           name="%ActionDefinition.indent.name">
+     </command>
+     <command
+           categoryId="org.eclipse.dltk.ui.category.source"
+           description="%ActionDefinition.format.description"
+           id="org.eclipse.dltk.ui.edit.text.script.format"
+           name="%ActionDefinition.format.name">
+     </command>
+     <command
+           categoryId="org.eclipse.dltk.ui.category.source"
+           description="%ActionDefinition.quickformat.description"
+           id="org.eclipse.dltk.ui.edit.text.script.quick.format"
+           name="%ActionDefinition.quickformat.name">
+     </command>
+  </extension>
+  <extension
+        point="org.eclipse.dltk.ui.formatterFactory">
+     <engineContribution
+           natureId="org.apache.uima.ruta.ide.nature">
+        <selector
+              class="org.eclipse.dltk.core.PreferenceBasedContributionSelector">
+           <parameter
+                 name="qualifier"
+                 value="org.apache.uima.ruta.ide.ui">
+           </parameter>
+           <parameter
+                 name="key"
+                 value="formatterId">
+           </parameter>
+        </selector>
+     </engineContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           category="org.apache.uima.ruta.ide.propertyPage"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaBuildpathPropertyPage"
+           id="org.apache.uima.ruta.ide.ui.BuildpathProperties"
+           name="%RutaBuildPathPropertyPage.name">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.ruta.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+        <keywordReference
+              id="org.eclipse.dltk.ui.buildpath">
+        </keywordReference>
+     </page>
+     <page
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaPropertyPage"
+           id="org.apache.uima.ruta.ide.propertyPage"
+           name="%RutaPropertyPage.name">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.ruta.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+     <!--
+     <page
+           category="org.apache.uima.ruta.ide.propertyPage"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaTodoTaskPreferencePage"
+           id="org.apache.uima.ruta.ide.propertyPage.todo"
+           name="%RutaTodoPropertyPage.name">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.ruta.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+     -->
+  </extension>
+  <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           category="org.apache.uima.ruta.ide.propertyPage"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaFormatterPreferencePage"
+           id="org.apache.uima.ruta.ide.propertyPage.formatter"
+           name="UIMA Ruta Formatter">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.ruta.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaGlobalPreferencePage"
+           id="org.apache.uima.ruta.ide.preferences"
+           name="%RutaPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.ruta.ide.preferences"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaEditorPreferencesPage"
+           id="org.apache.uima.ruta.ide.preferences.editor"
+           name="%RutaEditorPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.ruta.ide.preferences.editor"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaEditorHoverPreferencePage"
+           id="org.apache.uima.ruta.ide.preferences.editor.hovers"
+           name="%RutaEditorHoversPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.ruta.ide.preferences.editor"
+           class="org.apache.uima.ruta.ide.ui.templates.RutaCodeTemplatesPreferencePage"
+           id="org.apache.uima.ruta.ide.preferences.templates"
+           name="%RutaCodeTemplatesPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.ruta.ide.preferences.editor"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaEditorSyntaxColoringPreferencePage"
+           id="org.apache.uima.ruta.ide.ui.editor.SyntaxColoring"
+           name="%RutaEditorSyntaxColoringPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.ruta.ide.preferences.editor"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaSmartTypingPreferencePage"
+           id="org.apache.uima.ruta.ide.ui.editor.SmartTyping"
+           name="%RutaEditorSmartTypingPreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.ruta.ide.preferences.editor"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaFoldingPreferencePage"
+           id="org.apache.uima.ruta.ide.ui.editor.RutaFolding"
+           name="%RutaEditorFoldingPreferencePage.name">
+     </page>
+     <!--
+     <page
+           category="org.apache.uima.ruta.ide.preferences"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaTodoTaskPreferencePage"
+           id="org.apache.uima.ruta.ide.ui.editor.TodoTasks"
+           name="%RutaTaskTags.name">
+     </page>
+     -->
+     <page
+           category="org.apache.uima.ruta.ide.preferences.editor"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaEditorAssistancePreferencePage"
+           id="org.apache.uima.ruta.ide.ui.editor.Assistence"
+           name="%RutaEditorAssistancePreferencePage.name">
+     </page>
+     <page
+           category="org.apache.uima.ruta.ide.preferences"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaBuilderPreferencePage"
+           id="org.apache.uima.ruta.ide.preferences.builder"
+           name="Builder">
+     </page>
+     <page
+           category="org.apache.uima.ruta.ide.preferences.editor"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaFormatterPreferencePage"
+           id="org.apache.uima.ruta.ide.preferences.formatter"
+           name="Formatter">
+     </page>
+     <page
+           category="org.apache.uima.ruta.ide.preferences"
+           class="org.apache.uima.ruta.ide.ui.preferences.RutaProjectPreferencePage"
+           id="org.apache.uima.ruta.ide.preferences.project"
+           name="Project Management">
+     </page>
+  </extension>
+
+  <extension point="org.eclipse.ui.preferencePages">
+    <page
+      category="org.apache.uima.ruta.ide.preferences"
+      class="org.apache.uima.ruta.ide.debug.ui.interpreters.RutaInterpreterPreferencePage"
+      id="org.eclipse.dltk.debug.ui.RutaInterpreters"
+      name="%Interpreters.PreferencePage" />
+      <!--
+    <page
+      category="org.apache.uima.ruta.ide.preferences"
+      class="org.apache.uima.ruta.ide.debug.ui.preferences.RutaDebugPreferencePage"
+      id="org.apache.uima.ruta.ide.preferences.debug"
+      name="%Debug.PreferencePage" />
+    <page
+      category="org.apache.uima.ruta.ide.preferences.debug"
+      class="org.apache.uima.ruta.ide.debug.ui.preferences.RutaDebuggingEnginePreferencePage"
+      id="org.apache.uima.ruta.ide.preferences.debug.engines"
+      name="%Engines.PreferencePage" />
+    <page
+      category="org.apache.uima.ruta.ide.preferences"
+      class="org.apache.uima.ruta.ide.ui.preferences.RutaConsolePreferences"
+      id="org.apache.uima.ruta.ide.ui.console.preferences.RutaConsolePreferences"
+      name="%Console.PreferencePage" />
+    <page
+          category="org.apache.uima.ruta.ide.preferences.debug.engines"
+          class="org.apache.uima.ruta.ide.debugger.preferences.RutaDebuggerPreferencePage"
+          id="org.apache.uima.ruta.ide.preferences.debug.engines.debugger"
+          name="%PreferencePage.name">
+    </page>
+      -->
+  </extension>
+
+<!--
+  <extension point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.apache.uima.ruta.ide.debugger.preferences.RutaDebuggerPreferencePage"
+      category="org.apache.uima.ruta.ide.propertyPage.debug.engines"
+      id="org.apache.uima.ruta.ide.propertyPage.debug.engines.debugger"
+      name="%PropertyPage.name">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test
+            property="org.eclipse.core.resources.projectNature"
+            value="org.apache.uima.ruta.ide.nature" />
+        </adapt>
+      </enabledWhen>
+    </page>
+  </extension>
+  -->
+<!--
+  <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           category="org.apache.uima.ruta.ide.propertyPage"
+           class="org.apache.uima.ruta.ide.debug.ui.preferences.RutaDebugPreferencePage"
+           id="org.apache.uima.ruta.ide.propertyPage.debug"
+           name="%Debug.PropertyPage">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.ruta.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+     <page
+           category="org.apache.uima.ruta.ide.propertyPage.debug"
+           class="org.apache.uima.ruta.ide.debug.ui.preferences.RutaDebuggingEnginePreferencePage"
+           id="org.apache.uima.ruta.ide.propertyPage.debug.engines"
+           name="%Engines.PropertyPage">
+        <enabledWhen>
+           <adapt
+                 type="org.eclipse.core.resources.IProject">
+              <test
+                    property="org.eclipse.core.resources.projectNature"
+                    value="org.apache.uima.ruta.ide.nature">
+              </test>
+           </adapt>
+        </enabledWhen>
+     </page>
+  </extension>
+  -->
+  <extension
+        point="org.apache.uima.ruta.ide.rutaSemanticHighlighting">
+     <highlightingExtension
+           class="org.apache.uima.ruta.ide.ui.DefaultRutaSemanticHighlightingExtension">
+     </highlightingExtension>
+  </extension>
+     <extension
+         point="org.eclipse.dltk.validators.core.validator">
+      <validatorType
+            class="org.apache.uima.ruta.ide.validator.CheckValidator"
+            id="org.apache.uima.ruta.ide.validator.checkvalidator"
+            nature="org.apache.uima.ruta.ide.nature">
+      </validatorType>
+   </extension>
+     <extension
+           point="org.eclipse.dltk.core.buildParticipant">
+        <buildParticipant
+              class="org.apache.uima.ruta.ide.validator.CheckValidator"
+              id="org.apache.uima.ruta.ide.validator.Checker"
+              name="UIMA Ruta Validator"
+              nature="org.apache.uima.ruta.ide.nature">
+        </buildParticipant>
+     </extension>
+   <!--
+     <extension
+           point="org.eclipse.dltk.ui.buildpathContainerPage">
+        <buildpathContainerPage
+              class="org.apache.uima.ruta.ide.ui.wizards.RutaJavaContainerPage"
+              id="org.apache.uima.ruta.ide.java.page"
+              name="Java Library"
+              nature="org.apache.uima.ruta.ide.nature">
+        </buildpathContainerPage>
+     </extension>
+     -->
+</plugin>

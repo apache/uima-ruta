@@ -1,0 +1,10 @@
+PACKAGE my.package.one;
+
+WORDLIST twl1 = 'twl1.twl';
+WORDLIST twl2 = 'my/package/one/twl2.twl';
+WORDLIST mtwl = 'generated.mtwl';
+DECLARE Twl1, Twl2, Mtwl1, Mtwl2;
+
+Document{-> MARKFAST(Twl1, twl1)};
+Document{-> MARKFAST(Twl2, twl2)};
+Document{-> TRIE("twl1.txt" = Mtwl1, "my/package/one/twl2.txt" = Mtwl2, mtwl, true, 2, false, 0, "-")};

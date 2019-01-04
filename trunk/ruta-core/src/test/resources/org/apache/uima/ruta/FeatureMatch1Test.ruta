@@ -1,0 +1,39 @@
+PACKAGE org.apache.uima.ruta;
+
+DECLARE Annotation D(STRING ds);
+DECLARE D C(INT ci, BOOLEAN cb);
+DECLARE D B(C bc);
+DECLARE Annotation A(B ab, C ac);
+
+INT count;
+CW{ -> ASSIGN(count, count+1), CREATE(C, "ds" = "firstname", "ci" = count, "cb" = false)} CW{ -> 
+    GATHER(B, "bc" = 1), FILL(B, "ds" = "lastname")};
+C{REGEXP("M.*") -> SETFEATURE("cb", true)};
+(CW CW){-> CREATE(A, "ab" = B, "ac" = C)};
+
+DECLARE T1, T2, T3, T4, T5, T6, T7, T8, T9, 
+    T10, T11, T12, T13, T14, T15, T16, T17, T18, T19;
+
+C.cb==true{ -> MARK(T1)};
+B.bc.cb==true{ -> MARK(T2)};
+A.ac.cb==true{ -> MARK(T3)};
+A.ab.bc.cb==true{ -> MARK(T4)};
+
+D{FEATURE("ds", "firstname") -> MARK(T5)};
+B{FEATURE("ds", "lastname") -> MARK(T6)};
+D.ds=="lastname"{-> MARK(T7)};
+B.ds=="lastname"{-> MARK(T8)};
+A.ab.ds=="lastname"{-> MARK(T9)};
+
+C.ci==3{-> MARK(T10)};
+B.bc.ci==3{-> MARK(T11)};
+A.ab.bc.ci==3{-> MARK(T12)};
+
+A.ab.bc{-> MARK(T13)};
+A.ab{-> MARK(T14)};
+A.ac{-> MARK(T15)};
+
+(A.ac.ci==1 # A.ac.ci==2 # A.ac.ci==3){-> MARK(T16)};
+(A.ac.ci==1 # A.ac # A.ab){-> MARK(T17)};
+(A{A.ac.ci==1} # A{A.ac.ci==2} # A{A.ac.ci==3}){-> MARK(T18)};
+
