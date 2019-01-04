@@ -1,6 +1,0 @@
-PACKAGE org.apache.uima;
-
-DECLARE T1, T2;
-
-ANY+{-PARTOF(PM), -PARTOF(T1)-> MARK(T1,1,2)} PM;
-T1{LAST(EXCLAMATION) -> MARK(T2)};

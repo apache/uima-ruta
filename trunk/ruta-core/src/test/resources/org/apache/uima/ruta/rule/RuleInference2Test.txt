@@ -1,8 +1,0 @@
-References
-Bergmark, D. (2000). Automatic extraction of reference linking information from online docu-
-ments. Technical Report CSTR2000-1821, Cornell Digital Library Research Group.
-Bergmark, D., Phempoonpanich, P., and Zhao, S. (2001). Scraping the ACM digital library.
-SIGIR Forum, 35(2):1–7.
-Berkowitz, E. and Elkhadiri, M. R. (2004). Creation of a style independent intelligent au-
-tonomous citation indexer to support academic research. In Proceedings of the the Fifteenth
-Midwest Artificial Intelligence and Cognitive Science conference MAICS 2004, pages 68–73.

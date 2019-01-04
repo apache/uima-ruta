@@ -1,8 +1,0 @@
-PACKAGE org.apache.uima.ruta;
-SCRIPT org.apache.uima.ruta.StrictScript2;
-
-CW{-> Type1};
-CW{-> OtherType};
-
-
-

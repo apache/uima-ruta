@@ -1,3 +1,0 @@
-PACKAGE org.apache.uima.ruta;
-SCRIPT org.apache.uima.ruta.Additional;
-CALL(Additional);

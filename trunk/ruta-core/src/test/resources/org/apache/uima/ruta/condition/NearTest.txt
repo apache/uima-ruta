@@ -1,5 +1,0 @@
-The NEAR test:
-
-the NEAR condition evaluates true, if the actual annotation lies within a given distance
-to another annotation. We can control the search direction wit a boolean parameter.
-Another optional boolean parameter toggles filtering.

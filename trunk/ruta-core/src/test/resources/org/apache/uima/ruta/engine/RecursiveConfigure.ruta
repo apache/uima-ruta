@@ -1,3 +1,0 @@
-ENGINE org.apache.uima.ruta.engine.RecursiveConfigureEngine;
-CONFIGURE(RecursiveConfigureEngine, "statistics" = true);
-EXEC(RecursiveConfigureEngine);

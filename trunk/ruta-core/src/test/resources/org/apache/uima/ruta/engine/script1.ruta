@@ -1,3 +1,0 @@
-SCRIPT script2;
-
-Document{->CALL(script2)};
