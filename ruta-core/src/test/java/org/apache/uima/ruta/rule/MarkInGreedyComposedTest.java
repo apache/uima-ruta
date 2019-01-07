@@ -27,112 +27,76 @@ import org.junit.Test;
 public class MarkInGreedyComposedTest {
 
   @Test
-  public void testWildCardFollowedByComposedReversed() {
+  public void testWildCardFollowedByComposedReversed() throws Exception {
     String document = "1 x f B e d B x c A b a A 1";
     String script = "";
     script += "( ( (SW{REGEXP(\"x\")} SW ) #) {-> T1} )+ @NUM;";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "x f B e d B", "x c A b a A");
-
-    cas.release();
   }
 
   @Test
-  public void testSimpleFollowedByComposedReversed() {
+  public void testSimpleFollowedByComposedReversed() throws Exception {
     String document = "1 x f B x c A 1";
     String script = "";
     script += "( ( (SW{REGEXP(\"x\")} SW ) CW) {-> T1} )+ @NUM;";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "x f B", "x c A");
-
-    cas.release();
   }
 
   @Test
-  public void testWildCardFollowedByComposed() {
+  public void testWildCardFollowedByComposed() throws Exception {
     String document = "A c b A c x A c b A c x";
     String script = "";
     script += "( ( # (SW SW{REGEXP(\"x\")}) ) {-> T1} )+;";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "A c b A c x", "A c b A c x");
-
-    cas.release();
   }
 
   @Test
-  public void testWildCardFollowedByCondition() {
+  public void testWildCardFollowedByCondition() throws Exception {
     String document = "A A b A c X X b X c";
     String script = "";
     script += "((# SW{REGEXP(\"c\")}){-> T1})+; ";
-    script += "((# SW{REGEXP(\"c\")}){-> MARKONCE(T2)})+; ";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    script += "((# SW{REGEXP(\"c\")}){-> MARKONCE(T2)})+;";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "A A b A c", "X X b X c");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "A A b A c", "X X b X c");
-
-    cas.release();
   }
 
   @Test
-  public void testWithWildCard() {
+  public void testWithWildCard() throws Exception {
     String document = "1 . 2 .";
     String script = "";
     script += "((# PERIOD){-> T1})+; ";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "1 .", "2 .");
-
-    cas.release();
   }
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String document = "1 . 2 .";
     String script = "";
     script += "((NUM PERIOD){-> MARKONCE(T1)})+; ";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "1 .", "2 .");
-
-    cas.release();
   }
 }

@@ -361,7 +361,11 @@ public class WildCardRuleElement extends AbstractRuleElement {
         result = nextElement.continueMatch(after, anchor, extendedMatch, ruleApply,
                 nextContainerMatch, sideStepOrigin, nextElement, stream, crowd);
 //        List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(nextElement);
-        if (result == null || result.isEmpty() || !result.get(result.size() - 1).matched()) {
+
+        // cannot use container match since there could be new alternatives in the depth search
+        boolean nextElementDidMatch = nextElementDidMatch(result, nextElement);
+
+        if (!nextElementDidMatch) {
           moveOn(after, iterator, stream);
         } else {
           doneHere = true;
@@ -373,6 +377,32 @@ public class WildCardRuleElement extends AbstractRuleElement {
       }
     }
     return result;
+  }
+
+  private boolean nextElementDidMatch(List<RuleMatch> result, RuleElement nextElement) {
+    if (result == null || result.isEmpty()) {
+      return false;
+    }
+
+    for (RuleMatch ruleMatch : result) {
+      if (ruleMatch.matched()) {
+        return true;
+      }
+    }
+    for (RuleMatch ruleMatch : result) {
+      List<List<RuleElementMatch>> matchInfo = ruleMatch.getMatchInfo(nextElement);
+      List<RuleElementMatch> matches = matchInfo.get(matchInfo.size() - 1);
+      if (matches != null) {
+        for (RuleElementMatch ruleElementMatch : matches) {
+          if (ruleElementMatch != null && ruleElementMatch.matched()) {
+            return true;
+          }
+        }
+      }
+
+    }
+
+    return false;
   }
 
   private ComposedRuleElementMatch getContainerMatchOfNextElement(

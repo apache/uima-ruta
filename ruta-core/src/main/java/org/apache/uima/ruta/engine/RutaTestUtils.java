@@ -55,6 +55,7 @@ import org.apache.uima.util.CasIOUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
+import org.xml.sax.SAXException;
 
 public class RutaTestUtils {
 
@@ -174,8 +175,8 @@ public class RutaTestUtils {
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
-    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { ruleFile
-            .getParentFile().getPath() });
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS,
+            new String[] { ruleFile.getParentFile().getPath() });
     String name = ruleFile.getName();
     if (name.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
       name = name.substring(0, name.length() - 5);
@@ -208,8 +209,10 @@ public class RutaTestUtils {
   /**
    * Helper to get the test type, e.g. org.apache.uima.T1, org.apache.uima.T2, ...
    * 
-   * @param cas - The CAS object containing the type system
-   * @param i - typeId, converted to {@link #TYPE} + i
+   * @param cas
+   *          - The CAS object containing the type system
+   * @param i
+   *          - typeId, converted to {@link #TYPE} + i
    * @return the test type object with the given counter
    */
   public static Type getTestType(CAS cas, int i) {
@@ -218,14 +221,20 @@ public class RutaTestUtils {
     return cas.getTypeSystem().getType(TYPE + i);
   }
 
-  public static CAS getCAS(String document) throws ResourceInitializationException, IOException,
-          InvalidXMLException {
+  public static CAS getCAS(String document)
+          throws ResourceInitializationException, IOException, InvalidXMLException {
     return getCAS(document, null, null);
   }
 
   public static CAS getCAS(String document, Map<String, String> complexTypes,
-          Map<String, List<TestFeature>> features) throws ResourceInitializationException,
-          IOException, InvalidXMLException {
+          Map<String, List<TestFeature>> features)
+          throws ResourceInitializationException, IOException, InvalidXMLException {
+    return getCAS(document, complexTypes, features, false);
+  }
+
+  public static CAS getCAS(String document, Map<String, String> complexTypes,
+          Map<String, List<TestFeature>> features, boolean storeTypeSystem)
+          throws ResourceInitializationException, IOException, InvalidXMLException {
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
       url = RutaTestUtils.class.getClassLoader()
@@ -259,6 +268,16 @@ public class RutaTestUtils {
     tsds.add(basicTypeSystem);
     TypeSystemDescription mergeTypeSystems = CasCreationUtils.mergeTypeSystems(tsds);
 
+    if (storeTypeSystem) {
+      try (OutputStream os = new FileOutputStream("TypeSystem.xml")) {
+        try {
+          mergeTypeSystems.toXML(os);
+        } catch (SAXException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     CAS cas = ae.newCAS();
@@ -273,14 +292,18 @@ public class RutaTestUtils {
       System.out.println(annotationFS.getCoveredText());
     }
   }
-  
+
   /**
    * Helper for common assertion in JUnit tests
    * 
-   * @param cas - The CAS object containing the type system
-   * @param typeId - typeId, converted to {@link #TYPE} + i
-   * @param expectedCnt - the expected amount of annotations
-   * @param expecteds -  the exprected covered texts
+   * @param cas
+   *          - The CAS object containing the type system
+   * @param typeId
+   *          - typeId, converted to {@link #TYPE} + i
+   * @param expectedCnt
+   *          - the expected amount of annotations
+   * @param expecteds
+   *          - the exprected covered texts
    */
   public static void assertAnnotationsEquals(CAS cas, int typeId, int expectedCnt,
           String... expecteds) {
@@ -295,8 +318,8 @@ public class RutaTestUtils {
       for (String expected : expecteds) {
         String actual = iterator.next().getCoveredText();
         if (!actual.equals(expected)) {
-          throw new AssertionError("expected text (" + expected + ") does not match with actual ("
-                  + actual + ").");
+          throw new AssertionError(
+                  "expected text (" + expected + ") does not match with actual (" + actual + ").");
         }
       }
     }
@@ -305,7 +328,8 @@ public class RutaTestUtils {
   /**
    * Helper to run Ruta on a tests script
    * 
-   * @param testClass - the class of the unit test
+   * @param testClass
+   *          - the class of the unit test
    * @return the annotated {@link CAS}
    */
   public static CAS processTestScript(Class<?> testClass) {
@@ -322,15 +346,14 @@ public class RutaTestUtils {
     }
     return cas;
   }
-  
-  
+
   public static void storeCas(CAS cas, String name) {
     File file = new File("input/" + name + ".xmi");
     file.getParentFile().mkdirs();
     OutputStream fos = null;
     try {
       fos = new FileOutputStream(file);
-      CasIOUtils.save(cas, fos , SerialFormat.XMI);
+      CasIOUtils.save(cas, fos, SerialFormat.XMI);
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
     } finally {

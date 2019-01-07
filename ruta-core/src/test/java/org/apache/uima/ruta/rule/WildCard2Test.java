@@ -208,4 +208,21 @@ public class WildCard2Test {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "a a a");
   }
 
+  @Test
+  public void testWithFailingNextRuleElement() throws Exception {
+    String document = "a b c 1 d e f 2 g h i 3 / 4 m n o";
+    String script = "\"a\" -> T1;\n";
+    script += "INT a;\n";
+    script += "INT t;\n";
+    script += "(T1 # NUM{PARSE(a), a<100} ANY{REGEXP(\"[/]\")} NUM{PARSE(t),t<200}){ -> T2};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document, null, null, true);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.storeCas(cas, "testFailingConditionWithFailingNextRuleElement");
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "a");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+  }
+
 }
