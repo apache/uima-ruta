@@ -253,7 +253,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   /**
    * This parameter specifies whether the inference annotations created by the analysis engine
-   * should be removed after processing the CAS. The default value is set to true.
+   * should be removed after processing the CAS. The default value is set to false.
    */
   public static final String PARAM_REMOVE_BASICS = "removeBasics";
 

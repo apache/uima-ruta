@@ -1113,7 +1113,7 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <title>removeBasics</title>
           <para>
             This parameter specifies whether the inference annotations created by the analysis engine should be removed after processing the CAS.
-            The default value is set to true.
+            The default value is set to false.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.reindexOnly">
