@@ -139,7 +139,7 @@ public class RutaScriptFactory {
     String defaultNamespace = module;
     if (StringUtils.isBlank(module) && StringUtils.isBlank(pack)) {
       defaultNamespace = "";
-    } else if (StringUtils.isBlank(module) && StringUtils.isBlank(pack)) {
+    } else if (!StringUtils.isBlank(module) && !StringUtils.isBlank(pack)) {
       defaultNamespace = pack + "." + module;
     } else if (!StringUtils.isBlank(module)) {
       defaultNamespace = module;
