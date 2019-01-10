@@ -238,6 +238,7 @@ public class ExpressionVerbalizerTest {
             new SimpleFeatureExpression(new MatchReference("abc.d")))));
     assertEquals("abc.d", v.verbalize(new GenericFeatureExpression(new FeatureMatchExpression(
             new MatchReference("abc.d"), "==", new SimpleStringExpression("y")))));
+    assertEquals("", v.verbalize(new GenericFeatureExpression(null)));
   }
 
 }
