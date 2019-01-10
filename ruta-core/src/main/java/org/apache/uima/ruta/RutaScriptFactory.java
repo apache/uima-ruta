@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.antlr.runtime.Token;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UimaContext;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.action.AbstractRutaAction;
@@ -117,10 +118,8 @@ public class RutaScriptFactory {
   }
 
   public RutaScriptBlock createRootScriptBlock(String module, String pack) {
-    String defaultNamespace = module;
-    if (pack != null) {
-      defaultNamespace = pack + "." + module;
-    }
+    String defaultNamespace = getDefaultNamespace(module, pack);
+
     RutaScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace);
     List<RuleElement> ruleElements = new ArrayList<RuleElement>();
     RuleElementIsolator container = new RuleElementIsolator();
@@ -134,6 +133,20 @@ public class RutaScriptFactory {
     result.setRule(createRule);
     result.setContext(context);
     return result;
+  }
+
+  private String getDefaultNamespace(String module, String pack) {
+    String defaultNamespace = module;
+    if (StringUtils.isBlank(module) && StringUtils.isBlank(pack)) {
+      defaultNamespace = "";
+    } else if (StringUtils.isBlank(module) && StringUtils.isBlank(pack)) {
+      defaultNamespace = pack + "." + module;
+    } else if (!StringUtils.isBlank(module)) {
+      defaultNamespace = module;
+    } else if (!StringUtils.isBlank(pack)) {
+      defaultNamespace = pack;
+    }
+    return defaultNamespace;
   }
 
   public RutaBlock createForEachBlock(Token varToken, IBooleanExpression direction,

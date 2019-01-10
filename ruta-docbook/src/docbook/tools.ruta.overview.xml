@@ -708,6 +708,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.rules'>rulesScriptName</link>
+                  </entry>
+                  <entry>This parameter specifies the name of the non-existing script if the parameter 'rules' is used.
+                  </entry>
+                  <entry>Single String</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.scriptEncoding'>scriptEncoding</link>
                   </entry>
                   <entry>Encoding of all UIMA Ruta script files.</entry>
@@ -1012,6 +1020,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           If set, it replaces the content of file specified by the <link linkend='ugr.tools.ruta.ae.basic.parameter.mainScript'>mainScript</link> parameter.
           </para>
         </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.rulesScriptName">
+          <title>rulesScriptName</title>
+          <para>
+          This parameter specifies the name of the non-existing script if the <link linkend='ugr.tools.ruta.ae.basic.parameter.rules'>rules</link> parameter is used.
+          The default value is 'Anonymous'.
+          </para>
+        </section>
+    
         <section id="ugr.tools.ruta.ae.basic.parameter.scriptEncoding">
           <title>scriptEncoding</title>
           <para>

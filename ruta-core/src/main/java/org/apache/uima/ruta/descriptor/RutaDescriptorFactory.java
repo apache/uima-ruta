@@ -39,6 +39,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaScriptFactory;
 import org.apache.uima.ruta.action.ActionFactory;
 import org.apache.uima.ruta.condition.ConditionFactory;
@@ -52,18 +53,16 @@ import org.apache.uima.util.InvalidXMLException;
 
 public class RutaDescriptorFactory {
 
-  // public static final String ANONYMOUS = "Anonymous";
-
   private URL defaultTypeSystem;
 
   private URL defaultEngine;
 
   public RutaDescriptorFactory() {
     super();
-    this.defaultEngine = RutaDescriptorFactory.class.getClassLoader().getResource(
-            "org/apache/uima/ruta/engine/BasicEngine.xml");
-    this.defaultTypeSystem = RutaDescriptorFactory.class.getClassLoader().getResource(
-            "org/apache/uima/ruta/engine/BasicTypeSystem.xml");
+    this.defaultEngine = RutaDescriptorFactory.class.getClassLoader()
+            .getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
+    this.defaultTypeSystem = RutaDescriptorFactory.class.getClassLoader()
+            .getResource("org/apache/uima/ruta/engine/BasicTypeSystem.xml");
   }
 
   public RutaDescriptorFactory(String defaultTypeSystem, String defaultEngine)
@@ -86,8 +85,8 @@ public class RutaDescriptorFactory {
 
     RutaDescriptorBuilder builder = new RutaDescriptorBuilder(defaultTypeSystem, defaultEngine);
 
-    TypeSystemDescription typeSystemDescription = builder.createTypeSystemDescription(
-            descriptorInformation, typeSystemOutput, options, null);
+    TypeSystemDescription typeSystemDescription = builder
+            .createTypeSystemDescription(descriptorInformation, typeSystemOutput, options, null);
 
     return typeSystemDescription;
   }
@@ -132,19 +131,18 @@ public class RutaDescriptorFactory {
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     RutaParser parser = new RutaParser(tokens);
-    
+
     RutaDescriptorInformation descInfo = new RutaDescriptorInformation();
-    
-    
+
     parser.setDescriptorInformation(descInfo);
-    
+
     ExpressionFactory expressionFactory = new ExpressionFactory();
     ActionFactory actionFactory = new ActionFactory();
     ConditionFactory conditionFactory = new ConditionFactory();
     RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory);
     scriptFactory.setContext(null);
     ResourceManager rm = getResourceManager(options);
-    
+
     parser.setScriptFactory(scriptFactory);
     parser.setExpressionFactory(expressionFactory);
     parser.setActionFactory(actionFactory);
@@ -153,7 +151,7 @@ public class RutaDescriptorFactory {
     parser.setContext(null);
     parser.setResourcePaths(new String[0]);
     parser.setResourceManager(rm);
-    
+
     String name = scriptFile.getName();
     int lastIndexOf = name.lastIndexOf(RutaEngine.SCRIPT_FILE_EXTENSION);
     if (lastIndexOf != -1) {
@@ -164,25 +162,30 @@ public class RutaDescriptorFactory {
     return descInfo;
   }
 
-  public RutaDescriptorInformation parseDescriptorInformation(String script) throws IOException,
-          RecognitionException {
+  public RutaDescriptorInformation parseDescriptorInformation(String script)
+          throws IOException, RecognitionException {
     return parseDescriptorInformation(script, new RutaBuildOptions());
   }
 
-  public RutaDescriptorInformation parseDescriptorInformation(String script,
+  public RutaDescriptorInformation parseDescriptorInformation(String rules,
           RutaBuildOptions options) throws IOException, RecognitionException {
-    CharStream st = new ANTLRStringStream(script);
+    return parseDescriptorInformation(rules, RutaConstants.ANONYMOUS_SCRIPT, options);
+  }
+
+  public RutaDescriptorInformation parseDescriptorInformation(String rules, String rulesScriptName,
+          RutaBuildOptions options) throws IOException, RecognitionException {
+    CharStream st = new ANTLRStringStream(rules);
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     RutaParser parser = new RutaParser(tokens);
     RutaDescriptorInformation descInfo = new RutaDescriptorInformation();
     parser.setDescriptorInformation(descInfo);
-   
+
     ExpressionFactory expressionFactory = new ExpressionFactory();
     ActionFactory actionFactory = new ActionFactory();
     ConditionFactory conditionFactory = new ConditionFactory();
     RutaScriptFactory scriptFactory = new RutaScriptFactory(expressionFactory);
-    
+
     parser.setContext(null);
     parser.setScriptFactory(scriptFactory);
     parser.setExpressionFactory(expressionFactory);
@@ -192,10 +195,9 @@ public class RutaDescriptorFactory {
     parser.setResourcePaths(new String[0]);
     ResourceManager rm = getResourceManager(options);
     parser.setResourceManager(rm);
-    String name = "Anonymous";
-    descInfo.setScriptName(name);
-    parser.file_input(name);
-    descInfo.setRules(script);
+    descInfo.setScriptName(rulesScriptName);
+    parser.file_input(rulesScriptName);
+    descInfo.setRules(rules);
     return descInfo;
   }
 
