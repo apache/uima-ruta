@@ -29,6 +29,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.LazyFeature;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class NumberFeatureExpression extends AbstractNumberExpression {
@@ -72,9 +73,13 @@ public class NumberFeatureExpression extends AbstractNumberExpression {
       Feature feature = this.fe.getFeature(context, stream);
       Type range = feature.getRange();
       FeatureStructure next = featureStructures.iterator().next();
-      if (next instanceof AnnotationFS && !next.getType().equals(annotation.getType())) {
-        feature = this.fe.getFeature(new MatchContext((AnnotationFS) next, context.getElement(),
-                context.getRuleMatch(), context.getDirection()), stream);
+//      if (next instanceof AnnotationFS && !next.getType().equals(annotation.getType())) {
+//        feature = this.fe.getFeature(new MatchContext((AnnotationFS) next, context.getElement(),
+//                context.getRuleMatch(), context.getDirection()), stream);
+//      }
+      if (feature instanceof LazyFeature) {
+        LazyFeature lazyFeature = (LazyFeature) feature;
+        feature = lazyFeature.initialize(next);
       }
       if (CAS.TYPE_NAME_BYTE.equals(range.getName())) {
         result = next.getByteValue(feature);

@@ -77,6 +77,10 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
 
   public boolean checkFeatureValue(FeatureStructure fs, MatchContext context, RutaStream stream) {
     Feature feature = getFeature(context, stream);
+    if (feature instanceof LazyFeature) {
+      LazyFeature lazyFeature = (LazyFeature) feature;
+      feature = lazyFeature.initialize(fs);
+    }
     return checkFeatureValue(fs, feature, context, stream);
   }
 

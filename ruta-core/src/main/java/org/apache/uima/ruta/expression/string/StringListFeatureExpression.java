@@ -32,6 +32,7 @@ import org.apache.uima.cas.StringArrayFS;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.LazyFeature;
 import org.apache.uima.ruta.rule.MatchContext;
 
 /**
@@ -63,9 +64,13 @@ public class StringListFeatureExpression extends AbstractStringListExpression {
     List<String> result = new ArrayList<>();
 
     for (FeatureStructure each : featureStructures) {
-      if (each instanceof AnnotationFS && !each.getType().equals(annotation.getType())) {
-        feature = this.fe.getFeature(new MatchContext((AnnotationFS) each, context.getElement(),
-                context.getRuleMatch(), context.getDirection()), stream);
+//      if (each instanceof AnnotationFS && !each.getType().equals(annotation.getType())) {
+//        feature = this.fe.getFeature(new MatchContext((AnnotationFS) each, context.getElement(),
+//                context.getRuleMatch(), context.getDirection()), stream);
+//      }
+      if (feature instanceof LazyFeature) {
+        LazyFeature lazyFeature = (LazyFeature) feature;
+        feature = lazyFeature.initialize(each);
       }
       FeatureStructure featureValue = each.getFeatureValue(feature);
       if (featureValue instanceof StringArrayFS) {
