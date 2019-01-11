@@ -998,7 +998,7 @@ String label = null;
 	re1 = ruleElementAnnotationType[container] {re = re1;}
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
-	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
+	| (ruleElementWildCard[null])=> re4 = ruleElementWildCard[container] {re = re4;}
 	| (ruleElementOptional[null])=> re5 = ruleElementOptional[container] {re = re5;}
 	)
 	{
@@ -1006,18 +1006,19 @@ String label = null;
 	re.setStartAnchor(start != null);
 	}
 	(t = (THEN2) 
+	{innerConditionRules = new ArrayList<RutaStatement>();}
 	LCURLY 
 	(rule = simpleStatement {innerConditionRules.add(rule);})+ 
 	RCURLY 
-	{re.setInlinedConditionRules(innerConditionRules);}
-
-	)?
-	(t = (THEN) 
+	{re.addInlinedConditionRules(innerConditionRules);}
+	)*
+	(t = (THEN)
+	{innerActionRules = new ArrayList<RutaStatement>();} 
 	LCURLY 
 	(rule = simpleStatement {innerActionRules.add(rule);})+ 
 	RCURLY 
-	{re.setInlinedActionRules(innerActionRules);}
-	)?
+	{re.addInlinedActionRules(innerActionRules);}
+	)*
 	;	
 
 ruleElementWildCard [RuleElementContainer container] returns [AbstractRuleElement re = null]
