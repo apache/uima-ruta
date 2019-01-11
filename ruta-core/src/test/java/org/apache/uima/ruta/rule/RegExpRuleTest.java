@@ -36,6 +36,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class RegExpRuleTest {
@@ -147,4 +148,23 @@ public class RegExpRuleTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "concept", "a");
   }
 
+  @Test
+  public void testPartitioningInSequentialMatching() throws Exception {
+    String document = "11\n11ab\n1122\n11";
+    String script = " ";
+
+    script += "\"11\" -> T1;\r\n";
+    script += "\"[0-9]\" -> T2;\r\n";
+    script += "ADDRETAINTYPE(WS);\r\n";
+    script += "a:(T1 Annotation*{PARTOF({W,T2})}){-> T3};\r\n";
+    script += "REMOVERETAINTYPE(WS);";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 4, "11", "11", "11", "11");
+    Assert.assertEquals(10,
+            cas.getAnnotationIndex(cas.getTypeSystem().getType(RutaTestUtils.TYPE + "2")).size());
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 4, "11", "11ab", "1122", "11");
+  }
 }
