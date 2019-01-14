@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
 import org.apache.uima.ruta.expression.bool.AbstractBooleanListExpression;
@@ -34,6 +35,9 @@ import org.apache.uima.ruta.expression.bool.BooleanVariableExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanListExpression;
+import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
+import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
+import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.number.AbstractNumberListExpression;
 import org.apache.uima.ruta.expression.number.ComposedNumberExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
@@ -219,12 +223,22 @@ public class ExpressionVerbalizerTest {
     assertEquals("anyVar", s);
 
   }
-  
+
   @Test
   public void testAnnotationExpression() {
     RutaVerbalizer v = new RutaVerbalizer();
-    assertEquals("l" , v.verbalize(new AnnotationLabelExpression("l")));
-    assertEquals("l" , v.verbalize(new AnnotationVariableExpression("l")));
+    assertEquals("l", v.verbalize(new AnnotationLabelExpression("l")));
+    assertEquals("l", v.verbalize(new AnnotationVariableExpression("l")));
   }
-  
+
+  @Test
+  public void testGenericFeatureExpression() {
+    RutaVerbalizer v = new RutaVerbalizer();
+    assertEquals("abc.d", v.verbalize(new GenericFeatureExpression(
+            new SimpleFeatureExpression(new MatchReference("abc.d")))));
+    assertEquals("abc.d", v.verbalize(new GenericFeatureExpression(new FeatureMatchExpression(
+            new MatchReference("abc.d"), "==", new SimpleStringExpression("y")))));
+    assertEquals("", v.verbalize(new GenericFeatureExpression(null)));
+  }
+
 }

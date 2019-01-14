@@ -141,8 +141,8 @@ RuleElementComposed    -> "(" RuleElement ("&" RuleElement)+ ")"
                           OptionalRuleElementPart
 OptionalRuleElementPart-> QuantifierPart? ("{" Conditions?  Actions? "}")?
                           InlinedRules?
-InlinedRules           ->  ("<-" "{" SimpleStatement+ "}")?
-                           ("->"  "{" SimpleStatement+ "}")?
+InlinedRules           ->  ("<-" "{" SimpleStatement+ "}")*
+                           ("->"  "{" SimpleStatement+ "}")*
 RuleElementWildCard    -> "#"("{" Conditions?  Actions? }")? InlinedRules?
 RuleElementOptional    -> "_"("{" Conditions?  Actions? }")? InlinedRules?
 QuantifierPart         -> "*" | "*?" | "+" | "+?" | "?" | "??"

@@ -54,9 +54,9 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   @SuppressWarnings("unchecked")
   protected final InferenceCrowd emptyCrowd = new InferenceCrowd(Collections.EMPTY_LIST);
 
-  protected List<RutaStatement> inlinedConditionRules;
+  protected List<List<RutaStatement>> inlinedConditionRuleBlocks = new ArrayList<>();
 
-  protected List<RutaStatement> inlinedActionRules;
+  protected List<List<RutaStatement>> inlinedActionRuleBlocks = new ArrayList<>();
 
   public AbstractRuleElement(RuleElementQuantifier quantifier,
           List<AbstractRutaCondition> conditions, List<AbstractRutaAction> actions,
@@ -89,25 +89,25 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     }
   }
 
-  protected List<ScriptApply> processInlinedActionRules(RuleMatch ruleMatch, RutaStream stream,
+  protected List<List<ScriptApply>> processInlinedActionRules(RuleMatch ruleMatch, RutaStream stream,
           InferenceCrowd crowd) {
-    if (inlinedActionRules != null && !inlinedActionRules.isEmpty()) {
-      return processInlinedRules(inlinedActionRules, ruleMatch, stream, crowd);
+    if (inlinedActionRuleBlocks != null && !inlinedActionRuleBlocks.isEmpty()) {
+      return processInlinedRules(inlinedActionRuleBlocks, ruleMatch, stream, crowd);
     }
     return null;
   }
 
-  protected List<ScriptApply> processInlinedConditionRules(RuleMatch ruleMatch, RutaStream stream,
+  protected List<List<ScriptApply>> processInlinedConditionRules(RuleMatch ruleMatch, RutaStream stream,
           InferenceCrowd crowd) {
-    if (inlinedConditionRules != null && !inlinedConditionRules.isEmpty()) {
-      return processInlinedRules(inlinedConditionRules, ruleMatch, stream, crowd);
+    if (inlinedConditionRuleBlocks != null && !inlinedConditionRuleBlocks.isEmpty()) {
+      return processInlinedRules(inlinedConditionRuleBlocks, ruleMatch, stream, crowd);
     }
     return null;
   }
 
-  protected List<ScriptApply> processInlinedRules(List<RutaStatement> inlinedRules,
+  protected List<List<ScriptApply>> processInlinedRules(List<List<RutaStatement>> inlinedRuleBlocks,
           RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
-    List<ScriptApply> result = new ArrayList<ScriptApply>();
+    List<List<ScriptApply>> result = new ArrayList<>();
     List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOfElement(this);
     // TODO where to implement the explanation of inlined rules?
     // BlockApply blockApply = new BlockApply(this);
@@ -116,11 +116,15 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     // ruleMatch.addDelegateApply(this, blockApply);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
-      for (RutaStatement each : inlinedRules) {
-        ScriptApply apply = each.apply(windowStream, crowd);
-        // blockApply.add(apply);
-        ruleMatch.addDelegateApply(this, apply);
-        result.add(apply);
+      for (List<RutaStatement> inlinedRules : inlinedRuleBlocks) {
+        List<ScriptApply> blockResult = new ArrayList<>();
+        for (RutaStatement each : inlinedRules) {
+          ScriptApply apply = each.apply(windowStream, crowd);
+          // blockApply.add(apply);
+          ruleMatch.addDelegateApply(this, apply);
+          blockResult.add(apply);
+        }
+        result.add(blockResult);
       }
     }
     return result;
@@ -138,11 +142,19 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   protected boolean matchInnerRules(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
 
-    List<ScriptApply> list = processInlinedConditionRules(ruleMatch, stream, crowd);
-    if (list == null) {
+    List<List<ScriptApply>> blockResults = processInlinedConditionRules(ruleMatch, stream, crowd);
+    if (blockResults == null) {
       return true;
     }
+    
+    boolean matched = true;
+    for (List<ScriptApply> list : blockResults) {
+      matched &= atLeastOneRuleMatched(list);
+    }
+    return matched;
+  }
 
+  private boolean atLeastOneRuleMatched(List<ScriptApply> list) {
     for (ScriptApply scriptApply : list) {
       if (scriptApply instanceof RuleApply) {
         RuleApply ra = (RuleApply) scriptApply;
@@ -310,23 +322,23 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   }
 
   @Override
-  public void setInlinedConditionRules(List<RutaStatement> innerRules) {
-    this.inlinedConditionRules = innerRules;
+  public void addInlinedConditionRules(List<RutaStatement> innerRules) {
+    this.inlinedConditionRuleBlocks.add(innerRules);
   }
 
   @Override
-  public List<RutaStatement> getInlinedConditionRules() {
-    return inlinedConditionRules;
+  public List<List<RutaStatement>> getInlinedConditionRuleBlocks() {
+    return inlinedConditionRuleBlocks;
   }
 
   @Override
-  public void setInlinedActionRules(List<RutaStatement> innerRules) {
-    this.inlinedActionRules = innerRules;
+  public void addInlinedActionRules(List<RutaStatement> innerRules) {
+    this.inlinedActionRuleBlocks.add(innerRules);
   }
 
   @Override
-  public List<RutaStatement> getInlinedActionRules() {
-    return inlinedActionRules;
+  public List<List<RutaStatement>> getInlinedActionRuleBlocks() {
+    return inlinedActionRuleBlocks;
   }
 
 }

@@ -165,23 +165,23 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	    }
 	    int line = e.line;
 	    String text = e.token.getText();
-	
+	    String name = StringUtils.isBlank(moduleName) ? "unknown script" : moduleName;
    	    if (e instanceof NoViableAltException) {
 	      NoViableAltException nvae = (NoViableAltException) e;
-	      String msg = "Error in "+moduleName+",  line " + nvae.line + ", \"" + text + "\": found no viable alternative";
+	      String msg = "Error in "+name+",  line " + nvae.line + ", \"" + text + "\": found no viable alternative";
 	      emitErrorMessage(msg);
 	    } else if (e instanceof MismatchedTokenException) {
 	      MismatchedTokenException mte = (MismatchedTokenException) e;
 	      int expectedInt = mte.expecting;
 	      String stringExpected = expectedInt < 0 ? "'none'" : getTokenNames()[expectedInt];
-	      String msg = "Error in "+moduleName+", line " + line + ", \"" + text + "\": expected " + stringExpected
+	      String msg = "Error in "+name+", line " + line + ", \"" + text + "\": expected " + stringExpected
 	              + ", but found " + stringFound;
 	      emitErrorMessage(msg);
 	    } else if (e instanceof MissingTokenException) {
 	      MissingTokenException mte = (MissingTokenException) e;
     	      int missingType = mte.getMissingType();
     	      String stringMissing = getTokenNames()[missingType];
-    	      String msg = "Error in "+moduleName+",  line " + line + ", \"" + text + "\": missing " + stringMissing
+    	      String msg = "Error in "+name+",  line " + line + ", \"" + text + "\": missing " + stringMissing
                     + ", but found " + stringFound;
     	      emitErrorMessage(msg);
 	    } else {
@@ -249,14 +249,23 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	  }
 	  String resolvedType = name;
 	  if (!name.contains(".")) {
-	    resolvedType = namespace + "." + moduleName + "." + name;
+	    if(StringUtils.isBlank(moduleName)) {
+	      resolvedType = namespace + "." + name;
+	    } else {
+	      resolvedType = namespace + "." + moduleName + "." + name;
+	    }
 	  }
           parent.getEnvironment().declareType(resolvedType);
 	  if(descInfo != null) {
 		  name = parent.getNamespace() + "." + name.trim();
 		  String descriptionString = null;
 		  if(StringUtils.isBlank(namespace)) {
-			  descriptionString = "Type defined in " + moduleName;
+		  	if(StringUtils.isBlank(moduleName)) {
+		  		descriptionString = "Type defined in unknown script.";
+		  	} else {
+		  		descriptionString = "Type defined in " + moduleName;
+		  	}
+			  
 			  } else {
 			  descriptionString = "Type defined in " + parent.getNamespace();
 		  }
@@ -989,7 +998,7 @@ String label = null;
 	re1 = ruleElementAnnotationType[container] {re = re1;}
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
-	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
+	| (ruleElementWildCard[null])=> re4 = ruleElementWildCard[container] {re = re4;}
 	| (ruleElementOptional[null])=> re5 = ruleElementOptional[container] {re = re5;}
 	)
 	{
@@ -997,18 +1006,19 @@ String label = null;
 	re.setStartAnchor(start != null);
 	}
 	(t = (THEN2) 
+	{innerConditionRules = new ArrayList<RutaStatement>();}
 	LCURLY 
 	(rule = simpleStatement {innerConditionRules.add(rule);})+ 
 	RCURLY 
-	{re.setInlinedConditionRules(innerConditionRules);}
-
-	)?
-	(t = (THEN) 
+	{re.addInlinedConditionRules(innerConditionRules);}
+	)*
+	(t = (THEN)
+	{innerActionRules = new ArrayList<RutaStatement>();} 
 	LCURLY 
 	(rule = simpleStatement {innerActionRules.add(rule);})+ 
 	RCURLY 
-	{re.setInlinedActionRules(innerActionRules);}
-	)?
+	{re.addInlinedActionRules(innerActionRules);}
+	)*
 	;	
 
 ruleElementWildCard [RuleElementContainer container] returns [AbstractRuleElement re = null]

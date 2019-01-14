@@ -207,23 +207,27 @@ public class ScriptVerbalizer {
     }
     if (re instanceof AbstractRuleElement) {
       AbstractRuleElement are = (AbstractRuleElement) re;
-      List<RutaStatement> inlinedConditionRules = are.getInlinedConditionRules();
-      if (inlinedConditionRules != null && !inlinedConditionRules.isEmpty()) {
-        result.append(THEN2);
-        result.append(CBOPEN);
-        for (RutaStatement rutaStatement : inlinedConditionRules) {
-          result.append(verbalize(rutaStatement));
+      List<List<RutaStatement>> inlinedConditionRuleBlocks = are.getInlinedConditionRuleBlocks();
+      for (List<RutaStatement> inlinedConditionRules : inlinedConditionRuleBlocks) {
+        if (inlinedConditionRules != null && !inlinedConditionRules.isEmpty()) {
+          result.append(THEN2);
+          result.append(CBOPEN);
+          for (RutaStatement rutaStatement : inlinedConditionRules) {
+            result.append(verbalize(rutaStatement));
+          }
+          result.append(CBCLOSE);
         }
-        result.append(CBCLOSE);
       }
-      List<RutaStatement> inlinedActionRules = are.getInlinedActionRules();
-      if (inlinedActionRules != null && !inlinedActionRules.isEmpty()) {
-        result.append(THEN);
-        result.append(CBOPEN);
-        for (RutaStatement rutaStatement : inlinedActionRules) {
-          result.append(verbalize(rutaStatement));
+      List<List<RutaStatement>> inlinedActionRuleBlocks = are.getInlinedActionRuleBlocks();
+      for (List<RutaStatement> inlinedActionRules : inlinedActionRuleBlocks) {
+        if (inlinedActionRules != null && !inlinedActionRules.isEmpty()) {
+          result.append(THEN);
+          result.append(CBOPEN);
+          for (RutaStatement rutaStatement : inlinedActionRules) {
+            result.append(verbalize(rutaStatement));
+          }
+          result.append(CBCLOSE);
         }
-        result.append(CBCLOSE);
       }
     }
     return result.toString();

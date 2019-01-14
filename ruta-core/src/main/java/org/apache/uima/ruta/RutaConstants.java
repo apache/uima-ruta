@@ -20,6 +20,8 @@ package org.apache.uima.ruta;
 
 public class RutaConstants {
 
+  public static final String ANONYMOUS_SCRIPT = "Anonymous";
+
   public static final String RUTA_VARIABLE_ANNOTATION = "ANNOTATION";
 
   public static final String RUTA_VARIABLE_ANNOTATION_LIST = "ANNOTATIONLIST";

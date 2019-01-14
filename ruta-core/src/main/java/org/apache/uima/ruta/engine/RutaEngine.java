@@ -61,6 +61,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.FilterManager;
+import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaScriptFactory;
@@ -111,6 +112,14 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(name = PARAM_RULES, mandatory = false)
   private String rules;
+
+  /**
+   * This parameter specifies the name of the non-existing script if the parameter 'rules' is used.
+   */
+  public static final String PARAM_RULES_SCRIPT_NAME = "rulesScriptName";
+
+  @ConfigurationParameter(name = PARAM_RULES_SCRIPT_NAME, mandatory = true, defaultValue = RutaConstants.ANONYMOUS_SCRIPT)
+  private String rulesScriptName;
 
   /**
    * Load script in Java notation, with "{@code .}" as package separator and no extension. File
@@ -253,7 +262,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   /**
    * This parameter specifies whether the inference annotations created by the analysis engine
-   * should be removed after processing the CAS. The default value is set to true.
+   * should be removed after processing the CAS. The default value is set to false.
    */
   public static final String PARAM_REMOVE_BASICS = "removeBasics";
 
@@ -1121,7 +1130,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     RutaParser parser = createParser(tokens);
-    RutaModule script = parser.file_input("Anonymous");
+    RutaModule script = parser.file_input(rulesScriptName);
     return script;
   }
 

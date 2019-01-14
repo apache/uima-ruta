@@ -109,8 +109,8 @@ public class RutaRule extends AbstractRule {
         fillLabelMap(each);
       }
     }
-    fillLabelMapWithInlinedRules(ruleElement.getInlinedConditionRules());
-    fillLabelMapWithInlinedRules(ruleElement.getInlinedActionRules());
+    fillLabelMapWithInlinedRules(ruleElement.getInlinedConditionRuleBlocks());
+    fillLabelMapWithInlinedRules(ruleElement.getInlinedActionRuleBlocks());
   }
 
   private void fillLabelMapWithActions(List<AbstractRutaAction> actions) {
@@ -123,13 +123,15 @@ public class RutaRule extends AbstractRule {
     }
   }
 
-  private void fillLabelMapWithInlinedRules(List<RutaStatement> rules) {
-    if (rules != null) {
-      for (RutaStatement eachInlined : rules) {
-        if (eachInlined instanceof RutaRule) {
-          RutaRule inlinedRule = (RutaRule) eachInlined;
-          inlinedRule.setInlined(true);
-          fillLabelMap(inlinedRule.getRoot());
+  private void fillLabelMapWithInlinedRules(List<List<RutaStatement>> blocks) {
+    if (blocks != null) {
+      for (List<RutaStatement> list : blocks) {
+        for (RutaStatement eachInlined : list) {
+          if (eachInlined instanceof RutaRule) {
+            RutaRule inlinedRule = (RutaRule) eachInlined;
+            inlinedRule.setInlined(true);
+            fillLabelMap(inlinedRule.getRoot());
+          }
         }
       }
     }

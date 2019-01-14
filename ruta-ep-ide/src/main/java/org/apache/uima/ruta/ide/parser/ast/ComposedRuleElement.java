@@ -68,9 +68,11 @@ public class ComposedRuleElement extends RutaRuleElement {
           action.traverse(visitor);
         }
       }
-      if(inlinedRules != null) {
-        for (RutaRule rule : inlinedRules) {
-          rule.traverse(visitor);
+      if (getInlinedRuleBlocks() != null) {
+        for (List<RutaRule> inlinedRules : getInlinedRuleBlocks()) {
+          for (RutaRule rule : inlinedRules) {
+            rule.traverse(visitor);
+          }
         }
       }
       visitor.endvisit(this);

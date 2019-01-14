@@ -78,16 +78,16 @@ public interface RuleElement {
 
   boolean isStartAnchor();
 
-  void setInlinedActionRules(List<RutaStatement> innerRules);
+  void addInlinedActionRules(List<RutaStatement> innerRules);
 
-  void setInlinedConditionRules(List<RutaStatement> innerRules);
+  void addInlinedConditionRules(List<RutaStatement> innerRules);
 
   void setLabel(String label);
 
   String getLabel();
   
-  List<RutaStatement> getInlinedConditionRules();
+  List<List<RutaStatement>> getInlinedConditionRuleBlocks();
   
-  List<RutaStatement> getInlinedActionRules();
+  List<List<RutaStatement>> getInlinedActionRuleBlocks();
 
 }

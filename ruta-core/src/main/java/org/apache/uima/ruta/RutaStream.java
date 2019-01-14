@@ -67,6 +67,7 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
+import org.apache.uima.ruta.expression.feature.LazyFeature;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.INumberListExpression;
@@ -987,6 +988,11 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
               "Not able to assign feature value (e.g., coveredText) in script "
                       + context.getParent().getName());
     }
+    if (feature instanceof LazyFeature) {
+      LazyFeature lazyFeature = (LazyFeature) feature;
+      feature = lazyFeature.initialize(annotation);
+    }
+
     CAS cas = annotation.getCAS();
     TypeSystem typeSystem = cas.getTypeSystem();
     Type range = feature.getRange();

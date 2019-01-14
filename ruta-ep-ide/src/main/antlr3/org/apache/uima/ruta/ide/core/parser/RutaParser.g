@@ -819,10 +819,20 @@ String label = null;
 	| re4 = ruleElementSpecial {re = re4;}
 	)
 	{re.setLabel(label);}
-	(t = THEN2 LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 
-	RCURLY {re.setInlinedRules(innerRules);re.setInlineMode(t == null ? null : t.getText());})?
-	(t = THEN LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 
-	RCURLY {re.setInlinedRules(innerRules);re.setInlineMode(t == null ? null : t.getText());})?
+	
+	(
+	t = THEN2 LCURLY 
+	{innerRules = new ArrayList<RutaRule>();}
+	(rule = simpleStatement {innerRules.add(rule);})+ 
+	RCURLY {re.addInlinedRules(innerRules);}
+	)*
+	
+	(
+	t = THEN LCURLY 
+	{innerRules = new ArrayList<RutaRule>();}
+	(rule = simpleStatement {innerRules.add(rule);})+ 
+	RCURLY {re.addInlinedRules(innerRules);}
+	)*
 	;
 
 ruleElementSpecial returns [RutaRuleElement re = null] 
@@ -2708,7 +2718,7 @@ booleanAnnotationExpression  returns  [Expression expr = null]
 	:
 	e1 = annotationExpression
 	op = (EQUAL | NOTEQUAL)
-	e2 = annotationExpression
+	( e2 = annotationExpression | e2 = nullExpression )
 	{expr = ExpressionFactory.createBooleanAnnotationExpression(e1,op,e2);}
 	;
 
@@ -2725,7 +2735,7 @@ booleanTypeExpression  returns  [Expression expr = null]
 	:
 	e1 = typeExpression
 	op = (EQUAL | NOTEQUAL)
-	e2 = typeExpression
+	( e2 = typeExpression | e2 = nullExpression )
 	{expr = ExpressionFactory.createBooleanTypeExpression(e1,op,e2);}
 	;
 
@@ -2746,7 +2756,7 @@ booleanStringExpression  returns  [Expression expr = null]
 	//LPAREN
 	e1 = stringExpression
 	op = (EQUAL | NOTEQUAL)
-	e2 = stringExpression
+	( e2 = stringExpression | e2 = nullExpression )
 	//RPAREN
 	{expr = ExpressionFactory.createBooleanStringExpression(e1,op,e2);}
 	;

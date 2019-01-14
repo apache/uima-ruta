@@ -19,73 +19,77 @@
 
 package org.apache.uima.ruta.rule;
 
+import java.io.IOException;
+
 import org.apache.uima.cas.CAS;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class InlinedRulesTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String document = "The Ruta language is an imperative rule language extended with scripting elements. A Ruta rule defines a pattern of annotations with additional conditions. If this pattern applies, then the actions of the rule are performed  on the matched annotations. A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions. The matching condition is typically a type of an annotation by which the rule element matches on the covered text of one of those annotations. The quantifier specifies, whether it is necessary that the rule element successfully matches and how often the rule element may match. The list of conditions specifies additional constraints that the matched text or annotations need to fulfill. The list of actions defines the consequences of the rule and often creates new annotations or modifies existing annotations.";
     String script = "";
     script += "PERIOD #{-> T1} @PERIOD;\n";
     script += "#{-> T1} PERIOD;\n";
-     // inlined as block
-     script += "T1{STARTSWITH(Document)}->{CW{->T2};};\n";
-     script += "(T1 PERIOD T1){CONTAINS(COLON)}->{COMMA #{->T3} COMMA; COLON ANY{-> T4};};\n";
-     script += "(COLON # COMMA)->{ANY{REGEXP(\"a.*\", true)-> T5};};";
-     // inlined as condition
-     script += "T1{->T6}<-{ANY COLON ANY{->T6};};\n";
-     script += "T1{->T7}<-{CW COLON CW{->T7};};\n";
-     script +=
-     "(T1 PERIOD{ -> T8} T1){CONTAINS(COLON)}<-{CW COLON CW{->T9}; COLON ANY{-> T10};};\n";
-     script += "(T1 PERIOD{ -> T11} T1){CONTAINS(COLON)}<-{CW COLON CW{->T11};};\n";
-     script +=
-     "(T1 PERIOD T1{-> T12}){CONTAINS(COLON)}<-{W COLON (W W)<-{ANY{REGEXP(\"match.*\")};};};\n";
+    // inlined as block
+    script += "T1{STARTSWITH(Document)}->{CW{->T2};};\n";
+    script += "(T1 PERIOD T1){CONTAINS(COLON)}->{COMMA #{->T3} COMMA; COLON ANY{-> T4};};\n";
+    script += "(COLON # COMMA)->{ANY{REGEXP(\"a.*\", true)-> T5};};";
+    // inlined as condition
+    script += "T1{->T6}<-{ANY COLON ANY{->T6};};\n";
+    script += "T1{->T7}<-{CW COLON CW{->T7};};\n";
+    script += "(T1 PERIOD{ -> T8} T1){CONTAINS(COLON)}<-{CW COLON CW{->T9}; COLON ANY{-> T10};};\n";
+    script += "(T1 PERIOD{ -> T11} T1){CONTAINS(COLON)}<-{CW COLON CW{->T11};};\n";
+    script += "(T1 PERIOD T1{-> T12}){CONTAINS(COLON)}<-{W COLON (W W)<-{ANY{REGEXP(\"match.*\")};};};\n";
     // both types
     script += "T1<-{W COLON W W;}->{COLON{->T13};};\n";
     script += "(T1 PERIOD T1){CONTAINS(COLON)}<-{W COLON (W W)<-{ANY{REGEXP(\"match.*\")};}->{W{->T14};};};\n";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "The", "Ruta");
-    RutaTestUtils
-            .assertAnnotationsEquals(
-                    cas,
-                    3,
-                    3,//
-                    "then the actions of the rule are performed  on the matched annotations. A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition",
-                    "an optional quantifier", "an optional quantifier");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, //
+            "then the actions of the rule are performed  on the matched annotations. A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition",
+            "an optional quantifier", "an optional quantifier");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "A", "A");
     RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "A");
-    RutaTestUtils
-            .assertAnnotationsEquals(
-                    cas,
-                    6,
-                    2, //
-                    "A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions",
-                    "A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 2, //
+            "A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions",
+            "A");
     RutaTestUtils.assertAnnotationsEquals(cas, 7, 0);
     RutaTestUtils.assertAnnotationsEquals(cas, 8, 2, ".", ".");
     RutaTestUtils.assertAnnotationsEquals(cas, 9, 0);
     RutaTestUtils.assertAnnotationsEquals(cas, 10, 2, "A", "A");
     RutaTestUtils.assertAnnotationsEquals(cas, 11, 0);
-    RutaTestUtils
-            .assertAnnotationsEquals(
-                    cas,
-                    12,
-                    2, //
-                    "A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions",
-                    "The matching condition is typically a type of an annotation by which the rule element matches on the covered text of one of those annotations");
+    RutaTestUtils.assertAnnotationsEquals(cas, 12, 2, //
+            "A rule is composed of a sequence of rule elements and a rule element essentially consists of four parts: A matching condition, an optional quantifier, a list of conditions and a list of actions",
+            "The matching condition is typically a type of an annotation by which the rule element matches on the covered text of one of those annotations");
     RutaTestUtils.assertAnnotationsEquals(cas, 13, 1, ":");
     RutaTestUtils.assertAnnotationsEquals(cas, 14, 4, "A", "A", "matching", "matching");
+  }
 
-    cas.release();
+  @Test
+  public void testMultipleInlinedRuleBlocks() throws Exception {
+    String document ="AA 22 bb CC";
+    String script = "";
+    script += "Document{-> T1};\n";
+    // inlined as condition
+    script += "T1{-> T2} <- {CAP NUM;} <- {SW CAP;};\n";
+    script += "T1{-> T5} <- {CAP NUM;} <- {SW SW;};\n";
+    // inlined as action
+    script += "T1 -> {(CAP NUM){->T3};} -> {(SW CAP){->T4};};\n";
+    
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "AA 22 bb CC");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "AA 22");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "bb CC");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 0);
   }
 }

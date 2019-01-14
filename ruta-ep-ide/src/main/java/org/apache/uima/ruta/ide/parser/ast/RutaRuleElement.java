@@ -35,8 +35,8 @@ public class RutaRuleElement extends Expression {
   protected Expression head;
 
   protected List<Expression> quantifierExpressions;
-  
-  protected List<RutaRule> inlinedRules;
+
+  private List<List<RutaRule>> inlinedRuleBlocks = new ArrayList<>();
 
   private String inlineMode;
 
@@ -45,7 +45,7 @@ public class RutaRuleElement extends Expression {
   private boolean wildcard;
 
   private String label;
-  
+
   // TODO to be removed
   public RutaRuleElement(int start, int end) {
     super(start, end);
@@ -99,9 +99,11 @@ public class RutaRuleElement extends Expression {
           action.traverse(visitor);
         }
       }
-      if(inlinedRules != null) {
-        for (RutaRule rule : inlinedRules) {
-          rule.traverse(visitor);
+      if (inlinedRuleBlocks != null) {
+        for (List<RutaRule> inlinedRules : inlinedRuleBlocks) {
+          for (RutaRule rule : inlinedRules) {
+            rule.traverse(visitor);
+          }
         }
       }
       visitor.endvisit(this);
@@ -124,22 +126,19 @@ public class RutaRuleElement extends Expression {
     return quantifierExpressions;
   }
 
+  @Override
   public String toString() {
     return this.getClass().getSimpleName() + " : " + super.toString();
   }
 
-  public List<RutaRule> getInlinedRules() {
-    return inlinedRules;
-  }
-
-  public void setInlinedRules(List<RutaRule> inlinedRules) {
-    if(inlinedRules != null && !inlinedRules.isEmpty()) {
-      RutaRule last = inlinedRules.get(inlinedRules.size()-1);
-      if(last != null) {
+  public void addInlinedRules(List<RutaRule> inlinedRules) {
+    if (inlinedRules != null && !inlinedRules.isEmpty()) {
+      RutaRule last = inlinedRules.get(inlinedRules.size() - 1);
+      if (last != null) {
         setEnd(last.sourceEnd());
       }
     }
-    this.inlinedRules = inlinedRules;
+    inlinedRuleBlocks.add(inlinedRules);
   }
 
   public void setInlineMode(String mode) {
@@ -171,11 +170,19 @@ public class RutaRuleElement extends Expression {
   }
 
   public void setLabel(String label) {
-        this.label = label;
+    this.label = label;
   }
-  
+
   public String getLabel() {
     return this.label;
   }
-  
+
+  public List<List<RutaRule>> getInlinedRuleBlocks() {
+    return inlinedRuleBlocks;
+  }
+
+  public void setInlinedRuleBlocks(List<List<RutaRule>> inlinedRuleBlocks) {
+    this.inlinedRuleBlocks = inlinedRuleBlocks;
+  }
+
 }

@@ -27,6 +27,7 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.LazyFeature;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class BooleanFeatureExpression extends AbstractBooleanExpression {
@@ -48,9 +49,13 @@ public class BooleanFeatureExpression extends AbstractBooleanExpression {
             false, context, stream);
     if (!featureStructures.isEmpty()) {
       FeatureStructure next = featureStructures.iterator().next();
-      if (next instanceof AnnotationFS && next != annotation) {
-        feature = this.fe.getFeature(new MatchContext((AnnotationFS) next, context.getElement(),
-                context.getRuleMatch(), context.getDirection()), stream);
+//      if (next instanceof AnnotationFS && next != annotation) {
+//        feature = this.fe.getFeature(new MatchContext((AnnotationFS) next, context.getElement(),
+//                context.getRuleMatch(), context.getDirection()), stream);
+//      }
+      if (feature instanceof LazyFeature) {
+        LazyFeature lazyFeature = (LazyFeature) feature;
+        feature = lazyFeature.initialize(next);
       }
       return next.getBooleanValue(feature);
     }
