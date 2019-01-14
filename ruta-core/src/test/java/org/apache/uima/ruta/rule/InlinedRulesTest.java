@@ -80,6 +80,7 @@ public class InlinedRulesTest {
     script += "Document{-> T1};\n";
     // inlined as condition
     script += "T1{-> T2} <- {CAP NUM;} <- {SW CAP;};\n";
+    script += "T1{-> T5} <- {CAP NUM;} <- {SW SW;};\n";
     // inlined as action
     script += "T1 -> {(CAP NUM){->T3};} -> {(SW CAP){->T4};};\n";
     
@@ -89,5 +90,6 @@ public class InlinedRulesTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "AA 22 bb CC");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "AA 22");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "bb CC");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 0);
   }
 }
