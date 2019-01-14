@@ -83,7 +83,7 @@ public class RutaFormattedPrinter extends ASTVisitor {
   private static final String CONCAT = " + ";
 
   private static final String CONCAT_RULES = "% ";
-  
+
   private static final String COMMA = ",";
 
   private static final int NL_DECLS_COUNT = 2;
@@ -132,7 +132,8 @@ public class RutaFormattedPrinter extends ASTVisitor {
   private boolean retainLB = true;
 
   public RutaFormattedPrinter(FormatterDocument document, String lineDelimiter,
-          IFormatterIndentGenerator indentGenerator, List<CommonToken> comments, RutaFormatter tmf) {
+          IFormatterIndentGenerator indentGenerator, List<CommonToken> comments,
+          RutaFormatter tmf) {
     this.document = document;
     this.lineDelimiter = lineDelimiter;
     this.indentGenerator = indentGenerator;
@@ -209,7 +210,8 @@ public class RutaFormattedPrinter extends ASTVisitor {
         if (expressions.size() > 1) {
           for (int i = 1; i < expressions.size(); i++) {
             Expression expression = expressions.get(i);
-            if (expression.getKind() == RutaTypeConstants.RUTA_TYPE_N && i < expressions.size() - 1) {
+            if (expression.getKind() == RutaTypeConstants.RUTA_TYPE_N
+                    && i < expressions.size() - 1) {
               append(expression);
               append(EQUALS);
               append(expressions.get(++i));
@@ -353,7 +355,7 @@ public class RutaFormattedPrinter extends ASTVisitor {
       if (inLargeRule == 2) {
         inLargeRule = 4;
       }
-      if(cre.isAfterConcat()) {
+      if (cre.isAfterConcat()) {
         append(CONCAT_RULES);
       }
       append(PAR_OPEN);
@@ -381,7 +383,7 @@ public class RutaFormattedPrinter extends ASTVisitor {
       } else if (inLargeRule == 1) {
         inLargeRule = 2;
       }
-      if(ruleEl.isAfterConcat()) {
+      if (ruleEl.isAfterConcat()) {
         append(CONCAT_RULES);
       }
       appendRuleElement(ruleEl);
@@ -611,7 +613,7 @@ public class RutaFormattedPrinter extends ASTVisitor {
    * @param ruleEl
    * @param conditions
    * @param actions
-   * @throws Exception 
+   * @throws Exception
    */
   private void appendRuleElement(RutaRuleElement ruleEl) throws Exception {
     // if (ruleEl instanceof ComposedRuleElement) {
@@ -634,7 +636,7 @@ public class RutaFormattedPrinter extends ASTVisitor {
     if (ruleEl.getHead() != null) {
       append(ruleEl.getHead());
     }
-    if(ruleEl.isWildcard()) {
+    if (ruleEl.isWildcard()) {
       append("#");
     }
     List<RutaCondition> conditions = ruleEl.getConditions();
@@ -679,9 +681,8 @@ public class RutaFormattedPrinter extends ASTVisitor {
       return;
     }
 
-    if (!inBlockDeclaration
-            && ((conditions == null && actions.isEmpty()) || actions == null
-                    && (conditions != null) && conditions.isEmpty())) {
+    if (!inBlockDeclaration && ((conditions == null && actions.isEmpty())
+            || actions == null && (conditions != null) && conditions.isEmpty())) {
       return;
     }
     append(CURLY_OPEN);
@@ -701,14 +702,16 @@ public class RutaFormattedPrinter extends ASTVisitor {
       traverseAstNodes(actions);
     }
     append(CURLY_CLOSE);
-    if(ruleEl.getInlinedRules()!= null && !ruleEl.getInlinedRules().isEmpty()) {
+    if (ruleEl.getInlinedRuleBlocks() != null && !ruleEl.getInlinedRuleBlocks().isEmpty()) {
       String inlineMode = ruleEl.getInlineMode();
       append(inlineMode);
       append(CURLY_OPEN);
       indentLevel++;
-      List<RutaRule> inlinedRules = ruleEl.getInlinedRules();
-      for (RutaRule rutaRule : inlinedRules) {
-        visit(rutaRule);
+      List<List<RutaRule>> inlinedRuleBlocks = ruleEl.getInlinedRuleBlocks();
+      for (List<RutaRule> inlinedRules : inlinedRuleBlocks) {
+        for (RutaRule rutaRule : inlinedRules) {
+          visit(rutaRule);
+        }
       }
       indentLevel--;
       appendIntoNewLine(CURLY_CLOSE);

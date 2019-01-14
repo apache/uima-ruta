@@ -819,10 +819,20 @@ String label = null;
 	| re4 = ruleElementSpecial {re = re4;}
 	)
 	{re.setLabel(label);}
-	(t = THEN2 LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 
-	RCURLY {re.setInlinedRules(innerRules);re.setInlineMode(t == null ? null : t.getText());})?
-	(t = THEN LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 
-	RCURLY {re.setInlinedRules(innerRules);re.setInlineMode(t == null ? null : t.getText());})?
+	
+	(
+	t = THEN2 LCURLY 
+	{innerRules = new ArrayList<RutaRule>();}
+	(rule = simpleStatement {innerRules.add(rule);})+ 
+	RCURLY {re.addInlinedRules(innerRules);}
+	)*
+	
+	(
+	t = THEN LCURLY 
+	{innerRules = new ArrayList<RutaRule>();}
+	(rule = simpleStatement {innerRules.add(rule);})+ 
+	RCURLY {re.addInlinedRules(innerRules);}
+	)*
 	;
 
 ruleElementSpecial returns [RutaRuleElement re = null] 
