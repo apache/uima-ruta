@@ -82,7 +82,7 @@ import org.apache.uima.ruta.utils.RutaListUtils;
 import org.apache.uima.ruta.utils.UIMAUtils;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class RutaStream  {
+public class RutaStream {
 
   private final CAS cas;
 
@@ -1030,12 +1030,12 @@ public class RutaStream  {
       if (value instanceof IStringListExpression) {
         IStringListExpression stringListExpr = (IStringListExpression) value;
         List<String> stringList = stringListExpr.getStringList(context, this);
-        StringArrayFS stringArray = FSCollectionFactory.createStringArray(cas, stringList);
+        StringArrayFS stringArray = FSCollectionFactory.createStringArrayFS(cas, stringList);
         annotation.setFeatureValue(feature, stringArray);
       } else if (value instanceof IStringExpression) {
         IStringExpression stringExpr = (IStringExpression) value;
         String string = stringExpr.getStringValue(context, this);
-        StringArrayFS array = FSCollectionFactory.createStringArray(cas, new String[] { string });
+        StringArrayFS array = FSCollectionFactory.createStringArrayFS(cas, new String[] { string });
         annotation.setFeatureValue(feature, array);
       }
     } else if (rangeName.equals(CAS.TYPE_NAME_INTEGER) || rangeName.equals(CAS.TYPE_NAME_LONG)
@@ -1057,12 +1057,13 @@ public class RutaStream  {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         int v = numberExpr.getIntegerValue(context, this);
-        IntArrayFS array = FSCollectionFactory.createIntArray(cas, new int[] { v });
+        IntArrayFS array = FSCollectionFactory.createIntArrayFS(cas, new int[] { v });
         annotation.setFeatureValue(feature, array);
       } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
         List<Number> list = expr.getNumberList(context, this);
-        IntArrayFS array = FSCollectionFactory.createIntArray(cas, RutaListUtils.toIntArray(list));
+        IntArrayFS array = FSCollectionFactory.createIntArrayFS(cas,
+                RutaListUtils.toIntArray(list));
         annotation.setFeatureValue(feature, array);
       }
     } else if (rangeName.equals(CAS.TYPE_NAME_DOUBLE)) {
@@ -1075,12 +1076,12 @@ public class RutaStream  {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         double v = numberExpr.getDoubleValue(context, this);
-        DoubleArrayFS array = FSCollectionFactory.createDoubleArray(cas, new double[] { v });
+        DoubleArrayFS array = FSCollectionFactory.createDoubleArrayFS(cas, new double[] { v });
         annotation.setFeatureValue(feature, array);
       } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
         List<Number> list = expr.getNumberList(context, this);
-        DoubleArrayFS array = FSCollectionFactory.createDoubleArray(cas,
+        DoubleArrayFS array = FSCollectionFactory.createDoubleArrayFS(cas,
                 RutaListUtils.toDoubleArray(list));
         annotation.setFeatureValue(feature, array);
       }
@@ -1094,12 +1095,12 @@ public class RutaStream  {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         float v = numberExpr.getFloatValue(context, this);
-        FloatArrayFS array = FSCollectionFactory.createFloatArray(cas, new float[] { v });
+        FloatArrayFS array = FSCollectionFactory.createFloatArrayFS(cas, new float[] { v });
         annotation.setFeatureValue(feature, array);
       } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
         List<Number> list = expr.getNumberList(context, this);
-        FloatArrayFS array = FSCollectionFactory.createFloatArray(cas,
+        FloatArrayFS array = FSCollectionFactory.createFloatArrayFS(cas,
                 RutaListUtils.toFloatArray(list));
         annotation.setFeatureValue(feature, array);
       }
@@ -1113,12 +1114,12 @@ public class RutaStream  {
       if (value instanceof IBooleanListExpression) {
         IBooleanListExpression expr = (IBooleanListExpression) value;
         List<Boolean> list = expr.getBooleanList(context, this);
-        BooleanArrayFS array = FSCollectionFactory.createBooleanArray(cas, list);
+        BooleanArrayFS array = FSCollectionFactory.createBooleanArrayFS(cas, list);
         annotation.setFeatureValue(feature, array);
       } else if (value instanceof IBooleanExpression) {
         IBooleanExpression expr = (IBooleanExpression) value;
         Boolean v = expr.getBooleanValue(context, this);
-        BooleanArrayFS array = FSCollectionFactory.createBooleanArray(cas, new boolean[] { v });
+        BooleanArrayFS array = FSCollectionFactory.createBooleanArrayFS(cas, new boolean[] { v });
         annotation.setFeatureValue(feature, array);
       }
     } else if (value instanceof AnnotationTypeExpression && !range.isPrimitive()) {
@@ -1373,6 +1374,5 @@ public class RutaStream  {
   public FSIterator<AnnotationFS> getCurrentIt() {
     return currentIt;
   }
-
 
 }
