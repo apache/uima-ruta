@@ -516,7 +516,8 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
       <quote>&lt;-</quote>
       ,
       then the inlined rules are interpreted as some sort of condition. The surrounding rules will
-      only match, if one of the inlined rules was successfully applied.
+      only match, if one of the inlined rules was successfully applied. 
+      A rule element may be extended with several inlined rule blocks of the same type.
       The functionality introduced
       by inlined rules is illustrated with a few examples:
     </para>
