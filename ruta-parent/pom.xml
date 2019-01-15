@@ -193,6 +193,11 @@ Creative Commons Attribution 3.0 License.
       </plugins>
     </pluginManagement>
   <plugins>
+  	<plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>1.6</version>
+        </plugin>
     <plugin>
       <artifactId>maven-enforcer-plugin</artifactId>
         <executions>
