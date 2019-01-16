@@ -341,8 +341,8 @@ public class SplitTest {
   @Test
   public void testBoundary() throws Exception {
     String document = "Some text. More text , with 1 , and more. even more text.";
-    String script = "PERIOD #{-> T1} PERIOD;";
-    script += "#{-> T1} PERIOD;";
+    String script = "PERIOD (# PERIOD){-> T1};";
+    script += "(# PERIOD){-> T1};";
     script += "T1{-> SPLIT(PERIOD, true, false, true)};";
 
     CAS cas = RutaTestUtils.getCAS(document);
@@ -366,9 +366,7 @@ public class SplitTest {
     next = iterator.next();
     assertEquals("even more text.", next.getCoveredText());
 
-    if (cas != null) {
-      cas.release();
-    }
+    cas.release();
 
   }
 

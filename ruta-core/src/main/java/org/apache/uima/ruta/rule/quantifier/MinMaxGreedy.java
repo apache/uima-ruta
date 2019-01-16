@@ -60,6 +60,7 @@ public class MinMaxGreedy extends AbstractRuleElementQuantifier {
       RuleElementMatch ruleElementMatch = matches.get(matches.size() - 1);
       if (!ruleElementMatch.matched()) {
         matches.remove(ruleElementMatch);
+        updateLabelAssignment(matches, context, stream);
       }
     }
 

@@ -19,10 +19,6 @@
 
 package org.apache.uima.ruta.descriptor;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -47,9 +43,9 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.HtmlAnnotator;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.util.InvalidXMLException;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 
 public class GenerateDescriptorTest {
 
@@ -59,29 +55,34 @@ public class GenerateDescriptorTest {
 
   @BeforeClass
   public static void setUpClass() {
-    basicAEUrl = GenerateDescriptorTest.class.getClassLoader().getResource("BasicEngine.xml");
-    if (basicAEUrl == null) {
-      basicAEUrl = HtmlAnnotator.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/BasicEngine.xml");
+
+    GenerateDescriptorTest.basicAEUrl = GenerateDescriptorTest.class.getClassLoader()
+            .getResource("BasicEngine.xml");
+    if (GenerateDescriptorTest.basicAEUrl == null) {
+      GenerateDescriptorTest.basicAEUrl = HtmlAnnotator.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
     }
 
-    basicTSUrl = GenerateDescriptorTest.class.getClassLoader().getResource("BasicTypeSystem.xml");
-    if (basicTSUrl == null) {
-      basicTSUrl = HtmlAnnotator.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/BasicTypeSystem.xml");
+    GenerateDescriptorTest.basicTSUrl = GenerateDescriptorTest.class.getClassLoader()
+            .getResource("BasicTypeSystem.xml");
+    if (GenerateDescriptorTest.basicTSUrl == null) {
+      GenerateDescriptorTest.basicTSUrl = HtmlAnnotator.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/BasicTypeSystem.xml");
     }
   }
 
   @Test
-  public void testCreateAnalysisEngineDescription() throws InvalidXMLException, IOException,
-          RecognitionException, URISyntaxException {
+  public void testCreateAnalysisEngineDescription()
+          throws InvalidXMLException, IOException, RecognitionException, URISyntaxException {
+
     String script = "";
     script += "PACKAGE test.package;\n";
     script += "ENGINE org.apache.uima.ruta.engine.HtmlAnnotator;\n";
     script += "UIMAFIT org.apache.uima.ruta.engine.PlainTextAnnotator;\n";
     script += "SCRIPT org.apache.uiima.ruta.Additional;\n";
 
-    RutaDescriptorFactory rdf = new RutaDescriptorFactory(basicTSUrl, basicAEUrl);
+    RutaDescriptorFactory rdf = new RutaDescriptorFactory(GenerateDescriptorTest.basicTSUrl,
+            GenerateDescriptorTest.basicAEUrl);
     RutaDescriptorInformation descriptorInformation = rdf.parseDescriptorInformation(script);
     RutaBuildOptions options = new RutaBuildOptions();
     String typeSystemOutput = "target/temp/testCreateAnalysisEngineDescription_TypeSystem.xml";
@@ -94,26 +95,31 @@ public class GenerateDescriptorTest {
 
     String mainScript = (String) cps.getParameterValue(RutaEngine.PARAM_MAIN_SCRIPT);
     String rules = (String) cps.getParameterValue(RutaEngine.PARAM_RULES);
-    assertNull("mainScript param should be null", mainScript);
-    assertNotNull("rules param should not null", rules);
-    
-    String[] additionalEngines = (String[]) cps.getParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINES);
-    assertNotNull(additionalEngines);
-    assertEquals("org.apache.uima.ruta.engine.HtmlAnnotator", additionalEngines[0]);
-    
-    String[] additionalUimafitEngines = (String[]) cps.getParameterValue(RutaEngine.PARAM_ADDITIONAL_UIMAFIT_ENGINES);
-    assertNotNull(additionalUimafitEngines);
-    assertEquals("org.apache.uima.ruta.engine.PlainTextAnnotator", additionalUimafitEngines[0]);
-    
-    String[] additionalScripts = (String[]) cps.getParameterValue(RutaEngine.PARAM_ADDITIONAL_SCRIPTS);
-    assertNotNull(additionalScripts);
-    assertEquals("org.apache.uiima.ruta.Additional", additionalScripts[0]);
-    
+    Assert.assertNull("mainScript param should be null", mainScript);
+    Assert.assertNotNull("rules param should not null", rules);
+
+    String[] additionalEngines = (String[]) cps
+            .getParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINES);
+    Assert.assertNotNull(additionalEngines);
+    Assert.assertEquals("org.apache.uima.ruta.engine.HtmlAnnotator", additionalEngines[0]);
+
+    String[] additionalUimafitEngines = (String[]) cps
+            .getParameterValue(RutaEngine.PARAM_ADDITIONAL_UIMAFIT_ENGINES);
+    Assert.assertNotNull(additionalUimafitEngines);
+    Assert.assertEquals("org.apache.uima.ruta.engine.PlainTextAnnotator",
+            additionalUimafitEngines[0]);
+
+    String[] additionalScripts = (String[]) cps
+            .getParameterValue(RutaEngine.PARAM_ADDITIONAL_SCRIPTS);
+    Assert.assertNotNull(additionalScripts);
+    Assert.assertEquals("org.apache.uiima.ruta.Additional", additionalScripts[0]);
+
   }
 
   @Test
   public void testCreateTypeSystemDescription() throws URISyntaxException, IOException,
           RecognitionException, InvalidXMLException, ResourceInitializationException {
+
     String script = "";
     script += "PACKAGE test.package;\n";
     script += "TYPESYSTEM org.apache.uima.ruta.engine.HtmlTypeSystem;\n";
@@ -124,7 +130,8 @@ public class GenerateDescriptorTest {
     script += "DECLARE InnerType;\n";
     script += "}\n";
 
-    RutaDescriptorFactory rdf = new RutaDescriptorFactory(basicTSUrl, basicAEUrl);
+    RutaDescriptorFactory rdf = new RutaDescriptorFactory(GenerateDescriptorTest.basicTSUrl,
+            GenerateDescriptorTest.basicAEUrl);
     RutaDescriptorInformation descriptorInformation = rdf.parseDescriptorInformation(script);
     RutaBuildOptions options = new RutaBuildOptions();
     String typeSystemOutput = "target/temp/testCreateTypeSystemDescription_TypeSystem.xml";
@@ -135,67 +142,97 @@ public class GenerateDescriptorTest {
     tsd.resolveImports(rm);
 
     TypeDescription tagType = tsd.getType("org.apache.uima.ruta.type.html.TAG");
-    assertNotNull(tagType);
+    Assert.assertNotNull(tagType);
 
     TypeDescription simpleType = tsd.getType("test.package.Anonymous.SimpleType");
-    assertNotNull(simpleType);
-    assertEquals("uima.tcas.Annotation", simpleType.getSupertypeName());
+    Assert.assertNotNull(simpleType);
+    Assert.assertEquals("uima.tcas.Annotation", simpleType.getSupertypeName());
 
     TypeDescription complexType = tsd.getType("test.package.Anonymous.ComplexType");
-    assertNotNull(complexType);
-    assertEquals("Type defined in test.package.Anonymous", complexType.getDescription());
-    assertEquals("test.package.Anonymous.SimpleType", complexType.getSupertypeName());
+    Assert.assertNotNull(complexType);
+    Assert.assertEquals("Type defined in test.package.Anonymous", complexType.getDescription());
+    Assert.assertEquals("test.package.Anonymous.SimpleType", complexType.getSupertypeName());
     FeatureDescription[] features = complexType.getFeatures();
     Map<String, String> featureMap = new HashMap<>();
     featureMap.put("fs", "test.package.Anonymous.SimpleType");
     featureMap.put("s", "uima.cas.String");
     featureMap.put("b", "uima.cas.Boolean");
     featureMap.put("i", "uima.cas.Integer");
-    assertEquals(4, features.length);
+    Assert.assertEquals(4, features.length);
     for (FeatureDescription each : features) {
       String f = featureMap.get(each.getName());
-      assertNotNull(f);
+      Assert.assertNotNull(f);
     }
-    
+
     TypeDescription complexType2 = tsd.getType("test.package.Anonymous.ComplexType2");
-    assertNotNull(complexType2);
-    assertEquals("Type defined in test.package.Anonymous", complexType2.getDescription());
-    assertEquals("uima.tcas.Annotation", complexType2.getSupertypeName());
+    Assert.assertNotNull(complexType2);
+    Assert.assertEquals("Type defined in test.package.Anonymous", complexType2.getDescription());
+    Assert.assertEquals("uima.tcas.Annotation", complexType2.getSupertypeName());
     FeatureDescription[] features2 = complexType2.getFeatures();
     Map<String, String> featureMap2 = new HashMap<>();
     featureMap2.put("fs", "test.package.Anonymous.SimpleType");
     featureMap2.put("s", "uima.cas.String");
     featureMap2.put("b", "uima.cas.Boolean");
     featureMap2.put("i", "uima.cas.Integer");
-    assertEquals(4, features2.length);
+    Assert.assertEquals(4, features2.length);
     for (FeatureDescription each : features2) {
       String f = featureMap2.get(each.getName());
-      assertNotNull(f);
+      Assert.assertNotNull(f);
     }
 
     TypeDescription innerType = tsd.getType("test.package.Anonymous.sub.InnerType");
-    assertNotNull(innerType);
-    assertEquals("uima.tcas.Annotation", innerType.getSupertypeName());
+    Assert.assertNotNull(innerType);
+    Assert.assertEquals("uima.tcas.Annotation", innerType.getSupertypeName());
+
+  }
+
+  @Test
+  public void testRuleScriptName() throws URISyntaxException, IOException, RecognitionException,
+          InvalidXMLException, ResourceInitializationException {
+
+    String script = "";
+    script += "PACKAGE test.package;\n";
+    script += "DECLARE SimpleType;\n";
+
+    RutaDescriptorFactory rdf = new RutaDescriptorFactory(GenerateDescriptorTest.basicTSUrl,
+            GenerateDescriptorTest.basicAEUrl);
+    RutaBuildOptions options = new RutaBuildOptions();
+    RutaDescriptorInformation descriptorInformation = rdf.parseDescriptorInformation(script, null,
+            options);
+    String typeSystemOutput = "target/temp/testRuleScriptName_TypeSystem.xml";
+    ClassLoader classLoader = GenerateDescriptorTest.class.getClassLoader();
+    TypeSystemDescription tsd = rdf.createTypeSystemDescription(typeSystemOutput,
+            descriptorInformation, options, classLoader);
+    ResourceManager rm = new ResourceManager_impl(classLoader);
+    tsd.resolveImports(rm);
+
+    TypeDescription tagType = tsd.getType("test.package.SimpleType");
+    Assert.assertNotNull(tagType);
 
   }
 
   @Test
   public void testScriptOnly() throws Exception {
+
     String script = "DECLARE Type; CW{-> Type};";
-    
-    RutaDescriptorFactory rdf = new RutaDescriptorFactory(basicTSUrl, basicAEUrl);
+
+    RutaDescriptorFactory rdf = new RutaDescriptorFactory(GenerateDescriptorTest.basicTSUrl,
+            GenerateDescriptorTest.basicAEUrl);
     RutaDescriptorInformation descriptorInformation = rdf.parseDescriptorInformation(script);
     RutaBuildOptions options = new RutaBuildOptions();
-    Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = rdf.createDescriptions(null, null, descriptorInformation, options, null, null, null);
-    assertNotNull("Typesystem does not contain declaredtype!", descriptions.getValue().getType("Anonymous.Type"));
-    assertNotNull("AE typesystem does not contain declared type!", descriptions.getKey().getAnalysisEngineMetaData().getTypeSystem().getType("Anonymous.Type"));
+    Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = rdf
+            .createDescriptions(null, null, descriptorInformation, options, null, null, null);
+    Assert.assertNotNull("Typesystem does not contain declaredtype!",
+            descriptions.getValue().getType("Anonymous.Type"));
+    Assert.assertNotNull("AE typesystem does not contain declared type!", descriptions.getKey()
+            .getAnalysisEngineMetaData().getTypeSystem().getType("Anonymous.Type"));
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(descriptions.getKey());
     CAS cas = ae.newCAS();
     cas.setDocumentText("This is a test.");
     ae.process(cas);
     Type type = cas.getTypeSystem().getType("Anonymous.Type");
-    assertEquals(1, CasUtil.select(cas, type).size());
+    Assert.assertEquals(1, CasUtil.select(cas, type).size());
     cas.release();
   }
-  
+
 }

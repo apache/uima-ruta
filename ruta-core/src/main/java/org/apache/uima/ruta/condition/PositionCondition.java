@@ -52,8 +52,14 @@ public class PositionCondition extends TypeSentiveCondition {
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
-    RuleElement element = context.getElement();
+
     Type t = type.getType(context, stream);
+
+    if (annotation == null || t == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
+    RuleElement element = context.getElement();
 
     RutaBasic beginAnchor = stream.getBeginAnchor(annotation.getBegin());
     RutaBasic endAnchor = stream.getEndAnchor(annotation.getEnd());

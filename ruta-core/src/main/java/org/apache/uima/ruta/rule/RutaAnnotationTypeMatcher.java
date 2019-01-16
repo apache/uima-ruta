@@ -59,24 +59,39 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
     } else if (expression.getAnnotationListExpression() != null) {
       result = expression.getAnnotationList(context, stream);
     } else {
-      Type type = getType(parent, stream);
-      if (type == null) {
-        return Collections.emptyList();
-      }
-      Type overallDAType = stream.getCas().getDocumentAnnotation().getType();
-      String name = type.getName();
-      if (StringUtils.equals(CAS.TYPE_NAME_DOCUMENT_ANNOTATION, name)
-              || "org.apache.uima.ruta.type.Document".equals(name) || overallDAType.equals(type)) {
-        // TODO what about dynamic windowing?
-        result = new ArrayList<>(1);
-        result.add(stream.getDocumentAnnotation());
+
+      // TODO defer to getter of expression?
+      List<Type> types = null;
+      if (expression.getTypeListExpression() != null) {
+        types = expression.getTypeListExpression().getTypeList(context, stream);
       } else {
-        result = stream.getAnnotations(type);
+        Type type = getType(context.getParent(), stream);
+        types = new ArrayList<>(1);
+        if (type != null) {
+          types.add(type);
+        }
       }
-      if (expression.getFeatureExpression() != null) {
-        return expression.getFeatureExpression().getAnnotations(result, CHECK_ON_FEATURE, context,
-                stream);
+      result = new ArrayList<>();
+      for (Type type : types) {
+        if (type != null) {
+
+          Type overallDAType = stream.getCas().getDocumentAnnotation().getType();
+          String name = type.getName();
+          if (StringUtils.equals(CAS.TYPE_NAME_DOCUMENT_ANNOTATION, name)
+                  || "org.apache.uima.ruta.type.Document".equals(name)
+                  || overallDAType.equals(type)) {
+            // TODO what about dynamic windowing?
+            result.add(stream.getDocumentAnnotation());
+          } else {
+            result.addAll(stream.getAnnotations(type));
+          }
+          if (expression.getFeatureExpression() != null) {
+            result = new ArrayList<>(expression.getFeatureExpression().getAnnotations(result,
+                    CHECK_ON_FEATURE, context, stream));
+          }
+        }
       }
+
     }
     return result;
   }
@@ -96,7 +111,10 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
     } else {
       end = lastBasic.getEnd();
     }
-    if (annotation.getEnd() > 0) {
+    if (end == stream.getDocumentAnnotation().getBegin()) {
+      // non existing wildcard match
+      stream.moveToFirst();
+    } else if (annotation.getEnd() > 0) {
       stream.moveTo(lastBasic);
       if (stream.isVisible(lastBasic) && stream.isValid()
               && stream.get().getEnd() == lastBasic.getEnd()) {
@@ -141,24 +159,35 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
         }
         return result;
       } else {
-        Type type = getType(parent, stream);
-        Collection<AnnotationFS> anchors = new ArrayList<>();
-        Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(type);
-        if (beginAnchors != null) {
-          for (AnnotationFS afs : beginAnchors) {
-            if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()
-                    && afs.getEnd() <= stream.getDocumentAnnotation().getEnd()) {
-              anchors.add(afs);
+        List<Type> types = null;
+        if (expression.getTypeListExpression() != null) {
+          types = expression.getTypeListExpression().getTypeList(context, stream);
+        } else {
+          Type type = getType(context.getParent(), stream);
+          types = new ArrayList<>(1);
+          types.add(type);
+        }
+        List<AnnotationFS> annotations = new ArrayList<>();
+        for (Type type : types) {
+          Collection<AnnotationFS> anchors = new ArrayList<>();
+          Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(type);
+          if (beginAnchors != null) {
+            for (AnnotationFS afs : beginAnchors) {
+              if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()
+                      && afs.getEnd() <= stream.getDocumentAnnotation().getEnd()) {
+                anchors.add(afs);
+              }
             }
           }
-        }
-        if (expression.getFeatureExpression() != null) {
-          return expression.getFeatureExpression().getAnnotations(anchors, CHECK_ON_FEATURE,
-                  context, stream);
-        } else {
-          return anchors;
-        }
+          if (expression.getFeatureExpression() != null) {
+            annotations.addAll(expression.getFeatureExpression().getAnnotations(anchors,
+                    CHECK_ON_FEATURE, context, stream));
+          } else {
+            annotations.addAll(anchors);
+          }
 
+        }
+        return annotations;
       }
 
     }
@@ -178,6 +207,10 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
     stream.moveTo(firstBasic);
     if (stream.isVisible(firstBasic)) {
       stream.moveToPrevious();
+    }
+    if (firstBasic.getBegin() == stream.getDocumentAnnotation().getEnd()) {
+      // non existing wildcard match
+      stream.moveToLast();
     }
 
     if (stream.isValid()) {
@@ -213,22 +246,33 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
           }
         }
       } else {
-        Type type = getType(parent, stream);
-        Collection<AnnotationFS> anchors = new ArrayList<>();
-        Collection<AnnotationFS> endAnchors = nextBasic.getEndAnchors(type);
-        if (endAnchors != null) {
-          for (AnnotationFS afs : endAnchors) {
-            if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()) {
-              anchors.add(afs);
+        List<Type> types = null;
+        if (expression.getTypeListExpression() != null) {
+          types = expression.getTypeListExpression().getTypeList(context, stream);
+        } else {
+          Type type = getType(context.getParent(), stream);
+          types = new ArrayList<>(1);
+          types.add(type);
+        }
+        List<AnnotationFS> annotations = new ArrayList<>();
+        for (Type type : types) {
+          Collection<AnnotationFS> anchors = new ArrayList<>();
+          Collection<AnnotationFS> endAnchors = nextBasic.getEndAnchors(type);
+          if (endAnchors != null) {
+            for (AnnotationFS afs : endAnchors) {
+              if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()) {
+                anchors.add(afs);
+              }
             }
           }
+          if (expression.getFeatureExpression() != null) {
+            annotations.addAll(expression.getFeatureExpression().getAnnotations(anchors,
+                    CHECK_ON_FEATURE, context, stream));
+          } else {
+            annotations.addAll(anchors);
+          }
         }
-        if (expression.getFeatureExpression() != null) {
-          return expression.getFeatureExpression().getAnnotations(anchors, CHECK_ON_FEATURE,
-                  context, stream);
-        } else {
-          return anchors;
-        }
+        return annotations;
       }
     }
     return Collections.emptyList();

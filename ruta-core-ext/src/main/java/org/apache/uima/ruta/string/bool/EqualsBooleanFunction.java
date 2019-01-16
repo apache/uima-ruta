@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 package org.apache.uima.ruta.string.bool;
 
 import org.apache.uima.ruta.RutaStream;
@@ -26,19 +25,22 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class EqualsBooleanFunction extends BooleanFunctionExpression {
-  
+
   private IStringExpression text;
+
   private IStringExpression compare;
-  
-  
-  public EqualsBooleanFunction(IStringExpression text,
-          IStringExpression compare) {
+
+  public EqualsBooleanFunction(IStringExpression text, IStringExpression compare) {
     this.text = text;
     this.compare = compare;
   }
 
   public IStringExpression getExpr() {
     return text;
+  }
+
+  public IStringExpression getCompareExpr() {
+    return compare;
   }
 
   @Override
@@ -48,7 +50,8 @@ public class EqualsBooleanFunction extends BooleanFunctionExpression {
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
-    Boolean equals = text.getStringValue(context, stream).equals(compare.getStringValue(context, stream)); 
+    Boolean equals = text.getStringValue(context, stream)
+            .equals(compare.getStringValue(context, stream));
     return equals.toString();
   }
 }

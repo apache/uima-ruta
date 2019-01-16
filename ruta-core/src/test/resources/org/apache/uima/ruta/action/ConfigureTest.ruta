@@ -1,0 +1,5 @@
+PACKAGE org.apache.uima.ruta.action;
+
+ENGINE org.apache.uima.ruta.action.ConfigureTestEngine;
+
+CONFIGURE(ConfigureTestEngine, "emptyIsInvisible" = false);

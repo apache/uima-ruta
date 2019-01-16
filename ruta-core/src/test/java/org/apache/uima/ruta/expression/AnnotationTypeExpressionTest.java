@@ -38,7 +38,7 @@ public class AnnotationTypeExpressionTest {
     String script = "";
     script += "Document{-> CREATE(Struct1, \"as\" = COMMA)};\n";
     script += "Struct1.as{-> T1};\n";
-    
+
     Map<String, String> complexTypes = new TreeMap<String, String>();
     complexTypes.put("Struct1", "uima.tcas.Annotation");
     complexTypes.put("Struct2", "uima.tcas.Annotation");
@@ -48,11 +48,27 @@ public class AnnotationTypeExpressionTest {
     features.put("Struct2", list);
     list.add(new TestFeature("a", "", "uima.tcas.Annotation"));
     list.add(new TestFeature("as", "", "uima.cas.FSArray"));
-    
+
     CAS cas = RutaTestUtils.getCAS(document, complexTypes, features);
-    Ruta.apply(cas, script);    
-    
+    Ruta.apply(cas, script);
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+  }
+
+  @Test
+  public void testTypeList() throws Exception {
+    String document = "This is a test.";
+    String script = "TYPELIST tl = {CW,PERIOD};\n";
+    script += "tl{-> T1};\n";
+    script += "SW tl{-> T2};\n";
+    script += "tl{-> T3} @SW;\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "This", ".");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, ".");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "This");
   }
 
 }

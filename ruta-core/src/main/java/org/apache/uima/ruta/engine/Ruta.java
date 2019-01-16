@@ -68,11 +68,16 @@ public class Ruta {
   /**
    * This applies the given rule on the given JCas object
    * 
-   * @param jcas - the current document
-   * @param rule - String containing one or more rules in valid ruta syntax
-   * @param configurationData - additional configuration parameter pairs
-   * @throws AnalysisEngineProcessException - problem while processing
-   * @throws ResourceInitializationException - problem while initializing
+   * @param jcas
+   *          - the current document
+   * @param rule
+   *          - String containing one or more rules in valid ruta syntax
+   * @param configurationData
+   *          - additional configuration parameter pairs
+   * @throws AnalysisEngineProcessException
+   *           - problem while processing
+   * @throws ResourceInitializationException
+   *           - problem while initializing
    */
   public static void applyRule(JCas jcas, String rule, Object... configurationData)
           throws ResourceInitializationException, AnalysisEngineProcessException {
@@ -97,8 +102,8 @@ public class Ruta {
     File scriptFile = File.createTempFile("Ruta", RutaEngine.SCRIPT_FILE_EXTENSION);
     scriptFile.deleteOnExit();
     FileUtils.saveString2File(script, scriptFile, "UTF-8");
-    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile
-            .getParentFile().getAbsolutePath() });
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS,
+            new String[] { scriptFile.getParentFile().getAbsolutePath() });
     String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
     ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
     if (parameters != null) {
@@ -112,9 +117,9 @@ public class Ruta {
     ae.destroy();
   }
 
-  public static void apply(CAS cas, String script) throws IOException, InvalidXMLException,
-          ResourceInitializationException, ResourceConfigurationException,
-          AnalysisEngineProcessException, URISyntaxException {
+  public static void apply(CAS cas, String script)
+          throws IOException, InvalidXMLException, ResourceInitializationException,
+          ResourceConfigurationException, AnalysisEngineProcessException, URISyntaxException {
     apply(cas, script, null);
   }
 
@@ -126,7 +131,7 @@ public class Ruta {
     }
     return result;
   }
-  
+
   private static int countRuleApplies(JCas jcas) {
     int result = 0;
     Collection<DebugBlockApply> blockApplies = JCasUtil.select(jcas, DebugBlockApply.class);
@@ -172,11 +177,12 @@ public class Ruta {
       result.add(dmrm);
     }
   }
-  
+
   /**
    * Removes all debug annotations from the index.
    * 
-   * @param jcas - the current document
+   * @param jcas
+   *          - the current document
    */
   public static void removeDebugInformation(JCas jcas) {
     jcas.removeAllIncludingSubtypes(DebugBlockApply.type);
@@ -192,17 +198,17 @@ public class Ruta {
     StringBuilder sb = new StringBuilder();
     int start = 0;
     int counter = 0;
-    while(matcher.find(start)) {
+    while (matcher.find(start)) {
       String group = matcher.group();
       sb.append(script.substring(start, matcher.start()));
-      if(counter < addresses.length) {
+      if (counter < addresses.length) {
         sb.append("$" + addresses[0]);
       } else {
         sb.append("$" + group);
       }
       start = matcher.end();
     }
-    if(start <script.length()) {
+    if (start < script.length()) {
       sb.append(script.substring(start, script.length()));
     }
     return sb.toString();
@@ -211,14 +217,12 @@ public class Ruta {
   public static String inject(String script, FeatureStructureImpl... annotations) {
     return inject(script, "$", getAddresses(annotations));
   }
-  
-
 
   private static int[] getAddresses(FeatureStructureImpl[] annotations) {
     int[] result = new int[annotations.length];
     for (int i = 0; i < annotations.length; i++) {
       result[i] = annotations[i].getAddress();
-      
+
     }
     return result;
   }
@@ -226,12 +230,17 @@ public class Ruta {
   /**
    * This method returns the spans of successful rule applies.
    * 
-   * @param jcas - the current document
-   * @param rule - String containing one or more rules in valid ruta syntax
-   * @param configurationData - additional configuration parameter pairs
+   * @param jcas
+   *          - the current document
+   * @param rule
+   *          - String containing one or more rules in valid ruta syntax
+   * @param configurationData
+   *          - additional configuration parameter pairs
    * @return list of successful rule matches
-   * @throws AnalysisEngineProcessException - problem while processing
-   * @throws ResourceInitializationException - problem while initializing
+   * @throws AnalysisEngineProcessException
+   *           - problem while processing
+   * @throws ResourceInitializationException
+   *           - problem while initializing
    */
   public static List<Annotation> select(JCas jcas, String rule, Object... configurationData)
           throws AnalysisEngineProcessException, ResourceInitializationException {
@@ -243,16 +252,20 @@ public class Ruta {
     return ruleMatches;
   }
 
-
   /**
    * This method returns true if the rule (or one of the rules) was able to match.
    * 
-   * @param jcas - the current document
-   * @param rule - String containing one or more rules in valid ruta syntax
-   * @param configurationData - additional configuration parameter pairs
+   * @param jcas
+   *          - the current document
+   * @param rule
+   *          - String containing one or more rules in valid ruta syntax
+   * @param configurationData
+   *          - additional configuration parameter pairs
    * @return true if matched, false otherwise
-   * @throws AnalysisEngineProcessException - problem while processing
-   * @throws ResourceInitializationException - problem while initializing
+   * @throws AnalysisEngineProcessException
+   *           - problem while processing
+   * @throws ResourceInitializationException
+   *           - problem while initializing
    */
   public static boolean matches(JCas jcas, String rule, Object... configurationData)
           throws AnalysisEngineProcessException, ResourceInitializationException {
@@ -262,17 +275,18 @@ public class Ruta {
     removeDebugInformation(jcas);
     return applies > 0;
   }
-  
 
-  public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName, ResourceManager resourceManager)
+  public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName,
+          ResourceManager resourceManager) throws ResourceInitializationException,
+          ResourceConfigurationException, InvalidXMLException, IOException, URISyntaxException {
+    return wrapAnalysisEngine(descriptorUrl, viewName, false, Charset.defaultCharset().name(),
+            resourceManager);
+  }
+
+  public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName,
+          boolean rutaEngine, String encoding, ResourceManager resourceManager)
           throws ResourceInitializationException, ResourceConfigurationException,
           InvalidXMLException, IOException, URISyntaxException {
-    return wrapAnalysisEngine(descriptorUrl, viewName, false, Charset.defaultCharset().name(), resourceManager);
-  }
-  
-  public static AnalysisEngine wrapAnalysisEngine(URL descriptorUrl, String viewName,
-          boolean rutaEngine, String encoding, ResourceManager resourceManager) throws ResourceInitializationException,
-          ResourceConfigurationException, InvalidXMLException, IOException, URISyntaxException {
     if (viewName.equals(CAS.NAME_DEFAULT_SOFA)) {
       XMLInputSource in = new XMLInputSource(descriptorUrl);
       ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -293,7 +307,7 @@ public class Ruta {
       FileUtils.saveString2File(aaedString, tempFile);
       XMLInputSource in = new XMLInputSource(tempFile);
       ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
-      AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier,resourceManager, null);
+      AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier, resourceManager, null);
       tempFile.delete();
       return ae;
     }
@@ -307,8 +321,8 @@ public class Ruta {
 
   @Deprecated
   public static AnalysisEngineDescription createAnalysisEngineDescription(String script,
-          TypeSystemDescription... tsds) throws IOException, InvalidXMLException,
-          ResourceInitializationException {
+          TypeSystemDescription... tsds)
+          throws IOException, InvalidXMLException, ResourceInitializationException {
     File scriptFile = File.createTempFile("Ruta", RutaEngine.SCRIPT_FILE_EXTENSION);
     scriptFile.deleteOnExit();
     if (!script.startsWith("PACKAGE")) {
@@ -321,8 +335,8 @@ public class Ruta {
             .parseResourceSpecifier(in);
     AnalysisEngineMetaData metaData = aed.getAnalysisEngineMetaData();
     ConfigurationParameterSettings settings = metaData.getConfigurationParameterSettings();
-    settings.setParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile
-            .getParentFile().getAbsolutePath() });
+    settings.setParameterValue(RutaEngine.PARAM_SCRIPT_PATHS,
+            new String[] { scriptFile.getParentFile().getAbsolutePath() });
     String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
     settings.setParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
     if (tsds != null) {

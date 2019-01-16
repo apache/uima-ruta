@@ -165,23 +165,23 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	    }
 	    int line = e.line;
 	    String text = e.token.getText();
-	
+	    String name = StringUtils.isBlank(moduleName) ? "unknown script" : moduleName;
    	    if (e instanceof NoViableAltException) {
 	      NoViableAltException nvae = (NoViableAltException) e;
-	      String msg = "Error in "+moduleName+",  line " + nvae.line + ", \"" + text + "\": found no viable alternative";
+	      String msg = "Error in "+name+",  line " + nvae.line + ", \"" + text + "\": found no viable alternative";
 	      emitErrorMessage(msg);
 	    } else if (e instanceof MismatchedTokenException) {
 	      MismatchedTokenException mte = (MismatchedTokenException) e;
 	      int expectedInt = mte.expecting;
 	      String stringExpected = expectedInt < 0 ? "'none'" : getTokenNames()[expectedInt];
-	      String msg = "Error in "+moduleName+", line " + line + ", \"" + text + "\": expected " + stringExpected
+	      String msg = "Error in "+name+", line " + line + ", \"" + text + "\": expected " + stringExpected
 	              + ", but found " + stringFound;
 	      emitErrorMessage(msg);
 	    } else if (e instanceof MissingTokenException) {
 	      MissingTokenException mte = (MissingTokenException) e;
     	      int missingType = mte.getMissingType();
     	      String stringMissing = getTokenNames()[missingType];
-    	      String msg = "Error in "+moduleName+",  line " + line + ", \"" + text + "\": missing " + stringMissing
+    	      String msg = "Error in "+name+",  line " + line + ", \"" + text + "\": missing " + stringMissing
                     + ", but found " + stringFound;
     	      emitErrorMessage(msg);
 	    } else {
@@ -249,14 +249,23 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	  }
 	  String resolvedType = name;
 	  if (!name.contains(".")) {
-	    resolvedType = namespace + "." + moduleName + "." + name;
+	    if(StringUtils.isBlank(moduleName)) {
+	      resolvedType = namespace + "." + name;
+	    } else {
+	      resolvedType = namespace + "." + moduleName + "." + name;
+	    }
 	  }
           parent.getEnvironment().declareType(resolvedType);
 	  if(descInfo != null) {
 		  name = parent.getNamespace() + "." + name.trim();
 		  String descriptionString = null;
 		  if(StringUtils.isBlank(namespace)) {
-			  descriptionString = "Type defined in " + moduleName;
+		  	if(StringUtils.isBlank(moduleName)) {
+		  		descriptionString = "Type defined in unknown script.";
+		  	} else {
+		  		descriptionString = "Type defined in " + moduleName;
+		  	}
+			  
 			  } else {
 			  descriptionString = "Type defined in " + parent.getNamespace();
 		  }
@@ -989,25 +998,27 @@ String label = null;
 	re1 = ruleElementAnnotationType[container] {re = re1;}
 	| re2 = ruleElementLiteral[container] {re = re2;}
 	| (ruleElementComposed[null])=>re3 = ruleElementComposed[container] {re = re3;}
-	| (ruleElementWildCard[null])=> re5 = ruleElementWildCard[container] {re = re5;}
+	| (ruleElementWildCard[null])=> re4 = ruleElementWildCard[container] {re = re4;}
+	| (ruleElementOptional[null])=> re5 = ruleElementOptional[container] {re = re5;}
 	)
 	{
 	re.setLabel(label);
 	re.setStartAnchor(start != null);
 	}
 	(t = (THEN2) 
+	{innerConditionRules = new ArrayList<RutaStatement>();}
 	LCURLY 
 	(rule = simpleStatement {innerConditionRules.add(rule);})+ 
 	RCURLY 
-	{re.setInlinedConditionRules(innerConditionRules);}
-
-	)?
-	(t = (THEN) 
+	{re.addInlinedConditionRules(innerConditionRules);}
+	)*
+	(t = (THEN)
+	{innerActionRules = new ArrayList<RutaStatement>();} 
 	LCURLY 
 	(rule = simpleStatement {innerActionRules.add(rule);})+ 
 	RCURLY 
-	{re.setInlinedActionRules(innerActionRules);}
-	)?
+	{re.addInlinedActionRules(innerActionRules);}
+	)*
 	;	
 
 ruleElementWildCard [RuleElementContainer container] returns [AbstractRuleElement re = null]
@@ -1026,6 +1037,21 @@ ruleElementWildCard [RuleElementContainer container] returns [AbstractRuleElemen
 	}
     ;
 
+ruleElementOptional [RuleElementContainer container] returns [AbstractRuleElement re = null]
+    :
+    
+    w = OPTIONAL 
+     {re = factory.createOptionalRuleElement(null, null, container, $blockDeclaration::env);} 
+        (LCURLY c = conditions? (THEN a = actions)? RCURLY)?
+   {
+	if(c!= null) {
+		re.setConditions(c);
+	}
+	if(a != null) {
+		re.setActions(a);
+	}
+	}
+    ;
 
 
 ruleElementComposed [RuleElementContainer container] returns [ComposedRuleElement re = null]
@@ -1712,7 +1738,11 @@ conditionSize returns [AbstractRutaCondition cond = null]
     ;
 
 action  returns [AbstractRutaAction result = null]
+@init{
+  String label = null;
+}
 	:
+	(l = Identifier {label = l.getText();} COLON)?
 	(
 	a = actionColor
 	| a = actionDel
@@ -1764,7 +1794,11 @@ action  returns [AbstractRutaAction result = null]
 	| (typeExpression)=> te = typeExpression {a = actionFactory.createAction(te);}
 	
 //	| a = variableAction
-	) {result = a;}
+	) 
+	{
+	result = a;
+	result.setLabel(label);
+	}
 	;
 		
 	
@@ -2759,6 +2793,8 @@ composedBooleanExpression returns [IBooleanExpression expr = null]
 	(e2 = booleanCompare)=> e2 = booleanCompare {expr = e2;}
 	| (bne = booleanNumberExpression)=> bne = booleanNumberExpression{expr = bne;}
 	| (bse = booleanStringExpression)=> bse = booleanStringExpression{expr = bse;}
+	| (bale = booleanAnnotationListExpression)=> bale = booleanAnnotationListExpression{expr = bale;}
+	| (bae = booleanAnnotationExpression)=> bae = booleanAnnotationExpression{expr = bae;}
 	| (bte = booleanTypeExpression)=> bte = booleanTypeExpression{expr = bte;}
 	| e1 = booleanFunction {expr = e1;}
 	| LPAREN ep = booleanExpression RPAREN {expr = ep;}
@@ -2807,6 +2843,23 @@ booleanTypeExpression  returns  [IBooleanExpression expr = null]
 	e2 = typeExpression
 	{expr = expressionFactory.createBooleanTypeExpression(e1,op,e2);}
 	;
+
+booleanAnnotationExpression  returns  [IBooleanExpression expr = null]
+	:
+	e1 = annotationExpression
+	op = (EQUAL | NOTEQUAL)
+	e2 = annotationExpression
+	{expr = expressionFactory.createBooleanAnnotationExpression(e1,op,e2);}
+	;
+
+booleanAnnotationListExpression  returns  [IBooleanExpression expr = null]
+	:
+	e1 = annotationListExpression
+	op = (EQUAL | NOTEQUAL)
+	e2 = annotationListExpression
+	{expr = expressionFactory.createBooleanAnnotationListExpression(e1,op,e2);}
+	;
+	
 booleanStringExpression  returns  [IBooleanExpression expr = null]
 	:
 	e1 = stringExpression

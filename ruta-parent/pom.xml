@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>10</version>
+    <version>12</version>
     <relativePath />
   </parent>
 
@@ -193,6 +193,11 @@ Creative Commons Attribution 3.0 License.
       </plugins>
     </pluginManagement>
   <plugins>
+  	<plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>1.6</version>
+        </plugin>
     <plugin>
       <artifactId>maven-enforcer-plugin</artifactId>
         <executions>
@@ -325,6 +330,8 @@ Creative Commons Attribution 3.0 License.
                    <exclude>org.apache.uima.ruta.type</exclude>
                    <exclude>org.apache.uima.ruta.parser.RutaParser</exclude>
                 </excludes>
+                <!-- filter out classes with impl in their package or class name -->
+                <postAnalysisScript>${project.basedir}/../ruta-parent/src/main/groovy/api-report.groovy</postAnalysisScript>                  
               </parameter>
             </configuration>
             <executions>

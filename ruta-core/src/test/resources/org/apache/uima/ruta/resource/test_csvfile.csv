@@ -1,0 +1,5 @@
+this is the first line first column;ONE
+this is the second line first column;TWO
+this is the a line with custom; non default separator used#|#THREE
+line with empty column;;AFTER_EMPTY_COLUMN
+line with empty column custom separator#|##|#AFTER_EMPTY_COLUMN2

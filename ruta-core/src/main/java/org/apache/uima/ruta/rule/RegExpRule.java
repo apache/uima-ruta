@@ -72,6 +72,12 @@ public class RegExpRule extends AbstractRule {
     crowd.beginVisit(this, ruleApply);
     MatchContext context = new MatchContext(getParent());
     String regexpString = regexpExpr.getStringValue(context, stream);
+
+    if (regexpString == null) {
+      crowd.endVisit(this, ruleApply);
+      return ruleApply;
+    }
+
     AnnotationFS documentAnnotation = stream.getDocumentAnnotation();
     String document = documentAnnotation.getCoveredText();
     int delta = documentAnnotation.getBegin();
@@ -93,14 +99,14 @@ public class RegExpRule extends AbstractRule {
           createAnnotations(i, delta, begin, end, types, fa, matchResult, ruleMatch, stream);
         } else if (i == 0) {
           CAS cas = stream.getCas();
-          AnnotationFS afs = cas.createAnnotation(cas.getAnnotationType(), delta + begin, delta
-                  + end);
+          AnnotationFS afs = cas.createAnnotation(cas.getAnnotationType(), delta + begin,
+                  delta + end);
           ruleMatch.addMatched(0, afs);
         }
       }
       List<AnnotationFS> matchedAnnotationsOfRoot = ruleMatch.getMatchedAnnotationsOfRoot();
       if (matchedAnnotationsOfRoot != null && !matchedAnnotationsOfRoot.isEmpty()) {
-        ruleApply.add(ruleMatch);
+        ruleApply.add(ruleMatch, stream);
       }
     }
 
@@ -196,7 +202,7 @@ public class RegExpRule extends AbstractRule {
             if (argExpr instanceof INumberExpression) {
               INumberExpression ne = (INumberExpression) argExpr;
               int cg = ne.getIntegerValue(context, stream);
-              if (range.getName().equals(CAS.TYPE_NAME_STRING)) {
+              if (typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_STRING), range)) {
                 String s = matchResult.group(cg);
                 afs.setStringValue(feature, s);
               } else if (range.getName().equals(CAS.TYPE_NAME_BOOLEAN)) {
@@ -224,7 +230,7 @@ public class RegExpRule extends AbstractRule {
               }
             } else {
               if (argExpr instanceof ITypeExpression
-                      && range.getName().equals(CAS.TYPE_NAME_STRING)) {
+                      && typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_STRING), range)) {
                 ITypeExpression typeExpr = (ITypeExpression) argExpr;
                 List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(afs,
                         typeExpr.getType(context, stream));
@@ -233,7 +239,7 @@ public class RegExpRule extends AbstractRule {
                   afs.setStringValue(feature, annotation.getCoveredText());
                 }
               } else if (argExpr instanceof AbstractStringExpression
-                      && range.getName().equals(CAS.TYPE_NAME_STRING)) {
+                      && typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_STRING), range)) {
                 afs.setStringValue(feature,
                         ((AbstractStringExpression) argExpr).getStringValue(context, stream));
                 // numbers are reserved for capturing groups
@@ -302,7 +308,8 @@ public class RegExpRule extends AbstractRule {
     this.regexpExpr = regexp;
   }
 
-  public void setFeatureAssignments(Map<ITypeExpression, Map<IStringExpression, IRutaExpression>> fa) {
+  public void setFeatureAssignments(
+          Map<ITypeExpression, Map<IStringExpression, IRutaExpression>> fa) {
     this.featureAssignments = fa;
   }
 

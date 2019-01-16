@@ -48,7 +48,11 @@ public class PlusGreedy extends AbstractRuleElementQuantifier {
       result &= match.matched();
     }
     if (!result && matches.size() > 1) {
+      RuleElementMatch ruleElementMatch = matches.get(matches.size() - 1);
       matches.remove(matches.size() - 1);
+      if (!ruleElementMatch.getTextsMatched().isEmpty()) {
+        updateLabelAssignment(matches, context, stream);
+      }
       result = true;
     }
     if (matches.size() < 1 || allEmpty) {

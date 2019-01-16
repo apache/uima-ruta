@@ -45,7 +45,8 @@ public class SimpleTypeExpression extends AbstractTypeExpression {
     RutaBlock parent = context.getParent();
     Type type = parent.getEnvironment().getType(typeString);
     if (type == null) {
-      throw new IllegalArgumentException("Not able to resolve type: " + typeString);
+      throw new IllegalArgumentException("Not able to resolve type: " + typeString +
+              " in script "+context.getParent().getName());
     }
     return type;
   }

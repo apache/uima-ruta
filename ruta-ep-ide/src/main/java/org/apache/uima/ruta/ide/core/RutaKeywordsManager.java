@@ -40,11 +40,11 @@ public final class RutaKeywordsManager {
 
   private static boolean initialized = false;
 
-  private static void initialize() {
+  private synchronized static void initialize() {
     if (initialized) {
       return;
     }
-    initialized = true;
+    
     IConfigurationElement[] cfg = Platform.getExtensionRegistry().getConfigurationElementsFor(
             EXTENSION_POINT);
     for (int i = 0; i < IRutaKeywords.END_INDEX; i++) {
@@ -115,6 +115,7 @@ public final class RutaKeywordsManager {
       all[IRutaKeywords.DECLARATION] = RutaKeywords.append(all[IRutaKeywords.DECLARATION],
               knownExtensions);
     }
+    initialized = true;
   }
 
   public static String[] getKeywords() {

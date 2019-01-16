@@ -51,7 +51,8 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return newVariableReference(ref, RutaTypeConstants.RUTA_TYPE_G);
   }
 
-  public static RutaQuantifierLiteralExpression createQuantifierLiteralExpression(Token q, Token q2) {
+  public static RutaQuantifierLiteralExpression createQuantifierLiteralExpression(Token q,
+          Token q2) {
     int bounds[] = getBounds(q);
     if (q2 != null) {
       bounds[1] = Math.max(bounds[1], getBounds(q2)[1]);
@@ -142,6 +143,14 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   public static VariableReference createAnnotationTypeVariableReference(Token atRef) {
     return newVariableReference(atRef, RutaTypeConstants.RUTA_TYPE_AT);
+  }
+
+  public static VariableReference createAnnotationVariableReference(Token atRef) {
+    return newVariableReference(atRef, RutaTypeConstants.RUTA_TYPE_UA);
+  }
+
+  public static VariableReference createAnnotationListVariableReference(Token atRef) {
+    return newVariableReference(atRef, RutaTypeConstants.RUTA_TYPE_UAL);
   }
 
   public static Expression createAnnotationTypeConstantReference(Token atBasic) {
@@ -271,7 +280,8 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
 
   // TODO
   public static Expression createBooleanFunction(Token op, Expression e1, Expression e2) {
-    return new RutaExpression(e1.sourceStart(), e2.sourceEnd(), null, RutaTypeConstants.RUTA_TYPE_B);
+    return new RutaExpression(e1.sourceStart(), e2.sourceEnd(), null,
+            RutaTypeConstants.RUTA_TYPE_B);
   }
 
   public static Expression createListVariableReference(Token id) {
@@ -281,17 +291,16 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
   public static Expression createTableVariableReference(Token id) {
     return newVariableReference(id, RutaTypeConstants.RUTA_TYPE_WT);
   }
-  
+
   public static Expression createListVariableReference(Expression ref) {
     int bounds[] = getSurroundingBounds(ref);
     return new RutaVariableReference(bounds[0], bounds[1], "", RutaTypeConstants.RUTA_TYPE_WL);
   }
-  
+
   public static Expression createTableVariableReference(Expression ref) {
     int bounds[] = getSurroundingBounds(ref);
     return new RutaVariableReference(bounds[0], bounds[1], "", RutaTypeConstants.RUTA_TYPE_WT);
   }
-  
 
   public static Expression createRessourceReference(Token path) {
     int bounds[] = getBounds(path);
@@ -331,6 +340,48 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return null;
   }
 
+  public static Expression createBooleanAnnotationExpression(Expression e1, Token op,
+          Expression e2) {
+    int lexerOpID = op.getType(); // Integer.valueOf(op.getText());
+    int operatorID = 0;
+    // convert lexer-opId to dltk-opId:
+    switch (lexerOpID) {
+      case RutaLexer.EQUAL:
+        operatorID = E_EQUAL;
+        break;
+      case RutaLexer.NOTEQUAL:
+        operatorID = E_NOT_EQUAL;
+        break;
+      default:
+        break;
+    }
+    if (e1 != null && e2 != null) {
+      return new RutaBooleanCompareExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1, e2);
+    }
+    return null;
+  }
+
+  public static Expression createBooleanAnnotationListExpression(Expression e1, Token op,
+          Expression e2) {
+    int lexerOpID = op.getType(); // Integer.valueOf(op.getText());
+    int operatorID = 0;
+    // convert lexer-opId to dltk-opId:
+    switch (lexerOpID) {
+      case RutaLexer.EQUAL:
+        operatorID = E_EQUAL;
+        break;
+      case RutaLexer.NOTEQUAL:
+        operatorID = E_NOT_EQUAL;
+        break;
+      default:
+        break;
+    }
+    if (e1 != null && e2 != null) {
+      return new RutaBooleanCompareExpression(e1.sourceStart(), e2.sourceEnd(), operatorID, e1, e2);
+    }
+    return null;
+  }
+
   public static Expression createBooleanStringExpression(Expression e1, Token op, Expression e2) {
     int lexerOpID = op.getType(); // Integer.valueOf(op.getText());
     int operatorID = 0;
@@ -350,7 +401,7 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     }
     return null;
   }
-  
+
   public static Expression createListExpression(List<Expression> exprList, int type) {
     List<ASTNode> l = new ArrayList<>();
     int start = 0;
@@ -443,16 +494,13 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
           Expression arg, List<RutaCondition> cs) {
     int bounds[] = getBounds(match);
     int end = bounds[1];
-    if(cs != null && !cs.isEmpty()) {
-      end = cs.get(cs.size()-1).sourceEnd();
-    } else if(arg != null) {
+    if (cs != null && !cs.isEmpty()) {
+      end = cs.get(cs.size() - 1).sourceEnd();
+    } else if (arg != null) {
       end = arg.sourceEnd();
     }
-    FeatureMatchExpression reference =  new FeatureMatchExpression(bounds[0], end, match, comp, arg);
-    return new ConditionedAnnotationTypeExpression(bounds[0], end , reference, arg, cs);
+    FeatureMatchExpression reference = new FeatureMatchExpression(bounds[0], end, match, comp, arg);
+    return new ConditionedAnnotationTypeExpression(bounds[0], end, reference, arg, cs);
   }
 
-  
-
- 
 }

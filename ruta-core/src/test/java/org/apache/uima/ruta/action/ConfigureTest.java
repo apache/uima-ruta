@@ -28,25 +28,31 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.type.Statistics;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
-
 
 public class ConfigureTest {
 
   @Test
   public void test() throws Exception {
-    
+
     String script = "ENGINE org.apache.uima.ruta.engine.CWEngine;";
     script += "CONFIGURE(CWEngine, \"profile\"= true, \"statistics\"=true);";
-    script +="EXEC(CWEngine);";
+    script += "EXEC(CWEngine);";
     CAS cas = RutaTestUtils.getCAS("Some test.");
     Ruta.apply(cas, script);
-    
+
     JCas jcas = cas.getJCas();
     Collection<Statistics> statistics = JCasUtil.select(jcas, Statistics.class);
-    
+
     Assert.assertFalse(statistics.isEmpty());
   }
-  
-  
+
+  @Test
+  @Ignore
+  public void testSelfConfigure() throws Exception {
+
+    RutaTestUtils.processTestScript(this.getClass());
+  }
+
 }

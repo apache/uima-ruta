@@ -21,6 +21,7 @@ package org.apache.uima.ruta.condition;
 
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
@@ -55,12 +56,20 @@ public class NearCondition extends TypeSentiveCondition {
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
+
+    Type t = type.getType(context, stream);
+
+    if (annotation == null || t == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
     int maxValue = max.getIntegerValue(context, stream);
     int minValue = min.getIntegerValue(context, stream);
     boolean forwardValue = forward.getBooleanValue(context, stream);
 
-    FSIterator<AnnotationFS> it = filtered.getBooleanValue(context, stream) ? stream.getCurrentIt() : stream
-            .getUnfilteredBasicIterator();
+    FSIterator<AnnotationFS> it = filtered.getBooleanValue(context, stream)
+            ? stream.getCurrentIterator()
+            : stream.getUnfilteredBasicIterator();
     AnnotationFS pointer = null;
     if (forwardValue) {
       pointer = stream.getEndAnchor(annotation.getEnd());
@@ -74,7 +83,7 @@ public class NearCondition extends TypeSentiveCondition {
         FeatureStructure featureStructure = it.get();
         if (featureStructure instanceof RutaBasic) {
           RutaBasic each = (RutaBasic) featureStructure;
-          if (each.isPartOf(type.getType(context, stream))) {
+          if (each.isPartOf(t)) {
             return new EvaluatedCondition(this, true);
           }
         }

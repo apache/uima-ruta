@@ -44,6 +44,7 @@ public class PlusReluctant extends AbstractRuleElementQuantifier {
     }
     if (!result && matches.size() > 1) {
       matches.remove(matches.size() - 1);
+      updateLabelAssignment(matches, context, stream);
       result = true;
     }
     if (matches.size() < 1 || allEmpty) {
@@ -68,7 +69,7 @@ public class PlusReluctant extends AbstractRuleElementQuantifier {
     if (ownList == null || ownList.isEmpty()) {
       return true;
     }
-    
+
     RuleElement nextElement = getNextRuleElement(after, ruleElement);
     if (nextElement == null) {
       return false;

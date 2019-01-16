@@ -69,6 +69,7 @@ public class MinMaxReluctant extends AbstractRuleElementQuantifier {
       RuleElementMatch ruleElementMatch = matches.get(matches.size() - 1);
       if (!ruleElementMatch.matched()) {
         matches.remove(ruleElementMatch);
+        updateLabelAssignment(matches, context, stream);
       }
     }
     int matchedSize = matches.size();

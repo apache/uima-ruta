@@ -21,7 +21,12 @@ package org.apache.uima.ruta.rule.quantifier;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaEnvironment;
+import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleElementContainer;
 import org.apache.uima.ruta.rule.RuleElementMatch;
@@ -54,12 +59,32 @@ public abstract class AbstractRuleElementQuantifier implements RuleElementQuanti
     RuleElement nextElement = null;
     RuleElementContainer container = ruleElement.getContainer();
     RuleElement previousElement = ruleElement;
-    while(nextElement == null && container instanceof ComposedRuleElement) {
+    while (nextElement == null && container instanceof ComposedRuleElement) {
       nextElement = container.getNextElement(after, previousElement);
-      previousElement = ((ComposedRuleElement)container);
-      container = ((ComposedRuleElement)container).getContainer();
+      previousElement = ((ComposedRuleElement) container);
+      container = ((ComposedRuleElement) container).getContainer();
     }
     return nextElement;
   }
-  
+
+  protected void updateLabelAssignment(List<RuleElementMatch> matches, MatchContext context,
+          RutaStream stream) {
+
+    RutaEnvironment environment = context.getParent().getEnvironment();
+    RuleElement ruleElement = context.getElement();
+    String label = ruleElement.getLabel();
+
+    if (matches == null || matches.isEmpty()) {
+      environment.addAnnotationsToVariable(null, label, context);
+      return;
+    }
+
+    if (!StringUtils.isBlank(label)) {
+
+      RuleElementMatch ruleElementMatch = matches.get(matches.size() - 1);
+      List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
+      environment.addAnnotationsToVariable(textsMatched, label, context);
+    }
+  }
+
 }

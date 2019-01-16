@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.antlr.runtime.Token;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UimaContext;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.action.AbstractRutaAction;
@@ -50,6 +51,7 @@ import org.apache.uima.ruta.rule.RuleElementIsolator;
 import org.apache.uima.ruta.rule.RutaAnnotationTypeMatcher;
 import org.apache.uima.ruta.rule.RutaLiteralMatcher;
 import org.apache.uima.ruta.rule.RutaMatcher;
+import org.apache.uima.ruta.rule.RutaOptionalRuleElement;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.rule.WildCardRuleElement;
@@ -70,10 +72,10 @@ public class RutaScriptFactory {
   private UimaContext context;
 
   private ExpressionFactory expressionFactory;
-  
+
   @SuppressWarnings("unused")
   private TypeUsageInformation typeUsage;
-  
+
   public RutaScriptFactory(ExpressionFactory expressionFactory, TypeUsageInformation typeUsage) {
     super();
     if (expressionFactory == null) {
@@ -83,9 +85,9 @@ public class RutaScriptFactory {
     }
     this.typeUsage = typeUsage;
   }
-  
+
   public RutaScriptFactory(ExpressionFactory expressionFactory) {
-   this(expressionFactory, null);
+    this(expressionFactory, null);
   }
 
   public RutaScriptBlock createScriptBlock(Token id, RutaRuleElement ruleElement,
@@ -116,10 +118,8 @@ public class RutaScriptFactory {
   }
 
   public RutaScriptBlock createRootScriptBlock(String module, String pack) {
-    String defaultNamespace = module;
-    if (pack != null) {
-      defaultNamespace = pack + "." + module;
-    }
+    String defaultNamespace = getDefaultNamespace(module, pack);
+
     RutaScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace);
     List<RuleElement> ruleElements = new ArrayList<RuleElement>();
     RuleElementIsolator container = new RuleElementIsolator();
@@ -133,6 +133,20 @@ public class RutaScriptFactory {
     result.setRule(createRule);
     result.setContext(context);
     return result;
+  }
+
+  private String getDefaultNamespace(String module, String pack) {
+    String defaultNamespace = module;
+    if (StringUtils.isBlank(module) && StringUtils.isBlank(pack)) {
+      defaultNamespace = "";
+    } else if (!StringUtils.isBlank(module) && !StringUtils.isBlank(pack)) {
+      defaultNamespace = pack + "." + module;
+    } else if (!StringUtils.isBlank(module)) {
+      defaultNamespace = module;
+    } else if (!StringUtils.isBlank(pack)) {
+      defaultNamespace = pack;
+    }
+    return defaultNamespace;
   }
 
   public RutaBlock createForEachBlock(Token varToken, IBooleanExpression direction,
@@ -205,6 +219,12 @@ public class RutaScriptFactory {
   public AbstractRuleElement createWildCardRuleElement(List<AbstractRutaCondition> conditions,
           List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
     return new WildCardRuleElement(conditions, actions, container, parent);
+  }
+
+  public AbstractRuleElement createOptionalRuleElement(List<AbstractRutaCondition> conditions,
+          List<AbstractRutaAction> actions, RuleElementContainer container, RutaBlock parent) {
+
+    return new RutaOptionalRuleElement(conditions, actions, container, parent);
   }
 
   public ComposedRuleElement createComposedRuleElement(List<RuleElement> res,

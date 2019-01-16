@@ -51,6 +51,11 @@ public class TotalCountCondition extends TypeSentiveCondition {
     RuleElement element = context.getElement();
     int count = 0;
     Type t = type.getType(context, stream);
+
+    if (t == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
     AnnotationIndex<Annotation> annotationIndex = stream.getJCas().getAnnotationIndex(t);
     count = annotationIndex.size();
     if (var != null) {

@@ -56,10 +56,12 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.internal.ResourceManagerFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.FilterManager;
+import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaScriptFactory;
@@ -73,6 +75,7 @@ import org.apache.uima.ruta.extensions.IRutaExtension;
 import org.apache.uima.ruta.extensions.RutaExternalFactory;
 import org.apache.uima.ruta.parser.RutaLexer;
 import org.apache.uima.ruta.parser.RutaParser;
+import org.apache.uima.ruta.resource.CSVTable;
 import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.apache.uima.ruta.seed.RutaAnnotationSeeder;
 import org.apache.uima.ruta.type.RutaBasic;
@@ -109,6 +112,14 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(name = PARAM_RULES, mandatory = false)
   private String rules;
+
+  /**
+   * This parameter specifies the name of the non-existing script if the parameter 'rules' is used.
+   */
+  public static final String PARAM_RULES_SCRIPT_NAME = "rulesScriptName";
+
+  @ConfigurationParameter(name = PARAM_RULES_SCRIPT_NAME, mandatory = true, defaultValue = RutaConstants.ANONYMOUS_SCRIPT)
+  private String rulesScriptName;
 
   /**
    * Load script in Java notation, with "{@code .}" as package separator and no extension. File
@@ -251,7 +262,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   /**
    * This parameter specifies whether the inference annotations created by the analysis engine
-   * should be removed after processing the CAS. The default value is set to true.
+   * should be removed after processing the CAS. The default value is set to false.
    */
   public static final String PARAM_REMOVE_BASICS = "removeBasics";
 
@@ -383,6 +394,15 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private Boolean dictRemoveWS = false;
 
   /**
+   * If this parameter is set to any String value then this String/token is used to split columns in
+   * CSV tables
+   */
+  public static final String PARAM_CSV_SEPARATOR = "csvSeparator";
+
+  @ConfigurationParameter(name = PARAM_CSV_SEPARATOR, mandatory = false, defaultValue = CSVTable.DEFAULT_CSV_SEPARATOR)
+  private String csvSeparator = CSVTable.DEFAULT_CSV_SEPARATOR;
+
+  /**
    * This parameter specifies the names of variables and is used in combination with the parameter
    * varValues, which contains the values of the corresponding variables. The n-th entry of this
    * string array specifies the variable of the n-th entry of the string array of the parameter
@@ -422,8 +442,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   /**
    * If this parameter is activated, then only annotations of types are internally reindexed at
-   * beginning that are mentioned with in the rules. This parameter overrides the values of the parameter
-   * 'reindexOnly' with the types that are mentioned in the rules.
+   * beginning that are mentioned with in the rules. This parameter overrides the values of the
+   * parameter 'reindexOnly' with the types that are mentioned in the rules.
    */
   public static final String PARAM_REINDEX_ONLY_MENTIONED_TYPES = "reindexOnlyMentionedTypes";
 
@@ -470,6 +490,35 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(name = PARAM_MODIFY_DATAPATH, mandatory = false, defaultValue = "false")
   private boolean modifyDataPath;
+
+  /**
+   * This parameter specifies optional class names implementing the interface
+   * <code>org.apache.uima.ruta.visitor.RutaInferenceVisitor</code>, which will be notified during
+   * applying the rules.
+   * 
+   */
+  public static final String PARAM_INFERENCE_VISITORS = "inferenceVisitors";
+
+  @ConfigurationParameter(name = PARAM_INFERENCE_VISITORS, mandatory = false, defaultValue = {})
+  private String[] inferenceVisitors;
+
+  /**
+   * Maximum amount of allowed matches of a single rule.
+   */
+  public static final String PARAM_MAX_RULE_MATCHES = "maxRuleMatches";
+
+  @ConfigurationParameter(name = PARAM_MAX_RULE_MATCHES, mandatory = false, defaultValue = ""
+          + Integer.MAX_VALUE)
+  private int maxRuleMatches;
+
+  /**
+   * Maximum amount of allowed matches of a single rule element.
+   */
+  public static final String PARAM_MAX_RULE_ELEMENT_MATCHES = "maxRuleElementMatches";
+
+  @ConfigurationParameter(name = PARAM_MAX_RULE_ELEMENT_MATCHES, mandatory = false, defaultValue = ""
+          + Integer.MAX_VALUE)
+  private int maxRuleElementMatches;
 
   private UimaContext context;
 
@@ -557,6 +606,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
     stream.setGreedyRule(greedyRule);
+    stream.setMaxRuleMatches(maxRuleMatches);
+    stream.setMaxRuleElementMatches(maxRuleElementMatches);
     try {
       script.apply(stream, crowd);
     } catch (Throwable e) {
@@ -582,7 +633,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
   }
 
-  private void initializeResourceManager() {
+  private void initializeResourceManager() throws ResourceInitializationException {
     if (context instanceof UimaContextAdmin) {
       UimaContextAdmin uca = (UimaContextAdmin) context;
       ResourceManager rm = uca.getResourceManager();
@@ -591,7 +642,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
     }
     if (resourceManager == null) {
-      resourceManager = UIMAFramework.newDefaultResourceManager();
+      resourceManager = ResourceManagerFactory.newResourceManager();
     }
   }
 
@@ -629,13 +680,14 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     resetEnvironment(script, cas, new HashSet<RutaModule>());
   }
 
-  private void resetEnvironment(RutaModule module, CAS cas, Collection<RutaModule> alreadyResetted) {
-    if(alreadyResetted.contains(module)) {
+  private void resetEnvironment(RutaModule module, CAS cas,
+          Collection<RutaModule> alreadyResetted) {
+    if (alreadyResetted.contains(module)) {
       // avoid loop in recursion
       return;
     }
     alreadyResetted.add(module);
-    
+
     // reset all blocks
     RutaBlock block = module.getBlock(null);
     block.getEnvironment().reset(cas);
@@ -643,7 +695,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     for (RutaBlock each : blocks) {
       each.getEnvironment().reset(cas);
     }
-    
+
     // reset imported scripts
     Collection<RutaModule> scripts = module.getScripts().values();
     for (RutaModule eachModule : scripts) {
@@ -688,7 +740,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
     for (String each : additionalExtensions) {
       try {
-        Class<?> forName = Class.forName(each);
+        Class<?> forName = getClassLoader().loadClass(each);
         if (IRutaExtension.class.isAssignableFrom(forName)) {
           IRutaExtension extension = (IRutaExtension) forName.newInstance();
           verbalizer.addExternalVerbalizers(extension);
@@ -697,9 +749,18 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           }
         }
       } catch (Exception e) {
-        getLogger().log(Level.WARNING, "Failed to initialze extension " + each);
+        getLogger().log(Level.WARNING, "Failed to initialize extension " + each);
       }
     }
+  }
+
+  private ClassLoader getClassLoader() {
+    ClassLoader extensionClassLoader = resourceManager.getExtensionClassLoader();
+    if (extensionClassLoader == null) {
+      return this.getClass().getClassLoader();
+    }
+    return extensionClassLoader;
+
   }
 
   private InferenceCrowd initializeCrowd() {
@@ -717,6 +778,20 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     if (createdBy) {
       visitors.add(new CreatedByVisitor(verbalizer));
     }
+    if (inferenceVisitors != null && inferenceVisitors.length != 0) {
+      for (String eachClassName : inferenceVisitors) {
+        try {
+          Class<?> forName = getClassLoader().loadClass(eachClassName);
+          if (RutaInferenceVisitor.class.isAssignableFrom(forName)) {
+            RutaInferenceVisitor visitor = (RutaInferenceVisitor) forName.newInstance();
+            visitors.add(visitor);
+          }
+        } catch (Exception e) {
+          getLogger().log(Level.WARNING, "Failed to initialize inference visitor " + eachClassName);
+        }
+      }
+    }
+
     return new InferenceCrowd(visitors);
   }
 
@@ -746,7 +821,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       for (String seederClass : seeders) {
         Class<?> loadClass = null;
         try {
-          loadClass = Class.forName(seederClass);
+          loadClass = getClassLoader().loadClass(seederClass);
         } catch (ClassNotFoundException e) {
           throw new AnalysisEngineProcessException(e);
         }
@@ -916,8 +991,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     AnalysisEngine eachEngine = null;
     try {
       @SuppressWarnings("unchecked")
-      Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) Class
-              .forName(eachUimafitEngine);
+      Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) getClassLoader()
+              .loadClass(eachUimafitEngine);
       List<String> configurationData = script.getConfigurationData(eachUimafitEngine);
       AnalysisEngineDescription aed = AnalysisEngineFactory.createEngineDescription(uimafitClass,
               configurationData.toArray());
@@ -958,12 +1033,12 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       }
       RutaBlock block = script.getBlock(blockName);
       if (block == null) {
-        return;
+        continue;
       }
 
       RutaEnvironment environment = block.getEnvironment();
       if (!environment.ownsVariable(shortName)) {
-        return;
+        continue;
       }
       Object valueObj = null;
       Class<?> variableType = environment.getVariableType(shortName);
@@ -1055,7 +1130,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     RutaLexer lexer = new RutaLexer(st);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     RutaParser parser = createParser(tokens);
-    RutaModule script = parser.file_input("Anonymous");
+    RutaModule script = parser.file_input(rulesScriptName);
     return script;
   }
 

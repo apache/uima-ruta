@@ -21,10 +21,7 @@ package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
@@ -33,6 +30,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.junit.Test;
@@ -60,14 +58,8 @@ public class LoadResourceFromClassPathTest {
     list.add(new TestFeature(fn1, "", "uima.cas.String"));
     String fn2 = "system";
     list.add(new TestFeature(fn2, "", "uima.cas.String"));
-    
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, complexTypes, features);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = executeAnalysis(document, script, complexTypes, features);
     
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Peter", "Marshall", "Joern");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Kluegl", "Schor", "Kottmann");
@@ -130,13 +122,7 @@ public class LoadResourceFromClassPathTest {
     String fn2 = "system";
     list.add(new TestFeature(fn2, "", "uima.cas.String"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, complexTypes, features);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = executeAnalysis(document, script, complexTypes, features);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Peter", "Marshall", "Joern");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Kluegl", "Schor", "Kottmann");
@@ -175,5 +161,19 @@ public class LoadResourceFromClassPathTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "Peter", "Marshall", "Joern");
 
     cas.release();
+  }
+
+  private CAS executeAnalysis(String document, String script, Map<String, String> complexTypes, Map<String, List<TestFeature>> features) {
+    CAS cas = null;
+    try {
+      Map<String, Object> map = new HashMap<>();
+      map.put(RutaEngine.PARAM_DICT_REMOVE_WS, true);
+
+      cas = RutaTestUtils.getCAS(document, complexTypes, features);
+      Ruta.apply(cas, script, map);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return cas;
   }
 }

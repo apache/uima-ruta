@@ -92,7 +92,7 @@ public class RutaLiteralMatcher implements RutaMatcher {
     MatchContext context = new MatchContext(annotation, null, null, !before);
     context.setParent(parent);
     String stringValue = expression.getStringValue(context, stream);
-    if (stringValue.equals(basicNextTo.getCoveredText())) {
+    if (stringValue != null && stringValue.equals(basicNextTo.getCoveredText())) {
       result.add(basicNextTo);
     }
     return result;

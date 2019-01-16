@@ -71,6 +71,12 @@ public class GatherAction extends AbstractStructureAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     RuleMatch match = context.getRuleMatch();
     RuleElement element = context.getElement();
+    Type type = structureType.getType(context, stream);
+
+    if (type == null) {
+      return;
+    }
+
     List<Integer> indexList = getIndexList(indexes, context, stream);
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotations(indexList,
             element.getContainer());
@@ -78,13 +84,13 @@ public class GatherAction extends AbstractStructureAction {
       if (matchedAnnotation == null) {
         return;
       }
-      Type type = structureType.getType(context, stream);
       FeatureStructure newFS = stream.getCas().createFS(type);
       if (newFS instanceof Annotation) {
         Annotation a = (Annotation) newFS;
         a.setBegin(matchedAnnotation.getBegin());
         a.setEnd(matchedAnnotation.getEnd());
         stream.addAnnotation(a, match);
+        addAnnotationToLabel(a, context);
       }
       TOP newStructure = null;
       if (newFS instanceof TOP) {
@@ -144,8 +150,8 @@ public class GatherAction extends AbstractStructureAction {
               // search for
               Collection<AnnotationFS> beginAnchors = stream.getBeginAnchor(fs.getBegin())
                       .getBeginAnchors(range);
-              Collection<AnnotationFS> endAnchors = stream.getEndAnchor(fs.getEnd()).getEndAnchors(
-                      range);
+              Collection<AnnotationFS> endAnchors = stream.getEndAnchor(fs.getEnd())
+                      .getEndAnchors(range);
               @SuppressWarnings("unchecked")
               Collection<AnnotationFS> intersection = CollectionUtils.intersection(beginAnchors,
                       endAnchors);
@@ -208,7 +214,6 @@ public class GatherAction extends AbstractStructureAction {
     }
     return result;
   }
-
 
   public ITypeExpression getStructureType() {
     return structureType;

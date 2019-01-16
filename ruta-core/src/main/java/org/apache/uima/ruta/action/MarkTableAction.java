@@ -29,12 +29,13 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
-import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -64,7 +65,7 @@ public class MarkTableAction extends AbstractRutaAction {
 
   private final INumberExpression maxIgnoreChar;
 
-  private IBooleanExpression ignoreWS = new SimpleBooleanExpression(true);
+  private IBooleanExpression ignoreWS;
 
   public MarkTableAction(ITypeExpression typeExpr, INumberExpression indexExpr,
           WordTableExpression tableExpr, Map<IStringExpression, INumberExpression> featureMap,
@@ -91,11 +92,16 @@ public class MarkTableAction extends AbstractRutaAction {
     RuleElement element = context.getElement();
     element.getParent();
     RutaTable table = tableExpr.getTable(context, stream);
-    if(table == null) {
+    if (table == null) {
       return;
     }
     int index = indexExpr.getIntegerValue(context, stream);
     Type type = typeExpr.getType(context, stream);
+
+    if (type == null) {
+      return;
+    }
+
     Map<String, Integer> map = new HashMap<String, Integer>();
     for (IStringExpression each : featureMap.keySet()) {
       map.put(each.getStringValue(context, stream),
@@ -109,7 +115,8 @@ public class MarkTableAction extends AbstractRutaAction {
     String ignoreCharValue = ignoreChar != null ? ignoreChar.getStringValue(context, stream) : "";
     int maxIgnoreCharValue = maxIgnoreChar != null ? maxIgnoreChar.getIntegerValue(context, stream)
             : 0;
-    boolean ignoreWSValue = ignoreWS != null ? ignoreWS.getBooleanValue(context, stream) : false;
+    boolean ignoreWSValue = ignoreWS != null ? ignoreWS.getBooleanValue(context, stream)
+            : getDictWSParamValue(context);
 
     RutaWordList wordList = table.getWordList(index, element.getParent());
     Collection<AnnotationFS> found = wordList.find(stream, ignoreCaseValue, ignoreLengthValue,
@@ -122,10 +129,10 @@ public class MarkTableAction extends AbstractRutaAction {
           candidate = candidate.replaceFirst("[" + ignoreCharValue + "]", "");
         }
       }
-      List<String> rowWhere = table.getRowWhere(index - 1, candidate);
+      List<String> rowWhere = table.getRowWhere(index - 1, candidate, false);
       if (rowWhere.isEmpty() && ignoreCaseValue && candidate.length() > ignoreLengthValue) {
         // TODO: does not cover all variants
-        rowWhere = table.getRowWhere(index - 1, candidate.toLowerCase());
+        rowWhere = table.getRowWhere(index - 1, candidate, true);
       }
       FeatureStructure newFS = stream.getCas().createFS(type);
       if (newFS instanceof Annotation) {
@@ -143,9 +150,16 @@ public class MarkTableAction extends AbstractRutaAction {
     }
   }
 
+  private boolean getDictWSParamValue(MatchContext context) {
+    return (Boolean) context.getParent().getContext()
+            .getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
+  }
+
   private void fillFeatures(TOP structure, Map<String, Integer> map, AnnotationFS annotationFS,
           RuleElement element, List<String> row, RutaStream stream) {
     List<?> featuresList = structure.getType().getFeatures();
+    TypeSystem typeSystem = stream.getCas().getTypeSystem();
+
     for (int i = 0; i < featuresList.size(); i++) {
       Feature targetFeature = (Feature) featuresList.get(i);
       String name = targetFeature.getName();
@@ -154,7 +168,7 @@ public class MarkTableAction extends AbstractRutaAction {
       Type range = targetFeature.getRange();
       if (entryIndex != null && row.size() >= entryIndex) {
         String value = row.get(entryIndex - 1);
-        if (range.getName().equals(CAS.TYPE_NAME_STRING)) {
+        if (typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_STRING), range)) {
           structure.setStringValue(targetFeature, value);
         } else if (range.getName().equals(CAS.TYPE_NAME_INTEGER)) {
           Integer integer = Integer.parseInt(value);

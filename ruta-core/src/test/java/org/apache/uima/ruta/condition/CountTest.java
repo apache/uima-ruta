@@ -19,8 +19,16 @@
 
 package org.apache.uima.ruta.condition;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.resource.ResourceConfigurationException;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class CountTest {
@@ -36,5 +44,19 @@ public class CountTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Testing the COUNT condition of Ruta System");
     
     cas.release();    
+  }
+  
+  @Test
+  public void testCountWithPeriodPostfix() throws ResourceInitializationException, InvalidXMLException, 
+    IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+    
+    String document = "Some text.";
+    String script = "(CW SW) {-> T1};";
+    script +="INT i = 0;";
+    script +="T1{COUNT(PERIOD, i)};";
+    script +="Document{(i>0)-> T2};";
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
   }
 }

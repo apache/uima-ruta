@@ -16,30 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.uima.ruta.rule;
 
-package org.apache.uima.ruta.condition;
+import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.engine.Ruta;
+import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.junit.Test;
 
-import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.rule.EvaluatedCondition;
-import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.visitor.InferenceCrowd;
+public class RutaOptionalRuleElementTest {
 
-public class VariableCondition extends AbstractRutaCondition {
+  @Test
+  public void test() throws Exception {
+    String document = "This is a Test";
+    String script = "_{-PARTOF(CW)} @W{-> T1};\n";
+    script += "@W{-> T2} _{-PARTOF(CW)};\n";
 
-  private final String var;
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
-  public VariableCondition(String var) {
-    super();
-    this.var = var;
-  }
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "This", "a", "Test");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "This", "is", "Test");
 
-  @Override
-  public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-    return null;
-  }
-
-  public String getVar() {
-    return var;
   }
 
 }

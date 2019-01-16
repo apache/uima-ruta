@@ -71,8 +71,8 @@ public class DebugInfoFactory {
           boolean addToIndex, boolean withMatches, Map<RutaElement, Long> timeInfo) {
     JCas cas = stream.getJCas();
     DebugBlockApply dba = new DebugBlockApply(cas);
-    AnnotationFS matchedAnnotation = ruleMatch.getMatchedAnnotationsOfElement(
-            ruleMatch.getRule().getRoot()).get(0);
+    AnnotationFS matchedAnnotation = ruleMatch
+            .getMatchedAnnotationsOfElement(ruleMatch.getRule().getRoot()).get(0);
     dba.setElement(matchedAnnotation.getCoveredText());
     dba.setBegin(matchedAnnotation.getBegin());
     dba.setEnd(matchedAnnotation.getEnd());
@@ -127,8 +127,8 @@ public class DebugInfoFactory {
       }
       dba.setInnerApply(UIMAUtils.toFSArray(cas, innerApply));
       dba.setElement(verbalize);
-      DebugRuleApply ruleApply = createDebugRuleApply(blockApply.getRuleApply(), stream,
-              addToIndex, withMatches, timeInfo);
+      DebugRuleApply ruleApply = createDebugRuleApply(blockApply.getRuleApply(), stream, addToIndex,
+              withMatches, timeInfo);
       dba.setApplied(ruleApply.getApplied());
       dba.setTried(ruleApply.getTried());
       dba.setRules(ruleApply.getRules());
@@ -148,8 +148,8 @@ public class DebugInfoFactory {
       }
       dba.setInnerApply(UIMAUtils.toFSArray(cas, innerApply));
       dba.setElement(verbalize);
-      DebugRuleApply ruleApply = createDebugRuleApply(blockApply.getRuleApply(), stream,
-              addToIndex, withMatches, timeInfo);
+      DebugRuleApply ruleApply = createDebugRuleApply(blockApply.getRuleApply(), stream, addToIndex,
+              withMatches, timeInfo);
       dba.setApplied(ruleApply.getApplied());
       dba.setTried(ruleApply.getTried());
       dba.setRules(ruleApply.getRules());
@@ -176,8 +176,8 @@ public class DebugInfoFactory {
     int end = 0;
     if (withMatches) {
       for (AbstractRuleMatch<? extends AbstractRule> match : ruleApply.getList()) {
-        DebugRuleMatch debugRuleMatch = createDebugRuleMatch(match, stream, addToIndex,
-                withMatches, timeInfo);
+        DebugRuleMatch debugRuleMatch = createDebugRuleMatch(match, stream, addToIndex, withMatches,
+                timeInfo);
         begin = Math.min(begin, debugRuleMatch.getBegin());
         end = Math.max(end, debugRuleMatch.getEnd());
         ruleMatches.add(debugRuleMatch);

@@ -47,6 +47,9 @@ public class ConstraintXMLUtils {
 
   public static List<ConstraintData> readConstraints(String location) throws Exception {
     XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+    xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    xmlReader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+    xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
     FileReader reader = new FileReader(location);
     InputSource inputSource = new InputSource(reader);
     ConstraintContentHandler handler = new ConstraintContentHandler();

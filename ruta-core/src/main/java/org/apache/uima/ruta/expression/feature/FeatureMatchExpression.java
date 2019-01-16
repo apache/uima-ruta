@@ -21,17 +21,23 @@ package org.apache.uima.ruta.expression.feature;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.uima.cas.ArrayFS;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.Type;
+import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.RutaExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -71,51 +77,56 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
 
   public boolean checkFeatureValue(FeatureStructure fs, MatchContext context, RutaStream stream) {
     Feature feature = getFeature(context, stream);
+    if (feature instanceof LazyFeature) {
+      LazyFeature lazyFeature = (LazyFeature) feature;
+      feature = lazyFeature.initialize(fs);
+    }
     return checkFeatureValue(fs, feature, context, stream);
   }
 
   public boolean checkFeatureValue(FeatureStructure fs, Feature feature, MatchContext context,
           RutaStream stream) {
-    String rn = null;
-    if(feature instanceof CoveredTextFeature) {
-      rn = CAS.TYPE_NAME_STRING;
-    } else if (feature != null){
-      rn = feature.getRange().getName();
+    Type featureRangeType = null;
+    TypeSystem typeSystem = stream.getCas().getTypeSystem();
+    if (feature instanceof CoveredTextFeature) {
+      featureRangeType = typeSystem.getType(CAS.TYPE_NAME_STRING);
+    } else if (feature != null) {
+      featureRangeType = feature.getRange();
     }
-    
-    if (rn.equals(CAS.TYPE_NAME_BOOLEAN)) {
+    String rangeName = featureRangeType.getName();
+    if (rangeName.equals(CAS.TYPE_NAME_BOOLEAN)) {
       Boolean v1 = fs.getBooleanValue(feature);
       if (getArg() instanceof IBooleanExpression) {
         IBooleanExpression expr = (IBooleanExpression) getArg();
         Boolean v2 = expr.getBooleanValue(context, stream);
         return compare(v1, v2);
       }
-    } else if (rn.equals(CAS.TYPE_NAME_INTEGER) || rn.equals(CAS.TYPE_NAME_BYTE)
-            || rn.equals(CAS.TYPE_NAME_SHORT) || rn.equals(CAS.TYPE_NAME_LONG)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_INTEGER) || rangeName.equals(CAS.TYPE_NAME_BYTE)
+            || rangeName.equals(CAS.TYPE_NAME_SHORT) || rangeName.equals(CAS.TYPE_NAME_LONG)) {
       Integer v1 = fs.getIntValue(feature);
       if (getArg() instanceof INumberExpression) {
         INumberExpression expr = (INumberExpression) getArg();
         Integer v2 = expr.getIntegerValue(context, stream);
         return compare(v1, v2);
       }
-    } else if (rn.equals(CAS.TYPE_NAME_DOUBLE)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_DOUBLE)) {
       Double v1 = fs.getDoubleValue(feature);
       if (getArg() instanceof INumberExpression) {
         INumberExpression expr = (INumberExpression) getArg();
         Double v2 = expr.getDoubleValue(context, stream);
         return compare(v1, v2);
       }
-    } else if (rn.equals(CAS.TYPE_NAME_FLOAT)) {
+    } else if (rangeName.equals(CAS.TYPE_NAME_FLOAT)) {
       Float v1 = fs.getFloatValue(feature);
       if (getArg() instanceof INumberExpression) {
         INumberExpression expr = (INumberExpression) getArg();
         Float v2 = expr.getFloatValue(context, stream);
         return compare(v1, v2);
       }
-    } else if (rn.equals(CAS.TYPE_NAME_STRING)) {
+    } else if (typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_STRING), featureRangeType)) {
       String v1 = null;
       // null is possibly coveredText
-      if(feature instanceof CoveredTextFeature && fs instanceof AnnotationFS) {
+      if (feature instanceof CoveredTextFeature && fs instanceof AnnotationFS) {
         v1 = ((AnnotationFS) fs).getCoveredText();
       } else if (feature != null) {
         v1 = fs.getStringValue(feature);
@@ -125,13 +136,27 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
         String v2 = expr.getStringValue(context, stream);
         return compare(v1, v2);
       }
-    } else if (!feature.getRange().isPrimitive() && getArg() instanceof FeatureExpression) {
-      FeatureExpression fe = (FeatureExpression) getArg();
-      List<FeatureStructure> list = new ArrayList<>(1);
-      list.add(fs);
-      Collection<? extends FeatureStructure> featureAnnotations = fe.getFeatureStructures(list, false, context,
-              stream);
-      return compare(fs.getFeatureValue(feature), featureAnnotations);
+    } else {
+      FeatureStructure featureValue = fs.getFeatureValue(feature);
+      if (!feature.getRange().isPrimitive() && getArg() instanceof FeatureExpression) {
+        FeatureExpression fe = (FeatureExpression) getArg();
+        List<FeatureStructure> list = new ArrayList<>(1);
+        list.add(fs);
+        Collection<? extends FeatureStructure> featureAnnotations = fe.getFeatureStructures(list,
+                false, context, stream);
+        return compare(featureValue, featureAnnotations);
+      } else if (!feature.getRange().isPrimitive() && getArg() instanceof IAnnotationExpression) {
+        IAnnotationExpression ae = (IAnnotationExpression) getArg();
+        AnnotationFS compareAnnotation = ae.getAnnotation(context, stream);
+        return compare(featureValue, compareAnnotation);
+      } else if (!feature.getRange().isPrimitive()
+              && typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_FS_ARRAY), featureRangeType)
+              && getArg() instanceof IAnnotationListExpression) {
+        ArrayFS fsArray = (ArrayFS) featureValue;
+        IAnnotationListExpression ale = (IAnnotationListExpression) getArg();
+        List<AnnotationFS> annotationList = ale.getAnnotationList(context, stream);
+        return compare(Arrays.asList(fsArray.toArray()), annotationList);
+      }
     }
     return false;
   }
@@ -188,13 +213,13 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
   @Override
   public String toString() {
     String result = super.toString();
-    if(op != null) {
+    if (op != null) {
       result += op;
     }
-    if(arg != null) {
+    if (arg != null) {
       result += arg.toString();
     }
     return result;
   }
-  
+
 }

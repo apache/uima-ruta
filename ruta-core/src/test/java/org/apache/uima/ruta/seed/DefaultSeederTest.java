@@ -40,13 +40,12 @@ import org.junit.Test;
 
 public class DefaultSeederTest {
 
-  
-
   @Test
   public void test() throws Exception {
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
+      url = RutaTestUtils.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -113,17 +112,12 @@ public class DefaultSeederTest {
   public void testMarkup() throws Exception {
     String document = "<xref ref-type=\"bibr\" rid=\"b35-ehp0113-000220\">"
             + "<sec sec-type=\"methods\">" + "<sec sectype=\"methods\">"
-            + "<sec sec-type=\"methods\">" + "<sec sectype=\"methods\">"
-            + "<sec sectype='methods'>" + "<tag-with-dash value=\"1\">"
-            + "<-not-a-real-tag value=\"1\">" + "<a_real_tag value=\"1\">";
+            + "<sec sec-type=\"methods\">" + "<sec sectype=\"methods\">" + "<sec sectype='methods'>"
+            + "<tag-with-dash value=\"1\">" + "<-not-a-real-tag value=\"1\">"
+            + "<a_real_tag value=\"1\">";
     String script = "RETAINTYPE(MARKUP);MARKUP{-> T1};";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 8,
             "<xref ref-type=\"bibr\" rid=\"b35-ehp0113-000220\">", "<sec sec-type=\"methods\">",
@@ -132,7 +126,7 @@ public class DefaultSeederTest {
 
     cas.release();
   }
-  
+
   @Test
   public void testStackedMarkup() throws Exception {
     StringBuilder sb = new StringBuilder();
@@ -144,26 +138,28 @@ public class DefaultSeederTest {
       sb.append("</b>");
     }
 
-    // long start = System.currentTimeMillis();
-
     String document = sb.toString();
     String script = "RETAINTYPE(MARKUP);MARKUP{-> T1};";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    // long end = System.currentTimeMillis();
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
-    // System.out.println("took: " + (end-start)/1000 + "s");
     Type t1 = RutaTestUtils.getTestType(cas, 1);
     AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t1);
     Assert.assertEquals(2000, ai.size());
 
     cas.release();
 
+  }
+
+  @Test
+  public void testVerticalTab() throws Exception {
+
+    String document = "Some \u000b text.";
+    String script = "RETAINTYPE(WS);\nBREAK{->T1};";
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "\u000b");
   }
 
 }

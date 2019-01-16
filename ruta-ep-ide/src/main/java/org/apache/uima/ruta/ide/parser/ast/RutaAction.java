@@ -45,14 +45,16 @@ public class RutaAction extends Expression {
 
   private String name;
 
+  private String label;
+
   /**
    * @param start
    * @param end
    * @param exprs
    * @param kind
    */
-  public RutaAction(int start, int end, List<ASTNode> exprs, int kind, String name,
-          int nameStart, int nameEnd) {
+  public RutaAction(int start, int end, List<ASTNode> exprs, int kind, String name, int nameStart,
+          int nameEnd) {
     super(start, end);
     if (exprs != null) {
       this.exprs = exprs;
@@ -103,7 +105,16 @@ public class RutaAction extends Expression {
     return exprs;
   }
 
+  @Override
   public String toString() {
     return this.getClass().getSimpleName() + " : " + super.toString();
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
+  }
+
+  public String getLabel() {
+    return label;
   }
 }

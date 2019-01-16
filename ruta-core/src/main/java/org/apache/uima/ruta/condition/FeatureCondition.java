@@ -44,7 +44,9 @@ public class FeatureCondition extends AbstractRutaCondition {
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
-
+    if (annotation == null) {
+      return new EvaluatedCondition(this, false);
+    }
     String typeWithFeature = annotation.getType().getName() + "."
             + featureStringExpression.getStringValue(context, stream);
     MatchReference mf = new MatchReference(typeWithFeature);

@@ -24,11 +24,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.internal.ResourceManagerFactory;
+import org.apache.uima.fit.internal.ResourceManagerFactory.ResourceManagerCreator;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.ruta.RutaProcessRuntimeException;
 import org.apache.uima.ruta.TypeUsageInformation;
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,8 +56,8 @@ public class RutaEngineTest {
     AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
             RutaEngine.PARAM_VAR_NAMES, new String[] { "typeVar" }, RutaEngine.PARAM_VAR_VALUES,
             new String[] { "TruePositive" }, RutaEngine.PARAM_RULES, script,
-            RutaEngine.PARAM_INDEX_ONLY_MENTIONED_TYPES, true, RutaEngine.PARAM_INDEX_ADDITONALLY,
-            new String[] { "COMMA" });
+            RutaEngine.PARAM_INDEX_ONLY_MENTIONED_TYPES, Boolean.valueOf(true),
+            RutaEngine.PARAM_INDEX_ADDITONALLY, new String[] { "COMMA" });
     RutaEngine engine = (RutaEngine) FieldUtils.readField(ae, "mAnalysisComponent", true);
 
     TypeUsageInformation typeUsageInformation = (TypeUsageInformation) FieldUtils.readField(engine,
@@ -80,6 +87,96 @@ public class RutaEngineTest {
             "org.apache.uima.ruta.type.TruePositive", "org.apache.uima.ruta.type.W",
             "org.apache.uima.ruta.type.WS", "uima.tcas.DocumentAnnotation"), usedTypesList);
 
+  }
+
+  @Test(expected = NotImplementedException.class)
+  public void testInferenceVisitors() throws Throwable {
+
+    String document = "Some text.";
+    String script = "CW;";
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
+            script, RutaEngine.PARAM_INFERENCE_VISITORS,
+            new String[] { TestRutaInferenceVisitor.class.getName() });
+
+    CAS cas = RutaTestUtils.getCAS(document);
+
+    try {
+      ae.process(cas);
+    } catch (AnalysisEngineProcessException e) {
+      Throwable cause = e.getCause();
+      throw cause;
+    }
+  }
+
+  @Test
+  public void testMaxRuleMatches() throws Throwable {
+
+    String document = "This is some text.";
+    String script = "W;";
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
+            script, RutaEngine.PARAM_MAX_RULE_MATCHES, Integer.valueOf(2));
+
+    CAS cas = RutaTestUtils.getCAS(document);
+
+    try {
+      ae.process(cas);
+    } catch (AnalysisEngineProcessException e) {
+      Throwable cause = e.getCause();
+      Assert.assertTrue(cause instanceof RutaProcessRuntimeException);
+      String message = cause.getMessage();
+      Assert.assertTrue(message.startsWith("Rule exceeded the allowed amount of matches"));
+      return;
+    }
+    Assert.fail("expected RutaProcessRuntimeException");
+  }
+
+  @Test
+  public void testMaxRuleElementMatches() throws Throwable {
+
+    String document = "This is some text.";
+    String script = "W+;";
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
+            script, RutaEngine.PARAM_MAX_RULE_ELEMENT_MATCHES, Integer.valueOf(2));
+
+    CAS cas = RutaTestUtils.getCAS(document);
+
+    try {
+      ae.process(cas);
+    } catch (AnalysisEngineProcessException e) {
+      Throwable cause = e.getCause();
+      Assert.assertTrue(cause instanceof RutaProcessRuntimeException);
+      String message = cause.getMessage();
+      Assert.assertTrue(message.startsWith("Rule element exceeded the allowed amount of matches"));
+      return;
+    }
+    Assert.fail("expected RutaProcessRuntimeException");
+  }
+
+  @Test
+  public void testResourceManagerWithUimaFITInEXEC() throws Throwable {
+
+    final ResourceManager resourceManager = ResourceManagerFactory.newResourceManager();
+    ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
+
+      @Override
+      public ResourceManager newResourceManager() throws ResourceInitializationException {
+        return resourceManager;
+      }
+    });
+
+    String document = "This is some text.";
+    String script = "UIMAFIT org.apache.uima.ruta.engine.DummyAnnotator;";
+    script += "EXEC(DummyAnnotator);";
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
+            script, RutaEngine.PARAM_ADDITIONAL_UIMAFIT_ENGINES,
+            new String[] { DummyAnnotator.class.getName() });
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    ae.process(cas);
   }
 
 }

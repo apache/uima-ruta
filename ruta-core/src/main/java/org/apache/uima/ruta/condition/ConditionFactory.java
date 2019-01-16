@@ -128,7 +128,8 @@ public class ConditionFactory {
     }
 
     throw new RutaParseRuntimeException(
-            "The condition CONTAINS does not support the following arguments: " + sb.toString());
+            "The condition CONTAINS does not support the following arguments in script "
+                    + parent.getName() + ": " + sb.toString());
   }
 
   public AbstractRutaCondition createConditionContains(ITypeExpression typeExpr,
@@ -259,10 +260,6 @@ public class ConditionFactory {
     return new ParseCondition(var, localeExpr);
   }
 
-  public AbstractRutaCondition createConditionVariable(Token id) {
-    return new VariableCondition(id.getText());
-  }
-
   public AbstractRutaCondition createConditionIs(ITypeExpression type,
           AbstractTypeListExpression list, RutaBlock env) {
     if (type != null) {
@@ -352,8 +349,9 @@ public class ConditionFactory {
     List<AbstractRutaCondition> conditions = macroConditionDefinition.getMiddle();
     Set<String> vars = macroConditionDefinition.getRight();
     if (definition.size() != argSize) {
-      throw new RutaParseRuntimeException("Arguments of macro action '" + name
-              + "' do not match its definition: " + definition.values());
+      throw new RutaParseRuntimeException(
+              "Arguments of macro action '" + name + "' do not match its definition in script "
+                      + env.getName() + ": " + definition.values());
     }
 
     return new MacroCondition(name, definition, conditions, vars, args);

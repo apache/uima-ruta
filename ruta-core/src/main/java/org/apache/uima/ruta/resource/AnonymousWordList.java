@@ -54,12 +54,11 @@ public class AnonymousWordList implements RutaWordList {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     for (String each : list) {
       stream.moveToFirst();
-      while (stream.isValid()) {
-        RutaBasic next = (RutaBasic) stream.get();
+      while (stream.hasNext()) {
+        RutaBasic next = (RutaBasic) stream.next();
         if (each.equals(next.getCoveredText())) {
           result.add(next);
         }
-        stream.moveToNext();
       }
     }
     return result;

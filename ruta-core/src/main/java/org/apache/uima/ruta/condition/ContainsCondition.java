@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.condition;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.FSIterator;
@@ -89,20 +90,24 @@ public class ContainsCondition extends TypeSentiveCondition {
     int anchorCount = 0;
     int totalCount = 0;
 
+    boolean usePredefinedBoundaries = minIntValue == 1 && maxIntValue == Integer.MAX_VALUE ? false
+            : true;
+
     if (type != null) {
-      if (annotation != null) {
-        if (minIntValue == 1 && maxIntValue == Integer.MAX_VALUE && !usePercentage) {
+      Type t = type.getType(context, stream);
+      if (annotation != null && t != null) {
+        if (!usePredefinedBoundaries && !usePercentage) {
           // shortcut for simple CONTAINS(Type)
-          Type t = type.getType(context, stream);
           boolean annotationExsits = checkExistingAnnotation(t, annotation, stream);
           return new EvaluatedCondition(this, annotationExsits);
         } else {
           List<RutaBasic> annotations = stream.getBasicsInWindow(annotation);
           for (RutaBasic each : annotations) {
             totalCount++;
-            Type t = type.getType(context, stream);
             if (each.beginsWith(t) || stream.getCas().getTypeSystem().subsumes(t, each.getType())) {
-              anchorCount += each.getBeginAnchors(t).size();
+              Collection<AnnotationFS> beginAnchors = each.getBeginAnchors(t);
+              anchorCount = incrementAnchorsWithinStrictBoundaries(annotation, anchorCount,
+                      beginAnchors);
               basicCount++;
             } else if (each.isPartOf(t)) {
               basicCount++;
@@ -165,7 +170,7 @@ public class ContainsCondition extends TypeSentiveCondition {
       }
       anchorCount = basicCount;
     }
-    
+
     if (usePercentage) {
       double percentValue = 0;
       if (totalCount != 0) {
@@ -180,10 +185,20 @@ public class ContainsCondition extends TypeSentiveCondition {
     }
   }
 
+  private int incrementAnchorsWithinStrictBoundaries(AnnotationFS annotation, int anchorCount,
+          Collection<AnnotationFS> beginAnchors) {
+    for (AnnotationFS eachBegin : beginAnchors) {
+      if (eachBegin.getEnd() <= annotation.getEnd()) {
+        anchorCount++;
+      }
+    }
+    return anchorCount;
+  }
+
   private boolean checkExistingAnnotation(Type type, AnnotationFS annotation, RutaStream stream) {
     int begin = annotation.getBegin();
     int end = annotation.getEnd();
-    
+
     FSIterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(type).iterator();
     it.moveTo(annotation);
     if (!it.isValid()) {
@@ -217,7 +232,7 @@ public class ContainsCondition extends TypeSentiveCondition {
       if (a.getEnd() > end) {
         continue;
       }
-      if(stream.isVisible(a)) {
+      if (stream.isVisible(a)) {
         return true;
       }
 

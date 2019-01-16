@@ -21,6 +21,7 @@ package org.apache.uima.ruta.condition;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -57,22 +58,24 @@ public class ImplicitCondition extends AbstractRutaCondition {
       return new EvaluatedCondition(this, be.getBooleanValue(context, stream));
     } else if (expr instanceof FeatureMatchExpression) {
       FeatureMatchExpression fme = (FeatureMatchExpression) expr;
-      List<AnnotationFS> annotations =new ArrayList<>();
+      List<AnnotationFS> annotations = new ArrayList<>();
       MatchReference matchReference = fme.getMatchReference();
       // TODO refactor
       ITypeExpression typeExpr = matchReference.getTypeExpression(context, stream);
-      IAnnotationListExpression annotationListExpr = matchReference.getAnnotationListExpression(context, stream);
-      IAnnotationExpression annotationExpr = matchReference.getAnnotationExpression(context, stream);
+      IAnnotationListExpression annotationListExpr = matchReference
+              .getAnnotationListExpression(context, stream);
+      IAnnotationExpression annotationExpr = matchReference.getAnnotationExpression(context,
+              stream);
       if (typeExpr != null) {
         Type type = typeExpr.getType(context, stream);
         annotations = getAnnotationsToCheck(annotation, type, fme, stream);
-      } else if(annotationListExpr!=null) {
+      } else if (annotationListExpr != null) {
         annotations.addAll(annotationListExpr.getAnnotationList(context, stream));
-      } else if(annotationExpr!=null) {
+      } else if (annotationExpr != null) {
         annotations.add(annotationExpr.getAnnotation(context, stream));
       }
-      Collection<? extends FeatureStructure> featureAnnotations = fme.getFeatureStructures(annotations, true,
-              context, stream);
+      Collection<? extends FeatureStructure> featureAnnotations = fme
+              .getFeatureStructures(annotations, true, context, stream);
       return new EvaluatedCondition(this, !featureAnnotations.isEmpty());
     }
     return new EvaluatedCondition(this, false);
@@ -80,6 +83,11 @@ public class ImplicitCondition extends AbstractRutaCondition {
 
   private List<AnnotationFS> getAnnotationsToCheck(AnnotationFS annotation, Type type,
           FeatureMatchExpression fme, RutaStream stream) {
+
+    if (annotation == null || type == null) {
+      return Collections.emptyList();
+    }
+
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
     TypeSystem typeSystem = stream.getCas().getTypeSystem();
     if (typeSystem.subsumes(type, annotation.getType())) {

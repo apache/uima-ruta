@@ -54,15 +54,17 @@ public class ImplicitCondition2Test {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Peter", "Kluegl", "Joern");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "Peter", "Kluegl");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Peter");
-    RutaTestUtils.assertAnnotationsEquals(cas, 4, 5, "Kluegl", "Joern", "Kottmann", "Marshall", "Schor");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 5, "Kluegl", "Joern", "Kottmann", "Marshall",
+            "Schor");
     RutaTestUtils.assertAnnotationsEquals(cas, 5, 3, "Kottmann", "Marshall", "Schor");
     RutaTestUtils.assertAnnotationsEquals(cas, 6, 2, "Marshall", "Schor");
 
     cas.release();
   }
-  
+
   @Test
-  public void testStringCompare() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, CASException {
+  public void testStringCompare() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, CASException {
     String document = "a b. a b.";
     CAS cas = RutaTestUtils.getCAS(document);
     Assert.assertTrue(Ruta.matches(cas.getJCas(), "(w:W # W{W.ct==w.ct}){->T1};"));
@@ -70,21 +72,21 @@ public class ImplicitCondition2Test {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "a b. a", "b. a b");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "a b", "a b");
   }
-  
+
   @Test
-  public void testStringCompareNull() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, CASException {
+  public void testStringCompareNull() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, CASException {
     String document = "a b. a b.";
     CAS cas = RutaTestUtils.getCAS(document);
-    
+
     String rules = "STRING s2;\n";
     rules += "Document{s2 == \"\" -> T10};\n";
     rules += "Document{s2 == null -> T11};\n";
     Assert.assertTrue(Ruta.matches(cas.getJCas(), rules));
-    
-    RutaTestUtils.assertAnnotationsEquals(cas, 10, 1, document);
-    RutaTestUtils.assertAnnotationsEquals(cas, 11, 0);
-    
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 10, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 11, 1, document);
+
   }
-  
-  
+
 }

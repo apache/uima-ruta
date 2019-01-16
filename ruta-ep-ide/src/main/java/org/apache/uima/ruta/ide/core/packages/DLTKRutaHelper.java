@@ -33,11 +33,10 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
+import org.apache.uima.ruta.utils.XmlUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -370,13 +369,11 @@ public class DLTKRutaHelper {
 
   private static Document getDocument(String text) {
     try {
-      DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+      DocumentBuilder parser = XmlUtils.createDocumentBuilder();
       parser.setErrorHandler(new DefaultHandler());
       Document document = parser.parse(new ByteArrayInputStream(text.getBytes()));
       return document;
     } catch (IOException e) {
-
-    } catch (ParserConfigurationException e) {
       if (DLTKCore.DEBUG) {
         e.printStackTrace();
       }

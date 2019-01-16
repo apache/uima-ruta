@@ -144,15 +144,45 @@
                   <exclude>src/test/resources/org/apache/uima/ruta/**/*.ruta</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/action/*.*</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/table2.csv</exclude> <!-- test data -->
+                  <exclude>src/test/resources/org/apache/uima/ruta/resource/test_csvfile.csv</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/engine/*.html</exclude> <!-- test data -->
                   <exclude>src/test/resources/META-INF/org.apache.uima.fit/types.txt</exclude> <!-- test data -->
                   <exclude>src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude>
                   <exclude>issuesFixed/**</exclude> <!-- generated -->
+                  <exclude>input/**</exclude> <!-- temp test data -->
+                  <exclude>TypeSystem.xml</exclude> <!-- temp test data -->
                   <exclude>marker-file-identifying-*</exclude>
                 </excludes>
               </configuration>
             </execution>
           </executions>
+        </plugin>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+        	<groupId>org.eclipse.m2e</groupId>
+        	<artifactId>lifecycle-mapping</artifactId>
+        	<version>1.0.0</version>
+        	<configuration>
+        		<lifecycleMappingMetadata>
+        			<pluginExecutions>
+        				<pluginExecution>
+        					<pluginExecutionFilter>
+        						<groupId>de.jflex</groupId>
+        						<artifactId>
+        							jflex-maven-plugin
+        						</artifactId>
+        						<versionRange>[1.6.1,)</versionRange>
+        						<goals>
+        							<goal>generate</goal>
+        						</goals>
+        					</pluginExecutionFilter>
+        					<action>
+        						<ignore />
+        					</action>
+        				</pluginExecution>
+        			</pluginExecutions>
+        		</lifecycleMappingMetadata>
+        	</configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -190,6 +220,38 @@
             <configuration>
               <sources>
                 <source>${basedir}/target/generated-sources/antlr3
+                </source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+	  <plugin>
+        <groupId>de.jflex</groupId>
+        <artifactId>jflex-maven-plugin</artifactId>
+        <version>1.6.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${basedir}/target/generated-sources/jflex
                 </source>
               </sources>
             </configuration>

@@ -22,27 +22,38 @@ package org.apache.uima.ruta.expression.annotation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.cas.FSArray;
+import org.apache.uima.resource.ResourceConfigurationException;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class AnnotationVariableExpressionTest {
 
   @Test
-  public void test() {
+  public void test() throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
     String document = "Some text.";
     String script = "ANNOTATION a;";
     script += "CW{-> ASSIGN(a, CW)};";
@@ -59,13 +70,8 @@ public class AnnotationVariableExpressionTest {
     String fn = "a";
     list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -86,9 +92,11 @@ public class AnnotationVariableExpressionTest {
     assertNotNull("Feature value is null!", a);
     assertEquals("Some", a.getCoveredText());
   }
-  
+
   @Test
-  public void testImplicitAssignment() {
+  public void testImplicitAssignment()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
     String document = "Some text.";
     String script = "ANNOTATION a;";
     script += "CW{-> a = CW};";
@@ -105,13 +113,8 @@ public class AnnotationVariableExpressionTest {
     String fn = "a";
     list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -134,7 +137,9 @@ public class AnnotationVariableExpressionTest {
   }
 
   @Test
-  public void testListImplicitAssignment() {
+  public void testListImplicitAssignment()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
     String document = "Some text.";
     String script = "ANNOTATIONLIST as;";
     script += "Document{-> as = W};";
@@ -151,13 +156,8 @@ public class AnnotationVariableExpressionTest {
     String fn = "as";
     list.add(new TestFeature(fn, "", "uima.cas.FSArray"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -178,9 +178,10 @@ public class AnnotationVariableExpressionTest {
     assertNotNull("Feature value is null!", array);
     assertEquals(2, array.size());
   }
-  
+
   @Test
-  public void testList() {
+  public void testList() throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
     String document = "Some text.";
     String script = "ANNOTATIONLIST as;";
     script += "Document{-> ASSIGN(as, W)};";
@@ -197,13 +198,8 @@ public class AnnotationVariableExpressionTest {
     String fn = "as";
     list.add(new TestFeature(fn, "", "uima.cas.FSArray"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -224,4 +220,70 @@ public class AnnotationVariableExpressionTest {
     assertNotNull("Feature value is null!", array);
     assertEquals(2, array.size());
   }
+
+  @Test
+  public void testResetVariableBetweenCases()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+
+    String document = "Some text.";
+    String script = "ANNOTATIONLIST as;\n";
+    script += "ANNOTATION a;\n";
+    script += "WORDLIST wl = 'org/apache/uima/ruta/WSDictionaryTestList.txt';\n";
+    script += "WORDTABLE wt = 'org/apache/uima/ruta/table2.csv';\n";
+    script += "a{-> T1};\n";
+    script += "as{-> T2};\n";
+    script += "Document{-> a = CW};\n";
+    script += "Document{-> as = W};\n";
+    script += "a{-> T3};\n";
+    script += "as{-> T4};";
+
+    AnalysisEngineDescription description = AnalysisEngineFactory
+            .createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, script);
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(description);
+
+    CAS cas = RutaTestUtils.getCAS(document);
+
+    cas.reset();
+    cas.setDocumentText(document);
+    engine.process(cas);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "Some", "text");
+
+    cas.reset();
+    cas.setDocumentText(document);
+    engine.process(cas);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "Some", "text");
+
+  }
+
+  @Test
+  public void testNullValueWithFeatureMatch()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+
+    String document = "Some text.";
+    String script = "";
+    script += "ANNOTATION a;\n";
+    script += "INT i;\n";
+    script += "STRING s;\n";
+    script += "a.begin == 0{-> T1};\n";
+    script += "a.ct == \"text\"{-> T2};\n";
+    script += "a.ff == \"text\"{-> T3};\n"; // !!!
+    script += "Document{-> i = a.begin};\n";
+    script += "Document{-> s = a.ct};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+
+  }
+
 }

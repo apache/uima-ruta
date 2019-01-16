@@ -147,7 +147,7 @@ Dr.JoachimBaumeister
       
       <programlisting><![CDATA[PERIOD #{-> Sentence} PERIOD;]]></programlisting>
       
-      In this example, everything in beteen two periods is annotated with an annotation of the type
+      In this example, everything in between two periods is annotated with an annotation of the type
       <code>Sentence</code>. This rule is much more efficient than a rule like 
       <code>PERIOD ANY+{-PARTOF(PERIOD)} PERIOD;</code> since it only navigated in the index of PERIOD annotations 
       and does not match on all tokens.
@@ -159,12 +159,12 @@ Dr.JoachimBaumeister
       
       This rule creates only annotations after a period. If the wildcard is used as an anchor of the rule, 
       e.g., is the first rule element and no manual anchor is specified, then it starts to match at the beginning 
-      of the doucment or current window.
+      of the document or current window.
       
       <programlisting><![CDATA[(# PERIOD){-> Sentence};]]></programlisting>
       
       This rule creates a Sentence annotation starting at the begin of the document ending with the first period.
-      If the rule lements are swicthed, the result is quite different because of the starting anchor of the rule:
+      If the rule elements are switched, the result is quite different because of the starting anchor of the rule:
       
       <programlisting><![CDATA[(PERIOD #){-> Sentence};]]></programlisting>
       
@@ -175,6 +175,21 @@ Dr.JoachimBaumeister
     </para>
   </section>
   
+  <section id="ugr.tools.ruta.language.optional">
+    <title>Optional match _</title>
+    <para>
+      The optional match <code>_</code> is a special matching condition of a rule element, 
+      which does not require any annotations or a textual span in general to match.
+      The functionality of the optional match is illustrated with following examples:
+      
+      <programlisting><![CDATA[PERIOD{-> SentenceEnd} _{-PARTOF(CW)};]]></programlisting>
+      
+      In this example, an annotation of the type <code>SentenceEnd</code> is created for each <code>PERIOD</code> annotation, 
+      if it is followed by something that is not part of a <code>CW</code>. This is also fulfilled for the last <code>PERIOD</code> annotation
+      in a document that ends with a period.
+    </para>
+  </section>
+  
   <section id="ugr.tools.ruta.language.labels">
     <title>Label expressions</title>
     <para>
@@ -182,13 +197,13 @@ Dr.JoachimBaumeister
       multiple annotations - the annotations matched by the matching condition of the rule element. 
       The name of the variable is the short identifier before the colon in front of the matching condition, e.g., 
       in <code>sw:SW</code>, <code>SW</code> is the matching condition and <code>sw</code> is the name of the local variable.
-      The variable will be assigned when the rule element tries to match (also when it fails afterall) 
-      and can be utilzed in all other language elements afterwards.
+      The variable will be assigned when the rule element tries to match (also when it fails after all) 
+      and can be utilized in all other language elements afterwards.
       The functionality of the label expressions is illustrated with following examples:
       
       <programlisting><![CDATA[sw1:SW sw2:SW{sw1.end=sw2.begin};]]></programlisting>
       
-      This rule matches on two consecutive small-written words, but matches only if there is no space inbetween them.
+      This rule matches on two consecutive small-written words, but matches only if there is no space in between them.
       
       Label expression can also be used across <xref linkend='ugr.tools.ruta.language.inlined' />.
     </para>
@@ -501,7 +516,8 @@ Document{->CALL(MyScript.countNumberOfTypesInDocument)};
       <quote>&lt;-</quote>
       ,
       then the inlined rules are interpreted as some sort of condition. The surrounding rules will
-      only match, if one of the inlined rules was successfully applied.
+      only match, if one of the inlined rules was successfully applied. 
+      A rule element may be extended with several inlined rule blocks of the same type.
       The functionality introduced
       by inlined rules is illustrated with a few examples:
     </para>

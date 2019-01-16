@@ -30,6 +30,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.block.RutaBlock;
@@ -235,7 +236,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RutaStream stream, RuleElement element, AnnotationFS result) {
     RutaRuleElement re = (RutaRuleElement) element;
     RutaMatcher matcher = re.getMatcher();
-      
+
     if (matcher instanceof RutaLiteralMatcher) {
       RutaLiteralMatcher lm = (RutaLiteralMatcher) matcher;
       IStringExpression expression = lm.getExpression();
@@ -256,7 +257,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
       if (iterator == null) {
         return null;
       }
-      
+
       if (iterator.isValid()) {
         result = iterator.get();
         if (annotation != null && (after && result.getEnd() == annotation.getEnd())
@@ -359,9 +360,12 @@ public class WildCardRuleElement extends AbstractRuleElement {
         // TODO match and containermatch should be on the correct level!
         result = nextElement.continueMatch(after, anchor, extendedMatch, ruleApply,
                 nextContainerMatch, sideStepOrigin, nextElement, stream, crowd);
-        List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(nextElement);
-        if (nextList == null || nextList.isEmpty()
-                || !nextList.get(nextList.size() - 1).matched()) {
+//        List<RuleElementMatch> nextList = nextContainerMatch.getInnerMatches().get(nextElement);
+
+        // cannot use container match since there could be new alternatives in the depth search
+        boolean nextElementDidMatch = nextElementDidMatch(result, nextElement);
+
+        if (!nextElementDidMatch) {
           moveOn(after, iterator, stream);
         } else {
           doneHere = true;
@@ -373,6 +377,32 @@ public class WildCardRuleElement extends AbstractRuleElement {
       }
     }
     return result;
+  }
+
+  private boolean nextElementDidMatch(List<RuleMatch> result, RuleElement nextElement) {
+    if (result == null || result.isEmpty()) {
+      return false;
+    }
+
+    for (RuleMatch ruleMatch : result) {
+      if (ruleMatch.matched()) {
+        return true;
+      }
+    }
+    for (RuleMatch ruleMatch : result) {
+      List<List<RuleElementMatch>> matchInfo = ruleMatch.getMatchInfo(nextElement);
+      List<RuleElementMatch> matches = matchInfo.get(matchInfo.size() - 1);
+      if (matches != null) {
+        for (RuleElementMatch ruleElementMatch : matches) {
+          if (ruleElementMatch != null && ruleElementMatch.matched()) {
+            return true;
+          }
+        }
+      }
+
+    }
+
+    return false;
   }
 
   private ComposedRuleElementMatch getContainerMatchOfNextElement(
@@ -424,10 +454,10 @@ public class WildCardRuleElement extends AbstractRuleElement {
     if (stream.getDocumentAnnotation().equals(cas.getDocumentAnnotation())) {
       // no windowing needed
       if (annotation == null) {
-        result = cas.getAnnotationIndex(type).iterator();
+        result = cas.getAnnotationIndex(type).withSnapshotIterators().iterator();
       } else {
         AnnotationFS pointer = stream.getAnchor(after, annotation);
-        result = cas.getAnnotationIndex(type).iterator(pointer);
+        result = cas.getAnnotationIndex(type).withSnapshotIterators().iterator(pointer);
         if (!result.isValid()) {
           if (after) {
             // result.moveToFirst();
@@ -654,7 +684,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       textsMatched.add(annotation);
     }
     result.setMatchInfo(base, textsMatched, stream);
-    context.getParent().getEnvironment().addMatchToVariable(ruleMatch, this, context, stream);
+    RutaEnvironment environment = context.getParent().getEnvironment();
+    environment.addMatchToVariable(ruleMatch, this, context, stream);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {
         crowd.beginVisit(condition, null);
@@ -667,6 +698,13 @@ public class WildCardRuleElement extends AbstractRuleElement {
       }
     }
     result.setConditionInfo(base, evaluatedConditions);
+    if (result.matched()) {
+      boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
+      result.setInlinedRulesMatched(inlinedRulesMatched);
+    } else {
+      // update label for failed match after evaluating conditions
+      environment.addAnnotationsToVariable(null, getLabel(), context);
+    }
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
   }
 

@@ -40,16 +40,19 @@ public class StartsWithBooleanFunction extends BooleanFunctionExpression {
     return text;
   }
 
+  public IStringExpression getStartExpr() {
+    return start;
+  }
+
   @Override
   public boolean getBooleanValue(MatchContext context, RutaStream stream) {
-    return text.getStringValue(context, stream).startsWith(
-            start.getStringValue(context, stream));
+    return text.getStringValue(context, stream).startsWith(start.getStringValue(context, stream));
   }
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
-    Boolean endsWith = text.getStringValue(context, stream).startsWith(
-            start.getStringValue(context, stream));
+    Boolean endsWith = text.getStringValue(context, stream)
+            .startsWith(start.getStringValue(context, stream));
     return endsWith.toString();
   }
 }

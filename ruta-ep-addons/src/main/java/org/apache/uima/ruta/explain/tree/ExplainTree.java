@@ -20,16 +20,18 @@
 package org.apache.uima.ruta.explain.tree;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.uima.cas.ArrayFS;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.ruta.explain.ExplainConstants;
 
 public class ExplainTree {
@@ -73,7 +75,7 @@ public class ExplainTree {
 
   private void createTree(CAS cas, int offset, boolean onlyRules) {
     TypeSystem ts = cas.getTypeSystem();
-    Type scriptApply = ts.getType(ExplainConstants.SCRIPT_APPLY_TYPE);
+    Type scriptApplyType = ts.getType(ExplainConstants.SCRIPT_APPLY_TYPE);
 
     blockApplyType = ts.getType(ExplainConstants.BLOCK_APPLY_TYPE);
     ruleApplyType = ts.getType(ExplainConstants.RULE_APPLY_TYPE);
@@ -84,20 +86,32 @@ public class ExplainTree {
     ruleElementMatchesType = ts.getType(ExplainConstants.RULE_ELEMENT_MATCHES_TYPE);
     evaluatedConditionType = ts.getType(ExplainConstants.EVAL_CONDITION_TYPE);
 
-    if (scriptApply == null)
+    if (scriptApplyType == null) {
       return;
-    FSIterator<AnnotationFS> it = cas.getAnnotationIndex(scriptApply).iterator();
-    root = new ApplyRootNode(null, ts);
-
-    if (it.isValid()) {
-      it.moveToFirst();
-      while (it.isValid()) {
-        AnnotationFS fs = it.get();
-        buildTree(fs, root, ts, offset, onlyRules);
-        it.moveToNext();
-      }
     }
 
+    List<AnnotationFS> scriptApplies = new ArrayList<>(CasUtil.select(cas, scriptApplyType));
+    // sort by creation time
+    Collections.sort(scriptApplies, new Comparator<AnnotationFS>() {
+
+      @Override
+      public int compare(AnnotationFS o1, AnnotationFS o2) {
+        Feature feature = o1.getType().getFeatureByBaseName(ExplainConstants.TIME_STAMP);
+        if (feature == null || !o1.getType().equals(o2.getType())) {
+          return o1.getType().getName().compareTo(o2.getType().getName());
+        }
+        long l1 = o1.getLongValue(feature);
+        long l2 = o2.getLongValue(feature);
+        return Long.compare(l1, l2);
+      }
+    });
+
+    root = new ApplyRootNode(null, ts);
+
+    for (AnnotationFS scriptApply : scriptApplies) {
+
+      buildTree(scriptApply, root, ts, offset, onlyRules);
+    }
   }
 
   private void buildTree(FeatureStructure fs, IExplainTreeNode parent, TypeSystem ts, int offset,
@@ -185,8 +199,8 @@ public class ExplainTree {
     }
   }
 
-  private void processRuleApply(AnnotationFS fs, IExplainTreeNode parent, TypeSystem ts,
-          int offset, boolean onlyRules) {
+  private void processRuleApply(AnnotationFS fs, IExplainTreeNode parent, TypeSystem ts, int offset,
+          boolean onlyRules) {
     if (offset >= 0 && (fs.getBegin() >= offset || fs.getEnd() <= offset)) {
       return;
     }
@@ -225,8 +239,8 @@ public class ExplainTree {
     }
   }
 
-  private void processRuleMatch(AnnotationFS fs, IExplainTreeNode parent, TypeSystem ts,
-          int offset, boolean onlyRules) {
+  private void processRuleMatch(AnnotationFS fs, IExplainTreeNode parent, TypeSystem ts, int offset,
+          boolean onlyRules) {
     if (offset >= 0 && (fs.getBegin() >= offset || fs.getEnd() <= offset)) {
       return;
     }
@@ -305,7 +319,7 @@ public class ExplainTree {
   }
 
   private void prune(IExplainTreeNode node) {
-    if(node == null) {
+    if (node == null) {
       return;
     }
     List<IExplainTreeNode> children = node.getChildren();

@@ -39,7 +39,10 @@ public class AddFilterTypeAction extends AbstractRutaAction {
   public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     List<Type> types = new ArrayList<Type>();
     for (ITypeExpression each : list) {
-      types.add(each.getType(context, stream));
+      Type type = each.getType(context, stream);
+      if (type != null) {
+        types.add(type);
+      }
     }
     stream.addFilterTypes(types);
   }
@@ -50,5 +53,4 @@ public class AddFilterTypeAction extends AbstractRutaAction {
 
   private List<ITypeExpression> list;
 
-  
 }

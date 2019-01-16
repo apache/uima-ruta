@@ -708,6 +708,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.rules'>rulesScriptName</link>
+                  </entry>
+                  <entry>This parameter specifies the name of the non-existing script if the parameter 'rules' is used.
+                  </entry>
+                  <entry>Single String</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.scriptEncoding'>scriptEncoding</link>
                   </entry>
                   <entry>Encoding of all UIMA Ruta script files.</entry>
@@ -956,6 +964,39 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                   </entry>
                   <entry>Single Boolean</entry>
                 </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.csvSeparator'>csvSeparator</link>
+                  </entry>
+                  <entry>String/token to be used to split columns in CSV tables.
+                  </entry>
+                  <entry>Single String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.inferenceVisitors'>inferenceVisitors</link>
+                  </entry>
+                  <entry>List of factory classes for additional inference visitors.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.maxRuleMatches'>maxRuleMatches</link>
+                  </entry>
+                  <entry>Maximum amount of allowed matches of a single rule.
+                  </entry>
+                  <entry>Single Integer</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.maxRuleMatches'>maxRuleElementMatches</link>
+                  </entry>
+                  <entry>Maximum amount of allowed matches of a single rule element.
+                  </entry>
+                  <entry>Single Integer</entry>
+                </row>
+                
               </tbody>
             </tgroup>
           </table>
@@ -979,6 +1020,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           If set, it replaces the content of file specified by the <link linkend='ugr.tools.ruta.ae.basic.parameter.mainScript'>mainScript</link> parameter.
           </para>
         </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.rulesScriptName">
+          <title>rulesScriptName</title>
+          <para>
+          This parameter specifies the name of the non-existing script if the <link linkend='ugr.tools.ruta.ae.basic.parameter.rules'>rules</link> parameter is used.
+          The default value is 'Anonymous'.
+          </para>
+        </section>
+    
         <section id="ugr.tools.ruta.ae.basic.parameter.scriptEncoding">
           <title>scriptEncoding</title>
           <para>
@@ -1080,7 +1129,7 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <title>removeBasics</title>
           <para>
             This parameter specifies whether the inference annotations created by the analysis engine should be removed after processing the CAS.
-            The default value is set to true.
+            The default value is set to false.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.reindexOnly">
@@ -1233,6 +1282,33 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <title>dictRemoveWS</title>
           <para>
             If this parameter is set to true, then whitespaces are removed when dictionaries are loaded.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.csvSeparator">
+          <title>csvSeparator</title>
+          <para>
+            If this parameter is set to any String value then this String/token is used to split columns in CSV tables.
+            The default is set to ';'.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.inferenceVisitors">
+          <title>inferenceVisitors</title>
+          <para>
+            This parameter specifies optional class names implementing the interface
+    		<code>org.apache.uima.ruta.visitor.RutaInferenceVisitor</code>, which will be notified during
+   			applying the rules.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.maxRuleMatches">
+          <title>maxRuleMatches</title>
+          <para>
+             Maximum amount of allowed matches of a single rule.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.maxRuleElementMatches">
+          <title>maxRuleElementMatches</title>
+          <para>
+             Maximum amount of allowed matches of a single rule element.
           </para>
         </section>
       </section>

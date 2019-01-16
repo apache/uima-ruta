@@ -816,21 +816,31 @@ String label = null;
 	re1 = ruleElementType {re = re1;}
 	| re2 = ruleElementLiteral {re = re2;}
 	| re3 = ruleElementComposed {re = re3;}
-	| re4 = ruleElementWildCard {re = re4;}
+	| re4 = ruleElementSpecial {re = re4;}
 	)
 	{re.setLabel(label);}
-	(t = THEN2 LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 
-	RCURLY {re.setInlinedRules(innerRules);re.setInlineMode(t == null ? null : t.getText());})?
-	(t = THEN LCURLY (rule = simpleStatement {innerRules.add(rule);})+ 
-	RCURLY {re.setInlinedRules(innerRules);re.setInlineMode(t == null ? null : t.getText());})?
+	
+	(
+	t = THEN2 LCURLY 
+	{innerRules = new ArrayList<RutaRule>();}
+	(rule = simpleStatement {innerRules.add(rule);})+ 
+	RCURLY {re.addInlinedRules(innerRules);}
+	)*
+	
+	(
+	t = THEN LCURLY 
+	{innerRules = new ArrayList<RutaRule>();}
+	(rule = simpleStatement {innerRules.add(rule);})+ 
+	RCURLY {re.addInlinedRules(innerRules);}
+	)*
 	;
 
-ruleElementWildCard returns [RutaRuleElement re = null] 
+ruleElementSpecial returns [RutaRuleElement re = null] 
 @init{
 List<RutaCondition> dummyConds = new ArrayList<RutaCondition>();
 }
   :
-    	w = WILDCARD
+    	w = (WILDCARD | OPTIONAL)
         (LCURLY 
         {
         
@@ -848,6 +858,7 @@ List<RutaCondition> dummyConds = new ArrayList<RutaCondition>();
         re = scriptFactory.createRuleElement(w,c,a,end);}
 
     ;
+
 
 	
 ruleElementComposed returns [ComposedRuleElement re = null] 
@@ -1548,8 +1559,10 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 action returns [RutaAction result = null]
 @init {
 result = ActionFactory.createEmptyAction(input.LT(1));
+String label = null;
 }
 	:
+	(l = Identifier {label = l.getText();} COLON)?
 	(
 	a = actionColor
 	| a = actionDel
@@ -1600,7 +1613,7 @@ result = ActionFactory.createEmptyAction(input.LT(1));
 	| (typeExpression)=> te = typeExpression {a = ActionFactory.createAction(te);}
 	
 	// | a = variableAction
-	) {result = a;}
+	) {result = a; result.setLabel(label);}
 	;
 
 
@@ -2658,6 +2671,8 @@ composedBooleanExpression returns [Expression expr = null]
 	(e2 = booleanCompare)=> e2 = booleanCompare {expr = e2;}
 	| (bne = booleanNumberExpression)=> bne = booleanNumberExpression{expr = bne;}
 	| (bse = booleanStringExpression)=> bse = booleanStringExpression{expr = bse;}
+	| (booleanAnnotationListExpression)=> bale = booleanAnnotationListExpression {expr = bale;}
+	| (booleanAnnotationExpression)=> bae = booleanAnnotationExpression {expr = bae;}
 	| (bte = booleanTypeExpression)=> bte = booleanTypeExpression{expr = bte;}
 	| e1 = booleanFunction {expr = e1;}
 	| LPAREN ep = booleanExpression RPAREN {expr = ep;}
@@ -2698,13 +2713,29 @@ literalBooleanExpression returns  [BooleanLiteral expr = null]
 	| value = FALSE)
 	{expr = ExpressionFactory.createSimpleBooleanExpression(value);}
 	;
+	
+booleanAnnotationExpression  returns  [Expression expr = null]
+	:
+	e1 = annotationExpression
+	op = (EQUAL | NOTEQUAL)
+	( e2 = annotationExpression | e2 = nullExpression )
+	{expr = ExpressionFactory.createBooleanAnnotationExpression(e1,op,e2);}
+	;
+
+booleanAnnotationListExpression  returns  [Expression expr = null]
+	:
+	e1 = annotationListExpression
+	op = (EQUAL | NOTEQUAL)
+	e2 = annotationListExpression
+	{expr = ExpressionFactory.createBooleanAnnotationListExpression(e1,op,e2);}
+	;
 
 //not checked
 booleanTypeExpression  returns  [Expression expr = null]
 	:
 	e1 = typeExpression
 	op = (EQUAL | NOTEQUAL)
-	e2 = typeExpression
+	( e2 = typeExpression | e2 = nullExpression )
 	{expr = ExpressionFactory.createBooleanTypeExpression(e1,op,e2);}
 	;
 
@@ -2725,7 +2756,7 @@ booleanStringExpression  returns  [Expression expr = null]
 	//LPAREN
 	e1 = stringExpression
 	op = (EQUAL | NOTEQUAL)
-	e2 = stringExpression
+	( e2 = stringExpression | e2 = nullExpression )
 	//RPAREN
 	{expr = ExpressionFactory.createBooleanStringExpression(e1,op,e2);}
 	;

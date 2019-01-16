@@ -25,13 +25,12 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class EqualsIgnoreCaseBooleanFunction extends BooleanFunctionExpression {
-  
+
   private IStringExpression text;
+
   private IStringExpression compare;
-  
-  
-  public EqualsIgnoreCaseBooleanFunction(IStringExpression text,
-          IStringExpression compare) {
+
+  public EqualsIgnoreCaseBooleanFunction(IStringExpression text, IStringExpression compare) {
     this.text = text;
     this.compare = compare;
   }
@@ -40,14 +39,20 @@ public class EqualsIgnoreCaseBooleanFunction extends BooleanFunctionExpression {
     return text;
   }
 
+  public IStringExpression getCompareExpr() {
+    return compare;
+  }
+
   @Override
   public boolean getBooleanValue(MatchContext context, RutaStream stream) {
-    return text.getStringValue(context, stream).equalsIgnoreCase(compare.getStringValue(context, stream));
+    return text.getStringValue(context, stream)
+            .equalsIgnoreCase(compare.getStringValue(context, stream));
   }
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
-    Boolean equals = text.getStringValue(context, stream).equalsIgnoreCase(compare.getStringValue(context, stream)); 
+    Boolean equals = text.getStringValue(context, stream)
+            .equalsIgnoreCase(compare.getStringValue(context, stream));
     return equals.toString();
   }
 }

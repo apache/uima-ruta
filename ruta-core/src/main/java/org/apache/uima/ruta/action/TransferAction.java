@@ -47,6 +47,11 @@ public class TransferAction extends TypeSensitiveAction {
     List<List<RuleElementMatch>> list = match.getMatchInfo(element);
     CAS cas = stream.getCas();
     Type t = type.getType(context, stream);
+
+    if (t == null) {
+      return;
+    }
+
     for (List<RuleElementMatch> eachList : list) {
       for (RuleElementMatch each : eachList) {
         List<AnnotationFS> matched = each.getTextsMatched();
@@ -55,6 +60,7 @@ public class TransferAction extends TypeSensitiveAction {
           copyFeatures(annotationFS, createFS, cas);
           if (createFS instanceof AnnotationFS) {
             stream.addAnnotation((AnnotationFS) createFS, match);
+            addAnnotationToLabel((AnnotationFS) createFS, context);
           }
           cas.addFsToIndexes(createFS);
         }

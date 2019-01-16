@@ -65,14 +65,17 @@ public class CreateAction extends AbstractStructureAction {
         return;
       }
       Type type = structureType.getType(context, stream);
-      AnnotationFS annotation = stream.getCas().createAnnotation(type, 0, 0);
-      if (annotation instanceof Annotation) {
-        Annotation a = (Annotation) annotation;
-        a.setBegin(matchedAnnotation.getBegin());
-        a.setEnd(matchedAnnotation.getEnd());
-        context.setAnnotation(matchedAnnotation);
-        stream.assignFeatureValues(annotation, features, context);
-        stream.addAnnotation(a, true, match);
+      if (type != null) {
+        AnnotationFS annotation = stream.getCas().createAnnotation(type, 0, 0);
+        if (annotation instanceof Annotation) {
+          Annotation a = (Annotation) annotation;
+          a.setBegin(matchedAnnotation.getBegin());
+          a.setEnd(matchedAnnotation.getEnd());
+          context.setAnnotation(matchedAnnotation);
+          stream.assignFeatureValues(annotation, features, context);
+          stream.addAnnotation(a, true, match);
+          addAnnotationToLabel(a, context);
+        }
       }
     }
   }

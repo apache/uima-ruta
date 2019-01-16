@@ -42,11 +42,12 @@ public class StarGreedy extends AbstractRuleElementQuantifier {
       return null;
     }
     for (RuleElementMatch match : matches) {
-      result &= match.matched()
-              || (!(match instanceof ComposedRuleElementMatch) && match.getTextsMatched().isEmpty());
+      result &= match.matched() || (!(match instanceof ComposedRuleElementMatch)
+              && match.getTextsMatched().isEmpty());
     }
     if (!result && matches.size() > 0) {
       matches.remove(matches.size() - 1);
+      updateLabelAssignment(matches, context, stream);
       result = true;
     }
     if (result) {

@@ -247,6 +247,10 @@ public class ActionVerbalizerTest {
     s = v.verbalize(a);
     assertEquals("MATCHEDTEXT(anyVar, 4, numVar)", s);
 
+    a = new MatchedTextAction(var, null);
+    s = v.verbalize(a);
+    assertEquals("MATCHEDTEXT(anyVar)", s);
+
     // MERGE
     a = new MergeAction(boolExpr1, var, listExprList);
     s = v.verbalize(a);

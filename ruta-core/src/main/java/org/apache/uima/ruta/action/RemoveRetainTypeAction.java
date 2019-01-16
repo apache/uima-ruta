@@ -40,7 +40,10 @@ public class RemoveRetainTypeAction extends AbstractRutaAction {
     context.getElement();
     List<Type> types = new ArrayList<Type>();
     for (ITypeExpression each : list) {
-      types.add(each.getType(context, stream));
+      Type type = each.getType(context, stream);
+      if (type != null) {
+        types.add(type);
+      }
     }
     stream.removeRetainTypes(types);
   }
@@ -48,7 +51,7 @@ public class RemoveRetainTypeAction extends AbstractRutaAction {
   public List<ITypeExpression> getList() {
     return list;
   }
-  
+
   private List<ITypeExpression> list;
 
 }

@@ -31,38 +31,39 @@ import org.apache.uima.ruta.verbalize.RutaVerbalizer;
 
 public class BooleanOperationsExtension implements IRutaBooleanFunctionExtension {
 
-  private final String[] knownExtensions = new String[] { "contains", "endsWith",
-      "startsWith", "equals", "equalsIgnoreCase", "isEmpty" };
+  private final String[] knownExtensions = new String[] { "contains", "endsWith", "startsWith",
+      "equals", "equalsIgnoreCase", "isEmpty" };
 
   private final Class<?>[] extensions = new Class[] { ContainsBooleanFunction.class,
-      EndsWithBooleanFunction.class, StartsWithBooleanFunction.class,
-      EqualsBooleanFunction.class, EqualsIgnoreCaseBooleanFunction.class,
-      IsEmptyBooleanFunction.class };
+      EndsWithBooleanFunction.class, StartsWithBooleanFunction.class, EqualsBooleanFunction.class,
+      EqualsIgnoreCaseBooleanFunction.class, IsEmptyBooleanFunction.class };
 
-  
-  
+  @Override
   public String verbalize(RutaElement element, RutaVerbalizer verbalizer) {
     if (element instanceof ContainsBooleanFunction) {
       return verbalizeName(element) + "("
-              + verbalizer.verbalize(((ContainsBooleanFunction) element).getExpr()) + ")";
+              + verbalizer.verbalize(((ContainsBooleanFunction) element).getExpr()) + ","
+              + verbalizer.verbalize(((ContainsBooleanFunction) element).getContainsExpr()) + ")";
     } else if (element instanceof EndsWithBooleanFunction) {
       return verbalizeName(element) + "("
-              + verbalizer.verbalize(((EndsWithBooleanFunction) element).getExpr()) + ")";
-    }
-    //
-    else if (element instanceof StartsWithBooleanFunction) {
+              + verbalizer.verbalize(((EndsWithBooleanFunction) element).getExpr()) + ","
+              + verbalizer.verbalize(((EndsWithBooleanFunction) element).getEndExpr()) + ")";
+    } else if (element instanceof StartsWithBooleanFunction) {
       return verbalizeName(element) + "("
-              + verbalizer.verbalize(((StartsWithBooleanFunction) element).getExpr()) + ")";
+              + verbalizer.verbalize(((StartsWithBooleanFunction) element).getExpr()) + ","
+              + verbalizer.verbalize(((StartsWithBooleanFunction) element).getStartExpr()) + ")";
     } else if (element instanceof EqualsBooleanFunction) {
       return verbalizeName(element) + "("
-              + verbalizer.verbalize(((EqualsBooleanFunction) element).getExpr()) + ")";
+              + verbalizer.verbalize(((EqualsBooleanFunction) element).getExpr()) + ","
+              + verbalizer.verbalize(((EqualsBooleanFunction) element).getCompareExpr()) + ")";
     } else if (element instanceof EqualsIgnoreCaseBooleanFunction) {
       return verbalizeName(element) + "("
-              + verbalizer.verbalize(((EqualsIgnoreCaseBooleanFunction) element).getExpr()) + ")";
+              + verbalizer.verbalize(((EqualsIgnoreCaseBooleanFunction) element).getExpr()) + ","
+              + verbalizer.verbalize(((EqualsIgnoreCaseBooleanFunction) element).getCompareExpr())
+              + ")";
     } else if (element instanceof IsEmptyBooleanFunction) {
       return verbalizeName(element) + "("
-              + verbalizer.verbalize(((IsEmptyBooleanFunction) element).getExpr())
-              + ")";
+              + verbalizer.verbalize(((IsEmptyBooleanFunction) element).getExpr()) + ")";
     }
     //
     else {
@@ -70,46 +71,44 @@ public class BooleanOperationsExtension implements IRutaBooleanFunctionExtension
     }
   }
 
-
+  @Override
   public String verbalizeName(RutaElement element) {
-    
-     if (element instanceof ContainsBooleanFunction) {
+
+    if (element instanceof ContainsBooleanFunction) {
       return knownExtensions[0];
     }
-     
-     else if (element instanceof EndsWithBooleanFunction) {
+
+    else if (element instanceof EndsWithBooleanFunction) {
       return knownExtensions[1];
     }
 
-    
     else if (element instanceof StartsWithBooleanFunction) {
       return knownExtensions[2];
     }
-    
+
     else if (element instanceof EqualsBooleanFunction) {
       return knownExtensions[3];
     }
-    
+
     else if (element instanceof EqualsIgnoreCaseBooleanFunction) {
       return knownExtensions[4];
     }
-    
+
     else if (element instanceof IsEmptyBooleanFunction) {
       return knownExtensions[5];
     }
-    
 
-    
-    
     else {
       return "UnknownStringFunction";
     }
   }
 
+  @Override
   public String[] getKnownExtensions() {
     return knownExtensions;
   }
 
+  @Override
   public Class<?>[] extensions() {
     return extensions;
   }
@@ -117,41 +116,44 @@ public class BooleanOperationsExtension implements IRutaBooleanFunctionExtension
   @Override
   public BooleanFunctionExpression createBooleanFunction(String name, List<RutaExpression> args)
           throws RutaParseException {
-    if(args ==null ){
-      throw new RutaParseException("You have to specify at least 1 Argument to use these Functions !");
+    if (args == null) {
+      throw new RutaParseException(
+              "You have to specify at least 1 Argument to use these Functions !");
     }
-    
+
     if (name.equals(knownExtensions[5])) {
       return new IsEmptyBooleanFunction((IStringExpression) args.get(0));
     }
-    
-    if (args == null || args.size()<2) {
-      throw new RutaParseException("You have to specify at least 2 Arguments to use these Functions !");
+
+    if (args == null || args.size() < 2) {
+      throw new RutaParseException(
+              "You have to specify at least 2 Arguments to use these Functions !");
     }
 
     if (name.equals(knownExtensions[0])) {
-      return new ContainsBooleanFunction((IStringExpression) args.get(0), (IStringExpression) args.get(1));
+      return new ContainsBooleanFunction((IStringExpression) args.get(0),
+              (IStringExpression) args.get(1));
     }
 
     else if (name.equals(knownExtensions[1])) {
-      return new EndsWithBooleanFunction((IStringExpression) args.get(0),(IStringExpression) args.get(1));
+      return new EndsWithBooleanFunction((IStringExpression) args.get(0),
+              (IStringExpression) args.get(1));
     }
 
     else if (name.equals(knownExtensions[2])) {
-      return new StartsWithBooleanFunction((IStringExpression) args.get(0),(IStringExpression) args.get(1));
+      return new StartsWithBooleanFunction((IStringExpression) args.get(0),
+              (IStringExpression) args.get(1));
     }
-    
-     if (name.equals(knownExtensions[3])) {
-      return new EqualsBooleanFunction((IStringExpression) args.get(0),(IStringExpression) args.get(1));
+
+    if (name.equals(knownExtensions[3])) {
+      return new EqualsBooleanFunction((IStringExpression) args.get(0),
+              (IStringExpression) args.get(1));
+    } else if (name.equals(knownExtensions[4])) {
+      return new EqualsIgnoreCaseBooleanFunction((IStringExpression) args.get(0),
+              (IStringExpression) args.get(1));
     }
-    else if (name.equals(knownExtensions[4])) {
-      return new EqualsIgnoreCaseBooleanFunction((IStringExpression) args.get(0),(IStringExpression) args.get(1));
-    }
-     
-    
+
     return null;
   }
-
-
 
 }

@@ -47,8 +47,14 @@ public class BooleanStringExpression extends AbstractBooleanExpression {
 
   private boolean eval(String t1, String op, String t2) {
     if ("==".equals(op)) {
+      if (t1 == null) {
+        return t2 == null;
+      }
       return t1.equals(t2);
     } else if ("!=".equals(op)) {
+      if (t1 == null) {
+        return t2 != null;
+      }
       return !t1.equals(t2);
     }
     return false;

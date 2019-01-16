@@ -70,7 +70,8 @@ public class WSDictionaryTest {
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
     String script = "WORDLIST list = 'org/apache/uima/ruta/WSDictionaryTestList.txt';";
     script += "MARKFAST(T1, list, true, 0, false);";
-    Map<String, Object> map = new HashMap<String, Object>();
+
+    Map<String, Object> map = new HashMap<>();
     map.put(RutaEngine.PARAM_DICT_REMOVE_WS, true);
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script, map);
@@ -104,7 +105,9 @@ public class WSDictionaryTest {
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document, complexTypes, features);
-      Ruta.apply(cas, script);
+      Map<String, Object> map = new HashMap<>();
+      map.put(RutaEngine.PARAM_DICT_REMOVE_WS, true);
+      Ruta.apply(cas, script, map);
     } catch (Exception e) {
       e.printStackTrace();
     }

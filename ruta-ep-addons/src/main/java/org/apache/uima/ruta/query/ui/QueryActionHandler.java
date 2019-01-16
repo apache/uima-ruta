@@ -21,7 +21,6 @@ package org.apache.uima.ruta.query.ui;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -38,7 +38,6 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.cas.FSArray;
@@ -58,6 +57,7 @@ import org.apache.uima.ruta.extensions.IRutaTypeFunctionExtension;
 import org.apache.uima.ruta.ide.core.RutaExtensionManager;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.util.CasCreationUtils;
+import org.apache.uima.util.CasIOUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -114,14 +114,14 @@ public class QueryActionHandler implements IHandler {
     private final String fileNameFilter;
 
     QueryHandlerJob(ExecutionEvent event, String dir, String fileNameFilter, String typeSystem,
-            String rules, boolean recurive) {
+            String rules, boolean recursive) {
       super(String.format("Query in \"%s\" [filter: \"%s\"] ...", dir, fileNameFilter));
       this.event = event;
       this.dataLocation = dir;
       this.fileNameFilter = fileNameFilter;
       this.typeSystemLocation = typeSystem;
       this.rules = rules;
-      this.recursive = recurive;
+      this.recursive = recursive;
       setUser(true);
     }
 
@@ -280,8 +280,11 @@ public class QueryActionHandler implements IHandler {
           }
 
           cas.reset();
-          if (each.getName().endsWith("xmi")) {
-            XmiCasDeserializer.deserialize(new FileInputStream(each), cas, true);
+          if (FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("xmi") ||
+                  FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("bcas") ||
+                  FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("scas") ||
+                  FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("xcas")) {
+            CasIOUtils.load(each.toURI().toURL(), cas);
           } else {
             cas.setDocumentText(getText(each));
           }

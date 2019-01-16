@@ -42,10 +42,12 @@ import org.junit.Test;
 public class ImplicitActionTest {
 
   @Test
-  public void test() {
+  public void test() throws AnalysisEngineProcessException, InvalidXMLException,
+          ResourceInitializationException, ResourceConfigurationException, URISyntaxException,
+          IOException {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    CAS cas = null;
+
     Map<String, String> complexTypes = new HashMap<String, String>();
     Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
     String typeNameA = "org.apache.uima.ruta.FeatureMatchTest.A";
@@ -77,25 +79,23 @@ public class ImplicitActionTest {
     String fnds = "ds";
     listD.add(new TestFeature(fnds, "", "uima.cas.String"));
 
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
-              FeatureMatch1Test.class.getName().replaceAll("\\.", "/") +".txt", 50, false, false, complexTypes, features, null);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }    
-    
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Peter Kluegl", "Joern Kottmann", "Marshall Schor");
+    CAS cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+            FeatureMatch1Test.class.getName().replaceAll("\\.", "/") + ".txt", 50, false, false,
+            complexTypes, features, null);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Peter Kluegl", "Joern Kottmann",
+            "Marshall Schor");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Peter", "Joern", "Marshall");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "Peter", "Joern", "Marshall");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 3, "Peter", "Joern", "Marshall");
-    
+
     cas.release();
   }
-  
-  
+
   @Test
-  public void testChangeOffsets() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testChangeOffsets()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
     String text = "text 2 3 x 4 1";
     String script = "";
     script += "NUM{->T1};";
@@ -106,7 +106,5 @@ public class ImplicitActionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "4 1");
     cas.release();
   }
-  
-  
-  
+
 }

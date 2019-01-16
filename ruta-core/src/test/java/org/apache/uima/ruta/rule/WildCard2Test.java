@@ -142,7 +142,7 @@ public class WildCard2Test {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "A", "X 2 B", "B");
-    Assert.assertEquals(1008,
+    Assert.assertEquals(192,
             cas.getAnnotationIndex(cas.getTypeSystem().getType(RutaTestUtils.TYPE + "3")).size());
     cas.release();
   }
@@ -169,6 +169,60 @@ public class WildCard2Test {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "a b c", "d e f");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 6, "a", "b", "c", "d", "e", "f");
     cas.release();
+  }
+
+  @Test
+  public void testWildCardBetweenSameTypeWithAction() throws Exception {
+    String document = "1 a b c 2 d e f 3";
+    String script = "NUM{->T1,T1};";
+    script += "T1 # t:T1{-> UNMARK(t)};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "1", "1");
+  }
+
+  @Test
+  public void testDuplicateAnnotation() throws Exception {
+    String document = "x x x 1 a b c 2 d e f 3";
+    String script = "NUM{->T1, T1};";
+    script += "# t:T1{-> T2};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "1", "1");
+  }
+
+  @Test
+  public void testInlinedRulesAtWildcard() throws Exception {
+    String document = "1 a a a 1";
+    String script = "NUM #{->T1}<-{PERIOD;} NUM;\n";
+    script += "NUM #{->T2}<-{SW;} NUM;\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "a a a");
+  }
+
+  @Test
+  public void testWithFailingNextRuleElement() throws Exception {
+    String document = "a b c 1 d e f 2 g h i 3 / 4 m n o";
+    String script = "\"a\" -> T1;\n";
+    script += "INT a;\n";
+    script += "INT t;\n";
+    script += "(T1 # NUM{PARSE(a), a<100} ANY{REGEXP(\"[/]\")} NUM{PARSE(t),t<200}){ -> T2};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document, null, null, true);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.storeCas(cas, "testFailingConditionWithFailingNextRuleElement");
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "a");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
   }
 
 }

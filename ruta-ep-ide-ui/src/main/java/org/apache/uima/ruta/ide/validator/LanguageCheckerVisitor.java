@@ -665,6 +665,11 @@ public class LanguageCheckerVisitor extends ASTVisitor {
                   || StringUtils.equals(split[split.length - 1], "coveredText")) {
             return false;
           }
+          Integer prefixType = getVariableType(split[0]);
+          if (prefixType == RutaTypeConstants.RUTA_TYPE_UA
+                  || prefixType == RutaTypeConstants.RUTA_TYPE_UAL) {
+            return false;
+          }
         }
 
         pr.reportProblem(problemFactory.createTypeProblem(ref, sourceModule));
@@ -933,6 +938,12 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       return;
     }
 
+    // match expression against local annotation variables cannot be checked
+    if (variableType2 == RutaTypeConstants.RUTA_TYPE_UA
+            || variableType2 == RutaTypeConstants.RUTA_TYPE_UAL) {
+      return;
+    }
+
     match = expand(match);
     if (match != null) {
       int kind = -1;
@@ -942,6 +953,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
           kind = RutaTypeConstants.RUTA_TYPE_S;
         } else if (fme.getValue() instanceof NumericLiteral) {
           kind = RutaTypeConstants.RUTA_TYPE_N;
+        } else if (fme.getValue() instanceof RutaVariableReference) {
+          kind = ((RutaVariableReference) fme.getValue()).getType();
         } else if (fme.getValue() instanceof RutaFunction) {
           // check on function deactivates, requires correct parsing of AST with external factory
           kind = -1;

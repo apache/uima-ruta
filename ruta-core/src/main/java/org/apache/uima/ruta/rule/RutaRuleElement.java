@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.block.RutaBlock;
@@ -113,9 +114,9 @@ public class RutaRuleElement extends AbstractRuleElement {
       } else {
         if (getContainer() instanceof ComposedRuleElement) {
           ComposedRuleElement composed = (ComposedRuleElement) getContainer();
-          List<RuleMatch> fallbackContinue = composed
-                  .fallbackContinue(true, true, eachAnchor, extendedMatch, ruleApply,
-                          extendedContainerMatch, null, entryPoint, stream, crowd);
+          List<RuleMatch> fallbackContinue = composed.fallbackContinue(true, true, eachAnchor,
+                  extendedMatch, ruleApply, extendedContainerMatch, null, entryPoint, stream,
+                  crowd);
           result.addAll(fallbackContinue);
         }
       }
@@ -145,7 +146,8 @@ public class RutaRuleElement extends AbstractRuleElement {
                   sideStepOrigin, stream, crowd, entryPoint);
           break;
         }
-        Collection<? extends AnnotationFS> nextAnnotations = getNextAnnotations(after, eachAnchor, stream);
+        Collection<? extends AnnotationFS> nextAnnotations = getNextAnnotations(after, eachAnchor,
+                stream);
         if (nextAnnotations.size() == 0) {
           stopMatching = true;
           result = stepbackMatch(after, eachAnchor, extendedMatch, ruleApply,
@@ -157,8 +159,8 @@ public class RutaRuleElement extends AbstractRuleElement {
           if (this.equals(entryPoint)) {
             result.add(extendedMatch);
           } else if (extendedMatch.matched()) {
-            if (quantifier.continueMatch(after, context, eachAnchor, extendedContainerMatch,
-                    stream, crowd)) {
+            if (quantifier.continueMatch(after, context, eachAnchor, extendedContainerMatch, stream,
+                    crowd)) {
               // continue in while loop
             } else {
               stopMatching = true;
@@ -183,7 +185,7 @@ public class RutaRuleElement extends AbstractRuleElement {
     return result;
   }
 
-  private List<RuleMatch> continueMatchSomewhereElse(boolean after, boolean failed,
+  protected List<RuleMatch> continueMatchSomewhereElse(boolean after, boolean failed,
           AnnotationFS eachAnchor, RuleMatch extendedMatch, RuleApply ruleApply,
           ComposedRuleElementMatch extendedContainerMatch, RutaRuleElement sideStepOrigin,
           RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
@@ -209,12 +211,13 @@ public class RutaRuleElement extends AbstractRuleElement {
     // if() for really lazy quantifiers
     MatchContext context = new MatchContext(this, ruleMatch, after);
     if (quantifier.continueMatch(after, context, annotation, containerMatch, stream, crowd)) {
-      Collection<? extends AnnotationFS> nextAnnotations = getNextAnnotations(after, annotation, stream);
-      if (nextAnnotations.isEmpty()) {
+      Collection<? extends AnnotationFS> nextAnnotations = getNextAnnotations(after, annotation,
+              stream);
+      if (isNotConsumable(nextAnnotations)) {
         result = stepbackMatch(after, annotation, ruleMatch, ruleApply, containerMatch,
                 sideStepOrigin, stream, crowd, entryPoint);
       }
-      boolean useAlternatives = nextAnnotations.size() != 1;
+      boolean useAlternatives = nextAnnotations.size() > 1;
       for (AnnotationFS eachAnchor : nextAnnotations) {
         if (earlyExit(eachAnchor, ruleApply, stream)) {
           // ... for different matching paradigms that avoid some matches
@@ -262,7 +265,11 @@ public class RutaRuleElement extends AbstractRuleElement {
     return result;
   }
 
-  private List<RuleMatch> stepbackMatch(boolean after, AnnotationFS annotation,
+  protected boolean isNotConsumable(Collection<? extends AnnotationFS> nextAnnotations) {
+    return nextAnnotations.isEmpty();
+  }
+
+  protected List<RuleMatch> stepbackMatch(boolean after, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RutaStream stream, InferenceCrowd crowd,
           RuleElement entryPoint) {
@@ -280,8 +287,8 @@ public class RutaRuleElement extends AbstractRuleElement {
                 containerMatch, sideStepOrigin, entryPoint, stream, crowd);
       } else if (getContainer() instanceof ComposedRuleElement) {
         ComposedRuleElement cre = (ComposedRuleElement) getContainer();
-        result = cre.fallbackContinue(after, true, annotation, ruleMatch, ruleApply,
-                containerMatch, sideStepOrigin, entryPoint, stream, crowd);
+        result = cre.fallbackContinue(after, true, annotation, ruleMatch, ruleApply, containerMatch,
+                sideStepOrigin, entryPoint, stream, crowd);
         // was:
         // [Peter] why only check the parent? the grandparent could be optional!
         // should we add the second part again for the explanation component?
@@ -365,7 +372,7 @@ public class RutaRuleElement extends AbstractRuleElement {
     return result;
   }
 
-  private void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+  protected void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           ComposedRuleElementMatch containerMatch, boolean ruleAnchor, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
@@ -382,21 +389,27 @@ public class RutaRuleElement extends AbstractRuleElement {
     }
     // already set the matched text and inform others
     result.setMatchInfo(base, textsMatched, stream);
-    context.getParent().getEnvironment().addMatchToVariable(ruleMatch, this, context, stream);
+    RutaEnvironment environment = context.getParent().getEnvironment();
+    environment.addMatchToVariable(ruleMatch, this, context, stream);
     if (base) {
       for (AbstractRutaCondition condition : conditions) {
         crowd.beginVisit(condition, null);
         EvaluatedCondition eval = condition.eval(context, stream, crowd);
         crowd.endVisit(condition, null);
         evaluatedConditions.add(eval);
-        if(!eval.isValue()) {
+        if (!eval.isValue()) {
           break;
         }
       }
     }
     result.setConditionInfo(base, evaluatedConditions);
-    boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
-    result.setInlinedRulesMatched(inlinedRulesMatched);
+    if (result.matched()) {
+      boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
+      result.setInlinedRulesMatched(inlinedRulesMatched);
+    } else {
+      // update label for failed match after evaluating conditions
+      environment.addAnnotationsToVariable(null, getLabel(), context);
+    }
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
   }
 
@@ -437,8 +450,8 @@ public class RutaRuleElement extends AbstractRuleElement {
     return matcher.estimateAnchors(parent, stream);
   }
 
-  public Collection<? extends AnnotationFS> getNextAnnotations(boolean after, AnnotationFS annotation,
-          RutaStream stream) {
+  public Collection<? extends AnnotationFS> getNextAnnotations(boolean after,
+          AnnotationFS annotation, RutaStream stream) {
     if (after) {
       return matcher.getAnnotationsAfter(this, annotation, getParent(), stream);
     } else {

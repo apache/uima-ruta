@@ -42,6 +42,7 @@ import org.apache.uima.ruta.rule.ConjunctRulesRuleElement;
 import org.apache.uima.ruta.rule.RegExpRule;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RutaMatcher;
+import org.apache.uima.ruta.rule.RutaOptionalRuleElement;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.rule.WildCardRuleElement;
@@ -149,31 +150,33 @@ public class ScriptVerbalizer {
       result.append(verbalizeConjunct((ConjunctRulesRuleElement) re));
     } else if (re instanceof ComposedRuleElement) {
       result.append(verbalizeComposed((ComposedRuleElement) re));
+    } else if (re instanceof RutaOptionalRuleElement) {
+      result.append("_");
     } else if (re instanceof RutaRuleElement) {
       RutaRuleElement tmre = (RutaRuleElement) re;
       RutaMatcher matcher = tmre.getMatcher();
       // action-only rule
-        IRutaExpression expression = matcher.getExpression();
-        boolean actionOnlyRule = expression == null;
-        if(expression != null) {
-          String verbalize = verbalizer.verbalize(expression);
-          if(StringUtils.isBlank(verbalize)) {
-            actionOnlyRule = true;
-          } else {
-            result.append(verbalize);
+      IRutaExpression expression = matcher.getExpression();
+      boolean actionOnlyRule = expression == null;
+      if (expression != null) {
+        String verbalize = verbalizer.verbalize(expression);
+        if (StringUtils.isBlank(verbalize)) {
+          actionOnlyRule = true;
+        } else {
+          result.append(verbalize);
+        }
+      }
+      if (actionOnlyRule) {
+        Iterator<AbstractRutaAction> ait = actions.iterator();
+        while (ait.hasNext()) {
+          AbstractRutaAction each = ait.next();
+          result.append(verbalizer.verbalize(each));
+          if (ait.hasNext()) {
+            result.append(",");
           }
         }
-        if (actionOnlyRule) {
-          Iterator<AbstractRutaAction> ait = actions.iterator();
-          while (ait.hasNext()) {
-            AbstractRutaAction each = ait.next();
-            result.append(verbalizer.verbalize(each));
-            if (ait.hasNext()) {
-              result.append(",");
-            }
-          }
-          return result.toString();
-        }
+        return result.toString();
+      }
     } else if (re instanceof WildCardRuleElement) {
       result.append("#");
     }
@@ -204,23 +207,27 @@ public class ScriptVerbalizer {
     }
     if (re instanceof AbstractRuleElement) {
       AbstractRuleElement are = (AbstractRuleElement) re;
-      List<RutaStatement> inlinedConditionRules = are.getInlinedConditionRules();
-      if (inlinedConditionRules != null && !inlinedConditionRules.isEmpty()) {
-        result.append(THEN2);
-        result.append(CBOPEN);
-        for (RutaStatement rutaStatement : inlinedConditionRules) {
-          result.append(verbalize(rutaStatement));
+      List<List<RutaStatement>> inlinedConditionRuleBlocks = are.getInlinedConditionRuleBlocks();
+      for (List<RutaStatement> inlinedConditionRules : inlinedConditionRuleBlocks) {
+        if (inlinedConditionRules != null && !inlinedConditionRules.isEmpty()) {
+          result.append(THEN2);
+          result.append(CBOPEN);
+          for (RutaStatement rutaStatement : inlinedConditionRules) {
+            result.append(verbalize(rutaStatement));
+          }
+          result.append(CBCLOSE);
         }
-        result.append(CBCLOSE);
       }
-      List<RutaStatement> inlinedActionRules = are.getInlinedActionRules();
-      if (inlinedActionRules != null && !inlinedActionRules.isEmpty()) {
-        result.append(THEN);
-        result.append(CBOPEN);
-        for (RutaStatement rutaStatement : inlinedActionRules) {
-          result.append(verbalize(rutaStatement));
+      List<List<RutaStatement>> inlinedActionRuleBlocks = are.getInlinedActionRuleBlocks();
+      for (List<RutaStatement> inlinedActionRules : inlinedActionRuleBlocks) {
+        if (inlinedActionRules != null && !inlinedActionRules.isEmpty()) {
+          result.append(THEN);
+          result.append(CBOPEN);
+          for (RutaStatement rutaStatement : inlinedActionRules) {
+            result.append(verbalize(rutaStatement));
+          }
+          result.append(CBCLOSE);
         }
-        result.append(CBCLOSE);
       }
     }
     return result.toString();
@@ -262,10 +269,13 @@ public class ScriptVerbalizer {
     return result.toString();
   }
 
-  public String verbalizeMatcher(RutaRuleElement tmre) {
+  public String verbalizeMatcher(RutaRuleElement re) {
+
     StringBuilder result = new StringBuilder();
-    RutaMatcher matcher = tmre.getMatcher();
-    result.append(verbalizer.verbalize(matcher.getExpression()));
+    RutaMatcher matcher = re.getMatcher();
+    if (matcher != null) {
+      result.append(verbalizer.verbalize(matcher.getExpression()));
+    }
     return result.toString();
   }
 
@@ -337,8 +347,7 @@ public class ScriptVerbalizer {
           sb.append("(");
           Iterator<Entry<IStringExpression, IRutaExpression>> fit = map.entrySet().iterator();
           while (fit.hasNext()) {
-            Map.Entry<IStringExpression, IRutaExpression> entry = fit
-                    .next();
+            Map.Entry<IStringExpression, IRutaExpression> entry = fit.next();
             sb.append(verbalizer.verbalize(entry.getKey()));
             sb.append(" = ");
             sb.append(verbalizer.verbalize(entry.getValue()));

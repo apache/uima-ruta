@@ -46,6 +46,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.ISourceReference;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.internal.ui.actions.FoldingActionGroup;
 import org.eclipse.dltk.internal.ui.editor.DLTKEditorMessages;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
@@ -195,8 +196,8 @@ public class RutaEditor extends ScriptEditor {
     markAsStateDependentAction("Comment", true); //$NON-NLS-1$
 
     // Uncomment
-    action = new TextOperationAction(DLTKEditorMessages.getBundleForConstructedKeys(),
-            "Uncomment.", this, ITextOperationTarget.STRIP_PREFIX); //$NON-NLS-1$
+    action = new TextOperationAction(DLTKEditorMessages.getBundleForConstructedKeys(), "Uncomment.", //$NON-NLS-1$
+            this, ITextOperationTarget.STRIP_PREFIX);
     action.setActionDefinitionId(IScriptEditorActionDefinitionIds.UNCOMMENT);
     setAction("Uncomment", action); //$NON-NLS-1$
     markAsStateDependentAction("Uncomment", true); //$NON-NLS-1$
@@ -209,8 +210,8 @@ public class RutaEditor extends ScriptEditor {
     markAsStateDependentAction("ToggleComment", true); //$NON-NLS-1$
     configureToggleCommentAction();
 
-    action = new TextOperationAction(DLTKEditorMessages.getBundleForConstructedKeys(),
-            "Format.", this, ISourceViewer.FORMAT); //$NON-NLS-1$
+    action = new TextOperationAction(DLTKEditorMessages.getBundleForConstructedKeys(), "Format.", //$NON-NLS-1$
+            this, ISourceViewer.FORMAT);
     action.setActionDefinitionId(IScriptEditorActionDefinitionIds.FORMAT);
     setAction("Format", action); //$NON-NLS-1$
     markAsStateDependentAction("Format", true); //$NON-NLS-1$
@@ -297,8 +298,8 @@ public class RutaEditor extends ScriptEditor {
 
   @Override
   protected FoldingActionGroup createFoldingActionGroup() {
-    return new FoldingActionGroup(this, getViewer(), RutaIdeUIPlugin.getDefault()
-            .getPreferenceStore());
+    return new FoldingActionGroup(this, getViewer(),
+            RutaIdeUIPlugin.getDefault().getPreferenceStore());
   }
 
   @Override
@@ -316,19 +317,26 @@ public class RutaEditor extends ScriptEditor {
     if (myAnnotations != null && !myAnnotations.isEmpty()) {
       removeAnnotations(myAnnotations.keySet());
     }
+    ModuleDeclaration parsed = null;
+    int caret = 0;
 
     RutaSelectionParser parser = new RutaSelectionParser();
-    ISourceModule unit = (ISourceModule) getInputModelElement();
-    ModuleDeclaration parsed = parser.parse(unit);
-    ISourceViewer sourceViewer = getSourceViewer();
-    StyledText styledText = sourceViewer.getTextWidget();
-    int caret = 0;
-    if (sourceViewer instanceof ITextViewerExtension5) {
-      ITextViewerExtension5 extension = (ITextViewerExtension5) sourceViewer;
-      caret = extension.widgetOffset2ModelOffset(styledText.getCaretOffset());
-    } else {
-      int offset = sourceViewer.getVisibleRegion().getOffset();
-      caret = offset + styledText.getCaretOffset();
+    IModelElement unitObject = getInputModelElement();
+    if (unitObject instanceof SourceModule) {
+      SourceModule unit = (SourceModule) unitObject;
+      parsed = parser.parse(unit);
+      ISourceViewer sourceViewer = getSourceViewer();
+      StyledText styledText = sourceViewer.getTextWidget();
+      if (sourceViewer instanceof ITextViewerExtension5) {
+        ITextViewerExtension5 extension = (ITextViewerExtension5) sourceViewer;
+        caret = extension.widgetOffset2ModelOffset(styledText.getCaretOffset());
+      } else {
+        int offset = sourceViewer.getVisibleRegion().getOffset();
+        caret = offset + styledText.getCaretOffset();
+      }
+    }
+    if (parsed == null) {
+      return;
     }
     RutaReferenceVisitor visitor1 = new RutaReferenceVisitor(caret);
     ASTNode node = null;
@@ -479,8 +487,8 @@ public class RutaEditor extends ScriptEditor {
     } else {
       IRegion visibleRegion = sourceViewer.getVisibleRegion();
       // http://dev.eclipse.org/bugs/show_bug.cgi?id=34195
-      visible = (targetOffset >= visibleRegion.getOffset() && targetOffset <= visibleRegion
-              .getOffset() + visibleRegion.getLength());
+      visible = (targetOffset >= visibleRegion.getOffset()
+              && targetOffset <= visibleRegion.getOffset() + visibleRegion.getLength());
     }
 
     if (!visible) {

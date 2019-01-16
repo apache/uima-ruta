@@ -52,6 +52,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -65,6 +66,7 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
+import org.apache.uima.ruta.expression.feature.LazyFeature;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.INumberListExpression;
@@ -127,6 +129,10 @@ public class RutaStream {
   private Annotation documentEndAnchor;
 
   private boolean emptyIsInvisible;
+
+  private long maxRuleMatches;
+
+  private long maxRuleElementMatches;
 
   public RutaStream(CAS cas, Type basicType, FilterManager filter, boolean lowMemoryProfile,
           boolean simpleGreedyForComposed, boolean emptyIsInvisible, TypeUsageInformation typeUsage,
@@ -482,6 +488,8 @@ public class RutaStream {
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
     stream.setGreedyRule(greedyRule);
+    stream.setMaxRuleMatches(maxRuleMatches);
+    stream.setMaxRuleElementMatches(maxRuleElementMatches);
     return stream;
   }
 
@@ -491,6 +499,8 @@ public class RutaStream {
     stream.setDynamicAnchoring(dynamicAnchoring);
     stream.setGreedyRuleElement(greedyRuleElement);
     stream.setGreedyRule(greedyRule);
+    stream.setMaxRuleMatches(maxRuleMatches);
+    stream.setMaxRuleElementMatches(maxRuleElementMatches);
     return stream;
   }
 
@@ -508,6 +518,14 @@ public class RutaStream {
     } catch (Exception e) {
       // e.printStackTrace();
     }
+  }
+
+  public boolean hasNext() {
+    return currentIt.hasNext();
+  }
+
+  public AnnotationFS next() {
+    return currentIt.next();
   }
 
   public void moveToFirst() {
@@ -587,51 +605,17 @@ public class RutaStream {
     return result;
   }
 
-  private List<AnnotationFS> getAnnotationsInWindow2(AnnotationFS windowAnnotation, Type type) {
-    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    windowAnnotation = cas.createAnnotation(type, windowAnnotation.getBegin(),
-            windowAnnotation.getEnd() + 1);
-    FSIterator<AnnotationFS> completeIt = getCas().getAnnotationIndex(type).iterator();
-    if (getDocumentAnnotation().getEnd() < windowAnnotation.getEnd()) {
-      completeIt.moveToLast();
-    } else {
-      completeIt.moveTo(windowAnnotation);
-    }
-    while (completeIt.isValid()
-            && ((Annotation) completeIt.get()).getBegin() >= windowAnnotation.getBegin()) {
-      completeIt.moveToPrevious();
-    }
-
-    if (completeIt.isValid()) {
-      completeIt.moveToNext();
-    } else {
-      completeIt.moveToFirst();
-    }
-
-    while (completeIt.isValid()
-            && ((Annotation) completeIt.get()).getBegin() < windowAnnotation.getBegin()) {
-      completeIt.moveToNext();
-    }
-
-    while (completeIt.isValid()
-            && ((Annotation) completeIt.get()).getBegin() >= windowAnnotation.getBegin()) {
-      Annotation annotation = (Annotation) completeIt.get();
-      if (getCas().getTypeSystem().subsumes(type, annotation.getType())
-              && annotation.getEnd() <= windowAnnotation.getEnd()) {
-        result.add(annotation);
-      }
-      completeIt.moveToNext();
-    }
-    return result;
-  }
-
   public List<AnnotationFS> getAnnotationsInWindow(AnnotationFS windowAnnotation, Type type) {
+
     if (windowAnnotation == null || type == null) {
       return Collections.emptyList();
     }
+    TypeSystem typeSystem = this.getCas().getTypeSystem();
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    List<AnnotationFS> inWindow = getAnnotationsInWindow2(windowAnnotation, type);
-    result = inWindow;
+    if (typeSystem.subsumes(type, windowAnnotation.getType())) {
+      result.add(windowAnnotation);
+    }
+    result.addAll(CasUtil.selectCovered(this.cas, type, windowAnnotation));
     return result;
   }
 
@@ -657,45 +641,43 @@ public class RutaStream {
   }
 
   public RutaBasic getBasicNextTo(boolean before, AnnotationFS annotation) {
+
     if (annotation == null) {
-      return beginAnchors.get(0);
+      return null;
     }
+
     if (before) {
-      RutaBasic pointer = beginAnchors.get(annotation.getBegin());
-      moveTo(pointer);
-      if (isVisible(pointer) || !isValid()) {
-        moveToPrevious();
-      }
-      if (!isValid()) {
-        moveToLast();
-      }
-      if (isValid()) {
-        RutaBasic nextBasic = (RutaBasic) get();
-        // TODO HOTFIX for annotation of length 0
-        while (isValid() && nextBasic.getEnd() > annotation.getBegin()) {
-          moveToPrevious();
-          if (isValid()) {
-            nextBasic = (RutaBasic) get();
-          }
+
+      RutaBasic pointer = endAnchors.get(annotation.getBegin());
+      while (pointer != null && pointer.getBegin() >= documentAnnotation.getBegin()) {
+
+        if (isVisible(pointer)) {
+          return pointer;
         }
-        return nextBasic;
+
+        Entry<Integer, RutaBasic> lowerEntry = endAnchors.lowerEntry(pointer.getEnd());
+        if (lowerEntry != null) {
+          pointer = lowerEntry.getValue();
+        } else {
+          pointer = null;
+        }
       }
+
     } else {
-      RutaBasic pointer = endAnchors.get(annotation.getEnd());
-      moveTo(pointer);
-      if (isVisible(pointer)) {
-        moveToNext();
-      }
-      if (isValid()) {
-        RutaBasic nextBasic = (RutaBasic) get();
-        // TODO HOTFIX for annotation of length 0
-        while (isValid() && nextBasic.getBegin() < annotation.getEnd()) {
-          moveToNext();
-          if (isValid()) {
-            nextBasic = (RutaBasic) get();
-          }
+
+      RutaBasic pointer = beginAnchors.get(annotation.getEnd());
+      while (pointer != null && pointer.getEnd() <= documentAnnotation.getEnd()) {
+
+        if (isVisible(pointer)) {
+          return pointer;
         }
-        return nextBasic;
+
+        Entry<Integer, RutaBasic> higherEntry = beginAnchors.higherEntry(pointer.getBegin());
+        if (higherEntry != null) {
+          pointer = higherEntry.getValue();
+        } else {
+          pointer = null;
+        }
       }
     }
     return null;
@@ -746,23 +728,12 @@ public class RutaStream {
     return basicIt;
   }
 
-  public AnnotationFS getDocumentAnnotation() {
-    return documentAnnotation;
+  public FSIterator<AnnotationFS> getCurrentIterator() {
+    return currentIt;
   }
 
-  public RutaAnnotation getCorrectTMA(List<AnnotationFS> annotationsInWindow,
-          RutaAnnotation heuristicAnnotation) {
-    for (AnnotationFS annotation : annotationsInWindow) {
-      if (annotation instanceof RutaAnnotation) {
-        RutaAnnotation tma = (RutaAnnotation) annotation;
-        if (tma.getBegin() == heuristicAnnotation.getBegin()
-                && tma.getEnd() == heuristicAnnotation.getEnd() && tma.getAnnotation().getType()
-                        .equals(heuristicAnnotation.getAnnotation().getType())) {
-          return tma;
-        }
-      }
-    }
-    return null;
+  public AnnotationFS getDocumentAnnotation() {
+    return documentAnnotation;
   }
 
   public void retainTypes(List<Type> list) {
@@ -1006,7 +977,8 @@ public class RutaStream {
       Feature feature = type.getFeatureByBaseName(featureName);
       if (feature == null) {
         throw new IllegalArgumentException("Not able to assign feature value for feature '"
-                + featureName + "'. Feature is not defined for type '" + type.getName() + "'");
+                + featureName + "'. Feature is not defined for type '" + type.getName() + "'"
+                + " in script " + context.getParent().getName());
       }
       assignFeatureValue(annotation, feature, value, context);
     }
@@ -1015,12 +987,21 @@ public class RutaStream {
   public void assignFeatureValue(FeatureStructure annotation, Feature feature,
           IRutaExpression value, MatchContext context) {
     if (feature == null) {
-      throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
+      throw new IllegalArgumentException(
+              "Not able to assign feature value (e.g., coveredText) in script "
+                      + context.getParent().getName());
     }
+    if (feature instanceof LazyFeature) {
+      LazyFeature lazyFeature = (LazyFeature) feature;
+      feature = lazyFeature.initialize(annotation);
+    }
+
     CAS cas = annotation.getCAS();
+    TypeSystem typeSystem = cas.getTypeSystem();
     Type range = feature.getRange();
     String rangeName = range.getName();
-    if (rangeName.equals(CAS.TYPE_NAME_STRING)) {
+
+    if (typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_STRING), range)) {
       if (value instanceof IStringExpression) {
         IStringExpression stringExpr = (IStringExpression) value;
         String string = stringExpr.getStringValue(context, this);
@@ -1269,7 +1250,7 @@ public class RutaStream {
 
   public List<AnnotationFS> getBestGuessedAnnotationsAt(AnnotationFS window, Type type) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    if (window == null) {
+    if (window == null || type == null) {
       return result;
     }
     TypeSystem typeSystem = getCas().getTypeSystem();
@@ -1371,8 +1352,39 @@ public class RutaStream {
     return cas.getAnnotationType();
   }
 
-  public FSIterator<AnnotationFS> getCurrentIt() {
-    return currentIt;
+  public RutaAnnotation getRutaAnnotationFor(AnnotationFS annotation, boolean create,
+          RutaStream stream) {
+    Type heuristicType = this.cas.getTypeSystem().getType(RutaAnnotation.class.getName());
+    List<AnnotationFS> ras = CasUtil.selectAt(this.cas, heuristicType, annotation.getBegin(),
+            annotation.getEnd());
+    for (AnnotationFS each : ras) {
+      if (((RutaAnnotation) each).getAnnotation() == annotation) {
+        return (RutaAnnotation) each;
+      }
+    }
+    if (create) {
+      JCas jCas = stream.getJCas();
+      RutaAnnotation result = new RutaAnnotation(jCas, annotation.getBegin(), annotation.getEnd());
+      result.setAnnotation((Annotation) annotation);
+      result.addToIndexes();
+      return result;
+    }
+    return null;
   }
 
+  public void setMaxRuleMatches(long maxRuleMatches) {
+    this.maxRuleMatches = maxRuleMatches;
+  }
+
+  public void setMaxRuleElementMatches(long maxRuleElementMatches) {
+    this.maxRuleElementMatches = maxRuleElementMatches;
+  }
+
+  public long getMaxRuleMatches() {
+    return this.maxRuleMatches;
+  }
+
+  public long getMaxRuleElementMatches() {
+    return this.maxRuleElementMatches;
+  }
 }

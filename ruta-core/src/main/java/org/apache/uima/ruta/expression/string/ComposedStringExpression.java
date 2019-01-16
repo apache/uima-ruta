@@ -26,15 +26,22 @@ import org.apache.uima.ruta.rule.MatchContext;
 
 public class ComposedStringExpression extends LiteralStringExpression {
 
-  private final List<IStringExpression> epxressions;
+  private final List<IStringExpression> expressions;
 
   public ComposedStringExpression(List<IStringExpression> expressions) {
     super();
-    this.epxressions = expressions;
+    this.expressions = expressions;
   }
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
+    if (expressions == null) {
+      return null;
+    }
+    if (expressions.size() == 1) {
+      IStringExpression stringExpression = expressions.get(0);
+      return stringExpression.getStringValue(context, stream);
+    }
     StringBuilder result = new StringBuilder();
     for (IStringExpression each : getExpressions()) {
       result.append(each.getStringValue(context, stream));
@@ -43,7 +50,7 @@ public class ComposedStringExpression extends LiteralStringExpression {
   }
 
   public List<IStringExpression> getExpressions() {
-    return epxressions;
+    return expressions;
   }
 
 }

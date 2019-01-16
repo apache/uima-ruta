@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 package org.apache.uima.ruta.string.bool;
 
 import org.apache.uima.ruta.RutaStream;
@@ -26,29 +25,34 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class ContainsBooleanFunction extends BooleanFunctionExpression {
-  
+
   private IStringExpression text;
+
   private IStringExpression contains;
-  
-  public ContainsBooleanFunction(IStringExpression text,
-          IStringExpression contains) {
+
+  public ContainsBooleanFunction(IStringExpression text, IStringExpression contains) {
     this.text = text;
-    this.contains =contains;
+    this.contains = contains;
   }
 
   public IStringExpression getExpr() {
     return text;
   }
 
+  public IStringExpression getContainsExpr() {
+    return contains;
+  }
+
   @Override
   public boolean getBooleanValue(MatchContext context, RutaStream stream) {
-    
-return text.getStringValue(context, stream).contains(contains.getStringValue(context, stream));
+
+    return text.getStringValue(context, stream).contains(contains.getStringValue(context, stream));
   }
 
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
-    Boolean isContained = text.getStringValue(context, stream).contains(contains.getStringValue(context, stream)); 
+    Boolean isContained = text.getStringValue(context, stream)
+            .contains(contains.getStringValue(context, stream));
     return isContained.toString();
   }
 

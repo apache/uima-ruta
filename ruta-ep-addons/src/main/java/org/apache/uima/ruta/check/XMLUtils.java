@@ -51,6 +51,9 @@ public class XMLUtils {
       return new ArrayList<CheckDocument>();
     }
     XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+    xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    xmlReader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+    xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
     FileReader reader = new FileReader(file);
     InputSource inputSource = new InputSource(reader);
     CheckDocumentsContentHandler handler = new CheckDocumentsContentHandler();

@@ -62,8 +62,11 @@ public class EndsWithCondition extends TypeSentiveCondition {
     }
   }
 
-  private boolean check(RutaStream stream, AnnotationFS matched, Type givenType) {
-    RutaBasic endAnchor = stream.getEndAnchor(matched.getEnd());
+  private boolean check(RutaStream stream, AnnotationFS annotation, Type givenType) {
+    if (annotation == null || givenType == null) {
+      return false;
+    }
+    RutaBasic endAnchor = stream.getEndAnchor(annotation.getEnd());
     if (endAnchor != null) {
       return endAnchor.endsWith(givenType);
     } else {

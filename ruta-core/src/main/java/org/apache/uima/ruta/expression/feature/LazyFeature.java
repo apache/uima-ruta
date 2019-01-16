@@ -21,6 +21,7 @@ package org.apache.uima.ruta.expression.feature;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
+import org.apache.uima.ruta.block.RutaBlock;
 
 public class LazyFeature implements Feature {
 
@@ -30,9 +31,12 @@ public class LazyFeature implements Feature {
 
   private String initializedWith;
 
-  public LazyFeature(String featureName) {
+  private RutaBlock parent;
+
+  public LazyFeature(String featureName, RutaBlock parent) {
     super();
     this.featureName = featureName;
+    this.parent = parent;
   }
 
   public Feature initialize(FeatureStructure featureStructure) {
@@ -94,7 +98,8 @@ public class LazyFeature implements Feature {
   private void checkDelegate() {
     if (delegate == null) {
       throw new RuntimeException("Feature with name '" + featureName
-              + "' has not yet been resolved. Most likely, it is not defined for the given type: " + initializedWith);
+              + "' has not yet been resolved in script " + parent.getName()
+              + ". Most likely, it is not defined for the given type: " + initializedWith);
     }
 
   }

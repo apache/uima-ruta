@@ -62,14 +62,17 @@ public class UnmarkAction extends TypeSensitiveAction {
 
     if (expression != null) {
       List<AnnotationFS> annotationList = expression.getAnnotationList(context, stream);
-      if(expression.getTypeExpression() != null && expression.getFeatureExpression() == null && expression.getAnnotationExpression() == null && expression.getAnnotationListExpression()== null) {
+      if (expression.getTypeExpression() != null && expression.getFeatureExpression() == null
+              && expression.getAnnotationExpression() == null
+              && expression.getAnnotationListExpression() == null) {
         // type-based like old behavior
         Type t = expression.getTypeExpression().getType(context, stream);
         removeTypeBased(context, stream, match, element, t);
       } else {
-      for (AnnotationFS annotationFS : annotationList) {
-        stream.removeAnnotation(annotationFS);
-      }
+        for (AnnotationFS annotationFS : annotationList) {
+          stream.removeAnnotation(annotationFS);
+          addAnnotationToLabel(annotationFS, context);
+        }
       }
     } else {
       Type t = type.getType(context, stream);
@@ -79,6 +82,11 @@ public class UnmarkAction extends TypeSensitiveAction {
 
   private void removeTypeBased(MatchContext context, RutaStream stream, RuleMatch match,
           RuleElement element, Type t) {
+
+    if (t == null) {
+      return;
+    }
+
     boolean allAtAnchor = false;
     if (allAnchor != null) {
       allAtAnchor = allAnchor.getBooleanValue(context, stream);
@@ -91,6 +99,7 @@ public class UnmarkAction extends TypeSensitiveAction {
       boolean subsumes = stream.getCas().getTypeSystem().subsumes(t, matchedType);
       if (subsumes && !allAtAnchor) {
         stream.removeAnnotation(annotationFS, matchedType);
+        addAnnotationToLabel(annotationFS, context);
       } else {
         RutaBasic beginAnchor = stream.getBeginAnchor(annotationFS.getBegin());
         Collection<AnnotationFS> beginAnchors = beginAnchor.getBeginAnchors(t);
@@ -98,6 +107,7 @@ public class UnmarkAction extends TypeSensitiveAction {
           for (AnnotationFS each : new ArrayList<AnnotationFS>(beginAnchors)) {
             if (allAtAnchor || each.getEnd() == annotationFS.getEnd()) {
               stream.removeAnnotation(each, t);
+              addAnnotationToLabel(annotationFS, context);
             }
           }
         }

@@ -61,7 +61,7 @@ public class SetFeatureAction extends AbstractRutaAction {
         stream.assignFeatureValue(annotationFS, feature, expr, context);
         stream.getCas().addFsToIndexes(annotationFS);
       } else {
-        throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText).");
+        throw new IllegalArgumentException("Not able to assign feature value (e.g., coveredText) in script "+context.getParent().getName());
       }
     }
   }

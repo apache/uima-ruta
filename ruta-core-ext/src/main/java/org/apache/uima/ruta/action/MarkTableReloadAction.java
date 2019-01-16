@@ -129,7 +129,7 @@ public class MarkTableReloadAction extends AbstractRutaAction {
                 Logger.getLogger(this.getClass().getName()).info("Creating Table Word List from resource: " + tableNameValue);
 
                 try {
-                    table = new CSVTable(resource);
+                    table = new CSVTable(resource, CSVTable.DEFAULT_CSV_SEPARATOR);
                 } catch (IOException e) {
                     Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Unable to load CSV file: " + tableNameValue, e);
                 }
@@ -171,10 +171,10 @@ public class MarkTableReloadAction extends AbstractRutaAction {
               candidate = candidate.replaceFirst("[" + ignoreCharValue + "]", "");
             }
           }
-          List<String> rowWhere = table.getRowWhere(index - 1, candidate);
+          List<String> rowWhere = table.getRowWhere(index - 1, candidate, false);
           if (rowWhere.isEmpty() && ignoreCaseValue && candidate.length() > ignoreLengthValue) {
             // TODO: does not cover all variants
-            rowWhere = table.getRowWhere(index - 1, candidate.toLowerCase());
+            rowWhere = table.getRowWhere(index - 1, candidate, true);
           }
           FeatureStructure newFS = stream.getCas().createFS(type);
           if (newFS instanceof Annotation) {

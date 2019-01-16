@@ -19,11 +19,7 @@
 
 package org.apache.uima.ruta.condition;
 
-import java.util.List;
-
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.SimpleNumberExpression;
@@ -50,17 +46,16 @@ public class ScoreCondition extends TerminalRutaCondition {
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
+
+    if (annotation == null) {
+      return new EvaluatedCondition(this, false);
+    }
+
     RuleElement element = context.getElement();
-    Type heuristicType = stream.getJCas().getCasType(RutaAnnotation.type);
-    List<AnnotationFS> annotationsInWindow = stream.getAnnotationsInWindow(annotation,
-            heuristicType);
     double score = 0;
-    if (!annotationsInWindow.isEmpty()) {
-      RutaAnnotation heuristicAnnotation = (RutaAnnotation) stream.getCas().createAnnotation(
-              heuristicType, annotation.getBegin(), annotation.getEnd());
-      heuristicAnnotation.setAnnotation((Annotation) annotation);
-      RutaAnnotation tma = stream.getCorrectTMA(annotationsInWindow, heuristicAnnotation);
-      score = tma.getScore();
+    RutaAnnotation rutaAnnotation = stream.getRutaAnnotationFor(annotation, false, stream);
+    if (rutaAnnotation != null) {
+      score = rutaAnnotation.getScore();
     }
     if (var != null) {
       element.getParent().getEnvironment().setVariableValue(var, score);
