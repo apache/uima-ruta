@@ -30,6 +30,7 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class ImplicitCondition2Test {
 
@@ -64,7 +65,7 @@ public class ImplicitCondition2Test {
 
   @Test
   public void testStringCompare() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, CASException {
+          IOException, AnalysisEngineProcessException, CASException, SAXException {
     String document = "a b. a b.";
     CAS cas = RutaTestUtils.getCAS(document);
     Assert.assertTrue(Ruta.matches(cas.getJCas(), "(w:W # W{W.ct==w.ct}){->T1};"));
@@ -75,7 +76,7 @@ public class ImplicitCondition2Test {
 
   @Test
   public void testStringCompareNull() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, CASException {
+          IOException, AnalysisEngineProcessException, CASException, SAXException {
     String document = "a b. a b.";
     CAS cas = RutaTestUtils.getCAS(document);
 

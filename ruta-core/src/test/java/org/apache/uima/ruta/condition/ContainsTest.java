@@ -32,6 +32,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class ContainsTest {
 
@@ -45,19 +46,22 @@ public class ContainsTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "A single sentence", "And here is another one",
             "Testing the CONTAINS condition of Ruta");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Testing the CONTAINS condition of Ruta");
-    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "A single sentence", "Testing the CONTAINS condition of Ruta");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "A single sentence",
+            "Testing the CONTAINS condition of Ruta");
 
     cas.release();
   }
-  
+
   @Test
-  public void testAlias() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testAlias() throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
+          SAXException {
     String document = "1 some text; 2 some text; 3 some text;";
-    
+
     String script = "IMPORT PACKAGE * FROM org.apache.uima.ruta.ImportStatementsTestTypeSystemWithManyPackages AS ruta;";
     script += "(NUM # PM){-> ruta.Type1, T1};";
     script += "Document{CONTAINS(ruta.Type1) -> T2};";
-    
+
     Map<String, String> typeMap = new TreeMap<String, String>();
     String typeName = "org.apache.uima.ruta.other3.Type1";
     typeMap.put(typeName, "uima.tcas.Annotation");
@@ -66,29 +70,30 @@ public class ContainsTest {
 
     CAS cas = RutaTestUtils.getCAS(document, typeMap, null);
     Ruta.apply(cas, script);
-    
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 some text;", "2 some text;", "3 some text;");
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 some text;", "2 some text;",
+            "3 some text;");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, document);
-    
+
   }
-  
+
   @Test
-  public void testContainsOverlappingAnnotations() throws ResourceInitializationException, 
-      InvalidXMLException, IOException, AnalysisEngineProcessException, 
-      ResourceConfigurationException, URISyntaxException {
-  
-  String document = "1 2 3 4 5 6 7 8";
-  
-  String script = "(\"1\" # \"5\") {-> T1};";
-  script += "(\"3\" # \"8\") {-> T1};";
-  script += "(\"3\" # \"4\") {-> T1};";
-  script += "(\"3\" # \"5\") {-> T2};";
-  script += "T2{CONTAINS(T1,1,1)-> T3};";
-  
-  CAS cas = RutaTestUtils.getCAS(document);
-  Ruta.apply(cas, script);
-  
-  RutaTestUtils.assertAnnotationsEquals(cas, 3, 1);
-  
+  public void testContainsOverlappingAnnotations() throws ResourceInitializationException,
+          InvalidXMLException, IOException, AnalysisEngineProcessException,
+          ResourceConfigurationException, URISyntaxException, SAXException {
+
+    String document = "1 2 3 4 5 6 7 8";
+
+    String script = "(\"1\" # \"5\") {-> T1};";
+    script += "(\"3\" # \"8\") {-> T1};";
+    script += "(\"3\" # \"4\") {-> T1};";
+    script += "(\"3\" # \"5\") {-> T2};";
+    script += "T2{CONTAINS(T1,1,1)-> T3};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1);
+
   }
 }

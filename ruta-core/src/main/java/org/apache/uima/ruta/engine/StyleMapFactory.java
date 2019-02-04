@@ -30,14 +30,16 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
+import org.apache.uima.internal.util.XMLUtils;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.ruta.type.RutaColoring;
-import org.apache.uima.ruta.utils.XmlUtils;
 import org.apache.uima.tools.stylemap.ColorParser;
 import org.apache.uima.tools.stylemap.StyleMapEntry;
 import org.apache.uima.tools.stylemap.StyleMapXmlParser;
@@ -254,13 +256,14 @@ public class StyleMapFactory {
 
     File styleMapFile = new File(styleFileString);
     Document parse = null;
-   
-    try (FileInputStream stream = new FileInputStream(styleMapFile)) { 
-      DocumentBuilder db = XmlUtils.createDocumentBuilder();
+
+    try (FileInputStream stream = new FileInputStream(styleMapFile)) {
+      DocumentBuilderFactory documentBuilderFactory = XMLUtils.createDocumentBuilderFactory();
+      DocumentBuilder db = documentBuilderFactory.newDocumentBuilder();
       parse = db.parse(stream);
-    } catch (SAXException | IOException e) {
+    } catch (SAXException | IOException | ParserConfigurationException e) {
       throw new IllegalStateException(e);
-    } 
+    }
     final Node root = parse.getDocumentElement();
     final NodeList nodeList = root.getChildNodes();
 
@@ -274,18 +277,18 @@ public class StyleMapFactory {
 
       // Collect type or pattern, label, and color text style
       NodeList childrenList = node.getChildNodes();
-      String type = ""; //$NON-NLS-1$ 
-      String label = ""; //$NON-NLS-1$ 
-      String colorText = ""; //$NON-NLS-1$ 
+      String type = ""; //$NON-NLS-1$
+      String label = ""; //$NON-NLS-1$
+      String colorText = ""; //$NON-NLS-1$
       for (int j = 0; j < childrenList.getLength(); ++j) {
         final Node child = childrenList.item(j);
         final String childName = child.getNodeName();
 
-        if (childName.equals("pattern")) { //$NON-NLS-1$ 
+        if (childName.equals("pattern")) { //$NON-NLS-1$
           type = getTextValue(child);
-        } else if (childName.equals("label")) { //$NON-NLS-1$ 
+        } else if (childName.equals("label")) { //$NON-NLS-1$
           label = getTextValue(child);
-        } else if (childName.equals("style")) { //$NON-NLS-1$ 
+        } else if (childName.equals("style")) { //$NON-NLS-1$
           colorText = getTextValue(child);
         }
       }

@@ -30,12 +30,14 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class SidestepInComposedTest {
 
   @Test
   public void test() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
+          SAXException {
     String document = "15. Mai 2005";
     String script = "\"Mai\" -> T1;";
     script += "NUM{->T2} PERIOD @T1 NUM;\n";

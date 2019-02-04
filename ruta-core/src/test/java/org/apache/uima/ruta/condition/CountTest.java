@@ -30,6 +30,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class CountTest {
 
@@ -37,24 +38,25 @@ public class CountTest {
   public void test() {
 
     CAS cas = RutaTestUtils.processTestScript(this.getClass());
-    
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "A single sentence", "And here is another one",
             "Testing the COUNT condition of Ruta System");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Testing the COUNT condition of Ruta System");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Testing the COUNT condition of Ruta System");
-    
-    cas.release();    
+
+    cas.release();
   }
-  
+
   @Test
-  public void testCountWithPeriodPostfix() throws ResourceInitializationException, InvalidXMLException, 
-    IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
-    
+  public void testCountWithPeriodPostfix() throws ResourceInitializationException,
+          InvalidXMLException, IOException, AnalysisEngineProcessException,
+          ResourceConfigurationException, URISyntaxException, SAXException {
+
     String document = "Some text.";
     String script = "(CW SW) {-> T1};";
-    script +="INT i = 0;";
-    script +="T1{COUNT(PERIOD, i)};";
-    script +="Document{(i>0)-> T2};";
+    script += "INT i = 0;";
+    script += "T1{COUNT(PERIOD, i)};";
+    script += "Document{(i>0)-> T2};";
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);

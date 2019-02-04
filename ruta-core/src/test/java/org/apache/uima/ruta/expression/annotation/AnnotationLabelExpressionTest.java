@@ -48,6 +48,7 @@ import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class AnnotationLabelExpressionTest {
 
@@ -315,15 +316,16 @@ public class AnnotationLabelExpressionTest {
 
   @Test(expected = AnalysisEngineProcessException.class)
   public void testWrongFeature() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, CASException {
+          IOException, AnalysisEngineProcessException, CASException, SAXException {
 
     CAS cas = RutaTestUtils.getCAS("Some text.");
     Ruta.matches(cas.getJCas(), "a:W b:W{a.x == (b.y-1)-> T1};");
   }
 
   @Test
-  public void testSequentialLabelSelfMatch() throws ResourceInitializationException,
-          InvalidXMLException, IOException, AnalysisEngineProcessException, CASException {
+  public void testSequentialLabelSelfMatch()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, CASException, SAXException {
 
     CAS cas = RutaTestUtils.getCAS("Some text.");
     Assert.assertFalse(Ruta.matches(cas.getJCas(), "e:CW e;"));

@@ -33,21 +33,22 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.uima.internal.util.XMLUtils;
 import org.apache.uima.ruta.ide.ui.RutaPreferenceConstants;
-import org.apache.uima.ruta.utils.XmlUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.dialogs.TimeTriggeredProgressMonitorDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -141,8 +142,17 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
       return null;
 
     // Create the Document and the top-level node
-    DocumentBuilder docBuilder = XmlUtils.createDocumentBuilder();
-    Document doc = docBuilder.newDocument();
+    DocumentBuilderFactory documentBuilderFactory = XMLUtils.createDocumentBuilderFactory();
+    DocumentBuilder builder;
+    try {
+      builder = documentBuilderFactory.newDocumentBuilder();
+    } catch (ParserConfigurationException e) {
+      if (DLTKCore.DEBUG) {
+        e.printStackTrace();
+      }
+      return null;
+    }
+    Document doc = builder.newDocument();
 
     Element topElement = doc.createElement("manPages");
     doc.appendChild(topElement);
@@ -165,9 +175,7 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
     ByteArrayOutputStream s = new ByteArrayOutputStream();
 
     try {
-      TransformerFactory factory = TransformerFactory.newInstance();
-      factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-      factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+      TransformerFactory factory = XMLUtils.createTransformerFactory();
       Transformer transformer = factory.newTransformer();
       transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
       transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
@@ -175,17 +183,19 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
       DOMSource source = new DOMSource(doc);
       StreamResult outputTarget = new StreamResult(s);
       transformer.transform(source, outputTarget);
-    } catch (TransformerConfigurationException e) {
-      e.printStackTrace();
     } catch (TransformerException e) {
-      e.printStackTrace();
+      if (DLTKCore.DEBUG) {
+        e.printStackTrace();
+      }
     }
 
     String result = null;
     try {
       result = s.toString("UTF8");
     } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
+      if (DLTKCore.DEBUG) {
+        e.printStackTrace();
+      }
     }
 
     return result;
@@ -193,6 +203,7 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
 
   private class ManLocationsContentProvider implements ITreeContentProvider {
 
+    @Override
     public Object[] getChildren(Object parentElement) {
       if (parentElement instanceof RutaPageFolder) {
         RutaPageFolder folder = (RutaPageFolder) parentElement;
@@ -208,25 +219,30 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
       return new Object[0];
     }
 
+    @Override
     public Object getParent(Object element) {
       return null;
     }
 
+    @Override
     public boolean hasChildren(Object element) {
       if (element instanceof RutaPageFolder)
         return true;
       return false;
     }
 
+    @Override
     public Object[] getElements(Object inputElement) {
       if (folders == null)
         return new Object[0];
       return folders.toArray(new Object[folders.size()]);
     }
 
+    @Override
     public void dispose() {
     }
 
+    @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
     }
 
@@ -379,6 +395,7 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
    * @see
    * org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
    */
+  @Override
   public void widgetSelected(SelectionEvent e) {
     Object source = e.getSource();
     if (source == fClearButton) {
@@ -410,6 +427,7 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
    * @seeorg.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.
    * SelectionEvent)
    */
+  @Override
   public void widgetDefaultSelected(SelectionEvent e) {
   }
 
@@ -428,6 +446,7 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
         ProgressMonitorDialog dialog2 = new TimeTriggeredProgressMonitorDialog(null, 500);
         try {
           dialog2.run(true, true, new IRunnableWithProgress() {
+            @Override
             public void run(IProgressMonitor monitor) {
               monitor.beginTask("Searching for man pages", 1);
               performSearch(file);
@@ -456,6 +475,7 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
 
     File[] childs = dir.listFiles(new FileFilter() {
 
+      @Override
       public boolean accept(File file) {
         if (file.isDirectory())
           return true;
@@ -519,6 +539,7 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
    * org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers
    * .SelectionChangedEvent)
    */
+  @Override
   public void selectionChanged(SelectionChangedEvent event) {
     updateButtons();
   }

@@ -33,10 +33,12 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.uima.internal.util.XMLUtils;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
-import org.apache.uima.ruta.utils.XmlUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -63,6 +65,7 @@ public class DLTKRutaHelper {
     final List elements = new ArrayList();
     final BufferedReader input = new BufferedReader(new InputStreamReader(stream));
     Thread t = new Thread(new Runnable() {
+      @Override
       public void run() {
         try {
           while (true) {
@@ -369,15 +372,12 @@ public class DLTKRutaHelper {
 
   private static Document getDocument(String text) {
     try {
-      DocumentBuilder parser = XmlUtils.createDocumentBuilder();
+      DocumentBuilderFactory documentBuilderFactory = XMLUtils.createDocumentBuilderFactory();
+      DocumentBuilder parser = documentBuilderFactory.newDocumentBuilder();
       parser.setErrorHandler(new DefaultHandler());
       Document document = parser.parse(new ByteArrayInputStream(text.getBytes()));
       return document;
-    } catch (IOException e) {
-      if (DLTKCore.DEBUG) {
-        e.printStackTrace();
-      }
-    } catch (SAXException e) {
+    } catch (IOException | SAXException | ParserConfigurationException e) {
       if (DLTKCore.DEBUG) {
         e.printStackTrace();
       }

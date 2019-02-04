@@ -29,12 +29,14 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class LabelAtActionTest {
 
   @Test
   public void test() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
+          SAXException {
 
     String document = "This is a test.";
     String script = "CW{-> t:T1}->{t{->T2};};";

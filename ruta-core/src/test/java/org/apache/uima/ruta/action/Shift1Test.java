@@ -30,6 +30,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class Shift1Test {
 
@@ -42,9 +43,11 @@ public class Shift1Test {
 
     cas.release();
   }
-  
+
   @Test
-  public void testOverlapping() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testOverlapping() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
+          URISyntaxException, SAXException {
     String text = "text 2 3 x 4";
     String script = "";
     script += "NUM+{->T1};";
@@ -54,5 +57,5 @@ public class Shift1Test {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "2 3", "3 x 4", "4");
     cas.release();
   }
-  
+
 }

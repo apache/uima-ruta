@@ -38,6 +38,7 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class ImplicitActionTest {
 
@@ -93,9 +94,9 @@ public class ImplicitActionTest {
   }
 
   @Test
-  public void testChangeOffsets()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testChangeOffsets() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
+          URISyntaxException, SAXException {
     String text = "text 2 3 x 4 1";
     String script = "";
     script += "NUM{->T1};";

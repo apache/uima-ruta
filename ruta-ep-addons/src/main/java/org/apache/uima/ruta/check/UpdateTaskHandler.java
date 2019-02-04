@@ -108,7 +108,7 @@ public class UpdateTaskHandler implements IHandler {
       File dataFile = new File(documentSink, "data.xml");
       List<CheckDocument> docs = new ArrayList<CheckDocument>();
       try {
-        docs = XMLUtils.read(dataFile);
+        docs = CheckDocumentXMLUtils.read(dataFile);
       } catch (SAXException e) {
         RutaAddonsPlugin.error(e);
       } catch (IOException e) {
