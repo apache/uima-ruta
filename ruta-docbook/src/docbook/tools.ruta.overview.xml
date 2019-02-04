@@ -254,7 +254,7 @@ Document{-> MARKFAST(Animal, AnimalsList)};
 
 
     <para>
-      There is a <quote>wild card</quote> rule element, which can be used to skip some text or annotations until the next rule element is able to match.
+      There is a <quote>wild card</quote> (<quote>#</quote>) rule element, which can be used to skip some text or annotations until the next rule element is able to match.
     </para>
     
     <programlisting><![CDATA[DECLARE Sentence;
@@ -262,7 +262,24 @@ PERIOD #{-> MARK(Sentence)} PERIOD;]]></programlisting>
     
     <para>
       This rule annotates everything between two <quote>PERIOD</quote> annotations with the type <quote>Sentence</quote>. Please note that the resulting 
-      annotations is automatically trimmed using the current filtering settings.
+      annotations is automatically trimmed using the current filtering settings. Conditions at wild card rule elements should by avoided and only be used 
+      by advanced users.
+    </para>
+
+	<para>
+      Another special rule element is called <quote>optional</quote> (<quote>_</quote>). Sometimes, an annotation should be created on a 
+      text position if it is not followed by an annotation of a specific property. In contrast to normal rule elements with optional quantifier,
+      the optional rule element does not need to match at all. 
+    </para>
+
+	<programlisting><![CDATA[W ANY{-PARTOF(NUM)};
+W _{-PARTOF(NUM)};]]></programlisting>
+	
+	<para>
+      The two rules in this example specify the same pattern: A word that is not followed by a number. The difference between the rules 
+      shows itself at the border of the matching window, e.g., at the end of the document. If the document contains only a single word, 
+      the first rule will not match successfully because the second rule element already fails at its matching condition. The second rule, however,
+      will successfully match due to the optional rule element. 
     </para>
 
     <para>
@@ -413,19 +430,29 @@ Entity{-> MentionedAfter, MentionedAfter.first = firstPerson};]]></programlistin
     </para>
 
     <para>
-      Expressions for annoations can be extended by a feature match and also conditions. This does also apply for type expressions
-      that represent annoations. This functionality is illustrated with a simple example:
+      Expressions for annotations can be extended by a feature match and also conditions. This does also apply for type expressions
+      that represent annotations. This functionality is illustrated with a simple example:
     </para>
     <programlisting><![CDATA[Sentence{-> CREATE(EmplRelation, "employeeRef" = 
-Employee.ct=="Peter"{ENDSWITH(Sentence)})};]]></programlisting>
+    Employee.ct=="Peter"{ENDSWITH(Sentence)})};]]></programlisting>
     
     <para>
-      Here, an annotation of the type <code>EmplRelation</code> ios created for each sentence.
+      Here, an annotation of the type <code>EmplRelation</code> is created for each sentence.
       The feature <code>employeeRef</code> is filled with one <code>Employee</code> annotation.
       This annotation is specified by its type <code>Employee</code>. The first annotation
-      of this type within the matched sentence, which coveres the text <quote>Peter</quote> and also
+      of this type within the matched sentence, which covers the text <quote>Peter</quote> and also
       ends with a <code>Sentence</code> annotation, is selected.
     </para>
+    
+    <para>
+      Sometimes, an annotation which was just created by an action should be assigned to a feature. 
+      This can be achieved by referring to the annotation given its type like it was shown in the 
+      first example with <quote>EmplRelation</quote>. However, this can cause problems in situations, e.g. where
+      several annotation of a type are present at a specific span. Local variables using labels can also be used directly at actions, 
+      which create or modify actions. The action will assign the new annotation the the label variable, 
+      which can then be utilized by following actions as shown in the following example:
+    </para>
+    <programlisting><![CDATA[W.ct=="Peter"{-> e:Employee, CREATE(EmplRelation, "employeeRef" = e)};]]></programlisting>
     
     <para>
       In the last examples, the values of features were defined as annotation types. However, also primitive 
@@ -559,8 +586,16 @@ Sentence{}->{
     <programlisting><![CDATA[DECLARE SentenceWithNPNP;
 Sentence{-> SentenceWithNPNP}<-{
     NP NP;
-};
-]]></programlisting>
+};]]></programlisting>
+
+	<para>
+      A rule element may be extended with several inlined rule block as condition or action. If there a more than one inlined rule blocks as condition, 
+      each needs to contain at least one rule that was successfully applied. In the following example, the rule will one match if the sentence contains 
+      a number followed by a another number and a period followed by a comma, independently from their location within the sentence:
+    </para>
+	
+	<programlisting><![CDATA[Sentence<-{NUM NUM;}<-{PERIOD COMMA;};]]></programlisting>
+		
     <para>
       Let us take a closer look on what exactly the UIMA Ruta rules match. The following rule matches on a word followed by another word:
     </para>
