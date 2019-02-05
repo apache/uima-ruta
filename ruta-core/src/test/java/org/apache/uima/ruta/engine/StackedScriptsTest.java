@@ -39,6 +39,7 @@ import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class StackedScriptsTest {
 
@@ -55,9 +56,9 @@ public class StackedScriptsTest {
   String rules3 = "W{PARTOF({T1,T2,T3})->T4};";
 
   @Test
-  public void testWithUimaFitAggregated() throws ResourceInitializationException,
-          InvalidXMLException, IOException, AnalysisEngineProcessException,
-          ResourceConfigurationException {
+  public void testWithUimaFitAggregated()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, SAXException {
 
     AnalysisEngine aae = createEngine(createEngineDescription(
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules1),
@@ -74,8 +75,9 @@ public class StackedScriptsTest {
   }
 
   @Test
-  public void testWithoutUimaFit() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, ResourceConfigurationException {
+  public void testWithoutUimaFit()
+          throws ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, ResourceConfigurationException, SAXException {
 
     AnalysisEngine rutaAE1 = createAnalysisEngine(rules1, null);
     AnalysisEngine rutaAE2 = createAnalysisEngine(rules2, null);
@@ -85,9 +87,9 @@ public class StackedScriptsTest {
 
   }
 
-  private void processAndTest(AnalysisEngine rutaAE1, AnalysisEngine rutaAE2, AnalysisEngine rutaAE3)
-          throws ResourceInitializationException, IOException, InvalidXMLException,
-          AnalysisEngineProcessException {
+  private void processAndTest(AnalysisEngine rutaAE1, AnalysisEngine rutaAE2,
+          AnalysisEngine rutaAE3) throws ResourceInitializationException, IOException,
+          InvalidXMLException, AnalysisEngineProcessException, SAXException {
     CAS cas = getCAS(LINES);
 
     rutaAE1.process(cas);
@@ -128,8 +130,8 @@ public class StackedScriptsTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 3 * lines, t4);
   }
 
-  private CAS getCAS(int lines) throws ResourceInitializationException, IOException,
-          InvalidXMLException {
+  private CAS getCAS(int lines)
+          throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < lines; i++) {
       sb.append(DOC_TEXT);
@@ -144,7 +146,8 @@ public class StackedScriptsTest {
           ResourceConfigurationException {
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
+      url = RutaTestUtils.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -171,7 +174,7 @@ public class StackedScriptsTest {
 
   @Test
   public void testPerformanceOfReindexOnly() throws ResourceInitializationException,
-          InvalidXMLException, IOException, AnalysisEngineProcessException {
+          InvalidXMLException, IOException, AnalysisEngineProcessException, SAXException {
     AnalysisEngine aaeNoReindex = createEngine(createEngineDescription(
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules1),
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules2),
@@ -182,8 +185,8 @@ public class StackedScriptsTest {
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules2,
                     RutaEngine.PARAM_REINDEX_ONLY, new String[] { RutaTestUtils.TYPE + "1" }),
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules3,
-                    RutaEngine.PARAM_REINDEX_ONLY, new String[] { RutaTestUtils.TYPE + "2",
-                        RutaTestUtils.TYPE + "3" })));
+                    RutaEngine.PARAM_REINDEX_ONLY,
+                    new String[] { RutaTestUtils.TYPE + "2", RutaTestUtils.TYPE + "3" })));
 
     long start = 0;
     long end = 0;

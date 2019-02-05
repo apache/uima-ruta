@@ -48,12 +48,14 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class AnnotationVariableExpressionTest {
 
   @Test
   public void test() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
+          SAXException {
     String document = "Some text.";
     String script = "ANNOTATION a;";
     script += "CW{-> ASSIGN(a, CW)};";
@@ -94,9 +96,9 @@ public class AnnotationVariableExpressionTest {
   }
 
   @Test
-  public void testImplicitAssignment()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testImplicitAssignment() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
+          URISyntaxException, SAXException {
     String document = "Some text.";
     String script = "ANNOTATION a;";
     script += "CW{-> a = CW};";
@@ -137,9 +139,9 @@ public class AnnotationVariableExpressionTest {
   }
 
   @Test
-  public void testListImplicitAssignment()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testListImplicitAssignment() throws ResourceInitializationException,
+          InvalidXMLException, IOException, AnalysisEngineProcessException,
+          ResourceConfigurationException, URISyntaxException, SAXException {
     String document = "Some text.";
     String script = "ANNOTATIONLIST as;";
     script += "Document{-> as = W};";
@@ -181,7 +183,8 @@ public class AnnotationVariableExpressionTest {
 
   @Test
   public void testList() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
+          SAXException {
     String document = "Some text.";
     String script = "ANNOTATIONLIST as;";
     script += "Document{-> ASSIGN(as, W)};";
@@ -222,9 +225,9 @@ public class AnnotationVariableExpressionTest {
   }
 
   @Test
-  public void testResetVariableBetweenCases()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testResetVariableBetweenCases() throws ResourceInitializationException,
+          InvalidXMLException, IOException, AnalysisEngineProcessException,
+          ResourceConfigurationException, URISyntaxException, SAXException {
 
     String document = "Some text.";
     String script = "ANNOTATIONLIST as;\n";
@@ -263,9 +266,9 @@ public class AnnotationVariableExpressionTest {
   }
 
   @Test
-  public void testNullValueWithFeatureMatch()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testNullValueWithFeatureMatch() throws ResourceInitializationException,
+          InvalidXMLException, IOException, AnalysisEngineProcessException,
+          ResourceConfigurationException, URISyntaxException, SAXException {
 
     String document = "Some text.";
     String script = "";

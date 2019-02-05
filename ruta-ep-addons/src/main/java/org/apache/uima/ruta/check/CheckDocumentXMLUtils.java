@@ -25,15 +25,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.internal.util.XMLUtils;
 import org.apache.uima.util.FileUtils;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
-public class XMLUtils {
+public class CheckDocumentXMLUtils {
 
-  public static void write(List<CheckDocument> docs, File file) throws IOException  {
+  public static void write(List<CheckDocument> docs, File file) throws IOException {
     StringBuilder sb = new StringBuilder();
     sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     sb.append("\n");
@@ -45,22 +45,20 @@ public class XMLUtils {
     sb.append("</documents>");
     FileUtils.saveString2File(sb.toString(), file, "UTF-8");
   }
-  
-  public static List<CheckDocument> read(File file) throws SAXException, IOException  {
-    if(file == null || !file.exists()) {
+
+  public static List<CheckDocument> read(File file) throws SAXException, IOException {
+    if (file == null || !file.exists()) {
       return new ArrayList<CheckDocument>();
     }
-    XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-    xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-    xmlReader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
-    FileReader reader = new FileReader(file);
-    InputSource inputSource = new InputSource(reader);
-    CheckDocumentsContentHandler handler = new CheckDocumentsContentHandler();
-    xmlReader.setContentHandler(handler);
-    xmlReader.parse(inputSource);
-    return handler.getCheckDocuments();
+
+    try (FileReader reader = new FileReader(file)) {
+      InputSource inputSource = new InputSource(reader);
+      CheckDocumentsContentHandler handler = new CheckDocumentsContentHandler();
+      XMLReader xmlReader = XMLUtils.createXMLReader();
+      xmlReader.setContentHandler(handler);
+      xmlReader.parse(inputSource);
+      return handler.getCheckDocuments();
+    }
   }
-  
-  
+
 }

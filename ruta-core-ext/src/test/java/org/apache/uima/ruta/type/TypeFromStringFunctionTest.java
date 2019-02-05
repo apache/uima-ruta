@@ -38,12 +38,14 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class TypeFromStringFunctionTest {
 
   @Test
   public void test() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
+          SAXException {
     String document = "This is a test.\n1900/12/24 and 24.4.1982\nCW\norg.apache.uima.ruta.type.NUM";
 
     String script = "";
@@ -65,7 +67,7 @@ public class TypeFromStringFunctionTest {
     t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
     assertEquals(7, ai.size());
-    
+
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     assertEquals(8, ai.size());
@@ -73,6 +75,6 @@ public class TypeFromStringFunctionTest {
     if (cas != null) {
       cas.release();
     }
-    
+
   }
 }

@@ -36,15 +36,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import javax.xml.parsers.SAXParser;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.internal.util.XMLUtils;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.type.RutaBasic;
-import org.apache.uima.ruta.utils.XmlUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.xml.sax.InputSource;
@@ -68,10 +66,14 @@ public class TreeWordList implements RutaWordList {
   /**
    * Constructs a TreeWordList from a resource.
    * 
-   * @param resource - Resource to create a TextWordList from
-   * @param dictRemoveWS - option to remove whitespaces fromt he resource
-   * @throws IOException - when there is a problem reading the resource
-   * @throws IllegalArgumentException - for an invalid name or file ending
+   * @param resource
+   *          - Resource to create a TextWordList from
+   * @param dictRemoveWS
+   *          - option to remove whitespaces fromt he resource
+   * @throws IOException
+   *           - when there is a problem reading the resource
+   * @throws IllegalArgumentException
+   *           - for an invalid name or file ending
    */
   public TreeWordList(Resource resource, boolean dictRemoveWS) throws IOException {
     this.dictRemoveWS = dictRemoveWS;
@@ -100,9 +102,12 @@ public class TreeWordList implements RutaWordList {
   /**
    * Constructs a TreeWordList from a file with path = filename
    * 
-   * @param pathname - path of the file to create a TextWordList from
-   * @param dictRemoveWS - remove whitespaces    
-   * @throws IOException - when there is a problem reading the pathname
+   * @param pathname
+   *          - path of the file to create a TextWordList from
+   * @param dictRemoveWS
+   *          - remove whitespaces
+   * @throws IOException
+   *           - when there is a problem reading the pathname
    */
   public TreeWordList(String pathname, boolean dictRemoveWS) throws IOException {
     this(new FileSystemResource(pathname), dictRemoveWS);
@@ -113,9 +118,12 @@ public class TreeWordList implements RutaWordList {
    * 
    * @param stream
    *          path of the file to create a TextWordList from
-   * @param name - the name of the resource in the stream
-   * @param dictRemoveWS - remove whitespaces    
-   * @throws IOException - when there is a problem reading the stream
+   * @param name
+   *          - the name of the resource in the stream
+   * @param dictRemoveWS
+   *          - remove whitespaces
+   * @throws IOException
+   *           - when there is a problem reading the stream
    */
   public TreeWordList(InputStream stream, String name, boolean dictRemoveWS) throws IOException {
     this.dictRemoveWS = dictRemoveWS;
@@ -147,7 +155,8 @@ public class TreeWordList implements RutaWordList {
    * @param stream
    *          Open InputStream containing the word for the treeWordList, this method will close the
    *          stream.
-   * @throws IOException - when there is a problem reading the stream
+   * @throws IOException
+   *           - when there is a problem reading the stream
    */
   public void buildNewTree(InputStream stream) throws IOException {
     Scanner scan = new Scanner(stream, "UTF-8");
@@ -263,9 +272,11 @@ public class TreeWordList implements RutaWordList {
         result |= recursiveContains(pointer, text, next, ignoreCase, fragment, ignoreChars,
                 maxIgnoreChars, ignoreWS);
       } else {
-        result |= recursiveContains(childNodeL, text, next, ignoreCase, fragment, ignoreChars, maxIgnoreChars, ignoreWS);
-        if (childNodeL != childNodeU) {  // Do not go into the same tree.
-          result |= recursiveContains(childNodeU, text, next, ignoreCase, fragment, ignoreChars, maxIgnoreChars, ignoreWS);
+        result |= recursiveContains(childNodeL, text, next, ignoreCase, fragment, ignoreChars,
+                maxIgnoreChars, ignoreWS);
+        if (childNodeL != childNodeU) { // Do not go into the same tree.
+          result |= recursiveContains(childNodeU, text, next, ignoreCase, fragment, ignoreChars,
+                  maxIgnoreChars, ignoreWS);
         }
       }
     } else {
@@ -350,7 +361,8 @@ public class TreeWordList implements RutaWordList {
     return results;
   }
 
-  public List<AnnotationFS> find(RutaStream stream, boolean ignoreCase, int size, boolean ignoreWS) {
+  public List<AnnotationFS> find(RutaStream stream, boolean ignoreCase, int size,
+          boolean ignoreWS) {
     return find(stream, ignoreCase, size, null, 0, ignoreWS);
   }
 
@@ -360,8 +372,8 @@ public class TreeWordList implements RutaWordList {
     if (basicsToAdd.size() >= 1
             && contains(lastCandidate, ignoreCase, size, ignoreChars, maxIgnoredChars, ignoreWS)) {
 
-      results.add(new Annotation(stream.getJCas(), basicsToAdd.get(0).getBegin(), basicsToAdd.get(
-              basicsToAdd.size() - 1).getEnd()));
+      results.add(new Annotation(stream.getJCas(), basicsToAdd.get(0).getBegin(),
+              basicsToAdd.get(basicsToAdd.size() - 1).getEnd()));
     } else if (interResult != null) {
       results.add(interResult);
     }
@@ -377,17 +389,15 @@ public class TreeWordList implements RutaWordList {
       }
       InputStreamReader streamReader = new InputStreamReader(is, encoding);
       this.root = new TextNode();
+
       XMLEventHandler handler = new XMLEventHandler(root);
-      SAXParser parser = XmlUtils.createSaxParser();
-      XMLReader reader = parser.getXMLReader();
-      reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-      reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-      reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
+      XMLReader reader = XMLUtils.createXMLReader();
       reader.setContentHandler(handler);
       reader.setErrorHandler(handler);
+
       reader.parse(new InputSource(streamReader));
-    } catch (SAXException  e) {
-     throw new IllegalStateException(e);
+    } catch (SAXException e) {
+      throw new IllegalStateException(e);
     }
   }
 
@@ -440,8 +450,8 @@ public class TreeWordList implements RutaWordList {
 
   public void writeNode(Writer writer, TextNode node) throws IOException {
     String value = StringEscapeUtils.escapeXml11(String.valueOf(node.getValue()));
-    String output = "<node char=\"" + value + "\" isWordEnd=\""
-            + Boolean.toString(node.isWordEnd()) + "\">";
+    String output = "<node char=\"" + value + "\" isWordEnd=\"" + Boolean.toString(node.isWordEnd())
+            + "\">";
     writer.write(output);
     for (TextNode child : node.getChildren().values()) {
       writeNode(writer, child);
@@ -456,8 +466,8 @@ public class TreeWordList implements RutaWordList {
   }
 
   @Override
-  public List<AnnotationFS> find(RutaStream stream, Map<String, Object> typeMap,
-          boolean ignoreCase, int ignoreLength, boolean edit, double distance, String ignoreToken) {
+  public List<AnnotationFS> find(RutaStream stream, Map<String, Object> typeMap, boolean ignoreCase,
+          int ignoreLength, boolean edit, double distance, String ignoreToken) {
     return null;
   }
 

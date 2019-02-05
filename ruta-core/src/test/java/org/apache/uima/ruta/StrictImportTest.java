@@ -53,29 +53,32 @@ import org.apache.uima.ruta.type.TruePositive;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Test;
-
+import org.xml.sax.SAXException;
 
 /**
  * Test the strict import option of {@link org.apache.uima.ruta.engine.RutaEngine}.
  */
 public class StrictImportTest {
   private final String NAME = this.getClass().getSimpleName();
+
   private final String NAMESPACE = this.getClass().getPackage().getName();
 
   /**
    * Create an analysis engine for a Ruta script.
    *
-   * @param script       Script path.
-   * @param strictImport {@link RutaEngine#PARAM_STRICT_IMPORTS} value.
+   * @param script
+   *          Script path.
+   * @param strictImport
+   *          {@link RutaEngine#PARAM_STRICT_IMPORTS} value.
    * @return Analysis engine.
    */
-  private AnalysisEngine createAE(String script, boolean strictImport) throws ResourceInitializationException, IOException, InvalidXMLException {
+  private AnalysisEngine createAE(String script, boolean strictImport)
+          throws ResourceInitializationException, IOException, InvalidXMLException {
     final TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(
             "org.apache.uima.ruta.engine.BasicTypeSystem",
             "org.apache.uima.ruta.StrictImportTestTypeSystem");
     final AnalysisEngineDescription ruta = AnalysisEngineFactory.createEngineDescription(
-            "org.apache.uima.ruta.engine.BasicEngine",
-            RutaEngine.PARAM_MAIN_SCRIPT, script,
+            "org.apache.uima.ruta.engine.BasicEngine", RutaEngine.PARAM_MAIN_SCRIPT, script,
             RutaEngine.PARAM_STRICT_IMPORTS, strictImport);
 
     tsd.addType(script.replaceAll("/", ".") + ".T1", "Type for Testing", "uima.tcas.Annotation");
@@ -148,44 +151,46 @@ public class StrictImportTest {
 
     return values;
   }
-  
+
   @Test
-  public void testStrictScriptImport() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException {
+  public void testStrictScriptImport() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, SAXException {
     Map<String, String> complexTypes = new HashMap<>();
     String s1 = "org.apache.uima.ruta.StrictScript2.Type1";
     String s2 = "org.apache.uima.ruta.other.Type1";
     complexTypes.put(s1, "uima.tcas.Annotation");
     complexTypes.put(s2, "uima.tcas.Annotation");
-    
+
     CAS cas = RutaTestUtils.getCAS("Some text.", complexTypes, null);
-    
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, 
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
             RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.StrictScript1",
             RutaEngine.PARAM_ADDITIONAL_SCRIPTS, "org.apache.uima.ruta.StrictScript2",
-            RutaEngine.PARAM_STRICT_IMPORTS, true
-            );
+            RutaEngine.PARAM_STRICT_IMPORTS, true);
     ae.process(cas);
-    
+
     Type t1 = cas.getTypeSystem().getType(s1);
     Type t2 = cas.getTypeSystem().getType(s2);
-    
+
     Assert.assertEquals(1, cas.getAnnotationIndex(t1).size());
     Assert.assertEquals(1, cas.getAnnotationIndex(t2).size());
-    
+
     cas.release();
   }
-  
+
   @Test
-  public void testDocumentAnnotation() throws ResourceInitializationException, InvalidXMLException, IOException, AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException, CASRuntimeException, CASException  {
+  public void testDocumentAnnotation() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
+          URISyntaxException, CASRuntimeException, CASException, SAXException {
     CAS cas = RutaTestUtils.getCAS("Some text.");
     Map<String, Object> params = new HashMap<>();
     params.put(RutaEngine.PARAM_STRICT_IMPORTS, true);
     Ruta.apply(cas, "DocumentAnnotation{->TruePositive};", params);
     Ruta.apply(cas, "Document{->TruePositive};", params);
-    AnnotationIndex<Annotation> annotationIndex = cas.getJCas().getAnnotationIndex(TruePositive.type);
+    AnnotationIndex<Annotation> annotationIndex = cas.getJCas()
+            .getAnnotationIndex(TruePositive.type);
     Assert.assertEquals(2, annotationIndex.size());
     cas.release();
   }
-  
-  
+
 }

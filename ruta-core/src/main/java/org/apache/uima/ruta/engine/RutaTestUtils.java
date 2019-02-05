@@ -222,19 +222,19 @@ public class RutaTestUtils {
   }
 
   public static CAS getCAS(String document)
-          throws ResourceInitializationException, IOException, InvalidXMLException {
+          throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
     return getCAS(document, null, null);
   }
 
   public static CAS getCAS(String document, Map<String, String> complexTypes,
           Map<String, List<TestFeature>> features)
-          throws ResourceInitializationException, IOException, InvalidXMLException {
+          throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
     return getCAS(document, complexTypes, features, false);
   }
 
   public static CAS getCAS(String document, Map<String, String> complexTypes,
           Map<String, List<TestFeature>> features, boolean storeTypeSystem)
-          throws ResourceInitializationException, IOException, InvalidXMLException {
+          throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
       url = RutaTestUtils.class.getClassLoader()
@@ -270,11 +270,7 @@ public class RutaTestUtils {
 
     if (storeTypeSystem) {
       try (OutputStream os = new FileOutputStream("TypeSystem.xml")) {
-        try {
-          mergeTypeSystems.toXML(os);
-        } catch (SAXException e) {
-          e.printStackTrace();
-        }
+        mergeTypeSystems.toXML(os);
       }
     }
 

@@ -24,9 +24,9 @@ import java.io.FileReader;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.uima.internal.util.XMLUtils;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 public class ConstraintXMLUtils {
 
@@ -46,15 +46,16 @@ public class ConstraintXMLUtils {
   }
 
   public static List<ConstraintData> readConstraints(String location) throws Exception {
-    XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-    xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-    xmlReader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
-    FileReader reader = new FileReader(location);
-    InputSource inputSource = new InputSource(reader);
-    ConstraintContentHandler handler = new ConstraintContentHandler();
-    xmlReader.setContentHandler(handler);
-    xmlReader.parse(inputSource);
-    return handler.getConstraints();
+
+    try (FileReader reader = new FileReader(location)) {
+
+      InputSource inputSource = new InputSource(reader);
+      ConstraintContentHandler handler = new ConstraintContentHandler();
+      XMLReader xmlReader = XMLUtils.createXMLReader();
+      xmlReader.setContentHandler(handler);
+      xmlReader.parse(inputSource);
+      return handler.getConstraints();
+    }
+
   }
 }

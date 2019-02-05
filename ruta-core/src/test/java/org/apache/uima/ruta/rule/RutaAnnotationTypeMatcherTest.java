@@ -34,6 +34,7 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class RutaAnnotationTypeMatcherTest {
 
@@ -77,10 +78,9 @@ public class RutaAnnotationTypeMatcherTest {
     script += "c:CW{->T26}<-{c.begin==0;};\n";
     script += "s:Struct1->{s.as{-> T27};};\n";
     script += "s:Struct1->{s.as.begin==5{-> T28};};\n";
-    
-    
+
     CAS cas = apply(document, script);
-    
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "This");
@@ -109,12 +109,12 @@ public class RutaAnnotationTypeMatcherTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 26, 1, "This");
     RutaTestUtils.assertAnnotationsEquals(cas, 27, 3, "is", "a", "test");
     RutaTestUtils.assertAnnotationsEquals(cas, 28, 1, "is");
-    
+
   }
 
-  private CAS apply(String document, String script)
-          throws ResourceInitializationException, IOException, InvalidXMLException,
-          ResourceConfigurationException, AnalysisEngineProcessException, URISyntaxException {
+  private CAS apply(String document, String script) throws ResourceInitializationException,
+          IOException, InvalidXMLException, ResourceConfigurationException,
+          AnalysisEngineProcessException, URISyntaxException, SAXException {
     Map<String, String> complexTypes = new TreeMap<String, String>();
     complexTypes.put("Struct1", "uima.tcas.Annotation");
     complexTypes.put("Struct2", "uima.tcas.Annotation");
@@ -129,10 +129,10 @@ public class RutaAnnotationTypeMatcherTest {
     features.put("Struct4", list);
     list.add(new TestFeature("a", "", "uima.tcas.Annotation"));
     list.add(new TestFeature("as", "", "uima.cas.FSArray"));
-    
+
     CAS cas = RutaTestUtils.getCAS(document, complexTypes, features);
     Ruta.apply(cas, script);
     return cas;
   }
-  
+
 }

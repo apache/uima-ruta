@@ -35,6 +35,7 @@ import org.apache.uima.ruta.seed.TextSeeder;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class ForEachBlockTest {
 
@@ -69,9 +70,9 @@ public class ForEachBlockTest {
 
   @Test
   @Ignore
-  public void testPerformance()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testPerformance() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
+          URISyntaxException, SAXException {
 
     int lines = 10000;
     StringBuilder sb = new StringBuilder();
@@ -127,9 +128,9 @@ public class ForEachBlockTest {
   }
 
   @Test
-  public void testRigthToLeft()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testRigthToLeft() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
+          URISyntaxException, SAXException {
     String script = "NUM{-> T1};";
     script += "FOREACH(t) T1{}{\n";
     script += "n:T1 SPECIAL.ct==\"^\" t{-> t.begin = n.begin};\n";
@@ -144,7 +145,8 @@ public class ForEachBlockTest {
   @Test
   public void testEnforcedLeftToRigthInComposedWithDebbugging()
           throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
+          SAXException {
     String script = "NUM{-> T1};";
     script += "FOREACH(t) T1{}{\n";
     script += "(n:@T1{->UNMARK(T1)} SPECIAL.ct==\"^\" t){-> t.begin = n.begin};\n";
@@ -160,9 +162,9 @@ public class ForEachBlockTest {
   }
 
   @Test
-  public void testDirection()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testDirection() throws ResourceInitializationException, InvalidXMLException,
+          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
+          URISyntaxException, SAXException {
     String script = "NUM{-> T1};";
     script += "FOREACH(t,true) T1{}{\n";
     script += "(# t{-PARTOF(T2)}){->T2};\n";
@@ -178,7 +180,6 @@ public class ForEachBlockTest {
     cas.release();
   }
 
-
   @Test
   public void testComposed() throws Exception {
     String script = "NUM{-> T1};";
@@ -192,8 +193,7 @@ public class ForEachBlockTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "4x2^3");
     cas.release();
   }
-  
-  
+
   @Test
   public void testConditionMacro() throws Exception {
     String script = "CONDITION isSmall() = REGEXP(\".\");\n";
@@ -207,7 +207,7 @@ public class ForEachBlockTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "1");
     cas.release();
   }
-  
+
   @Test
   public void testWithContainingBlock() throws Exception {
     String script = "";
@@ -225,7 +225,5 @@ public class ForEachBlockTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "1", "22", "333");
     cas.release();
   }
-  
-  
-  
+
 }

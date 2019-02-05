@@ -32,44 +32,52 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Test;
-
+import org.xml.sax.SAXException;
 
 public class QuantifierTest {
-  
+
   @Test
-  public void testRightToLeftMinMaxReluctantToLiteral() throws CASException, ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException {
-    
+  public void testRightToLeftMinMaxReluctantToLiteral()
+          throws CASException, ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, SAXException {
+
     JCas jcas = RutaTestUtils.getCAS("a b c d e.").getJCas();
-    Assert.assertEquals("a b c d e.", Ruta.select(jcas, "\"a\" W[0,5]? @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("b c d e.", Ruta.select(jcas, "\"b\" W[0,5]? @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("c d e.", Ruta.select(jcas, "\"c\" W[0,5]? @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("d e.", Ruta.select(jcas, "\"d\" W[0,5]? @PERIOD;").get(0).getCoveredText());
+    Assert.assertEquals("a b c d e.",
+            Ruta.select(jcas, "\"a\" W[0,5]? @PERIOD;").get(0).getCoveredText());
+    Assert.assertEquals("b c d e.",
+            Ruta.select(jcas, "\"b\" W[0,5]? @PERIOD;").get(0).getCoveredText());
+    Assert.assertEquals("c d e.",
+            Ruta.select(jcas, "\"c\" W[0,5]? @PERIOD;").get(0).getCoveredText());
+    Assert.assertEquals("d e.",
+            Ruta.select(jcas, "\"d\" W[0,5]? @PERIOD;").get(0).getCoveredText());
     Assert.assertEquals("e.", Ruta.select(jcas, "\"e\" W[0,5]? @PERIOD;").get(0).getCoveredText());
-    
+
     jcas.release();
   }
-  
+
   @Test
-  public void testRightToLeftMinMaxGreedyToLiteral() throws CASException, ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException {
-    
+  public void testRightToLeftMinMaxGreedyToLiteral()
+          throws CASException, ResourceInitializationException, InvalidXMLException, IOException,
+          AnalysisEngineProcessException, SAXException {
+
     JCas jcas = RutaTestUtils.getCAS("a b c d e.").getJCas();
-    Assert.assertEquals("a b c d e.", Ruta.select(jcas, "\"a\" W[0,4] @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("b c d e.", Ruta.select(jcas, "\"b\" W[0,3] @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("c d e.", Ruta.select(jcas, "\"c\" W[0,2] @PERIOD;").get(0).getCoveredText());
+    Assert.assertEquals("a b c d e.",
+            Ruta.select(jcas, "\"a\" W[0,4] @PERIOD;").get(0).getCoveredText());
+    Assert.assertEquals("b c d e.",
+            Ruta.select(jcas, "\"b\" W[0,3] @PERIOD;").get(0).getCoveredText());
+    Assert.assertEquals("c d e.",
+            Ruta.select(jcas, "\"c\" W[0,2] @PERIOD;").get(0).getCoveredText());
     Assert.assertEquals("d e.", Ruta.select(jcas, "\"d\" W[0,1] @PERIOD;").get(0).getCoveredText());
     Assert.assertEquals("e.", Ruta.select(jcas, "\"e\" W[0,0] @PERIOD;").get(0).getCoveredText());
-    
+
     jcas.release();
   }
-  
+
   @Test
   public void testReluctantGreedyInComposed() throws Exception {
     JCas jcas = RutaTestUtils.getCAS("a B B . a B . a .").getJCas();
     List<Annotation> select = Ruta.select(jcas, "SW (CW+?) PERIOD;");
     Assert.assertEquals(2, select.size());
   }
-  
-  
+
 }

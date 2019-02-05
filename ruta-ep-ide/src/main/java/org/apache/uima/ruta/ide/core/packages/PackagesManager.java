@@ -23,9 +23,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,8 +36,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -45,9 +46,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.uima.internal.util.XMLUtils;
 import org.apache.uima.ruta.ide.RutaIdeCorePlugin;
 import org.apache.uima.ruta.ide.core.packages.DLTKRutaHelper.RutaPackage;
-import org.apache.uima.ruta.utils.XmlUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -180,19 +182,14 @@ public class PackagesManager {
     File packagesFile = packagesPath.toFile();
     if (packagesFile.exists()) {
       try {
-        DocumentBuilder builder = XmlUtils.createDocumentBuilder();
-        Document document = builder.parse(new BufferedInputStream(
-                new FileInputStream(packagesFile), 2048));
-        populate(document.getDocumentElement());
-      } catch (FileNotFoundException e) {
-        if (DLTKCore.DEBUG) {
-          e.printStackTrace();
+        DocumentBuilderFactory documentBuilderFactory = XMLUtils.createDocumentBuilderFactory();
+        DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(packagesFile),
+                2048)) {
+          Document document = builder.parse(bis);
+          populate(document.getDocumentElement());
         }
-      } catch (SAXException e) {
-        if (DLTKCore.DEBUG) {
-          e.printStackTrace();
-        }
-      } catch (IOException e) {
+      } catch (SAXException | IOException | ParserConfigurationException e) {
         if (DLTKCore.DEBUG) {
           e.printStackTrace();
         }
@@ -203,40 +200,31 @@ public class PackagesManager {
   private void save() {
     IPath packagesPath = RutaIdeCorePlugin.getDefault().getStateLocation().append(PACKAGES_FILE);
     File packagesFile = packagesPath.toFile();
-    DocumentBuilder builder;
+
+    OutputStream os = null;
     try {
-      builder = XmlUtils.createDocumentBuilder();
+      DocumentBuilderFactory documentBuilderFactory = XMLUtils.createDocumentBuilderFactory();
+      DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
       Document document = builder.newDocument();
       save(document);
 
-      FileOutputStream fos = new FileOutputStream(packagesFile, false);
-      BufferedOutputStream bos = new BufferedOutputStream(fos, 2048);
+      os = new BufferedOutputStream(new FileOutputStream(packagesFile, false), 2048);
 
-      TransformerFactory serFactory = TransformerFactory.newInstance();
-      serFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-      serFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-      Transformer transformer = serFactory.newTransformer();
+      TransformerFactory transformerFactory = XMLUtils.createTransformerFactory();
+      Transformer transformer = transformerFactory.newTransformer();
       transformer.setOutputProperty(OutputKeys.METHOD, "xml"); //$NON-NLS-1$
       transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
 
       DOMSource source = new DOMSource(document);
-      StreamResult outputTarget = new StreamResult(bos);
+      StreamResult outputTarget = new StreamResult(os);
       transformer.transform(source, outputTarget);
-      bos.close();
-      fos.close();
 
-    } catch (FileNotFoundException e) {
+    } catch (IOException | TransformerException | ParserConfigurationException e) {
       if (DLTKCore.DEBUG) {
         e.printStackTrace();
       }
-    } catch (IOException e) {
-      if (DLTKCore.DEBUG) {
-        e.printStackTrace();
-      }
-    } catch (TransformerException e) {
-      if (DLTKCore.DEBUG) {
-        e.printStackTrace();
-      }
+    } finally {
+      IOUtils.closeQuietly(os);
     }
   }
 
@@ -464,7 +452,8 @@ public class PackagesManager {
   /**
    * Return all packages paths in one call.
    */
-  public synchronized IPath[] getPathsForPackages(IInterpreterInstall install, Set packagesInBuild) {
+  public synchronized IPath[] getPathsForPackages(IInterpreterInstall install,
+          Set packagesInBuild) {
 
     StringBuffer buf = new StringBuffer();
     String[] pkgs = (String[]) packagesInBuild.toArray(new String[packagesInBuild.size()]);

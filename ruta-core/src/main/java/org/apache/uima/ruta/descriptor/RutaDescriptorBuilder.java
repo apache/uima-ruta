@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -61,11 +60,9 @@ import org.apache.uima.ruta.resource.RutaResourceLoader;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
-import org.apache.uima.util.XMLSerializer;
 import org.apache.uima.util.XMLizable;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 public class RutaDescriptorBuilder {
@@ -323,11 +320,12 @@ public class RutaDescriptorBuilder {
       }
     }
 
-     AnalysisEngineDescription analysisEngineDescription = configureEngine(desc, engineOutput, options, scriptPaths, enginePaths, resourcePaths, import_impl, aets);
-     if(needToIncludeTypeSystemDescriptor) {
-       analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(typeSystemDescription);
-     }
-     return analysisEngineDescription;
+    AnalysisEngineDescription analysisEngineDescription = configureEngine(desc, engineOutput,
+            options, scriptPaths, enginePaths, resourcePaths, import_impl, aets);
+    if (needToIncludeTypeSystemDescriptor) {
+      analysisEngineDescription.getAnalysisEngineMetaData().setTypeSystem(typeSystemDescription);
+    }
+    return analysisEngineDescription;
   }
 
   @Deprecated
@@ -571,7 +569,8 @@ public class RutaDescriptorBuilder {
             es.toArray(new String[0]));
   }
 
-  private TypeSystemDescription getTypeSystemDescriptor(URL url, ResourceManager rm) throws InvalidXMLException, IOException {
+  private TypeSystemDescription getTypeSystemDescriptor(URL url, ResourceManager rm)
+          throws InvalidXMLException, IOException {
     TypeSystemDescription tsdesc = UIMAFramework.getXMLParser()
             .parseTypeSystemDescription(new XMLInputSource(url));
     tsdesc.resolveImports(rm);
@@ -582,14 +581,11 @@ public class RutaDescriptorBuilder {
     return new File(location);
   }
 
-  private void toFile(XMLizable desc, File destination) throws SAXException, FileNotFoundException {
+  private void toFile(XMLizable desc, File destination) throws SAXException, IOException {
     destination.getParentFile().mkdirs();
-    OutputStream out = new FileOutputStream(destination);
-    XMLSerializer sax = new XMLSerializer(out);
-    ContentHandler ch = sax.getContentHandler();
-    ch.startDocument();
-    desc.toXML(ch);
-    ch.endDocument();
+    try (FileOutputStream fos = new FileOutputStream(destination)) {
+      desc.toXML(fos);
+    }
   }
 
   public static URL checkImportExistence(String candidate, String extension,
