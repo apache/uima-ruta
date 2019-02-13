@@ -1615,9 +1615,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return getFileHeaderString(true) + result;
   }
 
-  /**
-   * Return the set of additional documents and initializes it, if needed.
-   */
   public TextRulerExampleDocumentSet getAdditionalDocuments() {
     if (additionalDocuments == null) {
       if (!StringUtils.isBlank(additionalFolderPath)) {
