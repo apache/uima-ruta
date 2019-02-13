@@ -1,4 +1,0 @@
-This is a test.
-1900/12/24 and 24.4.1982
-CW
-org.apache.uima.ruta.type.NUM
