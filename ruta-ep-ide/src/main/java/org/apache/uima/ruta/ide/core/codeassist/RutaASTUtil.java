@@ -75,8 +75,8 @@ public class RutaASTUtil {
     // return null;
   }
 
-  /**
-   * We need to extend all statements to end of lines or to begining of next statement. This is
+  /*
+   * We need to extend all statements to end of lines or to beginning of next statement. This is
    * needed to for correct completion in statements. Such as variable completion and so on.
    */
   public static void extendStatements(ASTNode node, String content) {

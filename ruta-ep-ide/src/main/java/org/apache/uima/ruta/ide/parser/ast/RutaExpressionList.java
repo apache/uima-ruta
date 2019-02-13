@@ -32,11 +32,6 @@ import org.eclipse.dltk.utils.CorePrinter;
 public class RutaExpressionList extends Expression {
   private List<? extends Expression> expressions;
 
-  /**
-   * Statement with bounds from first to last expression.
-   * 
-   * @param expressions
-   */
   public RutaExpressionList(List<? extends Expression> expressions) {
     if (!expressions.isEmpty()) {
       // First
@@ -53,13 +48,6 @@ public class RutaExpressionList extends Expression {
     this.expressions = expressions;
   }
 
-  /**
-   * Statement with specified bounds and expression list.
-   * 
-   * @param start
-   * @param end
-   * @param expressions
-   */
   public RutaExpressionList(int start, int end, List<Expression> expressions) {
     super(start, end);
     if (expressions == null) {
@@ -111,7 +99,7 @@ public class RutaExpressionList extends Expression {
       output.formatPrintLn("");
       Iterator<? extends Expression> i = this.expressions.iterator();
       while (i.hasNext()) {
-        ASTNode node = (ASTNode) i.next();
+        ASTNode node = i.next();
         node.printNode(output);
         output.formatPrintLn(" ");
       }
@@ -124,7 +112,7 @@ public class RutaExpressionList extends Expression {
     if (this.expressions != null) {
       Iterator<? extends Expression> i = this.expressions.iterator();
       while (i.hasNext()) {
-        ASTNode node = (ASTNode) i.next();
+        ASTNode node = i.next();
         value += node.toString();
         value += " ";
       }

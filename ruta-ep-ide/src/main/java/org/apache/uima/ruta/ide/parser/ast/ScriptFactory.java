@@ -28,8 +28,6 @@ import java.util.Set;
 
 import org.antlr.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.uima.ruta.ide.core.parser.RutaLexer;
-import org.apache.uima.ruta.parser.RutaParser;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Block;
@@ -79,7 +77,7 @@ public class ScriptFactory extends AbstractFactory {
           Map<Expression, Map<Expression, Expression>> fa, Token s) {
     return createRegExpRule(exprs, fa, s, false);
   }
-  
+
   public RutaRule createRegExpRule(List<Expression> exprs,
           Map<Expression, Map<Expression, Expression>> fa, Token s, boolean updateCounter) {
     List<Expression> expressions = new ArrayList<Expression>();
@@ -97,7 +95,7 @@ public class ScriptFactory extends AbstractFactory {
       }
     }
     RutaRegExpRule rule = new RutaRegExpRule(expressions, fa, idCounter);
-    if(updateCounter) {
+    if (updateCounter) {
       idCounter++;
     }
     if (s != null) {
@@ -178,34 +176,12 @@ public class ScriptFactory extends AbstractFactory {
     return rutaRuleElement;
   }
 
-  /**
-   * Creates Root-Block.
-   * 
-   * @param declStart
-   * @param declEnd
-   * @param nameStart
-   * @param nameEnd
-   * @param string
-   * @param res
-   * @param block
-   * @param packageString
-   * @return new RutaScriptBlock
-   */
   public RutaScriptBlock createScriptBlock(int declStart, int declEnd, int nameStart, int nameEnd,
           String string, List<RutaRuleElement> res, Block block, String packageString) {
     createRule(new ArrayList<Expression>(), null);
     return new RutaScriptBlock(string, packageString, nameStart, nameEnd, declStart, declEnd);
   }
 
-  /**
-   * Creates Method-Blocks.<br>
-   * Please call finalizeScriptBlock afterwards.
-   * 
-   * @param id
-   * @param type
-   * @param rutaBlock
-   * @return RutaBlock
-   */
   public RutaBlock createScriptBlock(Token id, Token type, RutaBlock rutaBlock) {
     boolean forEach = false;
     if (type != null) {
@@ -235,14 +211,6 @@ public class ScriptFactory extends AbstractFactory {
     }
   }
 
-  /**
-   * Creates an AST element for an external block construct
-   * 
-   * @param type
-   * @param parent
-   *          block
-   * @return new external block construct
-   */
   public RutaBlock createExternalBlock(Token type, RutaBlock parent) {
     int[] bounds = getBounds(type);
     int[] nameBounds = getBounds(type);
@@ -269,9 +237,6 @@ public class ScriptFactory extends AbstractFactory {
     block.setEnd(rc != null ? getBounds(rc)[1] : rule.sourceEnd());
   }
 
-  /**
-   * @param body
-   */
   private void filterNullObjects(List<?> body) {
     if (body == null) {
       return;

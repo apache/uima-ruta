@@ -24,13 +24,6 @@ import org.eclipse.dltk.ast.references.VariableReference;
 public class RutaVariableReference extends VariableReference {
   private int typeId;
 
-  /**
-   * @param start
-   * @param end
-   * @param name
-   * @param typedId
-   *          raw type id from {@link RutaTypeConstants}
-   */
   public RutaVariableReference(int start, int end, String name, int typedId) {
     super(start, end, name);
     this.typeId = typedId;

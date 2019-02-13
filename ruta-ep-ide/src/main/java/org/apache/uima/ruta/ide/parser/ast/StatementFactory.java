@@ -32,12 +32,7 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 
 public class StatementFactory extends AbstractFactory {
-  /**
-   * @param component
-   * @param impString - import string
-   * @param type - type of import
-   * @return new Import-Statement
-   */
+
   public static RutaImportStatement createImport(ComponentDeclaration component, Token impString,
           int type) {
     int bounds[] = getBounds(impString, component);
@@ -60,18 +55,19 @@ public class StatementFactory extends AbstractFactory {
   public static Statement createImportType(Token importToken, Token type, ComponentDeclaration ts,
           Token alias) {
     int bounds[] = getBounds(importToken, type);
-    if(ts != null) {
+    if (ts != null) {
       bounds = getBounds(importToken, ts);
     }
-    if(alias != null) {
+    if (alias != null) {
       bounds = getBounds(importToken, alias);
     }
     return new RutaImportTypesStatement(bounds[0], bounds[1], ts, type, null, alias);
   }
 
-  public static Statement createImportAllPackagew(Token importToken, ComponentDeclaration ts, Token alias) {
+  public static Statement createImportAllPackagew(Token importToken, ComponentDeclaration ts,
+          Token alias) {
     int bounds[] = getBounds(importToken, ts);
-    if(alias != null) {
+    if (alias != null) {
       bounds = getBounds(importToken, alias);
     }
     return new RutaImportTypesStatement(bounds[0], bounds[1], ts, null, null, alias);
@@ -80,16 +76,15 @@ public class StatementFactory extends AbstractFactory {
   public static Statement createImportPackage(Token importToken, Token pkg, ComponentDeclaration ts,
           Token alias) {
     int bounds[] = getBounds(importToken, pkg);
-    if(ts != null) {
+    if (ts != null) {
       bounds = getBounds(importToken, ts);
     }
-    if(alias != null) {
+    if (alias != null) {
       bounds = getBounds(importToken, alias);
     }
     return new RutaImportTypesStatement(bounds[0], bounds[1], ts, null, pkg, alias);
   }
-  
-  
+
   public static RutaImportStatement createImportScript(ComponentDeclaration dottedId,
           Token impString) {
     if (dottedId != null) {
@@ -112,29 +107,17 @@ public class StatementFactory extends AbstractFactory {
     return createImport(dottedId, impString, kind);
   }
 
-  /**
-   * @param pString
-   *          Antlr-Token "PACKAGE"
-   * @param dottedId
-   *          Antlr-Token (dotted-identifier/id)
-   * @return new RutaPackageDeclaration
-   */
   public static RutaPackageDeclaration createPkgDeclaration(Token dottedId, Token pString) {
     int bounds[] = getBounds(pString, dottedId);
     int nameBounds[] = new int[2];
     if (dottedId != null) {
       nameBounds = getBounds(dottedId);
     }
-    SimpleReference ref = new SimpleReference(nameBounds[0], nameBounds[1], dottedId == null ? ""
-            : dottedId.getText());
+    SimpleReference ref = new SimpleReference(nameBounds[0], nameBounds[1],
+            dottedId == null ? "" : dottedId.getText());
     return new RutaPackageDeclaration(bounds[0], bounds[1], ref);
   }
 
-  /**
-   * @param id
-   * @param type
-   * @return new RutaVariableDeclaration
-   */
   private static RutaVariableDeclaration createVariable(Token id, Token typeToken, int type) {
     return createVariable(id, typeToken, type, null);
   }
@@ -150,85 +133,37 @@ public class StatementFactory extends AbstractFactory {
             declBounds[1], ref, type, expr);
   }
 
-  /**
-   * @param id
-   * @param type
-   * @return new RutaVariableDeclaration
-   */
   public static RutaVariableDeclaration createIntVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_I);
   }
 
-  /**
-   * @param id
-   * @param type
-   * @return new variable
-   */
   public static Object createFloatVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_F);
   }
 
-  /**
-   * @param id
-   * @param type
-   * @return new RutaVariableDeclaration
-   */
   public static RutaVariableDeclaration createDoubleVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_D);
   }
 
-  /**
-   * @param id
-   * @param type
-   * @return new RutaVariableDeclaration
-   */
   public static RutaVariableDeclaration createStringVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_S);
   }
 
-  /**
-   * @param id
-   * @param type
-   * @return new RutaVariableDeclaration
-   */
   public static RutaVariableDeclaration createBooleanVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_B);
   }
 
-  /**
-   * @param id
-   * @param type
-   * @return new RutaVariableDeclaration
-   */
   public static RutaVariableDeclaration createTypeVariable(Token id, Token type) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_AT);
   }
 
-  /**
-   * @param id
-   * @param type
-   * @return new RutaVariableDeclaration
-   */
   public static RutaVariableDeclaration createListVariable(Token id, Token type, Expression expr) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_WL, expr);
   }
 
-  /**
-   * @param id
-   * @param type
-   * @return new RutaVariableDeclaration
-   */
   public static RutaVariableDeclaration createTableVariable(Token id, Token type, Expression expr) {
     return createVariable(id, type, RutaTypeConstants.RUTA_TYPE_WT, expr);
   }
-
-  /**
-   * @param id
-   * @param declareToken
-   * @param type
-   * @param features
-   * @return new Declaration
-   */
 
   public static Declaration createAnnotationType(Token id, Token declareToken, Expression type,
           List<RutaFeatureDeclaration> features) {
@@ -277,9 +212,10 @@ public class StatementFactory extends AbstractFactory {
   @SuppressWarnings({ "rawtypes" })
   public static Statement createDeclareDeclarationsStatement(Token declareToken, List declarations,
           ASTNode parent) {
-    return createDeclareDeclarationsStatement(declareToken, declarations, parent, new ArrayList<RutaFeatureDeclaration>(0));
+    return createDeclareDeclarationsStatement(declareToken, declarations, parent,
+            new ArrayList<RutaFeatureDeclaration>(0));
   }
-  
+
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public static Statement createDeclareDeclarationsStatement(Token declareToken, List declarations,
           ASTNode parent, List<RutaFeatureDeclaration> features) {
@@ -297,14 +233,13 @@ public class StatementFactory extends AbstractFactory {
       int end = decls.get(decls.size() - 1).sourceEnd();
       statementBounds[1] = Math.max(statementBounds[1], end);
     }
-    if(features != null && !features.isEmpty()) {
+    if (features != null && !features.isEmpty()) {
       int end = features.get(features.size() - 1).sourceEnd();
       statementBounds[1] = Math.max(statementBounds[1], end);
     }
-    return new RutaDeclareDeclarationsStatement(statementBounds[0], statementBounds[1],
-            decls, parent, declBounds[0], declBounds[1], features);
+    return new RutaDeclareDeclarationsStatement(statementBounds[0], statementBounds[1], decls,
+            parent, declBounds[0], declBounds[1], features);
   }
-  
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public static Statement createDeclarationsStatement(Token declareToken, List declarations,
@@ -323,10 +258,9 @@ public class StatementFactory extends AbstractFactory {
       int end = decls.get(decls.size() - 1).sourceEnd();
       statementBounds[1] = Math.max(statementBounds[1], end);
     }
-    return new RutaDeclarationsStatement(statementBounds[0], statementBounds[1], declarations,
-            init, declBounds[0], declBounds[1]);
+    return new RutaDeclarationsStatement(statementBounds[0], statementBounds[1], declarations, init,
+            declBounds[0], declBounds[1]);
   }
-
 
   @SuppressWarnings("rawtypes")
   public static Statement createDeclarationsStatement(Token declareToken, List declarations) {
@@ -344,7 +278,8 @@ public class StatementFactory extends AbstractFactory {
     return null;
   }
 
-  public static Statement createComposedVariableActionDeclaration(Token id, List<RutaAction> actions) {
+  public static Statement createComposedVariableActionDeclaration(Token id,
+          List<RutaAction> actions) {
     return null;
   }
 
@@ -372,17 +307,16 @@ public class StatementFactory extends AbstractFactory {
 
   public static Statement createMacroStatement(Token kind, Token name, Map<Token, Token> def,
           List<? extends Expression> elements) {
-    int declBounds[] = getBounds(kind, elements.get(elements.size()-1));
+    int declBounds[] = getBounds(kind, elements.get(elements.size() - 1));
     int nameBounds[] = getBounds(name);
-    int k = kind.equals("CONDITION") ? RutaTypeConstants.RUTA_TYPE_C : RutaTypeConstants.RUTA_TYPE_A;
+    int k = kind.getText().equals("CONDITION") ? RutaTypeConstants.RUTA_TYPE_C
+            : RutaTypeConstants.RUTA_TYPE_A;
     // FieldDeclaration
     SimpleReference ref = new RutaVariableReference(nameBounds[0], nameBounds[1], name.getText(),
             k);
-    RutaExpressionList expr = new RutaExpressionList(elements); 
+    RutaExpressionList expr = new RutaExpressionList(elements);
     return new RutaMacroDeclaration(name.getText(), nameBounds[0], nameBounds[1], declBounds[0],
             declBounds[1], ref, k, def, expr);
   }
-
-
 
 }

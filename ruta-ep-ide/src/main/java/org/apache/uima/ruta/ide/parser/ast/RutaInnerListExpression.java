@@ -25,10 +25,6 @@ import org.eclipse.dltk.ast.expressions.Expression;
 public class RutaInnerListExpression extends Expression {
   private String innerList;
 
-  /**
-   * @param start
-   * @param end
-   */
   public RutaInnerListExpression(int start, int end, String inner) {
     super(start, end);
     this.innerList = inner == null ? "" : inner;
@@ -56,17 +52,10 @@ public class RutaInnerListExpression extends Expression {
     return RutaExpressionConstants.E_INNERLIST;
   }
 
-  /**
-   * @param innerList
-   *          the innerList to set
-   */
   public void setInnerList(String innerList) {
     this.innerList = innerList;
   }
 
-  /**
-   * @return the innerList
-   */
   public String getInnerList() {
     return innerList;
   }

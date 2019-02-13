@@ -47,12 +47,6 @@ public class RutaAction extends Expression {
 
   private String label;
 
-  /**
-   * @param start
-   * @param end
-   * @param exprs
-   * @param kind
-   */
   public RutaAction(int start, int end, List<ASTNode> exprs, int kind, String name, int nameStart,
           int nameEnd) {
     super(start, end);
@@ -67,11 +61,6 @@ public class RutaAction extends Expression {
     this.nameEnd = nameEnd;
   }
 
-  /**
-   * Copy-Constructor
-   * 
-   * @param source
-   */
   public RutaAction(RutaAction source) {
     super(source.sourceStart(), source.sourceEnd());
     this.exprs = source.exprs;
