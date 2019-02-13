@@ -42,6 +42,27 @@
     <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-maven-plugin</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-maven-plugin</developerConnection>
   </scm>
+  
+  <dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+  
 	<dependencies>
 		<!-- Dependencies on the Maven Plugin API and friends -->
 		<dependency>
