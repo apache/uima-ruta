@@ -248,12 +248,6 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
 
   }
 
-  /**
-   * Creates and returns the source lookup control.
-   * 
-   * @param parent
-   *          the parent widget of this control
-   */
   public Control createControl(Composite parent) {
     Font font = parent.getFont();
 
@@ -298,15 +292,6 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
     return comp;
   }
 
-  /**
-   * Creates and returns a button
-   * 
-   * @param parent
-   *          parent widget
-   * @param label
-   *          label
-   * @return Button
-   */
   protected Button createPushButton(Composite parent, String label) {
     Button button = new Button(parent, SWT.PUSH);
     button.setFont(parent.getFont());
@@ -323,9 +308,6 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
     button.setLayoutData(data);
   }
 
-  /**
-   * Create some empty space
-   */
   protected void createVerticalSpacer(Composite comp, int colSpan) {
     Label label = new Label(comp, SWT.NONE);
     GridData gd = new GridData();
@@ -333,9 +315,6 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
     label.setLayoutData(gd);
   }
 
-  /**
-   * Updates buttons and status based on current mans
-   */
   public void update() {
     updateButtons();
 
@@ -431,9 +410,6 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
   public void widgetDefaultSelected(SelectionEvent e) {
   }
 
-  /**
-   * Open the file selection dialog, and add the return locations.
-   */
   protected void add() {
     DirectoryDialog dialog = new DirectoryDialog(fLocationsViewer.getControl().getShell());
     dialog.setMessage("Select directory to search into");
@@ -544,9 +520,6 @@ public class RutaPagesLocationsBlock implements SelectionListener, ISelectionCha
     updateButtons();
   }
 
-  /**
-   * Refresh the enable/disable state for the buttons.
-   */
   private void updateButtons() {
     fClearButton.setEnabled(folders != null && folders.size() > 0);
     IStructuredSelection selection = (IStructuredSelection) fLocationsViewer.getSelection();

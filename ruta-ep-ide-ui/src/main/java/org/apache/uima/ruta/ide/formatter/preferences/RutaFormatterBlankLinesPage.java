@@ -33,9 +33,6 @@ import org.eclipse.swt.widgets.Group;
 
 public class RutaFormatterBlankLinesPage extends FormatterModifyTabPage {
 
-  /**
-   * @param dialog
-   */
   public RutaFormatterBlankLinesPage(IFormatterModifyDialog dialog) {
     super(dialog);
   }

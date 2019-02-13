@@ -50,20 +50,9 @@ public class RutaCheckerUtils {
     return importScript(path, type, project, false);
   }
 
-  /**
-   * @param path
-   *          relative to script folder of the project.<br>
-   *          i.e.: "org.apache.uima.MyScript"
-   * @param type
-   *          i.e. IModelElement.FIELD for fields to be collected and returned
-   * @return set of elements
-   * @throws InvalidXMLException
-   * @throws IOException
-   * @throws ModelException
-   */
   public static Set<String> importScript(String path, int type, IScriptProject project,
-          boolean appendPath) throws InvalidXMLException, IOException, ModelException,
-          CoreException {
+          boolean appendPath)
+          throws InvalidXMLException, IOException, ModelException, CoreException {
     // TODO rewrite method!
     Stack<String> namespaceStack = new Stack<String>();
 
@@ -79,7 +68,7 @@ public class RutaCheckerUtils {
     ISourceModule sourceModule = null;
     boolean found = false;
     for (IFolder eachFolder : scriptFolders) {
-      if(found ) {
+      if (found) {
         break;
       }
       IScriptProject sp = DLTKCore.create(eachFolder.getProject());
@@ -97,7 +86,7 @@ public class RutaCheckerUtils {
     }
     IModelElement elements[] = null;
     namespaceStack.push(fileNameWithoutExtension);
-    if(sourceModule == null) {
+    if (sourceModule == null) {
       return imports;
     }
     try {
@@ -115,8 +104,8 @@ public class RutaCheckerUtils {
           }
         }
         if (elementType == IModelElement.METHOD) {
-          String nSpace = namespaceStack.empty() ? modelElement.getElementName() : namespaceStack
-                  .peek() + "." + modelElement.getElementName();
+          String nSpace = namespaceStack.empty() ? modelElement.getElementName()
+                  : namespaceStack.peek() + "." + modelElement.getElementName();
           namespaceStack.push(nSpace);
           imports.addAll(collectElements((IMethod) modelElement, type, namespaceStack));
           namespaceStack.pop();
@@ -166,11 +155,6 @@ public class RutaCheckerUtils {
     return folder.getFile(fName);
   }
 
-  /**
-   * @param xmlFilePath
-   *          absolute full path. i.e.: "org.apache.uima.myengine" ".xml" will be added.
-   * @return file.exists
-   */
   public static boolean checkEngineImport(String xmlFilePath, IScriptProject project) {
     boolean result = false;
     List<IFolder> allDescriptorFolders;
@@ -221,8 +205,6 @@ public class RutaCheckerUtils {
     return null;
   }
 
-
-
   public static IFile checkTypeSystemImport(String localPath, IScriptProject project) {
     List<IFolder> allDescriptorFolders;
     try {
@@ -249,7 +231,7 @@ public class RutaCheckerUtils {
     String prefix = "classpath*:";
     String pattern = prefix + p;
     Resource[] resources = resolver.getResources(pattern);
-    if(resources == null || resources.length == 0) {
+    if (resources == null || resources.length == 0) {
       return null;
     } else {
       Resource resource = resources[0];
@@ -257,7 +239,5 @@ public class RutaCheckerUtils {
       return url;
     }
   }
-
-  
 
 }

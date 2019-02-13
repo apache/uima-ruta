@@ -106,7 +106,7 @@ import org.eclipse.ui.views.navigator.ResourceSorter;
  */
 public class RutaCommonTab extends AbstractLaunchConfigurationTab {
 
-  /**
+  /*
    * Provides a persistable dialog for selecting the shared project location
    */
   class SharedLocationSelectionDialog extends ContainerSelectionDialog {
@@ -166,15 +166,16 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
 
   private Button fNotUseDltkRatio;
 
-  /**
+  /*
    * Check box list for specifying favorites
    */
   private CheckboxTableViewer fFavoritesTable;
 
-  /**
+  /*
    * Modify listener that simply updates the owning launch configuration dialog.
    */
   private ModifyListener fBasicModifyListener = new ModifyListener() {
+    @Override
     public void modifyText(ModifyEvent evt) {
       updateLaunchConfigurationDialog();
     }
@@ -186,11 +187,12 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
    * @see
    * org.eclipse.debug.ui.ILaunchConfigurationTab#createControl(org.eclipse.swt.widgets.Composite)
    */
+  @Override
   public void createControl(Composite parent) {
     Composite comp = new Composite(parent, SWT.NONE);
     setControl(comp);
-    PlatformUI.getWorkbench().getHelpSystem()
-            .setHelp(getControl(), IDebugHelpContextIds.LAUNCH_CONFIGURATION_DIALOG_COMMON_TAB);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(),
+            IDebugHelpContextIds.LAUNCH_CONFIGURATION_DIALOG_COMMON_TAB);
     comp.setLayout(new GridLayout(2, true));
     comp.setFont(parent.getFont());
 
@@ -201,19 +203,12 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     createLaunchInBackgroundComponent(comp);
   }
 
-  /**
-   * Creates the favorites control
-   * 
-   * @param parent
-   *          the parent composite to add this one to
-   * 
-   */
   private void createFavoritesComponent(Composite parent) {
     Group favComp = SWTUtil.createGroup(parent,
             LaunchConfigurationsMessages.CommonTab_Display_in_favorites_menu__10, 1, 1,
             GridData.FILL_BOTH);
-    fFavoritesTable = CheckboxTableViewer.newCheckList(favComp, SWT.CHECK | SWT.BORDER | SWT.MULTI
-            | SWT.FULL_SELECTION);
+    fFavoritesTable = CheckboxTableViewer.newCheckList(favComp,
+            SWT.CHECK | SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
     Control table = fFavoritesTable.getControl();
     GridData gd = new GridData(GridData.FILL_BOTH);
     table.setLayoutData(gd);
@@ -221,19 +216,13 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     fFavoritesTable.setContentProvider(new FavoritesContentProvider());
     fFavoritesTable.setLabelProvider(new FavoritesLabelProvider());
     fFavoritesTable.addCheckStateListener(new ICheckStateListener() {
+      @Override
       public void checkStateChanged(CheckStateChangedEvent event) {
         updateLaunchConfigurationDialog();
       }
     });
   }
 
-  /**
-   * Creates the shared config component
-   * 
-   * @param parent
-   *          the parent composite to add this component to
-   * 
-   */
   private void createSharedConfigComponent(Composite parent) {
     Group group = SWTUtil.createGroup(parent, LaunchConfigurationsMessages.CommonTab_0, 3, 2,
             GridData.FILL_HORIZONTAL);
@@ -261,17 +250,6 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
 
     fLocalRadioButton.setSelection(true);
     setSharedEnabled(false);
-  }
-
-  /**
-   * Creates the component set for the capture output composite
-   * 
-   * @param data
-   *          .parent the parent to add this component to
-   */
-
-  private void test() {
-
   }
 
   private void createOutputCaptureComponent(Composite parent) {
@@ -354,6 +332,7 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     });
     fVariables = createPushButton(standardGroup, LaunchConfigurationsMessages.CommonTab_9, null);
     fVariables.addSelectionListener(new SelectionListener() {
+      @Override
       public void widgetSelected(SelectionEvent e) {
         StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(getShell());
         dialog.open();
@@ -363,6 +342,7 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
         }
       }
 
+      @Override
       public void widgetDefaultSelected(SelectionEvent e) {
       }
     });
@@ -378,13 +358,6 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     });
   }
 
-  /**
-   * Enables or disables the output capture widgets based on the the specified enablement
-   * 
-   * @param enable
-   *          if the output capture widgets should be enabled or not
-   * 
-   */
   private void enableOuputCaptureWidgets(boolean enable) {
     fFileText.setEnabled(enable);
     fFileBrowse.setEnabled(enable);
@@ -393,20 +366,14 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     fAppend.setEnabled(enable);
   }
 
-  /**
-   * Creates the encoding component
-   * 
-   * @param parent
-   *          the parent to add this composite to
-   */
   private void createEncodingComponent(Composite parent) {
     List allEncodings = IDEEncoding.getIDEEncodings();
     String defaultEncoding = WorkbenchEncoding.getWorkbenchDefaultEncoding();
     Group group = SWTUtil.createGroup(parent, LaunchConfigurationsMessages.CommonTab_1, 2, 1,
             GridData.FILL_BOTH);
 
-    fDefaultEncodingButton = createRadioButton(group, MessageFormat.format(
-            LaunchConfigurationsMessages.CommonTab_2, new String[] { defaultEncoding }));
+    fDefaultEncodingButton = createRadioButton(group, MessageFormat
+            .format(LaunchConfigurationsMessages.CommonTab_2, new String[] { defaultEncoding }));
     GridData gd = new GridData(SWT.BEGINNING, SWT.NORMAL, true, false);
     gd.horizontalSpan = 2;
     fDefaultEncodingButton.setLayoutData(gd);
@@ -434,14 +401,9 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     fEncodingCombo.addSelectionListener(listener);
   }
 
-  /**
-   * Creates the controls needed to edit the launch in background attribute of an external tool
-   * 
-   * @param parent
-   *          the composite to create the controls in
-   */
   protected void createLaunchInBackgroundComponent(Composite parent) {
-    fLaunchInBackgroundButton = createCheckButton(parent, LaunchConfigurationsMessages.CommonTab_10);
+    fLaunchInBackgroundButton = createCheckButton(parent,
+            LaunchConfigurationsMessages.CommonTab_10);
     GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
     data.horizontalSpan = 2;
     fLaunchInBackgroundButton.setLayoutData(data);
@@ -454,20 +416,11 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     });
   }
 
-  /**
-   * handles the shared radio button being selected
-   */
   private void handleSharedRadioButtonSelected() {
     setSharedEnabled(isShared());
     updateLaunchConfigurationDialog();
   }
 
-  /**
-   * Sets the widgets for specifying that a launch configuration is to be shared to the enable value
-   * 
-   * @param enable
-   *          the enabled value for
-   */
   private void setSharedEnabled(boolean enable) {
     fSharedLocationText.setEnabled(enable);
     fSharedLocationButton.setEnabled(enable);
@@ -492,26 +445,15 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     return path;
   }
 
-  /**
-   * if the shared radio button is selected, indicating that the launch configuration is to be
-   * shared
-   * 
-   * @return true if the radio button is selected, false otherwise
-   */
   private boolean isShared() {
     return fSharedRadioButton.getSelection();
   }
 
-  /**
-   * Handles the shared location button being selected
-   */
   private void handleSharedLocationButtonSelected() {
     String currentContainerString = fSharedLocationText.getText();
     IContainer currentContainer = getContainer(currentContainerString);
-    SharedLocationSelectionDialog dialog = new SharedLocationSelectionDialog(
-            getShell(),
-            currentContainer,
-            false,
+    SharedLocationSelectionDialog dialog = new SharedLocationSelectionDialog(getShell(),
+            currentContainer, false,
             LaunchConfigurationsMessages.CommonTab_Select_a_location_for_the_launch_configuration_13);
     dialog.showClosedProjects(false);
     dialog.open();
@@ -523,13 +465,6 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     }
   }
 
-  /**
-   * gets the container form the specified path
-   * 
-   * @param path
-   *          the path to get the container from
-   * @return the container for the specified path or null if one cannot be determined
-   */
   private IContainer getContainer(String path) {
     Path containerPath = new Path(path);
     return (IContainer) getWorkspaceRoot().findMember(containerPath);
@@ -541,6 +476,7 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
    * @seeorg.eclipse.debug.ui.ILaunchConfigurationTab#initializeFrom(org.eclipse.debug.core.
    * ILaunchConfiguration)
    */
+  @Override
   public void initializeFrom(ILaunchConfiguration configuration) {
     boolean isShared = !configuration.isLocal();
     fSharedRadioButton.setSelection(isShared);
@@ -564,12 +500,6 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     updateConsoleOutput(configuration);
   }
 
-  /**
-   * Updates the console output form the local configuration
-   * 
-   * @param configuration
-   *          the local configuration
-   */
   private void updateConsoleOutput(ILaunchConfiguration configuration) {
     boolean outputToConsole = true;
     String outputFile = null;
@@ -578,12 +508,12 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     boolean dltkOutput = false;
 
     try {
-      dltkOutput = configuration.getAttribute(
-              ScriptLaunchConfigurationConstants.ATTR_USE_INTERACTIVE_CONSOLE, false);
+      dltkOutput = configuration
+              .getAttribute(ScriptLaunchConfigurationConstants.ATTR_USE_INTERACTIVE_CONSOLE, false);
 
       outputToConsole = configuration.getAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
-      outputFile = configuration
-              .getAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, (String) null);
+      outputFile = configuration.getAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_FILE,
+              (String) null);
       append = configuration.getAttribute(IDebugUIConstants.ATTR_APPEND_TO_FILE, false);
     } catch (CoreException e) {
     }
@@ -601,22 +531,10 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     enableOuputCaptureWidgets(haveOutputFile);
   }
 
-  /**
-   * Updates the launch on background check button
-   * 
-   * @param configuration
-   *          the local launch configuration
-   */
   protected void updateLaunchInBackground(ILaunchConfiguration configuration) {
     fLaunchInBackgroundButton.setSelection(isLaunchInBackground(configuration));
   }
 
-  /**
-   * Updates the encoding
-   * 
-   * @param configuration
-   *          the local configuration
-   */
   private void updateEncoding(ILaunchConfiguration configuration) {
     String encoding = null;
     try {
@@ -636,13 +554,6 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     }
   }
 
-  /**
-   * Returns whether the given configuration should be launched in the background.
-   * 
-   * @param configuration
-   *          the configuration
-   * @return whether the configuration is configured to launch in the background
-   */
   public static boolean isLaunchInBackground(ILaunchConfiguration configuration) {
     boolean launchInBackground = true;
     try {
@@ -654,12 +565,6 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     return launchInBackground;
   }
 
-  /**
-   * Updates the favorites selections from the local configuration
-   * 
-   * @param config
-   *          the local configuration
-   */
   private void updateFavoritesFromConfig(ILaunchConfiguration config) {
     fFavoritesTable.setInput(config);
     fFavoritesTable.setCheckedElements(new Object[] {});
@@ -689,12 +594,6 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     }
   }
 
-  /**
-   * Updates the configuration form the local shared config working copy
-   * 
-   * @param config
-   *          the local shared config working copy
-   */
   private void updateConfigFromLocalShared(ILaunchConfigurationWorkingCopy config) {
     if (isShared()) {
       String containerPathString = fSharedLocationText.getText();
@@ -705,20 +604,10 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     }
   }
 
-  /**
-   * Convenience accessor
-   */
   protected LaunchConfigurationManager getLaunchConfigurationManager() {
     return DebugUIPlugin.getDefault().getLaunchConfigurationManager();
   }
 
-  /**
-   * Update the favorite settings.
-   * 
-   * NOTE: set to <code>null</code> instead of <code>false</code> for backwards compatibility when
-   * comparing if content is equal, since 'false' is default and will be missing for older
-   * configurations.
-   */
   private void updateConfigFromFavorites(ILaunchConfigurationWorkingCopy config) {
     try {
       Object[] checked = fFavoritesTable.getCheckedElements();
@@ -729,14 +618,14 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
         List groups = new ArrayList();
         int num = 0;
         if (debug) {
-          groups.add(getLaunchConfigurationManager().getLaunchGroup(
-                  IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP));
+          groups.add(getLaunchConfigurationManager()
+                  .getLaunchGroup(IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP));
           num++;
         }
         if (run) {
           num++;
-          groups.add(getLaunchConfigurationManager().getLaunchGroup(
-                  IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP));
+          groups.add(getLaunchConfigurationManager()
+                  .getLaunchGroup(IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP));
         }
         // see if there are any changes
         if (num == checked.length) {
@@ -768,9 +657,6 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     }
   }
 
-  /**
-   * Convenience method for getting the workspace root.
-   */
   private IWorkspaceRoot getWorkspaceRoot() {
     return ResourcesPlugin.getWorkspace().getRoot();
   }
@@ -778,9 +664,8 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.eclipse.debug.ui.ILaunchConfigurationTab#isValid(org.eclipse.debug.core.ILaunchConfiguration
-   * )
+   * @see org.eclipse.debug.ui.ILaunchConfigurationTab#isValid(org.eclipse.debug.core.
+   * ILaunchConfiguration )
    */
   @Override
   public boolean isValid(ILaunchConfiguration config) {
@@ -790,11 +675,6 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     return validateLocalShared() && validateRedirectFile() && validateEncoding();
   }
 
-  /**
-   * validates the encoding selection
-   * 
-   * @return true if the validate encoding is allowable, false otherwise
-   */
   private boolean validateEncoding() {
     if (fAltEncodingButton.getSelection()) {
       if (fEncodingCombo.getSelectionIndex() == -1) {
@@ -806,11 +686,6 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     return true;
   }
 
-  /**
-   * Validates if the redirect file is valid
-   * 
-   * @return true if the filename is not zero, false otherwise
-   */
   private boolean validateRedirectFile() {
     if (fFileOutput.getSelection()) {
       int len = fFileText.getText().trim().length();
@@ -822,20 +697,17 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
     return true;
   }
 
-  /**
-   * validates the local shared config file location
-   * 
-   * @return true if the local shared file exists, false otherwise
-   */
   private boolean validateLocalShared() {
     if (isShared()) {
       String path = fSharedLocationText.getText().trim();
       IContainer container = getContainer(path);
       if (container == null || container.equals(ResourcesPlugin.getWorkspace().getRoot())) {
-        setErrorMessage(LaunchConfigurationsMessages.CommonTab_Invalid_shared_configuration_location_14);
+        setErrorMessage(
+                LaunchConfigurationsMessages.CommonTab_Invalid_shared_configuration_location_14);
         return false;
       } else if (!container.getProject().isOpen()) {
-        setErrorMessage(LaunchConfigurationsMessages.CommonTab_Cannot_save_launch_configuration_in_a_closed_project__1);
+        setErrorMessage(
+                LaunchConfigurationsMessages.CommonTab_Cannot_save_launch_configuration_in_a_closed_project__1);
         return false;
       }
     }
@@ -849,6 +721,7 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
    * @seeorg.eclipse.debug.ui.ILaunchConfigurationTab#setDefaults(org.eclipse.debug.core.
    * ILaunchConfigurationWorkingCopy)
    */
+  @Override
   public void setDefaults(ILaunchConfigurationWorkingCopy config) {
     config.setContainer(null);
     config.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, true);
@@ -860,6 +733,7 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
    * @seeorg.eclipse.debug.ui.ILaunchConfigurationTab#performApply(org.eclipse.debug.core.
    * ILaunchConfigurationWorkingCopy)
    */
+  @Override
   public void performApply(ILaunchConfigurationWorkingCopy configuration) {
     updateConfigFromLocalShared(configuration);
     updateConfigFromFavorites(configuration);
@@ -901,8 +775,8 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
               Long.toString(System.currentTimeMillis()));
       IFileHandle proxyFile;
       try {
-        IExecutionEnvironment exeEnv = (IExecutionEnvironment) EnvironmentManager
-                .getLocalEnvironment().getAdapter(IExecutionEnvironment.class);
+        IExecutionEnvironment exeEnv = EnvironmentManager.getLocalEnvironment()
+                .getAdapter(IExecutionEnvironment.class);
         proxyFile = RutaIdeUIPlugin.getDefault().getConsoleProxy(exeEnv);
         configuration.setAttribute("environmentId", proxyFile.getEnvironment().getId());
         configuration.setAttribute("proxy_path", proxyFile.toOSString());
@@ -931,6 +805,7 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
    * 
    * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getName()
    */
+  @Override
   public String getName() {
     return LaunchConfigurationsMessages.CommonTab__Common_15;
   }
@@ -975,19 +850,17 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
   public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
   }
 
-  /**
-   * Content provider for the favorites table
-   */
   class FavoritesContentProvider implements IStructuredContentProvider {
 
+    @Override
     public Object[] getElements(Object inputElement) {
       ILaunchGroup[] groups = DebugUITools.getLaunchGroups();
       List possibleGroups = new ArrayList();
       ILaunchConfiguration configuration = (ILaunchConfiguration) inputElement;
       for (int i = 0; i < groups.length; i++) {
         ILaunchGroup extension = groups[i];
-        LaunchHistory history = getLaunchConfigurationManager().getLaunchHistory(
-                extension.getIdentifier());
+        LaunchHistory history = getLaunchConfigurationManager()
+                .getLaunchHistory(extension.getIdentifier());
         if (history != null && history.accepts(configuration)) {
           possibleGroups.add(extension);
         }
@@ -995,22 +868,21 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
       return possibleGroups.toArray();
     }
 
+    @Override
     public void dispose() {
     }
 
+    @Override
     public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
     }
 
   }
 
-  /**
-   * Provides the labels for the favorites table
-   * 
-   */
   class FavoritesLabelProvider implements ITableLabelProvider {
 
     private Map fImages = new HashMap();
 
+    @Override
     public Image getColumnImage(Object element, int columnIndex) {
       Image image = (Image) fImages.get(element);
       if (image == null) {
@@ -1023,14 +895,17 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
       return image;
     }
 
+    @Override
     public String getColumnText(Object element, int columnIndex) {
       String label = ((LaunchGroupExtension) element).getLabel();
       return DebugUIPlugin.removeAccelerators(label);
     }
 
+    @Override
     public void addListener(ILabelProviderListener listener) {
     }
 
+    @Override
     public void dispose() {
       Iterator images = fImages.values().iterator();
       while (images.hasNext()) {
@@ -1039,10 +914,12 @@ public class RutaCommonTab extends AbstractLaunchConfigurationTab {
       }
     }
 
+    @Override
     public boolean isLabelProperty(Object element, String property) {
       return false;
     }
 
+    @Override
     public void removeListener(ILabelProviderListener listener) {
     }
   }

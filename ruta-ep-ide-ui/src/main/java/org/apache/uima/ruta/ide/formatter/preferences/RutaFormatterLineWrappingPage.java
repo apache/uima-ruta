@@ -33,9 +33,6 @@ import org.eclipse.swt.widgets.Group;
 
 public class RutaFormatterLineWrappingPage extends FormatterModifyTabPage {
 
-  /**
-   * @param dialog
-   */
   public RutaFormatterLineWrappingPage(IFormatterModifyDialog dialog) {
     super(dialog);
   }

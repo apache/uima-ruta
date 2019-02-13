@@ -23,12 +23,6 @@ import java.io.Reader;
 
 public interface IRutaPagesLocation {
 
-  /**
-   * Should find inside location for an information about keyword
-   * 
-   * @param keyword
-   * @return Reader with html code
-   */
-  public Reader getHtmlInfo(String keyword);
+  Reader getHtmlInfo(String keyword);
 
 }

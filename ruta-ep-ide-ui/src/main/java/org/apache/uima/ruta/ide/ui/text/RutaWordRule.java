@@ -66,6 +66,7 @@ public class RutaWordRule implements IPredicateRule {
    *          the default token to be returned on success if nothing else is specified, may not be
    *          <code>null</code>
    * @param classNameToken
+   *          - not in use
    * 
    * @see #addWord(String, IToken)
    */
@@ -111,6 +112,7 @@ public class RutaWordRule implements IPredicateRule {
 
   private String lastFound = "";
 
+  @Override
   public IToken evaluate(ICharacterScanner scanner) {
     int c = scanner.read();
     fBuffer.setLength(0);
@@ -167,10 +169,12 @@ public class RutaWordRule implements IPredicateRule {
       scanner.unread();
   }
 
+  @Override
   public IToken evaluate(ICharacterScanner scanner, boolean resume) {
     return evaluate(scanner);
   }
 
+  @Override
   public IToken getSuccessToken() {
     return this.fDefaultToken;
   }
