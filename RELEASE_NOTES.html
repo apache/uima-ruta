@@ -50,6 +50,7 @@
 <p>
   <p>UIMA Ruta Language and Analysis Engine:</p>
   <ul>
+  	<li>Requires Java 8</li>
     <li>New language feature: label expressions at actions for directly assigning/reusing newly created annotations. Example: Document{-> a:T1, CREATE(T2, "ref" = a)};</li>
     <li>New language feature: new type of rule element for completely optional match which does not require an existing annotation and therefore also works at the boundary of a window/document. Example: NUM _{-PARTOF(CW)};</li>
     <li>Type lists can be used as matching condition.</li>
