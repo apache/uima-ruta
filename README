@@ -5,10 +5,11 @@ Apache UIMA Ruta (TM) v2.7.0
 Building from the Source Distribution
 -------------------------------------
 
-We use Maven 3.0 or later for building; download this if needed, 
+We use Maven 3.0 and Java 8 or later for building; download this if needed, 
 and set the environment variable MAVEN_OPTS to -Xmx800m -XX:MaxPerSize=256m.
 
 Then do the build by going into the UIMA Ruta directory, and issuing the command
+   
    mvn clean install
    
 This builds everything except the ...source-release.zip file. If you want that,
@@ -47,24 +48,4 @@ or the UIMA Ruta type system descriptors should explicitly be excluded:
     <typeSystemExclude>/**/InternalTypeSystem.xml</typeSystemExclude>
   </typeSystemExcludes>
 </configuration>
-
--------------------------------------
-
-If you use the uimaFIT JCasGenPomFriendly in Maven and want to use UIMA Ruta 
-as a standalone annotator you have to exclude the generated UIMA Ruta basic 
-type files from the build, e.g., by adding:
-
-
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-compiler-plugin</artifactId>
-  <version>3.0</version>
-  <configuration>
-    <excludes>
-      <exclude>org/apache/uima/ruta/type/*.java</exclude>
-    </excludes>
-  </configuration>
-</plugin> 
-
-
 

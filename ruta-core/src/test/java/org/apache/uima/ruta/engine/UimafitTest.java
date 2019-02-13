@@ -22,14 +22,10 @@ import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.antlr.runtime.RecognitionException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
@@ -41,8 +37,6 @@ import org.apache.uima.fit.factory.TypePrioritiesFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.FsIndexCollection;
 import org.apache.uima.resource.metadata.TypePriorities;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -52,7 +46,6 @@ import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 import org.apache.uima.ruta.type.FalsePositive;
 import org.apache.uima.ruta.type.TruePositive;
 import org.apache.uima.util.CasCreationUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class UimafitTest {
@@ -60,8 +53,8 @@ public class UimafitTest {
   @Test
   public void test() throws Exception {
     AnalysisEngine ae = createEngine(RutaEngine.class,
-    // Load script in "Java" notation, with "." as package separator and no extension.
-    // File needs to be located in the path specified below with ending ".ruta".
+            // Load script in "Java" notation, with "." as package separator and no extension.
+            // File needs to be located in the path specified below with ending ".ruta".
             RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.engine.UimafitTest",
             // Path(s) where the scripts are located
             RutaEngine.PARAM_SCRIPT_PATHS, new String[] { "src/test/resources" });
@@ -93,9 +86,7 @@ public class UimafitTest {
   }
 
   @Test
-  public void testUimafitWithoutXmlTypeSystem() throws ResourceInitializationException,
-          AnalysisEngineProcessException, InvalidXMLException, ResourceConfigurationException,
-          IOException, URISyntaxException, RecognitionException {
+  public void testUimafitWithoutXmlTypeSystem() throws Exception {
     String script = "DECLARE MyType;\n W{-> MyType};";
 
     RutaDescriptorFactory factory = new RutaDescriptorFactory();

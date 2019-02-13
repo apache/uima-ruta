@@ -129,6 +129,7 @@ Creative Commons Attribution 3.0 License.
     </postNoticeText>
     <uimaVersion>2.10.3</uimaVersion>
     <uimafit-version>2.4.0</uimafit-version>
+    <spring-version>4.3.22.RELEASE</spring-version>
      <!-- 
      BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+)
      BACKWARD_COMPATIBLE_USER        - minor version (=.+.0)
@@ -138,9 +139,9 @@ Creative Commons Attribution 3.0 License.
     <compat.level>NON_BACKWARD_COMPATIBLE</compat.level>
     <compat.previous.version>2.6.0</compat.previous.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <api_check_oldVersion>2.6.0</api_check_oldVersion>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <api_check_oldVersion>2.6.1</api_check_oldVersion>
   </properties>
   
   <dependencyManagement>
@@ -310,7 +311,7 @@ Creative Commons Attribution 3.0 License.
           <plugin>              
             <groupId>com.github.siom79.japicmp</groupId>
             <artifactId>japicmp-maven-plugin</artifactId>
-            <version>0.9.3</version>
+            <version>0.13.0</version>
             <configuration>
               <oldVersion>
                 <dependency>

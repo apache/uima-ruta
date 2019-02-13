@@ -232,22 +232,31 @@
 		            <phase>package</phase>
 		            <configuration>
 		              <target>
-		                <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
-									    <zipfileset dir="${basedir}/example-projects/ExampleProject/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/ExampleProject/" />
-									  </zip>
-									  <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
-                      <zipfileset dir="${basedir}/example-projects/ExtensionsExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/ExtensionsExample/" />
-                    </zip>
-                    <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
-                      <zipfileset dir="${basedir}/example-projects/TextRulerExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/TextRulerExample/" />
-                    </zip>
-                    <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
-                      <zipfileset dir="${basedir}/example-projects/GermanNovels/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/GermanNovels/" />
-                    </zip>
-                    <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
-                      <zipfileset dir="${basedir}/example-projects/Misc/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/Misc/" />
-                    </zip>
-		              </target>
+						<zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
+							<zipfileset dir="${basedir}/example-projects/ExampleProject/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/ExampleProject/" />
+						</zip>
+<!-- 						<zip -->
+<!-- 							destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" -->
+<!-- 							update="true"> -->
+<!-- 							<zipfileset -->
+<!-- 								dir="${basedir}/example-projects/ExtensionsExample/" -->
+<!-- 								includes=".project" -->
+<!-- 								prefix="${project.artifactId}-${project.version}/example-projects/ExtensionsExample/" /> -->
+<!-- 						</zip> -->
+						<zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
+							<zipfileset dir="${basedir}/example-projects/TextRulerExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/TextRulerExample/" />
+						</zip>
+<!-- 						<zip -->
+<!-- 							destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" -->
+<!-- 							update="true"> -->
+<!-- 							<zipfileset dir="${basedir}/example-projects/GermanNovels/" -->
+<!-- 								includes=".project" -->
+<!-- 								prefix="${project.artifactId}-${project.version}/example-projects/GermanNovels/" /> -->
+<!-- 						</zip> -->
+						<zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
+							<zipfileset dir="${basedir}/example-projects/Misc/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/Misc/" />
+						</zip>
+					</target>
 		            </configuration>
 		            <goals>
 		              <goal>run</goal>

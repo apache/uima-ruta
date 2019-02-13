@@ -22,8 +22,6 @@ package org.apache.uima.ruta;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -34,8 +32,6 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
-import org.apache.uima.cas.CASRuntimeException;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -43,17 +39,13 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.type.TruePositive;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 /**
  * Test the strict import option of {@link org.apache.uima.ruta.engine.RutaEngine}.
@@ -72,8 +64,7 @@ public class StrictImportTest {
    *          {@link RutaEngine#PARAM_STRICT_IMPORTS} value.
    * @return Analysis engine.
    */
-  private AnalysisEngine createAE(String script, boolean strictImport)
-          throws ResourceInitializationException, IOException, InvalidXMLException {
+  private AnalysisEngine createAE(String script, boolean strictImport) throws Exception {
     final TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(
             "org.apache.uima.ruta.engine.BasicTypeSystem",
             "org.apache.uima.ruta.StrictImportTestTypeSystem");
@@ -153,8 +144,7 @@ public class StrictImportTest {
   }
 
   @Test
-  public void testStrictScriptImport() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, SAXException {
+  public void testStrictScriptImport() throws Exception {
     Map<String, String> complexTypes = new HashMap<>();
     String s1 = "org.apache.uima.ruta.StrictScript2.Type1";
     String s2 = "org.apache.uima.ruta.other.Type1";
@@ -179,9 +169,7 @@ public class StrictImportTest {
   }
 
   @Test
-  public void testDocumentAnnotation() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
-          URISyntaxException, CASRuntimeException, CASException, SAXException {
+  public void testDocumentAnnotation() throws Exception {
     CAS cas = RutaTestUtils.getCAS("Some text.");
     Map<String, Object> params = new HashMap<>();
     params.put(RutaEngine.PARAM_STRICT_IMPORTS, true);

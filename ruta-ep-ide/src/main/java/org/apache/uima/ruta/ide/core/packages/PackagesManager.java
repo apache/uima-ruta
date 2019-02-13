@@ -323,9 +323,6 @@ public class PackagesManager {
     return key;
   }
 
-  /**
-   * Return paths specific only for selected package.
-   */
   public synchronized IPath[] getPathsForPackage(IInterpreterInstall install, String packageName) {
     PackageKey key = makeKey(packageName, getInterpreterKey(install));
     if (this.packages.containsKey(key)) {
@@ -449,9 +446,6 @@ public class PackagesManager {
     save();
   }
 
-  /**
-   * Return all packages paths in one call.
-   */
   public synchronized IPath[] getPathsForPackages(IInterpreterInstall install,
           Set packagesInBuild) {
 
@@ -517,11 +511,6 @@ public class PackagesManager {
     return (IPath[]) result.toArray(new IPath[result.size()]);
   }
 
-  /**
-   * This method removes all information about specified interpreter.
-   * 
-   * @param install
-   */
   public synchronized void removeInterprterInfo(IInterpreterInstall install) {
     // Remove interpreter to packages set
     String interpreterPath = getInterpreterKey(install);

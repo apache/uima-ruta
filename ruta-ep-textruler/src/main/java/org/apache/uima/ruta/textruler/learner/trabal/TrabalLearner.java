@@ -139,9 +139,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
     this.additionalFolderPath = additionalFolderPath;
   }
 
-  /**
-   * Main method. Starts the algorithm.
-   */
+  @Override
   protected void doRun() {
     try {
       getAnalysisEngine();
@@ -155,7 +153,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
       sendStatusUpdateToDelegate("Comparing documents...", TextRulerLearnerState.ML_RUNNING, true);
       for (int i = 0; i < algorithmIterations; i++) {
         actualResult += "BLOCK(Iteration_" + (i + 1) + ") Document{} {\n";
-        sendStatusUpdateToDelegate("Comparing documents...", TextRulerLearnerState.ML_RUNNING, true);
+        sendStatusUpdateToDelegate("Comparing documents...", TextRulerLearnerState.ML_RUNNING,
+                true);
         idf = createIDF();
         Map<String, List<AnnotationError>> errorGrps = createErrorGroups();
         List<TrabalRule> rules = runAlgorithm(errorGrps);
@@ -241,14 +240,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Compares the training data to the additional data and creates a mapping of the contained
-   * errors, where the key is a combination of the error type and the names of the concerned
-   * annotations, and the values are lists of errors that can be corrected through the same type of
-   * rule.
-   * 
-   * @return map of errors
-   */
   private Map<String, List<AnnotationError>> createErrorGroups() {
     errors = createErrorList();
     Collections.sort(errors);
@@ -300,9 +291,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Creates a list of annotation pairs and the fitting type of transformation action.
-   */
   private List<AnnotationError> createErrorList() {
     positiveExamples = new HashMap<String, RankedList>();
     List<AnnotationError> result = new ArrayList<AnnotationError>();
@@ -341,8 +329,9 @@ public class TrabalLearner extends TextRulerBasicLearner {
         if (shouldAbort())
           break;
         exampleIndex++;
-        sendStatusUpdateToDelegate("Comparing documents " + (i + 1) + " of " + goldStandard.size()
-                + ": example " + exampleIndex + " of " + gold.size(),
+        sendStatusUpdateToDelegate(
+                "Comparing documents " + (i + 1) + " of " + goldStandard.size() + ": example "
+                        + exampleIndex + " of " + gold.size(),
                 TextRulerLearnerState.ML_RUNNING, false);
         a = iterator.next();
         docIterator = docs.iterator();
@@ -508,13 +497,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Is called by doRun(). Creates and tests rules for a given list of error groups created by
-   * createErrorGroups().
-   * 
-   * @param errorGrps
-   * @return The best found list of correction rules.
-   */
   private List<TrabalRule> runAlgorithm(Map<String, List<AnnotationError>> errorGrps) {
     removeBasics();
     inducedRules.clear();
@@ -534,8 +516,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
       if (basicRules.size() > maxNumberOfBasicRules) {
         basicRules = basicRules.subList(0, maxNumberOfBasicRules);
       }
-      sendStatusUpdateToDelegate("Testing basic rules: " + status,
-              TextRulerLearnerState.ML_RUNNING, false);
+      sendStatusUpdateToDelegate("Testing basic rules: " + status, TextRulerLearnerState.ML_RUNNING,
+              false);
       basicRules = testTrabalRulesOnDocumentSet(basicRules, exampleDocuments, additionalDocuments,
               "basic rules (" + i + " of " + errorGrps.size() + ")");
       if (basicRules.size() > 0) {
@@ -543,8 +525,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
         bestRulesForStatus.add(basicRules.get(0));
       }
       result = actualResult + getRuleStrings(bestRulesForStatus);
-      sendStatusUpdateToDelegate("Testing basic rules: " + status,
-              TextRulerLearnerState.ML_RUNNING, true);
+      sendStatusUpdateToDelegate("Testing basic rules: " + status, TextRulerLearnerState.ML_RUNNING,
+              true);
       List<TrabalRule> learntRules = new ArrayList<TrabalRule>();
       for (TrabalRule rule : basicRules) {
         if (rule.getCoveringStatistics().getCoveredPositivesCount() > 0
@@ -638,12 +620,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return learntRules;
   }
 
-  /**
-   * Chooses the best final rules from the results of runAlgorithm().
-   * 
-   * @param rules
-   * @return A non redundant list of correction rules.
-   */
   private List<TrabalRule> getBest(List<TrabalRule> rules) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
     Collections.sort(rules, enhancedComparator);
@@ -713,12 +689,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Is called from getBest(). Applies the chosen rules to the additional documents, so the learner
-   * can ignore the already corrected errors in the next interation.
-   * 
-   * @param rule
-   */
   private void updateDocumentData(TrabalRule rule) {
     try {
       sendStatusUpdateToDelegate("Writing rules...", TextRulerLearnerState.ML_RUNNING, false);
@@ -737,12 +707,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     }
   }
 
-  /**
-   * Creates basic rules for the given types of errors.
-   * 
-   * @param errors
-   * @return list of basic rules
-   */
   public List<TrabalRule> createBasicRules(List<AnnotationError> errors) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
     for (AnnotationError each : errors) {
@@ -766,12 +730,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return getBestBasicRule(result);
   }
 
-  /**
-   * Chooses the rules which are expected to be the best.
-   * 
-   * @param rules
-   * @return list of best basic rules
-   */
   private List<TrabalRule> getBestBasicRule(List<TrabalRule> rules) {
     if (rules.size() < maxNumberOfBasicRules)
       return rules;
@@ -821,12 +779,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Creates basic rules for shifting type errors.
-   * 
-   * @param error
-   * @return list of shifting rules
-   */
   private List<TrabalRule> createShiftingRules(AnnotationError each) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
     TextRulerExample error = each.getError();
@@ -848,15 +800,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Creates basic rules for shifting errors, where both borders are shiftet to the same side or the
-   * size of the annotation is reduced.
-   * 
-   * @param error
-   *          The error example
-   * @param truth
-   *          The truth example
-   */
   private List<TrabalRule> createShiftAllRules(TextRulerExample error, TextRulerExample truth) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
     TextRulerExampleDocument document = error.getDocument();
@@ -907,13 +850,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Creates basic rules for expansion type errors.
-   * 
-   * @param error
-   * @param truth
-   * @return list of expansion rules
-   */
   private List<TrabalRule> createExpansionRules(TextRulerExample error, TextRulerExample truth) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
     TextRulerExampleDocument document = error.getDocument();
@@ -939,17 +875,11 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Creates basic rules for annotation type errors.
-   * 
-   * @param error
-   * @return list of annotation rules
-   */
   private List<TrabalRule> createAnnotationRules(AnnotationError each) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
     TextRulerExample truth = each.getTruth();
-    TextRulerExampleDocument document = additionalDocuments.getDocuments().get(
-            exampleDocuments.getDocuments().indexOf(truth.getDocument()));
+    TextRulerExampleDocument document = additionalDocuments.getDocuments()
+            .get(exampleDocuments.getDocuments().indexOf(truth.getDocument()));
     CAS cas = document.getCAS();
     List<TrabalRuleItem> truthLeftBorder = getBorderOfExample(truth, document, cas, true);
     List<TrabalRuleItem> truthRightBorder = getBorderOfExample(truth, document, cas, false);
@@ -967,12 +897,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Creates basic rules for deletion type errors.
-   * 
-   * @param error
-   * @return list of deletion rules
-   */
   private List<TrabalRule> createDeletionRules(AnnotationError each) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
     TextRulerExample error = each.getError();
@@ -982,12 +906,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Creates basic rules for correction type errors.
-   * 
-   * @param error
-   * @return list of correction rules
-   */
   private List<TrabalRule> createCorrectionRules(AnnotationError each) {
     List<TrabalRule> result = new ArrayList<TrabalRule>();
     TextRulerExample error = each.getError();
@@ -998,16 +916,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Examines the border of an example annotation and returns all annotations before and on that
-   * border if looking at the left border or returns all annotations on and after the example if
-   * looking at the right border.
-   * 
-   * @param example
-   *          The example that should be examined
-   * @param examineLeftBorder
-   *          set true for the left border or false for the right border to be examined
-   */
   private List<TrabalRuleItem> getBorderOfExample(TextRulerExample example,
           TextRulerExampleDocument document, CAS cas, boolean examineLeftBorder) {
     List<TrabalRuleItem> result = new ArrayList<TrabalRuleItem>();
@@ -1055,12 +963,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Creates conditions for a given rule.
-   * 
-   * @param rules
-   * @return ranked list of conditions
-   */
   public RankedList createConditions(List<TrabalRule> rules) {
     if (rules.size() == 0)
       return new RankedList(idf);
@@ -1075,12 +977,12 @@ public class TrabalLearner extends TextRulerBasicLearner {
           error.addAll(createConditions(rule.getAnnotation()));
           truth.addAll(createConditions(rule.getTargetAnnotation()));
         }
-        result = error.subtract(truth.unite(getPositiveExamplesFor(rules.get(0)
-                .getTargetAnnotation().getType())));
+        result = error.subtract(
+                truth.unite(getPositiveExamplesFor(rules.get(0).getTargetAnnotation().getType())));
         setNegative(result);
-        result.addAll(truth.cut(
-                getPositiveExamplesFor(rules.get(0).getTargetAnnotation().getType())).subtract(
-                error));
+        result.addAll(
+                truth.cut(getPositiveExamplesFor(rules.get(0).getTargetAnnotation().getType()))
+                        .subtract(error));
         return result;
       case CORRECTION:
         for (TrabalRule rule : rules) {
@@ -1090,9 +992,9 @@ public class TrabalLearner extends TextRulerBasicLearner {
                 truth.unite(getPositiveExamplesFor(rules.get(0).getTargetAnnotation().getType())));
         setNegative(result);
         if (getPositiveExamplesFor(rules.get(0).getTargetAnnotation().getType()).size() > 0) {
-          result.addAll(truth.cut(
-                  getPositiveExamplesFor(rules.get(0).getTargetAnnotation().getType())).subtract(
-                  getPositiveExamplesFor(rules.get(0).getAnnotation().getType())));
+          result.addAll(truth
+                  .cut(getPositiveExamplesFor(rules.get(0).getTargetAnnotation().getType()))
+                  .subtract(getPositiveExamplesFor(rules.get(0).getAnnotation().getType())));
         } else {
           result.addAll(truth);
         }
@@ -1112,8 +1014,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
         }
         result = getPositiveExamplesFor(rules.get(0).getAnnotation().getType()).subtract(error);
         setNegative(result);
-        result.addAll(createConditions(rules.get(0).getAnnotation()).subtract(
-                getPositiveExamplesFor(rules.get(0).getAnnotation().getType())));
+        result.addAll(createConditions(rules.get(0).getAnnotation())
+                .subtract(getPositiveExamplesFor(rules.get(0).getAnnotation().getType())));
         return result;
     }
     return null;
@@ -1136,19 +1038,11 @@ public class TrabalLearner extends TextRulerBasicLearner {
     }
   }
 
-  /**
-   * Creates conditions for a rule given by its boundaries and annotation type.
-   * 
-   * @param frontBoundary
-   * @param rearBoundary
-   * @param truth
-   * @return ranked list of conditions
-   */
   private RankedList createConditions(TrabalRuleItem frontBoundary, TrabalRuleItem rearBoundary,
           TrabalAnnotation truth) {
     RankedList result = new RankedList(idf);
-    TextRulerExampleDocument doc = additionalDocuments.getDocuments().get(
-            exampleDocuments.getDocuments().indexOf(truth.getDocument()));
+    TextRulerExampleDocument doc = additionalDocuments.getDocuments()
+            .get(exampleDocuments.getDocuments().indexOf(truth.getDocument()));
     CAS cas = doc.getCAS();
     for (TrabalRuleItem item : getTermsBefore(frontBoundary, doc)) {
       result.add(new Condition(ConditionType.AFTER, item));
@@ -1166,8 +1060,9 @@ public class TrabalLearner extends TextRulerBasicLearner {
         result.add(new Condition(ConditionType.STARTSWITH, item));
       }
     } else {
-      for (List<TrabalRuleItem> list : getFirstTermsWithinBounds(frontBoundary.getAnnotation()
-              .getBegin(), rearBoundary.getAnnotation().getEnd(), doc, cas, 1)) {
+      for (List<TrabalRuleItem> list : getFirstTermsWithinBounds(
+              frontBoundary.getAnnotation().getBegin(), rearBoundary.getAnnotation().getEnd(), doc,
+              cas, 1)) {
         result.add(new Condition(ConditionType.STARTSWITH, list.get(0)));
       }
     }
@@ -1176,20 +1071,15 @@ public class TrabalLearner extends TextRulerBasicLearner {
         result.add(new Condition(ConditionType.ENDSWITH, item));
       }
     } else {
-      for (List<TrabalRuleItem> list : getLastTermsWithinBounds(rearBoundary.getAnnotation()
-              .getBegin(), frontBoundary.getAnnotation().getEnd(), doc, cas, 1)) {
+      for (List<TrabalRuleItem> list : getLastTermsWithinBounds(
+              rearBoundary.getAnnotation().getBegin(), frontBoundary.getAnnotation().getEnd(), doc,
+              cas, 1)) {
         result.add(new Condition(ConditionType.ENDSWITH, list.get(0)));
       }
     }
     return result;
   }
 
-  /**
-   * Creates conditions for a rule, given by its annotation.
-   * 
-   * @param error
-   * @return ranked list of conditions
-   */
   private RankedList createConditions(TrabalAnnotation annotation) {
     RankedList result = new RankedList(idf);
     TrabalRuleItem ruleItem = new TrabalRuleItem(annotation);
@@ -1221,17 +1111,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Returns all items directly preceding the given example rule item.
-   * 
-   * @param ruleItem
-   *          Examined rule item
-   * @param document
-   *          Example document
-   * @param cas
-   *          The CAS
-   * @return List of rule items that precede the given example
-   */
   private List<TrabalRuleItem> getTermsBefore(TrabalRuleItem ruleItem,
           TextRulerExampleDocument document) {
     List<TrabalRuleItem> result = new ArrayList<TrabalRuleItem>();
@@ -1256,8 +1135,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
             nextEnd = a.getEnd();
           }
           if (a.getEnd() >= nextEnd && a.getEnd() <= begin) {
-            TrabalRuleItem term = new TrabalRuleItem(new TrabalAnnotation(a, document,
-                    enableFeatures));
+            TrabalRuleItem term = new TrabalRuleItem(
+                    new TrabalAnnotation(a, document, enableFeatures));
             result.add(term);
           }
         }
@@ -1267,17 +1146,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Returns all items directly following the given example rule item.
-   * 
-   * @param ruleItem
-   *          Examined rule item
-   * @param document
-   *          Example document
-   * @param cas
-   *          The CAS
-   * @return List of rule items that follow the given example
-   */
   private List<TrabalRuleItem> getTermsAfter(TrabalRuleItem ruleItem,
           TextRulerExampleDocument document) {
     List<TrabalRuleItem> result = new ArrayList<TrabalRuleItem>();
@@ -1297,8 +1165,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
             nextBegin = a.getBegin();
           }
           if (a.getBegin() <= nextBegin && a.getBegin() >= end) {
-            TrabalRuleItem term = new TrabalRuleItem(new TrabalAnnotation(a, document,
-                    enableFeatures));
+            TrabalRuleItem term = new TrabalRuleItem(
+                    new TrabalAnnotation(a, document, enableFeatures));
             result.add(term);
           }
         }
@@ -1308,17 +1176,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Gets the left border within the bounds, that means a list of elements that start with the
-   * border and those that end right before it.
-   * 
-   * @param startPos
-   * @param endPos
-   * @param document
-   * @param cas
-   * @param numberOfSideItems
-   * @return first term
-   */
   private List<List<TrabalRuleItem>> getFirstTermsWithinBounds(int startPos, int endPos,
           TextRulerExampleDocument document, CAS cas, int numberOfSideItems) {
     List<List<TrabalRuleItem>> preItems = new ArrayList<List<TrabalRuleItem>>();
@@ -1348,7 +1205,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
 
     for (AnnotationFS each : startAs) {
       List<TrabalRuleItem> startList = new ArrayList<TrabalRuleItem>();
-      TrabalRuleItem term = new TrabalRuleItem(new TrabalAnnotation(each, document, enableFeatures));
+      TrabalRuleItem term = new TrabalRuleItem(
+              new TrabalAnnotation(each, document, enableFeatures));
       startList.add(term);
       preItems.add(startList);
     }
@@ -1356,17 +1214,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return preItems;
   }
 
-  /**
-   * Gets the right border within the bounds, that means a list of elements that end with the border
-   * and those that start right behind it.
-   * 
-   * @param startPos
-   * @param endPos
-   * @param document
-   * @param cas
-   * @param numberOfSideItems
-   * @return last term
-   */
   private List<List<TrabalRuleItem>> getLastTermsWithinBounds(int startPos, int endPos,
           TextRulerExampleDocument document, CAS cas, int numberOfSideItems) {
     List<List<TrabalRuleItem>> postItems = new ArrayList<List<TrabalRuleItem>>();
@@ -1397,7 +1244,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
 
     for (AnnotationFS each : endAs) {
       List<TrabalRuleItem> endList = new ArrayList<TrabalRuleItem>();
-      TrabalRuleItem term = new TrabalRuleItem(new TrabalAnnotation(each, document, enableFeatures));
+      TrabalRuleItem term = new TrabalRuleItem(
+              new TrabalAnnotation(each, document, enableFeatures));
       endList.add(term);
       postItems.add(endList);
     }
@@ -1405,17 +1253,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return postItems;
   }
 
-  /**
-   * Returns a list of rule elements that precede the given elements.
-   * 
-   * @param lists
-   * @param till
-   * @param document
-   * @param cas
-   * @param index
-   * @param maxNumberOfItems
-   * @return updated list of items
-   */
   private List<List<TrabalRuleItem>> addPreceding(List<List<TrabalRuleItem>> lists, int till,
           TextRulerExampleDocument document, CAS cas, int index, int maxNumberOfItems) {
     if (index >= maxNumberOfItems) {
@@ -1449,17 +1286,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Returns a list of rule elements that follow on the given elements.
-   * 
-   * @param lists
-   * @param till
-   * @param document
-   * @param cas
-   * @param index
-   * @param maxNumberOfItems
-   * @return updated list of items
-   */
   private List<List<TrabalRuleItem>> addFollowing(List<List<TrabalRuleItem>> lists, int till,
           TextRulerExampleDocument document, CAS cas, int index, int maxNumberOfItems) {
     if (index >= maxNumberOfItems) {
@@ -1493,9 +1319,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Returns a list of all items, consuming the given RuleItem.
-   */
   private List<TrabalRuleItem> getConsumingTerms(TrabalRuleItem ruleItem,
           TextRulerExampleDocument document) {
     CAS cas = document.getCAS();
@@ -1516,15 +1339,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Returns a list of rule items within the given bounds.
-   * 
-   * @param begin
-   * @param end
-   * @param doc
-   * @param cas
-   * @return list of terms
-   */
   private List<TrabalRuleItem> getSingleTermsWithinBounds(int begin, int end,
           TextRulerExampleDocument doc, CAS cas) {
     Set<TrabalRuleItem> result = new HashSet<TrabalRuleItem>();
@@ -1544,16 +1358,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return new ArrayList<TrabalRuleItem>(result);
   }
 
-  /**
-   * Applies a set of rules to the additional data and compares it to the training data to rate
-   * them.
-   * 
-   * @param rules
-   * @param documents
-   * @param additionalDocuments
-   * @param ruleSet
-   * @return list of rules
-   */
   public List<TrabalRule> testTrabalRulesOnDocumentSet(List<TrabalRule> rules,
           final TextRulerExampleDocumentSet documents,
           final TextRulerExampleDocumentSet additionalDocuments, String ruleSet) {
@@ -1583,8 +1387,9 @@ public class TrabalLearner extends TextRulerBasicLearner {
         for (int i = 0; i < goldDocs.size(); i++) {
           TextRulerExampleDocument goldDoc = goldDocs.get(i);
           TextRulerExampleDocument additionalDoc = additionalDocs.get(i);
-          sendStatusUpdateToDelegate("Testing " + ruleSet + ruleInfo + " on document " + (i + 1)
-                  + " of " + goldDocs.size() + " : rule " + counter + " of " + rules.size(),
+          sendStatusUpdateToDelegate(
+                  "Testing " + ruleSet + ruleInfo + " on document " + (i + 1) + " of "
+                          + goldDocs.size() + " : rule " + counter + " of " + rules.size(),
                   TextRulerLearnerState.ML_RUNNING, false);
           TextRulerStatisticsCollector sumC = new TextRulerStatisticsCollector();
           prepareTestCas(theTestCAS, goldDoc, additionalDoc);
@@ -1636,13 +1441,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return ruleInfo;
   }
 
-  /**
-   * Resets the test CAS and adds the annotations of the additional data.
-   * 
-   * @param testCas
-   * @param goldDoc
-   * @param additionalDoc
-   */
   private void prepareTestCas(CAS testCas, TextRulerExampleDocument goldDoc,
           TextRulerExampleDocument additionalDoc) {
     testCas.reset();
@@ -1651,7 +1449,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
     testCas.setDocumentText(goldCas.getDocumentText());
 
     CasCopier.copyCas(additionalCas, testCas, testCas.getDocumentText() == null);
-    
+
 //    for (AnnotationFS fs : additionalCas.getAnnotationIndex()) {
 //      Type t = testCas.getTypeSystem().getType(fs.getType().getName());
 //      if (t != null) {
@@ -1664,16 +1462,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
 //    }
   }
 
-  /**
-   * Applies a rule to an element of the additional data and compares the result to the
-   * corresponding element of the training data.
-   * 
-   * @param rule
-   * @param goldDoc
-   * @param additionalDoc
-   * @param c
-   * @param testCas
-   */
   private void testRuleOnDocument(final TrabalRule rule, final TextRulerExampleDocument goldDoc,
           final TextRulerExampleDocument additionalDoc, final TextRulerStatisticsCollector c,
           CAS testCas) {
@@ -1691,44 +1479,36 @@ public class TrabalLearner extends TextRulerBasicLearner {
         TextRulerToolkit.writeCAStoXMIFile(testCas, tempDirectory() + "testCasProcessed.xmi");
       }
       if (rule.getAnnotation() != null && rule.getTargetAnnotation() != null) {
-        compareOriginalDocumentWithTestCAS(goldDoc, additionalDoc, testCas, new TextRulerTarget(
-                rule.getAnnotation().getType().getName(), this), c, false);
+        compareOriginalDocumentWithTestCAS(goldDoc, additionalDoc, testCas,
+                new TextRulerTarget(rule.getAnnotation().getType().getName(), this), c, false);
         if (rule.getAnnotation().getType() != rule.getTargetAnnotation().getType()) {
-          compareOriginalDocumentWithTestCAS(goldDoc, additionalDoc, testCas, new TextRulerTarget(
-                  rule.getTargetAnnotation().getType().getName(), this), c, false);
+          compareOriginalDocumentWithTestCAS(goldDoc, additionalDoc, testCas,
+                  new TextRulerTarget(rule.getTargetAnnotation().getType().getName(), this), c,
+                  false);
         }
       } else if (rule.getTargetAnnotation() != null) {
-        compareOriginalDocumentWithTestCAS(goldDoc, additionalDoc, testCas, new TextRulerTarget(
-                rule.getTargetAnnotation().getType().getName(), this), c, false);
+        compareOriginalDocumentWithTestCAS(goldDoc, additionalDoc, testCas,
+                new TextRulerTarget(rule.getTargetAnnotation().getType().getName(), this), c,
+                false);
       } else {
-        compareOriginalDocumentWithTestCAS(goldDoc, additionalDoc, testCas, new TextRulerTarget(
-                rule.getAnnotation().getType().getName(), this), c, false);
+        compareOriginalDocumentWithTestCAS(goldDoc, additionalDoc, testCas,
+                new TextRulerTarget(rule.getAnnotation().getType().getName(), this), c, false);
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  /**
-   * Compares two documents to rate the results of an applied rule.
-   * 
-   * @param goldDoc
-   * @param additionalDoc
-   * @param testCas
-   * @param target
-   * @param c
-   * @param collectNegativeExamples
-   */
   private void compareOriginalDocumentWithTestCAS(TextRulerExampleDocument goldDoc,
           TextRulerExampleDocument additionalDoc, CAS testCas, TextRulerTarget target,
           TextRulerStatisticsCollector c, boolean collectNegativeExamples) {
 
     List<TextRulerExample> goldPositives = goldDoc.createSlotInstancesForCAS(goldDoc.getCAS(),
             target, true);
-    List<TextRulerExample> additionalPositives = additionalDoc.createSlotInstancesForCAS(
-            additionalDoc.getCAS(), target, true);
-    List<TextRulerExample> testPositives = goldDoc
-            .createSlotInstancesForCAS(testCas, target, false);
+    List<TextRulerExample> additionalPositives = additionalDoc
+            .createSlotInstancesForCAS(additionalDoc.getCAS(), target, true);
+    List<TextRulerExample> testPositives = goldDoc.createSlotInstancesForCAS(testCas, target,
+            false);
 
     List<TextRulerExample> baseFP = new ArrayList<TextRulerExample>();
     for (TextRulerExample e : additionalPositives) {
@@ -1740,8 +1520,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
     }
     List<TextRulerExample> baseFN = new ArrayList<TextRulerExample>();
     for (TextRulerExample e : goldPositives) {
-      TextRulerExample example = TextRulerToolkit.exampleListContainsAnnotation(
-              additionalPositives, e.getAnnotation());
+      TextRulerExample example = TextRulerToolkit.exampleListContainsAnnotation(additionalPositives,
+              e.getAnnotation());
       if (example == null) {
         baseFN.add(e);
       }
@@ -1775,8 +1555,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
     for (TextRulerExample e : baseFN) {
       TextRulerExample example = TextRulerToolkit.exampleListContainsAnnotation(testFN,
               e.getAnnotation());
-      TextRulerExample coveredExample = TextRulerToolkit.exampleListContainsAnnotation(
-              goldPositives, e.getAnnotation());
+      TextRulerExample coveredExample = TextRulerToolkit
+              .exampleListContainsAnnotation(goldPositives, e.getAnnotation());
       if (example == null) {
         c.addCoveredPositive(coveredExample);
       }
@@ -1804,22 +1584,10 @@ public class TrabalLearner extends TextRulerBasicLearner {
     }
   }
 
-  /**
-   * Removes duplicate rules by their hash value.
-   * 
-   * @param rules
-   * @return updated list
-   */
   public static List<TrabalRule> removeDuplicateRules(List<TrabalRule> rules) {
     return new ArrayList<TrabalRule>(new HashSet<TrabalRule>(rules));
   }
 
-  /**
-   * Returns a string, containing the rules of the given list.
-   * 
-   * @param rules
-   * @return string representation of given rules
-   */
   public static String getRuleStrings(List<TrabalRule> rules) {
     String result = "";
     for (TrabalRule r : rules) {
@@ -1828,12 +1596,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return result;
   }
 
-  /**
-   * Tests, if the given type is a slot type.
-   * 
-   * @param type
-   * @return true, if given type is a slot type
-   */
   public boolean isSlotType(Type type) {
     for (String slot : slotNames) {
       if (slot.equals(type.getName())) {
@@ -1843,47 +1605,16 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return false;
   }
 
+  @Override
   public boolean collectNegativeCoveredInstancesWhenTesting() {
     return false;
   }
 
+  @Override
   public String getResultString() {
     return getFileHeaderString(true) + result;
   }
 
-  // // @Override
-  // public AnalysisEngine getAnalysisEngine() {
-  // if (ae == null) {
-  // String descriptorFile = TextRulerToolkit.getEngineDescriptorFromTMSourceFile(new Path(
-  // preprocessorTMFile));
-  // sendStatusUpdateToDelegate("loading AE...", TextRulerLearnerState.ML_INITIALIZING, false);
-  // ae = TextRulerToolkit.loadAnalysisEngine(descriptorFile);
-  //
-  // // set filters to NO filtering so that we can add it manually with
-  // // the FILTERTYPE expression!
-  // String tempRulesFileName = getTempRulesFileName();
-  // IPath path = new Path(tempRulesFileName);
-  // ae.setConfigParameterValue(RutaEngine.MAIN_SCRIPT, path.removeFileExtension()
-  // .lastSegment());
-  // String portableString = path.removeLastSegments(1).toPortableString();
-  // ae.setConfigParameterValue(RutaEngine.SCRIPT_PATHS, new String[] { portableString });
-  // ae.setConfigParameterValue(RutaEngine.ADDITIONAL_SCRIPTS, new String[0]);
-  // ae.setConfigParameterValue(RutaEngine.RELOAD_SCRIPT, true);
-  // ae.setConfigParameterValue(RutaEngine.REMOVE_BASICS, true);
-  //
-  // try {
-  // ae.reconfigure();
-  // } catch (ResourceConfigurationException e) {
-  // TextRulerPlugin.error(e);
-  // return null;
-  // }
-  // }
-  // return ae;
-  // }
-
-  /**
-   * Return the set of additional documents and initializes it, if needed.
-   */
   public TextRulerExampleDocumentSet getAdditionalDocuments() {
     if (additionalDocuments == null) {
       if (!StringUtils.isBlank(additionalFolderPath)) {
@@ -1897,7 +1628,7 @@ public class TrabalLearner extends TextRulerBasicLearner {
     return enableFeatures;
   }
 
-  // @Override
+  @Override
   public void setParameters(Map<String, Object> params) {
     if (TextRulerToolkit.DEBUG)
       saveParametersToTempFolder(params);
@@ -1915,12 +1646,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
       enableFeatures = (Boolean) params.get(ENABLE_FEATURES_KEY);
   }
 
-  /**
-   * Creates a file in the *.csv format, containing TraBaL errors (error type, file name, false
-   * annotation and true annotation).
-   * 
-   * @throws Exception
-   */
   public void getErrorsAsCSV(String filePath) throws Exception {
     String result = "";
     if (exampleDocuments == null) {
@@ -1958,11 +1683,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
     }
   }
 
-  /**
-   * Compares trabal rules, disregarding the error rate, so basic rules with maximum number of
-   * covered positives are chosen.
-   */
   protected Comparator<TrabalRule> basicComparator = new Comparator<TrabalRule>() {
+    @Override
     public int compare(TrabalRule o1, TrabalRule o2) {
       // coveredPositives
       if (o1.getCoveringStatistics().getCoveredPositivesCount() > o2.getCoveringStatistics()
@@ -1988,19 +1710,17 @@ public class TrabalLearner extends TextRulerBasicLearner {
     }
   };
 
-  /**
-   * Compares trabal rules, starting with the error rate.
-   */
   protected Comparator<TrabalRule> enhancedComparator = new Comparator<TrabalRule>() {
+    @Override
     public int compare(TrabalRule o1, TrabalRule o2) {
       // positives - negatives
-      if (o1.getCoveringStatistics().getCoveredPositivesCount()
-              - o1.getCoveringStatistics().getCoveredNegativesCount() > o2.getCoveringStatistics()
-              .getCoveredPositivesCount() - o2.getCoveringStatistics().getCoveredNegativesCount())
+      if (o1.getCoveringStatistics().getCoveredPositivesCount() - o1.getCoveringStatistics()
+              .getCoveredNegativesCount() > o2.getCoveringStatistics().getCoveredPositivesCount()
+                      - o2.getCoveringStatistics().getCoveredNegativesCount())
         return -1;
-      if (o1.getCoveringStatistics().getCoveredPositivesCount()
-              - o1.getCoveringStatistics().getCoveredNegativesCount() < o2.getCoveringStatistics()
-              .getCoveredPositivesCount() - o2.getCoveringStatistics().getCoveredNegativesCount())
+      if (o1.getCoveringStatistics().getCoveredPositivesCount() - o1.getCoveringStatistics()
+              .getCoveredNegativesCount() < o2.getCoveringStatistics().getCoveredPositivesCount()
+                      - o2.getCoveringStatistics().getCoveredNegativesCount())
         return 1;
       // coveredPositives
       if (o1.getCoveringStatistics().getCoveredPositivesCount() > o2.getCoveringStatistics()

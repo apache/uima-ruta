@@ -22,14 +22,11 @@ package org.apache.uima.ruta.engine;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
@@ -37,11 +34,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.FileUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -63,7 +57,7 @@ public class HtmlConverterTest {
   private String outputViewName = "raw_testing";
 
   @BeforeClass
-  public static void setUpClass() throws IOException, URISyntaxException {
+  public static void setUpClass() throws Exception {
     // get resource
     String namespace = HtmlConverterTest.class.getPackage().getName().replaceAll("\\.", "/");
     String testFilename = namespace + "/" + "testWin.html";
@@ -98,14 +92,12 @@ public class HtmlConverterTest {
   }
 
   @Test
-  public void htmlBodyContentHtmlDecodingExplicitPolicyTest()
-          throws AnalysisEngineProcessException, ResourceConfigurationException,
-          ResourceInitializationException, InvalidXMLException, IOException {
+  public void htmlBodyContentHtmlDecodingExplicitPolicyTest() throws Exception {
     // configure annotator and create AE:
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
-      url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      url = HtmlConverter.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -138,14 +130,12 @@ public class HtmlConverterTest {
   }
 
   @Test
-  public void htmlBodyContentHtmlDecodingHeuristicPolicyTest()
-          throws AnalysisEngineProcessException, ResourceConfigurationException,
-          ResourceInitializationException, InvalidXMLException, IOException {
+  public void htmlBodyContentHtmlDecodingHeuristicPolicyTest() throws Exception {
     // configure annotator and create AE:
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
-      url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      url = HtmlConverter.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -175,14 +165,12 @@ public class HtmlConverterTest {
   }
 
   @Test
-  public void htmlBodyContentUnixTest() throws AnalysisEngineProcessException,
-          ResourceConfigurationException, ResourceInitializationException, InvalidXMLException,
-          IOException {
+  public void htmlBodyContentUnixTest() throws Exception {
     // configure annotator and create AE:
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
-      url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      url = HtmlConverter.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -212,14 +200,12 @@ public class HtmlConverterTest {
   }
 
   @Test
-  public void htmlBodyContentWinTest() throws AnalysisEngineProcessException,
-          ResourceConfigurationException, ResourceInitializationException, InvalidXMLException,
-          IOException {
+  public void htmlBodyContentWinTest() throws Exception {
     // configure annotator and create AE:
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
-      url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      url = HtmlConverter.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -249,14 +235,12 @@ public class HtmlConverterTest {
   }
 
   @Test
-  public void htmlBodyContentWithCommentsTest() throws AnalysisEngineProcessException,
-          ResourceConfigurationException, ResourceInitializationException, InvalidXMLException,
-          IOException {
+  public void htmlBodyContentWithCommentsTest() throws Exception {
     // configure annotator and create AE:
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
-      url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      url = HtmlConverter.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -286,14 +270,12 @@ public class HtmlConverterTest {
   }
 
   @Test
-  public void htmlBodyContentNLTagsTest() throws AnalysisEngineProcessException,
-          ResourceConfigurationException, ResourceInitializationException, InvalidXMLException,
-          IOException {
+  public void htmlBodyContentNLTagsTest() throws Exception {
     // configure annotator and create AE:
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
-      url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      url = HtmlConverter.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -324,14 +306,12 @@ public class HtmlConverterTest {
   }
 
   @Test
-  public void htmlBodyContentWithCommentsAndScriptTest() throws AnalysisEngineProcessException,
-          ResourceConfigurationException, ResourceInitializationException, InvalidXMLException,
-          IOException {
+  public void htmlBodyContentWithCommentsAndScriptTest() throws Exception {
     // configure annotator and create AE:
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
-      url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      url = HtmlConverter.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -367,12 +347,12 @@ public class HtmlConverterTest {
       // configure annotator and create AE:
       URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
       if (url == null) {
-        url = HtmlConverter.class.getClassLoader().getResource(
-                "org/apache/uima/ruta/engine/HtmlConverter.xml");
+        url = HtmlConverter.class.getClassLoader()
+                .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
       }
       XMLInputSource in = new XMLInputSource(url);
-      AnalysisEngineDescription specifier = (AnalysisEngineDescription) UIMAFramework
-              .getXMLParser().parseResourceSpecifier(in);
+      AnalysisEngineDescription specifier = (AnalysisEngineDescription) UIMAFramework.getXMLParser()
+              .parseResourceSpecifier(in);
 
       AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
       ae.setConfigParameterValue("outputView", outputViewName);
@@ -414,13 +394,13 @@ public class HtmlConverterTest {
     // configure annotator and create AE:
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
-      url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      url = HtmlConverter.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
-    AnalysisEngineDescription specifier = (AnalysisEngineDescription) UIMAFramework
-            .getXMLParser().parseResourceSpecifier(in);
-    
+    AnalysisEngineDescription specifier = (AnalysisEngineDescription) UIMAFramework.getXMLParser()
+            .parseResourceSpecifier(in);
+
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     ae.setConfigParameterValue("outputView", outputViewName);
     ae.reconfigure();
@@ -476,14 +456,12 @@ public class HtmlConverterTest {
   }
 
   @Test
-  public void parameterTestInputView() throws AnalysisEngineProcessException,
-          ResourceConfigurationException, ResourceInitializationException, InvalidXMLException,
-          IOException {
+  public void parameterTestInputView() throws Exception {
     // configure annotator and create AE:
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
-      url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      url = HtmlConverter.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -515,15 +493,16 @@ public class HtmlConverterTest {
     // fini
     cas.release();
   }
-  
+
   @Test
   public void testStyle() throws Exception {
-    String html = "<html><head>\n" + "<style>\n" + "/*  */\n" + ".test {\n" + "   text-align: left;\n" + "}\n"
-            + "</style>\n" + "</head><body>Hello world</body></html>";
+    String html = "<html><head>\n" + "<style>\n" + "/*  */\n" + ".test {\n"
+            + "   text-align: left;\n" + "}\n" + "</style>\n"
+            + "</head><body>Hello world</body></html>";
     URL url = HtmlConverter.class.getClassLoader().getResource("HtmlConverter.xml");
     if (url == null) {
-      url = HtmlConverter.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlConverter.xml");
+      url = HtmlConverter.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlConverter.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);

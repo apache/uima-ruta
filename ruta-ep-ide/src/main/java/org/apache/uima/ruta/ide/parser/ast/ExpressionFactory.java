@@ -36,12 +36,6 @@ import org.eclipse.dltk.ast.references.VariableReference;
 
 public class ExpressionFactory extends AbstractFactory implements ExpressionConstants {
 
-  /**
-   * @param ref
-   * @param kind
-   *          see {@link RutaExpressionConstants}
-   * @return instance of VariableReference
-   */
   private static VariableReference newVariableReference(Token ref, int kind) {
     int bounds[] = getBounds(ref);
     return new RutaVariableReference(bounds[0], bounds[1], ref.getText(), kind);
@@ -216,12 +210,6 @@ public class ExpressionFactory extends AbstractFactory implements ExpressionCons
     return new FloatNumericLiteral(bounds[0], bounds[1], value);
   }
 
-  /**
-   * Creates (local) NumberVariableReference
-   * 
-   * @param numVarRef
-   * @return new VariableReference of Token
-   */
   public static VariableReference createNumberVariableReference(Token numVarRef) {
     return newVariableReference(numVarRef, RutaTypeConstants.RUTA_TYPE_N);
   }

@@ -21,7 +21,6 @@ package org.apache.uima.ruta.engine;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,17 +28,12 @@ import java.util.Collection;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.CasCreationUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class StackedScriptsTest {
 
@@ -56,9 +50,7 @@ public class StackedScriptsTest {
   String rules3 = "W{PARTOF({T1,T2,T3})->T4};";
 
   @Test
-  public void testWithUimaFitAggregated()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, SAXException {
+  public void testWithUimaFitAggregated() throws Exception {
 
     AnalysisEngine aae = createEngine(createEngineDescription(
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules1),
@@ -75,9 +67,7 @@ public class StackedScriptsTest {
   }
 
   @Test
-  public void testWithoutUimaFit()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, SAXException {
+  public void testWithoutUimaFit() throws Exception {
 
     AnalysisEngine rutaAE1 = createAnalysisEngine(rules1, null);
     AnalysisEngine rutaAE2 = createAnalysisEngine(rules2, null);
@@ -88,8 +78,7 @@ public class StackedScriptsTest {
   }
 
   private void processAndTest(AnalysisEngine rutaAE1, AnalysisEngine rutaAE2,
-          AnalysisEngine rutaAE3) throws ResourceInitializationException, IOException,
-          InvalidXMLException, AnalysisEngineProcessException, SAXException {
+          AnalysisEngine rutaAE3) throws Exception {
     CAS cas = getCAS(LINES);
 
     rutaAE1.process(cas);
@@ -130,8 +119,7 @@ public class StackedScriptsTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 3 * lines, t4);
   }
 
-  private CAS getCAS(int lines)
-          throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
+  private CAS getCAS(int lines) throws Exception {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < lines; i++) {
       sb.append(DOC_TEXT);
@@ -141,9 +129,7 @@ public class StackedScriptsTest {
     return cas;
   }
 
-  private AnalysisEngine createAnalysisEngine(String rules, String[] reindexOnly)
-          throws IOException, InvalidXMLException, ResourceInitializationException,
-          ResourceConfigurationException {
+  private AnalysisEngine createAnalysisEngine(String rules, String[] reindexOnly) throws Exception {
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
       url = RutaTestUtils.class.getClassLoader()
@@ -173,8 +159,7 @@ public class StackedScriptsTest {
   }
 
   @Test
-  public void testPerformanceOfReindexOnly() throws ResourceInitializationException,
-          InvalidXMLException, IOException, AnalysisEngineProcessException, SAXException {
+  public void testPerformanceOfReindexOnly() throws Exception {
     AnalysisEngine aaeNoReindex = createEngine(createEngineDescription(
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules1),
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules2),

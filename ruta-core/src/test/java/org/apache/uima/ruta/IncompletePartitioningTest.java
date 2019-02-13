@@ -20,7 +20,6 @@
 package org.apache.uima.ruta;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +41,7 @@ import org.junit.Test;
 public class IncompletePartitioningTest {
 
   @Test
-  public void test() throws Exception, IOException {
+  public void test() throws Exception {
     String className = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
 
@@ -54,7 +53,8 @@ public class IncompletePartitioningTest {
     File textFile = new File(textURL.toURI());
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
+      url = RutaTestUtils.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -62,8 +62,7 @@ public class IncompletePartitioningTest {
 
     TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().getTypeSystem();
     for (int i = 1; i <= 50; i++) {
-      basicTypeSystem.addType(RutaTestUtils.TYPE + i, "Type for Testing",
-              "uima.tcas.Annotation");
+      basicTypeSystem.addType(RutaTestUtils.TYPE + i, "Type for Testing", "uima.tcas.Annotation");
     }
     Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
     tsds.add(basicTypeSystem);
@@ -71,8 +70,8 @@ public class IncompletePartitioningTest {
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
-    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { ruleFile
-            .getParentFile().getPath() });
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS,
+            new String[] { ruleFile.getParentFile().getPath() });
     String name = ruleFile.getName();
     if (name.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
       name = name.substring(0, name.length() - 5);
@@ -84,7 +83,7 @@ public class IncompletePartitioningTest {
     ae.reconfigure();
     CAS cas = ae.newCAS();
     cas.setDocumentText(FileUtils.file2String(textFile, "UTF-8"));
-    
+
     Type typeCW = cas.getTypeSystem().getType("org.apache.uima.ruta.type.CW");
     Type typeSW = cas.getTypeSystem().getType("org.apache.uima.ruta.type.SW");
     cas.addFsToIndexes(cas.createAnnotation(typeCW, 0, 5));
@@ -92,7 +91,7 @@ public class IncompletePartitioningTest {
     cas.addFsToIndexes(cas.createAnnotation(typeCW, 15, 18));
     cas.addFsToIndexes(cas.createAnnotation(typeSW, 19, 22));
     cas.addFsToIndexes(cas.createAnnotation(typeCW, 23, 28));
-    
+
     ae.process(cas);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "Peter, Jochen", "Flo and");

@@ -19,18 +19,11 @@
 
 package org.apache.uima.ruta.block;
 
-import java.io.IOException;
-
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class RutaScriptBlockTest {
 
@@ -62,8 +55,7 @@ public class RutaScriptBlockTest {
   }
 
   @Test
-  public void testExternalBlockCall() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, CASException, SAXException {
+  public void testExternalBlockCall() throws Exception {
     String script = "SCRIPT org.apache.uima.ruta.ScriptWithStackedBlocks;";
     script += "(# PERIOD){-> T3} (# PERIOD){->T4};";
     script += "T3{-> CALL(ScriptWithStackedBlocks.First)};";

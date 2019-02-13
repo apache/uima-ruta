@@ -57,12 +57,15 @@ public class RutaFileHyperlink implements IHyperlink {
     fConsole = console;
   }
 
+  @Override
   public void linkEntered() {
   }
 
+  @Override
   public void linkExited() {
   }
 
+  @Override
   public void linkActivated() {
     try {
       String fileName;
@@ -104,8 +107,8 @@ public class RutaFileHyperlink implements IHyperlink {
       }
       // did not find source
       MessageDialog.openInformation(DLTKDebugUIPlugin.getActiveWorkbenchShell(),
-              ConsoleMessages.RutaFileHyperlink_Information_1, MessageFormat.format(
-                      ConsoleMessages.RutaFileHyperlink_Source_not_found_for__0__2,
+              ConsoleMessages.RutaFileHyperlink_Information_1,
+              MessageFormat.format(ConsoleMessages.RutaFileHyperlink_Source_not_found_for__0__2,
                       new String[] { fileName }));
     } catch (CoreException e) {
       DLTKDebugUIPlugin.errorDialog(
@@ -135,6 +138,8 @@ public class RutaFileHyperlink implements IHyperlink {
   /**
    * Returns the fully qualified name of the type to open
    * 
+   * @param linkText
+   *          contains the type name
    * @return fully qualified type name
    * @exception CoreException
    *              if unable to parse the type name
@@ -151,12 +156,6 @@ public class RutaFileHyperlink implements IHyperlink {
     throw new CoreException(status);
   }
 
-  /**
-   * Returns the line number associated with the stack trace or -1 if none.
-   * 
-   * @exception CoreException
-   *              if unable to parse the number
-   */
   protected int getLineNumber(String linkText) throws CoreException {
     Pattern p = Pattern.compile("line (\\d*)");
     Matcher m = p.matcher(linkText);
@@ -175,21 +174,10 @@ public class RutaFileHyperlink implements IHyperlink {
     throw new CoreException(status);
   }
 
-  /**
-   * Returns the console this link is contained in.
-   * 
-   * @return console
-   */
   protected TextConsole getConsole() {
     return fConsole;
   }
 
-  /**
-   * Returns this link's text
-   * 
-   * @exception CoreException
-   *              if unable to retrieve the text
-   */
   protected String getLinkText() throws CoreException {
     try {
       IDocument document = getConsole().getDocument();

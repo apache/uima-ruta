@@ -151,8 +151,12 @@ public class MarkTableAction extends AbstractRutaAction {
   }
 
   private boolean getDictWSParamValue(MatchContext context) {
-    return (Boolean) context.getParent().getContext()
+    Object configParameterValue = context.getParent().getContext()
             .getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
+    if (configParameterValue instanceof Boolean) {
+      return (Boolean) configParameterValue;
+    }
+    return false;
   }
 
   private void fillFeatures(TOP structure, Map<String, Integer> map, AnnotationFS annotationFS,

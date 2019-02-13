@@ -48,32 +48,13 @@ public interface TextRulerLearner {
     ML_UNDEFINED, ML_INITIALIZING, ML_RUNNING, ML_ERROR, ML_ABORTED, ML_DONE
   };
 
-  /**
-   * There the magic has to be placed...
-   */
   void run();
 
-  /**
-   * this method gets called from the UI and passes a hashMap with key value coded parameters that
-   * your corresponding TextRulerLearnerFactory declared by its getAlgorithmParameters method.
-   */
   void setParameters(Map<String, Object> params);
 
-  /**
-   * If any Ruta-Rules result is available (yet), the system asks your algorithm for it by
-   * calling this method.
-   */
   String getResultString();
 
-  /**
-   * 
-   * @return analysis engine
-   */
   AnalysisEngine getAnalysisEngine();
 
-  /**
-   * 
-   * @return CAS
-   */
   CAS getTestCAS();
 }

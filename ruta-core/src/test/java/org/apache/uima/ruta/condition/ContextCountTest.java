@@ -21,23 +21,16 @@ package org.apache.uima.ruta.condition;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class ContextCountTest {
 
@@ -63,8 +56,7 @@ public class ContextCountTest {
   }
 
   @Test
-  public void testIndex() throws CASException, ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, SAXException {
+  public void testIndex() throws Exception {
     JCas jcas = RutaTestUtils.getCAS("A B C a b c").getJCas();
     Assert.assertTrue(Ruta.matches(jcas,
             "INT index; CW{CONTEXTCOUNT(Document,index,index)} # @SW{CONTEXTCOUNT(Document,0,100,index)-> MARK(T1,1,3)};"));

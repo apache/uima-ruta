@@ -21,18 +21,14 @@ package org.apache.uima.ruta;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
-
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 /**
@@ -42,27 +38,26 @@ public class ConflictingTypeTest {
   /**
    * Create an analysis engine for a Ruta script.
    *
-   * @param script Script path.
+   * @param script
+   *          Script path.
    * @return Analysis engine.
    */
-  private AnalysisEngine createAE(String script) throws ResourceInitializationException, IOException, InvalidXMLException {
+  private AnalysisEngine createAE(String script) throws Exception {
     final TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(
             "org.apache.uima.ruta.engine.BasicTypeSystem",
             "org.apache.uima.ruta.ConflictingTypeSystem");
     final AnalysisEngineDescription ruta = AnalysisEngineFactory.createEngineDescription(
-            "org.apache.uima.ruta.engine.BasicEngine",
-            RutaEngine.PARAM_MAIN_SCRIPT, script);
+            "org.apache.uima.ruta.engine.BasicEngine", RutaEngine.PARAM_MAIN_SCRIPT, script);
 
     ruta.getAnalysisEngineMetaData().setTypeSystem(tsd);
-    ruta.getAnalysisEngineMetaData()
-            .getTypeSystem()
-            .addType("org.apache.uima.T1", "Type for Testing", "uima.tcas.Annotation");
+    ruta.getAnalysisEngineMetaData().getTypeSystem().addType("org.apache.uima.T1",
+            "Type for Testing", "uima.tcas.Annotation");
 
     return AnalysisEngineFactory.createEngine(ruta);
   }
 
   @Test
-  public void test() throws ResourceInitializationException, IOException, InvalidXMLException, AnalysisEngineProcessException {
+  public void test() throws Exception {
     final String name = getClass().getSimpleName();
     final String namespace = getClass().getPackage().getName();
     final AnalysisEngine ae = createAE(namespace + "." + name);
@@ -78,8 +73,8 @@ public class ConflictingTypeTest {
       // org.apache.uima.ruta.type.conflicting.W are imported into RUTA's namespace as W;
       assertTrue(e.getCause() instanceof IllegalArgumentException);
     } finally {
-        cas.release();
-        ae.destroy();
+      cas.release();
+      ae.destroy();
     }
   }
 }

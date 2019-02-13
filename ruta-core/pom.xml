@@ -28,7 +28,6 @@
   <description>The core implementation of the UIMA Ruta rule engine.</description>
   <name>Apache UIMA Ruta: ${project.artifactId}</name>
   
-  
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>

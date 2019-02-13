@@ -136,7 +136,7 @@
                 <Import-Package>
                 </Import-Package>
                 <Bundle-SymbolicName>org.apache.uima.ruta.core.ext;singleton:=true</Bundle-SymbolicName>
-                <Bundle-RequiredExecutionEnvironment>JavaSE-1.7</Bundle-RequiredExecutionEnvironment>
+                <Bundle-RequiredExecutionEnvironment>JavaSE-1.8</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
                 <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>

@@ -19,23 +19,16 @@
 
 package org.apache.uima.ruta.block;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.seed.TextSeeder;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class ForEachBlockTest {
 
@@ -70,9 +63,7 @@ public class ForEachBlockTest {
 
   @Test
   @Ignore
-  public void testPerformance() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
-          URISyntaxException, SAXException {
+  public void testPerformance() throws Exception {
 
     int lines = 10000;
     StringBuilder sb = new StringBuilder();
@@ -128,9 +119,7 @@ public class ForEachBlockTest {
   }
 
   @Test
-  public void testRigthToLeft() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
-          URISyntaxException, SAXException {
+  public void testRigthToLeft() throws Exception {
     String script = "NUM{-> T1};";
     script += "FOREACH(t) T1{}{\n";
     script += "n:T1 SPECIAL.ct==\"^\" t{-> t.begin = n.begin};\n";
@@ -143,10 +132,7 @@ public class ForEachBlockTest {
   }
 
   @Test
-  public void testEnforcedLeftToRigthInComposedWithDebbugging()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
-          SAXException {
+  public void testEnforcedLeftToRigthInComposedWithDebbugging() throws Exception {
     String script = "NUM{-> T1};";
     script += "FOREACH(t) T1{}{\n";
     script += "(n:@T1{->UNMARK(T1)} SPECIAL.ct==\"^\" t){-> t.begin = n.begin};\n";
@@ -162,9 +148,7 @@ public class ForEachBlockTest {
   }
 
   @Test
-  public void testDirection() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
-          URISyntaxException, SAXException {
+  public void testDirection() throws Exception {
     String script = "NUM{-> T1};";
     script += "FOREACH(t,true) T1{}{\n";
     script += "(# t{-PARTOF(T2)}){->T2};\n";
