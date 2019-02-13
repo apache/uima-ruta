@@ -19,13 +19,9 @@
 
 package org.apache.uima.ruta.rule;
 
-import java.io.IOException;
-
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class InlinedRulesTest {
