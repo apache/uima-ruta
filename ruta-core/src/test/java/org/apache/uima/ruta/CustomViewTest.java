@@ -21,7 +21,6 @@ package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,10 +32,8 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.type.W;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,17 +47,16 @@ public class CustomViewTest {
   /**
    * Create an analysis engine for a Ruta script.
    *
-   * @param script Script path.
+   * @param script
+   *          Script path.
    * @return Analysis engine.
    */
-  private AnalysisEngine createAE(String script) throws ResourceInitializationException, IOException, InvalidXMLException {
+  private AnalysisEngine createAE(String script) throws Exception {
     final AnalysisEngineDescription ruta = AnalysisEngineFactory.createEngineDescription(
-            "org.apache.uima.ruta.engine.BasicEngine",
-            RutaEngine.PARAM_MAIN_SCRIPT, script);
+            "org.apache.uima.ruta.engine.BasicEngine", RutaEngine.PARAM_MAIN_SCRIPT, script);
 
-    ruta.getAnalysisEngineMetaData()
-            .getTypeSystem()
-            .addType("org.apache.uima.T1", "Type for Testing", "uima.tcas.Annotation");
+    ruta.getAnalysisEngineMetaData().getTypeSystem().addType("org.apache.uima.T1",
+            "Type for Testing", "uima.tcas.Annotation");
 
     final AggregateBuilder builder = new AggregateBuilder();
     builder.add(ruta, "_InitialView", "text");
@@ -93,7 +89,8 @@ public class CustomViewTest {
         words.add(a.getCoveredText());
       }
 
-      assertEquals("Checking run " + i, words, Arrays.asList("This", "is", "a", "short", "document"));
+      assertEquals("Checking run " + i, words,
+              Arrays.asList("This", "is", "a", "short", "document"));
     }
   }
 }

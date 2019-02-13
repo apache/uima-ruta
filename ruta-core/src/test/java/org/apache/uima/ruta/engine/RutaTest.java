@@ -21,16 +21,13 @@ package org.apache.uima.ruta.engine;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.AnnotationImpl;
@@ -38,7 +35,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.FsIndexDescription;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypePriorities;
@@ -46,11 +42,9 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.resource.metadata.impl.TypeDescription_impl;
 import org.apache.uima.resource.metadata.impl.TypeSystemDescription_impl;
 import org.apache.uima.util.CasCreationUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.Assert;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class RutaTest {
 
@@ -122,8 +116,7 @@ public class RutaTest {
   }
 
   @Test
-  public void testApplyRule() throws ResourceInitializationException, InvalidXMLException,
-          IOException, CASException, AnalysisEngineProcessException, SAXException {
+  public void testApplyRule() throws Exception {
     CAS cas = RutaTestUtils.getCAS("Some document.");
     JCas jcas = cas.getJCas();
 
@@ -138,8 +131,7 @@ public class RutaTest {
   }
 
   @Test
-  public void testSelect() throws ResourceInitializationException, InvalidXMLException, IOException,
-          CASException, AnalysisEngineProcessException, SAXException {
+  public void testSelect() throws Exception {
     String document = "Some text.";
     CAS cas = RutaTestUtils.getCAS(document);
     JCas jcas = cas.getJCas();
@@ -158,8 +150,7 @@ public class RutaTest {
   }
 
   @Test
-  public void testSelectWithInjection() throws ResourceInitializationException, InvalidXMLException,
-          IOException, CASException, AnalysisEngineProcessException, SAXException {
+  public void testSelectWithInjection() throws Exception {
     String document = "Some text.";
     CAS cas = RutaTestUtils.getCAS(document);
     AnnotationImpl t1 = (AnnotationImpl) cas.createAnnotation(RutaTestUtils.getTestType(cas, 1), 5,
@@ -176,17 +167,14 @@ public class RutaTest {
   }
 
   @Test
-  public void testMatches() throws ResourceInitializationException, InvalidXMLException,
-          IOException, CASException, AnalysisEngineProcessException, SAXException {
+  public void testMatches() throws Exception {
     JCas jcas = RutaTestUtils.getCAS("Some text.").getJCas();
     Assert.assertTrue(Ruta.matches(jcas, "CW # @PERIOD;"));
     Assert.assertTrue(Ruta.matches(jcas, "W{IS(CW)} \"text\";"));
   }
 
   @Test
-  public void testMatchesWithInjection()
-          throws ResourceInitializationException, InvalidXMLException, IOException, CASException,
-          AnalysisEngineProcessException, SAXException {
+  public void testMatchesWithInjection() throws Exception {
     String document = "Some text.";
     CAS cas = RutaTestUtils.getCAS(document);
     AnnotationImpl t1 = (AnnotationImpl) cas.createAnnotation(RutaTestUtils.getTestType(cas, 1), 5,

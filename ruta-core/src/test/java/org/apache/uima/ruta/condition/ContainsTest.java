@@ -19,20 +19,13 @@
 
 package org.apache.uima.ruta.condition;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class ContainsTest {
 
@@ -53,9 +46,7 @@ public class ContainsTest {
   }
 
   @Test
-  public void testAlias() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
-          SAXException {
+  public void testAlias() throws Exception {
     String document = "1 some text; 2 some text; 3 some text;";
 
     String script = "IMPORT PACKAGE * FROM org.apache.uima.ruta.ImportStatementsTestTypeSystemWithManyPackages AS ruta;";
@@ -78,9 +69,7 @@ public class ContainsTest {
   }
 
   @Test
-  public void testContainsOverlappingAnnotations() throws ResourceInitializationException,
-          InvalidXMLException, IOException, AnalysisEngineProcessException,
-          ResourceConfigurationException, URISyntaxException, SAXException {
+  public void testContainsOverlappingAnnotations() throws Exception {
 
     String document = "1 2 3 4 5 6 7 8";
 

@@ -19,13 +19,10 @@
 
 package org.apache.uima.ruta.descriptor;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.antlr.runtime.RecognitionException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -33,7 +30,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.fit.util.CasUtil;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
@@ -42,7 +38,6 @@ import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.HtmlAnnotator;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -72,8 +67,7 @@ public class GenerateDescriptorTest {
   }
 
   @Test
-  public void testCreateAnalysisEngineDescription()
-          throws InvalidXMLException, IOException, RecognitionException, URISyntaxException {
+  public void testCreateAnalysisEngineDescription() throws Exception {
 
     String script = "";
     script += "PACKAGE test.package;\n";
@@ -117,8 +111,7 @@ public class GenerateDescriptorTest {
   }
 
   @Test
-  public void testCreateTypeSystemDescription() throws URISyntaxException, IOException,
-          RecognitionException, InvalidXMLException, ResourceInitializationException {
+  public void testCreateTypeSystemDescription() throws Exception {
 
     String script = "";
     script += "PACKAGE test.package;\n";
@@ -187,8 +180,7 @@ public class GenerateDescriptorTest {
   }
 
   @Test
-  public void testRuleScriptName() throws URISyntaxException, IOException, RecognitionException,
-          InvalidXMLException, ResourceInitializationException {
+  public void testRuleScriptName() throws Exception {
 
     String script = "";
     script += "PACKAGE test.package;\n";

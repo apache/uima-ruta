@@ -19,7 +19,6 @@
 
 package org.apache.uima.ruta.engine;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,25 +26,23 @@ import java.util.Map;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
-import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.Test;
 
 public class RulesParamTest {
   @Test
-  public void test() throws IOException, InvalidXMLException, ResourceInitializationException, ResourceConfigurationException {
+  public void test() throws Exception {
     String document = "Some text.";
     String script = "CW SW{-> T1};\n";
 
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(RutaEngine.PARAM_RULES, script);
-    
+
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
+      url = RutaTestUtils.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -55,7 +52,7 @@ public class RulesParamTest {
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document);
-    ae.process(cas);
+      ae.process(cas);
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -19,28 +19,23 @@
 package org.apache.uima.ruta.engine;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.internal.ResourceManagerFactory;
 import org.apache.uima.fit.internal.ResourceManagerFactory.ResourceManagerCreator;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class ResourcesFromDataPathTest {
 
   @Test
-  public void test() throws IOException, ResourceInitializationException, InvalidXMLException,
-          AnalysisEngineProcessException, SAXException {
+  public void test() throws Exception {
 
     final String datapath = "target/datapath/";
     new File(datapath).mkdirs();

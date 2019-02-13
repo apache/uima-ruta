@@ -33,7 +33,7 @@ import org.junit.Test;
 public class AlternativeMatchTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String document = "1 this is a Test.";
     String script = "";
     script += "CW{-> CREATE(T0, \"s\"=\"a\"),CREATE(T0, \"s\"=\"b\")};";
@@ -47,25 +47,19 @@ public class AlternativeMatchTest {
     script += "NUM W[1,8]? T0.s==\"a\"{-> T8};";
     script += "NUM W W W W?? T0.s==\"b\"{-> T9};";
     script += "NUM W W W W?? T0.s==\"a\"{-> T10};";
-    
-    
+
     Map<String, String> typeMap = new TreeMap<String, String>();
     String typeName1 = "T0";
     typeMap.put(typeName1, "uima.tcas.Annotation");
-    
+
     Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
     List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
     featureMap.put(typeName1, list);
     String fn1 = "s";
     list.add(new TestFeature(fn1, "", "uima.cas.String"));
-    
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Test");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Test");
@@ -77,7 +71,7 @@ public class AlternativeMatchTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 8, 1, "Test");
     RutaTestUtils.assertAnnotationsEquals(cas, 9, 1, "Test");
     RutaTestUtils.assertAnnotationsEquals(cas, 10, 1, "Test");
-    
+
     if (cas != null) {
       cas.release();
     }

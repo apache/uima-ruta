@@ -22,7 +22,6 @@ package org.apache.uima.ruta;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +36,6 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.fit.util.JCasUtil;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.descriptor.RutaBuildOptions;
 import org.apache.uima.ruta.descriptor.RutaDescriptorFactory;
@@ -45,7 +43,6 @@ import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.type.FalsePositive;
 import org.apache.uima.ruta.type.TruePositive;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -67,8 +64,7 @@ public class ImportStatementsTest {
    *          {@link org.apache.uima.ruta.engine.RutaEngine#PARAM_STRICT_IMPORTS} value.
    * @return Analysis engine.
    */
-  private AnalysisEngine createAE(String script, boolean strictImport)
-          throws ResourceInitializationException, IOException, InvalidXMLException {
+  private AnalysisEngine createAE(String script, boolean strictImport) throws Exception {
     final TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(
             "org.apache.uima.ruta.engine.BasicTypeSystem",
             "org.apache.uima.ruta.ImportStatementsTestTypeSystem",

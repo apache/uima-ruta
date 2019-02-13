@@ -18,25 +18,15 @@
  */
 package org.apache.uima.ruta.action;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class LabelAtActionTest {
 
   @Test
-  public void test() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
-          SAXException {
+  public void test() throws Exception {
 
     String document = "This is a test.";
     String script = "CW{-> t:T1}->{t{->T2};};";

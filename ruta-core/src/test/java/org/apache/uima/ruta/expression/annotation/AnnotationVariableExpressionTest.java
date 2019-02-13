@@ -22,8 +22,6 @@ package org.apache.uima.ruta.expression.annotation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +29,6 @@ import java.util.TreeMap;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
@@ -40,22 +37,16 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.cas.FSArray;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class AnnotationVariableExpressionTest {
 
   @Test
-  public void test() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
-          SAXException {
+  public void test() throws Exception {
     String document = "Some text.";
     String script = "ANNOTATION a;";
     script += "CW{-> ASSIGN(a, CW)};";
@@ -96,9 +87,7 @@ public class AnnotationVariableExpressionTest {
   }
 
   @Test
-  public void testImplicitAssignment() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, ResourceConfigurationException,
-          URISyntaxException, SAXException {
+  public void testImplicitAssignment() throws Exception {
     String document = "Some text.";
     String script = "ANNOTATION a;";
     script += "CW{-> a = CW};";
@@ -139,9 +128,7 @@ public class AnnotationVariableExpressionTest {
   }
 
   @Test
-  public void testListImplicitAssignment() throws ResourceInitializationException,
-          InvalidXMLException, IOException, AnalysisEngineProcessException,
-          ResourceConfigurationException, URISyntaxException, SAXException {
+  public void testListImplicitAssignment() throws Exception {
     String document = "Some text.";
     String script = "ANNOTATIONLIST as;";
     script += "Document{-> as = W};";
@@ -182,9 +169,7 @@ public class AnnotationVariableExpressionTest {
   }
 
   @Test
-  public void testList() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException,
-          SAXException {
+  public void testList() throws Exception {
     String document = "Some text.";
     String script = "ANNOTATIONLIST as;";
     script += "Document{-> ASSIGN(as, W)};";
@@ -225,9 +210,7 @@ public class AnnotationVariableExpressionTest {
   }
 
   @Test
-  public void testResetVariableBetweenCases() throws ResourceInitializationException,
-          InvalidXMLException, IOException, AnalysisEngineProcessException,
-          ResourceConfigurationException, URISyntaxException, SAXException {
+  public void testResetVariableBetweenCases() throws Exception {
 
     String document = "Some text.";
     String script = "ANNOTATIONLIST as;\n";
@@ -266,9 +249,7 @@ public class AnnotationVariableExpressionTest {
   }
 
   @Test
-  public void testNullValueWithFeatureMatch() throws ResourceInitializationException,
-          InvalidXMLException, IOException, AnalysisEngineProcessException,
-          ResourceConfigurationException, URISyntaxException, SAXException {
+  public void testNullValueWithFeatureMatch() throws Exception {
 
     String document = "Some text.";
     String script = "";

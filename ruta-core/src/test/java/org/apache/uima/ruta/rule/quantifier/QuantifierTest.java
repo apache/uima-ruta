@@ -19,27 +19,19 @@
 
 package org.apache.uima.ruta.rule.quantifier;
 
-import java.io.IOException;
 import java.util.List;
 
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class QuantifierTest {
 
   @Test
-  public void testRightToLeftMinMaxReluctantToLiteral()
-          throws CASException, ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, SAXException {
+  public void testRightToLeftMinMaxReluctantToLiteral() throws Exception {
 
     JCas jcas = RutaTestUtils.getCAS("a b c d e.").getJCas();
     Assert.assertEquals("a b c d e.",
@@ -56,9 +48,7 @@ public class QuantifierTest {
   }
 
   @Test
-  public void testRightToLeftMinMaxGreedyToLiteral()
-          throws CASException, ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, SAXException {
+  public void testRightToLeftMinMaxGreedyToLiteral() throws Exception {
 
     JCas jcas = RutaTestUtils.getCAS("a b c d e.").getJCas();
     Assert.assertEquals("a b c d e.",
