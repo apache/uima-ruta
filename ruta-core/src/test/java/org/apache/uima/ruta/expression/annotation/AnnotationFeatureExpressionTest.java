@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +29,16 @@ import java.util.TreeMap;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.SerialFormat;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.apache.uima.util.CasIOUtils;
 import org.junit.Test;
 
 public class AnnotationFeatureExpressionTest {
@@ -236,9 +241,40 @@ public class AnnotationFeatureExpressionTest {
     CAS cas = RutaTestUtils.getCAS(document, complexTypes, features);
     Ruta.apply(cas, script);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "a");
+    RutaTestUtils.assertAnnotationsEquals(cas, 1,1, "a");
   }
 
+  @Test
+  public void testFeatureAssignmentByFeatureMatch() throws Exception {
+    String document = "This is a Test.";
+    String script = "";
+    script += "SW{-> Word, Word.small = true};\n";
+    script += "CW{-> Word, Word.small = false};\n";
+    script += "Document{-> CREATE(Struct1, \"smallW\" = Word.small == true, \"capitalW\" = Word.small == false)};\n";
+    script += "Struct1.smallW{-> T1};\n";
+    script += "Struct1.capitalW{-> T2};\n";
+
+    Map<String, String> complexTypes = new TreeMap<String, String>();
+    complexTypes.put("Struct1", "uima.tcas.Annotation");
+    complexTypes.put("Word", "uima.tcas.Annotation");
+    Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> struct1Features = new ArrayList<RutaTestUtils.TestFeature>();
+    features.put("Struct1", struct1Features);
+    struct1Features.add(new TestFeature("smallW", "", "uima.cas.FSArray"));
+    struct1Features.add(new TestFeature("capitalW", "", "uima.cas.FSArray"));
+    
+    List<TestFeature> wordFeatures = new ArrayList<RutaTestUtils.TestFeature>();
+    features.put("Word", wordFeatures);
+    wordFeatures.add(new TestFeature("small", "", "uima.cas.Boolean"));
+    
+    CAS cas = RutaTestUtils.getCAS(document, complexTypes, features);
+    Ruta.apply(cas, script);
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "is", "a");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "This", "Test");
+  }
+  
+  
   @Test
   public void testPartofOnNullMatch() throws Exception {
     String document = "Some text.";

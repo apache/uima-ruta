@@ -251,9 +251,10 @@ public class AnnotationTypeExpression extends RutaExpression
             if (featureAnnotations != null && !featureAnnotations.isEmpty()) {
               annotations.addAll(featureAnnotations);
             }
-          }
-          if (bestGuessedAnnotations != null && !bestGuessedAnnotations.isEmpty()) {
-            annotations.addAll(bestGuessedAnnotations);
+          } else {
+            if (bestGuessedAnnotations != null && !bestGuessedAnnotations.isEmpty()) {
+              annotations.addAll(bestGuessedAnnotations);
+            }
           }
         }
       }
