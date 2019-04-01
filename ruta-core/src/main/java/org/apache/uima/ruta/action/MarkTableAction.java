@@ -34,7 +34,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
@@ -47,7 +46,7 @@ import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class MarkTableAction extends AbstractRutaAction {
+public class MarkTableAction extends AbstractMarkAction {
 
   private final ITypeExpression typeExpr;
 
@@ -71,7 +70,7 @@ public class MarkTableAction extends AbstractRutaAction {
           WordTableExpression tableExpr, Map<IStringExpression, INumberExpression> featureMap,
           IBooleanExpression ignoreCase, INumberExpression ignoreLength,
           IStringExpression ignoreChar, INumberExpression maxIgnoreChar) {
-    super();
+    super(typeExpr);
     this.typeExpr = typeExpr;
     this.indexExpr = indexExpr;
     this.tableExpr = tableExpr;
@@ -148,15 +147,6 @@ public class MarkTableAction extends AbstractRutaAction {
         newStructure.addToIndexes();
       }
     }
-  }
-
-  private boolean getDictWSParamValue(MatchContext context) {
-    Object configParameterValue = context.getParent().getContext()
-            .getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
-    if (configParameterValue instanceof Boolean) {
-      return (Boolean) configParameterValue;
-    }
-    return false;
   }
 
   private void fillFeatures(TOP structure, Map<String, Integer> map, AnnotationFS annotationFS,

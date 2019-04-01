@@ -26,6 +26,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -61,6 +62,15 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
   @Override
   public String toString() {
     return super.toString() + "," + type.getClass().getSimpleName();
+  }
+
+  boolean getDictWSParamValue(MatchContext context) {
+    Object configParameterValue = context.getParent().getContext()
+                                         .getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
+    if (configParameterValue instanceof Boolean) {
+      return (Boolean) configParameterValue;
+    }
+    return false;
   }
 
   protected List<Integer> getIndexList(MatchContext context, List<INumberExpression> list,

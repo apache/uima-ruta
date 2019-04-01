@@ -57,7 +57,7 @@ public class MarkFastAction extends AbstractMarkAction {
     this.ignore = ignore == null ? new SimpleBooleanExpression(false) : ignore;
     this.ignoreLength = ignoreLength == null ? new SimpleNumberExpression(Integer.valueOf(0))
             : ignoreLength;
-    this.ignoreWS = ignoreWS == null ? new SimpleBooleanExpression(true) : ignoreWS;
+    this.ignoreWS = ignoreWS;
   }
 
   public MarkFastAction(ITypeExpression type, AbstractStringListExpression list, IBooleanExpression ignore,
@@ -67,7 +67,7 @@ public class MarkFastAction extends AbstractMarkAction {
     this.ignore = ignore == null ? new SimpleBooleanExpression(false) : ignore;
     this.ignoreLength = ignoreLength == null ? new SimpleNumberExpression(Integer.valueOf(0))
             : ignoreLength;
-    this.ignoreWS = ignoreWS == null ? new SimpleBooleanExpression(true) : ignoreWS;
+    this.ignoreWS = ignoreWS;
   }
 
   @Override
@@ -75,19 +75,22 @@ public class MarkFastAction extends AbstractMarkAction {
     RuleMatch match = context.getRuleMatch();
     RuleElement element = context.getElement();
     List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
+
+    boolean ignoreWSValue = ignoreWS != null ? ignoreWS.getBooleanValue(context, stream) : getDictWSParamValue(context);
+
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
       RutaWordList wl = null;
       if (list != null) {
         wl = list.getList(context, stream);
       } else if (stringList != null) {
-        wl = new TreeWordList(stringList.getList(context, stream), false);
+        wl = new TreeWordList(stringList.getList(context, stream), ignoreWSValue);
       }
       if (wl instanceof TreeWordList) {
         Collection<AnnotationFS> found = wl.find(windowStream,
                 ignore.getBooleanValue(context, stream),
                 ignoreLength.getIntegerValue(context, stream), null, 0,
-                ignoreWS.getBooleanValue(context, stream));
+                ignoreWSValue);
         for (AnnotationFS annotation : found) {
           createAnnotation(annotation, context, windowStream);
         }
