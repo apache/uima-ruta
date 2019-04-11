@@ -308,63 +308,64 @@ Creative Commons Attribution 3.0 License.
         
         <plugins>
           <!-- https://siom79.github.io/japicmp/MavenPlugin.html -->
-<!--           <plugin>               -->
-<!--             <groupId>com.github.siom79.japicmp</groupId> -->
-<!--             <artifactId>japicmp-maven-plugin</artifactId> -->
-<!--             <version>0.13.0</version> -->
-<!--             <configuration> -->
-<!--               <oldVersion> -->
-<!--                 <dependency> -->
-<!--                   <groupId>${project.groupId}</groupId> -->
-<!--                   <artifactId>${project.artifactId}</artifactId> -->
-<!--                   <version>${api_check_oldVersion}</version> -->
-<!--                 </dependency> -->
-<!--               </oldVersion> -->
-<!--               <parameter> -->
-<!--                 <onlyModified>true</onlyModified> -->
-<!--                 <excludes> -->
-<!--                    <exclude>org.apache.uima.ruta.type</exclude> -->
-<!--                    <exclude>org.apache.uima.ruta.parser.RutaParser</exclude> -->
-<!--                 </excludes> -->
-<!--                 filter out classes with impl in their package or class name -->
-<!--                 <postAnalysisScript>${project.basedir}/../ruta-parent/src/main/groovy/api-report.groovy</postAnalysisScript>                   -->
-<!--               </parameter> -->
-<!--             </configuration> -->
-<!--             <executions> -->
-<!--               <execution> -->
-<!--                 <phase>verify</phase> -->
-<!--                 <goals> -->
-<!--                   <goal>cmp</goal> -->
-<!--                 </goals> -->
-<!--               </execution> -->
-<!--             </executions> -->
-<!--           </plugin> -->
+          <plugin>              
+            <groupId>com.github.siom79.japicmp</groupId>
+            <artifactId>japicmp-maven-plugin</artifactId>
+            <version>0.13.0</version>
+            <configuration>
+              <oldVersion>
+                <dependency>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>${project.artifactId}</artifactId>
+                  <version>${api_check_oldVersion}</version>
+                </dependency>
+              </oldVersion>
+              <parameter>
+                <onlyModified>true</onlyModified>
+                <excludes>
+                   <exclude>org.apache.uima.ruta.type</exclude>
+                   <exclude>org.apache.uima.ruta.parser.RutaParser</exclude>
+                </excludes>
+                filter out classes with impl in their package or class name
+                <postAnalysisScript>${project.basedir}/../ruta-parent/src/main/groovy/api-report.groovy</postAnalysisScript>                  
+              </parameter>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>cmp</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
           
           <!-- This copy is to have the api change report included in the source distribution -->
-<!--           <plugin> -->
-<!--             <artifactId>maven-antrun-plugin</artifactId> -->
-<!--             <executions> -->
-<!--               <execution> -->
-<!--                 <id>copy-API-change-report</id> -->
-<!--                 <phase>install</phase>  must follow verify -->
-<!--                 <goals><goal>run</goal></goals> -->
-<!--                 <configuration> -->
-<!--                   <target> -->
-<!--                     <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" /> -->
-<!--                     <if> -->
-<!--                       <available file="${project.build.directory}/japicmp/" /> -->
-<!--                       <then> -->
-<!--                         <copy toDir="${basedir}/api-change-report"> -->
-<!--                           <fileset dir="${project.build.directory}/japicmp" /> -->
-<!--                         </copy> -->
-<!--                       </then> -->
-<!--                     </if> -->
-<!--                   </target> -->
-<!--                 </configuration> -->
-<!--               </execution> -->
-<!--             </executions> -->
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-API-change-report</id>
+                <phase>install</phase>  
+<!--                 must follow verify -->
+                <goals><goal>run</goal></goals>
+                <configuration>
+                  <target>
+                    <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />
+                    <if>
+                      <available file="${project.build.directory}/japicmp/" />
+                      <then>
+                        <copy toDir="${basedir}/api-change-report">
+                          <fileset dir="${project.build.directory}/japicmp" />
+                        </copy>
+                      </then>
+                    </if>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
             
-<!--           </plugin> -->
+          </plugin>
         </plugins>
       </build>
     </profile>
