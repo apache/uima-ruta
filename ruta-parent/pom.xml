@@ -313,6 +313,7 @@ Creative Commons Attribution 3.0 License.
             <artifactId>japicmp-maven-plugin</artifactId>
             <version>0.13.0</version>
             <configuration>
+              <skip>true</skip>
               <oldVersion>
                 <dependency>
                   <groupId>${project.groupId}</groupId>
