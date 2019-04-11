@@ -162,4 +162,15 @@ public class DefaultSeederTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "\u000b");
   }
 
+  @Test
+  public void testSpecialChars() throws Exception {
+
+    String document = "Some text  Dr.";
+    String script = "RETAINTYPE(WS);\nBREAK{-> T1};";
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, " ");
+  }
+
 }
