@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-typesystem</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
