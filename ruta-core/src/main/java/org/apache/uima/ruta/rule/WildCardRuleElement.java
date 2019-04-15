@@ -24,6 +24,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
@@ -63,8 +65,17 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
+    Pair<RuleElement,Integer> next = getNextRuleElement(after, this);
+    RuleElement nextElement = next.getLeft();
+    int nextDepth = next.getRight().intValue();
+    List<RuleMatch> result = tryWithNextRuleElement(nextElement, after, annotation, ruleMatch,
+            ruleApply, containerMatch, nextDepth, sideStepOrigin, entryPoint, stream, crowd);
+    return result;
+  }
+
+  private Pair<RuleElement, Integer> getNextRuleElement(boolean after, RuleElement element) {
     RuleElement nextElement = null;
-    RuleElement current = this;
+    RuleElement current = element;
     int nextDepth = -1;
     while (nextElement == null && current != null && current.getContainer() != null) {
       RuleElementContainer container = current.getContainer();
@@ -79,9 +90,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     if (nextElement == null) {
       nextDepth = 0;
     }
-    List<RuleMatch> result = tryWithNextRuleElement(nextElement, after, annotation, ruleMatch,
-            ruleApply, containerMatch, nextDepth, sideStepOrigin, entryPoint, stream, crowd);
-    return result;
+    return new ImmutablePair<RuleElement, Integer>(nextElement, Integer.valueOf(nextDepth));
   }
 
   private List<RuleMatch> tryWithNextRuleElement(RuleElement nextElement, boolean after,
@@ -311,7 +320,10 @@ public class WildCardRuleElement extends AbstractRuleElement {
           // optional did not match -> match complete window/document
           // TODO refactor
 
-          AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, null, stream);
+          AnnotationFS nextAnchor = getNextAnchor(after, annotation, nextElement, ruleMatch,
+                  containerMatch, sideStepOrigin, stream, crowd);
+          
+          AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, nextAnchor, stream);
           doMatch(coveredByWildCard, ruleMatch, containerMatch, annotation == null, stream, crowd);
           if (ruleMatch.matched()) {
             ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
@@ -330,8 +342,12 @@ public class WildCardRuleElement extends AbstractRuleElement {
           }
         } else {
 
-          result = cre.fallbackContinue(after, true, annotation, ruleMatch, ruleApply,
-                  containerMatch, sideStepOrigin, entryPoint, stream, crowd);
+          if(ruleApply == null && entryPoint != null && entryPoint.equals(nextElement)) {
+            return result;
+          } else {
+            result = cre.fallbackContinue(after, true, annotation, ruleMatch, ruleApply,
+                    containerMatch, sideStepOrigin, entryPoint, stream, crowd);
+          }
         }
       }
       return result;
@@ -377,6 +393,26 @@ public class WildCardRuleElement extends AbstractRuleElement {
       }
     }
     return result;
+  }
+
+  private AnnotationFS getNextAnchor(boolean after, AnnotationFS annotation, RuleElement nextElement,
+          RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch,
+          RutaRuleElement sideStepOrigin, RutaStream stream, InferenceCrowd crowd) {
+    AnnotationFS nextAnchor = null;
+    Pair<RuleElement, Integer> nextNext = getNextRuleElement(after, nextElement);
+    if (nextNext != null && nextNext.getLeft() != null) {
+      List<RuleMatch> tryWithNextNextRuleElement = tryWithNextRuleElement(nextNext.getLeft(), after, annotation, ruleMatch, null, containerMatch, nextNext.getRight().intValue(), sideStepOrigin, nextNext.getLeft(), stream, crowd);
+      for (RuleMatch eachNextRuleMatch : tryWithNextNextRuleElement) {
+        if(eachNextRuleMatch.matched()) {
+          List<AnnotationFS> matchedAnnotationsOfElement = eachNextRuleMatch.getMatchedAnnotationsOfElement(nextNext.getLeft());
+          if (matchedAnnotationsOfElement != null && !matchedAnnotationsOfElement.isEmpty()) {
+            nextAnchor = after ? matchedAnnotationsOfElement.get(0) : matchedAnnotationsOfElement.get(matchedAnnotationsOfElement.size()-1);
+            break;
+          }
+        }
+      }
+    }
+    return nextAnchor;
   }
 
   private boolean nextElementDidMatch(List<RuleMatch> result, RuleElement nextElement) {

@@ -29,6 +29,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class WildCard2Test {
@@ -75,6 +76,17 @@ public class WildCard2Test {
     cas.release();
   }
 
+  @Test
+  public void testOptional2() throws Exception {
+    String document = "Cw 1 2 3 test";
+    String script = "(CW # COLON?){-> T1} SW;";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Cw 1 2 3");
+  }
+  
   @Test
   public void testLookaheadInGreedy() throws Exception {
     String document = "Some test. Some test. Some test.";
@@ -206,6 +218,20 @@ public class WildCard2Test {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "a a a");
+  }
+  
+  @Test
+  public void testInlinedRulesAtWildcardWithOptional() throws Exception {
+    String document = "1 a a b / A 1";
+    String script = "NUM #{->T1} NUM;\n";
+    script += "T1{->T2}<-{# COLON? CW;} NUM;\n";
+    script += "T2 -> {(#<-{SW # NUM?;} COLON? SPECIAL){-> T3} CW;};\n";
+    
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "a a b / A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "a a b /");
   }
 
   @Test
