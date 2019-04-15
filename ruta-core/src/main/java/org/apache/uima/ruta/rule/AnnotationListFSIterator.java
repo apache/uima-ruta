@@ -22,7 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.FSIteratorImplBase;
@@ -95,92 +95,92 @@ public class AnnotationListFSIterator extends FSIteratorImplBase<AnnotationFS> {
 
   @Override
   public int ll_indexSizeMaybeNotCurrent() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public LowLevelIndex<AnnotationFS> ll_getIndex() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public int ll_maxAnnotSpan() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public boolean isIndexesHaveBeenUpdated() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public boolean maybeReinitIterator() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public void moveToFirstNoReinit() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public void moveToLastNoReinit() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public void moveToNoReinit(FeatureStructure fs) {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public Comparator<TOP> getComparator() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public AnnotationFS getNvc() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public void moveToNextNvc() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public void moveToPreviousNvc() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public boolean hasPrevious() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public AnnotationFS previous() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public int nextIndex() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public int previousIndex() {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public void set(AnnotationFS e) {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public void add(AnnotationFS e) {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
 }

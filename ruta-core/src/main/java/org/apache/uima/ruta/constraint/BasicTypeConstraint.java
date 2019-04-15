@@ -22,7 +22,7 @@ package org.apache.uima.ruta.constraint;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.uima.cas.FSTypeConstraint;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -59,7 +59,7 @@ public class BasicTypeConstraint implements FSTypeConstraint {
 
   @Override
   public void add(String typeString) {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
