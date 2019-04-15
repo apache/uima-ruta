@@ -42,8 +42,7 @@ import org.junit.Test;
 public class TypeFromStringFunctionTest {
 
   @Test
-  public void test() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void test() throws Exception {
     String document = "This is a test.\n1900/12/24 and 24.4.1982\nCW\norg.apache.uima.ruta.type.NUM";
 
     String script = "";
