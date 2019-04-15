@@ -327,8 +327,8 @@ Creative Commons Attribution 3.0 License.
                    <exclude>org.apache.uima.ruta.type</exclude>
                    <exclude>org.apache.uima.ruta.parser.RutaParser</exclude>
                 </excludes>
-                filter out classes with impl in their package or class name
-                <postAnalysisScript>${project.basedir}/../ruta-parent/src/main/groovy/api-report.groovy</postAnalysisScript>                  
+				<!--  filter out classes with impl in their package or class name -->
+<!--                 <postAnalysisScript>${project.basedir}/../ruta-parent/src/main/groovy/api-report.groovy</postAnalysisScript>                   -->
               </parameter>
             </configuration>
             <executions>

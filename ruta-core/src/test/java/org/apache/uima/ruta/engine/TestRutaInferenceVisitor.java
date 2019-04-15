@@ -20,7 +20,7 @@ package org.apache.uima.ruta.engine;
 
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStream;
@@ -33,23 +33,23 @@ public class TestRutaInferenceVisitor implements RutaInferenceVisitor {
 
   @Override
   public void beginVisit(RutaElement element, ScriptApply result) {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public void endVisit(RutaElement element, ScriptApply result) {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
   @Override
   public void annotationAdded(AnnotationFS annotation,
           AbstractRuleMatch<? extends AbstractRule> creator) {
-    throw new NotImplementedException();
+    throw new NotImplementedException("Not supported.");
   }
 
 }
