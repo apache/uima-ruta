@@ -34,7 +34,7 @@ public class BasicTypeConstraint implements FSTypeConstraint {
   private final Collection<Type> types;
 
   private final boolean matchOnEmpty;
-  
+
   public BasicTypeConstraint(Collection<Type> types, boolean matchOnEmpty) {
     super();
     this.types = types;

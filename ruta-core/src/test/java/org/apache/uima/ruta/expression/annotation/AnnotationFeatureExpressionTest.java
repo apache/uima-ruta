@@ -19,8 +19,6 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,16 +27,13 @@ import java.util.TreeMap;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
-import org.apache.uima.cas.SerialFormat;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.apache.uima.util.CasIOUtils;
 import org.junit.Test;
 
 public class AnnotationFeatureExpressionTest {

@@ -36,14 +36,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import javax.xml.parsers.SAXParser;
-
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.internal.util.XMLUtils;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.type.RutaBasic;
-import org.apache.uima.ruta.utils.XmlUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.xml.sax.InputSource;
@@ -390,14 +389,12 @@ public class TreeWordList implements RutaWordList {
       }
       InputStreamReader streamReader = new InputStreamReader(is, encoding);
       this.root = new TextNode();
+
       XMLEventHandler handler = new XMLEventHandler(root);
-      SAXParser parser = XmlUtils.createSaxParser();
-      XMLReader reader = parser.getXMLReader();
-      reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-      reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-      reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+      XMLReader reader = XMLUtils.createXMLReader();
       reader.setContentHandler(handler);
       reader.setErrorHandler(handler);
+
       reader.parse(new InputSource(streamReader));
     } catch (SAXException e) {
       throw new IllegalStateException(e);

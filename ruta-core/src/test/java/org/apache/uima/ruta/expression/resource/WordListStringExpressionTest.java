@@ -19,6 +19,11 @@
 
 package org.apache.uima.ruta.expression.resource;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceConfigurationException;
@@ -29,11 +34,6 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class WordListStringExpressionTest {
 

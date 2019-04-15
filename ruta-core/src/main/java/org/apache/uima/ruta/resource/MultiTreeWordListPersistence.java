@@ -32,9 +32,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import javax.xml.parsers.SAXParser;
-
-import org.apache.uima.ruta.utils.XmlUtils;
+import org.apache.uima.internal.util.XMLUtils;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -48,10 +46,13 @@ public class MultiTreeWordListPersistence {
    *          - the root node of the tree
    * @param path
    *          - path of the word list
-   * @throws IOException - when there is a problem reading the stream
+   * @throws IOException
+   *           - when there is a problem reading the stream
    */
   public void readMTWL(MultiTextNode root, String path) throws IOException {
-    readMTWL(root, new FileInputStream(path), "UTF-8");
+    try (FileInputStream stream = new FileInputStream(path)) {
+      readMTWL(root, stream, "UTF-8");
+    }
   }
 
   /**
@@ -60,7 +61,8 @@ public class MultiTreeWordListPersistence {
    * @param is
    *          the inputStream to sniff. Must support {@link InputStream#markSupported()}
    * @return true if this stream starts with '{@literal <?xml}'
-   * @throws IOException - when there is a problem reading the stream
+   * @throws IOException
+   *           - when there is a problem reading the stream
    */
   public static boolean isSniffedXmlContentType(InputStream is) throws IOException {
     if (is == null)
@@ -89,16 +91,12 @@ public class MultiTreeWordListPersistence {
       }
       InputStreamReader streamReader = new InputStreamReader(is, encoding);
       TrieXMLEventHandler handler = new TrieXMLEventHandler(root);
-      SAXParser saxParser = XmlUtils.createSaxParser();
-      XMLReader reader = saxParser.getXMLReader();
-      reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-      reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-      reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
+      XMLReader reader = XMLUtils.createXMLReader();
       reader.setContentHandler(handler);
       reader.setErrorHandler(handler);
       reader.parse(new InputSource(streamReader));
     } catch (SAXException e) {
-     throw new IllegalStateException(e);
+      throw new IllegalStateException(e);
     }
   }
 

@@ -134,10 +134,11 @@ public class MultiTreeWordList implements RutaWordList {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
 
-    if (name.endsWith(".mtwl"))
+    if (name.endsWith(".mtwl")) {
       persistence.readMTWL(root, stream, ENCODING);
-    if (name.endsWith(".txt"))
+    } else if (name.endsWith(".txt")) {
       buildNewTree(stream, name);
+    }
   }
 
   /**
