@@ -216,10 +216,8 @@ public class WildCard2Test {
     script += "INT t;\n";
     script += "(T1 # NUM{PARSE(a), a<100} ANY{REGEXP(\"[/]\")} NUM{PARSE(t),t<200}){ -> T2};\n";
 
-    CAS cas = RutaTestUtils.getCAS(document, null, null, true);
+    CAS cas = RutaTestUtils.getCAS(document, null, null, false);
     Ruta.apply(cas, script);
-
-    RutaTestUtils.storeCas(cas, "testFailingConditionWithFailingNextRuleElement");
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "a");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);

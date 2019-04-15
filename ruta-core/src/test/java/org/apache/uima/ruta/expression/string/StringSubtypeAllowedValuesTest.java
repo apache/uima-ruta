@@ -18,18 +18,14 @@
  */
 package org.apache.uima.ruta.expression.string;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.AllowedValue;
 import org.apache.uima.resource.metadata.FsIndexDescription;
@@ -42,16 +38,13 @@ import org.apache.uima.ruta.type.FalseNegative;
 import org.apache.uima.ruta.type.FalsePositive;
 import org.apache.uima.ruta.type.TruePositive;
 import org.apache.uima.util.CasCreationUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class StringSubtypeAllowedValuesTest {
 
   @Test
-  public void testValidValue() throws ResourceInitializationException,
-          AnalysisEngineProcessException, InvalidXMLException, ResourceConfigurationException,
-          IOException, URISyntaxException, CASException {
+  public void testValidValue() throws Exception {
     CAS cas = createCAS();
 
     String script = "Document{-> CREATE(Test, \"allowed\" = \"A\")};";
@@ -74,9 +67,7 @@ public class StringSubtypeAllowedValuesTest {
   }
 
   @Test(expected = AnalysisEngineProcessException.class)
-  public void testInvalidValue() throws ResourceInitializationException,
-          AnalysisEngineProcessException, InvalidXMLException, ResourceConfigurationException,
-          IOException, URISyntaxException, CASException {
+  public void testInvalidValue() throws Exception {
 
     CAS cas = createCAS();
 

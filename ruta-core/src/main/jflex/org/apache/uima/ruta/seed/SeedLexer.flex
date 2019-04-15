@@ -60,8 +60,7 @@ import org.apache.uima.ruta.type.SW;
 
 ALPHA=[A-Za-z]
 DIGIT=[0-9]
-WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
-BREAK=[\n\r\b\012\u000b]
+BREAK=[\n\r\b\012\u000b\u2028]
 SPACE=[ \t]
 
 %%
@@ -207,9 +206,18 @@ SPACE=[ \t]
                 return t;
     }
 
-    <<EOF>> {
+	<<EOF>> {
                 return null;
     }
+
+	[^] {
+                SPECIAL t = new SPECIAL(cas);
+                t.setBegin(yychar);
+                t.setEnd(yychar + yytext().length());
+                
+                return t;
+    }
+
 
 }
 

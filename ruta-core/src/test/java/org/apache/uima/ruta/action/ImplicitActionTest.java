@@ -19,32 +19,24 @@
 
 package org.apache.uima.ruta.action;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.FeatureMatch1Test;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class ImplicitActionTest {
 
   @Test
-  public void test() throws AnalysisEngineProcessException, InvalidXMLException,
-          ResourceInitializationException, ResourceConfigurationException, URISyntaxException,
-          IOException {
+  public void test() throws Exception {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
 
@@ -93,9 +85,7 @@ public class ImplicitActionTest {
   }
 
   @Test
-  public void testChangeOffsets()
-          throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void testChangeOffsets() throws Exception {
     String text = "text 2 3 x 4 1";
     String script = "";
     script += "NUM{->T1};";

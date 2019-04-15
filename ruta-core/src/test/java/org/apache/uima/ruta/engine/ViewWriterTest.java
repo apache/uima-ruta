@@ -23,28 +23,21 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.FileUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 public class ViewWriterTest {
 
@@ -53,13 +46,11 @@ public class ViewWriterTest {
   private static final String NEW_VIEW = "newView";
 
   @Test
-  public void test() throws IOException, URISyntaxException, InvalidXMLException,
-          ResourceInitializationException, ResourceConfigurationException,
-          AnalysisEngineProcessException, SAXException {
+  public void test() throws Exception {
     URL url = RutaEngine.class.getClassLoader().getResource("ViewWriter.xml");
     if (url == null) {
-      url = RutaTestUtils.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/ViewWriter.xml");
+      url = RutaTestUtils.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/ViewWriter.xml");
     }
     File tempFile = File.createTempFile("ViewWriterTest", ".xmi");
     XMLInputSource in = new XMLInputSource(url);
@@ -104,9 +95,7 @@ public class ViewWriterTest {
   }
 
   @Test
-  public void testInRuta() throws IOException, URISyntaxException, InvalidXMLException,
-          ResourceInitializationException, ResourceConfigurationException,
-          AnalysisEngineProcessException, SAXException {
+  public void testInRuta() throws Exception {
     File xmiOutputFile = File.createTempFile("ViewWriterTest", ".xmi");
     File scriptFile = File.createTempFile("ViewWriterTest", ".ruta");
     StringBuilder scriptSB = new StringBuilder();
@@ -119,12 +108,13 @@ public class ViewWriterTest {
     FileUtils.saveString2File(scriptSB.toString(), scriptFile, "UTF-8");
     URL url = RutaEngine.class.getClassLoader().getResource("BasicEngine.xml");
     if (url == null) {
-      url = RutaTestUtils.class.getClassLoader().getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
+      url = RutaTestUtils.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/BasicEngine.xml");
     }
     URL urlDesc = RutaEngine.class.getClassLoader().getResource("ViewWriter.xml");
     if (urlDesc == null) {
-      urlDesc = RutaTestUtils.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/ViewWriter.xml");
+      urlDesc = RutaTestUtils.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/ViewWriter.xml");
     }
     File descFile = new File(urlDesc.toURI());
 
@@ -137,12 +127,12 @@ public class ViewWriterTest {
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     String module = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
     ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, module);
-    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { scriptFile.getParentFile()
-            .getAbsolutePath() });
+    ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS,
+            new String[] { scriptFile.getParentFile().getAbsolutePath() });
     String aeName = descFile.getName().substring(0, descFile.getName().length() - 4);
     ae.setConfigParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINES, new String[] { aeName });
-    ae.setConfigParameterValue(RutaEngine.PARAM_DESCRIPTOR_PATHS, new String[] { descFile.getParentFile()
-            .getAbsolutePath() });
+    ae.setConfigParameterValue(RutaEngine.PARAM_DESCRIPTOR_PATHS,
+            new String[] { descFile.getParentFile().getAbsolutePath() });
     ae.reconfigure();
 
     CAS cas = ae.newCAS();

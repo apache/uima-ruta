@@ -20,7 +20,9 @@
 package org.apache.uima.ruta;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,28 +35,26 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class WSDictionaryTest {
 
   @Test
-  public void test() {
+  public void test() throws SAXException, ResourceInitializationException, InvalidXMLException, IOException {
     String document = "Peter Kluegl, Marshall Schor, Joern Kottmann\n";
     document += "PeterKluegl, MarshallSchor, JoernKottmann\n";
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
     String script = "WORDLIST list = 'org/apache/uima/ruta/WSDictionaryTestList.txt';";
     script += "MARKFAST(T1, list);";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = executeAnalysis(RutaTestUtils.getCAS(document), script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 9, "Peter Kluegl", "Marshall Schor",
             "Joern Kottmann", "PeterKluegl", "MarshallSchor", "JoernKottmann", "Peter<x>Kluegl",
@@ -71,10 +71,7 @@ public class WSDictionaryTest {
     String script = "WORDLIST list = 'org/apache/uima/ruta/WSDictionaryTestList.txt';";
     script += "MARKFAST(T1, list, true, 0, false);";
 
-    Map<String, Object> map = new HashMap<>();
-    map.put(RutaEngine.PARAM_DICT_REMOVE_WS, true);
-    CAS cas = RutaTestUtils.getCAS(document);
-    Ruta.apply(cas, script, map);
+    CAS cas = executeAnalysis(RutaTestUtils.getCAS(document), script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 9, "Peter Kluegl", "Marshall Schor",
             "Joern Kottmann", "PeterKluegl", "MarshallSchor", "JoernKottmann", "Peter<x>Kluegl",
@@ -84,7 +81,7 @@ public class WSDictionaryTest {
   }
 
   @Test
-  public void testTableWithWS() {
+  public void testTableWithWS() throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
     String document = "Peter Kluegl, Marshall Schor, Joern Kottmann\n";
     document += "PeterKluegl, MarshallSchor, JoernKottmann\n";
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
@@ -102,15 +99,8 @@ public class WSDictionaryTest {
     list.add(new TestFeature(fn1, "", "uima.cas.String"));
     String fn2 = "system";
     list.add(new TestFeature(fn2, "", "uima.cas.String"));
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, complexTypes, features);
-      Map<String, Object> map = new HashMap<>();
-      map.put(RutaEngine.PARAM_DICT_REMOVE_WS, true);
-      Ruta.apply(cas, script, map);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = executeAnalysis(RutaTestUtils.getCAS(document, complexTypes, features), script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -182,4 +172,16 @@ public class WSDictionaryTest {
 
     cas.release();
   }
+
+  private CAS executeAnalysis(CAS cas, String script) {
+    try {
+      Map<String, Object> map = new HashMap<>();
+      map.put(RutaEngine.PARAM_DICT_REMOVE_WS, true);
+      Ruta.apply(cas, script, map);
+    } catch (Exception e) {
+      fail("Failed to execute analysis engine. Reason: " + e.getMessage());
+    }
+    return cas;
+  }
+
 }

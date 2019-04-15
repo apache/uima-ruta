@@ -19,7 +19,6 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ import java.util.TreeMap;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -40,11 +38,9 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -314,16 +310,14 @@ public class AnnotationLabelExpressionTest {
   }
 
   @Test(expected = AnalysisEngineProcessException.class)
-  public void testWrongFeature() throws ResourceInitializationException, InvalidXMLException,
-          IOException, AnalysisEngineProcessException, CASException {
+  public void testWrongFeature() throws Exception {
 
     CAS cas = RutaTestUtils.getCAS("Some text.");
     Ruta.matches(cas.getJCas(), "a:W b:W{a.x == (b.y-1)-> T1};");
   }
 
   @Test
-  public void testSequentialLabelSelfMatch() throws ResourceInitializationException,
-          InvalidXMLException, IOException, AnalysisEngineProcessException, CASException {
+  public void testSequentialLabelSelfMatch() throws Exception {
 
     CAS cas = RutaTestUtils.getCAS("Some text.");
     Assert.assertFalse(Ruta.matches(cas.getJCas(), "e:CW e;"));
@@ -654,8 +648,6 @@ public class AnnotationLabelExpressionTest {
     script += "s1:Struct{IS(PERIOD), s1.a.b -> T8};";
     CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
     Ruta.apply(cas, script);
-
-    RutaTestUtils.storeCas(cas, "testStackedReinitLazyFeature");
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Some");

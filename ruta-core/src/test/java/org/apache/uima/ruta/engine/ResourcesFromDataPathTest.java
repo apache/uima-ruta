@@ -19,33 +19,30 @@
 package org.apache.uima.ruta.engine;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.internal.ResourceManagerFactory;
 import org.apache.uima.fit.internal.ResourceManagerFactory.ResourceManagerCreator;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class ResourcesFromDataPathTest {
 
   @Test
-  public void test() throws IOException, ResourceInitializationException, InvalidXMLException,
-          AnalysisEngineProcessException {
+  public void test() throws Exception {
 
     final String datapath = "target/datapath/";
     new File(datapath).mkdirs();
     FileUtils.copyFile(new File("src/test/resources/org/apache/uima/ruta/action/MarkFastTest.ruta"),
             new File(datapath + "MarkFastTest.ruta"));
-    FileUtils.copyFile(new File("src/test/resources/org/apache/uima/ruta/action/MarkFastTestList.txt"),
+    FileUtils.copyFile(
+            new File("src/test/resources/org/apache/uima/ruta/action/MarkFastTestList.txt"),
             new File(datapath + "MarkFastTestList.txt"));
     ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
 
@@ -61,12 +58,13 @@ public class ResourcesFromDataPathTest {
         return resourceManager;
       }
     });
-    
-    
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_MAIN_SCRIPT, "MarkFastTest");
-    CAS cas = RutaTestUtils.getCAS(FileUtils.readFileToString(new File("src/test/resources/org/apache/uima/ruta/action/MarkFastTest.txt")));
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
+            RutaEngine.PARAM_MAIN_SCRIPT, "MarkFastTest");
+    CAS cas = RutaTestUtils.getCAS(FileUtils.readFileToString(
+            new File("src/test/resources/org/apache/uima/ruta/action/MarkFastTest.txt")));
     ae.process(cas);
-    
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 0 0", "100", "2 0 0");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "100");

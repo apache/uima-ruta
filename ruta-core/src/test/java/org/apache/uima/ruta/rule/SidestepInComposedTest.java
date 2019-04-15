@@ -19,23 +19,15 @@
 
 package org.apache.uima.ruta.rule;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 
 public class SidestepInComposedTest {
 
   @Test
-  public void test() throws ResourceInitializationException, InvalidXMLException, IOException,
-          AnalysisEngineProcessException, ResourceConfigurationException, URISyntaxException {
+  public void test() throws Exception {
     String document = "15. Mai 2005";
     String script = "\"Mai\" -> T1;";
     script += "NUM{->T2} PERIOD @T1 NUM;\n";
