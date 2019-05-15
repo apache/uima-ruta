@@ -67,21 +67,24 @@ public class RutaVerbalizer {
   }
 
   public String verbalize(Object element) {
-    if (externalVerbalizers.keySet().contains(element.getClass()) && element instanceof RutaElement) {
-      return externalVerbalizers.get(element.getClass()).verbalize((RutaElement) element, this);
-    } else if (element instanceof AbstractRutaAction) {
-      return actionVerbalizer.verbalize((AbstractRutaAction) element);
-    } else if (element instanceof AbstractRutaCondition) {
-      return conditionVerbalizer.verbalize((AbstractRutaCondition) element);
-    } else if (element instanceof IRutaExpression) {
-      return expressionVerbalizer.verbalize((RutaExpression) element);
-    } else if (element instanceof RutaBlock) {
-      return verbalize((RutaBlock) element, false);
-    } else if (element instanceof RutaElement) {
-      return scriptVerbalizer.verbalize((RutaElement) element);
-    } else {
-      return element.getClass().getSimpleName();
+    if (element != null) {
+      if (externalVerbalizers.keySet().contains(element.getClass()) && element instanceof RutaElement) {
+        return externalVerbalizers.get(element.getClass()).verbalize((RutaElement) element, this);
+      } else if (element instanceof AbstractRutaAction) {
+        return actionVerbalizer.verbalize((AbstractRutaAction) element);
+      } else if (element instanceof AbstractRutaCondition) {
+        return conditionVerbalizer.verbalize((AbstractRutaCondition) element);
+      } else if (element instanceof IRutaExpression) {
+        return expressionVerbalizer.verbalize((RutaExpression) element);
+      } else if (element instanceof RutaBlock) {
+        return verbalize((RutaBlock) element, false);
+      } else if (element instanceof RutaElement) {
+        return scriptVerbalizer.verbalize((RutaElement) element);
+      } else {
+        return element.getClass().getSimpleName();
+      }
     }
+    return "";
   }
 
   public String verbalizeName(RutaElement element) {
