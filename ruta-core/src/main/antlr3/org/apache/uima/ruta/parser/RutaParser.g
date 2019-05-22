@@ -242,44 +242,57 @@ public void setExternalFactory(RutaExternalFactory factory) {
 	
 	public void addType(RutaBlock parent, Token nameToken, Token parentTypeToken, List featureTypes,
           List featureNames) {
-          String name = nameToken.getText();
-          String parentType = "uima.tcas.Annotation";
-          if(parentTypeToken != null) {
-          	parentType = parentTypeToken.getText();
+          
+      
+          
+      String name = nameToken.getText();
+      String parentType = "uima.tcas.Annotation";
+      if(parentTypeToken != null) {
+        parentType = parentTypeToken.getText();
 	  }
+	  
 	  String resolvedType = name;
+	  
 	  if (!name.contains(".")) {
-	    if(StringUtils.isBlank(moduleName)) {
-	      resolvedType = namespace + "." + name;
+	    List<String> typeNameParts = new ArrayList<>();
+	    
+	    if(parent != null && !StringUtils.isBlank(parent.getNamespace())) {
+	      typeNameParts.add(parent.getNamespace());
 	    } else {
-	      resolvedType = namespace + "." + moduleName + "." + name;
-	    }
+	      if(!StringUtils.isBlank(namespace)) {
+            typeNameParts.add(namespace);
+	      }
+	      if(!StringUtils.isBlank(moduleName)) {
+            typeNameParts.add(moduleName);
+          }
+        }
+	    typeNameParts.add(name);
+	    resolvedType = StringUtils.join(typeNameParts, ".");
 	  }
-          parent.getEnvironment().declareType(resolvedType);
-	  if(descInfo != null) {
-		  name = parent.getNamespace() + "." + name.trim();
-		  String descriptionString = null;
-		  if(StringUtils.isBlank(namespace)) {
-		  	if(StringUtils.isBlank(moduleName)) {
-		  		descriptionString = "Type defined in unknown script.";
-		  	} else {
-		  		descriptionString = "Type defined in " + moduleName;
-		  	}
-			  
-			  } else {
-			  descriptionString = "Type defined in " + parent.getNamespace();
-		  }
-		  descInfo.addType(name, descriptionString, parentType);
-		  if(featureTypes != null && featureNames != null) {
-			  for (int i = 0; i < featureTypes.size(); i++) {
-				  Object object = featureTypes.get(i);
-				  String ftype = (String) featureTypes.get(i);
-				  String fname = (String) featureNames.get(i);
-				  descInfo.addFeature(name, fname, fname, ftype);
-			  }
-		  }
+      parent.getEnvironment().declareType(resolvedType);
+      
+      if(descInfo != null) {
+        String descriptionString = null;
+        if(StringUtils.isBlank(namespace)) {
+          if(StringUtils.isBlank(moduleName)) {
+            descriptionString = "Type defined in unknown script.";
+	      } else {
+            descriptionString = "Type defined in " + moduleName;
+          }
+		} else {
+          descriptionString = "Type defined in " + parent.getNamespace();
+        }
+        descInfo.addType(resolvedType, descriptionString, parentType);
+        if(featureTypes != null && featureNames != null) {
+          for (int i = 0; i < featureTypes.size(); i++) {
+            Object object = featureTypes.get(i);
+            String ftype = (String) featureTypes.get(i);
+            String fname = (String) featureNames.get(i);
+            descInfo.addFeature(resolvedType, fname, fname, ftype);
+          }
+		}
 	  }
- 	 }
+ 	}
 	
 	public boolean isType(RutaBlock parent, String type) {
 		return parent.getEnvironment().getType(type) != null || type.equals("Document");

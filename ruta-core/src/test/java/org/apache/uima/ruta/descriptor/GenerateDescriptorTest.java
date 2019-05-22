@@ -180,7 +180,7 @@ public class GenerateDescriptorTest {
   }
 
   @Test
-  public void testRuleScriptName() throws Exception {
+  public void testTypeWithRuleScriptNameWithPackage() throws Exception {
 
     String script = "";
     script += "PACKAGE test.package;\n";
@@ -191,7 +191,7 @@ public class GenerateDescriptorTest {
     RutaBuildOptions options = new RutaBuildOptions();
     RutaDescriptorInformation descriptorInformation = rdf.parseDescriptorInformation(script, null,
             options);
-    String typeSystemOutput = "target/temp/testRuleScriptName_TypeSystem.xml";
+    String typeSystemOutput = "target/temp/testTypeWithRuleScriptNameWithPackage_TypeSystem.xml";
     ClassLoader classLoader = GenerateDescriptorTest.class.getClassLoader();
     TypeSystemDescription tsd = rdf.createTypeSystemDescription(typeSystemOutput,
             descriptorInformation, options, classLoader);
@@ -199,6 +199,29 @@ public class GenerateDescriptorTest {
     tsd.resolveImports(rm);
 
     TypeDescription tagType = tsd.getType("test.package.SimpleType");
+    Assert.assertNotNull(tagType);
+
+  }
+
+  @Test
+  public void testTypeWithRuleScriptNameWithoutPackage() throws Exception {
+
+    String script = "";
+    script += "DECLARE SimpleType;\n";
+
+    RutaDescriptorFactory rdf = new RutaDescriptorFactory(GenerateDescriptorTest.basicTSUrl,
+            GenerateDescriptorTest.basicAEUrl);
+    RutaBuildOptions options = new RutaBuildOptions();
+    RutaDescriptorInformation descriptorInformation = rdf.parseDescriptorInformation(script, null,
+            options);
+    String typeSystemOutput = "target/temp/testTypeWithRuleScriptNameWithoutPackage_TypeSystem.xml";
+    ClassLoader classLoader = GenerateDescriptorTest.class.getClassLoader();
+    TypeSystemDescription tsd = rdf.createTypeSystemDescription(typeSystemOutput,
+            descriptorInformation, options, classLoader);
+    ResourceManager rm = new ResourceManager_impl(classLoader);
+    tsd.resolveImports(rm);
+
+    TypeDescription tagType = tsd.getType("SimpleType");
     Assert.assertNotNull(tagType);
 
   }
