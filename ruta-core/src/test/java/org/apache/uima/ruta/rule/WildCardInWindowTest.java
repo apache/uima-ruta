@@ -41,6 +41,7 @@ public class WildCardInWindowTest {
       e.printStackTrace();
     }
 
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 4, "a 1 b", "c 1 D", "e 1 1 1 f", "g 1 1 1 H");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "1", "1 1 1");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "b", "f");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "1", "1 1 1");

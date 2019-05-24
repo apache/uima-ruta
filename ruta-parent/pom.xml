@@ -59,7 +59,7 @@
       <id>eclipsePlugins</id>
       <name>Eclipse components</name>
       <layout>default</layout>
-      <url>http://repo1.maven.org/eclipse</url>
+      <url>https://repo1.maven.org/eclipse</url>
 
       <releases>
         <updatePolicy>never</updatePolicy>
@@ -76,7 +76,7 @@
       <id>central</id>
       <name>Maven Repository Switchboard</name>
       <layout>default</layout>
-      <url>http://repo1.maven.org/maven2</url>
+      <url>https://repo1.maven.org/maven2</url>
 
       <releases>
         <enabled>true</enabled>
@@ -93,7 +93,7 @@
     <repository>
       <id>apache.snapshots</id>
       <name>Apache Snapshot Repository</name>
-      <url>http://repository.apache.org/snapshots</url>
+      <url>https://repository.apache.org/snapshots</url>
       <releases>
         <enabled>false</enabled>
       </releases>
@@ -104,7 +104,7 @@
     <pluginRepository>
       <id>apache.snapshots.plugins</id>
       <name>Apache Snapshot Repository - Maven plugins</name>
-      <url>http://repository.apache.org/snapshots</url>
+      <url>https://repository.apache.org/snapshots</url>
       <layout>default</layout>
       <releases>
         <enabled>false</enabled>
@@ -127,8 +127,8 @@ This product contains icons developed by Mark James
 (http://www.famfamfam.com/lab/icons/silk/), licensed under the 
 Creative Commons Attribution 3.0 License.
     </postNoticeText>
-    <uimaVersion>3.0.1</uimaVersion>
-    <uimafit-version>3.0.0-SNAPSHOT</uimafit-version>
+    <uimaVersion>3.0.2</uimaVersion>
+    <uimafit-version>3.0.0</uimafit-version>
      <!-- 
      BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+)
      BACKWARD_COMPATIBLE_USER        - minor version (=.+.0)
