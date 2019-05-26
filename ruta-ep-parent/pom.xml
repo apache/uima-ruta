@@ -58,7 +58,7 @@
       Eclipse plugins that depend on bundles, which are not provided by public maven repositories. -->
     <repository>
       <id>averbis-osgi-releases</id>
-      <url>http://maven.averbis.com/m2/</url>
+      <url>https://maven.averbis.com/m2/</url>
     </repository>
   </repositories>
   
