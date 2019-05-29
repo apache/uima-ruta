@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -82,23 +83,28 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
           InferenceCrowd crowd) {
     if (!ruleMatch.isApplied()) {
       ruleApply.add(ruleMatch, stream);
+      RutaRule rule = ruleMatch.getRule();
+      Collection<String> localVariables = rule.getLabels();
       if (ruleMatch.matchedCompletely()) {
-        ruleMatch.getRule().getRoot().applyRuleElements(ruleMatch, stream, crowd);
+        rule.getEnvironment().acceptTempVariableValues(localVariables);
+        rule.getRoot().applyRuleElements(ruleMatch, stream, crowd);
+      } else {
+        rule.getEnvironment().clearTempVariables(localVariables);
       }
       ruleMatch.setApplied(true);
     }
   }
 
-  protected List<List<ScriptApply>> processInlinedActionRules(RuleMatch ruleMatch, RutaStream stream,
-          InferenceCrowd crowd) {
+  protected List<List<ScriptApply>> processInlinedActionRules(RuleMatch ruleMatch,
+          RutaStream stream, InferenceCrowd crowd) {
     if (inlinedActionRuleBlocks != null && !inlinedActionRuleBlocks.isEmpty()) {
       return processInlinedRules(inlinedActionRuleBlocks, ruleMatch, stream, crowd);
     }
     return null;
   }
 
-  protected List<List<ScriptApply>> processInlinedConditionRules(RuleMatch ruleMatch, RutaStream stream,
-          InferenceCrowd crowd) {
+  protected List<List<ScriptApply>> processInlinedConditionRules(RuleMatch ruleMatch,
+          RutaStream stream, InferenceCrowd crowd) {
     if (inlinedConditionRuleBlocks != null && !inlinedConditionRuleBlocks.isEmpty()) {
       return processInlinedRules(inlinedConditionRuleBlocks, ruleMatch, stream, crowd);
     }
@@ -146,7 +152,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     if (blockResults == null) {
       return true;
     }
-    
+
     boolean matched = true;
     for (List<ScriptApply> list : blockResults) {
       matched &= atLeastOneRuleMatched(list);

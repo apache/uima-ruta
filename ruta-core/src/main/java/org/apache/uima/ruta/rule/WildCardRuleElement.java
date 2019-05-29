@@ -65,7 +65,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
-    Pair<RuleElement,Integer> next = getNextRuleElement(after, this);
+    Pair<RuleElement, Integer> next = getNextRuleElement(after, this);
     RuleElement nextElement = next.getLeft();
     int nextDepth = next.getRight().intValue();
     List<RuleMatch> result = tryWithNextRuleElement(nextElement, after, annotation, ruleMatch,
@@ -322,8 +322,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
           AnnotationFS nextAnchor = getNextAnchor(after, annotation, nextElement, ruleMatch,
                   containerMatch, sideStepOrigin, stream, crowd);
-          
-          AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, nextAnchor, stream);
+
+          AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, nextAnchor,
+                  stream);
           doMatch(coveredByWildCard, ruleMatch, containerMatch, annotation == null, stream, crowd);
           if (ruleMatch.matched()) {
             ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
@@ -342,7 +343,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
           }
         } else {
 
-          if(ruleApply == null && entryPoint != null && entryPoint.equals(nextElement)) {
+          if (ruleApply == null && entryPoint != null && entryPoint.equals(nextElement)) {
             return result;
           } else {
             result = cre.fallbackContinue(after, true, annotation, ruleMatch, ruleApply,
@@ -395,18 +396,22 @@ public class WildCardRuleElement extends AbstractRuleElement {
     return result;
   }
 
-  private AnnotationFS getNextAnchor(boolean after, AnnotationFS annotation, RuleElement nextElement,
-          RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch,
+  private AnnotationFS getNextAnchor(boolean after, AnnotationFS annotation,
+          RuleElement nextElement, RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch,
           RutaRuleElement sideStepOrigin, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS nextAnchor = null;
     Pair<RuleElement, Integer> nextNext = getNextRuleElement(after, nextElement);
     if (nextNext != null && nextNext.getLeft() != null) {
-      List<RuleMatch> tryWithNextNextRuleElement = tryWithNextRuleElement(nextNext.getLeft(), after, annotation, ruleMatch, null, containerMatch, nextNext.getRight().intValue(), sideStepOrigin, nextNext.getLeft(), stream, crowd);
+      List<RuleMatch> tryWithNextNextRuleElement = tryWithNextRuleElement(nextNext.getLeft(), after,
+              annotation, ruleMatch, null, containerMatch, nextNext.getRight().intValue(),
+              sideStepOrigin, nextNext.getLeft(), stream, crowd);
       for (RuleMatch eachNextRuleMatch : tryWithNextNextRuleElement) {
-        if(eachNextRuleMatch.matched()) {
-          List<AnnotationFS> matchedAnnotationsOfElement = eachNextRuleMatch.getMatchedAnnotationsOfElement(nextNext.getLeft());
+        if (eachNextRuleMatch.matched()) {
+          List<AnnotationFS> matchedAnnotationsOfElement = eachNextRuleMatch
+                  .getMatchedAnnotationsOfElement(nextNext.getLeft());
           if (matchedAnnotationsOfElement != null && !matchedAnnotationsOfElement.isEmpty()) {
-            nextAnchor = after ? matchedAnnotationsOfElement.get(0) : matchedAnnotationsOfElement.get(matchedAnnotationsOfElement.size()-1);
+            nextAnchor = after ? matchedAnnotationsOfElement.get(0)
+                    : matchedAnnotationsOfElement.get(matchedAnnotationsOfElement.size() - 1);
             break;
           }
         }
@@ -739,7 +744,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
       result.setInlinedRulesMatched(inlinedRulesMatched);
     } else {
       // update label for failed match after evaluating conditions
-      environment.addAnnotationsToVariable(null, getLabel(), context);
+      environment.removeVariableValue(getLabel(), context);
     }
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
   }

@@ -92,7 +92,7 @@ public class RutaOptionalRuleElement extends RutaRuleElement {
       result.setInlinedRulesMatched(inlinedRulesMatched);
     } else {
       // update label for failed match after evaluating conditions
-      environment.addAnnotationsToVariable(null, getLabel(), context);
+      environment.removeVariableValue(getLabel(), context);
     }
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
   }

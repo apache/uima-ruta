@@ -762,4 +762,37 @@ public class AnnotationLabelExpressionTest {
 
   }
 
+  @Test
+  public void testTemporalFailingLabelAssignment() throws Exception {
+
+    String document = "Some text.";
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    typeMap.put("Struct1", "uima.tcas.Annotation");
+    typeMap.put("Struct2", "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put("Struct1", list);
+    featureMap.put("Struct2", list);
+    list.add(new TestFeature("a", "", "uima.tcas.Annotation"));
+    list.add(new TestFeature("b", "", "uima.tcas.Annotation"));
+
+    String script = "";
+    script += "Document{->CREATE(Struct1, \"a\" = a, \"b\" = b)} <-{a:W b:W;};\n";
+    script += "Document{->CREATE(Struct2, \"a\" = a, \"b\" = b)} <-{a:W{STARTSWITH(Document)} b:W;};\n";
+    script += "Struct1.a{-> T1};\n";
+    script += "Struct1.b{-> T2};\n";
+    script += "Struct2.a{-> T3};\n";
+    script += "Struct2.b{-> T4};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "text");
+
+  }
+
 }

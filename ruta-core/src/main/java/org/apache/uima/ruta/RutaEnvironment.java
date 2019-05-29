@@ -156,6 +156,8 @@ public class RutaEnvironment {
 
   private Map<String, Object> variableValues;
 
+  private Map<String, Object> tempVariableValues;
+
   private Map<String, Class<?>> variableTypes;
 
   private Map<String, Class<?>> availableTypes;
@@ -195,6 +197,7 @@ public class RutaEnvironment {
     wordLists = new HashMap<String, RutaWordList>();
     tables = new HashMap<String, RutaTable>();
     variableValues = new HashMap<String, Object>();
+    tempVariableValues = new HashMap<String, Object>();
     variableTypes = new HashMap<String, Class<?>>();
     variableGenericTypes = new HashMap<String, Class<?>>();
     macroConditions = new HashMap<>();
@@ -775,6 +778,7 @@ public class RutaEnvironment {
     variableTypes.remove(name);
     variableGenericTypes.remove(name);
     variableValues.remove(name);
+    tempVariableValues.remove(name);
   }
 
   public boolean ownsVariable(String name) {
@@ -841,8 +845,12 @@ public class RutaEnvironment {
     if (variableAliases.containsKey(name)) {
       name = variableAliases.get(name);
     }
+    Object result = null;
     boolean containsKey = variableValues.containsKey(name);
-    Object result = variableValues.get(name);
+    result = tempVariableValues.get(name);
+    if (result == null) {
+      result = variableValues.get(name);
+    }
 
     if (result instanceof String && type.equals(Type.class)) {
       // "cast" string to type, because initial values were set when there
@@ -974,6 +982,13 @@ public class RutaEnvironment {
     } else if (owner.getParent() != null) {
       owner.getParent().getEnvironment().setVariableValue(name, value);
     }
+  }
+
+  public void setTempVariableValue(String name, Object value) {
+    if (variableAliases.containsKey(name)) {
+      name = variableAliases.get(name);
+    }
+    tempVariableValues.put(name, value);
   }
 
   @SuppressWarnings("rawtypes")
@@ -1130,6 +1145,13 @@ public class RutaEnvironment {
     addAnnotationsToVariable(annotations, var, context);
   }
 
+  public void removeVariableValue(String var, MatchContext context) {
+    if (StringUtils.isBlank(var)) {
+      return;
+    }
+    setTempVariableValue(var, null);
+  }
+
   public void addAnnotationsToVariable(List<AnnotationFS> annotations, String var,
           MatchContext context) {
     if (StringUtils.isBlank(var)) {
@@ -1138,7 +1160,7 @@ public class RutaEnvironment {
 
     Class<?> variableType = getVariableType(var);
     if (List.class.equals(variableType) && AnnotationFS.class.equals(getVariableGenericType(var))) {
-      setVariableValue(var, annotations);
+      setTempVariableValue(var, annotations);
     } else if (AnnotationFS.class.equals(variableType)) {
       if (context.getDirection()) {
         AnnotationFS annotation = null;
@@ -1149,8 +1171,25 @@ public class RutaEnvironment {
             annotation = annotations.get(0);
           }
         }
-        setVariableValue(var, annotation);
+        setTempVariableValue(var, annotation);
       }
+    }
+  }
+
+  public void acceptTempVariableValues(Collection<String> localVariables) {
+    for (String variableName : localVariables) {
+      if (tempVariableValues.containsKey(variableName)) {
+        Object value = tempVariableValues.get(variableName);
+        setVariableValue(variableName, value);
+      }
+    }
+
+    clearTempVariables(localVariables);
+  }
+
+  public void clearTempVariables(Collection<String> localVariables) {
+    for (String variableName : localVariables) {
+      tempVariableValues.remove(variableName);
     }
   }
 

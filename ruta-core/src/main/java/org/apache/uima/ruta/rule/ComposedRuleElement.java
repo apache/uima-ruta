@@ -574,7 +574,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       match.setInlinedRulesMatched(inlinedRulesMatched);
     } else {
       // update label for failed match after evaluating conditions
-      environment.addAnnotationsToVariable(null, getLabel(), context);
+      environment.removeVariableValue(getLabel(), context);
     }
   }
 
