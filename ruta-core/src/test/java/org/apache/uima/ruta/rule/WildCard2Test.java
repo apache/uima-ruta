@@ -194,6 +194,18 @@ public class WildCard2Test {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "1", "1");
   }
+  
+  @Test
+  @Ignore
+  public void testConditionAtComposedWithWildcard() throws Exception {
+    String document = "1 a b c 2 d e f 3";
+    String script = "(NUM #){CONTAINS(CAP)->T1} NUM;";
+    
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+    
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+  }
 
   @Test
   public void testDuplicateAnnotation() throws Exception {
