@@ -153,6 +153,7 @@
                   <exclude>src/test/resources/org/apache/uima/ruta/engine/*.html</exclude> <!-- test data -->
                   <exclude>src/test/resources/META-INF/org.apache.uima.fit/types.txt</exclude> <!-- test data -->
                   <exclude>src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude>
+                  <exclude>api-change-report/**</exclude>
                   <exclude>issuesFixed/**</exclude> <!-- generated -->
                   <exclude>input/**</exclude> <!-- temp test data -->
                   <exclude>TypeSystem.xml</exclude> <!-- temp test data -->
