@@ -81,6 +81,12 @@ licensed under the Common Public License.
       <scope>compile</scope>
     </dependency>
     <dependency>
+	   <groupId>org.apache.commons</groupId>
+	   <artifactId>commons-text</artifactId>
+	   <version>1.6</version>
+	   <scope>compile</scope>
+	</dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.4</version>
@@ -255,6 +261,7 @@ licensed under the Common Public License.
                   org.antlr.runtime.tree,
                   org.htmlparser,
                   org.htmlparser.*,
+                  org.apache.commons.text.*,
                   org.apache.commons.lang3.*,
                   org.apache.commons.logging,
                   org.apache.commons.io.*,
