@@ -180,8 +180,90 @@
                 <multiValued>false</multiValued>
                 <mandatory>false</mandatory>
             </configurationParameter>
+            <configurationParameter>
+                <name>rulesScriptName</name>
+                <description/>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>dictRemoveWS</name>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>reindexOnly</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>reindexOnlyMentionedTypes</name>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>indexOnlyMentionedTypes</name>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>indexAdditionally</name>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>emptyIsInvisible</name>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>modifyDataPath</name>
+                <type>Boolean</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>csvSeparator</name>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>inferenceVisitors</name>
+                <description/>
+                <type>String</type>
+                <multiValued>true</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>maxRuleMatches</name>
+                <description/>
+                <type>Integer</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>maxRuleElementMatches</name>
+                <description/>
+                <type>Integer</type>
+                <multiValued>false</multiValued>
+                <mandatory>false</mandatory>
+            </configurationParameter>
         </configurationParameters>
         <configurationParameterSettings>
+            <nameValuePair>
+                <name>rulesScriptName</name>
+                <value>
+                    <string>Anonymous</string>
+                </value>
+            </nameValuePair>
             <nameValuePair>
                 <name>debug</name>
                 <value>
@@ -231,6 +313,30 @@
                 </value>
             </nameValuePair>
             <nameValuePair>
+                <name>emptyIsInvisible</name>
+                <value>
+                    <boolean>true</boolean>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>inferenceVisitors</name>
+                <value>
+                    <array/>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>maxRuleMatches</name>
+                <value>
+                    <integer>2147483647</integer>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>maxRuleElementMatches</name>
+                <value>
+                    <integer>2147483647</integer>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
                 <name>mainScript</name>
                 <value>
                     <string>uima.ruta.example.TEIConverter</string>
@@ -240,7 +346,7 @@
                 <name>scriptPaths</name>
                 <value>
                     <array>
-                        <string>C:/work/ws/ws-uima-ruta-plain/ruta-trunk/example-projects/Misc/script</string>
+                        <string>C:/src/ws/ws-uima/ruta/example-projects/Misc/script</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -248,7 +354,7 @@
                 <name>descriptorPaths</name>
                 <value>
                     <array>
-                        <string>C:/work/ws/ws-uima-ruta-plain/ruta-trunk/example-projects/Misc/descriptor</string>
+                        <string>C:/src/ws/ws-uima/ruta/example-projects/Misc/descriptor</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -256,7 +362,7 @@
                 <name>resourcePaths</name>
                 <value>
                     <array>
-                        <string>C:/work/ws/ws-uima-ruta-plain/ruta-trunk/example-projects/Misc/resources</string>
+                        <string>C:/src/ws/ws-uima/ruta/example-projects/Misc/resources</string>
                     </array>
                 </value>
             </nameValuePair>
@@ -286,18 +392,15 @@
                 <name>additionalExtensions</name>
                 <value>
                     <array>
+                        <string>org.apache.uima.ruta.action.MarkReloadExtension</string>
                         <string>org.apache.uima.ruta.string.bool.BooleanOperationsExtension</string>
                         <string>org.apache.uima.ruta.string.StringOperationsExtension</string>
+                        <string>org.apache.uima.ruta.type.TypeFromStringFunctionExtension</string>
+                        <string>org.apache.uima.ruta.block.DocumentBlockExtension</string>
                         <string>org.apache.uima.ruta.block.OnlyFirstBlockExtension</string>
                         <string>org.apache.uima.ruta.block.OnlyOnceBlockExtension</string>
                         <string>org.apache.uima.ruta.block.fst.FSTBlockExtension</string>
                     </array>
-                </value>
-            </nameValuePair>
-            <nameValuePair>
-                <name>additionalEngineLoaders</name>
-                <value>
-                    <array/>
                 </value>
             </nameValuePair>
         </configurationParameterSettings>

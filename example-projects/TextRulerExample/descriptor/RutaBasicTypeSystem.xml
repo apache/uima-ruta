@@ -18,13 +18,22 @@
   under the License.
 -->
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-  <name>org.apache.uima.ruta.engine.BasicTypeSystem</name>
+  <name>org.apache.uima.ruta.engine.RutaBasicTypeSystem</name>
   <description/>
   <version>1.0</version>
   <vendor/>
-  <imports>
-    <import location="RutaInternalTypeSystem.xml"/>
-    <import location="RutaBasicTypeSystem.xml"/>
-    <import location="DefaultSeederTypeSystem.xml"/>
-  </imports>
-  </typeSystemDescription>
+  <types>
+    <typeDescription>
+      <name>org.apache.uima.ruta.type.RutaBasic</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>replacement</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  </types>
+</typeSystemDescription>

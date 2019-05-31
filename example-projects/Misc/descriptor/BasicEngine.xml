@@ -22,7 +22,7 @@
   <primitive>true</primitive>
   <annotatorImplementationName>org.apache.uima.ruta.engine.RutaEngine</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>BasicEngine</name>
+    <name>org.apache.uima.ruta.engine.BasicEngine</name>
     <description/>
     <version>1.0</version>
     <vendor/>
@@ -198,8 +198,90 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>rulesScriptName</name>
+        <description/>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+       </configurationParameter>
+    <configurationParameter>
+        <name>dictRemoveWS</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+    <configurationParameter>
+        <name>reindexOnly</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>reindexOnlyMentionedTypes</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>indexOnlyMentionedTypes</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>indexAdditionally</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>emptyIsInvisible</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>modifyDataPath</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>csvSeparator</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>inferenceVisitors</name>
+        <description/>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>maxRuleMatches</name>
+        <description/>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>maxRuleElementMatches</name>
+        <description/>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
+      <nameValuePair>
+        <name>rulesScriptName</name>
+        <value>
+          <string>Anonymous</string>
+        </value>
+      </nameValuePair>
       <nameValuePair>
         <name>debug</name>
         <value>
@@ -248,10 +330,34 @@
           <boolean>false</boolean>
         </value>
       </nameValuePair>
+      <nameValuePair>
+        <name>emptyIsInvisible</name>
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>inferenceVisitors</name>
+        <value>
+          <array/>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+         <name>maxRuleMatches</name>
+         <value>
+            <integer>2147483647</integer>
+         </value>
+      </nameValuePair>
+      <nameValuePair>
+         <name>maxRuleElementMatches</name>
+         <value>
+           <integer>2147483647</integer>
+         </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
-        <import location="BasicTypeSystem.xml"/>
+        <import name="org.apache.uima.ruta.engine.BasicTypeSystem"/>
       </imports>
     </typeSystemDescription>
     <typePriorities>
