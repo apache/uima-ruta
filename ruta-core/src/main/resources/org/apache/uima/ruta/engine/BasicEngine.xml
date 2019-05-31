@@ -198,6 +198,13 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>rulesScriptName</name>
+        <description/>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+       </configurationParameter>
     <configurationParameter>
         <name>dictRemoveWS</name>
         <type>Boolean</type>
@@ -246,8 +253,35 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
     </configurationParameter>
+    <configurationParameter>
+        <name>inferenceVisitors</name>
+        <description/>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>maxRuleMatches</name>
+        <description/>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+    <configurationParameter>
+        <name>maxRuleElementMatches</name>
+        <description/>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
+      <nameValuePair>
+        <name>rulesScriptName</name>
+        <value>
+          <string>Anonymous</string>
+        </value>
+      </nameValuePair>
       <nameValuePair>
         <name>debug</name>
         <value>
@@ -301,6 +335,24 @@
         <value>
           <boolean>true</boolean>
         </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>inferenceVisitors</name>
+        <value>
+          <array/>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+         <name>maxRuleMatches</name>
+         <value>
+            <integer>2147483647</integer>
+         </value>
+      </nameValuePair>
+      <nameValuePair>
+         <name>maxRuleElementMatches</name>
+         <value>
+           <integer>2147483647</integer>
+         </value>
       </nameValuePair>
     </configurationParameterSettings>
     <typeSystemDescription>
