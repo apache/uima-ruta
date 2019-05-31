@@ -111,7 +111,9 @@ public class AnnotationTypeExpression extends RutaExpression
       } else {
         Type type = getType(context, stream);
         types = new ArrayList<>(1);
-        types.add(type);
+        if (type != null) {
+          types.add(type);
+        }
       }
       for (Type type : types) {
 
@@ -165,6 +167,12 @@ public class AnnotationTypeExpression extends RutaExpression
     if (!initialized) {
       initialize(context, stream);
     }
+
+    if (typeExpression == null && typeListExpression == null && annotationExpression == null
+            && annotationListExpression == null) {
+      return null;
+    }
+
     if (typeExpression != null) {
       return typeExpression.getType(context, stream);
     } else {
