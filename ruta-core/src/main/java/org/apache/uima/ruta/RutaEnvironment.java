@@ -641,6 +641,11 @@ public class RutaEnvironment {
   }
 
   public RutaWordList getWordList(String list) {
+
+    if (list == null) {
+      return null;
+    }
+
     RutaWordList result = wordLists.get(list);
     UimaContext context = owner.getContext();
     Boolean dictRemoveWS = false;
