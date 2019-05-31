@@ -144,6 +144,11 @@ public class TreeWordList implements RutaWordList {
 
   public void buildNewTree(List<String> data) {
     this.root = new TextNode();
+
+    if (data == null) {
+      return;
+    }
+
     for (String s : data) {
       addWord(s);
     }
@@ -191,6 +196,11 @@ public class TreeWordList implements RutaWordList {
    */
   public void addWord(String s) {
     // Create Nodes from all chars of the strings besides the last one
+
+    if (s == null) {
+      return;
+    }
+
     TextNode pointer = root;
     for (Character each : s.toCharArray()) {
       if (dictRemoveWS && Character.isWhitespace(each)) {

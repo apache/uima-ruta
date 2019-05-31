@@ -41,7 +41,7 @@ import org.junit.Test;
 public class GatherTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
 
@@ -57,15 +57,9 @@ public class GatherTest {
     String fn2 = "b";
     list.add(new TestFeature(fn2, "", "uima.tcas.Annotation"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
-              namespace + "/" + name + ".txt", 50, false, false, complexTypes, features, namespace
-                      + "/");
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
+    CAS cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+            namespace + "/" + name + ".txt", 50, false, false, complexTypes, features,
+            namespace + "/");
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
@@ -84,7 +78,6 @@ public class GatherTest {
     assertEquals("A", v1.getCoveredText());
     assertEquals("B", v2.getCoveredText());
 
-    cas.release();
   }
 
   @Test
@@ -105,8 +98,8 @@ public class GatherTest {
     list.add(new TestFeature(fn1, "", "uima.tcas.Annotation"));
     String fn2 = "b";
     list.add(new TestFeature(fn2, "", "uima.tcas.Annotation"));
-    CAS cas  = RutaTestUtils.getCAS(document, complexTypes, features);
-      Ruta.apply(cas, script);
+    CAS cas = RutaTestUtils.getCAS(document, complexTypes, features);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
