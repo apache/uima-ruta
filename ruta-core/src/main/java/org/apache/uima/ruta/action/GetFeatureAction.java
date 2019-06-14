@@ -33,6 +33,7 @@ import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -57,7 +58,10 @@ public class GetFeatureAction extends AbstractRutaAction {
 
     Type type = null;
     if (element instanceof RutaRuleElement) {
-      type = ((RutaRuleElement) element).getMatcher().getType(parent, stream);
+      RutaMatcher matcher = ((RutaRuleElement) element).getMatcher();
+      if (matcher != null) {
+        type = matcher.getType(parent, stream);
+      }
     }
     if (type == null) {
       return;

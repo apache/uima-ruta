@@ -473,7 +473,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
           Type type = matcher.getType(parent, stream);
           iterator = getIteratorOfType(after, type, annotation, stream);
         }
-      } else {
+      } else if (matcher != null) {
         // fallback
         Type type = matcher.getType(parent, stream);
         iterator = getIteratorOfType(after, type, annotation, stream);
@@ -580,6 +580,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RutaStream stream, InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     RutaLiteralMatcher matcher = (RutaLiteralMatcher) nextElement.getMatcher();
+    if (matcher == null) {
+      return result;
+    }
     IStringExpression expression = matcher.getExpression();
     MatchContext context = new MatchContext(this, ruleMatch, true);
     String stringValue = expression.getStringValue(context, stream);

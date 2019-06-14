@@ -35,17 +35,12 @@ public class ForEachBlockTest {
   private String text = "Some text 4 more text.";
 
   @Test
-  public void testDefault() {
+  public void testDefault() throws Exception {
 
     String script = getForEachScript();
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(text);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(text);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "4");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "4");
@@ -58,7 +53,6 @@ public class ForEachBlockTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 9, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 10, 1, "4");
 
-    cas.release();
   }
 
   @Test
@@ -89,8 +83,6 @@ public class ForEachBlockTest {
     Ruta.apply(cas, getForEachScript());
     long endForEach = System.currentTimeMillis();
     System.out.println("FOREACH: " + (endForEach - startForEach) + "ms");
-
-    cas.release();
 
   }
 
@@ -128,7 +120,6 @@ public class ForEachBlockTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "2^3", "2");
-    cas.release();
   }
 
   @Test
@@ -144,7 +135,6 @@ public class ForEachBlockTest {
     Ruta.apply(cas, script, parameters);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "4", "2^3");
-    cas.release();
   }
 
   @Test
@@ -161,7 +151,6 @@ public class ForEachBlockTest {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "text 4x2^3", "text 4x2", "text 4");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "text 4x2^3");
-    cas.release();
   }
 
   @Test
@@ -175,7 +164,6 @@ public class ForEachBlockTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "4x2^3");
-    cas.release();
   }
 
   @Test
@@ -189,7 +177,6 @@ public class ForEachBlockTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "1");
-    cas.release();
   }
 
   @Test
@@ -207,7 +194,19 @@ public class ForEachBlockTest {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "1", "22", "333");
-    cas.release();
+  }
+
+  @Test
+  public void testWithOptional() throws Exception {
+    String script = "";
+    script += "FOREACH(num) NUM{} {\n";
+    script += "_{-PARTOF(W)} num{-> T1};\n";
+    script += "}\n";
+
+    CAS cas = RutaTestUtils.getCAS("1 22 333");
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1", "22", "333");
   }
 
 }

@@ -156,14 +156,19 @@ public class ScriptVerbalizer {
       RutaRuleElement tmre = (RutaRuleElement) re;
       RutaMatcher matcher = tmre.getMatcher();
       // action-only rule
-      IRutaExpression expression = matcher.getExpression();
-      boolean actionOnlyRule = expression == null;
-      if (expression != null) {
-        String verbalize = verbalizer.verbalize(expression);
-        if (StringUtils.isBlank(verbalize)) {
-          actionOnlyRule = true;
-        } else {
-          result.append(verbalize);
+      boolean actionOnlyRule = false;
+      if (matcher == null) {
+        result.append("_");
+      } else {
+        IRutaExpression expression = matcher.getExpression();
+        actionOnlyRule = expression == null;
+        if (expression != null) {
+          String verbalize = verbalizer.verbalize(expression);
+          if (StringUtils.isBlank(verbalize)) {
+            actionOnlyRule = true;
+          } else {
+            result.append(verbalize);
+          }
         }
       }
       if (actionOnlyRule) {
