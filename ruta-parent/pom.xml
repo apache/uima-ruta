@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>12</version>
+    <version>13</version>
     <relativePath />
   </parent>
 
