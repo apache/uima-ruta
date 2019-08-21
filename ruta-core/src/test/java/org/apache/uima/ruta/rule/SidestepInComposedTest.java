@@ -22,6 +22,7 @@ package org.apache.uima.ruta.rule;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SidestepInComposedTest {
@@ -38,5 +39,18 @@ public class SidestepInComposedTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "15");
 
     cas.release();
+  }
+
+  @Test
+  @Ignore
+  public void testAnchorAtDisjunct() throws Exception {
+    String document = "15. Mai 2005";
+    String script = "(NUM PERIOD @(SW | CW) NUM){-> T1};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "15. Mai 2005");
+
   }
 }
