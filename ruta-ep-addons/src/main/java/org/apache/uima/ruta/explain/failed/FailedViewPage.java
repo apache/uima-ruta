@@ -55,13 +55,13 @@ public class FailedViewPage extends Page implements ISelectionListener {
 
   @Override
   public void dispose() {
-    super.dispose();
     getSite().getPage().removeSelectionListener(this);
     if (images != null) {
       for (Image each : images.values()) {
         each.dispose();
       }
     }
+    super.dispose();
   }
 
   private void initImages() {
