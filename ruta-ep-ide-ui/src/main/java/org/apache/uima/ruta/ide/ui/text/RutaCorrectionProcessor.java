@@ -37,6 +37,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IModelMarker;
 import org.eclipse.dltk.core.IScriptModelMarker;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
@@ -120,7 +121,7 @@ public class RutaCorrectionProcessor implements IQuickAssistProcessor {
   }
 
   public static boolean isFixable(IMarker marker) {
-    if (marker.getAttribute(IScriptModelMarker.ID, 0) == RutaProblems.UNKNOWN_REQUIRED_PACKAGE) {
+    if (marker.getAttribute(IModelMarker.ID, 0) == RutaProblems.UNKNOWN_REQUIRED_PACKAGE) {
       final String[] args = CorrectionEngine.getProblemArguments(marker);
       if (args != null && args.length != 0 && args[0] != null) {
         IResource resource = marker.getResource();

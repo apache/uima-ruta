@@ -40,7 +40,7 @@ import org.apache.uima.ruta.ide.ui.text.folding.RutaFoldingStructureProvider;
 import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.compiler.env.ISourceModule;
+import org.eclipse.dltk.compiler.env.IModuleSource;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceRange;
@@ -389,7 +389,7 @@ public class RutaEditor extends ScriptEditor {
     }
 
     RutaSelectionParser parser = new RutaSelectionParser();
-    ISourceModule unit = (ISourceModule) getInputModelElement();
+    IModuleSource unit = (IModuleSource) getInputModelElement();
     ModuleDeclaration parsed = parser.parse(unit);
     RutaRuleIdVisitor visitor = new RutaRuleIdVisitor(id);
     try {

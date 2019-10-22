@@ -46,7 +46,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.compiler.env.ISourceModule;
+import org.eclipse.dltk.compiler.env.IModuleSource;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
@@ -83,12 +83,11 @@ public class ExternalTypeHyperlinkDetector implements IHyperlinkDetector {
       IRegion wordRegion = ScriptWordFinder.findWord(document, offset);
       if (wordRegion == null)
         return null;
-      if (input instanceof ISourceModule) {
-        ISourceModule sm = (ISourceModule) input;
+      if (input instanceof IModuleSource) {
+        IModuleSource sm = (IModuleSource) input;
         IModelElement modelElement = sm.getModelElement();
         RutaSelectionParser parser = new RutaSelectionParser();
         ModuleDeclaration moduleDeclaration = parser.parse(sm);
-        String word = document.get(wordRegion.getOffset(), wordRegion.getLength());
         RutaReferenceVisitor referenceVisitor = new RutaReferenceVisitor(wordRegion.getOffset());
         moduleDeclaration.traverse(referenceVisitor);
         ASTNode node = referenceVisitor.getResult();
