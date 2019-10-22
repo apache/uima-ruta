@@ -203,7 +203,6 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
 
   @Override
   public void dispose() {
-    super.dispose();
     getSite().getPage().removeSelectionListener(this);
     editor.removeCasEditorInputListener(this);
     if (images != null) {
@@ -211,6 +210,7 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
         each.dispose();
       }
     }
+    super.dispose();
   }
 
   public void mouseDown(final MouseEvent event) {

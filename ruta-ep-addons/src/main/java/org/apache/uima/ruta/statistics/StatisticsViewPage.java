@@ -74,12 +74,12 @@ public class StatisticsViewPage extends Page implements IDoubleClickListener,
 
   @Override
   public void dispose() {
-    super.dispose();
     if (images != null) {
       for (Image each : images.values()) {
         each.dispose();
       }
     }
+    super.dispose();
   }
 
   private void initImages() {
