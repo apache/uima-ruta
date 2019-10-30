@@ -87,8 +87,10 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         List<RuleMatch> startRuleMatches = each.startMatch(extendedMatch, null, composedMatch, this,
                 stream, crowd);
         for (RuleMatch startRuleMatch : startRuleMatches) {
+          
           ComposedRuleElementMatch startElementMatch = (ComposedRuleElementMatch) startRuleMatch
                   .getLastMatch(this, true);
+          
           ruleMatches.put(startRuleMatch, startElementMatch);
         }
       }
@@ -102,8 +104,16 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         MatchContext context = new MatchContext(null, this, eachRuleMatch, true);
         AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(context, stream);
         boolean failed = !eachComposedMatch.matched();
+        RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
+        RutaRuleElement sideStepOrigin = null;
+
+        anchoringRuleElement = updateAnchorForDisjunctMatch(eachComposedMatch, stream);
+        
+        if (anchoringRuleElement instanceof RutaRuleElement && hasAncestor(false)) {
+          sideStepOrigin = (RutaRuleElement) anchoringRuleElement;
+        }
         List<RuleMatch> fallbackContinue = fallbackContinue(true, failed, lastAnnotation,
-                eachRuleMatch, ruleApply, eachComposedMatch, null, entryPoint, stream, crowd);
+                eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream, crowd);
         result.addAll(fallbackContinue);
       }
     } else if (conjunct) {
@@ -159,6 +169,24 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       }
     }
     return result;
+  }
+
+  private RuleElement updateAnchorForDisjunctMatch(ComposedRuleElementMatch eachComposedMatch, RutaStream stream) {
+    
+    Map<RuleElement, List<RuleElementMatch>> innerMatches = eachComposedMatch.getInnerMatches();
+    RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
+    
+    for (Entry<RuleElement, List<RuleElementMatch>> match : innerMatches.entrySet()) {
+      if (match.getValue() != null) {
+        List<RuleElementMatch> matchRuleElements = match.getValue();
+        for (RuleElementMatch elem : matchRuleElements) {
+          if (elem.conditionsMatched) {
+            anchoringRuleElement = match.getKey();
+          }
+        }
+      }
+    }
+    return anchoringRuleElement;
   }
 
   private AnnotationFS getPrefixAnnotation(RuleMatch ruleMatch, RutaStream stream) {
