@@ -31,22 +31,12 @@ import org.eclipse.dltk.ast.statements.StatementConstants;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class RutaStatement extends Statement {
+
   private List<Expression> expressions;
 
   public RutaStatement(List<Expression> expressions) {
-    if (!expressions.isEmpty()) {
-      // First
-      Expression first = expressions.get(0);
-      if (first != null) {
-        this.setStart(first.sourceStart());
-      }
-      // Last
-      Expression last = expressions.get(expressions.size() - 1);
-      if (last != null) {
-        this.setEnd(last.sourceEnd());
-      }
-    }
-    this.expressions = expressions;
+
+    setExpressions(expressions);
   }
 
   public RutaStatement(int start, int end, List<Expression> expressions) {
@@ -54,7 +44,7 @@ public class RutaStatement extends Statement {
     if (expressions == null) {
       this.expressions = new ArrayList<Expression>();
     } else {
-      this.expressions = expressions;
+      setExpressions(expressions);
     }
   }
 
@@ -124,6 +114,23 @@ public class RutaStatement extends Statement {
 
   public void setExpressions(List<Expression> asList) {
     this.expressions = asList;
+    updateBoundaries();
+  }
+
+  private void updateBoundaries() {
+
+    if (expressions != null && !expressions.isEmpty()) {
+      // First
+      Expression first = expressions.get(0);
+      if (first != null) {
+        this.setStart(first.sourceStart());
+      }
+      // Last
+      Expression last = expressions.get(expressions.size() - 1);
+      if (last != null) {
+        this.setEnd(last.sourceEnd());
+      }
+    }
   }
 
 }

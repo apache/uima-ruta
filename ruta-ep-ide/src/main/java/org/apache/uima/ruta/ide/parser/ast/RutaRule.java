@@ -32,6 +32,7 @@ public class RutaRule extends RutaStatement {
     this.id = id;
   }
 
+  @Override
   public String toString() {
     return this.getClass().getSimpleName() + " : " + super.toString();
   }
@@ -39,4 +40,5 @@ public class RutaRule extends RutaStatement {
   public int getId() {
     return id;
   }
+
 }

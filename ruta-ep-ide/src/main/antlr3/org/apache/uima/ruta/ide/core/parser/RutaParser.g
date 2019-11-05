@@ -740,12 +740,11 @@ options {
 	as = rawActions s = SEMI 
 	{stmt = scriptFactory.createImplicitRule(as, s);}
 	|
+	{stmt = scriptFactory.createRule(null, null, true);}
 	elements=ruleElementsRoot
-	{stmt = scriptFactory.createRule(elements, null, false);}
+	{stmt.setExpressions(elements);}
 		s = SEMI 
-	{stmt = scriptFactory.createRule(elements, s);}
-	
-	
+	{stmt.setEnd(((CommonToken)s).getStopIndex()+1);}
 	;
 
 regexpRule returns [RutaRule stmt = null]
