@@ -87,10 +87,10 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         List<RuleMatch> startRuleMatches = each.startMatch(extendedMatch, null, composedMatch, this,
                 stream, crowd);
         for (RuleMatch startRuleMatch : startRuleMatches) {
-          
+
           ComposedRuleElementMatch startElementMatch = (ComposedRuleElementMatch) startRuleMatch
                   .getLastMatch(this, true);
-          
+
           ruleMatches.put(startRuleMatch, startElementMatch);
         }
       }
@@ -108,12 +108,13 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         RutaRuleElement sideStepOrigin = null;
 
         anchoringRuleElement = updateAnchorForDisjunctMatch(eachComposedMatch, stream);
-        
+
         if (anchoringRuleElement instanceof RutaRuleElement && hasAncestor(false)) {
           sideStepOrigin = (RutaRuleElement) anchoringRuleElement;
         }
         List<RuleMatch> fallbackContinue = fallbackContinue(true, failed, lastAnnotation,
-                eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream, crowd);
+                eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
+                crowd);
         result.addAll(fallbackContinue);
       }
     } else if (conjunct) {
@@ -171,11 +172,12 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     return result;
   }
 
-  private RuleElement updateAnchorForDisjunctMatch(ComposedRuleElementMatch eachComposedMatch, RutaStream stream) {
-    
+  private RuleElement updateAnchorForDisjunctMatch(ComposedRuleElementMatch eachComposedMatch,
+          RutaStream stream) {
+
     Map<RuleElement, List<RuleElementMatch>> innerMatches = eachComposedMatch.getInnerMatches();
     RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
-    
+
     for (Entry<RuleElement, List<RuleElementMatch>> match : innerMatches.entrySet()) {
       if (match.getValue() != null) {
         List<RuleElementMatch> matchRuleElements = match.getValue();
@@ -441,7 +443,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     RuleElementContainer container = getContainer();
-    doMatch(after, containerMatch, ruleMatch, stream, crowd);
+    doMatch(after, annotation, ruleMatch, containerMatch, isStartAnchor(), stream, crowd);
     if (this.equals(entryPoint) && ruleApply == null) {
       result.add(ruleMatch);
     } else if (container == null) {
@@ -566,21 +568,24 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     }
   }
 
-  private void doMatch(boolean after, ComposedRuleElementMatch match, RuleMatch ruleMatch,
-          RutaStream stream, InferenceCrowd crowd) {
-    List<AnnotationFS> textsMatched = match.getTextsMatched();
+  @Override
+  public void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+          ComposedRuleElementMatch containerMatch, boolean ruleAnchor, RutaStream stream,
+          InferenceCrowd crowd) {
+
+    List<AnnotationFS> textsMatched = containerMatch.getTextsMatched();
     if (textsMatched == null || textsMatched.isEmpty()) {
       getParent().getEnvironment().addMatchToVariable(ruleMatch, this,
               new MatchContext(getParent()), stream);
-      match.evaluateInnerMatches(true, stream);
+      containerMatch.evaluateInnerMatches(true, stream);
       return;
     }
     int begin = textsMatched.get(0).getBegin();
     int end = textsMatched.get(textsMatched.size() - 1).getEnd();
-    AnnotationFS annotation = stream.getCas().createAnnotation(stream.getCas().getAnnotationType(),
-            begin, end);
+    AnnotationFS implicitAnnotation = stream.getCas()
+            .createAnnotation(stream.getCas().getAnnotationType(), begin, end);
 
-    MatchContext context = new MatchContext(annotation, this, ruleMatch, after);
+    MatchContext context = new MatchContext(implicitAnnotation, this, ruleMatch, after);
     RutaEnvironment environment = context.getParent().getEnvironment();
     environment.addMatchToVariable(ruleMatch, this, context, stream);
 
@@ -595,11 +600,11 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         break;
       }
     }
-    match.setConditionInfo(evaluatedConditions);
-    match.evaluateInnerMatches(true, stream);
-    if (match.matched()) {
+    containerMatch.setConditionInfo(evaluatedConditions);
+    containerMatch.evaluateInnerMatches(true, stream);
+    if (containerMatch.matched()) {
       boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
-      match.setInlinedRulesMatched(inlinedRulesMatched);
+      containerMatch.setInlinedRulesMatched(inlinedRulesMatched);
     } else {
       // update label for failed match after evaluating conditions
       environment.removeVariableValue(getLabel(), context);

@@ -372,7 +372,8 @@ public class RutaRuleElement extends AbstractRuleElement {
     return result;
   }
 
-  protected void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+  @Override
+  public void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           ComposedRuleElementMatch containerMatch, boolean ruleAnchor, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);

@@ -49,6 +49,10 @@ public interface RuleElement {
           RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd);
 
+  void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+          ComposedRuleElementMatch containerMatch, boolean ruleAnchor, RutaStream stream,
+          InferenceCrowd crowd);
+
   List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches, MatchContext context,
           RutaStream stream);
 
@@ -85,9 +89,9 @@ public interface RuleElement {
   void setLabel(String label);
 
   String getLabel();
-  
+
   List<List<RutaStatement>> getInlinedConditionRuleBlocks();
-  
+
   List<List<RutaStatement>> getInlinedActionRuleBlocks();
 
 }

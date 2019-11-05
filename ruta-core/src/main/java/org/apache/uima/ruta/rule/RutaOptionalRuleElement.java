@@ -57,7 +57,7 @@ public class RutaOptionalRuleElement extends RutaRuleElement {
   }
 
   @Override
-  protected void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+  public void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           ComposedRuleElementMatch containerMatch, boolean ruleAnchor, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);

@@ -101,7 +101,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     // what is the next stuff that should match?
     if (nextElement == null) {
       AnnotationFS afs = getCoveredByWildCard(after, annotation, null, stream);
-      doMatch(afs, ruleMatch, containerMatch, annotation == null, stream, crowd);
+      doMatch(after, afs, ruleMatch, containerMatch, annotation == null, stream, crowd);
       ComposedRuleElement composed = (ComposedRuleElement) getContainer();
       // [Peter] was ruleMatch.matched(), but it did not fail when matches?!
       result = composed.fallbackContinue(after, !ruleMatch.matched(), afs, ruleMatch, ruleApply,
@@ -144,8 +144,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
       AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, nextOne, stream);
-      doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
-              crowd);
+      doMatch(after, coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null,
+              stream, crowd);
       if (extendedMatch.matched()) {
         ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
                 extendedContainerMatch, nextDepth);
@@ -325,7 +325,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
           AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, nextAnchor,
                   stream);
-          doMatch(coveredByWildCard, ruleMatch, containerMatch, annotation == null, stream, crowd);
+          doMatch(after, coveredByWildCard, ruleMatch, containerMatch, annotation == null, stream,
+                  crowd);
           if (ruleMatch.matched()) {
             ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
                     containerMatch, nextDepth);
@@ -366,8 +367,11 @@ public class WildCardRuleElement extends AbstractRuleElement {
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
 
       AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, nextOne, stream);
-      doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
-              crowd);
+      doMatch(after, coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null,
+              stream, crowd);
+
+      // TODO: UIMA-6041: also doMatch for container conditions for (A #){XYZ} B;
+
       if (extendedMatch.matched()) {
         ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
                 extendedContainerMatch, nextDepth);
@@ -611,8 +615,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
       RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
       AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, anchor, stream);
-      doMatch(coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null, stream,
-              crowd);
+      doMatch(after, coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null,
+              stream, crowd);
       if (extendedMatch.matched()) {
         ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
                 extendedContainerMatch, nextDepth);
@@ -712,9 +716,11 @@ public class WildCardRuleElement extends AbstractRuleElement {
     return afs;
   }
 
-  private void doMatch(AnnotationFS annotation, RuleMatch ruleMatch,
+  @Override
+  public void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           ComposedRuleElementMatch containerMatch, boolean ruleAnchor, RutaStream stream,
           InferenceCrowd crowd) {
+
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
     result.setRuleAnchor(ruleAnchor);
     List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
