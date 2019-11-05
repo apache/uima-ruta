@@ -82,16 +82,15 @@ public class ConjunctRulesRuleElement extends ComposedRuleElement {
 
   @Override
   public List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
-          RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
-          InferenceCrowd crowd) {
+          RuleApply ruleApply, ComposedRuleElementMatch containerMatch, RuleElement sideStepOrigin,
+          RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
+          RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     throw new UnsupportedOperationException();
   }

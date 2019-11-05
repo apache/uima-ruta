@@ -62,9 +62,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   @Override
   public List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
-          RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
-          InferenceCrowd crowd) {
+          RuleApply ruleApply, ComposedRuleElementMatch containerMatch, RuleElement sideStepOrigin,
+          RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
     Pair<RuleElement, Integer> next = getNextRuleElement(after, this);
     RuleElement nextElement = next.getLeft();
     int nextDepth = next.getRight().intValue();
@@ -95,7 +94,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   private List<RuleMatch> tryWithNextRuleElement(RuleElement nextElement, boolean after,
           AnnotationFS annotation, RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, int nextDepth, RutaRuleElement sideStepOrigin,
+          ComposedRuleElementMatch containerMatch, int nextDepth, RuleElement sideStepOrigin,
           RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     // what is the next stuff that should match?
@@ -132,7 +131,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   private List<RuleMatch> tryWithNextComposed(boolean after, AnnotationFS annotation,
           ComposedRuleElement cre, RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, int nextDepth, RutaRuleElement sideStepOrigin,
+          ComposedRuleElementMatch containerMatch, int nextDepth, RuleElement sideStepOrigin,
           RutaStream stream, InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     AnnotationFS nextOne = annotation;
@@ -304,7 +303,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   private List<RuleMatch> tryWithNextAnnotationType(boolean after, AnnotationFS annotation,
           RuleElement nextElement, Type defaultType, RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, int nextDepth, RutaRuleElement sideStepOrigin,
+          ComposedRuleElementMatch containerMatch, int nextDepth, RuleElement sideStepOrigin,
           RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     FSIterator<AnnotationFS> iterator = getIterator(after, annotation, nextElement, defaultType,
@@ -402,7 +401,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   private AnnotationFS getNextAnchor(boolean after, AnnotationFS annotation,
           RuleElement nextElement, RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RutaStream stream, InferenceCrowd crowd) {
+          RuleElement sideStepOrigin, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS nextAnchor = null;
     Pair<RuleElement, Integer> nextNext = getNextRuleElement(after, nextElement);
     if (nextNext != null && nextNext.getLeft() != null) {
@@ -580,7 +579,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
   private List<RuleMatch> tryWithNextLiteral(boolean after, AnnotationFS annotation,
           RutaRuleElement nextElement, RuleMatch ruleMatch, RuleApply ruleApply,
-          ComposedRuleElementMatch containerMatch, int nextDepth, RutaRuleElement sideStepOrigin,
+          ComposedRuleElementMatch containerMatch, int nextDepth, RuleElement sideStepOrigin,
           RutaStream stream, InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     RutaLiteralMatcher matcher = (RutaLiteralMatcher) nextElement.getMatcher();
@@ -761,7 +760,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
   @Override
   public List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
+          RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     // won't happen
     return Collections.emptyList();

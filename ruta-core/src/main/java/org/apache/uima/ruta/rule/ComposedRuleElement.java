@@ -104,14 +104,9 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         MatchContext context = new MatchContext(null, this, eachRuleMatch, true);
         AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(context, stream);
         boolean failed = !eachComposedMatch.matched();
-        RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
-        RutaRuleElement sideStepOrigin = null;
 
-        anchoringRuleElement = updateAnchorForDisjunctMatch(eachComposedMatch, stream);
+        RuleElement sideStepOrigin = hasAncestor(false) ? this : null;
 
-        if (anchoringRuleElement instanceof RutaRuleElement && hasAncestor(false)) {
-          sideStepOrigin = (RutaRuleElement) anchoringRuleElement;
-        }
         List<RuleMatch> fallbackContinue = fallbackContinue(true, failed, lastAnnotation,
                 eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
                 crowd);
@@ -121,11 +116,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       // conjunctive
       Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new LinkedHashMap<RuleMatch, ComposedRuleElementMatch>();
       RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
-      RutaRuleElement sideStepOrigin = null;
 
-      if (anchoringRuleElement instanceof RutaRuleElement && hasAncestor(false)) {
-        sideStepOrigin = (RutaRuleElement) anchoringRuleElement;
-      }
       ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch,
               stream);
       List<RuleMatch> startRuleMatches = anchoringRuleElement.startMatch(ruleMatch, null,
@@ -162,6 +153,9 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         List<AnnotationFS> textsMatched = eachComposedMatch.getTextsMatched();
         if ((!stream.isGreedyAnchoring() && !stream.isOnlyOnce())
                 || !earlyExit(textsMatched.get(0), ruleApply, stream)) {
+
+          RuleElement sideStepOrigin = hasAncestor(false) ? this : null;
+
           List<RuleMatch> fallbackContinue = fallbackContinue(true, failed, lastAnnotation,
                   eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
                   crowd);
@@ -170,25 +164,6 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       }
     }
     return result;
-  }
-
-  private RuleElement updateAnchorForDisjunctMatch(ComposedRuleElementMatch eachComposedMatch,
-          RutaStream stream) {
-
-    Map<RuleElement, List<RuleElementMatch>> innerMatches = eachComposedMatch.getInnerMatches();
-    RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
-
-    for (Entry<RuleElement, List<RuleElementMatch>> match : innerMatches.entrySet()) {
-      if (match.getValue() != null) {
-        List<RuleElementMatch> matchRuleElements = match.getValue();
-        for (RuleElementMatch elem : matchRuleElements) {
-          if (elem.conditionsMatched) {
-            anchoringRuleElement = match.getKey();
-          }
-        }
-      }
-    }
-    return anchoringRuleElement;
   }
 
   private AnnotationFS getPrefixAnnotation(RuleMatch ruleMatch, RutaStream stream) {
@@ -211,9 +186,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   @Override
   public List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
-          RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
-          InferenceCrowd crowd) {
+          RuleApply ruleApply, ComposedRuleElementMatch containerMatch, RuleElement sideStepOrigin,
+          RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     if (conjunct == null) {
       // inner next sequential
@@ -389,7 +363,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
   @Override
   public List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
+          RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     if (!stream.isSimpleGreedyForComposed()) {
@@ -439,7 +413,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   public List<RuleMatch> fallbackContinue(boolean after, boolean failed, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
+          RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     RuleElementContainer container = getContainer();
@@ -539,7 +513,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   private List<RuleMatch> fallback(boolean after, boolean failed, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
+          RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     RuleElementContainer parentContainer = getContainer();

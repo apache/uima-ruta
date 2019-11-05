@@ -36,19 +36,34 @@ public class SidestepInComposedTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "15");
-
-    cas.release();
   }
 
   @Test
   public void testAnchorAtDisjunct() throws Exception {
     String document = "15. Mai 2005";
     String script = "(NUM PERIOD @(SW | CW) NUM){-> T1};\n";
+    script += "(NUM PERIOD (@((SW | CW))) NUM){-> T2};\n";
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "15. Mai 2005");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "15. Mai 2005");
 
   }
+
+  @Test
+  public void testAnchorAtConjunct() throws Exception {
+    String document = "15. Mai 2005";
+    String script = "(NUM PERIOD @(W & CW) NUM){-> T1};\n";
+    script += "(NUM PERIOD (@((CW & W))) NUM){-> T2};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "15. Mai 2005");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "15. Mai 2005");
+
+  }
+
 }
