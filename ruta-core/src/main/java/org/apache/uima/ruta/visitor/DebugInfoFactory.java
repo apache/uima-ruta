@@ -34,7 +34,6 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.block.BlockApply;
 import org.apache.uima.ruta.rule.AbstractRule;
-import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
@@ -192,9 +191,6 @@ public class DebugInfoFactory {
     if (element instanceof RutaStatement) {
       RutaStatement rs = (RutaStatement) element;
       namespace = rs.getParent().getScript().getRootBlock().getNamespace();
-    } else if (element instanceof AbstractRuleElement) {
-      AbstractRuleElement are = (AbstractRuleElement) element;
-      are.getRule().getParent().getScript().getRootBlock().getNamespace();
     }
     dra.setElement(verbalizer.verbalize(element));
     dra.setApplied(ruleApply.getApplied());

@@ -38,6 +38,8 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public abstract class AbstractRuleElement extends RutaElement implements RuleElement {
 
+  protected static final InferenceCrowd EMPTY_CROWD = new InferenceCrowd(Collections.emptyList());
+
   protected RuleElementQuantifier quantifier;
 
   protected List<AbstractRutaCondition> conditions;
@@ -51,9 +53,6 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   private RuleElementContainer container;
 
   protected RutaBlock parent;
-
-  @SuppressWarnings("unchecked")
-  protected final InferenceCrowd emptyCrowd = new InferenceCrowd(Collections.EMPTY_LIST);
 
   protected List<List<RutaStatement>> inlinedConditionRuleBlocks = new ArrayList<>();
 
@@ -232,7 +231,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           MatchContext context, RutaStream stream) {
-    return quantifier.evaluateMatches(matches, context, stream, emptyCrowd);
+    return quantifier.evaluateMatches(matches, context, stream, EMPTY_CROWD);
   }
 
   @Override
@@ -336,11 +335,6 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   public void setQuantifier(RuleElementQuantifier quantifier) {
     this.quantifier = quantifier;
-  }
-
-  @Override
-  public RutaRule getRule() {
-    return container.getRule();
   }
 
   @Override

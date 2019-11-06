@@ -62,8 +62,6 @@ public interface RuleElement {
 
   RutaBlock getParent();
 
-  RutaRule getRule();
-
   RuleElementContainer getContainer();
 
   void setContainer(RuleElementContainer container);

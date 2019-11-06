@@ -75,11 +75,6 @@ public class RuleElementIsolator implements RuleElementContainer {
   }
 
   @Override
-  public RutaRule getRule() {
-    return container.getRule();
-  }
-
-  @Override
   public RuleElement getNextElement(boolean after, RuleElement ruleElement) {
     return null;
   }

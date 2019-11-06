@@ -69,12 +69,13 @@ public class RuleElementCaretaker implements RuleElementContainer {
     for (RuleElement ruleElement : ruleElements) {
       if (ruleElement.isStartAnchor()) {
         return ruleElement;
-      } 
-      if(ruleElement instanceof ComposedRuleElement) {
-         RuleElement anchoringRuleElement = ((ComposedRuleElement) ruleElement).getAnchoringRuleElement(stream);
-         if(anchoringRuleElement.isStartAnchor()) {
-           return ruleElement;
-         }
+      }
+      if (ruleElement instanceof ComposedRuleElement) {
+        RuleElement anchoringRuleElement = ((ComposedRuleElement) ruleElement)
+                .getAnchoringRuleElement(stream);
+        if (anchoringRuleElement.isStartAnchor()) {
+          return ruleElement;
+        }
       }
     }
 
@@ -120,11 +121,6 @@ public class RuleElementCaretaker implements RuleElementContainer {
     for (RuleElement eachElement : getRuleElements()) {
       eachElement.apply(ruleMatch, stream, crowd);
     }
-  }
-
-  @Override
-  public RutaRule getRule() {
-    return container.getRule();
   }
 
   @Override
