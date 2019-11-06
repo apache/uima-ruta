@@ -31,7 +31,6 @@
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
     <version>${archetypeVersion}</version>
-    <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
 
   <properties>
