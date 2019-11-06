@@ -36,7 +36,7 @@
 
   <properties>
     <junit-version>4.11</junit-version>
-    <uima-version>2.10.0</uima-version>
+    <uima-version>2.10.4</uima-version>
     <ruta-version>${archetypeVersion}</ruta-version>
   </properties>
 
@@ -104,6 +104,9 @@
               </extensionPackages>
               <addRutaNature>true</addRutaNature>
               <buildPaths>
+              	<buildPath>script:src/main/ruta</buildPath>
+				<buildPath>descriptor:target/generated-sources/ruta/descriptor</buildPath>
+				<buildPath>resources:src/main/resources</buildPath>
               </buildPaths>
             </configuration>
           </execution>
