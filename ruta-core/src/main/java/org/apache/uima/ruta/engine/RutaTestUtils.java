@@ -306,7 +306,7 @@ public class RutaTestUtils {
     Type t = getTestType(cas, typeId);
     Collection<AnnotationFS> select = CasUtil.select(cas, t);
     if (select.size() != expectedCnt) {
-      throw new AssertionError("size of expected annotations (" + expectedCnt
+      throw new RuntimeException("size of expected annotations (" + expectedCnt
               + ") does not match with actual size (" + select.size() + ").");
     }
     if (expecteds.length > 0) {
@@ -314,7 +314,7 @@ public class RutaTestUtils {
       for (String expected : expecteds) {
         String actual = iterator.next().getCoveredText();
         if (!actual.equals(expected)) {
-          throw new AssertionError(
+          throw new RuntimeException(
                   "expected text (" + expected + ") does not match with actual (" + actual + ").");
         }
       }

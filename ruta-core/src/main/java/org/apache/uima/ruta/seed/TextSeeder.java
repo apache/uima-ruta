@@ -33,6 +33,7 @@ public class TextSeeder implements RutaAnnotationSeeder {
 
   public static final String seedType = "org.apache.uima.ruta.type.TokenSeed";
 
+  @Override
   public Type seed(String text, CAS cas) {
     Type result = null;
     JCas jCas = null;
@@ -55,7 +56,8 @@ public class TextSeeder implements RutaAnnotationSeeder {
 
     try {
       a = sourceLexer.yylex();
-    } catch (Exception e) {
+    } catch (Throwable e) {
+      // ignore problems
     }
     while (a != null) {
       cas.addFsToIndexes(a);
