@@ -66,8 +66,8 @@ public class ResourcesFromDataPathTest {
     ae.process(cas);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 0 0", "100", "2 0 0");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "1 0 0", "100", "2 0 0");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "100");
-    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "1 0 0", "2 0 0");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "100");
   }
 }

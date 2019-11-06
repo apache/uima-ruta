@@ -268,7 +268,7 @@ public class TreeWordList implements RutaWordList {
 
       TextNode wsNode = pointer.getChildNode(' ');
       if (ignoreWS && wsNode != null) {
-        result |= recursiveContains(wsNode, text, --next, ignoreCase, fragment, ignoreChars,
+        result |= recursiveContains(wsNode, text, next - 1, ignoreCase, fragment, ignoreChars,
                 maxIgnoreChars, ignoreWS);
       }
 
@@ -292,7 +292,7 @@ public class TreeWordList implements RutaWordList {
     } else {
       TextNode wsNode = pointer.getChildNode(' ');
       if (ignoreWS && wsNode != null) {
-        result |= recursiveContains(wsNode, text, --next, ignoreCase, fragment, ignoreChars,
+        result |= recursiveContains(wsNode, text, next - 1, ignoreCase, fragment, ignoreChars,
                 maxIgnoreChars, ignoreWS);
       }
 

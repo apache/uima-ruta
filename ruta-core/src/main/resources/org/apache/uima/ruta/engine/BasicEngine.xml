@@ -336,6 +336,12 @@
           <boolean>true</boolean>
         </value>
       </nameValuePair>
+       <nameValuePair>
+        <name>dictRemoveWS</name>
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </nameValuePair>
       <nameValuePair>
         <name>inferenceVisitors</name>
         <value>
