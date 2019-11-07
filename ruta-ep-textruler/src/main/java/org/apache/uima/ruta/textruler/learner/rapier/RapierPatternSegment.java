@@ -32,13 +32,12 @@ public class RapierPatternSegment {
   public void debugOutput() {
 
     TextRulerToolkit.log("\n-------------\nShorterList: ");
-    for (TextRulerRuleItem t : shorterPattern)
-      System.out.print(t.getStringForRuleString(null, null, 0, 1, 0, 1, 0) + "    ");
-    TextRulerToolkit.log("");
-
-    System.out.print("LongerList: ");
-    for (TextRulerRuleItem t : longerPattern)
-      System.out.print(t.getStringForRuleString(null, null, 0, 1, 0, 1, 0) + "    ");
-    TextRulerToolkit.log("");
+    for (TextRulerRuleItem t : shorterPattern) {
+      TextRulerToolkit.log(t.getStringForRuleString(null, null, 0, 1, 0, 1, 0) + "    ");
+    }
+    TextRulerToolkit.log("LongerList: ");
+    for (TextRulerRuleItem t : longerPattern) {
+      TextRulerToolkit.log(t.getStringForRuleString(null, null, 0, 1, 0, 1, 0) + "    ");
+    }
   }
 }

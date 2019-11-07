@@ -100,8 +100,8 @@ public class Wien extends TextRulerBasicLearner {
               TextRulerLearnerState.ML_RUNNING, false);
       if (!findRightPatterns())
         allOk = false;
-      sendStatusUpdateToDelegate("Searching for left patterns...",
-              TextRulerLearnerState.ML_RUNNING, false);
+      sendStatusUpdateToDelegate("Searching for left patterns...", TextRulerLearnerState.ML_RUNNING,
+              false);
       if (!findLeftPatterns())
         allOk = false;
       sendStatusUpdateToDelegate("Searching for head, tail and left1 patterns...",
@@ -181,7 +181,6 @@ public class Wien extends TextRulerBasicLearner {
     boolean allFound = true;
     for (int k = 0; k < slotNames.length; k++) {
       List<TextRulerRulePattern> rightContexts = getRightContextForSlot(doc, k);
-      System.out.println(rightContexts.get(0));
       int shortest = Integer.MAX_VALUE;
       for (TextRulerRulePattern p : rightContexts)
         shortest = p.size() < shortest ? p.size() : shortest;
@@ -386,13 +385,13 @@ public class Wien extends TextRulerBasicLearner {
     } else {
       CAS cas = doc.getCAS();
       TextRulerExample firstExample = doc.getPositiveExamples().get(0);
-      TextRulerExample lastExample = doc.getPositiveExamples().get(
-              doc.getPositiveExamples().size() - 1);
+      TextRulerExample lastExample = doc.getPositiveExamples()
+              .get(doc.getPositiveExamples().size() - 1);
       TypeSystem ts = cas.getTypeSystem();
       Type tokenType = ts.getType(TextRulerToolkit.RUTA_ALL_TYPE_NAME);
       List<AnnotationFS> headTokens = TextRulerToolkit.getAnnotationsBeforePosition(cas,
-              firstExample.getAnnotations()[0].getBegin(), 0, TextRulerToolkit
-                      .getFilterSetWithSlotNames(slotNames, filterSet), tokenType);
+              firstExample.getAnnotations()[0].getBegin(), 0,
+              TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokenType);
       TextRulerAnnotation[] lastExampleAnnotations = lastExample.getAnnotations();
       List<AnnotationFS> tailTokens = TextRulerToolkit.getAnnotationsAfterPosition(cas,
               lastExampleAnnotations[lastExampleAnnotations.length - 1].getEnd(), 0,
@@ -424,9 +423,9 @@ public class Wien extends TextRulerBasicLearner {
         TextRulerAnnotation[] exampleAnnotations2 = examples.get(i + 1).getAnnotations();
         TextRulerAnnotation lastOf1 = exampleAnnotations1[exampleAnnotations1.length - 1];
         TextRulerAnnotation firstOf2 = exampleAnnotations2[0];
-        List<AnnotationFS> theTokens = TextRulerToolkit.getAnnotationsWithinBounds(cas, lastOf1
-                .getEnd(), firstOf2.getBegin(), TextRulerToolkit.getFilterSetWithSlotNames(
-                slotNames, filterSet), tokenType);
+        List<AnnotationFS> theTokens = TextRulerToolkit.getAnnotationsWithinBounds(cas,
+                lastOf1.getEnd(), firstOf2.getBegin(),
+                TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokenType);
         TextRulerRulePattern thePattern = new TextRulerRulePattern();
         for (AnnotationFS afs : theTokens)
           thePattern.add(new WienRuleItem(new TextRulerAnnotation(afs, doc)));
@@ -470,8 +469,8 @@ public class Wien extends TextRulerBasicLearner {
                 TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokenType);
       else
         theTokens = TextRulerToolkit.getAnnotationsWithinBounds(cas, slotAnnotation.getEnd(),
-                nextSlotAnnotation.getBegin(), TextRulerToolkit.getFilterSetWithSlotNames(
-                        slotNames, filterSet), tokenType);
+                nextSlotAnnotation.getBegin(),
+                TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokenType);
       TextRulerRulePattern thePattern = new TextRulerRulePattern();
       for (AnnotationFS afs : theTokens)
         thePattern.add(new WienRuleItem(new TextRulerAnnotation(afs, doc)));
@@ -510,12 +509,12 @@ public class Wien extends TextRulerBasicLearner {
 
       List<AnnotationFS> theTokens;
       if (prevSlotAnnotation == null)
-        theTokens = TextRulerToolkit.getAnnotationsBeforePosition(cas, slotAnnotation.getBegin(),
-                0, TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokenType);
+        theTokens = TextRulerToolkit.getAnnotationsBeforePosition(cas, slotAnnotation.getBegin(), 0,
+                TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokenType);
       else
         theTokens = TextRulerToolkit.getAnnotationsWithinBounds(cas, prevSlotAnnotation.getEnd(),
-                slotAnnotation.getBegin(), TextRulerToolkit.getFilterSetWithSlotNames(slotNames,
-                        filterSet), tokenType);
+                slotAnnotation.getBegin(),
+                TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokenType);
       TextRulerRulePattern thePattern = new TextRulerRulePattern();
       for (AnnotationFS afs : theTokens)
         thePattern.add(new WienRuleItem(new TextRulerAnnotation(afs, doc), true));
@@ -535,8 +534,8 @@ public class Wien extends TextRulerBasicLearner {
     for (TextRulerExample e : examples) {
       TextRulerAnnotation slotAnnotation = e.getAnnotations()[slotIndex];
       List<AnnotationFS> theTokens = TextRulerToolkit.getAnnotationsWithinBounds(cas,
-              slotAnnotation.getBegin(), slotAnnotation.getEnd(), TextRulerToolkit
-                      .getFilterSetWithSlotNames(slotNames, filterSet), tokenType);
+              slotAnnotation.getBegin(), slotAnnotation.getEnd(),
+              TextRulerToolkit.getFilterSetWithSlotNames(slotNames, filterSet), tokenType);
       TextRulerRulePattern thePattern = new TextRulerRulePattern();
       for (AnnotationFS afs : theTokens)
         thePattern.add(new WienRuleItem(new TextRulerAnnotation(afs, doc)));
@@ -620,8 +619,8 @@ public class Wien extends TextRulerBasicLearner {
       ((WienRuleItem) it).getWordConstraint().setGeneralizeLinkMarkUp(true);
     int l1Pos = restForL1.find(l1);
     if (l1Pos < 0 || l1Pos != restForL1.size() - l1.size()) {
-      TextRulerToolkit.logIf(logReasons, "REASON 1\n\tl1         \t" + l1 + "\n\trestforl1\t"
-              + restForL1);
+      TextRulerToolkit.logIf(logReasons,
+              "REASON 1\n\tl1         \t" + l1 + "\n\trestforl1\t" + restForL1);
       return constraint3ReturnType.C3_L1CandidateSuffixError;
     }
 
@@ -690,6 +689,7 @@ public class Wien extends TextRulerBasicLearner {
     return constraint3ReturnType.C3_SUCCESS;
   }
 
+  @Override
   public String getResultString() {
     if (theRule == null)
       return "<no results yet>";
@@ -711,11 +711,8 @@ public class Wien extends TextRulerBasicLearner {
     result += ")};\n\n";
 
     result += "BLOCK(findData) wien_content {\n"
-            + "\t// find out if tail is before the next occurence of l1\n"
-            + "\t"
-            + theRule.getRuleString()
-            + "\n"
-            + "\tDocument{->ASSIGN(wien_redo, false)};\n"
+            + "\t// find out if tail is before the next occurence of l1\n" + "\t"
+            + theRule.getRuleString() + "\n" + "\tDocument{->ASSIGN(wien_redo, false)};\n"
             + "\twien_tail{PARTOF(wien_rulemark)->UNMARK(wien_tail), ASSIGN(wien_redo, true)}; // remove tail marks that are no longer relevant for us after the last rule !\n"
             + "\tDocument{IF(wien_redo)->CALL(filename.findData)};\n" + "}\n";
 
@@ -725,6 +722,7 @@ public class Wien extends TextRulerBasicLearner {
     return result;
   }
 
+  @Override
   public void setParameters(Map<String, Object> params) {
   }
 

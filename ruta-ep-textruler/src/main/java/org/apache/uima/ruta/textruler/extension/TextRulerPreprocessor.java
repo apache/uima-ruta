@@ -47,23 +47,22 @@ public class TextRulerPreprocessor {
 
   public String run(String inFolder, String docType, String rutaFile, String tmpDir,
           String[] currentSlotNames, TextRulerPreprocessorDelegate delegate) {
-    if(StringUtils.isBlank(inFolder)) {
+    if (StringUtils.isBlank(inFolder)) {
       return inFolder;
     }
-    
+
     AnalysisEngineDescription analysisEngineDescription = null;
     try {
-      analysisEngineDescription = TextRulerToolkit
-              .getAnalysisEngineDescription(RutaProjectUtils
-                      .getAnalysisEngineDescriptorPath(rutaFile).toPortableString());
+      analysisEngineDescription = TextRulerToolkit.getAnalysisEngineDescription(
+              RutaProjectUtils.getAnalysisEngineDescriptorPath(rutaFile).toPortableString());
     } catch (CoreException e) {
       TextRulerPlugin.error(e);
     }
-    if(analysisEngineDescription == null) {
+    if (analysisEngineDescription == null) {
       delegate.preprocessorStatusUpdate(this, "Descriptor is missing. Please rebuild the project.");
       return null;
     }
-    
+
     // we want to reuse these cases, so extend the type system in case a boundary-based learner is
     // called
     TextRulerToolkit.addBoundaryTypes(analysisEngineDescription, currentSlotNames);
@@ -73,6 +72,7 @@ public class TextRulerPreprocessor {
     File inputFolder = new File(inFolder);
     File outputFolder = new File(tmpDir + docType);
     File[] files = inputFolder.listFiles(new FilenameFilter() {
+      @Override
       public boolean accept(File dir, String name) {
         return (name.endsWith(".xmi"));
       }
@@ -96,7 +96,6 @@ public class TextRulerPreprocessor {
         delegate.preprocessorStatusUpdate(this,
                 "Loading input XMI file (" + docType + "): " + file.getName());
       cas = TextRulerToolkit.readCASfromXMIFile(file, ae, cas);
-      System.out.print("Processing...");
       try {
         ae.process(cas);
         TextRulerToolkit.log(" OK");

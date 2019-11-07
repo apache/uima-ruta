@@ -34,8 +34,8 @@ import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.eclipse.jdt.launching.JavaLaunchDelegate;
 import org.eclipse.ui.console.IOConsole;
 
-public class JavaLocalApplicationLaunchConfigurationDelegate extends JavaLaunchDelegate implements
-        ILaunchConfigurationDelegate {
+public class JavaLocalApplicationLaunchConfigurationDelegate extends JavaLaunchDelegate
+        implements ILaunchConfigurationDelegate {
 
   @Override
   public String getVMArguments(ILaunchConfiguration configuration) throws CoreException {
@@ -45,7 +45,6 @@ public class JavaLocalApplicationLaunchConfigurationDelegate extends JavaLaunchD
   @Override
   public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
           IProgressMonitor monitor) throws CoreException {
-    // System.out.println("launching");
     IDbgpService dbgpService = null;
     try {
       dbgpService = DLTKDebugPlugin.getDefault().getDbgpService();
@@ -60,6 +59,7 @@ public class JavaLocalApplicationLaunchConfigurationDelegate extends JavaLaunchD
       final RutaSourceLookupDirector l = new RutaSourceLookupDirector();
       launch.setSourceLocator(new ISourceLocator() {
 
+        @Override
         public Object getSourceElement(IStackFrame stackFrame) {
           Object sourceElement = sourceLocator.getSourceElement(stackFrame);
           if (sourceElement != null)

@@ -96,7 +96,8 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
   private Map<String, TextRulerStatisticsCollector> inducedRules = new TreeMap<String, TextRulerStatisticsCollector>();
 
   public TextRulerBasicLearner(String inputDir, String prePropTMFile, String tmpDir,
-          String[] slotNames, Set<String> filterSet, boolean skip, TextRulerLearnerDelegate delegate) {
+          String[] slotNames, Set<String> filterSet, boolean skip,
+          TextRulerLearnerDelegate delegate) {
     super();
     this.preprocessorFile = prePropTMFile;
     this.tempDirectory = tmpDir;
@@ -109,10 +110,10 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     filterSetWithSlotNames.add(RutaEngine.BASIC_TYPE);
     for (String s : slotNames) {
       filterSetWithSlotNames.add(s);
-      filterSetWithSlotNames.add(TextRulerTarget.getSingleSlotTypeName(
-              MLTargetType.SINGLE_LEFT_BOUNDARY, s));
-      filterSetWithSlotNames.add(TextRulerTarget.getSingleSlotTypeName(
-              MLTargetType.SINGLE_RIGHT_BOUNDARY, s));
+      filterSetWithSlotNames
+              .add(TextRulerTarget.getSingleSlotTypeName(MLTargetType.SINGLE_LEFT_BOUNDARY, s));
+      filterSetWithSlotNames
+              .add(TextRulerTarget.getSingleSlotTypeName(MLTargetType.SINGLE_RIGHT_BOUNDARY, s));
     }
 
     useDefaultFiltering = true;
@@ -139,6 +140,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       return false;
   }
 
+  @Override
   public AnalysisEngine getAnalysisEngine() {
     if (ae == null) {
       updateAE();
@@ -172,8 +174,8 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     // the FILTERTYPE expression!
     String tempRulesFileName = getTempRulesFileName();
     IPath path = new Path(tempRulesFileName);
-    ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, path.removeFileExtension()
-            .lastSegment());
+    ae.setConfigParameterValue(RutaEngine.PARAM_MAIN_SCRIPT,
+            path.removeFileExtension().lastSegment());
     String portableString = path.removeLastSegments(1).toPortableString();
     ae.setConfigParameterValue(RutaEngine.PARAM_SCRIPT_PATHS, new String[] { portableString });
     ae.setConfigParameterValue(RutaEngine.PARAM_ADDITIONAL_SCRIPTS, new String[0]);
@@ -218,8 +220,9 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       missingString = missingString.substring(0, missingString.length() - 2);
     }
     if (!result) {
-      sendStatusUpdateToDelegate("Error: Some Slot- or Helper-Types were not found in TypeSystem: "
-              + missingString, TextRulerLearnerState.ML_ERROR, false);
+      sendStatusUpdateToDelegate(
+              "Error: Some Slot- or Helper-Types were not found in TypeSystem: " + missingString,
+              TextRulerLearnerState.ML_ERROR, false);
     }
     return result;
   }
@@ -232,6 +235,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       return dir.mkdir();
   }
 
+  @Override
   public void run() {
     if (createTempDirIfNeccessary()) {
       updateAE();
@@ -283,6 +287,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     }
   }
 
+  @Override
   public CAS loadCAS(String fileName, CAS reuseCAS) {
     return TextRulerToolkit.readCASfromXMIFile(fileName, ae, reuseCAS);
   }
@@ -322,8 +327,8 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     // the code commented out with FALSENEGATIVES
 
     for (TextRulerExample e : testPositives) {
-      TextRulerExample coveredExample = TextRulerToolkit.exampleListContainsAnnotation(
-              originalPositives, e.getAnnotation());
+      TextRulerExample coveredExample = TextRulerToolkit
+              .exampleListContainsAnnotation(originalPositives, e.getAnnotation());
       if (coveredExample != null) {
         c.addCoveredPositive(coveredExample); // add covered example and
         // increment positive
@@ -425,10 +430,8 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     for (int ruleIndex = 0; ruleIndex < rules.size(); ruleIndex++) {
       TextRulerRule theRule = rules.get(ruleIndex);
       String ruleString = theRule.getRuleString();
-      System.out.println("testing: " + ruleString);
       if (inducedRules.containsKey(ruleString)) {
         theRule.setCoveringStatistics(inducedRules.get(ruleString));
-        System.out.println("skipped with " + inducedRules.get(ruleString));
       } else {
         TextRulerStatisticsCollector sumC = sums.get(ruleIndex);
         for (TextRulerExampleDocument theDoc : sortedDocs) {
@@ -436,7 +439,6 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
           testRuleOnDocument(theRule, theDoc, sumC, theTestCAS);
           double errorRate = sumC.n / Math.max(sumC.p, 1);
           if (errorRate > maxErrorRate) {
-            System.out.println("stopped:" + sumC);
             break;
           }
           if (shouldAbort())
@@ -471,8 +473,8 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
       TextRulerStatisticsCollector sumC = sums.get(ruleIndex);
 
       if (TextRulerToolkit.DEBUG && !target.equals(theRule.getTarget())) {
-        TextRulerToolkit
-                .log("[TextRulerBasicLearner.testRulesOnTrainingsSet] ERROR, ALL RULES MUST HAVE THE SAME LEARNING TARGET !");
+        TextRulerToolkit.log(
+                "[TextRulerBasicLearner.testRulesOnTrainingsSet] ERROR, ALL RULES MUST HAVE THE SAME LEARNING TARGET !");
       }
       document.resetAndFillTestCAS(theTestCAS, target);
       testRuleOnDocument(theRule, document, sumC, theTestCAS);
@@ -578,6 +580,7 @@ public abstract class TextRulerBasicLearner implements TextRulerLearner, CasCach
     return useDefaultFiltering;
   }
 
+  @Override
   public CAS getTestCAS() {
     // one big memory problem occured as we .reset+.release old CASes and
     // created new ones

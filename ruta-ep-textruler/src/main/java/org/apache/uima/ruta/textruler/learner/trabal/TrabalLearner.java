@@ -1379,10 +1379,8 @@ public class TrabalLearner extends TextRulerBasicLearner {
       counter++;
       String ruleString = rule.getRuleString();
       String ruleInfo = getRuleInfo(rule);
-      System.out.println("testing: " + ruleString);
       if (inducedRules.containsKey(ruleString)) {
         rule.setCoveringStatistics(inducedRules.get(ruleString));
-        System.out.println("skipped with " + inducedRules.get(ruleString));
       } else {
         for (int i = 0; i < goldDocs.size(); i++) {
           TextRulerExampleDocument goldDoc = goldDocs.get(i);
@@ -1402,7 +1400,6 @@ public class TrabalLearner extends TextRulerBasicLearner {
             pnorm = 1;
           }
           if (n / pnorm > maxErrorRate) {
-            System.out.println("stopped:" + sumC);
             break;
           }
 

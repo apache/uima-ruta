@@ -113,6 +113,7 @@ public class RutaGEConstraint implements IRutaConstraint {
     ae.reconfigure();
   }
 
+  @Override
   public Double processConstraint(CAS cas) throws Exception {
     if (!initalized) {
       initialize();
@@ -120,8 +121,8 @@ public class RutaGEConstraint implements IRutaConstraint {
     int runCount = 0;
     int printCount = 0;
     ArrayList<Double[]> results = new ArrayList<Double[]>();
-    Type matchedType = cas.getTypeSystem().getType(
-            "org.apache.uima.ruta.type.DebugMatchedRuleMatch");
+    Type matchedType = cas.getTypeSystem()
+            .getType("org.apache.uima.ruta.type.DebugMatchedRuleMatch");
     Type ruleApplyType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.DebugRuleApply");
     Type blockApplyType = cas.getTypeSystem().getType("org.apache.uima.ruta.type.DebugBlockApply");
 
@@ -155,8 +156,6 @@ public class RutaGEConstraint implements IRutaConstraint {
               Double ratioInConstraint = rulesMap.get(key);
               if (ratioInConstraint != null) {
                 results.add(new Double[] { ratioInConstraint, ratioInDocument });
-              } else {
-                System.out.println("rule not found!!!: " + key);
               }
             }
           }
@@ -169,13 +168,13 @@ public class RutaGEConstraint implements IRutaConstraint {
     removeDebugAnnotations(cas, matchedType, ruleApplyType, blockApplyType);
     ae.destroy();
 
-    runCount++;
-    printCount++;
-    if (printCount == 10) {
-      System.out.println(runCount);
-      System.out.println("time: " + System.currentTimeMillis());
-      printCount = 0;
-    }
+//    runCount++;
+//    printCount++;
+//    if (printCount == 10) {
+//      System.out.println(runCount);
+//      System.out.println("time: " + System.currentTimeMillis());
+//      printCount = 0;
+//    }
 
     // calculate cosinus similarity for result values:
     return EvaluationMeasures.cosine(results);
@@ -201,10 +200,12 @@ public class RutaGEConstraint implements IRutaConstraint {
     }
   }
 
+  @Override
   public String getDescription() {
     return this.description;
   }
 
+  @Override
   public void setDescription(String description) {
     this.description = description;
   }
@@ -248,10 +249,12 @@ public class RutaGEConstraint implements IRutaConstraint {
     return rulesMap;
   }
 
+  @Override
   public String getData() {
     return constraintText;
   }
 
+  @Override
   public void setData(String data) {
     this.constraintText = data;
   }

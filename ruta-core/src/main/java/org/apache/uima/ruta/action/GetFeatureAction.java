@@ -20,6 +20,8 @@
 package org.apache.uima.ruta.action;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
@@ -73,9 +75,10 @@ public class GetFeatureAction extends AbstractRutaAction {
     List<AnnotationFS> matchedAnnotations = match.getMatchedAnnotationsOfElement(element);
     for (AnnotationFS annotationFS : matchedAnnotations) {
       if (annotationFS.getType().getFeatureByBaseName(stringValue) == null) {
-        // TODO replace syso by logger
-        System.out.println("Can't access feature " + stringValue
-                + ", because it's not defined in the matched type: " + annotationFS.getType());
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO,
+                "Can't access feature " + stringValue
+                        + ", because it's not defined in the matched type: "
+                        + annotationFS.getType().getName());
         return;
       }
 

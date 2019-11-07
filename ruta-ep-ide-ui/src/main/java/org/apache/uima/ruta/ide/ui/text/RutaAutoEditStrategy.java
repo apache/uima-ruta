@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.ide.ui.RutaPartitions;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -849,9 +848,8 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.eclipse.jface.text.IAutoEditStrategy#customizeDocumentCommand(org.eclipse.jface.text.IDocument
-   * , org.eclipse.jface.text.DocumentCommand)
+   * @see org.eclipse.jface.text.IAutoEditStrategy#customizeDocumentCommand(org.eclipse.jface.text.
+   * IDocument , org.eclipse.jface.text.DocumentCommand)
    */
   @Override
   public void customizeDocumentCommand(IDocument d, DocumentCommand c) {
@@ -867,9 +865,6 @@ public class RutaAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
         if (indent == null)
           super.customizeDocumentCommand(d, c);
         else {
-          if (DLTKCore.DEBUG) {
-            System.err.println("Bug:PTN-9");
-          }
           c.text = c.text + indent;
         }
       } catch (BadLocationException e) {

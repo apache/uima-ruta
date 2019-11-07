@@ -60,7 +60,8 @@ public class TextRulerView extends ViewPart implements TextRulerControllerDelega
   }
 
   public boolean yesNoAlert(String message) {
-    MessageBox alert = new MessageBox(getSite().getShell(), SWT.OK | SWT.CANCEL | SWT.ICON_QUESTION);
+    MessageBox alert = new MessageBox(getSite().getShell(),
+            SWT.OK | SWT.CANCEL | SWT.ICON_QUESTION);
     alert.setMessage(message);
     int result = alert.open();
     return result == SWT.OK; // THIS DOES NOT WORK IN OS X !!??
@@ -104,16 +105,14 @@ public class TextRulerView extends ViewPart implements TextRulerControllerDelega
       }
 
       String[] slotNames = viewContent.getSlotNames();
-      for (String string : slotNames) {
-        System.out.println(string);
-      }
       String[] filterArray = viewContent.getFilters();
       Set<String> filters = new HashSet<String>();
       for (String s : filterArray)
         filters.add(s);
 
       if (slotNames.length == 0 || inputDir.length() == 0 || preProcTMFile.length() == 0) {
-        errorAlert("Please specify at least one slot type, the input directory and the preprocessing file (this is needed even if preprocessing is skipped)!");
+        errorAlert(
+                "Please specify at least one slot type, the input directory and the preprocessing file (this is needed even if preprocessing is skipped)!");
         return;
       }
       File dir = new File(inputDir);
@@ -138,10 +137,7 @@ public class TextRulerView extends ViewPart implements TextRulerControllerDelega
 
         if ((resultView = getView(TextRulerResultsView.ID, c.getID())) == null) {
           try {
-            IViewPart view = PlatformUI
-                    .getWorkbench()
-                    .getActiveWorkbenchWindow()
-                    .getActivePage()
+            IViewPart view = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                     .showView(TextRulerResultsView.ID, ((TextRulerLearnerController) i).getID(),
                             IWorkbenchPage.VIEW_CREATE);
             ((TextRulerResultsView) view).setViewTitle(c.getName() + " - Results");
@@ -152,7 +148,7 @@ public class TextRulerView extends ViewPart implements TextRulerControllerDelega
           ((TextRulerResultsView) resultView).setViewTitle(c.getName() + " - Results");
         }
       }
-      
+
       if (TextRulerController.enabledAlgorithmsCount() > 0) {
 //        GlobalCASSource.releaseAll();
         TextRulerController.start(inputDir, additionalDir, preProcTMFile, slotNames, filters, this,
@@ -169,6 +165,7 @@ public class TextRulerView extends ViewPart implements TextRulerControllerDelega
 
   public void asyncUpdateGlobalStatus(final String str) {
     viewContent.getDisplay().asyncExec(new Runnable() {
+      @Override
       public void run() {
         viewContent.setGlobalStatusString(str);
         updateEnabledStatus();
@@ -179,6 +176,7 @@ public class TextRulerView extends ViewPart implements TextRulerControllerDelega
   public void asyncUpdateList(final TextRulerLearnerController algController,
           final boolean ruleBaseChanged) {
     viewContent.getDisplay().asyncExec(new Runnable() {
+      @Override
       public void run() {
         updateList(algController, ruleBaseChanged);
       }
@@ -196,6 +194,7 @@ public class TextRulerView extends ViewPart implements TextRulerControllerDelega
     }
   }
 
+  @Override
   public synchronized void algorithmDidEnd(TextRulerLearnerController algController) {
     asyncUpdateList(algController, true);
 
@@ -222,15 +221,18 @@ public class TextRulerView extends ViewPart implements TextRulerControllerDelega
     return null;
   }
 
+  @Override
   public synchronized void algorithmStatusUpdate(TextRulerLearnerController algController,
           String statusString, TextRulerLearnerState state, boolean ruleBaseChanged) {
     asyncUpdateList(algController, ruleBaseChanged);
   }
 
+  @Override
   public void preprocessorStatusUpdate(TextRulerPreprocessor p, String statusString) {
     asyncUpdateGlobalStatus("Preprocessing... " + statusString);
   }
 
+  @Override
   public void globalStatusUpdate(String str) {
     asyncUpdateGlobalStatus(str);
   }

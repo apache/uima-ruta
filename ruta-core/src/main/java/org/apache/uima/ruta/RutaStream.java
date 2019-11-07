@@ -366,9 +366,6 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   private boolean indexType(Type type) {
     if (typeUsage != null) {
       boolean contains = typeUsage.getUsedTypesWithSubTypes().contains(type.getName());
-      // if(!contains) {
-      // System.out.println(type.getShortName());
-      // }
       return contains;
     }
     return true;
