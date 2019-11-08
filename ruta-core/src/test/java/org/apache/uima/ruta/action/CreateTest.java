@@ -89,7 +89,7 @@ public class CreateTest {
   }
 
   @Test
-  public void testFeature() {
+  public void testFeature() throws Exception {
     String document = "Test.";
     String script = "";
     script += "W{-> CREATE(Inner, \"word\" = W)};";
@@ -122,13 +122,8 @@ public class CreateTest {
     String fn3 = "word";
     list.add(new TestFeature(fn3, "", "uima.tcas.Annotation"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -145,6 +140,5 @@ public class CreateTest {
 
     assertEquals("Test", ((AnnotationFS) fv1).getCoveredText());
 
-    cas.release();
   }
 }
