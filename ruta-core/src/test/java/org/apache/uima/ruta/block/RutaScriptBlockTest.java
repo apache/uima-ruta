@@ -28,7 +28,7 @@ import org.junit.Test;
 public class RutaScriptBlockTest {
 
   @Test
-  public void testInnerDocumentMatch() {
+  public void testInnerDocumentMatch() throws Exception {
     String document = "Some text";
     String script = "";
     script += "CW{ -> CREATE(RutaAnnotation, \"score\"=1)};";
@@ -39,19 +39,12 @@ public class RutaScriptBlockTest {
     script += "RutaAnnotation{-> T3};";
     script += "}";
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "Some", "Some");
-
-    cas.release();
   }
 
   @Test
@@ -78,7 +71,6 @@ public class RutaScriptBlockTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "1");
-    cas.release();
   }
 
   @Test
@@ -92,7 +84,6 @@ public class RutaScriptBlockTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "1", "22", "333");
-    cas.release();
   }
 
 }

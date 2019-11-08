@@ -19,13 +19,17 @@
 
 package org.apache.uima.ruta.block;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.apache.uima.ruta.seed.TextSeeder;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -207,6 +211,29 @@ public class ForEachBlockTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1", "22", "333");
+  }
+
+  @Test
+  public void testFSArrayFeatureMatch() throws Exception {
+    String script = "Document {-> s:Struct, s.elements = SW};";
+    script += "FOREACH(struct) Struct{} {\n";
+    script += "struct.elements{-> T1};\n";
+    script += "}\n";
+
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    String typeName1 = "Struct";
+    typeMap.put(typeName1, "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put(typeName1, list);
+    String fn1 = "elements";
+    list.add(new TestFeature(fn1, "", "uima.cas.FSArray"));
+
+    CAS cas = RutaTestUtils.getCAS("This is a test.", typeMap, featureMap);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "is", "a", "test");
   }
 
 }

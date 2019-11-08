@@ -208,7 +208,7 @@ public class AnnotationTypeExpression extends RutaExpression
     }
     if (annotationListExpression != null) {
       List<AnnotationFS> result = annotationListExpression.getAnnotationList(context, stream);
-      if (featureExpression != null) {
+      if (result != null && featureExpression != null) {
         return new ArrayList<>(featureExpression.getAnnotations(result, true, context, stream));
       } else {
         return result;
