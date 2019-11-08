@@ -16,15 +16,45 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.uima.ruta.expression.feature;
 
-package org.apache.uima.ruta;
+import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.Type;
 
-public class UIMAConstants {
+public class TypeFeature implements Feature {
 
-  public static final String FEATURE_COVERED_TEXT = "coveredText";
+  public TypeFeature() {
+    super();
+  }
+  
+  @Override
+  public int compareTo(Feature o) {
+    return 0;
+  }
 
-  public static final String FEATURE_COVERED_TEXT_SHORT = "ct";
+  @Override
+  public Type getDomain() {
+    return null;
+  }
 
-  public static final String FEATURE_TYPE = "type";
+  @Override
+  public Type getRange() {
+    return null;
+  }
+
+  @Override
+  public String getName() {
+    return null;
+  }
+
+  @Override
+  public String getShortName() {
+    return null;
+  }
+
+  @Override
+  public boolean isMultipleReferencesAllowed() {
+    return false;
+  }
 
 }

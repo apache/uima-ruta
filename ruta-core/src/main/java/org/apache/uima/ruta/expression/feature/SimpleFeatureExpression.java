@@ -100,6 +100,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
           // also allow for unknown types
           feature = new CoveredTextFeature();
         }
+      } else if (StringUtils.equals(each, UIMAConstants.FEATURE_TYPE)) {
+        feature = new TypeFeature();
       } else if (type == null || type.isArray()) {
         // lazy check of range
         feature = new LazyFeature(each, context.getParent());
@@ -229,8 +231,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
     }
 
     if (currentFeature == null || currentFeature instanceof CoveredTextFeature
-            || currentFeature.getRange().isPrimitive()) {
-      // feature == null -> this is the coveredText "feature"
+            || currentFeature instanceof TypeFeature || currentFeature.getRange().isPrimitive()) {
+      // feature == null -> this is not a real feature
       if (this instanceof FeatureMatchExpression) {
         FeatureMatchExpression fme = (FeatureMatchExpression) this;
         if (checkOnFeatureValue) {

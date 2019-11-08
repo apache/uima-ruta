@@ -49,6 +49,8 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
 
   private FeatureExpression featureExpression;
 
+  private ITypeExpression typeExpression;
+
   private INumberExpression numberExpression;
 
   private IStringExpression stringExpression;
@@ -66,7 +68,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
   private IAnnotationListExpression annotationListExpression;
 
   private ExpressionFactory expressionFactory;
-  
+
   public GenericFeatureExpression(FeatureExpression fe) {
     super();
     this.featureExpression = fe;
@@ -128,14 +130,19 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
     }
     return annotationExpression.getFeatureStructure(context, stream);
   }
-  
-  
+
   @Override
   public Type getType(MatchContext context, RutaStream stream) {
+    if (typeExpression == null) {
+      typeExpression = expressionFactory.createTypeFeatureExpression(featureExpression);
+    }
+    if (typeExpression != null) {
+      return typeExpression.getType(context, stream);
+    }
     // special case where an argument is interpreted as a type expression
     return featureExpression.getInitialType(context, stream);
   }
-  
+
   public FeatureExpression getFeatureExpression() {
     return featureExpression;
   }
@@ -199,6 +206,5 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
     }
     return result;
   }
-
 
 }

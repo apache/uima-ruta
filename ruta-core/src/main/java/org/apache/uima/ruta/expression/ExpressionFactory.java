@@ -25,6 +25,7 @@ import java.util.List;
 import org.antlr.runtime.Token;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.TypeUsageInformation;
+import org.apache.uima.ruta.UIMAConstants;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.condition.AndCondition;
@@ -210,10 +211,32 @@ public class ExpressionFactory {
   }
 
   public ITypeExpression createSimpleTypeExpression(String typeString, RutaBlock parent) {
+    if (typeString.endsWith("." + UIMAConstants.FEATURE_TYPE)) {
+      return createTypeFeatureExpression(typeString, parent);
+    }
+
     if (typeUsage != null) {
       typeUsage.addMentionedType(typeString);
     }
     return new SimpleTypeExpression(typeString);
+  }
+
+  public ITypeExpression createTypeFeatureExpression(String typeString, RutaBlock parent) {
+    MatchReference matchReference = createMatchReference(typeString);
+    return createTypeFeatureExpression(matchReference);
+  }
+
+  public ITypeExpression createTypeFeatureExpression(FeatureExpression featureExpression) {
+    if (featureExpression instanceof SimpleFeatureExpression) {
+      return createTypeFeatureExpression(
+              ((SimpleFeatureExpression) featureExpression).getMatchReference());
+    }
+    return null;
+  }
+
+  private ITypeExpression createTypeFeatureExpression(MatchReference matchReference) {
+    AnnotationTypeExpression typeExpression = createAnnotationTypeExpression(matchReference);
+    return typeExpression;
   }
 
   public IBooleanExpression createBooleanFunction(Token op, IBooleanExpression e1,
