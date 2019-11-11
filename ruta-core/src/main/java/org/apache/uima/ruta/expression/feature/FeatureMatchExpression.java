@@ -90,7 +90,6 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
     Type featureRangeType = null;
     TypeSystem typeSystem = stream.getCas().getTypeSystem();
     if (feature instanceof TypeFeature) {
-      // TODO
       if (getArg() instanceof ITypeExpression) {
         Type t1 = fs.getType();
         ITypeExpression expr = (ITypeExpression) getArg();
