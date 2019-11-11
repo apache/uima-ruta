@@ -113,7 +113,7 @@ public class RutaLiteralMatcher implements RutaMatcher {
       return Collections.emptyList();
     }
 
-    String substring = windowAnnotation.getCoveredText().substring(begin, end);
+    String substring = stream.getCas().getDocumentText().substring(begin, end);
     if (StringUtils.equals(literal, substring)) {
       AnnotationFS matchedAnnotation = getAnnotation(begin, end, stream);
       if (stream.isVisible(matchedAnnotation)) {
@@ -144,7 +144,7 @@ public class RutaLiteralMatcher implements RutaMatcher {
       return Collections.emptyList();
     }
 
-    String substring = windowAnnotation.getCoveredText().substring(begin, end);
+    String substring = stream.getCas().getDocumentText().substring(begin, end);
     if (StringUtils.equals(literal, substring)) {
       AnnotationFS matchedAnnotation = getAnnotation(begin, end, stream);
       if (stream.isVisible(matchedAnnotation)) {
