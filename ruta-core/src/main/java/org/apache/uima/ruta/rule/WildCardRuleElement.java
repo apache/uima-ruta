@@ -145,6 +145,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, nextOne, stream);
       doMatch(after, coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null,
               stream, crowd);
+      doMatchPotentialParentElements(after, annotation, nextDepth, extendedMatch,
+              extendedContainerMatch, coveredByWildCard, stream, crowd);
       if (extendedMatch.matched()) {
         ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
                 extendedContainerMatch, nextDepth);
@@ -369,7 +371,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       doMatch(after, coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null,
               stream, crowd);
 
-      // TODO: UIMA-6041: also doMatch for container conditions for (A #){XYZ} B;
+      doMatchPotentialParentElements(after, annotation, nextDepth, extendedMatch,
+              extendedContainerMatch, coveredByWildCard, stream, crowd);
 
       if (extendedMatch.matched()) {
         ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
@@ -397,6 +400,22 @@ public class WildCardRuleElement extends AbstractRuleElement {
       }
     }
     return result;
+  }
+
+  private void doMatchPotentialParentElements(boolean after, AnnotationFS annotation, int nextDepth,
+          RuleMatch extendedMatch, ComposedRuleElementMatch extendedContainerMatch,
+          AnnotationFS coveredByWildCard, RutaStream stream, InferenceCrowd crowd) {
+    RuleElement element = this;
+    for (int i = nextDepth; i > 0; i--) {
+      // UIMA-6041: also doMatch for container conditions like (A #){XYZ} B;
+      RuleElementContainer c = element.getContainer();
+      if (c instanceof ComposedRuleElement) {
+        ComposedRuleElement cre = (ComposedRuleElement) c;
+        cre.doMatch(after, coveredByWildCard, extendedMatch,
+                extendedContainerMatch.getContainerMatch(), annotation == null, stream, crowd);
+        element = cre;
+      }
+    }
   }
 
   private AnnotationFS getNextAnchor(boolean after, AnnotationFS annotation,
@@ -616,6 +635,8 @@ public class WildCardRuleElement extends AbstractRuleElement {
       AnnotationFS coveredByWildCard = getCoveredByWildCard(after, annotation, anchor, stream);
       doMatch(after, coveredByWildCard, extendedMatch, extendedContainerMatch, annotation == null,
               stream, crowd);
+      doMatchPotentialParentElements(after, annotation, nextDepth, extendedMatch,
+              extendedContainerMatch, coveredByWildCard, stream, crowd);
       if (extendedMatch.matched()) {
         ComposedRuleElementMatch nextContainerMatch = getContainerMatchOfNextElement(
                 extendedContainerMatch, nextDepth);

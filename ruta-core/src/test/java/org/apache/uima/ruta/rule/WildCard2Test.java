@@ -29,7 +29,6 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class WildCard2Test {
@@ -196,15 +195,26 @@ public class WildCard2Test {
   }
 
   @Test
-  @Ignore
   public void testConditionAtComposedWithWildcard() throws Exception {
-    String document = "1 a b c 2 d e f 3";
+    String document = "1 A a , 2 D d . 3";
     String script = "(NUM #){CONTAINS(CAP)->T1} NUM;";
+    script += "((NUM #){CONTAINS(COMMA)}){CONTAINS(PERIOD)-> T2} NUM;";
+    script += "((NUM #){CONTAINS(SW)}){CONTAINS(PERIOD)-> T3} NUM;";
+    script += "(NUM #){CONTAINS(CAP)->T4} (NUM);";
+    script += "((NUM #){CONTAINS(CAP)->T5}) ((NUM));";
+    script += "((NUM #){CONTAINS(CAP)->T6}) \"2\";";
+    script += "((NUM #){CONTAINS(CAP)->T7}) \"3\";";
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "2 D d .");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 0);
   }
 
   @Test
