@@ -43,46 +43,32 @@ import org.junit.Test;
 public class MacroActionTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String document = "Test";
     String script = "INT j;\n";
     script += "ACTION macro(TYPE t, INT inc) = MARK(t),ASSIGN(j,j+inc);\n";
     script += "Document{-> macro(T1,1)};\n";
     script += "Document{(j>0)->T2};\n";
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Test");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Test");
-
-    cas.release();
   }
 
   @Test
-  public void testNoArgs() {
+  public void testNoArgs() throws Exception {
     String document = "Test.";
     String script = "INT j;\n";
     script += "ACTION macro() = MARK(T1), MARK(T2);\n";
     script += "W{-> macro()};\n";
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Test");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Test");
-
-    cas.release();
   }
 
   @Test
@@ -97,8 +83,20 @@ public class MacroActionTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Test");
+  }
 
-    cas.release();
+  @Test
+  public void testLabel() throws Exception {
+    String document = "Test";
+    String script = "";
+    script += "ACTION doit() = MARK(T1);\n";
+    script += "CW{-> t:doit()}-> {t{->T2};};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Test");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Test");
   }
 
   @Test
@@ -138,7 +136,6 @@ public class MacroActionTest {
     assertNotNull(fv1);
 
     assertEquals("5", ((AnnotationFS) fv1).getCoveredText());
-
   }
 
 }

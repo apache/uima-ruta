@@ -98,6 +98,14 @@ public class MacroAction extends AbstractRutaAction {
     }
   }
 
+  @Override
+  public void setLabel(String label) {
+    super.setLabel(label);
+    for (AbstractRutaAction action : actions) {
+      action.setLabel(label);
+    }
+  }
+
   public String getName() {
     return name;
   }

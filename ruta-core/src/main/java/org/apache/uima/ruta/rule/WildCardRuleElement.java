@@ -406,6 +406,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RuleMatch extendedMatch, ComposedRuleElementMatch extendedContainerMatch,
           AnnotationFS coveredByWildCard, RutaStream stream, InferenceCrowd crowd) {
     RuleElement element = this;
+    ComposedRuleElementMatch containerMatch = extendedContainerMatch.getContainerMatch();
     for (int i = nextDepth; i > 0; i--) {
       // UIMA-6041: also doMatch for container conditions like (A #){XYZ} B;
       RuleElementContainer c = element.getContainer();
@@ -414,6 +415,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
         cre.doMatch(after, coveredByWildCard, extendedMatch,
                 extendedContainerMatch.getContainerMatch(), annotation == null, stream, crowd);
         element = cre;
+        containerMatch = containerMatch.getContainerMatch();
       }
     }
   }
