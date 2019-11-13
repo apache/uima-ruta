@@ -46,6 +46,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -53,6 +54,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
@@ -91,7 +94,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
 
       IPath outputPath = getAbsolutePath(sourceModule);
       @SuppressWarnings("unused")
-      IPath[] generateResources = generateResources(moduleDeclaration, outputPath, container,
+      final IPath[] generateResources = generateResources(moduleDeclaration, outputPath, container,
               sourceModule);
 
       IProject proj = sourceModule.getScriptProject().getProject();
@@ -102,28 +105,46 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
 
       monitor.worked(2);
       // refreshing deactivated in context of UIMA-5669
-      // String defaultDescriptorLocation = RutaProjectUtils.getDefaultDescriptorLocation();
-      // IFolder folder = container.getProject().getFolder(defaultDescriptorLocation);
-      // for (IPath iPath : generateResources) {
-      // IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-      // IFile[] files = root.findFilesForLocationURI(iPath.toFile().toURI());
-      // for (IFile file : files) {
-      // file.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-      // }
-      //
-      // IResource findMember2 = root.findMember(iPath);
-      //
-      // iPath = iPath.makeRelativeTo(folder.getLocation());
-      // IResource findMember = folder.findMember(iPath);
-      // if (findMember != null) {
-      // findMember.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-      // findMember.getParent().refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
-      // }
-      //
-      // }
-      // folder.refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(monitor,
-      // generateResources.length));
-      //
+      String defaultDescriptorLocation = RutaProjectUtils.getDefaultDescriptorLocation();
+      final IFolder folder = container.getProject().getFolder(defaultDescriptorLocation);
+
+//      for (IPath iPath : generateResources) {
+//        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+//        IFile[] files = root.findFilesForLocationURI(iPath.toFile().toURI());
+//        for (IFile file : files) {
+//          file.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+//        }
+//
+//        IResource findMember2 = root.findMember(iPath);
+//
+//        iPath = iPath.makeRelativeTo(folder.getLocation());
+//        IResource findMember = folder.findMember(iPath);
+//        if (findMember != null) {
+//          findMember.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+//          findMember.getParent().refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+//        }
+//
+//      }
+
+      Job refreshJob = new Job("Refreshing generated descriptors") {
+        @Override
+        public boolean belongsTo(Object family) {
+          return family == ResourcesPlugin.FAMILY_MANUAL_REFRESH;
+        }
+
+        @Override
+        protected IStatus run(IProgressMonitor pm) {
+          try {
+            folder.refreshLocal(IResource.DEPTH_INFINITE,
+                    new SubProgressMonitor(monitor, generateResources.length));
+          } catch (CoreException e) {
+            return e.getStatus();
+          }
+          return Status.OK_STATUS;
+        }
+      };
+      refreshJob.schedule();
+
       // monitor.worked(1);
     } catch (ModelException e) {
       if (DLTKCore.DEBUG_PARSER) {
