@@ -111,13 +111,14 @@ public class ExplainTree {
       processBlockRuleApply(fs, blockNode, ts, offset, onlyRules);
     }
 
-    for (FeatureStructure each : fs.getInnerApply()) {
-      if (!onlyRules) {
-        buildTree(each, blockNode, ts, offset, onlyRules);
-      } else {
-        buildTree(each, parent, ts, offset, onlyRules);
+    if (fs.getInnerApply() != null) {
+      for (FeatureStructure each : fs.getInnerApply()) {
+        if (!onlyRules) {
+          buildTree(each, blockNode, ts, offset, onlyRules);
+        } else {
+          buildTree(each, parent, ts, offset, onlyRules);
+        }
       }
-
     }
   }
 
@@ -134,16 +135,20 @@ public class ExplainTree {
     ruleNode.addChild(matched);
     ruleNode.addChild(failed);
 
-    for (FeatureStructure each : fs.getRules()) {
-      DebugRuleMatch eachRuleMatch = (DebugRuleMatch) each;
-      boolean matchedValue = eachRuleMatch.getMatched();
-      if (matchedValue) {
-        buildTree(eachRuleMatch, matched, ts, offset, onlyRules);
-      } else {
-        buildTree(eachRuleMatch, failed, ts, offset, onlyRules);
-      }
-      for (FeatureStructure delegateFS : eachRuleMatch.getDelegates()) {
-        buildTree(delegateFS, ruleNode, ts, offset, onlyRules);
+    if (fs.getRules() != null) {
+      for (FeatureStructure each : fs.getRules()) {
+        DebugRuleMatch eachRuleMatch = (DebugRuleMatch) each;
+        boolean matchedValue = eachRuleMatch.getMatched();
+        if (matchedValue) {
+          buildTree(eachRuleMatch, matched, ts, offset, onlyRules);
+        } else {
+          buildTree(eachRuleMatch, failed, ts, offset, onlyRules);
+        }
+        if (eachRuleMatch.getDelegates() != null) {
+          for (FeatureStructure delegateFS : eachRuleMatch.getDelegates()) {
+            buildTree(delegateFS, ruleNode, ts, offset, onlyRules);
+          }
+        }
       }
     }
   }
@@ -161,18 +166,23 @@ public class ExplainTree {
     ruleNode.addChild(matched);
     ruleNode.addChild(failed);
 
-    for (FeatureStructure each : fs.getRules()) {
-      DebugRuleMatch eachRuleMatch = (DebugRuleMatch) each;
-      boolean matchedValue = eachRuleMatch.getMatched();
-      if (matchedValue) {
-        buildTree(eachRuleMatch, matched, ts, offset, onlyRules);
-      } else {
-        buildTree(eachRuleMatch, failed, ts, offset, onlyRules);
-      }
-      for (FeatureStructure delegateFS : eachRuleMatch.getDelegates()) {
-        buildTree(delegateFS, ruleNode, ts, offset, onlyRules);
+    if (fs.getRules() != null) {
+      for (FeatureStructure each : fs.getRules()) {
+        DebugRuleMatch eachRuleMatch = (DebugRuleMatch) each;
+        boolean matchedValue = eachRuleMatch.getMatched();
+        if (matchedValue) {
+          buildTree(eachRuleMatch, matched, ts, offset, onlyRules);
+        } else {
+          buildTree(eachRuleMatch, failed, ts, offset, onlyRules);
+        }
+        if (eachRuleMatch.getDelegates() != null) {
+          for (FeatureStructure delegateFS : eachRuleMatch.getDelegates()) {
+            buildTree(delegateFS, ruleNode, ts, offset, onlyRules);
+          }
+        }
       }
     }
+
   }
 
   private void processRuleMatch(DebugRuleMatch fs, IExplainTreeNode parent, TypeSystem ts,
@@ -186,8 +196,10 @@ public class ExplainTree {
     RuleElementRootNode remRoot = new RuleElementRootNode(matchNode, ts);
     matchNode.addChild(remRoot);
 
-    for (FeatureStructure each : fs.getElements()) {
-      buildTree(each, remRoot, ts, offset, onlyRules);
+    if (fs.getElements() != null) {
+      for (FeatureStructure each : fs.getElements()) {
+        buildTree(each, remRoot, ts, offset, onlyRules);
+      }
     }
   }
 
@@ -196,8 +208,10 @@ public class ExplainTree {
     RuleElementMatchesNode remsNode = new RuleElementMatchesNode(parent, fs, ts);
     parent.addChild(remsNode);
 
-    for (FeatureStructure each : fs.getMatches()) {
-      buildTree(each, remsNode, ts, offset, onlyRules);
+    if (fs.getMatches() != null) {
+      for (FeatureStructure each : fs.getMatches()) {
+        buildTree(each, remsNode, ts, offset, onlyRules);
+      }
     }
   }
 
@@ -212,11 +226,15 @@ public class ExplainTree {
     DebugEvaluatedCondition baseCondition = fs.getBaseCondition();
     buildTree(baseCondition, remNode, ts, offset, onlyRules);
 
-    for (FeatureStructure each : fs.getConditions()) {
-      buildTree(each, remNode, ts, offset, onlyRules);
+    if (fs.getConditions() != null) {
+      for (FeatureStructure each : fs.getConditions()) {
+        buildTree(each, remNode, ts, offset, onlyRules);
+      }
     }
-    for (FeatureStructure each : fs.getElements()) {
-      buildTree(each, remNode, ts, offset, onlyRules);
+    if (fs.getElements() != null) {
+      for (FeatureStructure each : fs.getElements()) {
+        buildTree(each, remNode, ts, offset, onlyRules);
+      }
     }
   }
 
@@ -225,8 +243,10 @@ public class ExplainTree {
     ConditionNode condNode = new ConditionNode(parent, fs, ts);
     parent.addChild(condNode);
 
-    for (FeatureStructure each : fs.getConditions()) {
-      buildTree(each, condNode, ts, offset, onlyRules);
+    if (fs.getConditions() != null) {
+      for (FeatureStructure each : fs.getConditions()) {
+        buildTree(each, condNode, ts, offset, onlyRules);
+      }
     }
   }
 

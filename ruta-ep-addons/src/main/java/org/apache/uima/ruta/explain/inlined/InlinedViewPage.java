@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.uima.ruta.explain.element;
+package org.apache.uima.ruta.explain.inlined;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,14 +25,15 @@ import java.util.Map;
 import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.explain.ExplainConstants;
-import org.apache.uima.ruta.explain.failed.FailedView;
-import org.apache.uima.ruta.explain.matched.MatchedView;
-import org.apache.uima.ruta.explain.tree.RuleElementRootNode;
-import org.apache.uima.ruta.explain.tree.RuleMatchNode;
+import org.apache.uima.ruta.explain.apply.ApplyView;
+import org.apache.uima.ruta.explain.rulelist.RuleListView;
+import org.apache.uima.ruta.explain.selection.ExplainSelectionView;
+import org.apache.uima.ruta.explain.tree.BlockApplyNode;
+import org.apache.uima.ruta.explain.tree.RuleApplyNode;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -41,13 +42,13 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.Page;
 
-public class ElementViewPage extends Page implements ISelectionListener {
+public class InlinedViewPage extends Page implements ISelectionListener {
 
-  private TreeViewer treeView;
+  private CheckboxTreeViewer treeView;
 
   private Map<String, Image> images;
 
-  public ElementViewPage(AnnotationEditor editor) {
+  public InlinedViewPage(AnnotationEditor editor) {
     super();
   }
 
@@ -68,41 +69,25 @@ public class ElementViewPage extends Page implements ISelectionListener {
     Image image;
     String name;
 
-    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation_add.png");
-    image = desc.createImage();
-    name = ExplainConstants.RULE_ELEMENT_MATCHES_TYPE + "true";
-    images.put(name, image);
-
-    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation_delete.png");
-    image = desc.createImage();
-    name = ExplainConstants.RULE_ELEMENT_MATCHES_TYPE + "false";
-    images.put(name, image);
-
-    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation_delete.png");
-    image = desc.createImage();
-    name = "element";
-    images.put(name, image);
-
-    desc = RutaAddonsPlugin.getImageDescriptor("/icons/font_add.png");
-    image = desc.createImage();
-    name = ExplainConstants.RULE_ELEMENT_MATCH_TYPE + "true";
-    images.put(name, image);
-
-    desc = RutaAddonsPlugin.getImageDescriptor("/icons/font_delete.png");
-    image = desc.createImage();
-    name = ExplainConstants.RULE_ELEMENT_MATCH_TYPE + "false";
-    images.put(name, image);
-
     desc = RutaAddonsPlugin.getImageDescriptor("/icons/accept.png");
     image = desc.createImage();
-    name = ExplainConstants.EVAL_CONDITION_TYPE + "true";
+    name = "matched";
     images.put(name, image);
 
     desc = RutaAddonsPlugin.getImageDescriptor("/icons/cancel.png");
     image = desc.createImage();
-    name = ExplainConstants.EVAL_CONDITION_TYPE + "false";
+    name = "failed";
     images.put(name, image);
 
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/font_add.png");
+    image = desc.createImage();
+    name = ExplainConstants.MATCHED_RULE_MATCH_TYPE;
+    images.put(name, image);
+
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/font_delete.png");
+    image = desc.createImage();
+    name = ExplainConstants.FAILED_RULE_MATCH_TYPE;
+    images.put(name, image);
   }
 
   public Image getImage(String name) {
@@ -114,13 +99,10 @@ public class ElementViewPage extends Page implements ISelectionListener {
 
   @Override
   public void createControl(Composite parent) {
-    // treeView = new CheckboxTreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL
-    // | SWT.V_SCROLL);
-    treeView = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
-    treeView.setContentProvider(new ElementTreeContentProvider());
-    treeView.setLabelProvider(new ElementTreeLabelProvider(this));
+    treeView = new CheckboxTreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
+    treeView.setContentProvider(new InlinedTreeContentProvider());
+    treeView.setLabelProvider(new InlinedTreeLabelProvider(this));
     treeView.setInput(null);
-    // treeView.addCheckStateListener(getCurrentCEVData());
     getSite().setSelectionProvider(treeView);
     getSite().getPage().addSelectionListener(this);
   }
@@ -136,34 +118,28 @@ public class ElementViewPage extends Page implements ISelectionListener {
   }
 
   public void inputChange(Object newInput) {
-    if (treeView == null) {
+    if (newInput == null || treeView == null || newInput == treeView.getInput()) {
       return;
     }
-    Object oldInput = treeView.getInput();
-    if ((oldInput == null && newInput == null) || (oldInput != null && oldInput.equals(newInput)))
-      return;
-
-    if (newInput != null && newInput instanceof RuleElementRootNode) {
-      treeView.setInput(newInput);
-      treeView.expandAll();
-      treeView.refresh();
-    } else {
-      treeView.setInput(null);
-    }
+    // TODO filter
+    this.treeView.setInput(newInput);
+    this.treeView.refresh();
   }
 
   @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-    if (selection instanceof TreeSelection
-            && (part instanceof MatchedView || part instanceof FailedView)) {
+    if (selection instanceof TreeSelection && (part instanceof ApplyView
+            || part instanceof RuleListView || part instanceof ExplainSelectionView)) {
       TreeSelection ts = (TreeSelection) selection;
       Object firstElement = ts.getFirstElement();
 
-      if (firstElement instanceof RuleMatchNode) {
-        RuleMatchNode match = (RuleMatchNode) firstElement;
-        if (match.hasChildren()) {
-          inputChange(match.getChildren().get(0));
-        }
+      // TODO: !!!!
+      if (firstElement instanceof BlockApplyNode) {
+        BlockApplyNode block = (BlockApplyNode) firstElement;
+        inputChange(block.getBlockRuleNode().getMatchedChild());
+      } else if (firstElement instanceof RuleApplyNode) {
+        RuleApplyNode rule = (RuleApplyNode) firstElement;
+        inputChange(rule.getMatchedChild());
       }
 
     }

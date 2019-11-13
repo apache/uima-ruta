@@ -113,7 +113,7 @@ public class ApplyTreeLabelProvider extends LabelProvider implements ILabelProvi
             FeatureStructure parent = parentNode.getFeatureStructure();
             if (parent != null) {
               long parentTime = parent.getLongValue(f4);
-              if(parentTime>0) {
+              if (parentTime > 0) {
                 percent = (took / (parentTime / 1000.0)) * 100.0;
               }
             }
