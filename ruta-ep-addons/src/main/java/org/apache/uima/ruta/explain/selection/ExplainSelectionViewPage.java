@@ -46,7 +46,7 @@ public class ExplainSelectionViewPage extends ApplyViewPage {
     viewer.setContentProvider(new ApplyTreeContentProvider());
     viewer.setLabelProvider(new ApplyTreeLabelProvider(this));
 
-    viewer.setInput(new ApplyRootNode(null, document.getCAS().getTypeSystem()));
+    viewer.setInput(new ApplyRootNode(null, getJCas().getTypeSystem()));
 
     getSite().setSelectionProvider(viewer);
     getSite().getPage().addSelectionListener(this);
@@ -57,7 +57,7 @@ public class ExplainSelectionViewPage extends ApplyViewPage {
     if (selection instanceof StructuredSelection && part instanceof AnnotationEditor) {
       offset = editor.getCaretOffset();
       if (offset >= 0) {
-        ExplainTree tree = new ExplainTree(document.getCAS(), offset);
+        ExplainTree tree = new ExplainTree(getJCas(), offset);
         viewer.setInput(tree.getRoot());
         viewer.refresh();
       }

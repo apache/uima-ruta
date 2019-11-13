@@ -24,91 +24,59 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.uima.cas.ArrayFS;
-import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.fit.util.CasUtil;
-import org.apache.uima.ruta.explain.ExplainConstants;
+import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.ruta.type.DebugBlockApply;
+import org.apache.uima.ruta.type.DebugEvaluatedCondition;
+import org.apache.uima.ruta.type.DebugRuleApply;
+import org.apache.uima.ruta.type.DebugRuleElementMatch;
+import org.apache.uima.ruta.type.DebugRuleElementMatches;
+import org.apache.uima.ruta.type.DebugRuleMatch;
+import org.apache.uima.ruta.type.DebugScriptApply;
 
 public class ExplainTree {
 
   private IExplainTreeNode root;
 
-  private Type ruleMatchType;
-
-  private Type blockApplyType;
-
-  private Type ruleApplyType;
-
-  private Type ruleElementMatchType;
-
-  private Type ruleElementMatchesType;
-
-  private Type evaluatedConditionType;
-
-  private Type matchedRuleMatchType;
-
-  private Type failedRuleMatchType;
-
-  public ExplainTree(CAS cas) {
-    this(cas, -1);
+  public ExplainTree(JCas jcas) {
+    this(jcas, -1);
   }
 
-  public ExplainTree(CAS cas, int offset) {
-    this(cas, offset, false);
+  public ExplainTree(JCas jcas, int offset) {
+    this(jcas, offset, false);
     if (offset >= 0) {
       prune(root);
     }
   }
 
-  public ExplainTree(CAS cas, int offset, boolean onlyRules) {
-    createTree(cas, offset, onlyRules);
+  public ExplainTree(JCas jcas, int offset, boolean onlyRules) {
+    createTree(jcas, offset, onlyRules);
   }
 
   public IExplainTreeNode getRoot() {
     return root;
   }
 
-  private void createTree(CAS cas, int offset, boolean onlyRules) {
-    TypeSystem ts = cas.getTypeSystem();
-    Type scriptApplyType = ts.getType(ExplainConstants.SCRIPT_APPLY_TYPE);
-
-    blockApplyType = ts.getType(ExplainConstants.BLOCK_APPLY_TYPE);
-    ruleApplyType = ts.getType(ExplainConstants.RULE_APPLY_TYPE);
-    ruleMatchType = ts.getType(ExplainConstants.RULE_MATCH_TYPE);
-    matchedRuleMatchType = ts.getType(ExplainConstants.MATCHED_RULE_MATCH_TYPE);
-    failedRuleMatchType = ts.getType(ExplainConstants.FAILED_RULE_MATCH_TYPE);
-    ruleElementMatchType = ts.getType(ExplainConstants.RULE_ELEMENT_MATCH_TYPE);
-    ruleElementMatchesType = ts.getType(ExplainConstants.RULE_ELEMENT_MATCHES_TYPE);
-    evaluatedConditionType = ts.getType(ExplainConstants.EVAL_CONDITION_TYPE);
-
-    if (scriptApplyType == null) {
-      return;
-    }
-
-    List<AnnotationFS> scriptApplies = new ArrayList<>(CasUtil.select(cas, scriptApplyType));
+  private void createTree(JCas jcas, int offset, boolean onlyRules) {
+    TypeSystem ts = jcas.getTypeSystem();
+    List<DebugScriptApply> scriptApplies = new ArrayList<>(
+            JCasUtil.select(jcas, DebugScriptApply.class));
     // sort by creation time
-    Collections.sort(scriptApplies, new Comparator<AnnotationFS>() {
+    Collections.sort(scriptApplies, new Comparator<DebugScriptApply>() {
 
       @Override
-      public int compare(AnnotationFS o1, AnnotationFS o2) {
-        Feature feature = o1.getType().getFeatureByBaseName(ExplainConstants.TIME_STAMP);
-        if (feature == null || !o1.getType().equals(o2.getType())) {
-          return o1.getType().getName().compareTo(o2.getType().getName());
-        }
-        long l1 = o1.getLongValue(feature);
-        long l2 = o2.getLongValue(feature);
+      public int compare(DebugScriptApply o1, DebugScriptApply o2) {
+        long l1 = o1.getTimestamp();
+        long l2 = o2.getTimestamp();
         return Long.compare(l1, l2);
       }
     });
 
     root = new ApplyRootNode(null, ts);
 
-    for (AnnotationFS scriptApply : scriptApplies) {
+    for (DebugScriptApply scriptApply : scriptApplies) {
 
       buildTree(scriptApply, root, ts, offset, onlyRules);
     }
@@ -116,23 +84,22 @@ public class ExplainTree {
 
   private void buildTree(FeatureStructure fs, IExplainTreeNode parent, TypeSystem ts, int offset,
           boolean onlyRules) {
-    if (blockApplyType != null && blockApplyType.equals(fs.getType())) {
-      processBlockApply((AnnotationFS) fs, parent, ts, offset, onlyRules);
-    } else if (ruleApplyType != null && ruleApplyType.equals(fs.getType())) {
-      processRuleApply((AnnotationFS) fs, parent, ts, offset, onlyRules);
-    } else if ((matchedRuleMatchType != null && matchedRuleMatchType.equals(fs.getType()))
-            || (failedRuleMatchType != null && failedRuleMatchType.equals(fs.getType()))) {
-      processRuleMatch((AnnotationFS) fs, parent, ts, offset, onlyRules);
-    } else if (ruleElementMatchesType != null && ruleElementMatchesType.equals(fs.getType())) {
-      processRuleElementMatches(fs, parent, ts, offset, onlyRules);
-    } else if (ruleElementMatchType != null && ruleElementMatchType.equals(fs.getType())) {
-      processRuleElementMatch((AnnotationFS) fs, parent, ts, offset, onlyRules);
-    } else if (evaluatedConditionType != null && evaluatedConditionType.equals(fs.getType())) {
-      processEvaluatedCondition(fs, parent, ts, offset, onlyRules);
+    if (fs instanceof DebugBlockApply) {
+      processBlockApply((DebugBlockApply) fs, parent, ts, offset, onlyRules);
+    } else if (fs instanceof DebugRuleApply) {
+      processRuleApply((DebugRuleApply) fs, parent, ts, offset, onlyRules);
+    } else if (fs instanceof DebugRuleMatch) {
+      processRuleMatch((DebugRuleMatch) fs, parent, ts, offset, onlyRules);
+    } else if (fs instanceof DebugRuleElementMatches) {
+      processRuleElementMatches((DebugRuleElementMatches) fs, parent, ts, offset, onlyRules);
+    } else if (fs instanceof DebugRuleElementMatch) {
+      processRuleElementMatch((DebugRuleElementMatch) fs, parent, ts, offset, onlyRules);
+    } else if (fs instanceof DebugEvaluatedCondition) {
+      processEvaluatedCondition((DebugEvaluatedCondition) fs, parent, ts, offset, onlyRules);
     }
   }
 
-  private void processBlockApply(AnnotationFS fs, IExplainTreeNode parent, TypeSystem ts,
+  private void processBlockApply(DebugBlockApply fs, IExplainTreeNode parent, TypeSystem ts,
           int offset, boolean onlyRules) {
     if (offset >= 0 && (fs.getBegin() >= offset || fs.getEnd() <= offset)) {
       return;
@@ -143,11 +110,8 @@ public class ExplainTree {
       parent.addChild(blockNode);
       processBlockRuleApply(fs, blockNode, ts, offset, onlyRules);
     }
-    Feature feature = blockApplyType.getFeatureByBaseName(ExplainConstants.INNER_APPLY);
-    FeatureStructure featureValue = fs.getFeatureValue(feature);
-    ArrayFS value = (ArrayFS) featureValue;
-    FeatureStructure[] fsarray = value.toArray();
-    for (FeatureStructure each : fsarray) {
+
+    for (FeatureStructure each : fs.getInnerApply()) {
       if (!onlyRules) {
         buildTree(each, blockNode, ts, offset, onlyRules);
       } else {
@@ -157,7 +121,7 @@ public class ExplainTree {
     }
   }
 
-  private void processBlockRuleApply(AnnotationFS fs, BlockApplyNode parent, TypeSystem ts,
+  private void processBlockRuleApply(DebugBlockApply fs, BlockApplyNode parent, TypeSystem ts,
           int offset, boolean onlyRules) {
     if (offset >= 0 && (fs.getBegin() >= offset || fs.getEnd() <= offset)) {
       return;
@@ -165,82 +129,54 @@ public class ExplainTree {
     RuleApplyNode ruleNode = new RuleApplyNode(parent, fs, ts);
     parent.setBlockRuleApply(ruleNode);
 
-    Feature feature = ruleApplyType.getFeatureByBaseName(ExplainConstants.RULES);
-    ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
-    if (value == null)
-      return;
-    FeatureStructure[] fsarray = value.toArray();
-
     MatchedRootNode matched = new MatchedRootNode(ruleNode, ts);
     FailedRootNode failed = new FailedRootNode(ruleNode, ts);
     ruleNode.addChild(matched);
     ruleNode.addChild(failed);
 
-    for (FeatureStructure eachRuleMatch : fsarray) {
-      Feature f = eachRuleMatch.getType().getFeatureByBaseName(ExplainConstants.MATCHED);
-      boolean matchedValue = eachRuleMatch.getBooleanValue(f);
+    for (FeatureStructure each : fs.getRules()) {
+      DebugRuleMatch eachRuleMatch = (DebugRuleMatch) each;
+      boolean matchedValue = eachRuleMatch.getMatched();
       if (matchedValue) {
         buildTree(eachRuleMatch, matched, ts, offset, onlyRules);
       } else {
         buildTree(eachRuleMatch, failed, ts, offset, onlyRules);
       }
-
-      Feature df = eachRuleMatch.getType().getFeatureByBaseName(ExplainConstants.DELEGATES);
-      if (df != null) {
-        ArrayFS dv = (ArrayFS) eachRuleMatch.getFeatureValue(df);
-        if (dv != null) {
-          FeatureStructure[] da = dv.toArray();
-          for (FeatureStructure delegateFS : da) {
-            buildTree(delegateFS, ruleNode, ts, offset, onlyRules);
-          }
-        }
+      for (FeatureStructure delegateFS : eachRuleMatch.getDelegates()) {
+        buildTree(delegateFS, ruleNode, ts, offset, onlyRules);
       }
-
     }
   }
 
-  private void processRuleApply(AnnotationFS fs, IExplainTreeNode parent, TypeSystem ts, int offset,
-          boolean onlyRules) {
+  private void processRuleApply(DebugRuleApply fs, IExplainTreeNode parent, TypeSystem ts,
+          int offset, boolean onlyRules) {
     if (offset >= 0 && (fs.getBegin() >= offset || fs.getEnd() <= offset)) {
       return;
     }
     RuleApplyNode ruleNode = new RuleApplyNode(parent, fs, ts);
     parent.addChild(ruleNode);
 
-    Feature feature = ruleApplyType.getFeatureByBaseName(ExplainConstants.RULES);
-    ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
-    FeatureStructure[] fsarray = value.toArray();
-
     MatchedRootNode matched = new MatchedRootNode(ruleNode, ts);
     FailedRootNode failed = new FailedRootNode(ruleNode, ts);
     ruleNode.addChild(matched);
     ruleNode.addChild(failed);
 
-    for (FeatureStructure eachRuleMatch : fsarray) {
-      Feature f = eachRuleMatch.getType().getFeatureByBaseName(ExplainConstants.MATCHED);
-      boolean matchedValue = eachRuleMatch.getBooleanValue(f);
+    for (FeatureStructure each : fs.getRules()) {
+      DebugRuleMatch eachRuleMatch = (DebugRuleMatch) each;
+      boolean matchedValue = eachRuleMatch.getMatched();
       if (matchedValue) {
         buildTree(eachRuleMatch, matched, ts, offset, onlyRules);
       } else {
         buildTree(eachRuleMatch, failed, ts, offset, onlyRules);
       }
-
-      Feature df = eachRuleMatch.getType().getFeatureByBaseName(ExplainConstants.DELEGATES);
-      if (df != null) {
-        ArrayFS dv = (ArrayFS) eachRuleMatch.getFeatureValue(df);
-        if (dv != null) {
-          FeatureStructure[] da = dv.toArray();
-          for (FeatureStructure delegateFS : da) {
-            buildTree(delegateFS, ruleNode, ts, offset, onlyRules);
-          }
-        }
+      for (FeatureStructure delegateFS : eachRuleMatch.getDelegates()) {
+        buildTree(delegateFS, ruleNode, ts, offset, onlyRules);
       }
-
     }
   }
 
-  private void processRuleMatch(AnnotationFS fs, IExplainTreeNode parent, TypeSystem ts, int offset,
-          boolean onlyRules) {
+  private void processRuleMatch(DebugRuleMatch fs, IExplainTreeNode parent, TypeSystem ts,
+          int offset, boolean onlyRules) {
     if (offset >= 0 && (fs.getBegin() >= offset || fs.getEnd() <= offset)) {
       return;
     }
@@ -250,71 +186,47 @@ public class ExplainTree {
     RuleElementRootNode remRoot = new RuleElementRootNode(matchNode, ts);
     matchNode.addChild(remRoot);
 
-    Feature feature = ruleMatchType.getFeatureByBaseName(ExplainConstants.ELEMENTS);
-    ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
-    if (value != null) {
-      FeatureStructure[] fsarray = value.toArray();
-      for (FeatureStructure each : fsarray) {
-        buildTree(each, remRoot, ts, offset, onlyRules);
-      }
+    for (FeatureStructure each : fs.getElements()) {
+      buildTree(each, remRoot, ts, offset, onlyRules);
     }
   }
 
-  private void processRuleElementMatches(FeatureStructure fs, IExplainTreeNode parent,
+  private void processRuleElementMatches(DebugRuleElementMatches fs, IExplainTreeNode parent,
           TypeSystem ts, int offset, boolean onlyRules) {
     RuleElementMatchesNode remsNode = new RuleElementMatchesNode(parent, fs, ts);
     parent.addChild(remsNode);
 
-    Feature feature = ruleElementMatchesType.getFeatureByBaseName(ExplainConstants.MATCHES);
-    ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
-    FeatureStructure[] fsarray = value.toArray();
-    for (FeatureStructure each : fsarray) {
+    for (FeatureStructure each : fs.getMatches()) {
       buildTree(each, remsNode, ts, offset, onlyRules);
     }
   }
 
-  private void processRuleElementMatch(AnnotationFS fs, IExplainTreeNode parent, TypeSystem ts,
-          int offset, boolean onlyRules) {
+  private void processRuleElementMatch(DebugRuleElementMatch fs, IExplainTreeNode parent,
+          TypeSystem ts, int offset, boolean onlyRules) {
     if (offset >= 0 && (fs.getBegin() >= offset || fs.getEnd() <= offset)) {
       return;
     }
     RuleElementMatchNode remNode = new RuleElementMatchNode(parent, fs, ts);
     parent.addChild(remNode);
 
-    Feature feature = ruleElementMatchType.getFeatureByBaseName(ExplainConstants.BASE_CONDITION);
-    FeatureStructure base = fs.getFeatureValue(feature);
-    buildTree(base, remNode, ts, offset, onlyRules);
+    DebugEvaluatedCondition baseCondition = fs.getBaseCondition();
+    buildTree(baseCondition, remNode, ts, offset, onlyRules);
 
-    feature = ruleElementMatchType.getFeatureByBaseName(ExplainConstants.CONDITIONS);
-    ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
-    if (value != null) {
-      FeatureStructure[] fsarray = value.toArray();
-      for (FeatureStructure each : fsarray) {
-        buildTree(each, remNode, ts, offset, onlyRules);
-      }
+    for (FeatureStructure each : fs.getConditions()) {
+      buildTree(each, remNode, ts, offset, onlyRules);
     }
-    feature = fs.getType().getFeatureByBaseName(ExplainConstants.ELEMENTS);
-    value = (ArrayFS) fs.getFeatureValue(feature);
-    if (value != null) {
-      FeatureStructure[] fsarray = value.toArray();
-      for (FeatureStructure each : fsarray) {
-        buildTree(each, remNode, ts, offset, onlyRules);
-      }
+    for (FeatureStructure each : fs.getElements()) {
+      buildTree(each, remNode, ts, offset, onlyRules);
     }
   }
 
-  private void processEvaluatedCondition(FeatureStructure fs, IExplainTreeNode parent,
+  private void processEvaluatedCondition(DebugEvaluatedCondition fs, IExplainTreeNode parent,
           TypeSystem ts, int offset, boolean onlyRules) {
     ConditionNode condNode = new ConditionNode(parent, fs, ts);
     parent.addChild(condNode);
 
-    Feature feature = evaluatedConditionType.getFeatureByBaseName(ExplainConstants.CONDITIONS);
-    ArrayFS value = (ArrayFS) fs.getFeatureValue(feature);
-    if (value != null) {
-      FeatureStructure[] fsarray = value.toArray();
-      for (FeatureStructure each : fsarray) {
-        buildTree(each, condNode, ts, offset, onlyRules);
-      }
+    for (FeatureStructure each : fs.getConditions()) {
+      buildTree(each, condNode, ts, offset, onlyRules);
     }
   }
 
