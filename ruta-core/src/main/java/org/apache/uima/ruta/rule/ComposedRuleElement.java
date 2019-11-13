@@ -577,7 +577,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     containerMatch.setConditionInfo(evaluatedConditions);
     containerMatch.evaluateInnerMatches(true, stream);
     if (containerMatch.matched()) {
-      boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
+      boolean inlinedRulesMatched = matchInlinedRules(ruleMatch, containerMatch, stream, crowd);
       containerMatch.setInlinedRulesMatched(inlinedRulesMatched);
     } else {
       // update label for failed match after evaluating conditions

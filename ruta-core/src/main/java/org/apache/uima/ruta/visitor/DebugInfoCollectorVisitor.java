@@ -79,7 +79,7 @@ public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
   }
 
   public boolean createDebugInfo(RutaRule rule) {
-    return createDebugInfo || ids.contains("" + rule.getId());
+    return createDebugInfo || ids.contains(String.valueOf(rule.getId()));
   }
 
   @Override

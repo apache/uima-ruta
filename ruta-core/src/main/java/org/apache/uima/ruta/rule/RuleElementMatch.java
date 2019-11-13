@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.ScriptApply;
 
 public class RuleElementMatch {
 
@@ -43,6 +44,10 @@ public class RuleElementMatch {
 
   private boolean ruleAnchor = false;
 
+  private List<List<ScriptApply>> inlinedActionRules;
+
+  private List<List<ScriptApply>> inlinedConditionRules;
+
   public RuleElementMatch(RuleElement ruleElement, ComposedRuleElementMatch containerMatch) {
     super();
     this.ruleElement = ruleElement;
@@ -54,8 +59,7 @@ public class RuleElementMatch {
     return ruleElement.getLabel();
   }
 
-  public void setMatchInfo(boolean baseCondition, List<AnnotationFS> texts,
-         RutaStream stream) {
+  public void setMatchInfo(boolean baseCondition, List<AnnotationFS> texts, RutaStream stream) {
     baseConditionMatched = baseCondition;
     textsMatched = texts;
     conditionsMatched = baseConditionMatched;
@@ -63,7 +67,7 @@ public class RuleElementMatch {
       containerMatch.addInnerMatch(ruleElement, this, stream);
     }
   }
-  
+
   public void setConditionInfo(boolean baseCondition, List<EvaluatedCondition> conditionList) {
     baseConditionMatched = baseCondition;
     conditions = conditionList;
@@ -74,7 +78,6 @@ public class RuleElementMatch {
       }
     }
   }
-  
 
   public boolean matched() {
     return baseConditionMatched && conditionsMatched && inlinedRulesMatched;
@@ -158,5 +161,23 @@ public class RuleElementMatch {
 
   public void setInlinedRulesMatched(boolean inlinedRulesMatched) {
     this.inlinedRulesMatched = inlinedRulesMatched;
+  }
+
+  public void setInlinedActionRules(List<List<ScriptApply>> inlinedBlocksApplies) {
+    this.inlinedActionRules = inlinedBlocksApplies;
+  }
+
+  public void setInlinedConditionRules(List<List<ScriptApply>> inlinedBlocksApplies) {
+    this.inlinedConditionRules = inlinedBlocksApplies;
+
+  }
+
+  public List<List<ScriptApply>> getInlinedActionRules() {
+    return this.inlinedActionRules;
+  }
+
+  public List<List<ScriptApply>> getInlinedConditionRules() {
+    return this.inlinedConditionRules;
+
   }
 }

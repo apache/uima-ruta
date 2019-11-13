@@ -88,7 +88,7 @@ public class RutaOptionalRuleElement extends RutaRuleElement {
     }
     result.setConditionInfo(base, evaluatedConditions);
     if (result.matched()) {
-      boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
+      boolean inlinedRulesMatched = matchInlinedRules(ruleMatch, result, stream, crowd);
       result.setInlinedRulesMatched(inlinedRulesMatched);
     } else {
       // update label for failed match after evaluating conditions

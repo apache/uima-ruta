@@ -140,18 +140,36 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     }
   }
 
+  protected void processInlinedActionRules(RuleMatch ruleMatch, RutaStream stream,
+          InferenceCrowd crowd) {
+    List<List<RuleElementMatch>> matchInfo = ruleMatch.getMatchInfo(this);
+    // TODO: which rule element match should be used? all? should context matter?
+    if (matchInfo == null || matchInfo.isEmpty() || matchInfo.get(0) == null
+            || matchInfo.get(0).isEmpty()) {
+      return;
+    }
+    RuleElementMatch ruleElementMatch = matchInfo.get(0).get(0);
+    processInlinedActionRules(ruleMatch, ruleElementMatch, stream, crowd);
+  }
+
   protected List<List<ScriptApply>> processInlinedActionRules(RuleMatch ruleMatch,
-          RutaStream stream, InferenceCrowd crowd) {
+          RuleElementMatch ruleElementMatch, RutaStream stream, InferenceCrowd crowd) {
     if (inlinedActionRuleBlocks != null && !inlinedActionRuleBlocks.isEmpty()) {
-      return processInlinedRules(inlinedActionRuleBlocks, ruleMatch, stream, crowd);
+      List<List<ScriptApply>> inlinedBlocksApplies = processInlinedRules(inlinedActionRuleBlocks,
+              ruleMatch, stream, crowd);
+      ruleElementMatch.setInlinedActionRules(inlinedBlocksApplies);
+      return inlinedBlocksApplies;
     }
     return null;
   }
 
   protected List<List<ScriptApply>> processInlinedConditionRules(RuleMatch ruleMatch,
-          RutaStream stream, InferenceCrowd crowd) {
+          RuleElementMatch ruleElementMatch, RutaStream stream, InferenceCrowd crowd) {
     if (inlinedConditionRuleBlocks != null && !inlinedConditionRuleBlocks.isEmpty()) {
-      return processInlinedRules(inlinedConditionRuleBlocks, ruleMatch, stream, crowd);
+      List<List<ScriptApply>> inlinedBlocksApplies = processInlinedRules(inlinedConditionRuleBlocks,
+              ruleMatch, stream, crowd);
+      ruleElementMatch.setInlinedConditionRules(inlinedBlocksApplies);
+      return inlinedBlocksApplies;
     }
     return null;
   }
@@ -159,20 +177,14 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   protected List<List<ScriptApply>> processInlinedRules(List<List<RutaStatement>> inlinedRuleBlocks,
           RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     List<List<ScriptApply>> result = new ArrayList<>();
+
     List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOfElement(this);
-    // TODO where to implement the explanation of inlined rules?
-    // BlockApply blockApply = new BlockApply(this);
-    // RuleApply dummyRuleApply = getDummyRuleApply(ruleMatch);
-    // blockApply.setRuleApply(dummyRuleApply);
-    // ruleMatch.addDelegateApply(this, blockApply);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
       for (List<RutaStatement> inlinedRules : inlinedRuleBlocks) {
         List<ScriptApply> blockResult = new ArrayList<>();
         for (RutaStatement each : inlinedRules) {
           ScriptApply apply = each.apply(windowStream, crowd);
-          // blockApply.add(apply);
-          ruleMatch.addDelegateApply(this, apply);
           blockResult.add(apply);
         }
         result.add(blockResult);
@@ -188,12 +200,15 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
       action.execute(new MatchContext(this, ruleMatch), stream, crowd);
       crowd.endVisit(action, null);
     }
+
     processInlinedActionRules(ruleMatch, stream, crowd);
   }
 
-  protected boolean matchInnerRules(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
+  protected boolean matchInlinedRules(RuleMatch ruleMatch, RuleElementMatch ruleElementMatch,
+          RutaStream stream, InferenceCrowd crowd) {
 
-    List<List<ScriptApply>> blockResults = processInlinedConditionRules(ruleMatch, stream, crowd);
+    List<List<ScriptApply>> blockResults = processInlinedConditionRules(ruleMatch, ruleElementMatch,
+            stream, crowd);
     if (blockResults == null) {
       return true;
     }
