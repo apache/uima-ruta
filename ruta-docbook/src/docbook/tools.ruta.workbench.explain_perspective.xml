@@ -244,6 +244,28 @@
       <quote>NameLinker</quote> annotation the whole rule fails.
     </para>
   </section>
+  
+  <section
+    id="section.ugr.tools.ruta.workbench.explain_perspective.inlined_rules">
+    <title>Inlined Rules</title>
+    <para>
+      The Inlined Rules view provides additional information about the blocks of rules 
+      that are inlined as condition or as actions. The view is automatically updated 
+      if a element in a different view is selected, which contains inlined rules.
+      This includes the Rule Elements view, the Matched View and the Failed View. 
+      If a rule apply in the Applied Rules View contains only a single rule match 
+      and this match, then the Inlined Rules View is also updated.
+      If a rule apply in the Inlined Rules View is selected, then 
+      the Matched Rules View and the Failed Rules View is updated with the matched 
+      of this inlined rule.
+    </para>
+    <para>
+      This view is not by default included in the perspective, but need to be added manually, 
+      e.g., by using the Quick Access near the perspectives.
+    </para>
+    
+    
+  </section>
 
   <section
     id="section.ugr.tools.ruta.workbench.explain_perspective.covering_rules">
