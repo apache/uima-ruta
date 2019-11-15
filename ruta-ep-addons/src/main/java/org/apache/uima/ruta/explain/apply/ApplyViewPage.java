@@ -107,6 +107,23 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
     image = desc.createImage();
     name = ExplainConstants.RULE_APPLY_TYPE;
     images.put(name, image);
+    images.put(ExplainConstants.INLINED_AS_ACTION, image);
+
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/arrow_left.png");
+    image = desc.createImage();
+    images.put(ExplainConstants.INLINED_AS_CONDITION, image);
+
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation.png");
+    image = desc.createImage();
+    images.put(ExplainConstants.INLINED_ACTION_BLOCK, image);
+
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation_add.png");
+    image = desc.createImage();
+    images.put(ExplainConstants.INLINED_CONDITION_BLOCK_MATCHED, image);
+
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation_delete.png");
+    image = desc.createImage();
+    images.put(ExplainConstants.INLINED_CONDITION_BLOCK_FAILED, image);
 
     desc = RutaAddonsPlugin.getImageDescriptor("/icons/arrow_branch.png");
     image = desc.createImage();

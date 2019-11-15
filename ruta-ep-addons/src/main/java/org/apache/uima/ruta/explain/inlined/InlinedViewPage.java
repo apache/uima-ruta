@@ -19,129 +19,63 @@
 
 package org.apache.uima.ruta.explain.inlined;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.uima.caseditor.editor.AnnotationEditor;
-import org.apache.uima.ruta.addons.RutaAddonsPlugin;
-import org.apache.uima.ruta.explain.ExplainConstants;
 import org.apache.uima.ruta.explain.apply.ApplyView;
+import org.apache.uima.ruta.explain.apply.ApplyViewPage;
+import org.apache.uima.ruta.explain.element.ElementView;
+import org.apache.uima.ruta.explain.failed.FailedView;
+import org.apache.uima.ruta.explain.matched.MatchedView;
 import org.apache.uima.ruta.explain.rulelist.RuleListView;
 import org.apache.uima.ruta.explain.selection.ExplainSelectionView;
-import org.apache.uima.ruta.explain.tree.BlockApplyNode;
-import org.apache.uima.ruta.explain.tree.RuleApplyNode;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.CheckboxTreeViewer;
+import org.apache.uima.ruta.explain.tree.ExplainAbstractTreeNode;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.part.Page;
 
-public class InlinedViewPage extends Page implements ISelectionListener {
-
-  private CheckboxTreeViewer treeView;
-
-  private Map<String, Image> images;
+public class InlinedViewPage extends ApplyViewPage implements ISelectionListener {
 
   public InlinedViewPage(AnnotationEditor editor) {
-    super();
-  }
-
-  @Override
-  public void dispose() {
-    getSite().getPage().removeSelectionListener(this);
-    if (images != null) {
-      for (Image each : images.values()) {
-        each.dispose();
-      }
-    }
-    super.dispose();
-  }
-
-  private void initImages() {
-    images = new HashMap<String, Image>();
-    ImageDescriptor desc;
-    Image image;
-    String name;
-
-    desc = RutaAddonsPlugin.getImageDescriptor("/icons/accept.png");
-    image = desc.createImage();
-    name = "matched";
-    images.put(name, image);
-
-    desc = RutaAddonsPlugin.getImageDescriptor("/icons/cancel.png");
-    image = desc.createImage();
-    name = "failed";
-    images.put(name, image);
-
-    desc = RutaAddonsPlugin.getImageDescriptor("/icons/font_add.png");
-    image = desc.createImage();
-    name = ExplainConstants.MATCHED_RULE_MATCH_TYPE;
-    images.put(name, image);
-
-    desc = RutaAddonsPlugin.getImageDescriptor("/icons/font_delete.png");
-    image = desc.createImage();
-    name = ExplainConstants.FAILED_RULE_MATCH_TYPE;
-    images.put(name, image);
-  }
-
-  public Image getImage(String name) {
-    if (images == null) {
-      initImages();
-    }
-    return images.get(name);
+    super(editor);
   }
 
   @Override
   public void createControl(Composite parent) {
-    treeView = new CheckboxTreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
-    treeView.setContentProvider(new InlinedTreeContentProvider());
-    treeView.setLabelProvider(new InlinedTreeLabelProvider(this));
-    treeView.setInput(null);
-    getSite().setSelectionProvider(treeView);
+    viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
+    viewer.setContentProvider(new InlinedTreeContentProvider());
+    viewer.setLabelProvider(new InlinedTreeLabelProvider(this));
+
+    document.addChangeListener(this);
+
+    viewer.setAutoExpandLevel(2);
+    viewer.addDoubleClickListener(this);
+    getSite().setSelectionProvider(viewer);
     getSite().getPage().addSelectionListener(this);
   }
 
-  @Override
-  public Control getControl() {
-    return treeView.getControl();
-  }
-
-  @Override
-  public void setFocus() {
-    treeView.getControl().setFocus();
-  }
-
   public void inputChange(Object newInput) {
-    if (newInput == null || treeView == null || newInput == treeView.getInput()) {
+    if (newInput == null || viewer == null || newInput == viewer.getInput()) {
       return;
     }
-    // TODO filter
-    this.treeView.setInput(newInput);
-    this.treeView.refresh();
+    this.viewer.setInput(newInput);
+    this.viewer.refresh();
   }
 
   @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-    if (selection instanceof TreeSelection && (part instanceof ApplyView
-            || part instanceof RuleListView || part instanceof ExplainSelectionView)) {
+    if (selection instanceof TreeSelection
+            && (part instanceof ApplyView || part instanceof RuleListView
+                    || part instanceof ExplainSelectionView || part instanceof MatchedView
+                    || part instanceof FailedView || part instanceof ElementView)) {
       TreeSelection ts = (TreeSelection) selection;
       Object firstElement = ts.getFirstElement();
 
-      // TODO: !!!!
-      if (firstElement instanceof BlockApplyNode) {
-        BlockApplyNode block = (BlockApplyNode) firstElement;
-        inputChange(block.getBlockRuleNode().getMatchedChild());
-      } else if (firstElement instanceof RuleApplyNode) {
-        RuleApplyNode rule = (RuleApplyNode) firstElement;
-        inputChange(rule.getMatchedChild());
+      if (firstElement instanceof ExplainAbstractTreeNode) {
+        inputChange(((ExplainAbstractTreeNode) firstElement).getInlined());
       }
-
     }
   }
 

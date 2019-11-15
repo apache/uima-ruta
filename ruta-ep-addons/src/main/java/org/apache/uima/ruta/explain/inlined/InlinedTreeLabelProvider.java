@@ -20,47 +20,47 @@
 package org.apache.uima.ruta.explain.inlined;
 
 import org.apache.uima.cas.FeatureStructure;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.explain.tree.RuleMatchNode;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
+import org.apache.uima.ruta.explain.ExplainConstants;
+import org.apache.uima.ruta.explain.apply.ApplyTreeLabelProvider;
+import org.apache.uima.ruta.explain.apply.ApplyViewPage;
+import org.apache.uima.ruta.explain.tree.InlinedRuleBlockNode;
+import org.apache.uima.ruta.type.DebugInlinedBlock;
 import org.eclipse.swt.graphics.Image;
 
+public class InlinedTreeLabelProvider extends ApplyTreeLabelProvider {
 
-public class InlinedTreeLabelProvider extends LabelProvider implements ILabelProvider {
-
-  private InlinedViewPage owner;
-
-  public InlinedTreeLabelProvider(InlinedViewPage owner) {
-    super();
-    this.owner = owner;
+  public InlinedTreeLabelProvider(ApplyViewPage owner) {
+    super(owner);
   }
 
   @Override
   public Image getImage(Object element) {
-    if (element instanceof RuleMatchNode) {
-      RuleMatchNode ruleMatchNode = (RuleMatchNode) element;
-      FeatureStructure fs = ruleMatchNode.getFeatureStructure();
-      if (fs != null) {
-        String name = fs.getType().getName();
-        return owner.getImage(name);
+    if (element instanceof InlinedRuleBlockNode) {
+      InlinedRuleBlockNode ruleBlockNode = (InlinedRuleBlockNode) element;
+      if (ruleBlockNode.isAsCondition()) {
+        if (ruleBlockNode.isMatched()) {
+          return owner.getImage(ExplainConstants.INLINED_CONDITION_BLOCK_MATCHED);
+        } else {
+          return owner.getImage(ExplainConstants.INLINED_CONDITION_BLOCK_FAILED);
+        }
+      } else {
+        return owner.getImage(ExplainConstants.INLINED_ACTION_BLOCK);
       }
     }
-    return null;
+
+    return super.getImage(element);
   }
 
   @Override
   public String getText(Object element) {
-    if (element instanceof RuleMatchNode) {
-      RuleMatchNode debugNode = (RuleMatchNode) element;
-      FeatureStructure fs = debugNode.getFeatureStructure();
-      if (fs != null) {
-        String s = ((AnnotationFS) fs).getCoveredText();
-        s = s.replaceAll("[\\n\\r]", "");
-        return s;
+    if (element instanceof InlinedRuleBlockNode) {
+      InlinedRuleBlockNode node = (InlinedRuleBlockNode) element;
+      FeatureStructure fs = node.getFeatureStructure();
+      if (fs instanceof DebugInlinedBlock) {
+        return ((DebugInlinedBlock) fs).getElement();
       }
     }
 
-    return element.toString();
+    return super.getText(element);
   }
 }

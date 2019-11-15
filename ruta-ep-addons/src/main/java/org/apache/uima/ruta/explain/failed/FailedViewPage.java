@@ -26,6 +26,7 @@ import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.explain.ExplainConstants;
 import org.apache.uima.ruta.explain.apply.ApplyView;
+import org.apache.uima.ruta.explain.inlined.InlinedView;
 import org.apache.uima.ruta.explain.rulelist.RuleListView;
 import org.apache.uima.ruta.explain.selection.ExplainSelectionView;
 import org.apache.uima.ruta.explain.tree.BlockApplyNode;
@@ -126,9 +127,11 @@ public class FailedViewPage extends Page implements ISelectionListener {
     }
   }
 
+  @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
     if (selection instanceof TreeSelection
-            && (part instanceof ApplyView || part instanceof RuleListView || part instanceof ExplainSelectionView)) {
+            && (part instanceof ApplyView || part instanceof RuleListView
+                    || part instanceof ExplainSelectionView || part instanceof InlinedView)) {
       TreeSelection ts = (TreeSelection) selection;
       Object firstElement = ts.getFirstElement();
 

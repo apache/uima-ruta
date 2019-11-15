@@ -86,8 +86,8 @@ public class InlinedRulesExplanationTest {
     DebugRuleElementMatches re1Matches = (DebugRuleElementMatches) reMatches1FS;
     DebugRuleElementMatches re2Matches = (DebugRuleElementMatches) reMatches2FS;
 
-    FSArray inlinedActionRules1 = re1Matches.getInlinedActionRules();
-    FSArray inlinedActionRules2 = re2Matches.getInlinedActionRules();
+    FSArray inlinedActionRules1 = re1Matches.getInlinedActionBlocks();
+    FSArray inlinedActionRules2 = re2Matches.getInlinedActionBlocks();
 
     Assert.assertEquals(1, inlinedActionRules1.size());
     Assert.assertEquals(2, inlinedActionRules2.size());
@@ -95,8 +95,8 @@ public class InlinedRulesExplanationTest {
     DebugRuleElementMatch re1Match = (DebugRuleElementMatch) re1Matches.getMatches().get(0);
     DebugRuleElementMatch re2Match = (DebugRuleElementMatch) re2Matches.getMatches().get(0);
 
-    FSArray inlinedConditionRules1 = re1Match.getInlinedConditionRules();
-    FSArray inlinedConditionRules2 = re2Match.getInlinedConditionRules();
+    FSArray inlinedConditionRules1 = re1Match.getInlinedConditionBlocks();
+    FSArray inlinedConditionRules2 = re2Match.getInlinedConditionBlocks();
 
     Assert.assertEquals(2, inlinedConditionRules1.size());
     Assert.assertEquals(1, inlinedConditionRules2.size());

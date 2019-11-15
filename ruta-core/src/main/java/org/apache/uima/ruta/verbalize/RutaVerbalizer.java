@@ -26,6 +26,7 @@ import java.util.Map;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.ruta.RutaElement;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
@@ -68,7 +69,8 @@ public class RutaVerbalizer {
 
   public String verbalize(Object element) {
     if (element != null) {
-      if (externalVerbalizers.keySet().contains(element.getClass()) && element instanceof RutaElement) {
+      if (externalVerbalizers.keySet().contains(element.getClass())
+              && element instanceof RutaElement) {
         return externalVerbalizers.get(element.getClass()).verbalize((RutaElement) element, this);
       } else if (element instanceof AbstractRutaAction) {
         return actionVerbalizer.verbalize((AbstractRutaAction) element);
@@ -104,6 +106,14 @@ public class RutaVerbalizer {
 
   public String verbalize(RuleElement element) {
     return scriptVerbalizer.verbalizeRuleElement(element);
+  }
+
+  public String verbalizeInlinedActionRuleBlock(List<ScriptApply> block) {
+    return scriptVerbalizer.verbalizeInlinedActionRuleApplyBlock(block);
+  }
+
+  public String verbalizeInlinedConditionRuleBlock(List<ScriptApply> block) {
+    return scriptVerbalizer.verbalizeInlinedConditionRuleApplyBlock(block);
   }
 
   public String verbalizeType(Type type) {

@@ -17,10 +17,18 @@
  * under the License.
 */
 
-package org.apache.uima.ruta.explain.inlined;
+package org.apache.uima.ruta.explain.tree;
 
-import org.apache.uima.ruta.explain.apply.ApplyTreeContentProvider;
+import org.apache.uima.cas.TypeSystem;
 
-public class InlinedTreeContentProvider extends ApplyTreeContentProvider {
+public class InlinedRootNode extends ExplainAbstractTreeNode implements ExplainRootNode {
 
+  public InlinedRootNode(IExplainTreeNode parent, TypeSystem ts) {
+    super(parent, null, ts);
+  }
+
+  @Override
+  public String toString() {
+    return "Inlined";
+  }
 }

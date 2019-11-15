@@ -49,6 +49,7 @@ import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.type.DebugBlockApply;
 import org.apache.uima.ruta.type.DebugEvaluatedCondition;
 import org.apache.uima.ruta.type.DebugFailedRuleMatch;
+import org.apache.uima.ruta.type.DebugInlinedBlock;
 import org.apache.uima.ruta.type.DebugMatchedRuleMatch;
 import org.apache.uima.ruta.type.DebugRuleApply;
 import org.apache.uima.ruta.type.DebugRuleElementMatch;
@@ -335,9 +336,9 @@ public class DebugInfoFactory {
         } else {
           rem = createDebugRuleElementMatch(each, stream, addToIndex);
         }
-        FSArray inlinedConditionRules = createInlinedRules(each.getInlinedConditionRules(), stream,
-                addToIndex, withMatches, timeInfo);
-        rem.setInlinedConditionRules(inlinedConditionRules);
+        FSArray inlinedConditionBlocks = createInlinedBlocks(each.getInlinedConditionRules(),
+                stream, true, addToIndex, withMatches, timeInfo);
+        rem.setInlinedConditionBlocks(inlinedConditionBlocks);
         if (rem != null) {
           remList.add(rem);
         }
@@ -348,43 +349,59 @@ public class DebugInfoFactory {
     }
     drems.setMatches(UIMAUtils.toFSArray(cas, remList));
 
-    FSArray inlinedActionRules = createInlinedActionRules(rems, stream, addToIndex, withMatches,
+    FSArray inlinedActionBlocks = createInlinedActionBlocks(rems, stream, addToIndex, withMatches,
             timeInfo);
-    drems.setInlinedActionRules(inlinedActionRules);
+    drems.setInlinedActionBlocks(inlinedActionBlocks);
 
     if (addToIndex)
       drems.addToIndexes();
     return drems;
   }
 
-  private FSArray createInlinedRules(List<List<ScriptApply>> blocks, RutaStream stream,
-          boolean addToIndex, boolean withMatches, Map<RutaElement, Long> timeInfo) {
+  private FSArray createInlinedBlocks(List<List<ScriptApply>> blocks, RutaStream stream,
+          boolean asCondition, boolean addToIndex, boolean withMatches,
+          Map<RutaElement, Long> timeInfo) {
     JCas jcas = stream.getJCas();
     if (blocks == null || blocks.isEmpty()) {
       return null;
     }
 
-    List<FSArray> resultList = new ArrayList<>();
+    List<DebugInlinedBlock> blockList = new ArrayList<>();
     for (List<ScriptApply> block : blocks) {
       List<DebugScriptApply> list = new ArrayList<>();
+      boolean oneRuleApplied = false;
       for (ScriptApply ruleApply : block) {
+        if (ruleApply instanceof RuleApply) {
+          if (((RuleApply) ruleApply).getApplied() > 0) {
+            oneRuleApplied = true;
+          }
+        }
         DebugScriptApply debugScriptApply = createDebugScriptApply(ruleApply, stream, addToIndex,
                 withMatches, timeInfo);
         list.add(debugScriptApply);
       }
-      resultList.add(FSCollectionFactory.createFSArray(jcas, list));
+      DebugInlinedBlock debugInlinedBlock = new DebugInlinedBlock(jcas);
+      debugInlinedBlock.setInlinedRules(FSCollectionFactory.createFSArray(jcas, list));
+      debugInlinedBlock.setAsCondition(asCondition);
+      if (asCondition) {
+        debugInlinedBlock.setElement(verbalizer.verbalizeInlinedConditionRuleBlock(block));
+        debugInlinedBlock.setMatched(oneRuleApplied);
+      } else {
+        debugInlinedBlock.setElement(verbalizer.verbalizeInlinedActionRuleBlock(block));
+      }
+      blockList.add(debugInlinedBlock);
     }
-    return FSCollectionFactory.createFSArray(jcas, resultList);
+    return FSCollectionFactory.createFSArray(jcas, blockList);
   }
 
-  private FSArray createInlinedActionRules(List<RuleElementMatch> rems, RutaStream stream,
+  private FSArray createInlinedActionBlocks(List<RuleElementMatch> rems, RutaStream stream,
           boolean addToIndex, boolean withMatches, Map<RutaElement, Long> timeInfo) {
     if (rems == null || rems.isEmpty()) {
       return null;
     }
 
-    return createInlinedRules(rems.get(0).getInlinedActionRules(), stream, addToIndex, withMatches,
-            timeInfo);
+    return createInlinedBlocks(rems.get(0).getInlinedActionRules(), stream, false, addToIndex,
+            withMatches, timeInfo);
   }
 
   public DebugRuleElementMatch createDebugComposedRuleElementMatch(ComposedRuleElementMatch rem,
@@ -444,8 +461,9 @@ public class DebugInfoFactory {
       }
     }
 
-    if (addToIndex)
+    if (addToIndex) {
       drem.addToIndexes();
+    }
     return drem;
   }
 

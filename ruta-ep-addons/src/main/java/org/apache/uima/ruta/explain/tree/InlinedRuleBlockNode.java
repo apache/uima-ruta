@@ -17,10 +17,35 @@
  * under the License.
 */
 
-package org.apache.uima.ruta.explain.inlined;
+package org.apache.uima.ruta.explain.tree;
 
-import org.apache.uima.ruta.explain.apply.ApplyTreeContentProvider;
+import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.TypeSystem;
 
-public class InlinedTreeContentProvider extends ApplyTreeContentProvider {
+public class InlinedRuleBlockNode extends ExplainAbstractTreeNode {
+
+  private final boolean asCondition;
+
+  private final boolean matched;
+
+  public InlinedRuleBlockNode(IExplainTreeNode parent, FeatureStructure fs, boolean asCondition,
+          boolean matched, TypeSystem ts) {
+    super(parent, fs, ts);
+    this.asCondition = asCondition;
+    this.matched = matched;
+  }
+
+  @Override
+  public void addChild(IExplainTreeNode node) {
+    super.addChild(node);
+  }
+
+  public boolean isAsCondition() {
+    return asCondition;
+  }
+
+  public boolean isMatched() {
+    return matched;
+  }
 
 }

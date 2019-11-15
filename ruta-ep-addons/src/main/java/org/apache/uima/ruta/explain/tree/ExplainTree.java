@@ -28,8 +28,10 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.type.DebugBlockApply;
 import org.apache.uima.ruta.type.DebugEvaluatedCondition;
+import org.apache.uima.ruta.type.DebugInlinedBlock;
 import org.apache.uima.ruta.type.DebugRuleApply;
 import org.apache.uima.ruta.type.DebugRuleElementMatch;
 import org.apache.uima.ruta.type.DebugRuleElementMatches;
@@ -99,6 +101,20 @@ public class ExplainTree {
     }
   }
 
+  private void buildInlinedBlock(boolean asCondition, DebugInlinedBlock debugInlinedBlock,
+          IExplainTreeNode parent, TypeSystem ts, int offset, boolean onlyRules) {
+    InlinedRuleBlockNode inlinedBlockNode = new InlinedRuleBlockNode(parent, debugInlinedBlock,
+            debugInlinedBlock.getAsCondition(), debugInlinedBlock.getMatched(), ts);
+    parent.addChild(inlinedBlockNode);
+
+    FSArray inlinedRules = debugInlinedBlock.getInlinedRules();
+    if (inlinedRules != null) {
+      for (FeatureStructure each : inlinedRules) {
+        buildTree(each, inlinedBlockNode, ts, offset, onlyRules);
+      }
+    }
+  }
+
   private void processBlockApply(DebugBlockApply fs, IExplainTreeNode parent, TypeSystem ts,
           int offset, boolean onlyRules) {
     if (offset >= 0 && (fs.getBegin() >= offset || fs.getEnd() <= offset)) {
@@ -151,6 +167,7 @@ public class ExplainTree {
         }
       }
     }
+
   }
 
   private void processRuleApply(DebugRuleApply fs, IExplainTreeNode parent, TypeSystem ts,
@@ -181,8 +198,10 @@ public class ExplainTree {
           }
         }
       }
+      if (fs.getRules().size() == 1) {
+        mergeInlinedRuleBlockNodesOfChildren(ruleNode);
+      }
     }
-
   }
 
   private void processRuleMatch(DebugRuleMatch fs, IExplainTreeNode parent, TypeSystem ts,
@@ -201,6 +220,7 @@ public class ExplainTree {
         buildTree(each, remRoot, ts, offset, onlyRules);
       }
     }
+    mergeInlinedRuleBlockNodesOfChildren(matchNode);
   }
 
   private void processRuleElementMatches(DebugRuleElementMatches fs, IExplainTreeNode parent,
@@ -213,6 +233,19 @@ public class ExplainTree {
         buildTree(each, remsNode, ts, offset, onlyRules);
       }
     }
+
+    FSArray inlinedActionBlocks = fs.getInlinedActionBlocks();
+    if (inlinedActionBlocks != null) {
+      InlinedRootNode inlinedRootNode = new InlinedRootNode(remsNode, ts);
+      remsNode.setInlined(inlinedRootNode);
+      for (FeatureStructure each : inlinedActionBlocks) {
+        if (each instanceof DebugInlinedBlock) {
+          buildInlinedBlock(false, (DebugInlinedBlock) each, inlinedRootNode, ts, offset,
+                  onlyRules);
+        }
+      }
+    }
+    mergeInlinedRuleBlockNodesOfChildren(remsNode);
   }
 
   private void processRuleElementMatch(DebugRuleElementMatch fs, IExplainTreeNode parent,
@@ -236,6 +269,17 @@ public class ExplainTree {
         buildTree(each, remNode, ts, offset, onlyRules);
       }
     }
+    FSArray inlinedConditionBlocks = fs.getInlinedConditionBlocks();
+    if (inlinedConditionBlocks != null) {
+      InlinedRootNode inlinedRootNode = new InlinedRootNode(remNode, ts);
+      remNode.setInlined(inlinedRootNode);
+      for (FeatureStructure each : inlinedConditionBlocks) {
+        if (each instanceof DebugInlinedBlock) {
+          buildInlinedBlock(true, (DebugInlinedBlock) each, inlinedRootNode, ts, offset, onlyRules);
+        }
+      }
+    }
+    mergeInlinedRuleBlockNodesOfChildren(remNode);
   }
 
   private void processEvaluatedCondition(DebugEvaluatedCondition fs, IExplainTreeNode parent,
@@ -247,6 +291,41 @@ public class ExplainTree {
       for (FeatureStructure each : fs.getConditions()) {
         buildTree(each, condNode, ts, offset, onlyRules);
       }
+    }
+  }
+
+  private void mergeInlinedRuleBlockNodesOfChildren(ExplainAbstractTreeNode parent) {
+
+    List<IExplainTreeNode> list = new ArrayList<>();
+
+    for (IExplainTreeNode each : parent.getChildren()) {
+      collectInlinedBlockNodes(each, list);
+    }
+    InlinedRootNode inlinedRootNode = parent.getInlined();
+    if (inlinedRootNode == null && !list.isEmpty()) {
+      inlinedRootNode = new InlinedRootNode(parent, parent.getTypeSystem());
+      parent.setInlined(inlinedRootNode);
+    }
+
+    if (inlinedRootNode != null) {
+      for (IExplainTreeNode each : list) {
+        if (!inlinedRootNode.getChildren().contains(each)) {
+          inlinedRootNode.addChild(each);
+        }
+      }
+    }
+  }
+
+  private void collectInlinedBlockNodes(IExplainTreeNode node, List<IExplainTreeNode> result) {
+    if (node.getInlined() != null && node.getInlined().hasChildren()) {
+      // already collected down to this level
+      result.addAll(node.getInlined().getChildren());
+      return;
+    }
+
+    List<IExplainTreeNode> children = node.getChildren();
+    for (IExplainTreeNode each : children) {
+      collectInlinedBlockNodes(each, result);
     }
   }
 

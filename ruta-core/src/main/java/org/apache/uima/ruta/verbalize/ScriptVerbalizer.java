@@ -23,10 +23,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.ruta.RutaElement;
 import org.apache.uima.ruta.RutaStatement;
+import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.action.AbstractRutaAction;
 import org.apache.uima.ruta.block.ForEachBlock;
 import org.apache.uima.ruta.block.RutaBlock;
@@ -212,30 +214,59 @@ public class ScriptVerbalizer {
     }
     if (re instanceof AbstractRuleElement) {
       AbstractRuleElement are = (AbstractRuleElement) re;
+
       List<List<RutaStatement>> inlinedConditionRuleBlocks = are.getInlinedConditionRuleBlocks();
       for (List<RutaStatement> inlinedConditionRules : inlinedConditionRuleBlocks) {
-        if (inlinedConditionRules != null && !inlinedConditionRules.isEmpty()) {
-          result.append(THEN2);
-          result.append(CBOPEN);
-          for (RutaStatement rutaStatement : inlinedConditionRules) {
-            result.append(verbalize(rutaStatement));
-          }
-          result.append(CBCLOSE);
-        }
+        result.append(verbalizeInlinedConditionRuleBlock(inlinedConditionRules));
       }
       List<List<RutaStatement>> inlinedActionRuleBlocks = are.getInlinedActionRuleBlocks();
       for (List<RutaStatement> inlinedActionRules : inlinedActionRuleBlocks) {
-        if (inlinedActionRules != null && !inlinedActionRules.isEmpty()) {
-          result.append(THEN);
-          result.append(CBOPEN);
-          for (RutaStatement rutaStatement : inlinedActionRules) {
-            result.append(verbalize(rutaStatement));
-          }
-          result.append(CBCLOSE);
-        }
+        result.append(verbalizeInlinedActionRuleBlock(inlinedActionRules));
       }
     }
     return result.toString();
+  }
+
+  public String verbalizeInlinedActionRuleBlock(List<RutaStatement> inlinedActionRules) {
+    StringBuilder result = new StringBuilder();
+    if (inlinedActionRules != null && !inlinedActionRules.isEmpty()) {
+      result.append(THEN);
+      result.append(CBOPEN);
+      for (RutaStatement rutaStatement : inlinedActionRules) {
+        result.append(verbalize(rutaStatement));
+      }
+      result.append(CBCLOSE);
+    }
+    return result.toString();
+  }
+
+  public String verbalizeInlinedConditionRuleBlock(List<RutaStatement> inlinedConditionRules) {
+    StringBuilder result = new StringBuilder();
+    if (inlinedConditionRules != null && !inlinedConditionRules.isEmpty()) {
+      result.append(THEN2);
+      result.append(CBOPEN);
+      for (RutaStatement rutaStatement : inlinedConditionRules) {
+        result.append(verbalize(rutaStatement));
+      }
+      result.append(CBCLOSE);
+    }
+    return result.toString();
+  }
+
+  public String verbalizeInlinedConditionRuleApplyBlock(List<ScriptApply> block) {
+
+    List<RutaStatement> list = block.stream().map(a -> a.getElement())
+            .filter(RutaStatement.class::isInstance).map(s -> (RutaStatement) s)
+            .collect(Collectors.toList());
+    return verbalizeInlinedConditionRuleBlock(list);
+  }
+
+  public String verbalizeInlinedActionRuleApplyBlock(List<ScriptApply> block) {
+
+    List<RutaStatement> list = block.stream().map(a -> a.getElement())
+            .filter(RutaStatement.class::isInstance).map(s -> (RutaStatement) s)
+            .collect(Collectors.toList());
+    return verbalizeInlinedActionRuleBlock(list);
   }
 
   private String verbalizeConjunct(ConjunctRulesRuleElement re) {

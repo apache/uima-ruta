@@ -39,4 +39,7 @@ public interface IExplainTreeNode {
   FeatureStructure getFeatureStructure();
 
   TypeSystem getTypeSystem();
+
+  ExplainAbstractTreeNode getInlined();
+
 }
