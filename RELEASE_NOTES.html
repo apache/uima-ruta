@@ -21,10 +21,10 @@
    -->
 
 <head>
-  <title>Apache UIMA Ruta v2.7.0 Release Notes</title>
+  <title>Apache UIMA Ruta v2.8.0 Release Notes</title>
 </head>
 <body>
-<h1>Apache UIMA Ruta&#8482; v2.7.0 Release Notes</h1>
+<h1>Apache UIMA Ruta&#8482; v2.8.0 Release Notes</h1>
 
 <h2>Contents</h2>
 <p>
@@ -48,37 +48,26 @@
 
 <h2><a name="major.changes">2. Major Changes in this Release</a></h2>
 <p>
+    This release contains changed in the analysis engine descriptor and the type system descriptors 
+    and therefore requires an update of the Ruta projects. This can be accomplished for example by 
+    right-click on the Ruta project, selecting "UIMA Ruta" and then "Update Project".
+</p>
+<p>
   <p>UIMA Ruta Language and Analysis Engine:</p>
   <ul>
-  	<li>Requires Java 8</li>
-    <li>New language feature: label expressions at actions for directly assigning/reusing newly created annotations. Example: Document{-> a:T1, CREATE(T2, "ref" = a)};</li>
-    <li>New language feature: new type of rule element for completely optional match which does not require an existing annotation and therefore also works at the boundary of a window/document. Example: NUM _{-PARTOF(CW)};</li>
-    <li>Type lists can be used as matching condition.</li>
-    <li>Initial default value of string and annotations variables is now null.</li>
-    <li>Comparison of annotation and annotation list are now supported.</li>
-    <li>New configuration parameter 'inferenceVisitors'.</li>
-    <li>New configuration parameter 'maxRuleMatches'.</li>
-    <li>New configuration parameter 'maxRuleElementMatches'.</li>
-    <li>New configuration parameter 'rulesScriptName'.</li>
-    <li>Inlined rules as condition are only evaluated if the rule element match was successful.</li>
-    <li>Multiple inlined rule blocks are allowed at one rule element.</li>
-    <li>String features with allowed values are supported.</li>
-    <li>PlainTextAnnotator supports vertical tabs.</li>
-    <li>Various improvements for WORDTABLE.</li>
-    <li>Thrown exceptions include script name.</li>
-    <li>Fixed values of label for failed matches.</li>
-    <li>Fixed inlined rules as condition at wildcards.</li>
-    <li>Fixed resetting of annotation-based variables.</li>
-    <li>Fixed various bugs of wildcards.</li>
-    <li>Fixed CONTAINS condition for annotations overlapping the window.</li>
-    <li>Fixed COUNT condition.</li>
-    <li>Fixed setting variables by configuration parameter.</li>
+  	<li>The analysis engine is able to generate debug information about inlined rules which includes also an extension of the ruta type system.</li>
+    <li>Type expressions in dot notation for annotation expressions a new supported: a1:ANY a2:ANY{a1.type==a2.type -> Type};</li>
+    <li>Matching on string literals is no more restricted to single RutaBasic annotations, e.g., it is not possible to write: "This is a test"{-> Test};</li>
+    <li>Dictionary matching is now more robust concerning white spaces in the word list. The parameter dictRemoveWS is now also set to true by default.</li>
+    <li>Fixed anchors at composed rule elements.</li>
+    <li>Labels at macro actions are supported now.</li>
+    <li>Fixed several bugs.</li>
   </ul>
   <p>UIMA Ruta Workbench:</p>
   <ul>
-  	<li>Query View support more CAS formats.</li>
-    <li>Fixed order of scripts in Applied Rules view.</li>
-    <li>Fixed reporting of non-existing problems in editor.</li>
+  	<li>New view for visualizing the explanation of inlined rules.</li>
+    <li>Fixed problem with blocked build processes in Ruta projects with many scripts.</li>
+    <li>Fixed bugs.</li>
   </ul>
 </p>
  
