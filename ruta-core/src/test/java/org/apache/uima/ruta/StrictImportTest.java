@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -39,6 +40,7 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
@@ -75,7 +77,9 @@ public class StrictImportTest {
     tsd.addType(script.replaceAll("/", ".") + ".T1", "Type for Testing", "uima.tcas.Annotation");
     ruta.getAnalysisEngineMetaData().setTypeSystem(tsd);
 
-    return AnalysisEngineFactory.createEngine(ruta);
+    ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
+    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(ruta, resourceManager, null);
+    return ae;
   }
 
   @Test
@@ -153,10 +157,13 @@ public class StrictImportTest {
 
     CAS cas = RutaTestUtils.getCAS("Some text.", complexTypes, null);
 
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
-            RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.StrictScript1",
+    AnalysisEngineDescription description = AnalysisEngineFactory.createEngineDescription(
+            RutaEngine.class, RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.StrictScript1",
             RutaEngine.PARAM_ADDITIONAL_SCRIPTS, "org.apache.uima.ruta.StrictScript2",
             RutaEngine.PARAM_STRICT_IMPORTS, true);
+    ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
+    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(description, resourceManager, null);
+
     ae.process(cas);
 
     Type t1 = cas.getTypeSystem().getType(s1);
