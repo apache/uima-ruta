@@ -239,6 +239,7 @@
                 <excludes>
                   <exclude>release.properties</exclude> <!-- release generated artifact -->
                   <exclude>marker-file-identifying-*</exclude>
+                  <exclude>META-INF/MANIFEST.MF</exclude>
                   <exclude>src/main/resources/org/apache/uima/ruta/ide/formatter/*.ruta</exclude> <!-- preview file -->
                   <exclude>src/main/resources/org/apache/uima/ruta/ide/formatter/preferences/*.ruta</exclude> <!-- preview file -->
                   <exclude>src/main/resources/org/apache/uima/ruta/ide/launching/*.ruta</exclude> <!-- preview file -->
