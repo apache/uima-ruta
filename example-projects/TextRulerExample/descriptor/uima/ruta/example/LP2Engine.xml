@@ -4,7 +4,7 @@
     <primitive>true</primitive>
     <annotatorImplementationName>org.apache.uima.ruta.engine.RutaEngine</annotatorImplementationName>
     <analysisEngineMetaData>
-        <name>uima.ruta.example.BaseEngine</name>
+        <name>uima.ruta.example.LP2Engine</name>
         <description/>
         <version>1.0</version>
         <vendor/>
@@ -345,7 +345,7 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.ruta.example.Base</string>
+                    <string>uima.ruta.example.LP2</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -375,7 +375,9 @@
             <nameValuePair>
                 <name>additionalScripts</name>
                 <value>
-                    <array/>
+                    <array>
+                        <string>uima.ruta.example.Features</string>
+                    </array>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -408,7 +410,7 @@
         </configurationParameterSettings>
         <typeSystemDescription>
             <imports>
-                <import location="BaseTypeSystem.xml"/>
+                <import location="LP2TypeSystem.xml"/>
             </imports>
         </typeSystemDescription>
         <typePriorities>
@@ -423,6 +425,65 @@
             <capability>
                 <inputs/>
                 <outputs/>
+                <languagesSupported/>
+            </capability>
+            <capability>
+                <inputs>
+                    <type>uima.ruta.example.LP2.AuthorSTART</type>
+                    <type>uima.ruta.example.LP2.AuthorEND</type>
+                    <type>uima.ruta.example.LP2.DateSTART</type>
+                    <type>uima.ruta.example.LP2.DateEND</type>
+                    <type>uima.ruta.example.LP2.PagesSTART</type>
+                    <type>uima.ruta.example.LP2.PagesEND</type>
+                    <type>uima.ruta.example.LP2.PublisherSTART</type>
+                    <type>uima.ruta.example.LP2.PublisherEND</type>
+                    <type>uima.ruta.example.LP2.InstitutionSTART</type>
+                    <type>uima.ruta.example.LP2.InstitutionEND</type>
+                    <type>uima.ruta.example.LP2.VolumeSTART</type>
+                    <type>uima.ruta.example.LP2.VolumeEND</type>
+                    <type>uima.ruta.example.LP2.EditorSTART</type>
+                    <type>uima.ruta.example.LP2.EditorEND</type>
+                    <type>uima.ruta.example.LP2.TitleSTART</type>
+                    <type>uima.ruta.example.LP2.TitleEND</type>
+                    <type>uima.ruta.example.LP2.BooktitleSTART</type>
+                    <type>uima.ruta.example.LP2.BooktitleEND</type>
+                    <type>uima.ruta.example.LP2.NoteSTART</type>
+                    <type>uima.ruta.example.LP2.NoteEND</type>
+                    <type>uima.ruta.example.LP2.JournalSTART</type>
+                    <type>uima.ruta.example.LP2.JournalEND</type>
+                    <type>uima.ruta.example.LP2.LocationSTART</type>
+                    <type>uima.ruta.example.LP2.LocationEND</type>
+                    <type>uima.ruta.example.LP2.TechSTART</type>
+                    <type>uima.ruta.example.LP2.TechEND</type>
+                </inputs>
+                <outputs>
+                    <type>uima.ruta.example.LP2.AuthorSTART</type>
+                    <type>uima.ruta.example.LP2.AuthorEND</type>
+                    <type>uima.ruta.example.LP2.DateSTART</type>
+                    <type>uima.ruta.example.LP2.DateEND</type>
+                    <type>uima.ruta.example.LP2.PagesSTART</type>
+                    <type>uima.ruta.example.LP2.PagesEND</type>
+                    <type>uima.ruta.example.LP2.PublisherSTART</type>
+                    <type>uima.ruta.example.LP2.PublisherEND</type>
+                    <type>uima.ruta.example.LP2.InstitutionSTART</type>
+                    <type>uima.ruta.example.LP2.InstitutionEND</type>
+                    <type>uima.ruta.example.LP2.VolumeSTART</type>
+                    <type>uima.ruta.example.LP2.VolumeEND</type>
+                    <type>uima.ruta.example.LP2.EditorSTART</type>
+                    <type>uima.ruta.example.LP2.EditorEND</type>
+                    <type>uima.ruta.example.LP2.TitleSTART</type>
+                    <type>uima.ruta.example.LP2.TitleEND</type>
+                    <type>uima.ruta.example.LP2.BooktitleSTART</type>
+                    <type>uima.ruta.example.LP2.BooktitleEND</type>
+                    <type>uima.ruta.example.LP2.NoteSTART</type>
+                    <type>uima.ruta.example.LP2.NoteEND</type>
+                    <type>uima.ruta.example.LP2.JournalSTART</type>
+                    <type>uima.ruta.example.LP2.JournalEND</type>
+                    <type>uima.ruta.example.LP2.LocationSTART</type>
+                    <type>uima.ruta.example.LP2.LocationEND</type>
+                    <type>uima.ruta.example.LP2.TechSTART</type>
+                    <type>uima.ruta.example.LP2.TechEND</type>
+                </outputs>
                 <languagesSupported/>
             </capability>
         </capabilities>

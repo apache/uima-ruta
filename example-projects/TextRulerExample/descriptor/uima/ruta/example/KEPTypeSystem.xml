@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>uima.ruta.example.KEPTypeSystem</name>
+    <imports>
+        <import location="../../../BasicTypeSystem.xml"/>
+        <import location="FeaturesTypeSystem.xml"/>
+    </imports>
+    <types>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.LocationSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.DateSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.InstitutionSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.NoteSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.LocationEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.PagesSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.VolumeSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.JournalSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.AuthorEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.TechSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.InstitutionEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.TitleSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.NoteEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.AuthorSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.TechEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.BooktitleSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.DateEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.PublisherSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.TitleEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.EditorSTART</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.PublisherEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.VolumeEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.BooktitleEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.JournalEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.EditorEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>uima.ruta.example.KEP.PagesEND</name>
+            <description>Type defined in uima.ruta.example.KEP</description>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+    </types>
+</typeSystemDescription>

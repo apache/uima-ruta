@@ -4,7 +4,7 @@
     <primitive>true</primitive>
     <annotatorImplementationName>org.apache.uima.ruta.engine.RutaEngine</annotatorImplementationName>
     <analysisEngineMetaData>
-        <name>uima.ruta.example.BaseEngine</name>
+        <name>uima.ruta.example.KEPEngine</name>
         <description/>
         <version>1.0</version>
         <vendor/>
@@ -345,7 +345,7 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.ruta.example.Base</string>
+                    <string>uima.ruta.example.KEP</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -375,7 +375,9 @@
             <nameValuePair>
                 <name>additionalScripts</name>
                 <value>
-                    <array/>
+                    <array>
+                        <string>uima.ruta.example.Features</string>
+                    </array>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -408,7 +410,7 @@
         </configurationParameterSettings>
         <typeSystemDescription>
             <imports>
-                <import location="BaseTypeSystem.xml"/>
+                <import location="KEPTypeSystem.xml"/>
             </imports>
         </typeSystemDescription>
         <typePriorities>
@@ -423,6 +425,65 @@
             <capability>
                 <inputs/>
                 <outputs/>
+                <languagesSupported/>
+            </capability>
+            <capability>
+                <inputs>
+                    <type>uima.ruta.example.KEP.AuthorSTART</type>
+                    <type>uima.ruta.example.KEP.AuthorEND</type>
+                    <type>uima.ruta.example.KEP.DateSTART</type>
+                    <type>uima.ruta.example.KEP.DateEND</type>
+                    <type>uima.ruta.example.KEP.PagesSTART</type>
+                    <type>uima.ruta.example.KEP.PagesEND</type>
+                    <type>uima.ruta.example.KEP.PublisherSTART</type>
+                    <type>uima.ruta.example.KEP.PublisherEND</type>
+                    <type>uima.ruta.example.KEP.InstitutionSTART</type>
+                    <type>uima.ruta.example.KEP.InstitutionEND</type>
+                    <type>uima.ruta.example.KEP.VolumeSTART</type>
+                    <type>uima.ruta.example.KEP.VolumeEND</type>
+                    <type>uima.ruta.example.KEP.EditorSTART</type>
+                    <type>uima.ruta.example.KEP.EditorEND</type>
+                    <type>uima.ruta.example.KEP.TitleSTART</type>
+                    <type>uima.ruta.example.KEP.TitleEND</type>
+                    <type>uima.ruta.example.KEP.BooktitleSTART</type>
+                    <type>uima.ruta.example.KEP.BooktitleEND</type>
+                    <type>uima.ruta.example.KEP.NoteSTART</type>
+                    <type>uima.ruta.example.KEP.NoteEND</type>
+                    <type>uima.ruta.example.KEP.JournalSTART</type>
+                    <type>uima.ruta.example.KEP.JournalEND</type>
+                    <type>uima.ruta.example.KEP.LocationSTART</type>
+                    <type>uima.ruta.example.KEP.LocationEND</type>
+                    <type>uima.ruta.example.KEP.TechSTART</type>
+                    <type>uima.ruta.example.KEP.TechEND</type>
+                </inputs>
+                <outputs>
+                    <type>uima.ruta.example.KEP.AuthorSTART</type>
+                    <type>uima.ruta.example.KEP.AuthorEND</type>
+                    <type>uima.ruta.example.KEP.DateSTART</type>
+                    <type>uima.ruta.example.KEP.DateEND</type>
+                    <type>uima.ruta.example.KEP.PagesSTART</type>
+                    <type>uima.ruta.example.KEP.PagesEND</type>
+                    <type>uima.ruta.example.KEP.PublisherSTART</type>
+                    <type>uima.ruta.example.KEP.PublisherEND</type>
+                    <type>uima.ruta.example.KEP.InstitutionSTART</type>
+                    <type>uima.ruta.example.KEP.InstitutionEND</type>
+                    <type>uima.ruta.example.KEP.VolumeSTART</type>
+                    <type>uima.ruta.example.KEP.VolumeEND</type>
+                    <type>uima.ruta.example.KEP.EditorSTART</type>
+                    <type>uima.ruta.example.KEP.EditorEND</type>
+                    <type>uima.ruta.example.KEP.TitleSTART</type>
+                    <type>uima.ruta.example.KEP.TitleEND</type>
+                    <type>uima.ruta.example.KEP.BooktitleSTART</type>
+                    <type>uima.ruta.example.KEP.BooktitleEND</type>
+                    <type>uima.ruta.example.KEP.NoteSTART</type>
+                    <type>uima.ruta.example.KEP.NoteEND</type>
+                    <type>uima.ruta.example.KEP.JournalSTART</type>
+                    <type>uima.ruta.example.KEP.JournalEND</type>
+                    <type>uima.ruta.example.KEP.LocationSTART</type>
+                    <type>uima.ruta.example.KEP.LocationEND</type>
+                    <type>uima.ruta.example.KEP.TechSTART</type>
+                    <type>uima.ruta.example.KEP.TechEND</type>
+                </outputs>
                 <languagesSupported/>
             </capability>
         </capabilities>

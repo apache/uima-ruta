@@ -4,7 +4,7 @@
     <primitive>true</primitive>
     <annotatorImplementationName>org.apache.uima.ruta.engine.RutaEngine</annotatorImplementationName>
     <analysisEngineMetaData>
-        <name>uima.ruta.example.BaseEngine</name>
+        <name>uima.ruta.example.WhiskEngine</name>
         <description/>
         <version>1.0</version>
         <vendor/>
@@ -345,7 +345,7 @@
             <nameValuePair>
                 <name>mainScript</name>
                 <value>
-                    <string>uima.ruta.example.Base</string>
+                    <string>uima.ruta.example.Whisk</string>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -375,7 +375,9 @@
             <nameValuePair>
                 <name>additionalScripts</name>
                 <value>
-                    <array/>
+                    <array>
+                        <string>uima.ruta.example.Features</string>
+                    </array>
                 </value>
             </nameValuePair>
             <nameValuePair>
@@ -408,7 +410,7 @@
         </configurationParameterSettings>
         <typeSystemDescription>
             <imports>
-                <import location="BaseTypeSystem.xml"/>
+                <import location="WhiskTypeSystem.xml"/>
             </imports>
         </typeSystemDescription>
         <typePriorities>
