@@ -27,51 +27,39 @@ import org.junit.Test;
 public class WildCardInWindowTest {
 
   @Test
-  public void testSingleBothDirections() {
+  public void testSingleBothDirections() throws Exception {
     String document = ". a 1 b . c 1 D . e 1 1 1 f . g 1 1 1 H .";
     String script = "";
     script += "PERIOD #{-> T1} PERIOD;";
     script += "T1 -> { SW #{-> T2} SW{-> T3};};";
     script += "T1 -> { SW #{-> T4} @SW{-> T5};};";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "1", "1 1 1");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "b", "f");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "1", "1 1 1");
     RutaTestUtils.assertAnnotationsEquals(cas, 5, 2, "b", "f");
 
-    cas.release();
   }
 
   @Test
-  public void testMultiMidOut() {
+  public void testMultiMidOut() throws Exception {
     String document = ". A x 1 1 : x 2 % 3 x ; . A x B 1 C 1 : x 4 % 5 x ; .";
     String script = "";
     script += "PERIOD #{-> T1} PERIOD;";
     script += "T1 -> {CW{-> T4} # @COLON # NUM{-> T2} SPECIAL NUM{-> T3} # SEMICOLON;};";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "2", "4");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "3", "5");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "A", "C");
 
-    cas.release();
   }
 
   @Test
-  public void testCombiMidOut() {
+  public void testCombiMidOut() throws Exception {
     String document = ". some text. some A.B text C.D text. some text .";
     String script = "";
 
@@ -79,64 +67,44 @@ public class WildCardInWindowTest {
     script += "PERIOD{-PARTOF(T1)} #{-> T2} PERIOD{-PARTOF(T1)};";
     script += "T2<-{CW PERIOD CW;}->{#{-> T3} @PERIOD #{-> T3};};";
     script += "T3<-{CW PERIOD CW;}->{#{-> T4} @PERIOD #{-> T4};};";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 4, "some A.B text C", "some A",
-            "B text C.D text", "D text");
-    RutaTestUtils.assertAnnotationsEquals(cas, 4, 4, "some A", "B text C", "B text C",
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 4, "some A.B text C", "some A", "B text C.D text",
             "D text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 4, "some A", "B text C", "B text C", "D text");
 
-    cas.release();
   }
-  
+
   @Test
-  public void testSameRightToLeftInWindow() {
+  public void testSameRightToLeftInWindow() throws Exception {
     String document = ". a 1 b . c 1 D . e 1 1 1 f . g 1 1 1 H .";
     String script = "";
     script += "PERIOD #{-> T1} PERIOD;";
     script += "T1 ->{W{->T3} #{->T2} @W;};";
     script += "T1 ->{W #{-PARTOF(NUM)->T4} @W;};";
-    
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 4, "1", "1", "1 1 1", "1 1 1");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 4, "a", "c", "e", "g");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 0);
 
-    cas.release();
   }
-  
+
   @Test
-  public void testCoveredRightToLeftNoWindow() {
+  public void testCoveredRightToLeftNoWindow() throws Exception {
     String document = "CAP1 some text CAP2 more text";
     String script = "";
     script += "(CAP NUM){-> T1};";
     script += "SW (T1 W+){-> T2};";
     script += " T1 #{->T3} @T2;";
-    
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "some text");
-
-    cas.release();
   }
 
 }
