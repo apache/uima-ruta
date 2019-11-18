@@ -75,8 +75,9 @@ public class ShiftAllRule extends ShiftingRule {
         after = "{" + after + "}";
 
       // this part will delete the original annotation
-      String unmark = errorBoundaryItem + (frontItemInBorders ? "" : " ANY") +"{STARTSWITH(" + annotation.getType().getShortName()
-              + ") -> UNMARK(" + annotation.getType().getShortName() + ", true)}";
+      String unmark = errorBoundaryItem + (frontItemInBorders ? "" : " ANY") + "{STARTSWITH("
+              + annotation.getType().getShortName() + ") -> UNMARK("
+              + annotation.getType().getShortName() + ", true)}";
 
       if (shiftToLeft)
         compileShiftToLeft(frontItemInBorders, rearItemInBorders, before, after, action, unmark);
@@ -100,8 +101,7 @@ public class ShiftAllRule extends ShiftingRule {
             + rearBoundaryItem + ")}"; // like ANY*? but faster
 //    ruleString += "#{-CONTAINS(" + errorBoundaryItem + ")} " + unmark + " #{-CONTAINS("
 //            + rearBoundaryItem + ")}"; // like ANY*? but faster
-    
-    
+
     // Check, if the rear item should be included and mark all tokens between the brackets as
     // the
     // new annotation.
@@ -128,8 +128,6 @@ public class ShiftAllRule extends ShiftingRule {
     ruleString += "ANY*{-PARTOF(" + rearBoundaryItem + ")}"; // like ANY*? but faster
 //    ruleString += "#{-CONTAINS(" + rearBoundaryItem + ")}"; // like ANY*? but faster
 
-    
-    
     // Check, if the rear item should be included and mark all tokens between the brackets as
     // the
     // new annotation.
@@ -194,11 +192,6 @@ public class ShiftAllRule extends ShiftingRule {
     return false;
   }
 
-  /**
-   * Sets the boundary item that marks the beginning of the original annotation.
-   * 
-   * @param errorBoundaryItem
-   */
   public void setErrorBoundaryItem(TrabalRuleItem errorBoundaryItem) {
     this.errorBoundaryItem = errorBoundaryItem;
   }

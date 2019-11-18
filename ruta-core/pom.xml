@@ -30,22 +30,19 @@
   <name>Apache UIMA Ruta: ${project.artifactId}</name>
   
   <dependencies>
+  
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-typesystem</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
       <version>${uimaVersion}</version>
-      <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
+    
    <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr-runtime</artifactId>
@@ -57,34 +54,46 @@
         </exclusion>
       </exclusions>
     </dependency>
+    
     <dependency>
       <groupId>org.htmlparser</groupId>
       <artifactId>htmlparser</artifactId>
       <version>1.6</version>
     </dependency>
+    
+    <dependency>
+	   <groupId>org.apache.commons</groupId>
+	   <artifactId>commons-text</artifactId>
+	   <version>1.6</version>
+	</dependency>
+    
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.2.1</version>
       <scope>compile</scope>
     </dependency>
+    
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-tools</artifactId>
       <version>${uimaVersion}</version>
       <scope>compile</scope>
     </dependency>
+    
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-test-util</artifactId>
       <version>${uimaVersion}</version>
       <scope>test</scope>
     </dependency>
+    
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.8.1</version>
     </dependency>
+    
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimafit-core</artifactId>
@@ -102,12 +111,14 @@
         </exclusion>
       </exclusions>
     </dependency>
+    
     <!-- needed for ruta-ep-ide - TODO this should be moved to engine? -->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.4</version>
     </dependency>
+    
     <!-- needed for ruta-ep-textruler/ruta-ep-addons - TODO this should be moved to engine? -->
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -115,6 +126,11 @@
       <version>3.0</version>
     </dependency>
     
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <scope>test</scope>
+    </dependency>
     
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -148,6 +164,7 @@
                   <exclude>src/test/resources/org/apache/uima/ruta/engine/*.html</exclude> <!-- test data -->
                   <exclude>src/test/resources/META-INF/org.apache.uima.fit/types.txt</exclude> <!-- test data -->
                   <exclude>src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude>
+                  <exclude>api-change-report/**</exclude>
                   <exclude>issuesFixed/**</exclude> <!-- generated -->
                   <exclude>input/**</exclude> <!-- temp test data -->
                   <exclude>TypeSystem.xml</exclude> <!-- temp test data -->

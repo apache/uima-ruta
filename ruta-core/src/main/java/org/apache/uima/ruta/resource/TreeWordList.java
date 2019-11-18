@@ -36,7 +36,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.internal.util.XMLUtils;
@@ -144,6 +144,11 @@ public class TreeWordList implements RutaWordList {
 
   public void buildNewTree(List<String> data) {
     this.root = new TextNode();
+
+    if (data == null) {
+      return;
+    }
+
     for (String s : data) {
       addWord(s);
     }
@@ -191,6 +196,11 @@ public class TreeWordList implements RutaWordList {
    */
   public void addWord(String s) {
     // Create Nodes from all chars of the strings besides the last one
+
+    if (s == null) {
+      return;
+    }
+
     TextNode pointer = root;
     for (Character each : s.toCharArray()) {
       if (dictRemoveWS && Character.isWhitespace(each)) {
@@ -258,7 +268,7 @@ public class TreeWordList implements RutaWordList {
 
       TextNode wsNode = pointer.getChildNode(' ');
       if (ignoreWS && wsNode != null) {
-        result |= recursiveContains(wsNode, text, --next, ignoreCase, fragment, ignoreChars,
+        result |= recursiveContains(wsNode, text, next - 1, ignoreCase, fragment, ignoreChars,
                 maxIgnoreChars, ignoreWS);
       }
 
@@ -282,7 +292,7 @@ public class TreeWordList implements RutaWordList {
     } else {
       TextNode wsNode = pointer.getChildNode(' ');
       if (ignoreWS && wsNode != null) {
-        result |= recursiveContains(wsNode, text, --next, ignoreCase, fragment, ignoreChars,
+        result |= recursiveContains(wsNode, text, next - 1, ignoreCase, fragment, ignoreChars,
                 maxIgnoreChars, ignoreWS);
       }
 
@@ -319,7 +329,7 @@ public class TreeWordList implements RutaWordList {
           char[] ignoreChars, int maxIgnoredChars, boolean ignoreWS) {
     ArrayList<AnnotationFS> results = new ArrayList<AnnotationFS>();
     stream.moveToFirst();
-    RutaStream streamPointer = stream.copy();
+    FSIterator<AnnotationFS> streamPointer = stream.copy();
     while (stream.isValid()) {
       RutaBasic anchorBasic = (RutaBasic) stream.get();
       streamPointer.moveTo(anchorBasic);

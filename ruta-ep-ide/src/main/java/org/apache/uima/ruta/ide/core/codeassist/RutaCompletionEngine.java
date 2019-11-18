@@ -114,6 +114,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     return RutaParseUtils.processTypeName(type, token);
   }
 
+  @Override
   public void complete(IModuleSource module, int position, int i) {
     this.sourceModule = module;
     this.actualCompletionPosition = position;
@@ -188,7 +189,7 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
 
         // }
       } catch (Exception e) {
-        System.out.println("no completion node found");
+        // ignore
       } finally {
         this.requestor.endReporting();
       }
@@ -242,8 +243,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     if (type == ComponentDeclaration.SCRIPT) {
       List<String> scripts = new ArrayList<String>();
 
-      List<IFolder> scriptFolders = RutaProjectUtils.getAllScriptFolders(sourceModule
-              .getModelElement().getScriptProject());
+      List<IFolder> scriptFolders = RutaProjectUtils
+              .getAllScriptFolders(sourceModule.getModelElement().getScriptProject());
       for (IFolder folder : scriptFolders) {
         try {
           scripts.addAll(collectScripts(folder, ""));
@@ -294,8 +295,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       Resource[] resources = getFilesInClasspath(complString, "xml");
       for (Resource resource : resources) {
         try {
-          UIMAFramework.getXMLParser().parseAnalysisEngineDescription(
-                  new XMLInputSource(resource.getURL()));
+          UIMAFramework.getXMLParser()
+                  .parseAnalysisEngineDescription(new XMLInputSource(resource.getURL()));
           String string = getScriptRepresentation(resource, "xml");
           if (string != null) {
             engines.add(string);
@@ -305,8 +306,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         }
       }
       if (StringUtils.isAllUpperCase(complString)) {
-        List<IFolder> descriptorFolders = RutaProjectUtils.getAllDescriptorFolders(sourceModule
-                .getModelElement().getScriptProject().getProject());
+        List<IFolder> descriptorFolders = RutaProjectUtils.getAllDescriptorFolders(
+                sourceModule.getModelElement().getScriptProject().getProject());
         for (IFolder folder : descriptorFolders) {
           try {
             engines.addAll(collectEngines(folder, ""));
@@ -324,8 +325,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       Resource[] resources = getFilesInClasspath(complString, "xml");
       for (Resource resource : resources) {
         try {
-          UIMAFramework.getXMLParser().parseTypeSystemDescription(
-                  new XMLInputSource(resource.getURL()));
+          UIMAFramework.getXMLParser()
+                  .parseTypeSystemDescription(new XMLInputSource(resource.getURL()));
           String string = getScriptRepresentation(resource, "xml");
           if (string != null) {
             tss.add(string);
@@ -336,8 +337,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       }
       if (StringUtils.isAllUpperCase(complString)) {
         // fallback for camel case
-        List<IFolder> descriptorFolders = RutaProjectUtils.getAllDescriptorFolders(sourceModule
-                .getModelElement().getScriptProject().getProject());
+        List<IFolder> descriptorFolders = RutaProjectUtils.getAllDescriptorFolders(
+                sourceModule.getModelElement().getScriptProject().getProject());
         for (IFolder folder : descriptorFolders) {
           try {
             tss.addAll(collectTypeSystems(folder, ""));
@@ -377,8 +378,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
         eachExternalForm = "jar:" + eachExternalForm + "!/";
       }
       if (externalForm.startsWith(eachExternalForm)) {
-        String name = externalForm.substring(eachExternalForm.length(), externalForm.length()
-                - (suffix.length() + 1));
+        String name = externalForm.substring(eachExternalForm.length(),
+                externalForm.length() - (suffix.length() + 1));
         name = name.replaceAll("[/]", ".");
         return name;
       }
@@ -464,9 +465,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     }
   }
 
-
-  private Set<String> getTypes(IPath typeSystemDescriptorPath) throws InvalidXMLException,
-          IOException {
+  private Set<String> getTypes(IPath typeSystemDescriptorPath)
+          throws InvalidXMLException, IOException {
     Set<String> types = new HashSet<String>();
     URL url = URIUtil.toURI(typeSystemDescriptorPath.toPortableString()).toURL();
     try {
@@ -478,12 +478,12 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     return types;
   }
 
-  private Set<String> getTypes(URL resource, ResourceManager resMgr) throws IOException,
-          InvalidXMLException {
+  private Set<String> getTypes(URL resource, ResourceManager resMgr)
+          throws IOException, InvalidXMLException {
     Set<String> types = new HashSet<String>();
     TypeSystemDescription typeSysDescr = null;
-    typeSysDescr = UIMAFramework.getXMLParser().parseTypeSystemDescription(
-            new XMLInputSource(resource));
+    typeSysDescr = UIMAFramework.getXMLParser()
+            .parseTypeSystemDescription(new XMLInputSource(resource));
     typeSysDescr.resolveImports(resMgr);
     for (TypeDescription each : typeSysDescr.getTypes()) {
       String name = each.getName();
@@ -523,7 +523,8 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     if (type == RutaTypeConstants.RUTA_TYPE_AT) {
       try {
         IPath path = sourceModule.getModelElement().getResource().getLocation();
-        IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(path, sourceModule.getModelElement().getScriptProject().getProject(), classloader);
+        IPath typeSystemDescriptorPath = RutaProjectUtils.getTypeSystemDescriptorPath(path,
+                sourceModule.getModelElement().getScriptProject().getProject(), classloader);
         types = getTypes(typeSystemDescriptorPath);
       } catch (Exception e) {
       }
@@ -622,7 +623,6 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
     // }
   }
 
-
   private void addProposal(String complString, String string, int kind) {
     addProposal(complString, string, string, kind);
   }
@@ -660,6 +660,5 @@ public class RutaCompletionEngine extends ScriptCompletionEngine {
       }
     }
   }
-
 
 }

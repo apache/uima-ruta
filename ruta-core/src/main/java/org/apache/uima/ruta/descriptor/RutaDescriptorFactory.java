@@ -50,6 +50,7 @@ import org.apache.uima.ruta.extensions.RutaExternalFactory;
 import org.apache.uima.ruta.parser.RutaLexer;
 import org.apache.uima.ruta.parser.RutaParser;
 import org.apache.uima.util.InvalidXMLException;
+import org.apache.uima.util.Level;
 
 public class RutaDescriptorFactory {
 
@@ -229,7 +230,8 @@ public class RutaDescriptorFactory {
           }
         }
       } catch (Exception e) {
-        // System.out.println("EXTENSION ERROR: " + each);
+        UIMAFramework.getLogger(getClass()).log(Level.WARNING,
+                "Error loading external extension " + each, e);
       }
     }
     return factory;

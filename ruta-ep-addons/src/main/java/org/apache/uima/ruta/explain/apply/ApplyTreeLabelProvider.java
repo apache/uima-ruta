@@ -29,6 +29,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.ruta.explain.ExplainConstants;
 import org.apache.uima.ruta.explain.tree.IExplainTreeNode;
+import org.apache.uima.ruta.type.ProfiledAnnotation;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -37,12 +38,12 @@ import org.eclipse.swt.graphics.Image;
 public class ApplyTreeLabelProvider extends LabelProvider implements ILabelProvider {
 
   private DecimalFormat dfTime = new DecimalFormat("###,###,##0.000",
-          DecimalFormatSymbols.getInstance(Locale.ENGLISH));;
+          DecimalFormatSymbols.getInstance(Locale.ENGLISH));
 
   private DecimalFormat dfPercentage = new DecimalFormat("##0.00",
-          DecimalFormatSymbols.getInstance(Locale.ENGLISH));;
+          DecimalFormatSymbols.getInstance(Locale.ENGLISH));
 
-  private ApplyViewPage owner;
+  protected ApplyViewPage owner;
 
   ImageDescriptor blockApply;
 
@@ -111,9 +112,10 @@ public class ApplyTreeLabelProvider extends LabelProvider implements ILabelProvi
           IExplainTreeNode parentNode = debugNode.getParent();
           if (parentNode != null) {
             FeatureStructure parent = parentNode.getFeatureStructure();
-            if (parent != null) {
-              long parentTime = parent.getLongValue(f4);
-              if(parentTime>0) {
+            if (parent instanceof ProfiledAnnotation) {
+              // TODO FSArray break in inlined by purpose?
+              long parentTime = ((ProfiledAnnotation) parent).getTime();
+              if (parentTime > 0) {
                 percent = (took / (parentTime / 1000.0)) * 100.0;
               }
             }

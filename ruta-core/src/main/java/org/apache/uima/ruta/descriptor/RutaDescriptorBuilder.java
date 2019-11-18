@@ -399,8 +399,6 @@ public class RutaDescriptorBuilder {
     if (name.indexOf(".") == -1) {
       if (types.containsKey(name)) {
         name = types.get(name);
-      } else {
-        name = packageName + "." + name;
       }
     }
     int lastIndexOf = name.lastIndexOf(".");

@@ -30,6 +30,7 @@ import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.compiler.env.IModuleSource;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.ui.editor.highlighting.HighlightedPosition;
@@ -102,7 +103,7 @@ public class DefaultRutaSemanticHighlightingExtension implements ISemanticHighli
     return highlightings;
   }
 
-  public void doOtherHighlighting(ISourceModule code,
+  public void doOtherHighlighting(IModuleSource code,
           final ISemanticHighlightingRequestor semanticHighlightingRequestor) {
     ModuleDeclaration moduleDeclaration = SourceParserUtil
             .getModuleDeclaration((org.eclipse.dltk.core.ISourceModule) (code.getModelElement()));

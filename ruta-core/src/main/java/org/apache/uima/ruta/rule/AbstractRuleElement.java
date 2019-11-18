@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,6 +38,8 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public abstract class AbstractRuleElement extends RutaElement implements RuleElement {
 
+  protected static final InferenceCrowd EMPTY_CROWD = new InferenceCrowd(Collections.emptyList());
+
   protected RuleElementQuantifier quantifier;
 
   protected List<AbstractRutaCondition> conditions;
@@ -50,9 +53,6 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   private RuleElementContainer container;
 
   protected RutaBlock parent;
-
-  @SuppressWarnings("unchecked")
-  protected final InferenceCrowd emptyCrowd = new InferenceCrowd(Collections.EMPTY_LIST);
 
   protected List<List<RutaStatement>> inlinedConditionRuleBlocks = new ArrayList<>();
 
@@ -78,29 +78,98 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     }
   }
 
+  @Override
+  public List<RuleMatch> continueSideStep(boolean after, RuleMatch ruleMatch, RuleApply ruleApply,
+          ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
+          InferenceCrowd crowd) {
+    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    boolean newDirection = !after;
+    List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOfElement(this);
+    AnnotationFS annotation = null;
+    if (!matchedAnnotationsOf.isEmpty()) {
+      if (newDirection) {
+        annotation = matchedAnnotationsOf.get(matchedAnnotationsOf.size() - 1);
+      } else {
+        annotation = matchedAnnotationsOf.get(0);
+      }
+      ComposedRuleElementMatch sideStepContainerMatch = containerMatch;
+      if (!containerMatch.getRuleElement().equals(getContainer())) {
+        List<List<RuleElementMatch>> matchInfo = ruleMatch
+                .getMatchInfo((ComposedRuleElement) getContainer());
+        if (newDirection) {
+          List<RuleElementMatch> list = matchInfo.get(matchInfo.size() - 1);
+          sideStepContainerMatch = (ComposedRuleElementMatch) list.get(list.size() - 1);
+        } else {
+          List<RuleElementMatch> list = matchInfo.get(0);
+          sideStepContainerMatch = (ComposedRuleElementMatch) list.get(0);
+        }
+      }
+      MatchContext context = new MatchContext(this, ruleMatch, newDirection);
+      if (quantifier.continueMatch(newDirection, context, annotation, sideStepContainerMatch,
+              stream, crowd)) {
+        continueMatch(newDirection, annotation, ruleMatch, ruleApply, sideStepContainerMatch, null,
+                entryPoint, stream, crowd);
+      } else {
+        RuleElement nextRuleElement = getContainer().getNextElement(newDirection, this);
+        if (nextRuleElement != null) {
+          result = nextRuleElement.continueMatch(newDirection, annotation, ruleMatch, ruleApply,
+                  sideStepContainerMatch, null, null, stream, crowd);
+        } else if (getContainer() instanceof ComposedRuleElement) {
+          ComposedRuleElement composed = (ComposedRuleElement) getContainer();
+          result = composed.fallbackContinue(newDirection, false, annotation, ruleMatch, ruleApply,
+                  sideStepContainerMatch, null, entryPoint, stream, crowd);
+        }
+      }
+    }
+    return result;
+  }
+
   protected void doneMatching(RuleMatch ruleMatch, RuleApply ruleApply, RutaStream stream,
           InferenceCrowd crowd) {
     if (!ruleMatch.isApplied()) {
       ruleApply.add(ruleMatch, stream);
+      RutaRule rule = ruleMatch.getRule();
+      Collection<String> localVariables = rule.getLabels();
       if (ruleMatch.matchedCompletely()) {
-        ruleMatch.getRule().getRoot().applyRuleElements(ruleMatch, stream, crowd);
+        rule.getEnvironment().acceptTempVariableValues(localVariables);
+        rule.getRoot().applyRuleElements(ruleMatch, stream, crowd);
+      } else {
+        rule.getEnvironment().clearTempVariables(localVariables);
       }
       ruleMatch.setApplied(true);
     }
   }
 
-  protected List<List<ScriptApply>> processInlinedActionRules(RuleMatch ruleMatch, RutaStream stream,
+  protected void processInlinedActionRules(RuleMatch ruleMatch, RutaStream stream,
           InferenceCrowd crowd) {
+    List<List<RuleElementMatch>> matchInfo = ruleMatch.getMatchInfo(this);
+    // TODO: which rule element match should be used? all? should context matter?
+    if (matchInfo == null || matchInfo.isEmpty() || matchInfo.get(0) == null
+            || matchInfo.get(0).isEmpty()) {
+      return;
+    }
+    RuleElementMatch ruleElementMatch = matchInfo.get(0).get(0);
+    processInlinedActionRules(ruleMatch, ruleElementMatch, stream, crowd);
+  }
+
+  protected List<List<ScriptApply>> processInlinedActionRules(RuleMatch ruleMatch,
+          RuleElementMatch ruleElementMatch, RutaStream stream, InferenceCrowd crowd) {
     if (inlinedActionRuleBlocks != null && !inlinedActionRuleBlocks.isEmpty()) {
-      return processInlinedRules(inlinedActionRuleBlocks, ruleMatch, stream, crowd);
+      List<List<ScriptApply>> inlinedBlocksApplies = processInlinedRules(inlinedActionRuleBlocks,
+              ruleMatch, stream, crowd);
+      ruleElementMatch.setInlinedActionRules(inlinedBlocksApplies);
+      return inlinedBlocksApplies;
     }
     return null;
   }
 
-  protected List<List<ScriptApply>> processInlinedConditionRules(RuleMatch ruleMatch, RutaStream stream,
-          InferenceCrowd crowd) {
+  protected List<List<ScriptApply>> processInlinedConditionRules(RuleMatch ruleMatch,
+          RuleElementMatch ruleElementMatch, RutaStream stream, InferenceCrowd crowd) {
     if (inlinedConditionRuleBlocks != null && !inlinedConditionRuleBlocks.isEmpty()) {
-      return processInlinedRules(inlinedConditionRuleBlocks, ruleMatch, stream, crowd);
+      List<List<ScriptApply>> inlinedBlocksApplies = processInlinedRules(inlinedConditionRuleBlocks,
+              ruleMatch, stream, crowd);
+      ruleElementMatch.setInlinedConditionRules(inlinedBlocksApplies);
+      return inlinedBlocksApplies;
     }
     return null;
   }
@@ -108,20 +177,14 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   protected List<List<ScriptApply>> processInlinedRules(List<List<RutaStatement>> inlinedRuleBlocks,
           RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
     List<List<ScriptApply>> result = new ArrayList<>();
+
     List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOfElement(this);
-    // TODO where to implement the explanation of inlined rules?
-    // BlockApply blockApply = new BlockApply(this);
-    // RuleApply dummyRuleApply = getDummyRuleApply(ruleMatch);
-    // blockApply.setRuleApply(dummyRuleApply);
-    // ruleMatch.addDelegateApply(this, blockApply);
     for (AnnotationFS annotationFS : matchedAnnotationsOf) {
       RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
       for (List<RutaStatement> inlinedRules : inlinedRuleBlocks) {
         List<ScriptApply> blockResult = new ArrayList<>();
         for (RutaStatement each : inlinedRules) {
           ScriptApply apply = each.apply(windowStream, crowd);
-          // blockApply.add(apply);
-          ruleMatch.addDelegateApply(this, apply);
           blockResult.add(apply);
         }
         result.add(blockResult);
@@ -137,16 +200,19 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
       action.execute(new MatchContext(this, ruleMatch), stream, crowd);
       crowd.endVisit(action, null);
     }
+
     processInlinedActionRules(ruleMatch, stream, crowd);
   }
 
-  protected boolean matchInnerRules(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd) {
+  protected boolean matchInlinedRules(RuleMatch ruleMatch, RuleElementMatch ruleElementMatch,
+          RutaStream stream, InferenceCrowd crowd) {
 
-    List<List<ScriptApply>> blockResults = processInlinedConditionRules(ruleMatch, stream, crowd);
+    List<List<ScriptApply>> blockResults = processInlinedConditionRules(ruleMatch, ruleElementMatch,
+            stream, crowd);
     if (blockResults == null) {
       return true;
     }
-    
+
     boolean matched = true;
     for (List<ScriptApply> list : blockResults) {
       matched &= atLeastOneRuleMatched(list);
@@ -180,7 +246,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   @Override
   public List<RuleElementMatch> evaluateMatches(List<RuleElementMatch> matches,
           MatchContext context, RutaStream stream) {
-    return quantifier.evaluateMatches(matches, context, stream, emptyCrowd);
+    return quantifier.evaluateMatches(matches, context, stream, EMPTY_CROWD);
   }
 
   @Override
@@ -284,11 +350,6 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   public void setQuantifier(RuleElementQuantifier quantifier) {
     this.quantifier = quantifier;
-  }
-
-  @Override
-  public RutaRule getRule() {
-    return container.getRule();
   }
 
   @Override

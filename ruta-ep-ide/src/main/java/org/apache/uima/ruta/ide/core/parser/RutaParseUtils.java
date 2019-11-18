@@ -166,12 +166,6 @@ public class RutaParseUtils {
     return null;
   }
 
-  /**
-   * @param token
-   * @return (start, end)
-   * @throws IllegalArgumentException
-   *           when token==null or !(token instanceof CommonToken)
-   */
   public static final int[] getBounds(Token token) throws IllegalArgumentException {
     if (token == null) {
       throw new IllegalArgumentException();
@@ -184,15 +178,6 @@ public class RutaParseUtils {
     return bounds;
   }
 
-  /**
-   * @param tokenA
-   *          startToken
-   * @param tokenB
-   *          endToken
-   * @return positions of a.start // b.end
-   * @throws IllegalArgumentException
-   *           when some token is null or not instanceof CommonToken
-   */
   public static final int[] getBounds(Token tokenA, Token tokenB) throws IllegalArgumentException {
     if (!((tokenA instanceof CommonToken) && (tokenB instanceof CommonToken || tokenB == null))) {
       throw new IllegalArgumentException();
@@ -208,10 +193,6 @@ public class RutaParseUtils {
     }
   }
 
-  /**
-   * @param member
-   * @return see {@link RutaTypeConstants}, -1 if not valid
-   */
   public static final int getTypeOfIModelElement(IMember member) {
     int type;
     try {

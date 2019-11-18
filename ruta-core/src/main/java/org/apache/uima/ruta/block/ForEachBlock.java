@@ -122,6 +122,9 @@ public class ForEachBlock extends RutaBlock {
   private boolean setRuleElementAnchorRecursively(RuleElement ruleElement) {
     if (ruleElement instanceof RutaRuleElement) {
       RutaMatcher matcher = ((RutaRuleElement) ruleElement).getMatcher();
+      if (matcher == null) {
+        return false;
+      }
       IRutaExpression expression = matcher.getExpression();
       if (expression instanceof AnnotationTypeExpression) {
         MatchReference reference = ((AnnotationTypeExpression) expression).getReference();

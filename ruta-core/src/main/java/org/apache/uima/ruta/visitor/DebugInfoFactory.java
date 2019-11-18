@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.RutaElement;
@@ -34,7 +35,6 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.block.BlockApply;
 import org.apache.uima.ruta.rule.AbstractRule;
-import org.apache.uima.ruta.rule.AbstractRuleElement;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.ComposedRuleElement;
 import org.apache.uima.ruta.rule.ComposedRuleElementMatch;
@@ -49,6 +49,7 @@ import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.type.DebugBlockApply;
 import org.apache.uima.ruta.type.DebugEvaluatedCondition;
 import org.apache.uima.ruta.type.DebugFailedRuleMatch;
+import org.apache.uima.ruta.type.DebugInlinedBlock;
 import org.apache.uima.ruta.type.DebugMatchedRuleMatch;
 import org.apache.uima.ruta.type.DebugRuleApply;
 import org.apache.uima.ruta.type.DebugRuleElementMatch;
@@ -192,9 +193,6 @@ public class DebugInfoFactory {
     if (element instanceof RutaStatement) {
       RutaStatement rs = (RutaStatement) element;
       namespace = rs.getParent().getScript().getRootBlock().getNamespace();
-    } else if (element instanceof AbstractRuleElement) {
-      AbstractRuleElement are = (AbstractRuleElement) element;
-      are.getRule().getParent().getScript().getRootBlock().getNamespace();
     }
     dra.setElement(verbalizer.verbalize(element));
     dra.setApplied(ruleApply.getApplied());
@@ -227,7 +225,7 @@ public class DebugInfoFactory {
     drm.setMatched(match.matchedCompletely());
     if (match instanceof RuleMatch) {
       ComposedRuleElementMatch rootMatch = ((RuleMatch) match).getRootMatch();
-      setInnerMatches(stream, addToIndex, cas, drm, rootMatch);
+      setInnerMatches(stream, addToIndex, withMatches, timeInfo, drm, rootMatch);
       // if (match.matched()) {
       List<DebugScriptApply> delegates = new ArrayList<DebugScriptApply>();
       for (ScriptApply rem : ((RuleMatch) match).getDelegateApply().values()) {
@@ -292,7 +290,23 @@ public class DebugInfoFactory {
     return drm;
   }
 
-  private void setInnerMatches(RutaStream stream, boolean addToIndex, JCas cas, DebugRuleMatch drm,
+  private void setInnerMatches(RutaStream stream, boolean addToIndex, boolean withMatches,
+          Map<RutaElement, Long> timeInfo, DebugRuleMatch drm, ComposedRuleElementMatch rootMatch) {
+    Set<Entry<RuleElement, List<RuleElementMatch>>> entrySet = rootMatch.getInnerMatches()
+            .entrySet();
+    List<DebugRuleElementMatches> ruleElementMatches = new ArrayList<DebugRuleElementMatches>();
+    for (Entry<RuleElement, List<RuleElementMatch>> entry : entrySet) {
+      RuleElement re = entry.getKey();
+      List<RuleElementMatch> rems = entry.getValue();
+      ruleElementMatches.add(
+              createDebugRuleElementMatches(re, rems, stream, addToIndex, withMatches, timeInfo));
+    }
+
+    drm.setElements(UIMAUtils.toFSArray(stream.getJCas(), ruleElementMatches));
+  }
+
+  private void setInnerMatches(RutaStream stream, boolean addToIndex, boolean withMatches,
+          Map<RutaElement, Long> timeInfo, DebugRuleElementMatch drm,
           ComposedRuleElementMatch rootMatch) {
     Set<Entry<RuleElement, List<RuleElementMatch>>> entrySet = rootMatch.getInnerMatches()
             .entrySet();
@@ -300,38 +314,33 @@ public class DebugInfoFactory {
     for (Entry<RuleElement, List<RuleElementMatch>> entry : entrySet) {
       RuleElement re = entry.getKey();
       List<RuleElementMatch> rems = entry.getValue();
-      ruleElementMatches.add(createDebugRuleElementMatches(re, rems, stream, addToIndex));
+      ruleElementMatches.add(
+              createDebugRuleElementMatches(re, rems, stream, addToIndex, withMatches, timeInfo));
     }
-
-    drm.setElements(UIMAUtils.toFSArray(cas, ruleElementMatches));
-  }
-
-  private void setInnerMatches(RutaStream stream, boolean addToIndex, JCas cas,
-          DebugRuleElementMatch drm, ComposedRuleElementMatch rootMatch) {
-    Set<Entry<RuleElement, List<RuleElementMatch>>> entrySet = rootMatch.getInnerMatches()
-            .entrySet();
-    List<DebugRuleElementMatches> ruleElementMatches = new ArrayList<DebugRuleElementMatches>();
-    for (Entry<RuleElement, List<RuleElementMatch>> entry : entrySet) {
-      RuleElement re = entry.getKey();
-      List<RuleElementMatch> rems = entry.getValue();
-      ruleElementMatches.add(createDebugRuleElementMatches(re, rems, stream, addToIndex));
-    }
-    drm.setElements(UIMAUtils.toFSArray(cas, ruleElementMatches));
+    drm.setElements(UIMAUtils.toFSArray(stream.getJCas(), ruleElementMatches));
   }
 
   public DebugRuleElementMatches createDebugRuleElementMatches(RuleElement re,
-          List<RuleElementMatch> rems, RutaStream stream, boolean addToIndex) {
+          List<RuleElementMatch> rems, RutaStream stream, boolean addToIndex, boolean withMatches,
+          Map<RutaElement, Long> timeInfo) {
     JCas cas = stream.getJCas();
     DebugRuleElementMatches drems = new DebugRuleElementMatches(cas);
     drems.setElement(verbalizer.verbalize(re));
     List<DebugRuleElementMatch> remList = new ArrayList<DebugRuleElementMatch>();
     if (rems != null) {
       for (RuleElementMatch each : rems) {
+        DebugRuleElementMatch rem = null;
         if (each instanceof ComposedRuleElementMatch) {
-          remList.add(createDebugComposedRuleElementMatch((ComposedRuleElementMatch) each, stream,
-                  addToIndex));
+          rem = createDebugComposedRuleElementMatch((ComposedRuleElementMatch) each, stream,
+                  addToIndex, withMatches, timeInfo);
         } else {
-          remList.add(createDebugRuleElementMatch(each, stream, addToIndex));
+          rem = createDebugRuleElementMatch(each, stream, addToIndex);
+        }
+        FSArray inlinedConditionBlocks = createInlinedBlocks(each.getInlinedConditionRules(),
+                stream, true, addToIndex, withMatches, timeInfo);
+        rem.setInlinedConditionBlocks(inlinedConditionBlocks);
+        if (rem != null) {
+          remList.add(rem);
         }
       }
     }
@@ -339,20 +348,72 @@ public class DebugInfoFactory {
       drems.setRuleAnchor(rems.get(0).isRuleAnchor());
     }
     drems.setMatches(UIMAUtils.toFSArray(cas, remList));
+
+    FSArray inlinedActionBlocks = createInlinedActionBlocks(rems, stream, addToIndex, withMatches,
+            timeInfo);
+    drems.setInlinedActionBlocks(inlinedActionBlocks);
+
     if (addToIndex)
       drems.addToIndexes();
     return drems;
   }
 
+  private FSArray createInlinedBlocks(List<List<ScriptApply>> blocks, RutaStream stream,
+          boolean asCondition, boolean addToIndex, boolean withMatches,
+          Map<RutaElement, Long> timeInfo) {
+    JCas jcas = stream.getJCas();
+    if (blocks == null || blocks.isEmpty()) {
+      return null;
+    }
+
+    List<DebugInlinedBlock> blockList = new ArrayList<>();
+    for (List<ScriptApply> block : blocks) {
+      List<DebugScriptApply> list = new ArrayList<>();
+      boolean oneRuleApplied = false;
+      for (ScriptApply ruleApply : block) {
+        if (ruleApply instanceof RuleApply) {
+          if (((RuleApply) ruleApply).getApplied() > 0) {
+            oneRuleApplied = true;
+          }
+        }
+        DebugScriptApply debugScriptApply = createDebugScriptApply(ruleApply, stream, addToIndex,
+                withMatches, timeInfo);
+        list.add(debugScriptApply);
+      }
+      DebugInlinedBlock debugInlinedBlock = new DebugInlinedBlock(jcas);
+      debugInlinedBlock.setInlinedRules(FSCollectionFactory.createFSArray(jcas, list));
+      debugInlinedBlock.setAsCondition(asCondition);
+      if (asCondition) {
+        debugInlinedBlock.setElement(verbalizer.verbalizeInlinedConditionRuleBlock(block));
+        debugInlinedBlock.setMatched(oneRuleApplied);
+      } else {
+        debugInlinedBlock.setElement(verbalizer.verbalizeInlinedActionRuleBlock(block));
+      }
+      blockList.add(debugInlinedBlock);
+    }
+    return FSCollectionFactory.createFSArray(jcas, blockList);
+  }
+
+  private FSArray createInlinedActionBlocks(List<RuleElementMatch> rems, RutaStream stream,
+          boolean addToIndex, boolean withMatches, Map<RutaElement, Long> timeInfo) {
+    if (rems == null || rems.isEmpty()) {
+      return null;
+    }
+
+    return createInlinedBlocks(rems.get(0).getInlinedActionRules(), stream, false, addToIndex,
+            withMatches, timeInfo);
+  }
+
   public DebugRuleElementMatch createDebugComposedRuleElementMatch(ComposedRuleElementMatch rem,
-          RutaStream stream, boolean addToIndex) {
+          RutaStream stream, boolean addToIndex, boolean withMatches,
+          Map<RutaElement, Long> timeInfo) {
     JCas cas = stream.getJCas();
     DebugRuleElementMatch drem = new DebugRuleElementMatch(cas);
 
     DebugEvaluatedCondition base = new DebugEvaluatedCondition(cas);
     base.setValue(rem.isBaseConditionMatched());
 
-    setInnerMatches(stream, addToIndex, cas, drem, rem);
+    setInnerMatches(stream, addToIndex, withMatches, timeInfo, drem, rem);
 
     String baseString = verbalizer.verbalize(rem.getRuleElement());
     base.setElement(baseString);
@@ -399,8 +460,10 @@ public class DebugInfoFactory {
         drem.setEnd(end);
       }
     }
-    if (addToIndex)
+
+    if (addToIndex) {
       drem.addToIndexes();
+    }
     return drem;
   }
 

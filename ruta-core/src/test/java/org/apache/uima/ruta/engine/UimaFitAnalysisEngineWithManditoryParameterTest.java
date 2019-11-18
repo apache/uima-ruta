@@ -19,10 +19,12 @@
 
 package org.apache.uima.ruta.engine;
 
+import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.descriptor.RutaBuildOptions;
 import org.apache.uima.ruta.descriptor.RutaDescriptorFactory;
 import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
@@ -42,15 +44,16 @@ public class UimaFitAnalysisEngineWithManditoryParameterTest {
     RutaDescriptorInformation rdi = factory.parseDescriptorInformation(script);
     AnalysisEngineDescription aed = factory.createAnalysisEngineDescription(null, rdi,
             new RutaBuildOptions(), null, null, null, this.getClass().getClassLoader());
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(aed, RutaEngine.PARAM_RULES, script);
+    aed.getAnalysisEngineMetaData().getConfigurationParameterSettings()
+            .setParameterValue(RutaEngine.PARAM_RULES, script);
+    ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
+    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, resourceManager, null);
     CAS cas = RutaTestUtils.getCAS(document);
     ae.process(cas);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
-
-    cas.release();
   }
-  
+
   @Test
   public void testScriptOnly() throws Exception {
 
@@ -58,12 +61,12 @@ public class UimaFitAnalysisEngineWithManditoryParameterTest {
     String script = "UIMAFIT org.apache.uima.ruta.engine.UimaFitAnalysisEngineWithManditoryParameter (type, "
             + RutaTestUtils.TYPE + "1);";
     script += "EXEC(UimaFitAnalysisEngineWithManditoryParameter);";
-    
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES, script);
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
+            script);
     CAS cas = RutaTestUtils.getCAS(document);
     ae.process(cas);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
-    cas.release();
   }
 }

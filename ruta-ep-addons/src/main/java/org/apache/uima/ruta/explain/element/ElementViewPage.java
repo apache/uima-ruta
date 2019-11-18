@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
-import org.apache.uima.caseditor.editor.ICasDocument;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.explain.ExplainConstants;
 import org.apache.uima.ruta.explain.failed.FailedView;
@@ -48,25 +47,19 @@ public class ElementViewPage extends Page implements ISelectionListener {
 
   private Map<String, Image> images;
 
-  private AnnotationEditor editor;
-
-  private ICasDocument document;
-
   public ElementViewPage(AnnotationEditor editor) {
     super();
-    this.editor = editor;
-    this.document = editor.getDocument();
   }
 
   @Override
   public void dispose() {
-    super.dispose();
     getSite().getPage().removeSelectionListener(this);
     if (images != null) {
       for (Image each : images.values()) {
         each.dispose();
       }
     }
+    super.dispose();
   }
 
   private void initImages() {
@@ -159,6 +152,7 @@ public class ElementViewPage extends Page implements ISelectionListener {
     }
   }
 
+  @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
     if (selection instanceof TreeSelection
             && (part instanceof MatchedView || part instanceof FailedView)) {

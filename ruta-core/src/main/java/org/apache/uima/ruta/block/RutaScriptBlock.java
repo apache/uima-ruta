@@ -30,6 +30,7 @@ import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.RuleApply;
 import org.apache.uima.ruta.rule.RuleMatch;
+import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRule;
 import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -59,8 +60,12 @@ public class RutaScriptBlock extends RutaBlock {
           continue;
         }
         // TODO refactor!!
-        Type type = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher()
-                .getType(getParent() == null ? this : getParent(), stream);
+        RutaMatcher matcher = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher();
+        if (matcher == null) {
+          continue;
+        }
+
+        Type type = matcher.getType(getParent() == null ? this : getParent(), stream);
         RutaStream window = stream.getWindowStream(each, type);
         for (RutaStatement element : getElements()) {
           if (element != null) {

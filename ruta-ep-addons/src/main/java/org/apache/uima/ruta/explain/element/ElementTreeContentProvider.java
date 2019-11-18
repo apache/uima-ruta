@@ -19,21 +19,29 @@
 
 package org.apache.uima.ruta.explain.element;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.uima.ruta.explain.tree.IExplainTreeNode;
+import org.apache.uima.ruta.explain.tree.InlinedRootNode;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-
 public class ElementTreeContentProvider implements ITreeContentProvider {
 
+  @Override
   public Object[] getChildren(Object parentElement) {
-    if (parentElement instanceof IExplainTreeNode) {
-      IExplainTreeNode debugNode = (IExplainTreeNode) parentElement;
-      return debugNode.getChildren().toArray();
+    List<Object> result = new ArrayList<Object>();
+    IExplainTreeNode debugNode = (IExplainTreeNode) parentElement;
+    for (IExplainTreeNode each : debugNode.getChildren()) {
+      if (!(each instanceof InlinedRootNode)) {
+        result.add(each);
+      }
     }
-    return null;
+    return result.toArray();
   }
 
+  @Override
   public Object getParent(Object element) {
     if (element instanceof IExplainTreeNode) {
       return ((IExplainTreeNode) element).getParent();
@@ -42,10 +50,12 @@ public class ElementTreeContentProvider implements ITreeContentProvider {
 
   }
 
+  @Override
   public Object[] getElements(Object element) {
     return getChildren(element);
   }
 
+  @Override
   public boolean hasChildren(Object parentElement) {
     if (parentElement instanceof IExplainTreeNode) {
       IExplainTreeNode debugNode = (IExplainTreeNode) parentElement;
@@ -54,9 +64,11 @@ public class ElementTreeContentProvider implements ITreeContentProvider {
     return false;
   }
 
+  @Override
   public void dispose() {
   }
 
+  @Override
   public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
   }
 

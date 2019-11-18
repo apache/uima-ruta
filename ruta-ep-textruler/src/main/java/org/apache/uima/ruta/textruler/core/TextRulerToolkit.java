@@ -34,6 +34,8 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -90,18 +92,20 @@ public class TextRulerToolkit {
   public static final String RIGHT_BOUNDARY_EXTENSION = "END";
 
   public static void log(String str) {
-    if (LOGGING_ENABLED)
-      System.out.println(str);
+    if (LOGGING_ENABLED) {
+      Logger.getLogger(TextRulerToolkit.class.getName()).log(Level.INFO, str);
+    }
   }
 
   public static void logIfDebug(String str) {
     if (DEBUG)
-      log(str);
+      Logger.getLogger(TextRulerToolkit.class.getName()).log(Level.INFO, str);
   }
 
   public static void logIf(boolean condition, String str) {
-    if (LOGGING_ENABLED && condition)
-      System.out.println(str);
+    if (LOGGING_ENABLED && condition) {
+      Logger.getLogger(TextRulerToolkit.class.getName()).log(Level.INFO, str);
+    }
   }
 
   public static URL getResourceURL(String name) {
@@ -220,9 +224,6 @@ public class TextRulerToolkit {
     TypeSystem ts = aCas.getTypeSystem();
     Type slotType = ts.getType(slotName);
     FSIterator<AnnotationFS> it = aCas.getAnnotationIndex(slotType).iterator(true);
-    if (!it.isValid()) {
-      // System.out.println("##### -> iterator not valid for slots!!");
-    }
     while (it.isValid()) {
       AnnotationFS fs = it.get();
 
@@ -284,8 +285,8 @@ public class TextRulerToolkit {
     return result;
   }
 
-  public static List<AnnotationFS> getAnnotationsAfterPosition(CAS aCas, int position,
-          int maxCount, Set<String> filterSet, Type rootType) {
+  public static List<AnnotationFS> getAnnotationsAfterPosition(CAS aCas, int position, int maxCount,
+          Set<String> filterSet, Type rootType) {
     int maxPos = aCas.getDocumentText().length() - 1;
     List<AnnotationFS> result = getAnnotationWithinBounds(aCas, position, maxPos, filterSet,
             rootType);
@@ -317,9 +318,9 @@ public class TextRulerToolkit {
     if (filterSet != null)
       allFilters.addAll(filterSet);
     for (; it.isValid(); it.moveToNext()) {
-      AnnotationFS fs = (AnnotationFS) it.get();
-      if (fs.getBegin() == tokenAnnotation.getBegin()
-              && fs.getEnd() == tokenAnnotation.getEnd() && fs.getType().equals(tokenType)) {
+      AnnotationFS fs = it.get();
+      if (fs.getBegin() == tokenAnnotation.getBegin() && fs.getEnd() == tokenAnnotation.getEnd()
+              && fs.getType().equals(tokenType)) {
         leftIt = it;
 
         rightIt = it.copy();
@@ -332,11 +333,10 @@ public class TextRulerToolkit {
       leftIt.moveToPrevious(); // leave our token annotation behind us...
     // search from the token annotation to the left
     for (; leftIt.isValid(); leftIt.moveToPrevious()) {
-      AnnotationFS fs = (AnnotationFS) leftIt.get();
+      AnnotationFS fs = leftIt.get();
       if (fs.getEnd() <= tokenAnnotation.getBegin())
         break; // if that happens we are out of reach and can stop
-      if (fs.getBegin() <= tokenAnnotation.getBegin()
-              && fs.getEnd() >= tokenAnnotation.getEnd()
+      if (fs.getBegin() <= tokenAnnotation.getBegin() && fs.getEnd() >= tokenAnnotation.getEnd()
               && !allFilters.contains(fs.getType().getName())
               && !ts.subsumes(rootType, fs.getType()))
         result.add(fs);
@@ -346,11 +346,10 @@ public class TextRulerToolkit {
     if (rightIt.isValid())
       rightIt.moveToNext(); // leave our token annotation behind us...
     for (; rightIt.isValid(); rightIt.moveToNext()) {
-      AnnotationFS fs = (AnnotationFS) rightIt.get();
+      AnnotationFS fs = rightIt.get();
       if (fs.getBegin() >= tokenAnnotation.getEnd())
         break; // if that happens we are out of reach and can stop
-      if (fs.getBegin() <= tokenAnnotation.getBegin()
-              && fs.getEnd() >= tokenAnnotation.getEnd()
+      if (fs.getBegin() <= tokenAnnotation.getBegin() && fs.getEnd() >= tokenAnnotation.getEnd()
               && !allFilters.contains(fs.getType().getName())
               && !ts.subsumes(rootType, fs.getType()))
         result.add(fs);
@@ -412,6 +411,7 @@ public class TextRulerToolkit {
           List<TextRulerExample> list, TextRulerAnnotation ann) {
     TextRulerExample needle = new TextRulerExample(null, ann, true, null);
     int index = Collections.binarySearch(list, needle, new Comparator<TextRulerExample>() {
+      @Override
       public int compare(TextRulerExample o1, TextRulerExample o2) {
         TextRulerAnnotation afs1 = o1.getAnnotation();
         TextRulerAnnotation afs2 = o2.getAnnotation();
@@ -459,7 +459,6 @@ public class TextRulerToolkit {
     } else
       return typeName;
   }
-
 
   public static synchronized String escapeForRegExp(String aRegexFragment) {
     final StringBuilder result = new StringBuilder();

@@ -81,6 +81,12 @@ licensed under the Common Public License.
       <scope>compile</scope>
     </dependency>
     <dependency>
+	   <groupId>org.apache.commons</groupId>
+	   <artifactId>commons-text</artifactId>
+	   <version>1.6</version>
+	   <scope>compile</scope>
+	</dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.4</version>
@@ -176,13 +182,6 @@ licensed under the Common Public License.
       <version>3.1.2.RELEASE</version>
       <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.24</version>
-      <scope>compile</scope>
-    </dependency>
-    
   </dependencies>
   <scm>
     <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-ep-engine</url>
@@ -210,6 +209,7 @@ licensed under the Common Public License.
                 <excludes>
                   <exclude>release.properties</exclude> <!-- release generated artifact -->
                   <exclude>marker-file-identifying-*</exclude>
+                  <exclude>META-INF/MANIFEST.MF</exclude>
                   <exclude>issuesFixed/**</exclude>
                 </excludes>
               </configuration>
@@ -235,7 +235,9 @@ licensed under the Common Public License.
                   org.apache.uima.ruta.descriptor,
                   org.apache.uima.ruta.engine,
                   org.apache.uima.ruta.expression,
+                  org.apache.uima.ruta.expression.annotation,
                   org.apache.uima.ruta.expression.bool,
+                  org.apache.uima.ruta.expression.feature,
                   org.apache.uima.ruta.expression.list,
                   org.apache.uima.ruta.expression.number,
                   org.apache.uima.ruta.expression.resource,
@@ -260,12 +262,13 @@ licensed under the Common Public License.
                   org.antlr.runtime.tree,
                   org.htmlparser,
                   org.htmlparser.*,
+                  org.apache.commons.text.*,
                   org.apache.commons.lang3.*,
+                  org.apache.commons.logging,
                   org.apache.commons.io.*,
                   org.apache.uima.fit.*,
                   org.apache.commons.math3.*,
-                  org.springframework.*,
-                  org.slf4j.*
+                  org.springframework.*
                 </_exportcontents>
 
                 <Import-Package>
@@ -287,7 +290,7 @@ licensed under the Common Public License.
                   !javax.xml.stream.events, !javax.xml.stream.util,
                   !javax.xml.transform, !javax.xml.transform.sax,
                   !javax.xml.transform.stax,
-                  !javax.xml.ws, !joptsimple, !net.sf.cglib.*, !net.sf.ehcache.*,
+                  !javax.xml.ws, !javax.xml.*, !joptsimple, !net.sf.cglib.*, !net.sf.ehcache.*,
                   !org.antlr.stringtemplate,
                   !org.apache.avalon.framework.logger,
                   !org.apache.log, !org.apache.log4j, !org.apache.log4j.xml,
@@ -295,7 +298,7 @@ licensed under the Common Public License.
                   !org.joda.*, !org.jruby.*, !org.omg.CORBA,
                   !org.springframework.instrument,
                   !org.w3c.dom, !org.xml.sax, !org.xml.sax.ext, !org.xml.sax.helpers,
-                  !org.aopalliance.*, !org.springframework.aop.*, !org.slf4j.*
+                  !org.aopalliance.*, !org.springframework.aop.*
                 </Import-Package>
                 <!-- -->
                 <Require-Bundle> org.apache.uima.runtime </Require-Bundle>
@@ -317,7 +320,7 @@ licensed under the Common Public License.
                 <Embed-Dependency>*;scope=compile</Embed-Dependency>
                 <!-- <Embed-Transitive>true</Embed-Transitive> -->
                 <Bundle-SymbolicName>org.apache.uima.ruta.engine;singleton:=true</Bundle-SymbolicName>
-                <Bundle-RequiredExecutionEnvironment>JavaSE-1.7</Bundle-RequiredExecutionEnvironment>
+                <Bundle-RequiredExecutionEnvironment>JavaSE-1.8</Bundle-RequiredExecutionEnvironment>
                 <Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
                 <!-- <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy> -->
                 <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>

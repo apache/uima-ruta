@@ -87,15 +87,15 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
   private static final String RUTA_NATURE = "org.apache.uima.ruta.ide.nature";
 
-  @Parameter( defaultValue = "${project}", readonly = true )
+  @Parameter(defaultValue = "${project}", readonly = true)
   private MavenProject project;
 
   @Component
   private BuildContext buildContext;
 
-  @Parameter( defaultValue = "${session}", readonly = true )
+  @Parameter(defaultValue = "${session}", readonly = true)
   private MavenSession session;
-  
+
   /**
    * The source files for the multi tree word list.
    */
@@ -198,6 +198,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   @Parameter(required = false)
   private String[] buildPaths;
 
+  @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
 
     if (!typeSystemOutputDirectory.exists()) {
@@ -212,8 +213,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
     this.project.addCompileSourceRoot(this.typeSystemOutputDirectory.getPath());
     this.project.addCompileSourceRoot(this.analysisEngineOutputDirectory.getPath());
-    
-    
+
     String[] files = null;
     if (scriptFiles != null) {
       try {
@@ -239,18 +239,18 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     List<File> filesToBuild = new ArrayList<File>();
     for (String each : files) {
       File file = new File(each);
-      
+
       // TODO should check the correct package!
       List<File> possibleDescriptors = getPossibleDescriptors(file);
-      if(possibleDescriptors == null) {
+      if (possibleDescriptors == null) {
         filesToBuild.add(file);
         continue;
       }
-      
+
       long scriptModified = file.lastModified();
       for (File eachDescriptor : possibleDescriptors) {
         long descModified = eachDescriptor.lastModified();
-        if(scriptModified > descModified) {
+        if (scriptModified > descModified) {
           filesToBuild.add(file);
           break;
         }
@@ -262,8 +262,6 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       return;
     }
 
-   
-    
     RutaDescriptorFactory factory = new RutaDescriptorFactory();
     if (typeSystemTemplate != null) {
       try {
@@ -292,8 +290,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
     List<String> extensions = getExtensionsFromClasspath(classloader);
     options.setLanguageExtensions(extensions);
-    
-    
+
     if (maxBuildRetries == -1) {
       maxBuildRetries = filesToBuild.size() * 3;
     }
@@ -322,9 +319,8 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
         getLog().warn("Failed to parse UIMA Ruta script: " + scriptName, re);
       } catch (IOException ioe) {
         toBuild.add(descriptorInformation);
-        getLog().warn(
-                "Tried to build " + scriptName
-                        + ", but failed (dependency probably not yet build): " + ioe.getMessage());
+        getLog().warn("Tried to build " + scriptName
+                + ", but failed (dependency probably not yet build): " + ioe.getMessage());
         count++;
       } catch (SAXException saxe) {
         getLog().warn("Failed to write descriptor: " + scriptName, saxe);
@@ -376,7 +372,6 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
     return result;
   }
-  
 
   private List<String> getExtensionsFromClasspath(ClassLoader classloader) {
     List<String> result = new ArrayList<String>();
@@ -398,18 +393,18 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   }
 
   private void createDescriptors(RutaDescriptorFactory factory, RutaBuildOptions options,
-          RutaDescriptorInformation descriptorInformation) throws IOException,
-          RecognitionException, InvalidXMLException, ResourceInitializationException,
-          URISyntaxException, SAXException {
+          RutaDescriptorInformation descriptorInformation) throws IOException, RecognitionException,
+          InvalidXMLException, ResourceInitializationException, URISyntaxException, SAXException {
     String packageString = "";
     if (!StringUtils.isBlank(descriptorInformation.getPackageString())) {
       packageString = descriptorInformation.getPackageString().replaceAll("[.]", "/").concat("/");
     }
-    String engineOutput = new File(analysisEngineOutputDirectory, packageString
-            + descriptorInformation.getScriptName() + analysisEngineSuffix + ".xml")
-            .getAbsolutePath();
-    String typeSystemOutput = new File(typeSystemOutputDirectory, packageString
-            + descriptorInformation.getScriptName() + typeSystemSuffix + ".xml").getAbsolutePath();
+    String engineOutput = new File(analysisEngineOutputDirectory,
+            packageString + descriptorInformation.getScriptName() + analysisEngineSuffix + ".xml")
+                    .getAbsolutePath();
+    String typeSystemOutput = new File(typeSystemOutputDirectory,
+            packageString + descriptorInformation.getScriptName() + typeSystemSuffix + ".xml")
+                    .getAbsolutePath();
     Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = factory
             .createDescriptions(engineOutput, typeSystemOutput, descriptorInformation, options,
                     scriptPaths, descriptorPaths, resourcePaths);
@@ -434,10 +429,6 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     }
   }
 
-  /**
-   * Create a class loader which covers the classes compiled in the current project and all
-   * dependencies.
-   */
   public static URLClassLoader getClassloader(MavenProject project, Log aLog)
           throws MojoExecutionException {
 
@@ -446,12 +437,12 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     for (String element : project.getCompileSourceRoots()) {
       try {
         urls.add(new File(element).toURI().toURL());
-        if(aLog != null) {
+        if (aLog != null) {
           aLog.debug("Classpath entry: " + element);
         }
       } catch (MalformedURLException e) {
-        throw new MojoExecutionException("Unable to assemble classpath: "
-                + ExceptionUtils.getRootCauseMessage(e), e);
+        throw new MojoExecutionException(
+                "Unable to assemble classpath: " + ExceptionUtils.getRootCauseMessage(e), e);
       }
     }
 
@@ -459,31 +450,31 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       try {
         String directory = element.getDirectory();
         urls.add(new File(directory).toURI().toURL());
-        if(aLog != null) {
+        if (aLog != null) {
           aLog.debug("Classpath entry: " + directory);
         }
       } catch (MalformedURLException e) {
-        throw new MojoExecutionException("Unable to assemble classpath: "
-                + ExceptionUtils.getRootCauseMessage(e), e);
+        throw new MojoExecutionException(
+                "Unable to assemble classpath: " + ExceptionUtils.getRootCauseMessage(e), e);
       }
     }
 
     try {
       for (Object object : project.getCompileClasspathElements()) {
         String path = (String) object;
-        if(aLog != null) {
+        if (aLog != null) {
           aLog.debug("Classpath entry: " + object);
         }
         urls.add(new File(path).toURI().toURL());
       }
     } catch (IOException e) {
-      throw new MojoExecutionException("Unable to assemble classpath: "
-              + ExceptionUtils.getRootCauseMessage(e), e);
+      throw new MojoExecutionException(
+              "Unable to assemble classpath: " + ExceptionUtils.getRootCauseMessage(e), e);
     } catch (DependencyResolutionRequiredException e) {
-      throw new MojoExecutionException("Unable to resolve dependencies: "
-              + ExceptionUtils.getRootCauseMessage(e), e);
+      throw new MojoExecutionException(
+              "Unable to resolve dependencies: " + ExceptionUtils.getRootCauseMessage(e), e);
     }
-    Set<Artifact> artifacts = (Set<Artifact>) project.getDependencyArtifacts();
+    Set<Artifact> artifacts = project.getDependencyArtifacts();
     if (artifacts != null) {
       for (Artifact dep : artifacts) {
         try {
@@ -491,9 +482,9 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
             // Unresolved file because it is in the wrong scope (e.g. test?)
             continue;
           }
-          if(aLog != null) {
-          aLog.debug("Classpath entry: " + dep.getGroupId() + ":" + dep.getArtifactId() + ":"
-                  + dep.getVersion() + " -> " + dep.getFile());
+          if (aLog != null) {
+            aLog.debug("Classpath entry: " + dep.getGroupId() + ":" + dep.getArtifactId() + ":"
+                    + dep.getVersion() + " -> " + dep.getFile());
           }
           urls.add(dep.getFile().toURI().toURL());
         } catch (Exception e) {

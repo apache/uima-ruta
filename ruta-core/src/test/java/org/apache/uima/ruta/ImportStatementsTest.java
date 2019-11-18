@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -36,6 +37,7 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.descriptor.RutaBuildOptions;
 import org.apache.uima.ruta.descriptor.RutaDescriptorFactory;
@@ -76,7 +78,8 @@ public class ImportStatementsTest {
 
     ruta.getAnalysisEngineMetaData().setTypeSystem(tsd);
 
-    return AnalysisEngineFactory.createEngine(ruta);
+    ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
+    return UIMAFramework.produceAnalysisEngine(ruta, resourceManager, null);
   }
 
   @Test

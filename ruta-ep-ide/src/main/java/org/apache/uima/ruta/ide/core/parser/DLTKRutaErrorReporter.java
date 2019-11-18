@@ -55,7 +55,6 @@ public class DLTKRutaErrorReporter {
       return;
     }
     if (re.token == null) {
-      System.out.println("Token is null in ErrorReporter");
       return;
     }
     Token token = re.token;
@@ -124,7 +123,6 @@ public class DLTKRutaErrorReporter {
       if (!problems.contains(defaultProblem)) {
         reporter.reportProblem(defaultProblem);
         problems.add(defaultProblem);
-        System.out.println(messages[0] + " ### line " + re.token.getLine());
       }
     }
   }
@@ -176,7 +174,6 @@ public class DLTKRutaErrorReporter {
       return;
     }
     if (re.token == null) {
-      System.out.println("Token is null in ErrorReporter");
       return;
     }
     Token token = re.token;
@@ -217,7 +214,6 @@ public class DLTKRutaErrorReporter {
       if (!problems.contains(defaultProblem)) {
         reporter.reportProblem(defaultProblem);
         problems.add(defaultProblem);
-        System.out.println(messages[0] + " ### line " + ec.token.getLine());
       }
     } else if (re instanceof MismatchedTokenException) {
       MismatchedTokenException ec = (MismatchedTokenException) re;
@@ -257,7 +253,6 @@ public class DLTKRutaErrorReporter {
       if (!problems.contains(defaultProblem)) {
         reporter.reportProblem(defaultProblem);
         problems.add(defaultProblem);
-        System.out.println(messages[0] + " ### line " + ec.line);
       }
     } else if (re instanceof FailedPredicateException) {
       String[] messages = { "Syntax Error:" + message, message };
@@ -269,13 +264,12 @@ public class DLTKRutaErrorReporter {
       int et = convert.getColumn() + convert.getText().length();
       // reporter.handle(CompilerOptions.OFFSET, messages, messages,
       // st, et);
-      DefaultProblem defaultProblem = new DefaultProblem("", "Type not defined in this script: "
-              + convert.getText(), 0, new String[] {}, ProblemSeverities.Warning, st, et,
-              re.token.getLine());
+      DefaultProblem defaultProblem = new DefaultProblem("",
+              "Type not defined in this script: " + convert.getText(), 0, new String[] {},
+              ProblemSeverities.Warning, st, et, re.token.getLine());
       if (!problems.contains(defaultProblem)) {
         reporter.reportProblem(defaultProblem);
         problems.add(defaultProblem);
-        System.out.println(messages[0] + " ### line " + re.token.getLine());
       }
     } else {
       String[] messages = { "Syntax Error:" + message, message };
@@ -292,7 +286,6 @@ public class DLTKRutaErrorReporter {
       if (!problems.contains(defaultProblem)) {
         reporter.reportProblem(defaultProblem);
         problems.add(defaultProblem);
-        System.out.println(messages[0] + " ### line " + re.token.getLine());
       }
     }
     // } catch (CoreException e) {

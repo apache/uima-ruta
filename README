@@ -5,10 +5,11 @@ Apache UIMA Ruta (TM) v3.0.0
 Building from the Source Distribution
 -------------------------------------
 
-We use Maven 3.0 or later for building; download this if needed, 
-and set the environment variable MAVEN_OPTS to -Xmx800m -XX:MaxPerSize=256m.
+We use Maven 3.0 and Java 8 or later for building; download this if needed, 
+and set the environment variable MAVEN_OPTS to -Xmx800m -XX:MaxPermSize=256m.
 
 Then do the build by going into the UIMA Ruta directory, and issuing the command
+   
    mvn clean install
    
 This builds everything except the ...source-release.zip file. If you want that,

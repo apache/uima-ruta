@@ -46,11 +46,7 @@ public class RankedList extends ArrayList<Condition> {
     addAll(c);
   }
 
-  /**
-   * Adds the item to the list and increases its ranking by one.
-   * 
-   * @return true, if the item was newly inserted into the list.
-   */
+  @Override
   public boolean add(Condition e) {
     boolean result;
     double value;
@@ -71,10 +67,6 @@ public class RankedList extends ArrayList<Condition> {
     return result;
   }
 
-  /**
-   * Adds the item to the list and increases its ranking by the given number.
-   * 
-   */
   public void add(double index, Condition e) {
     if (ranking.containsKey(e)) {
       Double rank = ranking.get(e);
@@ -86,20 +78,13 @@ public class RankedList extends ArrayList<Condition> {
     }
   }
 
-  /**
-   * Adds the items to the ranked list and increases their ranking by their value in the given list.
-   * 
-   */
   public void addAll(RankedList list) {
     for (Condition each : list) {
       add(list.rankingOf(each), each);
     }
   }
 
-  /**
-   * Adds the items to the list and increases their ranking by one.
-   * 
-   */
+  @Override
   public boolean addAll(Collection<? extends Condition> c) {
     for (Condition each : c) {
       add(each);
@@ -107,10 +92,6 @@ public class RankedList extends ArrayList<Condition> {
     return true;
   }
 
-  /**
-   * Adds the items to the list and increases their ranking by the given number.
-   * 
-   */
   public boolean addAll(double index, Collection<? extends Condition> c) {
     for (Condition each : c) {
       add(index, each);
@@ -118,6 +99,7 @@ public class RankedList extends ArrayList<Condition> {
     return true;
   }
 
+  @Override
   public Condition remove(int index) {
     Condition element = super.get(index);
     if (element != null) {
@@ -130,6 +112,7 @@ public class RankedList extends ArrayList<Condition> {
     return null;
   }
 
+  @Override
   public boolean remove(Object o) {
     if (size() > 0) {
       if (contains(o) && ranking.containsKey(o)) {
@@ -141,23 +124,28 @@ public class RankedList extends ArrayList<Condition> {
     return false;
   }
 
+  @Override
   public List<Condition> subList(int start, int end) {
     return super.subList(start, end);
   }
 
+  @Override
   public boolean contains(Object o) {
     return super.contains(o);
   }
 
+  @Override
   public void clear() {
     super.clear();
     ranking.clear();
   }
 
+  @Override
   public int size() {
     return super.size();
   }
 
+  @Override
   public RankedList clone() {
     RankedList clone = new RankedList(idf);
     for (Condition element : subList(0, size())) {
@@ -166,16 +154,11 @@ public class RankedList extends ArrayList<Condition> {
     return clone;
   }
 
+  @Override
   public Condition get(int i) {
     return super.get(i);
   }
 
-  /**
-   * Returns the ranking of the given object.
-   * 
-   * @param each
-   * @return ranking
-   */
   public double rankingOf(Condition each) {
     if (contains(each)) {
       return ranking.get(each).doubleValue();
@@ -187,9 +170,6 @@ public class RankedList extends ArrayList<Condition> {
     return ranking;
   }
 
-  /**
-   * Sorts the elements of the list in order of its ranking.
-   */
   public void sort() {
     List<Condition> newList = new ArrayList<Condition>();
     for (int i = 0; i < size(); i++) {
@@ -206,12 +186,6 @@ public class RankedList extends ArrayList<Condition> {
     super.addAll(newList);
   }
 
-  /**
-   * Unites the lists and adds their values for common elements.
-   * 
-   * @param list
-   *          A list of the same type.
-   */
   public RankedList unite(RankedList list) {
     RankedList clone = clone();
     for (Condition element : list.subList(0, list.size())) {
@@ -221,13 +195,6 @@ public class RankedList extends ArrayList<Condition> {
     return clone;
   }
 
-  /**
-   * Removes all elements that are not part of both lists. Also adds the values of elements that
-   * occur in both lists.
-   * 
-   * @param list
-   *          A list of the same type.
-   */
   public RankedList cut(RankedList list) {
     RankedList clone = clone();
     for (Condition element : subList(0, size())) {
@@ -241,13 +208,6 @@ public class RankedList extends ArrayList<Condition> {
     return clone;
   }
 
-  /**
-   * Removes all elements of the given list that occur in this list. Also adds the values of
-   * elements that occur in both lists.
-   * 
-   * @param list
-   *          A list of the same type.
-   */
   public RankedList subtract(RankedList list) {
     RankedList clone = clone();
     for (Condition element : subList(0, size())) {
@@ -275,10 +235,6 @@ public class RankedList extends ArrayList<Condition> {
     return super.set(index, element);
   }
 
-  /**
-   * Adds the element to the list and assigns the ranking of the element located at the index. If
-   * the element already exists, it is only assigned the ranking value.
-   */
   @Override
   public void add(int index, Condition element) {
     if (size() >= index) {

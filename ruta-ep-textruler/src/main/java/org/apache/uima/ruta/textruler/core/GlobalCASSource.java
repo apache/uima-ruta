@@ -57,7 +57,6 @@ public class GlobalCASSource {
       try {
         CAS newCas = ae.newCAS();
         CAS++;
-        System.out.println("####### CAS: " + CAS);
         inUsage.add(newCas);
         return newCas;
       } catch (Exception e) {

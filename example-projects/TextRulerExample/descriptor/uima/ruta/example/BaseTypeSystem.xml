@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-    <name>BaseTypeSystem</name>
+    <name>uima.ruta.example.BaseTypeSystem</name>
     <imports>
-        <import location="..\..\..\BasicTypeSystem.xml"/>
-        <import location="..\..\..\types\Bibtex.xml"/>
+        <import location="../../../BasicTypeSystem.xml"/>
+        <import location="../../../types/Bibtex.xml"/>
     </imports>
 </typeSystemDescription>

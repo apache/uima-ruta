@@ -48,8 +48,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class RutaFoldingPreferenceBlock extends AbstractConfigurationBlock implements
-        IFoldingPreferenceBlock {
+public class RutaFoldingPreferenceBlock extends AbstractConfigurationBlock
+        implements IFoldingPreferenceBlock {
 
   protected class ListBlock {
     private ListViewer fList;
@@ -90,11 +90,14 @@ public class RutaFoldingPreferenceBlock extends AbstractConfigurationBlock imple
       fAddButton = createPushButton(pathButtonComp,
               RutaFoldingMessages.RutaFoldingPreferenceBlock_0);
       fAddButton.addSelectionListener(new SelectionListener() {
+        @Override
         public void widgetDefaultSelected(SelectionEvent e) {
         }
 
+        @Override
         public void widgetSelected(SelectionEvent e) {
           IInputValidator validator = new IInputValidator() {
+            @Override
             public String isValid(String newText) {
               if (newText.trim().length() > 0 && newText.matches("[_a-zA-Z]*")) //$NON-NLS-1$
                 return null;
@@ -112,9 +115,11 @@ public class RutaFoldingPreferenceBlock extends AbstractConfigurationBlock imple
       fRemoveButton = createPushButton(pathButtonComp,
               RutaFoldingMessages.RutaFoldingPreferenceBlock_6);
       fRemoveButton.addSelectionListener(new SelectionListener() {
+        @Override
         public void widgetDefaultSelected(SelectionEvent e) {
         }
 
+        @Override
         public void widgetSelected(SelectionEvent e) {
           ISelection s = fList.getSelection();
           if (s instanceof IStructuredSelection) {
@@ -140,9 +145,6 @@ public class RutaFoldingPreferenceBlock extends AbstractConfigurationBlock imple
       return button;
     }
 
-    /**
-     * Returns a width hint for a button control.
-     */
     public int getButtonWidthHint(Button button) {
       button.setFont(JFaceResources.getDialogFont());
       PixelConverter converter = new PixelConverter(button);
@@ -199,7 +201,8 @@ public class RutaFoldingPreferenceBlock extends AbstractConfigurationBlock imple
 
   private OverlayKey[] fKeys;
 
-  public RutaFoldingPreferenceBlock(OverlayPreferenceStore store, PreferencePage mainPreferencePage) {
+  public RutaFoldingPreferenceBlock(OverlayPreferenceStore store,
+          PreferencePage mainPreferencePage) {
     super(store, mainPreferencePage);
     fOverlayStore = store;
     fKeys = createKeys();
@@ -232,6 +235,7 @@ public class RutaFoldingPreferenceBlock extends AbstractConfigurationBlock imple
     return keys;
   }
 
+  @Override
   public Control createControl(Composite composite) {
     Composite inner = new Composite(composite, SWT.NONE);
     GridLayout layout = new GridLayout();
@@ -258,6 +262,7 @@ public class RutaFoldingPreferenceBlock extends AbstractConfigurationBlock imple
 
     IInputValidator val = new IInputValidator() {
 
+      @Override
       public String isValid(String number) {
         if (number.length() == 0) {
           return PreferencesMessages.DLTKEditorPreferencePage_empty_input;

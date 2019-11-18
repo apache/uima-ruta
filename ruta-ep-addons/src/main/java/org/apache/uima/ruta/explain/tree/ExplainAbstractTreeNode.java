@@ -31,6 +31,8 @@ public abstract class ExplainAbstractTreeNode implements IExplainTreeNode, IAdap
 
   private IExplainTreeNode parent;
 
+  private InlinedRootNode inlined;
+
   private List<IExplainTreeNode> children;
 
   private FeatureStructure fs;
@@ -44,14 +46,17 @@ public abstract class ExplainAbstractTreeNode implements IExplainTreeNode, IAdap
     this.ts = ts;
   }
 
+  @Override
   public IExplainTreeNode getParent() {
     return parent;
   }
 
+  @Override
   public List<IExplainTreeNode> getChildren() {
     return children;
   }
 
+  @Override
   public boolean hasChildren() {
     if (children.size() > 0) {
       return true;
@@ -59,18 +64,22 @@ public abstract class ExplainAbstractTreeNode implements IExplainTreeNode, IAdap
     return false;
   }
 
+  @Override
   public void addChild(IExplainTreeNode child) {
     children.add(child);
   }
 
+  @Override
   public boolean removeChild(IExplainTreeNode child) {
     return children.remove(child);
   }
 
+  @Override
   public FeatureStructure getFeatureStructure() {
     return fs;
   }
 
+  @Override
   public TypeSystem getTypeSystem() {
     return ts;
   }
@@ -80,15 +89,26 @@ public abstract class ExplainAbstractTreeNode implements IExplainTreeNode, IAdap
     return fs.toString();
   }
 
+  @Override
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public Object getAdapter(Class adapter) {
 
     if (FeatureStructure.class.equals(adapter)) {
       return getFeatureStructure();
-    } else if (AnnotationFS.class.equals(adapter) && getFeatureStructure() instanceof AnnotationFS) {
+    } else if (AnnotationFS.class.equals(adapter)
+            && getFeatureStructure() instanceof AnnotationFS) {
       return getFeatureStructure();
     }
 
     return null;
+  }
+
+  @Override
+  public InlinedRootNode getInlined() {
+    return inlined;
+  }
+
+  public void setInlined(InlinedRootNode inlined) {
+    this.inlined = inlined;
   }
 }

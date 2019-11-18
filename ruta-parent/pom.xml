@@ -127,8 +127,9 @@ This product contains icons developed by Mark James
 (http://www.famfamfam.com/lab/icons/silk/), licensed under the 
 Creative Commons Attribution 3.0 License.
     </postNoticeText>
-    <uimaVersion>3.1.0</uimaVersion>
+    <uimaVersion>3.1.1</uimaVersion>
     <uimafit-version>3.0.0</uimafit-version>
+    <spring-version>4.3.22.RELEASE</spring-version>
      <!-- 
      BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+)
      BACKWARD_COMPATIBLE_USER        - minor version (=.+.0)
@@ -140,7 +141,7 @@ Creative Commons Attribution 3.0 License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
-    <api_check_oldVersion>2.6.0</api_check_oldVersion>
+    <api_check_oldVersion>2.6.1</api_check_oldVersion>
   </properties>
   
   <dependencyManagement>
@@ -193,11 +194,6 @@ Creative Commons Attribution 3.0 License.
       </plugins>
     </pluginManagement>
   <plugins>
-  	<plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.6</version>
-        </plugin>
     <plugin>
       <artifactId>maven-enforcer-plugin</artifactId>
         <executions>
@@ -315,9 +311,9 @@ Creative Commons Attribution 3.0 License.
           <plugin>              
             <groupId>com.github.siom79.japicmp</groupId>
             <artifactId>japicmp-maven-plugin</artifactId>
-            <version>0.9.3</version>
+            <version>0.13.0</version>
             <configuration>
-              <skip>true</skip>	
+              <skip>true</skip>
               <oldVersion>
                 <dependency>
                   <groupId>${project.groupId}</groupId>
@@ -331,8 +327,8 @@ Creative Commons Attribution 3.0 License.
                    <exclude>org.apache.uima.ruta.type</exclude>
                    <exclude>org.apache.uima.ruta.parser.RutaParser</exclude>
                 </excludes>
-                <!-- filter out classes with impl in their package or class name -->
-                <postAnalysisScript>${project.basedir}/../ruta-parent/src/main/groovy/api-report.groovy</postAnalysisScript>                  
+				<!--  filter out classes with impl in their package or class name -->
+<!--                 <postAnalysisScript>${project.basedir}/../ruta-parent/src/main/groovy/api-report.groovy</postAnalysisScript>                   -->
               </parameter>
             </configuration>
             <executions>
@@ -351,7 +347,8 @@ Creative Commons Attribution 3.0 License.
             <executions>
               <execution>
                 <id>copy-API-change-report</id>
-                <phase>install</phase>  <!-- must follow verify -->
+                <phase>install</phase>  
+<!--                 must follow verify -->
                 <goals><goal>run</goal></goals>
                 <configuration>
                   <target>

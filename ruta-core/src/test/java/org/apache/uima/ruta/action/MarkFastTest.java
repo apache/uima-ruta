@@ -19,32 +19,56 @@
 
 package org.apache.uima.ruta.action;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.junit.Test;
 
 public class MarkFastTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50, false, false, null, namespace + "/");
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
+    CAS cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+            namespace + "/" + name + ".txt", 50, false, false, null, namespace + "/");
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 0 0", "100", "2 0 0");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "100");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "1 0 0", "100", "2 0 0");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "1 0 0", "2 0 0");
 
-    cas.release();
   }
+
+  @Test
+  public void testWithNullStringList() throws Exception {
+
+    String text = "Some text.";
+    String script = "";
+    script += "STRINGLIST list;\n";
+    script += "Document{-> ADD(list, null)};\n";
+    script += "MARKFAST(T1,list);\n";
+
+    Map<String, String> complexTypes = new TreeMap<String, String>();
+    String typeName = "org.apache.uima.Struct";
+    complexTypes.put(typeName, "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    features.put(typeName, list);
+    String fn1 = "s";
+    list.add(new TestFeature(fn1, "", "uima.cas.String"));
+    CAS cas = RutaTestUtils.getCAS(text, complexTypes, features);
+    Ruta.apply(cas, script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+  }
+
 }

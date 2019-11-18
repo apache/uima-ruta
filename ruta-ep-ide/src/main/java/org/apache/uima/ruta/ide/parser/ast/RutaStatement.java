@@ -31,42 +31,20 @@ import org.eclipse.dltk.ast.statements.StatementConstants;
 import org.eclipse.dltk.utils.CorePrinter;
 
 public class RutaStatement extends Statement {
+
   private List<Expression> expressions;
 
-  /**
-   * Statement with bounds from first to last expression.
-   * 
-   * @param expressions
-   */
   public RutaStatement(List<Expression> expressions) {
-    if (!expressions.isEmpty()) {
-      // First
-      Expression first = expressions.get(0);
-      if (first != null) {
-        this.setStart(first.sourceStart());
-      }
-      // Last
-      Expression last = expressions.get(expressions.size() - 1);
-      if (last != null) {
-        this.setEnd(last.sourceEnd());
-      }
-    }
-    this.expressions = expressions;
+
+    setExpressions(expressions);
   }
 
-  /**
-   * Statement with specified bounds and expression list.
-   * 
-   * @param start
-   * @param end
-   * @param expressions
-   */
   public RutaStatement(int start, int end, List<Expression> expressions) {
     super(start, end);
     if (expressions == null) {
       this.expressions = new ArrayList<Expression>();
     } else {
-      this.expressions = expressions;
+      setExpressions(expressions);
     }
   }
 
@@ -112,7 +90,7 @@ public class RutaStatement extends Statement {
       output.formatPrintLn("");
       Iterator<Expression> i = this.expressions.iterator();
       while (i.hasNext()) {
-        ASTNode node = (ASTNode) i.next();
+        ASTNode node = i.next();
         node.printNode(output);
         output.formatPrintLn(" ");
       }
@@ -125,7 +103,7 @@ public class RutaStatement extends Statement {
     if (this.expressions != null) {
       Iterator<Expression> i = this.expressions.iterator();
       while (i.hasNext()) {
-        ASTNode node = (ASTNode) i.next();
+        ASTNode node = i.next();
         value += node.toString();
         value += " ";
       }
@@ -136,6 +114,23 @@ public class RutaStatement extends Statement {
 
   public void setExpressions(List<Expression> asList) {
     this.expressions = asList;
+    updateBoundaries();
+  }
+
+  private void updateBoundaries() {
+
+    if (expressions != null && !expressions.isEmpty()) {
+      // First
+      Expression first = expressions.get(0);
+      if (first != null) {
+        this.setStart(first.sourceStart());
+      }
+      // Last
+      Expression last = expressions.get(expressions.size() - 1);
+      if (last != null) {
+        this.setEnd(last.sourceEnd());
+      }
+    }
   }
 
 }

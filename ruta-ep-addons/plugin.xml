@@ -605,6 +605,13 @@ under the License.
             id="org.apache.uima.ruta.explain.failed"
             name="Failed Rules">
       </view>
+       <view
+            category="org.apache.uima.ruta.ide.ui"
+            class="org.apache.uima.ruta.explain.inlined.InlinedView"
+            icon="icons/chart_organisation.png"
+            id="org.apache.uima.ruta.explain.inlined"
+            name="Inlined Rules">
+      </view>
       <view
             category="org.apache.uima.ruta.ide.ui"
             class="org.apache.uima.ruta.explain.element.ElementView"

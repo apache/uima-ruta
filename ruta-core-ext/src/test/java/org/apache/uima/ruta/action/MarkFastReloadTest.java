@@ -27,7 +27,7 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
-public class MarkFastReloadTest  {
+public class MarkFastReloadTest {
 
   @Test
   public void test() {
@@ -39,8 +39,10 @@ public class MarkFastReloadTest  {
       String ruleFileName = namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION;
       String textFileName = namespace + "/" + name + ".txt";
       Map<String, Object> parameters = new HashMap<>();
-      parameters.put(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS, new String[] {MarkReloadExtension.class.getName()});
-      cas = RutaTestUtils.process(ruleFileName, textFileName, parameters, 50, null,  null, namespace + "/", null);
+      parameters.put(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
+              new String[] { MarkReloadExtension.class.getName() });
+      cas = RutaTestUtils.process(ruleFileName, textFileName, parameters, 50, null, null,
+              namespace + "/", null);
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);
@@ -48,11 +50,10 @@ public class MarkFastReloadTest  {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 0 0", "100", "2 0 0");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "100");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "1 0 0", "100", "2 0 0");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "1 0 0", "2 0 0");
 
     cas.release();
   }
 
-    
 }

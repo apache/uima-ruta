@@ -76,6 +76,17 @@ public class WildCard2Test {
   }
 
   @Test
+  public void testOptional2() throws Exception {
+    String document = "Cw 1 2 3 test";
+    String script = "(CW # COLON?){-> T1} SW;";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Cw 1 2 3");
+  }
+
+  @Test
   public void testLookaheadInGreedy() throws Exception {
     String document = "Some test. Some test. Some test.";
     String script = "((CW #){-> T1})+;";
@@ -184,6 +195,29 @@ public class WildCard2Test {
   }
 
   @Test
+  public void testConditionAtComposedWithWildcard() throws Exception {
+    String document = "1 A a , 2 D d . 3";
+    String script = "(NUM #){CONTAINS(CAP)->T1} NUM;";
+    script += "((NUM #){CONTAINS(COMMA)}){CONTAINS(PERIOD)-> T2} NUM;";
+    script += "((NUM #){CONTAINS(SW)}){CONTAINS(PERIOD)-> T3} NUM;";
+    script += "(NUM #){CONTAINS(CAP)->T4} (NUM);";
+    script += "((NUM #){CONTAINS(CAP)->T5}) ((NUM));";
+    script += "((NUM #){CONTAINS(CAP)->T6}) \"2\";";
+    script += "((NUM #){CONTAINS(CAP)->T7}) \"3\";";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "2 D d .");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 0);
+  }
+
+  @Test
   public void testDuplicateAnnotation() throws Exception {
     String document = "x x x 1 a b c 2 d e f 3";
     String script = "NUM{->T1, T1};";
@@ -206,6 +240,20 @@ public class WildCard2Test {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "a a a");
+  }
+
+  @Test
+  public void testInlinedRulesAtWildcardWithOptional() throws Exception {
+    String document = "1 a a b / A 1";
+    String script = "NUM #{->T1} NUM;\n";
+    script += "T1{->T2}<-{# COLON? CW;} NUM;\n";
+    script += "T2 -> {(#<-{SW # NUM?;} COLON? SPECIAL){-> T3} CW;};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "a a b / A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "a a b /");
   }
 
   @Test

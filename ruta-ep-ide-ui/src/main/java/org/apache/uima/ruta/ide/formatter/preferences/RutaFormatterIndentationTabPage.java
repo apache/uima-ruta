@@ -41,9 +41,6 @@ import org.eclipse.swt.widgets.Text;
 
 public class RutaFormatterIndentationTabPage extends FormatterModifyTabPage {
 
-  /**
-   * @param dialog
-   */
   public RutaFormatterIndentationTabPage(IFormatterModifyDialog dialog) {
     super(dialog);
   }
@@ -57,8 +54,8 @@ public class RutaFormatterIndentationTabPage extends FormatterModifyTabPage {
   private final String[] tabPolicyItems = new String[] { CodeFormatterConstants.SPACE,
       CodeFormatterConstants.TAB, CodeFormatterConstants.MIXED };
 
-  private class TabPolicyListener extends SelectionAdapter implements
-          IFormatterControlManager.IInitializeListener {
+  private class TabPolicyListener extends SelectionAdapter
+          implements IFormatterControlManager.IInitializeListener {
 
     private final IFormatterControlManager manager;
 
@@ -75,9 +72,10 @@ public class RutaFormatterIndentationTabPage extends FormatterModifyTabPage {
       }
     }
 
+    @Override
     public void initialize() {
-      final boolean tabMode = CodeFormatterConstants.TAB.equals(manager
-              .getString(RutaFormatterConstants.FORMATTER_TAB_CHAR));
+      final boolean tabMode = CodeFormatterConstants.TAB
+              .equals(manager.getString(RutaFormatterConstants.FORMATTER_TAB_CHAR));
       manager.enableControl(indentSize, !tabMode);
     }
 
@@ -101,6 +99,7 @@ public class RutaFormatterIndentationTabPage extends FormatterModifyTabPage {
     tabSize = manager.createNumber(tabPolicyGroup, RutaFormatterConstants.FORMATTER_TAB_SIZE,
             FormatterMessages.IndentationTabPage_general_group_option_tab_size);
     tabSize.addModifyListener(new ModifyListener() {
+      @Override
       public void modifyText(ModifyEvent e) {
         int index = tabPolicy.getSelectionIndex();
         if (index >= 0) {

@@ -114,6 +114,7 @@ public class RuleListViewPage extends ApplyViewPage implements Listener {
     }
   }
 
+  @Override
   public void handleEvent(Event event) {
     if (event.widget == filterTextField && event.type == SWT.Modify) {
       manualFilter = filterTextField.getText();
@@ -163,7 +164,7 @@ public class RuleListViewPage extends ApplyViewPage implements Listener {
   }
 
   private void reloadTree() {
-    ExplainTree tree = new ExplainTree(document.getCAS(), offset, true);
+    ExplainTree tree = new ExplainTree(getJCas(), offset, true);
     filterTree(tree);
     viewer.setInput(tree.getRoot());
     viewer.refresh();

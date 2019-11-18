@@ -87,8 +87,10 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         List<RuleMatch> startRuleMatches = each.startMatch(extendedMatch, null, composedMatch, this,
                 stream, crowd);
         for (RuleMatch startRuleMatch : startRuleMatches) {
+
           ComposedRuleElementMatch startElementMatch = (ComposedRuleElementMatch) startRuleMatch
                   .getLastMatch(this, true);
+
           ruleMatches.put(startRuleMatch, startElementMatch);
         }
       }
@@ -102,19 +104,19 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         MatchContext context = new MatchContext(null, this, eachRuleMatch, true);
         AnnotationFS lastAnnotation = eachRuleMatch.getLastMatchedAnnotation(context, stream);
         boolean failed = !eachComposedMatch.matched();
+
+        RuleElement sideStepOrigin = hasAncestor(false) ? this : null;
+
         List<RuleMatch> fallbackContinue = fallbackContinue(true, failed, lastAnnotation,
-                eachRuleMatch, ruleApply, eachComposedMatch, null, entryPoint, stream, crowd);
+                eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
+                crowd);
         result.addAll(fallbackContinue);
       }
     } else if (conjunct) {
       // conjunctive
       Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new LinkedHashMap<RuleMatch, ComposedRuleElementMatch>();
       RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
-      RutaRuleElement sideStepOrigin = null;
 
-      if (anchoringRuleElement instanceof RutaRuleElement && hasAncestor(false)) {
-        sideStepOrigin = (RutaRuleElement) anchoringRuleElement;
-      }
       ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch,
               stream);
       List<RuleMatch> startRuleMatches = anchoringRuleElement.startMatch(ruleMatch, null,
@@ -151,6 +153,9 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         List<AnnotationFS> textsMatched = eachComposedMatch.getTextsMatched();
         if ((!stream.isGreedyAnchoring() && !stream.isOnlyOnce())
                 || !earlyExit(textsMatched.get(0), ruleApply, stream)) {
+
+          RuleElement sideStepOrigin = hasAncestor(false) ? this : null;
+
           List<RuleMatch> fallbackContinue = fallbackContinue(true, failed, lastAnnotation,
                   eachRuleMatch, ruleApply, eachComposedMatch, sideStepOrigin, entryPoint, stream,
                   crowd);
@@ -181,9 +186,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   @Override
   public List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
-          RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
-          InferenceCrowd crowd) {
+          RuleApply ruleApply, ComposedRuleElementMatch containerMatch, RuleElement sideStepOrigin,
+          RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     if (conjunct == null) {
       // inner next sequential
@@ -359,7 +363,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
   @Override
   public List<RuleMatch> continueOwnMatch(boolean after, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
+          RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     if (!stream.isSimpleGreedyForComposed()) {
@@ -409,11 +413,11 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   public List<RuleMatch> fallbackContinue(boolean after, boolean failed, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
+          RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     RuleElementContainer container = getContainer();
-    doMatch(after, containerMatch, ruleMatch, stream, crowd);
+    doMatch(after, annotation, ruleMatch, containerMatch, isStartAnchor(), stream, crowd);
     if (this.equals(entryPoint) && ruleApply == null) {
       result.add(ruleMatch);
     } else if (container == null) {
@@ -509,7 +513,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
   private List<RuleMatch> fallback(boolean after, boolean failed, AnnotationFS annotation,
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
-          RutaRuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
+          RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
     List<RuleMatch> result = new ArrayList<RuleMatch>();
     RuleElementContainer parentContainer = getContainer();
@@ -538,21 +542,24 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     }
   }
 
-  private void doMatch(boolean after, ComposedRuleElementMatch match, RuleMatch ruleMatch,
-          RutaStream stream, InferenceCrowd crowd) {
-    List<AnnotationFS> textsMatched = match.getTextsMatched();
+  @Override
+  public void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+          ComposedRuleElementMatch containerMatch, boolean ruleAnchor, RutaStream stream,
+          InferenceCrowd crowd) {
+
+    List<AnnotationFS> textsMatched = containerMatch.getTextsMatched();
     if (textsMatched == null || textsMatched.isEmpty()) {
       getParent().getEnvironment().addMatchToVariable(ruleMatch, this,
               new MatchContext(getParent()), stream);
-      match.evaluateInnerMatches(true, stream);
+      containerMatch.evaluateInnerMatches(true, stream);
       return;
     }
     int begin = textsMatched.get(0).getBegin();
     int end = textsMatched.get(textsMatched.size() - 1).getEnd();
-    AnnotationFS annotation = stream.getCas().createAnnotation(stream.getCas().getAnnotationType(),
-            begin, end);
+    AnnotationFS implicitAnnotation = stream.getCas()
+            .createAnnotation(stream.getCas().getAnnotationType(), begin, end);
 
-    MatchContext context = new MatchContext(annotation, this, ruleMatch, after);
+    MatchContext context = new MatchContext(implicitAnnotation, this, ruleMatch, after);
     RutaEnvironment environment = context.getParent().getEnvironment();
     environment.addMatchToVariable(ruleMatch, this, context, stream);
 
@@ -567,14 +574,14 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
         break;
       }
     }
-    match.setConditionInfo(evaluatedConditions);
-    match.evaluateInnerMatches(true, stream);
-    if (match.matched()) {
-      boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
-      match.setInlinedRulesMatched(inlinedRulesMatched);
+    containerMatch.setConditionInfo(evaluatedConditions);
+    containerMatch.evaluateInnerMatches(true, stream);
+    if (containerMatch.matched()) {
+      boolean inlinedRulesMatched = matchInlinedRules(ruleMatch, containerMatch, stream, crowd);
+      containerMatch.setInlinedRulesMatched(inlinedRulesMatched);
     } else {
       // update label for failed match after evaluating conditions
-      environment.addAnnotationsToVariable(null, getLabel(), context);
+      environment.removeVariableValue(getLabel(), context);
     }
   }
 

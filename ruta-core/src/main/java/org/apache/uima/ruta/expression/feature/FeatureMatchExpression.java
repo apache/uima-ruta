@@ -41,6 +41,7 @@ import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class FeatureMatchExpression extends SimpleFeatureExpression {
@@ -88,7 +89,14 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
           RutaStream stream) {
     Type featureRangeType = null;
     TypeSystem typeSystem = stream.getCas().getTypeSystem();
-    if (feature instanceof CoveredTextFeature) {
+    if (feature instanceof TypeFeature) {
+      if (getArg() instanceof ITypeExpression) {
+        Type t1 = fs.getType();
+        ITypeExpression expr = (ITypeExpression) getArg();
+        Type t2 = expr.getType(context, stream);
+        return compare(t1, t2);
+      }
+    } else if (feature instanceof CoveredTextFeature) {
       featureRangeType = typeSystem.getType(CAS.TYPE_NAME_STRING);
     } else if (feature != null) {
       featureRangeType = feature.getRange();

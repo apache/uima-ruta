@@ -27,6 +27,7 @@ import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.block.RutaBlock;
+import org.apache.uima.ruta.expression.annotation.AnnotationListDelegateVariableExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationListVariableExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationListVariableIndexExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
@@ -164,6 +165,7 @@ public class MatchReference extends RutaExpression {
         return true;
       } else if (environment.isVariableOfType(candidate, RutaConstants.RUTA_VARIABLE_ANNOTATION)) {
         annotationExpression = new AnnotationVariableExpression(candidate);
+        annotationListExpression = new AnnotationListDelegateVariableExpression(candidate);
         return true;
       } else if (environment.isVariableOfType(candidate,
               RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST)) {

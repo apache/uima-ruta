@@ -22,6 +22,17 @@ package org.apache.uima.ruta.explain;
 import org.apache.uima.ruta.engine.RutaEngine;
 
 public class ExplainConstants {
+
+  public static final String INLINED_AS_CONDITION = "inlinedAsCondition";
+
+  public static final String INLINED_AS_ACTION = "inlinedAsAction";
+
+  public static final String INLINED_ACTION_BLOCK = "inlinedActionBlock";
+
+  public static final String INLINED_CONDITION_BLOCK_MATCHED = "inlinedConditionBlockMatched";
+
+  public static final String INLINED_CONDITION_BLOCK_FAILED = "inlinedConditionBlockFailed";
+
   public static final String BASIC_TYPE = RutaEngine.BASIC_TYPE;
 
   public static final String SCRIPT_APPLY_TYPE = "org.apache.uima.ruta.type.DebugScriptApply";

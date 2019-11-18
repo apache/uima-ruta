@@ -27,36 +27,15 @@ import org.eclipse.dltk.ast.ASTNode;
 
 public abstract class AbstractFactory {
 
-  /**
-   * @param token
-   * @return (start, end)
-   * @throws IllegalArgumentException
-   *           when token==null or !(token instanceof CommonToken)
-   */
   protected static final int[] getBounds(Token token) throws IllegalArgumentException {
     return RutaParseUtils.getBounds(token);
   }
 
-  /**
-   * @param tokenA
-   *          startToken
-   * @param tokenB
-   *          endToken
-   * @return positions of a.start // b.end
-   * @throws IllegalArgumentException
-   *           when some token is null or not instanceof CommonToken
-   */
   protected static final int[] getBounds(Token tokenA, Token tokenB)
           throws IllegalArgumentException {
     return RutaParseUtils.getBounds(tokenA, tokenB);
   }
 
-  /**
-   * 
-   * @param a
-   * @param b
-   * @return indexarray a.start // b.end
-   */
   protected static final int[] getBounds(Token a, ASTNode b) {
     int[] bounds = { 0, 0 };
     if (a == null && b == null) {
@@ -89,13 +68,6 @@ public abstract class AbstractFactory {
     return bounds;
   }
 
-  /**
-   * @param head
-   *          first element. determines bounds[0].
-   * @param astnodeListArray
-   *          in ascending elements order
-   * @return bounds of arguments
-   */
   @SuppressWarnings({ "rawtypes", "unchecked" })
   protected static final int[] getSurroundingBounds(ASTNode head, List... astnodeListArray) {
     int bounds[] = { Integer.MAX_VALUE, -1 };
@@ -135,12 +107,6 @@ public abstract class AbstractFactory {
     }
   }
 
-  /**
-   * Applies start/end positions of <code>Token token</code> to <code>Node node</code>
-   * 
-   * @param node
-   * @param token
-   */
   protected static final void setBounds(ASTNode node, Token token) {
     if (node == null || token == null) {
       return;

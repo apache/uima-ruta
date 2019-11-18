@@ -29,6 +29,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.uima.UIMAFramework;
+import org.apache.uima.util.Level;
+
 /**
  * Class EditDistanceMap.
  * 
@@ -155,7 +158,7 @@ public class EditDistanceCostMap {
     try {
       br = new BufferedReader(new FileReader(new File(file)));
     } catch (FileNotFoundException e) {
-      System.err.println("File not found.");
+      UIMAFramework.getLogger(getClass()).log(Level.WARNING, "File not found: " + file, e);
       return false;
     }
 
@@ -188,7 +191,6 @@ public class EditDistanceCostMap {
 
             // The "strings" should have just one character.
             if (cArray.length != 1) {
-              System.err.println("Invalid format.");
               retValue = false;
               continue;
             }
@@ -207,7 +209,6 @@ public class EditDistanceCostMap {
             char[] dArray = line[2].toCharArray();
 
             if (cArray.length != 1 || dArray.length != 1) {
-              System.err.println("Invalid format.");
               retValue = false;
               continue;
             }
@@ -221,18 +222,14 @@ public class EditDistanceCostMap {
             defaultCosts = value;
 
           } else {
-            System.err.println("Invalid EditDistance" + "CostMap-Operation.");
             retValue = false;
           }
 
         } catch (StringIndexOutOfBoundsException e) {
-          System.err.println("String Index out of bounds.");
           retValue = false;
         } catch (IndexOutOfBoundsException e) {
-          System.err.println("Index out of bounds.");
           retValue = false;
         } catch (NumberFormatException e) {
-          System.err.println("Number Format Error.");
           retValue = false;
         }
       }
@@ -240,7 +237,6 @@ public class EditDistanceCostMap {
       br.close();
 
     } catch (IOException e) {
-      System.err.println("IO-Error.");
       return false;
     }
 

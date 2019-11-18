@@ -53,11 +53,15 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
     // just for forcing expression top initialize
     // TODO this is maybe a bit expensive sometimes
     expression.getType(context, stream);
-    if (expression.getAnnotationExpression() != null) {
+    if (expression.getAnnotationListExpression() != null) {
+      result = expression.getAnnotationList(context, stream);
+      if (result == null) {
+        // avoid null lists here
+        result = Collections.emptyList();
+      }
+    } else if (expression.getAnnotationExpression() != null) {
       result = new ArrayList<>(1);
       result.add(expression.getAnnotation(context, stream));
-    } else if (expression.getAnnotationListExpression() != null) {
-      result = expression.getAnnotationList(context, stream);
     } else {
 
       // TODO defer to getter of expression?

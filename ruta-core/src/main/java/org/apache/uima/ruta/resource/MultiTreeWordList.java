@@ -38,6 +38,7 @@ import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
@@ -98,6 +99,10 @@ public class MultiTreeWordList implements RutaWordList {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
 
+    if (lists == null) {
+      return;
+    }
+
     for (Resource list : lists) {
       // check if the resource is a directory
       File directory = null;
@@ -154,6 +159,11 @@ public class MultiTreeWordList implements RutaWordList {
   public MultiTreeWordList(String[] pathnames, File base) throws IOException {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
+
+    if (pathnames == null) {
+      return;
+    }
+
     for (String pathname : pathnames) {
       String name = getRelativePath(new File(pathname), base);
       load(new FileSystemResource(pathname), name);
@@ -171,6 +181,11 @@ public class MultiTreeWordList implements RutaWordList {
   public MultiTreeWordList(List<File> files, File base) throws IOException {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
+
+    if (files == null) {
+      return;
+    }
+
     for (File file : files) {
       String name = getRelativePath(file, base);
       load(new FileSystemResource(file), name);

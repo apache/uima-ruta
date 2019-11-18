@@ -18,7 +18,6 @@
  */
 package org.apache.uima.ruta.engine;
 
-import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
 import java.net.URL;
@@ -29,6 +28,7 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.CasCreationUtils;
@@ -52,10 +52,13 @@ public class StackedScriptsTest {
   @Test
   public void testWithUimaFitAggregated() throws Exception {
 
-    AnalysisEngine aae = createEngine(createEngineDescription(
+    AnalysisEngineDescription description = createEngineDescription(
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules1),
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules2),
-            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules3)));
+            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules3));
+
+    ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
+    AnalysisEngine aae = UIMAFramework.produceAnalysisEngine(description, resourceManager, null);
 
     CAS cas = getCAS(LINES);
 
@@ -87,7 +90,6 @@ public class StackedScriptsTest {
 
     checkResult(cas, LINES);
 
-    cas.release();
   }
 
   private void checkResult(CAS cas, int lines) {
@@ -147,7 +149,8 @@ public class StackedScriptsTest {
     tsds.add(basicTypeSystem);
     TypeSystemDescription mergeTypeSystems = CasCreationUtils.mergeTypeSystems(tsds);
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
-    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
+    ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
+    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed, resourceManager, null);
 
     ae.setConfigParameterValue(RutaEngine.PARAM_RULES, rules);
     if (reindexOnly != null) {
@@ -160,18 +163,24 @@ public class StackedScriptsTest {
 
   @Test
   public void testPerformanceOfReindexOnly() throws Exception {
-    AnalysisEngine aaeNoReindex = createEngine(createEngineDescription(
+    AnalysisEngineDescription noReindexDescription = createEngineDescription(
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules1),
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules2),
-            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules3)));
-    AnalysisEngine aaeReindex = createEngine(createEngineDescription(
+            createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules3));
+    AnalysisEngineDescription reindexDescription = createEngineDescription(
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules1,
                     RutaEngine.PARAM_REINDEX_ONLY, new String[] { CAS.TYPE_NAME_ANNOTATION }),
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules2,
                     RutaEngine.PARAM_REINDEX_ONLY, new String[] { RutaTestUtils.TYPE + "1" }),
             createEngineDescription(RutaEngine.class, RutaEngine.PARAM_RULES, rules3,
                     RutaEngine.PARAM_REINDEX_ONLY,
-                    new String[] { RutaTestUtils.TYPE + "2", RutaTestUtils.TYPE + "3" })));
+                    new String[] { RutaTestUtils.TYPE + "2", RutaTestUtils.TYPE + "3" }));
+
+    ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
+    AnalysisEngine aaeNoReindex = UIMAFramework.produceAnalysisEngine(noReindexDescription,
+            resourceManager, null);
+    AnalysisEngine aaeReindex = UIMAFramework.produceAnalysisEngine(reindexDescription,
+            resourceManager, null);
 
     long start = 0;
     long end = 0;

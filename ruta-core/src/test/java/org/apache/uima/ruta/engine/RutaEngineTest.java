@@ -26,17 +26,27 @@ import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.Type;
+import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.internal.ResourceManagerFactory;
 import org.apache.uima.fit.internal.ResourceManagerFactory.ResourceManagerCreator;
+import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.RutaProcessRuntimeException;
 import org.apache.uima.ruta.TypeUsageInformation;
+import org.apache.uima.ruta.descriptor.RutaBuildOptions;
+import org.apache.uima.ruta.descriptor.RutaDescriptorFactory;
+import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -177,6 +187,58 @@ public class RutaEngineTest {
 
     CAS cas = RutaTestUtils.getCAS(document);
     ae.process(cas);
+  }
+
+  @Test
+  public void testProcessWithRulesDeclareWithoutPackage() throws Throwable {
+
+    String rules = "DECLARE MyType; SW{-> MyType};";
+    String text = "This is a test";
+
+    RutaDescriptorFactory rdf = new RutaDescriptorFactory();
+    RutaBuildOptions buildOptions = new RutaBuildOptions();
+    RutaDescriptorInformation descriptorInformation = rdf.parseDescriptorInformation(rules, "",
+            buildOptions);
+    Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = rdf
+            .createDescriptions(null, null, descriptorInformation, buildOptions, null, null, null);
+
+    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(descriptions.getLeft());
+    CAS cas = ae.newCAS();
+    cas.setDocumentText(text);
+
+    ae.process(cas);
+
+    Type type = cas.getTypeSystem().getType("MyType");
+    Assert.assertNotNull(type);
+    Collection<AnnotationFS> select = CasUtil.select(cas, type);
+    Assert.assertEquals(3, select.size());
+
+  }
+
+  @Test
+  public void testProcessWithRulesDeclareWithPackage() throws Throwable {
+
+    String rules = "PACKAGE pack; DECLARE MyType; SW{-> MyType};";
+    String text = "This is a test";
+
+    RutaDescriptorFactory rdf = new RutaDescriptorFactory();
+    RutaBuildOptions buildOptions = new RutaBuildOptions();
+    RutaDescriptorInformation descriptorInformation = rdf.parseDescriptorInformation(rules, "",
+            buildOptions);
+    Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = rdf
+            .createDescriptions(null, null, descriptorInformation, buildOptions, null, null, null);
+
+    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(descriptions.getLeft());
+    CAS cas = ae.newCAS();
+    cas.setDocumentText(text);
+
+    ae.process(cas);
+
+    Type type = cas.getTypeSystem().getType("pack.MyType");
+    Assert.assertNotNull(type);
+    Collection<AnnotationFS> select = CasUtil.select(cas, type);
+    Assert.assertEquals(3, select.size());
+
   }
 
 }

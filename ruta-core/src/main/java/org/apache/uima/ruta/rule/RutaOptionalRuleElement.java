@@ -57,7 +57,7 @@ public class RutaOptionalRuleElement extends RutaRuleElement {
   }
 
   @Override
-  protected void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
+  public void doMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           ComposedRuleElementMatch containerMatch, boolean ruleAnchor, RutaStream stream,
           InferenceCrowd crowd) {
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
@@ -88,11 +88,11 @@ public class RutaOptionalRuleElement extends RutaRuleElement {
     }
     result.setConditionInfo(base, evaluatedConditions);
     if (result.matched()) {
-      boolean inlinedRulesMatched = matchInnerRules(ruleMatch, stream, crowd);
+      boolean inlinedRulesMatched = matchInlinedRules(ruleMatch, result, stream, crowd);
       result.setInlinedRulesMatched(inlinedRulesMatched);
     } else {
       // update label for failed match after evaluating conditions
-      environment.addAnnotationsToVariable(null, getLabel(), context);
+      environment.removeVariableValue(getLabel(), context);
     }
     ruleMatch.setMatched(ruleMatch.matched() && result.matched());
   }

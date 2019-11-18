@@ -46,6 +46,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,6 +55,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
@@ -72,6 +74,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 public class RutaBuilder extends AbstractBuildParticipantType implements IBuildParticipant,
         IBuildParticipantExtension, IBuildParticipantExtension2, IBuildParticipantExtension3 {
 
+  @SuppressWarnings("unused")
   private IScriptProject project;
 
   public RutaBuilder() {
@@ -90,7 +93,8 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       IContainer container = getContainer(sourceModule);
 
       IPath outputPath = getAbsolutePath(sourceModule);
-      IPath[] generateResources = generateResources(moduleDeclaration, outputPath, container,
+      @SuppressWarnings("unused")
+      final IPath[] generateResources = generateResources(moduleDeclaration, outputPath, container,
               sourceModule);
 
       IProject proj = sourceModule.getScriptProject().getProject();
@@ -98,30 +102,57 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       for (IFolder iFolder : allDescriptorFolders) {
         RutaProjectUtils.addProjectDataPath(proj, iFolder);
       }
-      
+
       monitor.worked(2);
+      // refreshing deactivated in context of UIMA-5669
       String defaultDescriptorLocation = RutaProjectUtils.getDefaultDescriptorLocation();
-      IFolder folder = container.getProject().getFolder(defaultDescriptorLocation);
-      for (IPath iPath : generateResources) {
-        iPath = iPath.makeRelativeTo(folder.getLocation());
-        IResource findMember = folder.findMember(iPath);
-        if (findMember != null) {
-          findMember.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-          findMember.getParent().refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+      final IFolder folder = container.getProject().getFolder(defaultDescriptorLocation);
+
+//      for (IPath iPath : generateResources) {
+//        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+//        IFile[] files = root.findFilesForLocationURI(iPath.toFile().toURI());
+//        for (IFile file : files) {
+//          file.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+//        }
+//
+//        IResource findMember2 = root.findMember(iPath);
+//
+//        iPath = iPath.makeRelativeTo(folder.getLocation());
+//        IResource findMember = folder.findMember(iPath);
+//        if (findMember != null) {
+//          findMember.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+//          findMember.getParent().refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
+//        }
+//
+//      }
+
+      Job refreshJob = new Job("Refreshing generated descriptors") {
+        @Override
+        public boolean belongsTo(Object family) {
+          return family == ResourcesPlugin.FAMILY_MANUAL_REFRESH;
         }
 
-      }
-      folder.refreshLocal(IResource.DEPTH_INFINITE, new SubProgressMonitor(monitor,
-              generateResources.length));
+        @Override
+        protected IStatus run(IProgressMonitor pm) {
+          try {
+            folder.refreshLocal(IResource.DEPTH_INFINITE,
+                    new SubProgressMonitor(monitor, generateResources.length));
+          } catch (CoreException e) {
+            return e.getStatus();
+          }
+          return Status.OK_STATUS;
+        }
+      };
+      refreshJob.schedule();
 
-      monitor.worked(1);
+      // monitor.worked(1);
     } catch (ModelException e) {
       if (DLTKCore.DEBUG_PARSER) {
-        e.printStackTrace();
+        RutaIdeCorePlugin.error(e);
       }
     } catch (CoreException e) {
       if (DLTKCore.DEBUG_PARSER) {
-        e.printStackTrace();
+        RutaIdeCorePlugin.error(e);
       }
     }
     monitor.done();
@@ -137,32 +168,35 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       String elementName = RutaProjectUtils.getModuleName(pathToModule);
 
       IScriptProject scriptProject = sourceModule.getScriptProject();
-      
+
       IProject project = scriptProject.getProject();
-      
+
       IPath descPath = RutaProjectUtils.getDescriptorRootPath(project);
       String basicTS = descPath.append("BasicTypeSystem.xml").toPortableString();
       String basicE = descPath.append("BasicEngine.xml").toPortableString();
-      
+
       List<IFolder> descriptorFolders = RutaProjectUtils.getDescriptorFolders(project);
       for (IFolder iFolder : descriptorFolders) {
         File btsd = iFolder.getLocation().append("BasicTypeSystem.xml").toFile();
         File baed = iFolder.getLocation().append("BasicEngine.xml").toFile();
-        if(btsd.exists() && baed.exists()) {
+        if (btsd.exists() && baed.exists()) {
           basicTS = btsd.getAbsolutePath();
           basicE = baed.getAbsolutePath();
           descPath = iFolder.getLocation();
           break;
         }
       }
-      
-      IPath relativePackagePath = RutaProjectUtils.getPackagePath(sourceModule.getResource()
-              .getLocation(), project);
-      IPath descPackagePath = descPath.append(relativePackagePath);
-      String typeSystem = descPackagePath.append(elementName + RutaProjectUtils.getTypeSystemSuffix(project) + ".xml").toPortableString();
-      String engine = descPackagePath.append(elementName + RutaProjectUtils.getAnalysisEngineSuffix(project) + ".xml").toPortableString();
 
-      
+      IPath relativePackagePath = RutaProjectUtils
+              .getPackagePath(sourceModule.getResource().getLocation(), project);
+      IPath descPackagePath = descPath.append(relativePackagePath);
+      String typeSystem = descPackagePath
+              .append(elementName + RutaProjectUtils.getTypeSystemSuffix(project) + ".xml")
+              .toPortableString();
+      String engine = descPackagePath
+              .append(elementName + RutaProjectUtils.getAnalysisEngineSuffix(project) + ".xml")
+              .toPortableString();
+
       String scriptWithPackagePath = RutaProjectUtils.getScriptWithPackage(pathToModule, project);
       List<String> scriptPathList = new ArrayList<String>();
       List<String> descriptorPathList = new ArrayList<String>();
@@ -182,7 +216,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       } catch (Exception e) {
         RutaIdeCorePlugin.error(e);
       }
-      
+
       try {
         List<IFolder> allResourceFolders = RutaProjectUtils.getAllResourceFolders(project);
         resourcePathList.addAll(RutaProjectUtils.getFolderLocations(allResourceFolders));
@@ -192,8 +226,8 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
 
       String[] descriptorPaths = descriptorPathList.toArray(new String[0]);
       String[] scriptPaths = scriptPathList.toArray(new String[0]);
-      String[] resourcePaths =  resourcePathList.toArray(new String[0]);
-              
+      String[] resourcePaths = resourcePathList.toArray(new String[0]);
+
       String mainScript = scriptWithPackagePath;
       mainScript = mainScript.replaceAll("/", ".");
       if (mainScript.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
@@ -206,13 +240,14 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
         try {
           urls[counter] = new File(dep).toURI().toURL();
         } catch (MalformedURLException e) {
-          throw new CoreException(new Status(IStatus.ERROR,
-                  RutaIdeCorePlugin.PLUGIN_ID, e.getMessage()));
+          throw new CoreException(
+                  new Status(IStatus.ERROR, RutaIdeCorePlugin.PLUGIN_ID, e.getMessage()));
         }
         counter++;
       }
       ClassLoader classloader = new URLClassLoader(urls);
-      build(basicTS, basicE, typeSystem, engine, sm, scriptPaths, descriptorPaths, resourcePaths, classloader);
+      build(basicTS, basicE, typeSystem, engine, sm, scriptPaths, descriptorPaths, resourcePaths,
+              classloader);
 
       IPath tsPath = Path.fromPortableString(typeSystem);
       IPath ePath = Path.fromPortableString(engine);
@@ -228,7 +263,7 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
     RutaDescriptorBuilder builder = null;
     try {
       URL tsUrl = new File(basicTypesystem).toURI().toURL();
-      URL aeUrl= new File(basicEngine).toURI().toURL();
+      URL aeUrl = new File(basicEngine).toURI().toURL();
       builder = new RutaDescriptorBuilder(tsUrl, aeUrl);
     } catch (Exception e) {
       DLTKCore.error(e.getMessage(), e);
@@ -283,7 +318,8 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
       option.setImportByName(store.getBoolean(RutaCorePreferences.BUILDER_IMPORT_BY_NAME));
       option.setResolveImports(store.getBoolean(RutaCorePreferences.BUILDER_RESOLVE_IMPORTS));
       option.setClassLoader(classloader);
-      builder.build(sm, typeSystemDest, engineDest, option, scriptPaths, enginePaths, resourcePaths);
+      builder.build(sm, typeSystemDest, engineDest, option, scriptPaths, enginePaths,
+              resourcePaths);
     } catch (Exception e) {
       DLTKCore.error(e.getMessage(), e);
       if (DLTKCore.DEBUG_PARSER) {
@@ -330,24 +366,30 @@ public class RutaBuilder extends AbstractBuildParticipantType implements IBuildP
     return relativeFilePath;
   }
 
+  @Override
   public void clean() {
   }
 
+  @Override
   public void prepare(IBuildChange buildChange, IBuildState buildState) throws CoreException {
   }
 
+  @Override
   public void buildExternalModule(IBuildContext context) throws CoreException {
 
   }
 
+  @Override
   public boolean beginBuild(int buildType) {
     return buildType != RECONCILE_BUILD;
   }
 
+  @Override
   public void endBuild(IProgressMonitor monitor) {
 
   }
 
+  @Override
   public void build(IBuildContext context) throws CoreException {
     final ModuleDeclaration ast = (ModuleDeclaration) context
             .get(IBuildContext.ATTR_MODULE_DECLARATION);

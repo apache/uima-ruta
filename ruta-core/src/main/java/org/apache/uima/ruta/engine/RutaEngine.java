@@ -390,8 +390,8 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
    */
   public static final String PARAM_DICT_REMOVE_WS = "dictRemoveWS";
 
-  @ConfigurationParameter(name = PARAM_DICT_REMOVE_WS, mandatory = false, defaultValue = "false")
-  private Boolean dictRemoveWS = false;
+  @ConfigurationParameter(name = PARAM_DICT_REMOVE_WS, mandatory = false, defaultValue = "true")
+  private Boolean dictRemoveWS = true;
 
   /**
    * If this parameter is set to any String value then this String/token is used to split columns in

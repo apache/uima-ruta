@@ -37,14 +37,8 @@ public class RutaFunction extends Expression {
 
   private String name;
 
-  /**
-   * @param start
-   * @param end
-   * @param exprs
-   * @param kind
-   */
-  public RutaFunction(int start, int end, List<ASTNode> exprs, int kind, String name,
-          int nameStart, int nameEnd) {
+  public RutaFunction(int start, int end, List<ASTNode> exprs, int kind, String name, int nameStart,
+          int nameEnd) {
     super(start, end);
     if (exprs != null) {
       this.exprs = exprs;
@@ -57,11 +51,6 @@ public class RutaFunction extends Expression {
     this.nameEnd = nameEnd;
   }
 
-  /**
-   * Copy-Constructor
-   * 
-   * @param source
-   */
   public RutaFunction(RutaFunction source) {
     super(source.sourceStart(), source.sourceEnd());
     this.exprs = source.exprs;
@@ -94,6 +83,7 @@ public class RutaFunction extends Expression {
     return exprs;
   }
 
+  @Override
   public String toString() {
     return this.getClass().getSimpleName() + " : " + super.toString();
   }

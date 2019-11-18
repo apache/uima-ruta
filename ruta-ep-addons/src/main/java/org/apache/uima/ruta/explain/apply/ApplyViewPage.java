@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
@@ -32,6 +33,7 @@ import org.apache.uima.caseditor.editor.AnnotationEditor;
 import org.apache.uima.caseditor.editor.ICasDocument;
 import org.apache.uima.caseditor.editor.ICasDocumentListener;
 import org.apache.uima.caseditor.editor.ICasEditorInputListener;
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.ruta.addons.RutaAddonsPlugin;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.explain.ExplainConstants;
@@ -105,6 +107,23 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
     image = desc.createImage();
     name = ExplainConstants.RULE_APPLY_TYPE;
     images.put(name, image);
+    images.put(ExplainConstants.INLINED_AS_ACTION, image);
+
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/arrow_left.png");
+    image = desc.createImage();
+    images.put(ExplainConstants.INLINED_AS_CONDITION, image);
+
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation.png");
+    image = desc.createImage();
+    images.put(ExplainConstants.INLINED_ACTION_BLOCK, image);
+
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation_add.png");
+    image = desc.createImage();
+    images.put(ExplainConstants.INLINED_CONDITION_BLOCK_MATCHED, image);
+
+    desc = RutaAddonsPlugin.getImageDescriptor("/icons/chart_organisation_delete.png");
+    image = desc.createImage();
+    images.put(ExplainConstants.INLINED_CONDITION_BLOCK_FAILED, image);
 
     desc = RutaAddonsPlugin.getImageDescriptor("/icons/arrow_branch.png");
     image = desc.createImage();
@@ -146,9 +165,12 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
 
     document.addChangeListener(this);
 
-    ExplainTree tree = new ExplainTree(document.getCAS());
+    ExplainTree tree = new ExplainTree(getJCas());
+
     viewer.setAutoExpandLevel(2);
-    viewer.setInput(tree.getRoot());
+    if (tree != null) {
+      viewer.setInput(tree.getRoot());
+    }
     viewer.addDoubleClickListener(this);
     getSite().setSelectionProvider(viewer);
     getSite().getPage().addSelectionListener(this);
@@ -156,6 +178,16 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
     viewer.refresh();
   }
 
+  protected JCas getJCas() {
+    try {
+      return document.getCAS().getJCas();
+    } catch (CASException e) {
+      RutaAddonsPlugin.error(e);
+    }
+    return null;
+  }
+
+  @Override
   public void doubleClick(DoubleClickEvent event) {
     ISelection selection = event.getSelection();
     if (!selection.isEmpty() && selection instanceof TreeSelection) {
@@ -203,7 +235,6 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
 
   @Override
   public void dispose() {
-    super.dispose();
     getSite().getPage().removeSelectionListener(this);
     editor.removeCasEditorInputListener(this);
     if (images != null) {
@@ -211,6 +242,7 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
         each.dispose();
       }
     }
+    super.dispose();
   }
 
   public void mouseDown(final MouseEvent event) {
@@ -225,10 +257,12 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
 
   }
 
+  @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 
   }
 
+  @Override
   public void casDocumentChanged(IEditorInput oldInput, ICasDocument oldDocument,
           IEditorInput newInput, ICasDocument newDocument) {
     // editor.removeCasEditorInputListener(this);
@@ -240,32 +274,40 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
 
   }
 
+  @Override
   public void added(FeatureStructure newFeatureStructure) {
 
   }
 
+  @Override
   public void added(Collection<FeatureStructure> newFeatureStructure) {
 
   }
 
+  @Override
   public void removed(FeatureStructure deletedFeatureStructure) {
 
   }
 
+  @Override
   public void removed(Collection<FeatureStructure> deletedFeatureStructure) {
 
   }
 
+  @Override
   public void updated(FeatureStructure featureStructure) {
 
   }
 
+  @Override
   public void updated(Collection<FeatureStructure> featureStructure) {
 
   }
 
+  @Override
   public void changed() {
     Display.getDefault().syncExec(new Runnable() {
+      @Override
       public void run() {
         reloadTree();
       }
@@ -274,10 +316,11 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
   }
 
   private void reloadTree() {
-    ExplainTree tree = new ExplainTree(document.getCAS());
+    ExplainTree tree = new ExplainTree(getJCas());
     viewer.setInput(tree.getRoot());
   }
 
+  @Override
   public void viewChanged(String oldViewName, String newViewName) {
     changed();
   }

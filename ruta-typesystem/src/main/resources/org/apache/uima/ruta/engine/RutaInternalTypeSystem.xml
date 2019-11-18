@@ -17,7 +17,6 @@
   specific language governing permissions and limitations
   under the License.
 -->
-
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>org.apache.uima.ruta.engine.RutaInternalTypeSystem</name>
   <description/>
@@ -156,6 +155,13 @@
           <elementType>org.apache.uima.ruta.type.DebugRuleElementMatches</elementType>
           <multipleReferencesAllowed>false</multipleReferencesAllowed>
         </featureDescription>
+        <featureDescription>
+          <name>inlinedConditionBlocks</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>org.apache.uima.ruta.type.DebugInlinedBlock</elementType>
+          <multipleReferencesAllowed>false</multipleReferencesAllowed>
+        </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
@@ -178,6 +184,42 @@
           <name>ruleAnchor</name>
           <description/>
           <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>inlinedActionBlocks</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>org.apache.uima.ruta.type.DebugInlinedBlock</elementType>
+          <multipleReferencesAllowed>false</multipleReferencesAllowed>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>org.apache.uima.ruta.type.DebugInlinedBlock</name>
+      <description/>
+      <supertypeName>uima.cas.TOP</supertypeName>
+      <features>
+        <featureDescription>
+          <name>element</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>asCondition</name>
+          <description/>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>matched</name>
+          <description/>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>inlinedRules</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>org.apache.uima.ruta.type.DebugScriptApply</elementType>
+          <multipleReferencesAllowed>false</multipleReferencesAllowed>
         </featureDescription>
       </features>
     </typeDescription>

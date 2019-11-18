@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.rule;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -186,6 +187,10 @@ public class RutaRule extends AbstractRule {
 
   public ComposedRuleElement getRoot() {
     return root;
+  }
+
+  public Collection<String> getLabels() {
+    return labels.keySet();
   }
 
 }

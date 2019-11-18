@@ -42,9 +42,6 @@ public class RutaCommentReader extends SingleCharReader {
     reset();
   }
 
-  /**
-   * @see java.io.Reader#read()
-   */
   @Override
   public int read() {
     if (fCurrPos < fEndPos) {
@@ -72,26 +69,17 @@ public class RutaCommentReader extends SingleCharReader {
     return -1;
   }
 
-  /**
-   * @see java.io.Reader#close()
-   */
   @Override
   public void close() {
     fBuffer = null;
   }
 
-  /**
-   * @see java.io.Reader#reset()
-   */
   @Override
   public void reset() {
     fCurrPos = fStartPos;
     fWasNewLine = true;
   }
 
-  /**
-   * Returns the offset of the last read character in the passed buffer.
-   */
   public int getOffset() {
     return fCurrPos;
   }

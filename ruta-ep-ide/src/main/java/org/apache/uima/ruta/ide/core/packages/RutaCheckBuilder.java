@@ -58,8 +58,8 @@ import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.osgi.util.NLS;
 
-public class RutaCheckBuilder implements IBuildParticipant, IBuildParticipantExtension,
-        IBuildParticipantExtension2 {
+public class RutaCheckBuilder
+        implements IBuildParticipant, IBuildParticipantExtension, IBuildParticipantExtension2 {
 
   private final IScriptProject project;
 
@@ -89,19 +89,13 @@ public class RutaCheckBuilder implements IBuildParticipant, IBuildParticipantExt
 
   }
 
-  /**
-   * @param project
-   * @throws CoreException
-   * @throws IllegalStateException
-   *           if associated interpreter could not be found
-   */
   public RutaCheckBuilder(IScriptProject project) throws CoreException, IllegalStateException {
     this.project = project;
     install = ScriptRuntime.getInterpreterInstall(project);
     if (install == null) {
       // thrown exception is caught in the RutaPackageCheckerType
-      throw new IllegalStateException(NLS.bind(Messages.RutaCheckBuilder_interpreterNotFound,
-              project.getElementName()));
+      throw new IllegalStateException(
+              NLS.bind(Messages.RutaCheckBuilder_interpreterNotFound, project.getElementName()));
     }
     knownPackageNames = manager.getPackageNames(install);
     buildpath = getBuildpath(project);
@@ -109,12 +103,13 @@ public class RutaCheckBuilder implements IBuildParticipant, IBuildParticipantExt
 
   private int buildType;
 
+  @Override
   public boolean beginBuild(int buildType) {
     this.buildType = buildType;
     if (buildType != FULL_BUILD) {
       // retrieve packages provided by this project
-      packageCollector.getPackagesProvided().addAll(
-              manager.getInternalPackageNames(install, project));
+      packageCollector.getPackagesProvided()
+              .addAll(manager.getInternalPackageNames(install, project));
     }
     loadProvidedPackagesFromRequiredProjects();
     return true;
@@ -135,13 +130,14 @@ public class RutaCheckBuilder implements IBuildParticipant, IBuildParticipantExt
         final IPath path = entry.getPath();
         final IProject project = workspaceRoot.getProject(path.lastSegment());
         if (project.exists()) {
-          packageCollector.getPackagesProvided().addAll(
-                  manager.getInternalPackageNames(install, project));
+          packageCollector.getPackagesProvided()
+                  .addAll(manager.getInternalPackageNames(install, project));
         }
       }
     }
   }
 
+  @Override
   public void buildExternalModule(IBuildContext context) throws CoreException {
     final ModuleDeclaration ast = (ModuleDeclaration) context
             .get(IBuildContext.ATTR_MODULE_DECLARATION);
@@ -151,6 +147,7 @@ public class RutaCheckBuilder implements IBuildParticipant, IBuildParticipantExt
     }
   }
 
+  @Override
   public void build(IBuildContext context) throws CoreException {
     ModuleDeclaration ast = (ModuleDeclaration) context.get(ModuleDeclaration.class.getName());
     if (ast == null) {
@@ -159,13 +156,13 @@ public class RutaCheckBuilder implements IBuildParticipant, IBuildParticipantExt
     packageCollector.getRequireDirectives().clear();
     packageCollector.process(ast);
     if (!packageCollector.getRequireDirectives().isEmpty()) {
-      resourceToModuleInfos.put(
-              context.getSourceModule(),
-              new ModuleInfo(context.getProblemReporter(), new ArrayList(packageCollector
-                      .getRequireDirectives())));
+      resourceToModuleInfos.put(context.getSourceModule(),
+              new ModuleInfo(context.getProblemReporter(),
+                      new ArrayList(packageCollector.getRequireDirectives())));
     }
   }
 
+  @Override
   public void endBuild(IProgressMonitor monitor) {
     if (buildType != RECONCILE_BUILD) {
       // Save packages provided by the project
@@ -310,6 +307,7 @@ public class RutaCheckBuilder implements IBuildParticipant, IBuildParticipantExt
     return false;
   }
 
+  @Override
   public void prepare(IBuildChange buildChange, IBuildState buildState) throws CoreException {
 
   }

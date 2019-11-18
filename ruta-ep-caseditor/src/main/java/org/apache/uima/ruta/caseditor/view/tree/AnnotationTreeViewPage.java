@@ -380,7 +380,6 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
    */
   @Override
   public void dispose() {
-    super.dispose();
     getSite().getPage().removeSelectionListener(this);
     editor.removeAnnotationListener(this);
     editor.getCasDocumentProvider().getTypeSystemPreferenceStore(editor.getEditorInput())
@@ -391,6 +390,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       image.dispose();
     }
     rutaImage.dispose();
+    super.dispose();
   }
 
   /*

@@ -45,7 +45,6 @@ public class Shift1Test {
     CAS cas = RutaTestUtils.getCAS(text);
     Ruta.apply(cas, script);
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "2 3", "3 x 4", "4");
-    cas.release();
   }
 
 }

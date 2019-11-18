@@ -232,7 +232,7 @@ public class RutaProjectCreationWizard extends ProjectWizard {
     try {
       out = new FileOutputStream(new File(dir, fileName));
     } catch (FileNotFoundException e) {
-      System.err.println(e);
+      DLTKCore.error(e);
     }
     if (in != null && out != null) {
       copy(in, out);
@@ -246,20 +246,20 @@ public class RutaProjectCreationWizard extends ProjectWizard {
       for (int len; (len = fis.read(buffer)) != -1;)
         fos.write(buffer, 0, len);
     } catch (IOException e) {
-      System.err.println(e);
+      DLTKCore.error(e);
     } finally {
       if (fis != null) {
         try {
           fis.close();
         } catch (IOException e) {
-          System.err.println(e);
+          DLTKCore.error(e);
         }
       }
       if (fos != null) {
         try {
           fos.close();
         } catch (IOException e) {
-          System.err.println(e);
+          DLTKCore.error(e);
         }
       }
     }
@@ -275,6 +275,7 @@ public class RutaProjectCreationWizard extends ProjectWizard {
     return res;
   }
 
+  @Override
   public void setInitializationData(IConfigurationElement cfig, String propertyName, Object data) {
     fConfigElement = cfig;
   }

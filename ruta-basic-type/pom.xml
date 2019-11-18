@@ -50,6 +50,13 @@
   <build>
     <pluginManagement>
       <plugins>
+      	<plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId> 
+          <configuration>
+            <excludePackageNames>org.apache.uima.ruta.type</excludePackageNames>
+          </configuration>  
+        </plugin>
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>

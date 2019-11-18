@@ -32,6 +32,7 @@ import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleElement;
+import org.apache.uima.ruta.rule.RutaMatcher;
 import org.apache.uima.ruta.rule.RutaRuleElement;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
@@ -91,7 +92,10 @@ public class PositionCondition extends TypeSentiveCondition {
     List<Type> targetTypes = new ArrayList<Type>();
     if (element instanceof RutaRuleElement) {
       RutaRuleElement re = (RutaRuleElement) element;
-      targetTypes.add(re.getMatcher().getType(element.getParent(), stream));
+      RutaMatcher matcher = re.getMatcher();
+      if (matcher != null) {
+        targetTypes.add(matcher.getType(element.getParent(), stream));
+      }
     } else {
       targetTypes.add(annotation.getType());
     }

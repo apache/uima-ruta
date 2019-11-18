@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.ArrayFS;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CommonArrayFS;
@@ -41,7 +40,8 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
     this(cas, parent, annotation, new Stack<Type>());
   }
 
-  public FSTreeNode(CAS cas, ITreeNode parent, FeatureStructure annotation, Stack<Type> parentTypes) {
+  public FSTreeNode(CAS cas, ITreeNode parent, FeatureStructure annotation,
+          Stack<Type> parentTypes) {
     super(cas, parent);
     this.fs = annotation;
     parentTypes.push(fs.getType());
@@ -92,16 +92,22 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
           }
         }
       } else if (featureValue instanceof CommonArrayFS) {
-        // handle all other kind of CommonArrayFS nodes (ArrayFS handled above) 
+        // handle all other kind of CommonArrayFS nodes (ArrayFS handled above)
         CommonArrayFS array = (CommonArrayFS) featureValue;
-        String text = "[" + StringUtils.join(array.toStringArray(), ", ") + "]";
-        parent.addChild(new ArrayFeatureTreeNode(this, f, text));
+        String text = "Array" + "[" + array.size() + "]";
+        PrimitiveFeatureTreeNode arrayNode = new PrimitiveFeatureTreeNode(this, f, text);
+        parent.addChild(arrayNode);
+        String[] stringArray = array.toStringArray();
+        for (String string : stringArray) {
+          PrimitiveTreeNode stringNode = new PrimitiveTreeNode(arrayNode, string);
+          arrayNode.addChild(stringNode);
+        }
       }
     } else if (f.getRange().isPrimitive()) {
       if ("uima.cas.AnnotationBase:sofa".equals(f.getName())) {
       } else {
-        parent.addChild(new PrimitiveFeatureTreeNode(this, f, featureStructure
-                .getFeatureValueAsString(f)));
+        parent.addChild(
+                new PrimitiveFeatureTreeNode(this, f, featureStructure.getFeatureValueAsString(f)));
       }
     } else if (f.getRange() instanceof Type) {
       FeatureStructure featureValue = featureStructure.getFeatureValue(f);

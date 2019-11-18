@@ -98,6 +98,7 @@
                 <excludes>
                   <exclude>release.properties</exclude> <!-- release generated artifact -->
                   <exclude>marker-file-identifying-*</exclude>
+                  <exclude>META-INF/MANIFEST.MF</exclude>
                   <exclude>issuesFixed/**</exclude>
                   <exclude>src/test/resources/org/apache/uima/ruta/example/extensions/*.txt</exclude> <!-- test data -->
                   <exclude>src/test/resources/org/apache/uima/ruta/example/extensions/*ruta</exclude> <!-- test data -->
@@ -132,7 +133,7 @@
                 <Import-Package>
                 </Import-Package>
                 <Bundle-SymbolicName>org.apache.uima.ruta.example.extensions;singleton:=true</Bundle-SymbolicName>
-                <Bundle-RequiredExecutionEnvironment>JavaSE-1.7</Bundle-RequiredExecutionEnvironment>
+                <Bundle-RequiredExecutionEnvironment>JavaSE-1.8</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
                 <!-- <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy> -->

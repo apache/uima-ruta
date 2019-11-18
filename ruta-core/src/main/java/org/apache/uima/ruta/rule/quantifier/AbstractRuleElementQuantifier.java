@@ -75,7 +75,7 @@ public abstract class AbstractRuleElementQuantifier implements RuleElementQuanti
     String label = ruleElement.getLabel();
 
     if (matches == null || matches.isEmpty()) {
-      environment.addAnnotationsToVariable(null, label, context);
+      environment.removeVariableValue(label, context);
       return;
     }
 

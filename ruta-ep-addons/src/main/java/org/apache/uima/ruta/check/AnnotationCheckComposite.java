@@ -732,7 +732,7 @@ public class AnnotationCheckComposite extends Composite
       }
       File dataFile = new File(goldFolderLocation, "data.xml");
       try {
-        XMLUtils.write(docs, dataFile);
+        CheckDocumentXMLUtils.write(docs, dataFile);
       } catch (IOException e) {
         RutaAddonsPlugin.error(e);
       }

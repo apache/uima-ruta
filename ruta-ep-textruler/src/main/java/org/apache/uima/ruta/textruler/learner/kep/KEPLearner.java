@@ -28,6 +28,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.ConstraintFactory;
@@ -142,7 +144,8 @@ public class KEPLearner extends TextRulerBasicLearner {
     removeBadRules();
 
     long estimatedTime = (System.nanoTime() - startTime) / 1000000000;
-    System.out.println(estimatedTime + " seconds needed to learn all rules");
+    Logger.getLogger(getClass().getName()).log(Level.INFO,
+            estimatedTime + " seconds needed to learn all rules");
     sendStatusUpdateToDelegate("Done", TextRulerLearnerState.ML_DONE, true);
 
   }
@@ -193,15 +196,13 @@ public class KEPLearner extends TextRulerBasicLearner {
             exampleMap.put(annotation.getType().getName(), list);
           }
         }
-        double aLength = (double) (annotation.getEnd() - annotation.getBegin());
-        lengthMap.put(
-                annotation.getType().getName(),
-                lengthMap.get(annotation.getType().getName()) == null ? aLength : lengthMap
-                        .get(annotation.getType().getName()) + aLength);
-        countMap.put(
-                annotation.getType().getName(),
-                countMap.get(annotation.getType().getName()) == null ? 1 : countMap.get(annotation
-                        .getType().getName()) + 1);
+        double aLength = annotation.getEnd() - annotation.getBegin();
+        lengthMap.put(annotation.getType().getName(),
+                lengthMap.get(annotation.getType().getName()) == null ? aLength
+                        : lengthMap.get(annotation.getType().getName()) + aLength);
+        countMap.put(annotation.getType().getName(),
+                countMap.get(annotation.getType().getName()) == null ? 1
+                        : countMap.get(annotation.getType().getName()) + 1);
       }
     }
 
@@ -213,16 +214,17 @@ public class KEPLearner extends TextRulerBasicLearner {
     }
     double exLength = 0;
     for (TextRulerExample ex : exampleDocuments.getAllPositiveExamples()) {
-      exLength += (double) (ex.getAnnotation().getEnd() - ex.getAnnotation().getBegin());
+      exLength += ex.getAnnotation().getEnd() - ex.getAnnotation().getBegin();
     }
     double bestRatio = 0;
     Type bestType = null;
     for (Type type : result) {
-      if ((exLength / lengthMap.get(type.getName()) > bestRatio && countMap.get(type.getName()) <= exampleDocuments
-              .getAllPositiveExamples().size())
+      if ((exLength / lengthMap.get(type.getName()) > bestRatio
+              && countMap.get(type.getName()) <= exampleDocuments.getAllPositiveExamples().size())
               || (exLength / lengthMap.get(type.getName()) == bestRatio
-                      && countMap.get(type.getName()) > countMap.get(bestType.getName()) && countMap
-                      .get(type.getName()) <= exampleDocuments.getAllPositiveExamples().size())) {
+                      && countMap.get(type.getName()) > countMap.get(bestType.getName())
+                      && countMap.get(type.getName()) <= exampleDocuments.getAllPositiveExamples()
+                              .size())) {
         bestType = type;
         bestRatio = exLength / lengthMap.get(type.getName());
       }
@@ -235,8 +237,8 @@ public class KEPLearner extends TextRulerBasicLearner {
   private void learnRules(TextRulerTarget target) {
 
     List<KEPRule> ruleList = this.ruleLists.get(target.getSingleSlotTypeName());
-    List<TextRulerExample> coveredExamples = this.coveredExamples.get(target
-            .getSingleSlotTypeName());
+    List<TextRulerExample> coveredExamples = this.coveredExamples
+            .get(target.getSingleSlotTypeName());
     List<TextRulerExample> positiveExamples = this.exampleDocuments.getAllPositiveExamples();
 
     for (TextRulerExample e : positiveExamples) {
@@ -261,9 +263,8 @@ public class KEPLearner extends TextRulerBasicLearner {
 
   private List<KEPRule> makeInFillerRulesForExample(TextRulerExample e) {
     sendStatusUpdateToDelegate(
-            "Searching for Infiller Rules for "
-                    + e.getTarget().getSingleSlotTypeName()
-                            .substring(e.getTarget().getSingleSlotTypeName().lastIndexOf(".") + 1),
+            "Searching for Infiller Rules for " + e.getTarget().getSingleSlotTypeName()
+                    .substring(e.getTarget().getSingleSlotTypeName().lastIndexOf(".") + 1),
             TextRulerLearnerState.ML_RUNNING, false);
     Collection<KEPRule> rules = new HashSet<KEPRule>();
 
@@ -281,10 +282,9 @@ public class KEPLearner extends TextRulerBasicLearner {
 
     testRulesOnDocumentSet(result, exampleDocuments);
     sendStatusUpdateToDelegate(
-            "Searching for Infiller Rules for "
-                    + e.getTarget().getSingleSlotTypeName()
-                            .substring(e.getTarget().getSingleSlotTypeName().lastIndexOf(".") + 1)
-                    + " done", TextRulerLearnerState.ML_RUNNING, true);
+            "Searching for Infiller Rules for " + e.getTarget().getSingleSlotTypeName().substring(
+                    e.getTarget().getSingleSlotTypeName().lastIndexOf(".") + 1) + " done",
+            TextRulerLearnerState.ML_RUNNING, true);
     return new ArrayList<KEPRule>(rules);
   }
 
@@ -302,8 +302,8 @@ public class KEPLearner extends TextRulerBasicLearner {
 
     Collection<KEPRule> expandedRules = new HashSet<KEPRule>();
     if (rules.isEmpty()) {
-      List<AnnotationFS> seeds = getAnnotationsStartingAt(e.getDocumentCAS(), e.getAnnotation()
-              .getBegin(), e.getAnnotation().getEnd());
+      List<AnnotationFS> seeds = getAnnotationsStartingAt(e.getDocumentCAS(),
+              e.getAnnotation().getBegin(), e.getAnnotation().getEnd());
       if (seeds.isEmpty()) {
         expanding = false;
       }
@@ -351,9 +351,8 @@ public class KEPLearner extends TextRulerBasicLearner {
 
   private List<KEPRule> getCandidateClassificationRules(TextRulerTarget target) {
     sendStatusUpdateToDelegate(
-            "Searching for Candidate Classification Rules for "
-                    + target.getSingleSlotTypeName().substring(
-                            target.getSingleSlotTypeName().lastIndexOf(".") + 1),
+            "Searching for Candidate Classification Rules for " + target.getSingleSlotTypeName()
+                    .substring(target.getSingleSlotTypeName().lastIndexOf(".") + 1),
             TextRulerLearnerState.ML_RUNNING, false);
     List<KEPRule> result = new ArrayList<KEPRule>();
     List<Type> types = getTokensInNExamples(exampleDocuments.getAllPositiveExamples(),
@@ -366,9 +365,8 @@ public class KEPLearner extends TextRulerBasicLearner {
     // result = getBestAndOptimalRules(result);
     result = addConditions(result, target);
     sendStatusUpdateToDelegate(
-            "Searching for Candidate Classification Rules for "
-                    + target.getSingleSlotTypeName().substring(
-                            target.getSingleSlotTypeName().lastIndexOf(".") + 1) + " done",
+            "Searching for Candidate Classification Rules for " + target.getSingleSlotTypeName()
+                    .substring(target.getSingleSlotTypeName().lastIndexOf(".") + 1) + " done",
             TextRulerLearnerState.ML_RUNNING, true);
     return result;
   }
@@ -385,8 +383,8 @@ public class KEPLearner extends TextRulerBasicLearner {
         for (Type type : containedTypes) {
           if (!type.getName().equals(ruleItem.getType().getName())
                   && !ruleItem.containsAndCondition(type)) {
-            result.add(new KEPRule(this, target).addInFillerItem(ruleItem.copy().addAndCondition(
-                    new KEPRuleItemCondition(type, Condition.CONTAINS, false))));
+            result.add(new KEPRule(this, target).addInFillerItem(ruleItem.copy()
+                    .addAndCondition(new KEPRuleItemCondition(type, Condition.CONTAINS, false))));
           }
         }
       }
@@ -413,9 +411,8 @@ public class KEPLearner extends TextRulerBasicLearner {
       result.addAll(addConditions(toRefine, target));
     }
     sendStatusUpdateToDelegate(
-            "Adding conditions to rules for "
-                    + target.getSingleSlotTypeName().substring(
-                            target.getSingleSlotTypeName().lastIndexOf(".") + 1) + " done",
+            "Adding conditions to rules for " + target.getSingleSlotTypeName()
+                    .substring(target.getSingleSlotTypeName().lastIndexOf(".") + 1) + " done",
             TextRulerLearnerState.ML_RUNNING, true);
     return result;
   }
@@ -424,13 +421,9 @@ public class KEPLearner extends TextRulerBasicLearner {
     if (!baseRules.isEmpty() && !shouldAbort()) {
       sendStatusUpdateToDelegate(
               "Adding postfillers to rules for "
-                      + baseRules
-                              .get(0)
-                              .getTarget()
-                              .getSingleSlotTypeName()
-                              .substring(
-                                      baseRules.get(0).getTarget().getSingleSlotTypeName()
-                                              .lastIndexOf(".") + 1),
+                      + baseRules.get(0).getTarget().getSingleSlotTypeName()
+                              .substring(baseRules.get(0).getTarget().getSingleSlotTypeName()
+                                      .lastIndexOf(".") + 1),
               TextRulerLearnerState.ML_RUNNING, true);
     } else {
       return new ArrayList<KEPRule>();
@@ -445,12 +438,12 @@ public class KEPLearner extends TextRulerBasicLearner {
           if (lastItem != null) {
             end = lastItem.getEnd();
           }
-          List<AnnotationFS> annotations = getAnnotationsStartingAt(e.getDocumentCAS(), end, e
-                  .getDocumentCAS().getDocumentText().length());
+          List<AnnotationFS> annotations = getAnnotationsStartingAt(e.getDocumentCAS(), end,
+                  e.getDocumentCAS().getDocumentText().length());
           boolean blockBoundaryHit = false;
           for (AnnotationFS annotationFS : annotations) {
-            if (annotationFS.getType().equals(
-                    blocks.get(baseRules.get(0).getTarget().getSingleSlotTypeName()))) {
+            if (annotationFS.getType()
+                    .equals(blocks.get(baseRules.get(0).getTarget().getSingleSlotTypeName()))) {
               blockBoundaryHit = true;
               break;
             }
@@ -488,13 +481,10 @@ public class KEPLearner extends TextRulerBasicLearner {
     resultList.addAll(makePreFillers(resultList, changed));
     sendStatusUpdateToDelegate(
             "Adding postfillers to rules for "
-                    + baseRules
-                            .get(0)
-                            .getTarget()
-                            .getSingleSlotTypeName()
-                            .substring(
-                                    baseRules.get(0).getTarget().getSingleSlotTypeName()
-                                            .lastIndexOf(".") + 1) + " done",
+                    + baseRules.get(0).getTarget().getSingleSlotTypeName()
+                            .substring(baseRules.get(0).getTarget().getSingleSlotTypeName()
+                                    .lastIndexOf(".") + 1)
+                    + " done",
             TextRulerLearnerState.ML_RUNNING, true);
     return resultList;
   }
@@ -503,13 +493,9 @@ public class KEPLearner extends TextRulerBasicLearner {
     if (!baseRules.isEmpty() && !shouldAbort()) {
       sendStatusUpdateToDelegate(
               "Adding prefillers to rules for "
-                      + baseRules
-                              .get(0)
-                              .getTarget()
-                              .getSingleSlotTypeName()
-                              .substring(
-                                      baseRules.get(0).getTarget().getSingleSlotTypeName()
-                                              .lastIndexOf(".") + 1),
+                      + baseRules.get(0).getTarget().getSingleSlotTypeName()
+                              .substring(baseRules.get(0).getTarget().getSingleSlotTypeName()
+                                      .lastIndexOf(".") + 1),
               TextRulerLearnerState.ML_RUNNING, true);
     } else {
       return new ArrayList<KEPRule>();
@@ -527,8 +513,8 @@ public class KEPLearner extends TextRulerBasicLearner {
           List<AnnotationFS> annotations = getAnnotationsEndingAt(begin, e.getDocumentCAS());
           boolean blockBoundaryHit = false;
           for (AnnotationFS annotationFS : annotations) {
-            if (annotationFS.getType().equals(
-                    blocks.get(baseRules.get(0).getTarget().getSingleSlotTypeName()))) {
+            if (annotationFS.getType()
+                    .equals(blocks.get(baseRules.get(0).getTarget().getSingleSlotTypeName()))) {
               blockBoundaryHit = true;
               break;
             }
@@ -566,13 +552,10 @@ public class KEPLearner extends TextRulerBasicLearner {
 
     sendStatusUpdateToDelegate(
             "Adding prefillers to rules for "
-                    + baseRules
-                            .get(0)
-                            .getTarget()
-                            .getSingleSlotTypeName()
-                            .substring(
-                                    baseRules.get(0).getTarget().getSingleSlotTypeName()
-                                            .lastIndexOf(".") + 1) + " done",
+                    + baseRules.get(0).getTarget().getSingleSlotTypeName()
+                            .substring(baseRules.get(0).getTarget().getSingleSlotTypeName()
+                                    .lastIndexOf(".") + 1)
+                    + " done",
             TextRulerLearnerState.ML_RUNNING, true);
     return resultList;
   }
@@ -584,8 +567,8 @@ public class KEPLearner extends TextRulerBasicLearner {
               && hasPerfectRules.get(slotNamesWithBoundaries[3 * i + 2])) {
         List<KEPRule> list = new ArrayList<KEPRule>();
         for (KEPRule kepRule : ruleLists.get(slotNames[i])) {
-          List<TextRulerExample> exList = new ArrayList<TextRulerExample>(kepRule
-                  .getCoveringStatistics().getCoveredNegativeExamples());
+          List<TextRulerExample> exList = new ArrayList<TextRulerExample>(
+                  kepRule.getCoveringStatistics().getCoveredNegativeExamples());
           exList.removeAll(getCorrectedExamples(slotNames[i]));
           if (exList.size() == 0) {
             list.add(kepRule);
@@ -596,8 +579,8 @@ public class KEPLearner extends TextRulerBasicLearner {
         if (!hasPerfectRules.get(slotNamesWithBoundaries[3 * i + 1])) {
           List<KEPRule> list = new ArrayList<KEPRule>();
           for (KEPRule kepRule : ruleLists.get(slotNamesWithBoundaries[3 * i + 1])) {
-            List<TextRulerExample> exList = new ArrayList<TextRulerExample>(kepRule
-                    .getCoveringStatistics().getCoveredNegativeExamples());
+            List<TextRulerExample> exList = new ArrayList<TextRulerExample>(
+                    kepRule.getCoveringStatistics().getCoveredNegativeExamples());
             exList.removeAll(getCorrectedExamples(slotNamesWithBoundaries[3 * i + 1]));
             if (exList.size() == 0) {
               list.add(kepRule);
@@ -607,8 +590,8 @@ public class KEPLearner extends TextRulerBasicLearner {
         if (!hasPerfectRules.get(slotNamesWithBoundaries[3 * i + 2])) {
           List<KEPRule> list = new ArrayList<KEPRule>();
           for (KEPRule kepRule : ruleLists.get(slotNamesWithBoundaries[3 * i + 2])) {
-            List<TextRulerExample> exList = new ArrayList<TextRulerExample>(kepRule
-                    .getCoveringStatistics().getCoveredNegativeExamples());
+            List<TextRulerExample> exList = new ArrayList<TextRulerExample>(
+                    kepRule.getCoveringStatistics().getCoveredNegativeExamples());
             exList.removeAll(getCorrectedExamples(slotNamesWithBoundaries[3 * i + 2]));
             if (exList.size() == 0) {
               list.add(kepRule);
@@ -621,9 +604,8 @@ public class KEPLearner extends TextRulerBasicLearner {
 
   private List<KEPRule> makeRemovalRules(TextRulerTarget target) {
     sendStatusUpdateToDelegate(
-            "Searching for Removal Rules for "
-                    + target.getSingleSlotTypeName().substring(
-                            target.getSingleSlotTypeName().lastIndexOf(".") + 1),
+            "Searching for Removal Rules for " + target.getSingleSlotTypeName()
+                    .substring(target.getSingleSlotTypeName().lastIndexOf(".") + 1),
             TextRulerLearnerState.ML_RUNNING, false);
     if (!hasFalsePositives(target.getSingleSlotTypeName()))
       return new ArrayList<KEPRule>();
@@ -638,18 +620,18 @@ public class KEPLearner extends TextRulerBasicLearner {
     if (!containedTypes.isEmpty()) {
       KEPRuleItem containsRuleItem = new KEPRuleItem(targetType);
       for (Type type : containedTypes) {
-        result.add(new KEPRule(this, target).addInFillerItem(
-                containsRuleItem.copy().addAndCondition(
-                        new KEPRuleItemCondition(type, Condition.CONTAINS, true)))
+        result.add(new KEPRule(this, target)
+                .addInFillerItem(containsRuleItem.copy()
+                        .addAndCondition(new KEPRuleItemCondition(type, Condition.CONTAINS, true)))
                 .setCorrectionRule(true));
       }
     }
     if (!notContainedTypes.isEmpty()) {
       KEPRuleItem notContainsRuleItem = new KEPRuleItem(targetType);
       for (Type type : notContainedTypes) {
-        result.add(new KEPRule(this, target).addInFillerItem(
-                notContainsRuleItem.copy().addAndCondition(
-                        new KEPRuleItemCondition(type, Condition.CONTAINS, false)))
+        result.add(new KEPRule(this, target)
+                .addInFillerItem(notContainsRuleItem.copy()
+                        .addAndCondition(new KEPRuleItemCondition(type, Condition.CONTAINS, false)))
                 .setCorrectionRule(true));
       }
     }
@@ -667,14 +649,14 @@ public class KEPLearner extends TextRulerBasicLearner {
     }
     result.removeAll(toRemove);
     if (!toMerge.isEmpty()) {
-      result.add(new KEPRule(this, target).addInFillerItem(
-              new KEPRuleItem(targetType).addConditions(toMerge)).setCorrectionRule(true));
+      result.add(new KEPRule(this, target)
+              .addInFillerItem(new KEPRuleItem(targetType).addConditions(toMerge))
+              .setCorrectionRule(true));
       testCorrectionRules(target);
     }
     sendStatusUpdateToDelegate(
-            "Searching for Removal Rules for "
-                    + target.getSingleSlotTypeName().substring(
-                            target.getSingleSlotTypeName().lastIndexOf(".") + 1) + " done",
+            "Searching for Removal Rules for " + target.getSingleSlotTypeName()
+                    .substring(target.getSingleSlotTypeName().lastIndexOf(".") + 1) + " done",
             TextRulerLearnerState.ML_RUNNING, true);
     return result;
   }
@@ -688,16 +670,16 @@ public class KEPLearner extends TextRulerBasicLearner {
 
   private List<AnnotationFS> getAnnotationsEndingAt(int end, CAS cas) {
     List<AnnotationFS> result = new ArrayList<AnnotationFS>();
-    FSIterator<AnnotationFS> it = cas.getAnnotationIndex(
-            cas.getTypeSystem().getType(TextRulerToolkit.RUTA_ALL_TYPE_NAME)).iterator();
+    FSIterator<AnnotationFS> it = cas
+            .getAnnotationIndex(cas.getTypeSystem().getType(TextRulerToolkit.RUTA_ALL_TYPE_NAME))
+            .iterator();
     while (it.isValid() && it.get().getBegin() < end) {
       it.moveToNext();
     }
     do
       it.moveToPrevious();
-    while (it.isValid()
-            && (it.get().getBegin() >= end || filterSetWithSlotNames.contains(it.get().getType()
-                    .getName())));
+    while (it.isValid() && (it.get().getBegin() >= end
+            || filterSetWithSlotNames.contains(it.get().getType().getName())));
     if (!it.isValid())
       return result;
     end = it.get().getEnd();
@@ -753,11 +735,11 @@ public class KEPLearner extends TextRulerBasicLearner {
     List<KEPRule> tmpList = new ArrayList<KEPRule>();
     List<TextRulerExample> coveredExamples = new ArrayList<TextRulerExample>();
     List<TextRulerExample> positiveExamples = exampleDocuments.getAllPositiveExamples();
-    List<TextRulerExample> correctedExamples = getCorrectedExamples(rules.get(0).getTarget()
-            .getSingleSlotTypeName());
+    List<TextRulerExample> correctedExamples = getCorrectedExamples(
+            rules.get(0).getTarget().getSingleSlotTypeName());
     for (KEPRule rule : rules) {
-      List<TextRulerExample> uncorrectedExamples = new ArrayList<TextRulerExample>(rule
-              .getCoveringStatistics().getCoveredNegativeExamples());
+      List<TextRulerExample> uncorrectedExamples = new ArrayList<TextRulerExample>(
+              rule.getCoveringStatistics().getCoveredNegativeExamples());
       uncorrectedExamples.removeAll(correctedExamples);
       if (uncorrectedExamples.size() == 0
               && rule.getCoveringStatistics().getCoveredPositivesCount() > 0)
@@ -774,8 +756,8 @@ public class KEPLearner extends TextRulerBasicLearner {
     List<KEPRule> bestRules = getBestRules(rules);
     while (!coveredExamples.containsAll(positiveExamples) && !bestRules.isEmpty()) {
       KEPRule bestRule = bestRules.get(0);
-      if (!coveredExamples.containsAll(bestRule.getCoveringStatistics()
-              .getCoveredPositiveExamples())) {
+      if (!coveredExamples
+              .containsAll(bestRule.getCoveringStatistics().getCoveredPositiveExamples())) {
         coveredExamples.removeAll(bestRule.getCoveringStatistics().getCoveredPositiveExamples());
         coveredExamples.addAll(bestRule.getCoveringStatistics().getCoveredPositiveExamples());
         tmpList.add(bestRule);
@@ -790,6 +772,7 @@ public class KEPLearner extends TextRulerBasicLearner {
     if (rules.isEmpty())
       return new ArrayList<KEPRule>();
     final class AComparator implements Comparator<KEPRule> {
+      @Override
       public int compare(KEPRule r1, KEPRule r2) {
         if (r1.getCoveringStatistics().getCoveredPositivesCount() < r2.getCoveringStatistics()
                 .getCoveredPositivesCount())
@@ -803,8 +786,9 @@ public class KEPLearner extends TextRulerBasicLearner {
         else if (r1.getCoveringStatistics().getCoveredNegativesCount() < r2.getCoveringStatistics()
                 .getCoveredNegativesCount())
           return -1;
-        else if (r1.getPreFiller().size() + r1.getInFiller().size() + r1.getPostFiller().size() < r2
-                .getPreFiller().size() + r2.getInFiller().size() + r2.getPostFiller().size())
+        else if (r1.getPreFiller().size() + r1.getInFiller().size()
+                + r1.getPostFiller().size() < r2.getPreFiller().size() + r2.getInFiller().size()
+                        + r2.getPostFiller().size())
           return -1;
         return 0;
       }
@@ -818,9 +802,9 @@ public class KEPLearner extends TextRulerBasicLearner {
       KEPRule rule = rules.get(i);
       if ((3 * rule.getCoveringStatistics().getCoveredPositivesCount() >= rule
               .getCoveringStatistics().getCoveredNegativesCount())
-              && (rule.getCoveringStatistics().getCoveredPositivesCount() >= positiveExamples
-                      .size() || !coveredExamples.containsAll(rule.getCoveringStatistics()
-                      .getCoveredPositiveExamples()))) {
+              && (rule.getCoveringStatistics().getCoveredPositivesCount() >= positiveExamples.size()
+                      || !coveredExamples.containsAll(
+                              rule.getCoveringStatistics().getCoveredPositiveExamples()))) {
         result.add(rule);
         coveredExamples.addAll(rule.getCoveringStatistics().getCoveredPositiveExamples());
 
@@ -831,8 +815,8 @@ public class KEPLearner extends TextRulerBasicLearner {
     for (int i = 0; i < rules.size(); i++) {
       KEPRule rule = rules.get(i);
       if (rule.getCoveringStatistics().getCoveredPositivesCount() >= positiveExamples.size()
-              || !coveredExamples.containsAll(rule.getCoveringStatistics()
-                      .getCoveredPositiveExamples())) {
+              || !coveredExamples
+                      .containsAll(rule.getCoveringStatistics().getCoveredPositiveExamples())) {
         result.add(rule);
         coveredExamples.addAll(rule.getCoveringStatistics().getCoveredPositiveExamples());
 
@@ -865,10 +849,10 @@ public class KEPLearner extends TextRulerBasicLearner {
               example.getAnnotation().getBegin(), example.getAnnotation().getEnd(),
               filterSetWithSlotNames, null)) {
         if (!filterSetWithSlotNames.contains(a.getType().getName()))
-          if (((!countOnlyCoveringTokens) && (a.getBegin() >= example.getAnnotation().getBegin() && a
-                  .getEnd() <= example.getAnnotation().getEnd()))
-                  || (a.getBegin() == example.getAnnotation().getBegin() && a.getEnd() == example
-                          .getAnnotation().getEnd())) {
+          if (((!countOnlyCoveringTokens) && (a.getBegin() >= example.getAnnotation().getBegin()
+                  && a.getEnd() <= example.getAnnotation().getEnd()))
+                  || (a.getBegin() == example.getAnnotation().getBegin()
+                          && a.getEnd() == example.getAnnotation().getEnd())) {
             List<TextRulerExample> list = countMap.get(a.getType().getName());
             if (list == null) {
               list = new ArrayList<TextRulerExample>();
@@ -906,6 +890,7 @@ public class KEPLearner extends TextRulerBasicLearner {
     return result;
   }
 
+  @Override
   public String getResultString() {
     StringBuffer ruleStrings = new StringBuffer();
     if (slotNamesWithBoundaries == null || slotNamesWithBoundaries.length == 0)
@@ -917,13 +902,12 @@ public class KEPLearner extends TextRulerBasicLearner {
       if (blockType != null
               && !(i > 0 && blocks.get(slotNamesWithBoundaries[i - 1]) != null && blocks
                       .get(slotNamesWithBoundaries[i - 1]).getName().equals(blockType.getName()))) {
-        ruleStrings.append("BLOCK(" + blockType.getShortName() + ") " + blockType.getShortName()
-                + "{} { \n");
+        ruleStrings.append(
+                "BLOCK(" + blockType.getShortName() + ") " + blockType.getShortName() + "{} { \n");
       }
       if (ruleList == null || ruleList.isEmpty()) {
-        if (blockType != null
-                && !(i < slotNamesWithBoundaries.length - 1
-                        && blocks.get(slotNamesWithBoundaries[i + 1]) != null && blocks
+        if (blockType != null && !(i < slotNamesWithBoundaries.length - 1
+                && blocks.get(slotNamesWithBoundaries[i + 1]) != null && blocks
                         .get(slotNamesWithBoundaries[i + 1]).getName().equals(blockType.getName())))
           ruleStrings.append("} \n");
         continue;
@@ -933,10 +917,9 @@ public class KEPLearner extends TextRulerBasicLearner {
         ruleStrings.append((blockType != null ? "\t" : "") + rule.getRuleString() + "\t// "
                 + rule.getCoveringStatistics() + "\n");
       }
-      if (blockType != null
-              && !(i < slotNamesWithBoundaries.length - 1
-                      && blocks.get(slotNamesWithBoundaries[i + 1]) != null && blocks
-                      .get(slotNamesWithBoundaries[i + 1]).getName().equals(blockType.getName())))
+      if (blockType != null && !(i < slotNamesWithBoundaries.length - 1
+              && blocks.get(slotNamesWithBoundaries[i + 1]) != null
+              && blocks.get(slotNamesWithBoundaries[i + 1]).getName().equals(blockType.getName())))
         ruleStrings.append("}");
       ruleStrings.append("\n");
     }
@@ -951,11 +934,11 @@ public class KEPLearner extends TextRulerBasicLearner {
       for (KEPRule rule : ruleList) {
         if (slotNamesWithBoundaries[i].contains(TextRulerToolkit.LEFT_BOUNDARY_EXTENSION)
                 || slotNamesWithBoundaries[i].contains(TextRulerToolkit.RIGHT_BOUNDARY_EXTENSION)) {
-          boundaryCorrectors.append(rule.getRuleString() + "\t// " + rule.getCoveringStatistics()
-                  + "\n");
+          boundaryCorrectors
+                  .append(rule.getRuleString() + "\t// " + rule.getCoveringStatistics() + "\n");
         } else {
-          wholeSlotCorrectors.append(rule.getRuleString() + "\t// " + rule.getCoveringStatistics()
-                  + "\n");
+          wholeSlotCorrectors
+                  .append(rule.getRuleString() + "\t// " + rule.getCoveringStatistics() + "\n");
         }
       }
     }
@@ -969,8 +952,8 @@ public class KEPLearner extends TextRulerBasicLearner {
     result.append("// " + slotName + " RULES \n");
     Type blockType = blocks.get(slotName);
     if (blockType != null) {
-      result.append("BLOCK(" + blockType.getShortName() + ") " + blockType.getShortName()
-              + "{} { \n");
+      result.append(
+              "BLOCK(" + blockType.getShortName() + ") " + blockType.getShortName() + "{} { \n");
     }
     List<KEPRule> ruleList = this.ruleLists.get(slotName);
     if (ruleList != null && !ruleList.isEmpty()) {
@@ -995,12 +978,12 @@ public class KEPLearner extends TextRulerBasicLearner {
                 + blockType.getShortName() + "{} { \n");
       }
       String shortName = slotName.substring(slotName.lastIndexOf(".") + 1);
-      String str = shortName + TextRulerToolkit.LEFT_BOUNDARY_EXTENSION + "{->MARKONCE("
-              + shortName + ",1,3)} ANY*? " + shortName + TextRulerToolkit.RIGHT_BOUNDARY_EXTENSION
-              + ";" + "\n";
+      String str = shortName + TextRulerToolkit.LEFT_BOUNDARY_EXTENSION + "{->MARKONCE(" + shortName
+              + ",1,3)} ANY*? " + shortName + TextRulerToolkit.RIGHT_BOUNDARY_EXTENSION + ";"
+              + "\n";
       str += shortName + TextRulerToolkit.LEFT_BOUNDARY_EXTENSION + "{IS(" + shortName
-              + TextRulerToolkit.RIGHT_BOUNDARY_EXTENSION + ")->MARKONCE(" + shortName + ")} "
-              + ";" + "\n";
+              + TextRulerToolkit.RIGHT_BOUNDARY_EXTENSION + ")->MARKONCE(" + shortName + ")} " + ";"
+              + "\n";
       result.append(str);
       if (blockType != null) {
         result.append("}");
@@ -1108,8 +1091,8 @@ public class KEPLearner extends TextRulerBasicLearner {
 
   private void prepareCASWithBoundaries(CAS cas) {
     for (String slotName : slotNames)
-      if (!(slotName.contains(TextRulerToolkit.LEFT_BOUNDARY_EXTENSION) || slotName
-              .contains(TextRulerToolkit.RIGHT_BOUNDARY_EXTENSION)))
+      if (!(slotName.contains(TextRulerToolkit.LEFT_BOUNDARY_EXTENSION)
+              || slotName.contains(TextRulerToolkit.RIGHT_BOUNDARY_EXTENSION)))
         TextRulerExampleDocument.createBoundaryAnnotationsForCas(cas, slotName, filterSet);
   }
 
@@ -1130,6 +1113,7 @@ public class KEPLearner extends TextRulerBasicLearner {
     return true;
   }
 
+  @Override
   public void setParameters(Map<String, Object> params) {
     if (TextRulerToolkit.DEBUG)
       saveParametersToTempFolder(params);
@@ -1163,6 +1147,7 @@ public class KEPLearner extends TextRulerBasicLearner {
 
       private final FSTypeConstraint c = constraint;
 
+      @Override
       public boolean match(FeatureStructure fs) {
         return !c.match(fs);
       }
@@ -1179,6 +1164,7 @@ public class KEPLearner extends TextRulerBasicLearner {
       this.cas = cas;
     }
 
+    @Override
     public int compare(KEPRule o1, KEPRule o2) {
       ArrayList<TextRulerRuleItem> items1 = o1.getInFiller();
       items1.addAll(o1.getPostFiller());

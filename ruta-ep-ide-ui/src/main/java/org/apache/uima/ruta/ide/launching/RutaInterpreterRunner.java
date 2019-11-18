@@ -71,26 +71,31 @@ import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.xml.sax.SAXException;
 
-public class RutaInterpreterRunner extends AbstractInterpreterRunner implements IConfigurableRunner {
+public class RutaInterpreterRunner extends AbstractInterpreterRunner
+        implements IConfigurableRunner {
 
   public static final IRutaInterpreterRunnerConfig DEFAULT_CONFIG = new IRutaInterpreterRunnerConfig() {
 
+    @Override
     public void adjustRunnerConfiguration(VMRunnerConfiguration vconfig, InterpreterConfig iconfig,
             ILaunch launch, IJavaProject project) {
-      System.out.println("adjust runner");
     }
 
+    @Override
     public String[] computeClassPath(InterpreterConfig config, ILaunch launch, IJavaProject project)
             throws Exception {
       return RutaInterpreterRunner.getClassPath(project);
     }
 
+    @Override
     public String[] getProgramArguments(InterpreterConfig config, ILaunch launch,
             IJavaProject project) {
       return new String[0];
     }
 
-    public String getRunnerClassName(InterpreterConfig config, ILaunch launch, IJavaProject project) {
+    @Override
+    public String getRunnerClassName(InterpreterConfig config, ILaunch launch,
+            IJavaProject project) {
       return "RutaRunner";
     }
 
@@ -173,8 +178,8 @@ public class RutaInterpreterRunner extends AbstractInterpreterRunner implements 
   public static void doRunImpl(InterpreterConfig config, ILaunch launch,
           IRutaInterpreterRunnerConfig iconfig, IProgressMonitor monitor) throws CoreException {
     String launchMode = launch.getLaunchMode();
-    IScriptProject proj = AbstractScriptLaunchConfigurationDelegate.getScriptProject(launch
-            .getLaunchConfiguration());
+    IScriptProject proj = AbstractScriptLaunchConfigurationDelegate
+            .getScriptProject(launch.getLaunchConfiguration());
 
     IPath projectPath = proj.getResource().getLocation();
     IPath inputDirPath = projectPath.append(RutaProjectUtils.getDefaultInputLocation());
@@ -363,6 +368,7 @@ public class RutaInterpreterRunner extends AbstractInterpreterRunner implements 
     return RutaLaunchConfigurationConstants.ID_RUTA_PROCESS_TYPE;
   }
 
+  @Override
   public void setRunnerConfig(IRutaInterpreterRunnerConfig config) {
     this.config = config;
   }

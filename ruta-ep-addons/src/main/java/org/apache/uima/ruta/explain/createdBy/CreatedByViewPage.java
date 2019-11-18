@@ -188,7 +188,6 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
 
   @Override
   public void dispose() {
-    super.dispose();
     getSite().getPage().removeSelectionListener(this);
     editor.removeCasEditorInputListener(this);
     if (images != null) {
@@ -196,6 +195,7 @@ public class CreatedByViewPage extends Page implements ISelectionListener, ICasE
         each.dispose();
       }
     }
+    super.dispose();
   }
 
   public void mouseDown(final MouseEvent event) {

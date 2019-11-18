@@ -29,9 +29,7 @@ public class GetFeatureTest {
   public void test() {
 
     CAS cas = RutaTestUtils.processTestScript(this.getClass());
-    
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1);
-
-    cas.release();
   }
+
 }

@@ -28,10 +28,6 @@ public interface RuleElementContainer {
 
   List<RuleElement> getRuleElements();
 
-  // RuleElement getElementAfter(RuleElement element);
-  //
-  // RuleElement getElementBefore(RuleElement element);
-
   RuleElement getFirstElement();
 
   RuleElement getLastElement();
@@ -39,8 +35,6 @@ public interface RuleElementContainer {
   RuleElement getAnchoringRuleElement(RutaStream stream);
 
   void applyRuleElements(RuleMatch ruleMatch, RutaStream stream, InferenceCrowd crowd);
-
-  RutaRule getRule();
 
   RuleElement getNextElement(boolean after, RuleElement ruleElement);
 

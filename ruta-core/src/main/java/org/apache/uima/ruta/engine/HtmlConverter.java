@@ -27,8 +27,8 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
@@ -258,7 +258,6 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
       }
     }
 
-
     if (useSpaceGap) {
       gapText = " ";
     }
@@ -398,8 +397,9 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
       Annotation clone = (Annotation) casCopier.copyFs(annotation);
       // change the view/sofa of the new annotation...
       // see: http://osdir.com/ml/apache.uima.general/2007-09/msg00107.html
-      clone.setFeatureValue(modview.getTypeSystem()
-              .getFeatureByFullName(CAS.FEATURE_FULL_NAME_SOFA), modview.getSofa());
+      clone.setFeatureValue(
+              modview.getTypeSystem().getFeatureByFullName(CAS.FEATURE_FULL_NAME_SOFA),
+              modview.getSofa());
       final int mappedBegin = map[clone.getBegin()];
       final int mappedEnd = map[clone.getEnd()];
       if (mappedBegin < mappedEnd) {
@@ -473,7 +473,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
     return this.handleConversion(visibleSpansSoFar, splitSeq, linebreakReplacement);
   }
 
-  private SortedSet<HtmlConverterPSpan> htmlDecoding(SortedSet<HtmlConverterPSpan> visibleSpansSoFar) {
+  private SortedSet<HtmlConverterPSpan> htmlDecoding(
+          SortedSet<HtmlConverterPSpan> visibleSpansSoFar) {
     TreeSet<HtmlConverterPSpan> copy = new TreeSet<HtmlConverterPSpan>(visibleSpansSoFar);
 
     Pattern patt = Pattern.compile("(&[a-zA-Z0-9]{2,6};)|(&#\\d{2,5};)");
@@ -515,7 +516,8 @@ public class HtmlConverter extends JCasAnnotator_ImplBase {
   }
 
   private SortedSet<HtmlConverterPSpan> handleConversion(
-          SortedSet<HtmlConverterPSpan> visibleSpansSoFar, String patternString, String replacement) {
+          SortedSet<HtmlConverterPSpan> visibleSpansSoFar, String patternString,
+          String replacement) {
     TreeSet<HtmlConverterPSpan> copy = new TreeSet<HtmlConverterPSpan>(visibleSpansSoFar);
 
     Pattern patt = Pattern.compile(patternString);
