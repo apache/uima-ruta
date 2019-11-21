@@ -983,9 +983,10 @@ public class RutaStream {
 
   public void assignFeatureValue(FeatureStructure annotation, Feature feature,
           IRutaExpression value, MatchContext context) {
-    if (feature == null) {
+    if (feature == null || feature instanceof CoveredTextFeature
+            || feature instanceof TypeFeature) {
       throw new IllegalArgumentException(
-              "Not able to assign feature value (e.g., coveredText) in script "
+              "Not able to assign feature value (e.g., coveredText, type) in script "
                       + context.getParent().getName());
     }
     if (feature instanceof LazyFeature) {

@@ -18,6 +18,7 @@
  */
 package org.apache.uima.ruta.expression.type;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
@@ -43,6 +44,17 @@ public class TypeFeatureTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 6, "is", "is", "a", "a", "test", "test");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "is a", "a test");
 
+  }
+
+  @Test(expected = AnalysisEngineProcessException.class)
+  public void testAssignType() throws Exception {
+
+    String document = "This is a test.";
+
+    String script = "cw:CW{-> cw.type = SW};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
   }
 
 }
