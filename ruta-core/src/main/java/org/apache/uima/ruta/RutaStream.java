@@ -65,10 +65,12 @@ import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanListExpression;
+import org.apache.uima.ruta.expression.feature.CoveredTextFeature;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.feature.LazyFeature;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
+import org.apache.uima.ruta.expression.feature.TypeFeature;
 import org.apache.uima.ruta.expression.number.INumberExpression;
 import org.apache.uima.ruta.expression.number.INumberListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -980,9 +982,10 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   public void assignFeatureValue(FeatureStructure annotation, Feature feature,
           IRutaExpression value, MatchContext context) {
-    if (feature == null) {
+    if (feature == null || feature instanceof CoveredTextFeature
+            || feature instanceof TypeFeature) {
       throw new IllegalArgumentException(
-              "Not able to assign feature value (e.g., coveredText) in script "
+              "Not able to assign feature value (e.g., coveredText, type) in script "
                       + context.getParent().getName());
     }
     if (feature instanceof LazyFeature) {

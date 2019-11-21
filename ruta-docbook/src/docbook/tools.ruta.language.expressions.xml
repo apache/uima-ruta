@@ -25,19 +25,19 @@
   </para>
   <para>
   <emphasis role="bold">Definition:</emphasis>
-<programlisting><![CDATA[RutaExpression  ->   TypeExpression | NumberExpression | 
-                           StringExpression | BooleanExpression
-                           | ListExpression]]></programlisting>
+<programlisting><![CDATA[RutaExpression  ->   TypeExpression | AnnotationExpression 
+                     | StringExpression | BooleanExpression 
+                     | NumberExpression | ListExpression]]></programlisting>
   </para>
   <section id="ugr.tools.ruta.language.expressions.type">
     <title>Type Expressions</title>
     <para>
-      UIMA Ruta provides two kinds of type expressions.
+      UIMA Ruta provides several kinds of type expressions.
       <orderedlist numeration="arabic">
         <listitem>
           Declared annotation types (see
           <xref linkend='ugr.tools.ruta.language.declarations.type' />
-          ).
+          ) also including any types present in the type system of the CAS or defined in imported type systems.
         </listitem>
         <listitem>
           Type variables
@@ -45,18 +45,25 @@
           <xref linkend='ugr.tools.ruta.language.declarations.variable' />
           ).
         </listitem>
+        <listitem>
+          Type of an annotation expression 
+          (see
+          <xref linkend='ugr.tools.ruta.language.expressions.features' />
+          ).
+        </listitem>
       </orderedlist>
+    </para>
       <section>
         <title>
           <emphasis role="bold">Definition:</emphasis>
         </title>
         <para>
 <programlisting><![CDATA[TypeExpression  ->  AnnotationType | TypeVariable]]></programlisting>
-        </para>
+                    | AnnotationExpression.type</para>
       </section>
       <section>
         <title>
-          <emphasis role="bold">Example:</emphasis>
+          <emphasis role="bold">Examples:</emphasis>
         </title>
         <para>
           <programlisting><![CDATA[DECLARE Author;  // Author defines a type, therefore it is 
@@ -64,8 +71,69 @@
 TYPE typeVar;    // type variable typeVar is a type expression 
 Document{->ASSIGN(typeVar, Author)};]]></programlisting>
         </para>
+        <para>
+          <programlisting><![CDATA[e:Entity{-> e.type}; // the dot notation type refers to the type 
+          // of the anotation stored in the label a. In this example, 
+          // this type expression refers to the type Entity or a specific 
+          // subtype of Entity.]]></programlisting>
+        </para>
       </section>
+  </section>
+  
+  <section id="ugr.tools.ruta.language.expressions.annotation">
+    <title>Annotation Expressions</title>
+    <para>
+      UIMA Ruta provides several kinds of annotation expressions.
+      <orderedlist numeration="arabic">
+        <listitem>
+          Annotation variables
+          (see
+          <xref linkend='ugr.tools.ruta.language.declarations.variable' />
+          ).
+        </listitem>
+        <listitem>
+          Label expressions storing matched annotations (see 
+          <xref linkend=' ugr.tools.ruta.language.labels' />
+          ). Label expressions are on-the-fly defined (local) variables in the context of a rule.
+        </listitem>
+        <listitem>
+          Annotation implicit referenced by a type expression in the match context  (see
+          <xref linkend='ugr.tools.ruta.language.expressions.type' />
+          ).
+        </listitem>
+        <listitem>
+          Annotations stored in features of other annotations.
+          (see
+          <xref linkend='ugr.tools.ruta.language.expressions.features' />
+          ).
+        </listitem>
+      </orderedlist>
     </para>
+      <section>
+        <title>
+          <emphasis role="bold">Definition:</emphasis>
+        </title>
+        <para>
+<programlisting><![CDATA[AnnotationExpression  ->  AnnotationVariable | LabelExpression 
+                          | TypeExpression | FeatureExpression]]></programlisting>
+        </para>
+      </section>
+      <section>
+        <title>
+          <emphasis role="bold">Examples:</emphasis>
+        </title>
+        <para>
+          <programlisting><![CDATA[ANNOTATION anno; // a variable declaration for storing an annotation.
+e:Entity; // label expression e stored the annotation matched by the 
+          // rule element with the matching condition Entity.
+er:EmplRelation{-> er.employer = Employer}; // the type expression 
+          // Employer implicitly refers to annotations of the 
+          // type Employer in the context of the EmplRelation match.
+e:EmplRelation.employer; // this feature expression represents the 
+                         // annotation stored in the feature employer.                                       
+]]></programlisting>
+        </para>
+      </section>
   </section>
 
   <section id="ugr.tools.ruta.language.expressions.number">
@@ -274,9 +342,10 @@ BooleanLiteral    ->  "true" | "false"]]></programlisting>
           <emphasis role="bold">Definition:</emphasis>
         </title>
         <para>
-<programlisting><![CDATA[ListExpression  ->   WordListExpression | WordTableExpression |
-                     TypeListExpression | NumberListExpression |
-                     StringListExpression | BooleanListExpression
+<programlisting><![CDATA[ListExpression  ->   WordListExpression | WordTableExpression 
+                     | TypeListExpression | AnnotationListExpression
+                     | NumberListExpression | StringListExpression 
+                     | BooleanListExpression
 WordListExpression     ->  RessourceLiteral | WordListVariable
 WordTableExpression    ->  RessourceLiteral | WordTableVariable
 TypeListExpression     ->  TypeListVariable
@@ -317,12 +386,22 @@ FeatureAssignmentExpression -> FeatureExpression "=" Expression
 ]]></programlisting>
     </para>
     <para>
+      Ruta allows the access of two special attributes of an annotation with the feature notation:
+      The covered text of an annotation can be accessed as a string expression and the type of 
+      an annotation can be accessed as an type expression.
+    </para>
+    <para>
       The covered text of an annotation can be referred to with "coveredText" or "ct". 
       The latter one is an abbreviation and returns the covered text of an annotation
       only if the type of the annotation does not define a feature with the name "ct". 
       The following example creates an annotation of the type TypeA for each word with the 
       covered text "A".
       <programlisting><![CDATA[W.ct == "A" {-> TypeA};]]></programlisting>
+    </para>
+    <para>
+      The type of an annotation can be referred to with "type". 
+      The following example creates an annotation of the type TypeA for each pair of ANY annotation.
+      <programlisting><![CDATA[(a1:ANY a2:ANY){a1.type == a2.type -> TypeA};]]></programlisting>
     </para>
   </section>
 </section>
