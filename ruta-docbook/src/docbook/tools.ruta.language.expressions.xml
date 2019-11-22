@@ -58,8 +58,9 @@
           <emphasis role="bold">Definition:</emphasis>
         </title>
         <para>
-<programlisting><![CDATA[TypeExpression  ->  AnnotationType | TypeVariable]]></programlisting>
-                    | AnnotationExpression.type</para>
+<programlisting><![CDATA[TypeExpression  ->  AnnotationType | TypeVariable
+                    | AnnotationExpression.type]]></programlisting>
+        </para>
       </section>
       <section>
         <title>
