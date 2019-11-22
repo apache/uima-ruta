@@ -1317,6 +1317,7 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <title>dictRemoveWS</title>
           <para>
             If this parameter is set to true, then whitespaces are removed when dictionaries are loaded.
+            The default is set to "true".
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.csvSeparator">
@@ -1352,7 +1353,7 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
       <title>Annotation Writer</title>
       <para>
         This Analysis Engine can be utilized to write the covered text of annotations in a text file, whereas each covered text is put into a new line.
-        If the Analyis engine, for example, is configured for the type <quote>uima.example.Person</quote>, then all covered texts of all Person annotations are stored
+        If the Analysis engine, for example, is configured for the type <quote>uima.example.Person</quote>, then all covered texts of all Person annotations are stored
         in a text file, one person in each line.
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a UIMA Ruta project.
       </para>
@@ -1552,7 +1553,7 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
             This boolean parameter determines if the converter should skip whitespaces. 
             Html documents often contains whitespaces for indentation and formatting, 
             which should not be reproduced in the converted plain text document.
-            If the parameter is set to false, then the whitespces are not removed. 
+            If the parameter is set to false, then the whitespaces are not removed. 
             This behavior is useful, if not Html documents are converted, but XMl files.
             The default value is true.
           </para>
@@ -1576,7 +1577,7 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <title>gapInducingTags</title>
           <para>
             This string array parameter sets the names of the html tags that create additional text in the
-   output view. The acutal string of the gap is defined by the parameter <quote>gapText</quote>.
+   output view. The actual string of the gap is defined by the parameter <quote>gapText</quote>.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.htmlconverter.parameter.gapText">
@@ -1597,7 +1598,7 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
       <title>Style Map Creator</title>
       <para>
         This Analysis Engine can be utilized to create style map information, which is needed by the Modifier Analysis Engine in order to create
-        highlightings for some annotations.
+        highlighting for some annotations.
         Style map information can be created using the <link linkend='ugr.tools.ruta.language.actions.color'>COLOR</link> action.
         A descriptor file for this Analysis Engine is located in the folder <quote>descriptor/utils</quote> of a UIMA Ruta project.
       </para>
