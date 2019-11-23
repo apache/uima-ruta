@@ -199,7 +199,9 @@ public class RutaStream {
   private void updateIterators(CAS cas, Type basicType, FilterManager filter,
           AnnotationFS additionalWindow) {
     if (additionalWindow != null) {
-      this.basicIt = cas.getAnnotationIndex(basicType).subiterator(additionalWindow);
+      this.basicIt = cas.getAnnotationIndex(basicType).select().coveredBy(additionalWindow)
+              .fsIterator();
+      // was: this.basicIt = cas.getAnnotationIndex(basicType).subiterator(additionalWindow);
     } else {
       this.basicIt = cas.getAnnotationIndex(basicType).iterator();
     }
@@ -690,7 +692,10 @@ public class RutaStream {
     }
     FSMatchConstraint defaultConstraint = filter.getDefaultConstraint();
     FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(
-            cas.getAnnotationIndex(basicType).subiterator(windowAnnotation), defaultConstraint);
+            cas.getAnnotationIndex(basicType).select().coveredBy(windowAnnotation).fsIterator(),
+            defaultConstraint);
+//    FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(
+//            cas.getAnnotationIndex(basicType).subiterator(windowAnnotation), defaultConstraint);
 
     while (iterator.isValid()) {
       result.add((RutaBasic) iterator.get());
@@ -936,9 +941,13 @@ public class RutaStream {
                     || windowAnnotation.getEnd() != cas.getDocumentAnnotation().getEnd())) {
       AnnotationFS frame = cas.createAnnotation(cas.getTypeSystem().getType(RutaEngine.FRAME_TYPE),
               windowAnnotation.getBegin(), windowAnnotation.getEnd());
-      FSIterator<AnnotationFS> subiterator = cas.getAnnotationIndex(type).subiterator(frame);
-      while (subiterator.hasNext()) {
-        AnnotationFS each = subiterator.next();
+      FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(type).select().coveredBy(frame)
+              .fsIterator();
+      // was: FSIterator<AnnotationFS> subiterator =
+      // cas.getAnnotationIndex(type).subiterator(frame);
+
+      while (iterator.hasNext()) {
+        AnnotationFS each = iterator.next();
         if (isVisible(each)) {
           result.add(each);
         }
