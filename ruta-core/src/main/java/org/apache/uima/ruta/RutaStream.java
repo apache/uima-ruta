@@ -898,6 +898,9 @@ public class RutaStream {
     Set<Type> currentHiddenTypes = filter.getCurrentHiddenTypes();
     RutaBasic beginAnchor = getBeginAnchor(begin);
     if (beginAnchor != null) {
+      if (beginAnchor.isEmpty() && emptyIsInvisible) {
+        return false;
+      }
       for (Type type : currentHiddenTypes) {
         boolean partOf = beginAnchor.isPartOf(type);
         if (partOf) {
@@ -907,6 +910,9 @@ public class RutaStream {
     }
     RutaBasic endAnchor = getEndAnchor(end);
     if (endAnchor != null) {
+      if (endAnchor.isEmpty() && emptyIsInvisible) {
+        return false;
+      }
       for (Type type : currentHiddenTypes) {
         boolean partOf = endAnchor.isPartOf(type);
         if (partOf) {
