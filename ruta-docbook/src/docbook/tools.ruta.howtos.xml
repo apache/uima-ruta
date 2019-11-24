@@ -239,7 +239,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
 			the more efficient structures, tree word list and multi tree word
 			list. The usage and configuration is shortly summarized in the
 			following. An exemplary maven project for UIMA Ruta is given here:
-			<code>https://svn.apache.org/repos/asf/uima/ruta/trunk/example-projects/ruta-maven-example</code>
+			<code>https://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/example-projects/ruta-maven-example</code>
 		</para>
 		<section>
 		<title>generate goal</title>
@@ -250,7 +250,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
 		<programlisting><![CDATA[<plugin>
 <groupId>org.apache.uima</groupId>
 <artifactId>ruta-maven-plugin</artifactId>
-<version>2.3.0</version>
+<version>3.0.0</version>
 <configuration>
 
  <!-- This is a exemplary configuration, which explicitly specifies the 
@@ -384,12 +384,12 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
     or the configuration of the generated analysis engine descriptor, e.g., 
     the values of the configuration parameter scriptPaths.
     However, there are also other parameters: addRutaNature and buildPaths. 
-    Both can be utilzed to configure the current Eclipse project (due to the missing m2e connector).
-    This is required if the functionality of the UIMA Ruta Workbench, e.g., syntax checking or auto-completeion,
+    Both can be utilized to configure the current Eclipse project (due to the missing m2e connector).
+    This is required if the functionality of the UIMA Ruta Workbench, e.g., syntax checking or auto-completion,
      should be available in the maven project. If the parameter addRutaNature is set to true, then
      the UIMA Ruta Workbench will recognize the project as a script project. Only then, 
      the buildpath of the UIMA Ruta project can be configured using the buildPaths parameter, which specifies 
-     the three important source folders of the UIMA Ruta project. In normal UIMA Ruta Workbnech projects, 
+     the three important source folders of the UIMA Ruta project. In normal UIMA Ruta Workbench projects, 
      these are script, descriptor and resources.
     </para>
 		</section>
@@ -403,7 +403,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
     <programlisting><![CDATA[<plugin>
 <groupId>org.apache.uima</groupId>
 <artifactId>ruta-maven-plugin</artifactId>
-<version>2.3.0</version>
+<version>3.0.0</version>
 <configuration></configuration>
 <executions>
 <execution>
@@ -456,7 +456,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
     <programlisting><![CDATA[<plugin>
 <groupId>org.apache.uima</groupId>
 <artifactId>ruta-maven-plugin</artifactId>
-<version>2.3.0</version>
+<version>3.0.0</version>
 <configuration></configuration>
 <executions>
 <execution>
@@ -527,7 +527,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
     </para>  
     
     <programlisting><![CDATA[mvn archetype:generate -DarchetypeGroupId=org.apache.uima 
-    -DarchetypeArtifactId=ruta-maven-archetype -DarchetypeVersion=2.6.0
+    -DarchetypeArtifactId=ruta-maven-archetype -DarchetypeVersion=3.0.0
     -DgroupId=my.domain -DartifactId=my-ruta-project]]></programlisting>
     
     <para>
