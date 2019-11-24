@@ -50,9 +50,9 @@
 
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-typesystem</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-typesystem</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-typesystem</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/uv3/ruta-v3/trunk/ruta-typesystem</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-typesystem</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-typesystem</developerConnection>
   </scm>
   <build>
     <pluginManagement>

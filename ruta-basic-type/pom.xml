@@ -43,9 +43,9 @@
 
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-basic-type</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-basic-type</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-basic-type</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/uv3/ruta-v3/trunk/ruta-basic-type</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-basic-type</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-basic-type</developerConnection>
   </scm>
   <build>
     <pluginManagement>

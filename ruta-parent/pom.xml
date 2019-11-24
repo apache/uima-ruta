@@ -45,9 +45,9 @@
        Keeping this a bit factored allows cutting/pasting the <scm>
        element, and just changing the following two properties -->
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-parent</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-parent</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-parent</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/uv3/ruta-v3/trunk/ruta-parent</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-parent</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-parent</developerConnection>
   </scm>
 
   <!-- The repositories and pluginRepositories section is duplicated from the parent pom one, and adds 

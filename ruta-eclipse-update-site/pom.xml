@@ -37,13 +37,13 @@
 
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-eclipse-update-site
+      scm:svn:http://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-eclipse-update-site
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-eclipse-update-site
+      scm:svn:https://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-eclipse-update-site
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-eclipse-update-site
+      http://svn.apache.org/viewvc/uima/uv3/ruta-v3/trunk/ruta-eclipse-update-site
     </url>
   </scm>
   
