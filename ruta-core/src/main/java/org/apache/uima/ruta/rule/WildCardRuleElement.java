@@ -502,8 +502,12 @@ public class WildCardRuleElement extends AbstractRuleElement {
     } else {
       iterator = getIteratorOfType(after, defaultType, annotation, stream);
     }
-    if (iterator != null && iterator.isValid() && iterator.get().equals(annotation)) {
-      moveOn(after, iterator, stream);
+    if (annotation != null && iterator != null && iterator.isValid()) {
+      AnnotationFS pointer = iterator.get();
+      if ((after && pointer.getEnd() == annotation.getEnd())
+              || (!after && pointer.getBegin() == annotation.getBegin())) {
+        moveOn(after, iterator, stream);
+      }
     }
     return iterator;
   }
