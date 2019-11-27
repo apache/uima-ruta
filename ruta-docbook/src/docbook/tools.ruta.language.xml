@@ -899,7 +899,7 @@ WORDTABLE presidentsOfUSA = "" + package + "presidentsOfUSA.csv";
 ]]></programlisting>
       </para>
       <para>
-        By default, whitespaces are removed by the activated parameter <quote>dictRemoveWS</quote> 
+        By default, whitespaces are removed by activating the parameter <quote>dictRemoveWS</quote> 
         for WORDLIST and WORDTABLE when the dictionary is loaded. In the special case when whitespace are relevant, e.g., 
         specific patterns of whitespaces need to be detected by the dictionary lookup, 
         then the analysis engine needs to be configured differently. 
