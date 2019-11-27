@@ -20,7 +20,7 @@ change the command to
 
    mvn clean install -Papache-release
    
-For more details, please see http://uima.apache.org/building-uima.html   
+For more details, please see https://uima.apache.org/building-uima.html   
 
 
 -------------------------------------
