@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.rule;
 
 import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
@@ -37,12 +38,55 @@ public class LiteralStringMatchTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 7, 5, "CW", "CW", "CW", "SW", "CW");
     RutaTestUtils.assertAnnotationsEquals(cas, 8, 5, "CW", "CW", "CW SW CW", "SW CW", "CW");
     RutaTestUtils.assertAnnotationsEquals(cas, 9, 2, "CW COMMA CW COMMA CW", "CW COMMA CW");
-    RutaTestUtils.assertAnnotationsEquals(cas, 10, 3, "CW COMMA CW COMMA CW SW", "CW COMMA CW SW", "CW SW");
-    RutaTestUtils.assertAnnotationsEquals(cas, 11, 3, "CW COMMA CW COMMA CW SW CW PERIOD", "CW COMMA CW SW CW PERIOD",
-            "CW SW CW PERIOD");
-    RutaTestUtils.assertAnnotationsEquals(cas, 13, 6, "CW COMMA", "CW COMMA", "CW COMMA", "CW SW", "CW SW", "CW SW");
-    RutaTestUtils.assertAnnotationsEquals(cas, 14, 3, "CW COMMA CW COMMA CW SW", "CW COMMA CW SW", "CW SW");
+    RutaTestUtils.assertAnnotationsEquals(cas, 10, 3, "CW COMMA CW COMMA CW SW", "CW COMMA CW SW",
+            "CW SW");
+    RutaTestUtils.assertAnnotationsEquals(cas, 11, 3, "CW COMMA CW COMMA CW SW CW PERIOD",
+            "CW COMMA CW SW CW PERIOD", "CW SW CW PERIOD");
+    RutaTestUtils.assertAnnotationsEquals(cas, 13, 6, "CW COMMA", "CW COMMA", "CW COMMA", "CW SW",
+            "CW SW", "CW SW");
+    RutaTestUtils.assertAnnotationsEquals(cas, 14, 3, "CW COMMA CW COMMA CW SW", "CW COMMA CW SW",
+            "CW SW");
 
     cas.release();
+  }
+
+  @Test
+  public void testLiteralMatchingInInvisible() throws Exception {
+
+    String document = "<W a >";
+    String script = "";
+    script += "\"W\"{-> T1};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+  }
+
+  @Test
+  public void testExamples() throws Exception {
+
+    String document = "breast and ovarian cancer.\r\n"
+            + "colorectal, endometrial, and ovarian cancers.\r\n"
+            + "colorectal, endometrial and ovarian cancers.\r\n"
+            + "vasculopathy of the heart and brain.\r\n"
+            + "abnormalities of eyes, nervous system, and kidneys.\r\n"
+            + "Prader-Willi and Angelman syndromes\r\n" + "breast or ovarian cancer.\r\n"
+            + "breast and/or ovarian cancer.";
+    String script = "";
+    script += "\"and\"{-> T1};";
+    script += "\"or\"{-> T2};";
+    script += "\"endometrial, and ovarian\"{-> T3};";
+    script += "(\"colorectal\" # \"cancers.\"){-> T4};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 7, "and", "and", "and", "and", "and");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "or", "or");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "endometrial, and ovarian");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2,
+            "colorectal, endometrial, and ovarian cancers.",
+            "colorectal, endometrial and ovarian cancers.");
   }
 }

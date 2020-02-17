@@ -920,6 +920,18 @@ public class RutaStream {
         }
       }
     }
+    if (beginAnchor == null && endAnchor == null) {
+      // missing segmentation in RutaBasics maybe because of temp annotation?
+      Entry<Integer, RutaBasic> floorEntry = beginAnchors.floorEntry(Integer.valueOf(begin));
+      Entry<Integer, RutaBasic> ceilingEntry = endAnchors.ceilingEntry(Integer.valueOf(end));
+      if (floorEntry != null && ceilingEntry != null) {
+        for (Type type : currentHiddenTypes) {
+          if (floorEntry.getValue().isPartOf(type) || ceilingEntry.getValue().isPartOf(type)) {
+            return false;
+          }
+        }
+      }
+    }
     return true;
   }
 
