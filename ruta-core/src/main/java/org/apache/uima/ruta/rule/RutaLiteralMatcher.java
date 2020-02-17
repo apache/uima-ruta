@@ -69,9 +69,16 @@ public class RutaLiteralMatcher implements RutaMatcher {
 
   private AnnotationFS getAnnotation(int begin, int end, RutaStream stream) {
     RutaBasic beginAnchor = stream.getBeginAnchor(begin);
-    if (beginAnchor.getEnd() == end) {
+    if (beginAnchor != null && beginAnchor.getEnd() == end) {
       return beginAnchor;
     }
+    RutaBasic endAnchor = stream.getEndAnchor(begin);
+    if (beginAnchor == null && endAnchor == null) {
+      // do not detect text passages that are not covered by internal segmentation in order to avoid
+      // unintended behavior
+      return null;
+    }
+
     CAS cas = stream.getCas();
     return cas.createAnnotation(cas.getAnnotationType(), begin, end);
   }
