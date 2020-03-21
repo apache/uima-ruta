@@ -2172,6 +2172,15 @@ actionAssign returns [AbstractRutaAction action = null]
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "DOUBLE")}? 
         nv = Identifier COMMA e5 = numberExpression 
         {action = actionFactory.createAssignAction(nv, e5,$blockDeclaration::env);}
+    |
+    {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "BOOLEANLIST")||
+     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "INTLIST")||
+     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "DOUBLELIST")||
+     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "FLOATLIST")||
+     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "STRINGLIST")||
+     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPELIST")}? 
+        nv = Identifier COMMA e7 = listExpression 
+        {action = actionFactory.createAssignAction(nv, e7,$blockDeclaration::env);}
     ) RPAREN
     ;
 

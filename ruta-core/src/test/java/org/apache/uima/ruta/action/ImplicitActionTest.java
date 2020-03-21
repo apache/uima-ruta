@@ -97,4 +97,63 @@ public class ImplicitActionTest {
     cas.release();
   }
 
+  @Test
+  public void testBooleanListAssignment() throws Exception {
+    String document = "This is a test.";
+
+    String script = "";
+    script += "BOOLEANLIST bl;";
+    script += "Document { -> bl = {true}};";
+    script += "Document{CONTAINS(bl, true) -> T1};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This is a test.");
+  }
+
+  @Test
+  public void testIntListAssignment() throws Exception {
+    String document = "This is a test.";
+
+    String script = "";
+    script += "INTLIST il;";
+    script += "Document { -> il = {1,2,3}};";
+    script += "Document{CONTAINS(il, 2) -> T1};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This is a test.");
+  }
+
+  @Test
+  public void testStringListAssignment() throws Exception {
+    String document = "This is a test.";
+
+    String script = "";
+    script += "STRINGLIST sl;";
+    script += "Document { -> sl = {\"a\",\"b\"}};";
+    script += "Document{CONTAINS(sl, \"a\") -> T1};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This is a test.");
+  }
+
+  @Test
+  public void testTypeListAssignment() throws Exception {
+    String document = "This is a test.";
+
+    String script = "";
+    script += "TYPELIST tl;";
+    script += "Document { -> tl = {CW, CAP}};";
+    script += "Document{CONTAINS(tl, CW) -> T1};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This is a test.");
+  }
 }

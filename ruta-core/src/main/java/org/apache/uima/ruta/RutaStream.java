@@ -76,6 +76,7 @@ import org.apache.uima.ruta.expression.number.INumberListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.IStringListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeListExpression;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -1239,8 +1240,24 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         List<AnnotationFS> v = ((IAnnotationListExpression) expression).getAnnotationList(context,
                 this);
         environment.setVariableValue(var, v);
+      } else if (variableGenericType.equals(Boolean.class)
+              && expression instanceof IBooleanListExpression) {
+        List<Boolean> v = ((IBooleanListExpression) expression).getBooleanList(context, this);
+        environment.setVariableValue(var, v);
+      } else if (Number.class.isAssignableFrom(variableGenericType)
+              && expression instanceof INumberListExpression) {
+        List<Number> v = ((INumberListExpression) expression).getNumberList(context, this);
+        environment.setVariableValue(var, v);
+      } else if (variableGenericType.equals(String.class)
+              && expression instanceof IStringListExpression) {
+        List<String> v = ((IStringListExpression) expression).getStringList(context, this);
+        environment.setVariableValue(var, v);
+      } else if (variableGenericType.equals(Type.class)
+              && expression instanceof ITypeListExpression) {
+        List<Type> v = ((ITypeListExpression) expression).getTypeList(context, this);
+        environment.setVariableValue(var, v);
       }
-      // TODO assign also other lists
+
     }
   }
 
