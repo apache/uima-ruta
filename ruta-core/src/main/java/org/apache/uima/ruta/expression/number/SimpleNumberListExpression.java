@@ -47,4 +47,10 @@ public class SimpleNumberListExpression extends AbstractNumberListExpression {
   public List<INumberExpression> getList() {
     return list;
   }
+
+  @Override
+  public List<?> getRawList(MatchContext context, RutaStream stream) {
+
+    return getList();
+  }
 }

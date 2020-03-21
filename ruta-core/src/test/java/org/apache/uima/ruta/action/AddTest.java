@@ -27,7 +27,7 @@ import org.junit.Test;
 public class AddTest {
 
   @Test
-  public void testAnnotations() {
+  public void testAnnotations() throws Exception {
     String document = "Some text.";
     String script = "";
     script += "ANNOTATION a;";
@@ -38,18 +38,32 @@ public class AddTest {
     script += "Document{SIZE(as,2,2)->T2};";
     script += "as{->T3};";
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Some text.");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "Some", "text");
+  }
 
-    cas.release();
+  @Test
+  public void testVariable() throws Exception {
+    String document = "This is a test.";
+
+    String script = "";
+    script += "STRING s = \"a\";";
+    script += "STRINGLIST sl = {s};";
+    script += "Document{CONTAINS(sl, \"a\") -> T1};";
+    script += "Document{ -> ADD(sl, s)};";
+    script += "Document{ -> s = \"b\"};";
+    script += "Document{CONTAINS(sl, \"a\") -> T2};";
+    script += "Document{CONTAINS(sl, \"b\") -> T3};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This is a test.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "This is a test.");
   }
 }

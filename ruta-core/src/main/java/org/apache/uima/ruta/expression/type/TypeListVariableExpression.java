@@ -36,24 +36,23 @@ public class TypeListVariableExpression extends AbstractTypeListExpression {
     this.var = var;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public List<Type> getList(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    List<Object> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
+    List<?> list = getRawList(context, stream);
     List<Type> result = new ArrayList<Type>();
     for (Object each : list) {
       if (each instanceof ITypeExpression) {
         result.add(((ITypeExpression) each).getType(context, stream));
       } else if (each instanceof Type) {
         result.add((Type) each);
-      } else if(each instanceof String) {
+      } else if (each instanceof String) {
         Type type = parent.getEnvironment().getType((String) each);
-        if(type != null) {
+        if (type != null) {
           result.add(type);
         } else {
-          throw new IllegalArgumentException("Not able to resolve type: " + each + 
-                  " in script " +context.getParent().getName());
+          throw new IllegalArgumentException("Not able to resolve type: " + each + " in script "
+                  + context.getParent().getName());
         }
       }
     }
@@ -64,5 +63,10 @@ public class TypeListVariableExpression extends AbstractTypeListExpression {
     return var;
   }
 
- 
+  @Override
+  public List<?> getRawList(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
+    return parent.getEnvironment().getVariableValue(var, List.class, stream);
+  }
+
 }

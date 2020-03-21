@@ -95,4 +95,9 @@ public class StringListFeatureExpression extends AbstractStringListExpression {
     this.fe = fe;
   }
 
+  @Override
+  public List<?> getRawList(MatchContext context, RutaStream stream) {
+    return null;
+  }
+
 }

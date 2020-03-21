@@ -35,11 +35,9 @@ public class BooleanListVariableExpression extends AbstractBooleanListExpression
     this.var = var;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public List<Boolean> getList(MatchContext context, RutaStream stream) {
-    RutaBlock parent = context.getParent();
-    List<Object> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
+    List<?> list = getRawList(context, stream);
     List<Boolean> result = new ArrayList<Boolean>();
     for (Object each : list) {
       if (each instanceof IBooleanExpression) {
@@ -55,6 +53,10 @@ public class BooleanListVariableExpression extends AbstractBooleanListExpression
     return var;
   }
 
-  
+  @Override
+  public List<?> getRawList(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
+    return parent.getEnvironment().getVariableValue(var, List.class, stream);
+  }
 
 }

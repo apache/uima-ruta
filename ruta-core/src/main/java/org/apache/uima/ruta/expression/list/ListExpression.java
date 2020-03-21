@@ -29,6 +29,13 @@ public abstract class ListExpression<T> extends AbstractStringExpression {
 
   public abstract List<T> getList(MatchContext context, RutaStream stream);
 
+  public abstract List<?> getRawList(MatchContext context, RutaStream stream);
+
+//  @Override
+//  public List<IRutaExpression> getRawList(MatchContext context, RutaStream stream) {
+//    return null;
+//  }
+
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
     return getList(context, stream).toString();

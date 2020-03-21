@@ -47,4 +47,9 @@ public class SimpleStringListExpression extends AbstractStringListExpression {
   public List<IStringExpression> getList() {
     return list;
   }
+
+  @Override
+  public List<?> getRawList(MatchContext context, RutaStream stream) {
+    return getList();
+  }
 }

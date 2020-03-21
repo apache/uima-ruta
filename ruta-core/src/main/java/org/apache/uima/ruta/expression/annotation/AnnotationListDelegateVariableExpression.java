@@ -50,4 +50,9 @@ public class AnnotationListDelegateVariableExpression extends AbstractAnnotation
     return null;
   }
 
+  @Override
+  public List<?> getRawList(MatchContext context, RutaStream stream) {
+    return null;
+  }
+
 }

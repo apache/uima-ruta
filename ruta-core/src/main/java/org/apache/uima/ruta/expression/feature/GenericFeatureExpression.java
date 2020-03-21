@@ -207,4 +207,9 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
     return result;
   }
 
+  @Override
+  public List<?> getRawList(MatchContext context, RutaStream stream) {
+    return null;
+  }
+
 }
