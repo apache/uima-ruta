@@ -22,7 +22,7 @@
   <description>The top project for Apache UIMA Ruta</description>
   <url>${uimaWebsiteUrl}</url>
   <properties>
-    <jiraVersion>12345012</jiraVersion>
+    <jiraVersion>12346562</jiraVersion>
     <!-- 
      <assembly.attach>false</assembly.attach>
      -->
