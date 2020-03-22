@@ -21,10 +21,10 @@
    -->
 
 <head>
-  <title>Apache UIMA Ruta v2.8.0 Release Notes</title>
+  <title>Apache UIMA Ruta v2.8.1 Release Notes</title>
 </head>
 <body>
-<h1>Apache UIMA Ruta&#8482; v2.8.0 Release Notes</h1>
+<h1>Apache UIMA Ruta&#8482; v2.8.1 Release Notes</h1>
 
 <h2>Contents</h2>
 <p>
@@ -47,27 +47,15 @@
 			</p>
 
 <h2><a name="major.changes">2. Major Changes in this Release</a></h2>
-<p>
-    This release contains changed in the analysis engine descriptor and the type system descriptors 
-    and therefore requires an update of the Ruta projects. This can be accomplished for example by 
-    right-click on the Ruta project, selecting "UIMA Ruta" and then "Update Project".
-</p>
+
 <p>
   <p>UIMA Ruta Language and Analysis Engine:</p>
   <ul>
-  	<li>The analysis engine is able to generate debug information about inlined rules which includes also an extension of the ruta type system.</li>
-    <li>Type expressions in dot notation for annotation expressions a new supported: a1:ANY a2:ANY{a1.type==a2.type -> Type};</li>
-    <li>Matching on string literals is no more restricted to single RutaBasic annotations, e.g., it is now possible to write: "This is a test"{-> Test};</li>
-    <li>Dictionary matching is now more robust concerning white spaces in the word list. The parameter dictRemoveWS is now also set to true by default.</li>
-    <li>Fixed anchors at composed rule elements.</li>
-    <li>Labels at macro actions are supported now.</li>
-    <li>Fixed several bugs.</li>
-  </ul>
-  <p>UIMA Ruta Workbench:</p>
-  <ul>
-  	<li>New view for visualizing the explanation of inlined rules.</li>
-    <li>Fixed problem with blocked build processes in Ruta projects with many scripts.</li>
-    <li>Fixed bugs.</li>
+  	<li>Fixed broken literal string matching.</li>
+  	<li>Fixed variable initialization with other variables.</li>
+  	<li>Fixed assignment of lists to variables.</li>
+  	<li>Fixed assignment of annotation comparison expression to variables.</li>
+    <li>PARSE condition supports additional argument that represents the string to be parsed.</li>
   </ul>
 </p>
  
