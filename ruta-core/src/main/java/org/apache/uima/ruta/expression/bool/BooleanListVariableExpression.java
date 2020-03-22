@@ -37,7 +37,8 @@ public class BooleanListVariableExpression extends AbstractBooleanListExpression
 
   @Override
   public List<Boolean> getList(MatchContext context, RutaStream stream) {
-    List<?> list = getRawList(context, stream);
+    RutaBlock parent = context.getParent();
+    List<?> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
     List<Boolean> result = new ArrayList<Boolean>();
     for (Object each : list) {
       if (each instanceof IBooleanExpression) {
@@ -51,12 +52,6 @@ public class BooleanListVariableExpression extends AbstractBooleanListExpression
 
   public String getVar() {
     return var;
-  }
-
-  @Override
-  public List<?> getRawList(MatchContext context, RutaStream stream) {
-    RutaBlock parent = context.getParent();
-    return parent.getEnvironment().getVariableValue(var, List.class, stream);
   }
 
 }

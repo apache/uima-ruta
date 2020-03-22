@@ -58,9 +58,4 @@ public class AnnotationListFeatureExpression extends AbstractAnnotationListExpre
     this.fe = fe;
   }
 
-  @Override
-  public List<?> getRawList(MatchContext context, RutaStream stream) {
-    return null;
-  }
-
 }

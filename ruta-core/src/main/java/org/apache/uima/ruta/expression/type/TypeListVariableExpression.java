@@ -39,7 +39,7 @@ public class TypeListVariableExpression extends AbstractTypeListExpression {
   @Override
   public List<Type> getList(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    List<?> list = getRawList(context, stream);
+    List<?> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
     List<Type> result = new ArrayList<Type>();
     for (Object each : list) {
       if (each instanceof ITypeExpression) {
@@ -61,12 +61,6 @@ public class TypeListVariableExpression extends AbstractTypeListExpression {
 
   public String getVar() {
     return var;
-  }
-
-  @Override
-  public List<?> getRawList(MatchContext context, RutaStream stream) {
-    RutaBlock parent = context.getParent();
-    return parent.getEnvironment().getVariableValue(var, List.class, stream);
   }
 
 }

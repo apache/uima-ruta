@@ -135,7 +135,8 @@ public class ContainsCondition extends TypeSentiveCondition {
               && argList instanceof INumberListExpression) {
         INumberExpression e = (INumberExpression) arg;
         INumberListExpression le = (INumberListExpression) argList;
-        Number v = e.getDoubleValue(context, stream);
+        Double v = e.getDoubleValue(context, stream);
+        // TODO: this wont work for numbers yet!
         List<Number> l = new ArrayList<Number>(le.getNumberList(context, stream));
         while (l.remove(v)) {
           basicCount++;

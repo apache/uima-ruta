@@ -47,10 +47,4 @@ public class SimpleBooleanListExpression extends AbstractBooleanListExpression {
     return list;
   }
 
-  @Override
-  public List<?> getRawList(MatchContext context, RutaStream stream) {
-
-    return getList();
-  }
-
 }

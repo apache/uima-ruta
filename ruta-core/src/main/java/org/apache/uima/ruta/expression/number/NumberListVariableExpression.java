@@ -37,7 +37,8 @@ public class NumberListVariableExpression extends AbstractNumberListExpression {
 
   @Override
   public List<Number> getList(MatchContext context, RutaStream stream) {
-    List<?> list = getRawList(context, stream);
+    RutaBlock parent = context.getParent();
+    List<?> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
     List<Number> result = new ArrayList<Number>();
     for (Object each : list) {
       if (each instanceof INumberExpression) {
@@ -54,10 +55,4 @@ public class NumberListVariableExpression extends AbstractNumberListExpression {
     return var;
   }
 
-  @Override
-  public List<?> getRawList(MatchContext context, RutaStream stream) {
-    RutaBlock parent = context.getParent();
-    return parent.getEnvironment().getVariableValue(var, List.class, stream);
-
-  }
 }

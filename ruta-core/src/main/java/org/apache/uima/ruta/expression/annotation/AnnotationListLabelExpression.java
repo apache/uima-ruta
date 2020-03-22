@@ -48,9 +48,4 @@ public class AnnotationListLabelExpression extends AbstractAnnotationListExpress
     return label;
   }
 
-  @Override
-  public List<?> getRawList(MatchContext context, RutaStream stream) {
-    return null;
-  }
-
 }

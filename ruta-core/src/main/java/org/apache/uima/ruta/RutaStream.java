@@ -80,7 +80,6 @@ import org.apache.uima.ruta.expression.type.ITypeListExpression;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.rule.RuleElement;
 import org.apache.uima.ruta.type.RutaAnnotation;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.type.RutaOptional;
@@ -1208,8 +1207,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   public void assignVariable(String var, IRutaExpression expression, MatchContext context) {
-    RuleElement element = context.getElement();
-    RutaBlock parent = element.getParent();
+    RutaBlock parent = context.getParent();
     RutaEnvironment environment = parent.getEnvironment();
     Class<?> clazz = environment.getVariableType(var);
     if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
@@ -1259,6 +1257,34 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       }
 
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T extends Object> T getExpressionValue(Class<T> clazz, IRutaExpression expression,
+          MatchContext context) {
+    if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
+      double v = ((INumberExpression) expression).getDoubleValue(context, this);
+      return (T) Double.valueOf(v);
+    } else if (clazz.equals(Float.class) && expression instanceof INumberExpression) {
+      float v = (float) ((INumberExpression) expression).getDoubleValue(context, this);
+      return (T) Float.valueOf(v);
+    } else if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
+      int v = ((INumberExpression) expression).getIntegerValue(context, this);
+      return (T) Integer.valueOf(v);
+    } else if (clazz.equals(Type.class) && expression instanceof ITypeExpression) {
+      Type v = ((ITypeExpression) expression).getType(context, this);
+      return (T) v;
+    } else if (clazz.equals(Boolean.class) && expression instanceof IBooleanExpression) {
+      boolean v = ((IBooleanExpression) expression).getBooleanValue(context, this);
+      return (T) Boolean.valueOf(v);
+    } else if (clazz.equals(String.class) && expression instanceof IStringExpression) {
+      String v = ((IStringExpression) expression).getStringValue(context, this);
+      return (T) v;
+    } else if (clazz.equals(AnnotationFS.class) && expression instanceof IAnnotationExpression) {
+      AnnotationFS v = ((IAnnotationExpression) expression).getAnnotation(context, this);
+      return (T) v;
+    }
+    return null;
   }
 
   public AnnotationFS getSingleAnnotationByTypeInContext(Type type, MatchContext context) {

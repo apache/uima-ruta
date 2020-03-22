@@ -68,25 +68,23 @@ public class AddAction extends AbstractRutaAction {
     Class<?> vgtype = environment.getVariableGenericType(var);
     for (IRutaExpression each : elements) {
       if (vgtype.equals(Boolean.class) && each instanceof IBooleanExpression) {
-        list.add(each);
+        list.add(((IBooleanExpression) each).getBooleanValue(context, stream));
       } else if (vgtype.equals(Integer.class) && each instanceof INumberExpression) {
-        list.add(each);
+        list.add(((INumberExpression) each).getIntegerValue(context, stream));
       } else if (vgtype.equals(Double.class) && each instanceof INumberExpression) {
-        list.add(each);
-      } else if (vgtype.equals(Float.class) && each instanceof INumberExpression) {
-        list.add(each);
+        list.add(((INumberExpression) each).getDoubleValue(context, stream));
       } else if (vgtype.equals(Type.class) && each instanceof ITypeExpression) {
-        list.add(each);
+        list.add(((ITypeExpression) each).getType(context, stream));
       } else if (vgtype.equals(String.class) && each instanceof IStringExpression) {
-        list.add(each);
+        list.add(((IStringExpression) each).getStringValue(context, stream));
       } else if (vgtype.equals(AnnotationFS.class) && each instanceof IAnnotationExpression) {
-        list.add(each);
-      } else if (each instanceof ListExpression) {
-        ListExpression listExpression = (ListExpression) each;
-        List rawList = listExpression.getRawList(context, stream);
-        if (rawList != null) {
-          list.addAll(rawList);
+        AnnotationFS annotation = ((IAnnotationExpression) each).getAnnotation(context, stream);
+        if(annotation != null) {
+          list.add(annotation);
         }
+      } else if (each instanceof ListExpression) {
+        ListExpression l = (ListExpression) each;
+        list.addAll(l.getList(context, stream));
       }
     }
   }

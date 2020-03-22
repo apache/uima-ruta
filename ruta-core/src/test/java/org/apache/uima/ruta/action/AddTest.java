@@ -63,7 +63,7 @@ public class AddTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This is a test.");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "This is a test.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "This is a test.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
   }
 }

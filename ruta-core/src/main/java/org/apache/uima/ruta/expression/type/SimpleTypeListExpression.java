@@ -48,8 +48,4 @@ public class SimpleTypeListExpression extends AbstractTypeListExpression {
     return list;
   }
 
-  @Override
-  public List<?> getRawList(MatchContext context, RutaStream stream) {
-    return getList();
-  }
 }

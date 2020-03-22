@@ -57,6 +57,7 @@ import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.IRutaExpression;
+import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanListExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
@@ -70,6 +71,7 @@ import org.apache.uima.ruta.expression.resource.WordListExpression;
 import org.apache.uima.ruta.expression.resource.WordTableExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.SimpleStringListExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeListExpression;
 import org.apache.uima.ruta.resource.CSVTable;
@@ -1198,4 +1200,38 @@ public class RutaEnvironment {
     }
   }
 
+  public void ensureMaterializedInitialValues(MatchContext matchContext, RutaStream stream) {
+
+    for (Entry<String, Object> entry : new ArrayList<>(initializedVariables.entrySet())) {
+      String var = entry.getKey();
+      Object value = entry.getValue();
+
+      if (value instanceof IAnnotationExpression || value instanceof IBooleanExpression
+              || value instanceof INumberExpression || value instanceof IStringExpression
+              || value instanceof ITypeExpression) {
+        Class<?> clazz = variableTypes.get(var);
+        Object expressionValue = stream.getExpressionValue(clazz, (IRutaExpression) value,
+                matchContext);
+        initializedVariables.put(var, expressionValue);
+        variableValues.put(var, expressionValue);
+      } else if (value instanceof List) {
+        List<?> list = (List<?>) value;
+        List<Object> newList = new ArrayList<>(list.size());
+        Class<?> clazz = variableGenericTypes.get(var);
+        for (Object each : list) {
+          if (each instanceof IAnnotationExpression || each instanceof IBooleanExpression
+                  || each instanceof INumberExpression || each instanceof IStringExpression
+                  || each instanceof ITypeExpression) {
+            Object expressionValue = stream.getExpressionValue(clazz, (IRutaExpression) each,
+                    matchContext);
+            newList.add(expressionValue);
+          } else {
+            newList.add(each);
+          }
+        }
+        initializedVariables.put(var, newList);
+        variableValues.put(var, new ArrayList<>(newList));
+      }
+    }
+  }
 }

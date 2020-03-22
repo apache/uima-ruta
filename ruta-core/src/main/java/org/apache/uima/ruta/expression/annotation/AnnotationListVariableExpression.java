@@ -38,7 +38,8 @@ public class AnnotationListVariableExpression extends AbstractAnnotationListExpr
 
   @Override
   public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
-    List<?> list = getRawList(context, stream);
+    RutaBlock parent = context.getParent();
+    List<?> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
     List<AnnotationFS> result = new ArrayList<>();
     for (Object each : list) {
       if (each instanceof IAnnotationExpression) {
@@ -49,12 +50,6 @@ public class AnnotationListVariableExpression extends AbstractAnnotationListExpr
       }
     }
     return result;
-  }
-
-  @Override
-  public List<?> getRawList(MatchContext context, RutaStream stream) {
-    RutaBlock parent = context.getParent();
-    return parent.getEnvironment().getVariableValue(var, List.class, stream);
   }
 
 }

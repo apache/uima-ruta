@@ -116,9 +116,4 @@ public class NumberListFeatureExpression extends AbstractNumberListExpression {
     this.fe = fe;
   }
 
-  @Override
-  public List<?> getRawList(MatchContext context, RutaStream stream) {
-    return null;
-  }
-
 }

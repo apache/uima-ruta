@@ -60,6 +60,7 @@ public class ForEachBlock extends RutaBlock {
   @Override
   public ScriptApply apply(RutaStream stream, InferenceCrowd crowd) {
     BlockApply result = new BlockApply(this);
+    getEnvironment().ensureMaterializedInitialValues(new MatchContext(this), stream);
     crowd.beginVisit(this, result);
 
     setRuleElementAnchor();

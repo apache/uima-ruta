@@ -75,6 +75,6 @@ public class RemoveDuplicateAction extends AbstractRutaAction {
     } else if (obj instanceof IStringExpression) {
       return ((IStringExpression) obj).getStringValue(context, stream);
     }
-    return null;
+    return obj;
   }
 }

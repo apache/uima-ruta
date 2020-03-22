@@ -66,10 +66,4 @@ public class UntypedListExpression extends ListExpression<Object> {
     return list;
   }
 
-  @Override
-  public List<?> getRawList(MatchContext context, RutaStream stream) {
-
-    return list;
-  }
-
 }
