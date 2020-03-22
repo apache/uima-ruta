@@ -28,6 +28,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleApply;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.rule.RutaRuleElement;
@@ -47,6 +48,7 @@ public class OnlyFirstBlock extends RutaBlock {
   @Override
   public ScriptApply apply(RutaStream stream, InferenceCrowd crowd) {
     BlockApply result = new BlockApply(this);
+    getEnvironment().ensureMaterializedInitialValues(new MatchContext(this), stream);
     crowd.beginVisit(this, result);
     RuleApply apply = rule.apply(stream, crowd, true);
     for (AbstractRuleMatch<? extends AbstractRule> eachMatch : apply.getList()) {
@@ -63,24 +65,24 @@ public class OnlyFirstBlock extends RutaBlock {
         boolean stop = false;
         Type type = ((RutaRuleElement) rule.getRuleElements().get(0)).getMatcher()
                 .getType(getParent() == null ? this : getParent(), stream);
-          RutaStream window = stream.getWindowStream(each, type);
-          for (RutaStatement element : getElements()) {
-            if (stop)
-              break;
-            if (element != null) {
-              ScriptApply elementApply = element.apply(window, crowd);
-              if (elementApply instanceof BlockApply) {
-                BlockApply ba = (BlockApply) elementApply;
-                if (ba.getRuleApply().getApplied() > 0) {
-                  stop = true;
-                }
-              } else if (elementApply instanceof RuleApply) {
-                RuleApply ra = (RuleApply) elementApply;
-                if (ra.getApplied() > 0) {
-                  stop = true;
-                }
+        RutaStream window = stream.getWindowStream(each, type);
+        for (RutaStatement element : getElements()) {
+          if (stop)
+            break;
+          if (element != null) {
+            ScriptApply elementApply = element.apply(window, crowd);
+            if (elementApply instanceof BlockApply) {
+              BlockApply ba = (BlockApply) elementApply;
+              if (ba.getRuleApply().getApplied() > 0) {
+                stop = true;
+              }
+            } else if (elementApply instanceof RuleApply) {
+              RuleApply ra = (RuleApply) elementApply;
+              if (ra.getApplied() > 0) {
+                stop = true;
               }
             }
+          }
         }
       }
     }
