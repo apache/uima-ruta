@@ -606,19 +606,20 @@
     <title>PARSE</title>
     <para>
       The PARSE condition is fulfilled, if the text covered by the
-      matched annotation can be transformed into a value of the given
+      matched annotation or the text defined by a optional first argument can be transformed into a value of the given
       variable's type. If this is possible, the parsed value is
       additionally assigned to the passed variable. For numeric values,
       this conditions delegates to the NumberFormat of the locale given by the optional
-      second argument. Therefore, this condition parses the string <quote>2,3</quote> for the locale
+      last argument. Therefore, this condition parses the string <quote>2,3</quote> for the locale
       <quote>en</quote> to the value 23.
+      
     </para>
     <section>
       <title>
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[PARSE(variable(, stringExpression)?)]]></programlisting>
+        <programlisting><![CDATA[PARSE((stringExpression,)? variable(, stringExpression)?)]]></programlisting>
       </para>
     </section>
     <section>
@@ -626,7 +627,8 @@
         <emphasis role="bold">Example:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[NUM{PARSE(var,"de")};]]></programlisting>
+        <programlisting><![CDATA[NUM{PARSE(var,"de")};
+n:NUM{PARSE(n.ct,var,"de")};]]></programlisting>
       </para>
       <para>
         If the variable 'var' is of an appropriate numeric type for the locale "de", the

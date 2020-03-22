@@ -1450,10 +1450,20 @@ conditionFeature returns [RutaCondition cond = null]
     RPAREN
     ;   
 conditionParse returns [RutaCondition cond = null]
+  options {
+	backtrack = true;
+}
     :
     name = PARSE LPAREN
-     var=genericVariableReference (COMMA locale = stringExpression)?
+    (
+    se=stringExpression COMMA
+    var=genericVariableReference (COMMA locale = stringExpression)?
+    {cond = ConditionFactory.createCondition(name, se, var, locale);}
+    |
+    var=genericVariableReference (COMMA locale = stringExpression)?
     {cond = ConditionFactory.createCondition(name, var, locale);}
+    )
+   
     RPAREN
     ;
 
