@@ -67,6 +67,7 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanListExpression;
 import org.apache.uima.ruta.expression.feature.CoveredTextFeature;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.feature.LazyFeature;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
@@ -1255,7 +1256,25 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
         List<Type> v = ((ITypeListExpression) expression).getTypeList(context, this);
         environment.setVariableValue(var, v);
       }
-
+    } else if (clazz.equals(Boolean.class) && expression instanceof AnnotationTypeExpression) {
+      // special not yet supported use case: b = a1==a2
+      // TODO: this should be solved by having a boolean expression and an atomic feature
+      // expression?
+      AnnotationTypeExpression ate = (AnnotationTypeExpression) expression;
+      AnnotationFS annotation = ate.getAnnotation(context, this);
+      FeatureExpression featureExpression = ate.getFeatureExpression();
+      if (featureExpression instanceof FeatureMatchExpression) {
+        FeatureMatchExpression fme = (FeatureMatchExpression) featureExpression;
+        IRutaExpression arg = fme.getArg();
+        if (arg instanceof IAnnotationExpression) {
+          AnnotationFS argAnnotation = ((IAnnotationExpression) arg).getAnnotation(context, this);
+          if (StringUtils.equals(fme.getOp(), "==")) {
+            environment.setVariableValue(var, annotation == argAnnotation);
+          } else if (StringUtils.equals(fme.getOp(), "!=")) {
+            environment.setVariableValue(var, annotation != argAnnotation);
+          }
+        }
+      }
     }
   }
 

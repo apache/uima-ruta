@@ -41,7 +41,6 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class AnnotationVariableExpressionTest {
@@ -270,11 +269,10 @@ public class AnnotationVariableExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
 
   }
-  
+
   @Test
-  @Ignore
   public void testCompareGlobalVariableInAction() throws Exception {
-    
+
     String document = "Some text.";
     String script = "";
     script += "ANNOTATION a1, a2;\n";
@@ -283,15 +281,14 @@ public class AnnotationVariableExpressionTest {
     script += "Document{-> b1 = a1==a2};\n";
     script += "Document{-> b2 = a1!=a2};\n";
     script += "Document{b1==false-> T1};\n";
-    script += "Document{b2==true-> T2};\n";
-    
+    script += "Document{b2==true -> T2};\n";
+
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
-    
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1);
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1);
-    
+
   }
-  
 
 }
