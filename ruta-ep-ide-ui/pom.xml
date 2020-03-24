@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-ep-parent</artifactId>
-    <version>3.0.1</version>
+    <version>3.0.2-SNAPSHOT</version>
     <relativePath>../ruta-ep-parent/pom.xml</relativePath>
   </parent>
   <properties>
@@ -204,9 +204,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/uv3/ruta-v3/tags/ruta-3.0.1/ruta-ep-ide-ui</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/uv3/ruta-v3/tags/ruta-3.0.1/ruta-ep-ide-ui</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/uv3/ruta-v3/tags/ruta-3.0.1/ruta-ep-ide-ui</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/uv3/ruta-v3/trunk/ruta-ep-ide-ui</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-ep-ide-ui</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-ep-ide-ui</developerConnection>
   </scm>
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->
