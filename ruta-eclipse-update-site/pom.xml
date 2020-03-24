@@ -29,7 +29,7 @@
   
 	<artifactId>ruta-eclipse-update-site</artifactId>
 	<packaging>pom</packaging>
-	<version>3.0.0</version>
+	<version>3.0.1</version>
   
 	<name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <description>The UIMA Ruta Eclipse update site</description>
@@ -51,8 +51,8 @@
     <uimaScmProject>${project.artifactId}</uimaScmProject>
     <eclipseUpdateSiteComponent>ruta</eclipseUpdateSiteComponent>
     <eclipseUpdateSubSite>${project.build.directory}/eclipse-update-site-v3/${eclipseUpdateSiteComponent}</eclipseUpdateSubSite>
-    <item-maven-release-version>3.0.0</item-maven-release-version>
-    <item-eclipse-release-version>3.0.0</item-eclipse-release-version>
+    <item-maven-release-version>3.0.1</item-maven-release-version>
+    <item-eclipse-release-version>3.0.1</item-eclipse-release-version>
     <dropPrevVersions>false</dropPrevVersions>
   </properties>
 	<build>
