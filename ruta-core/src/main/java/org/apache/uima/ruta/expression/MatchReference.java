@@ -137,6 +137,10 @@ public class MatchReference extends RutaExpression {
         features = tail;
       }
     }
+    if (featureExpression == null && comparator != null && argument != null) {
+      featureExpression = new FeatureMatchExpression(this, comparator, argument);
+    }
+
     initialized = true;
     if (typeExpression == null && typeListExpression == null && annotationExpression == null
             && annotationListExpression == null) {

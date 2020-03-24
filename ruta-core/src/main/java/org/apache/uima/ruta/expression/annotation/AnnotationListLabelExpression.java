@@ -31,24 +31,21 @@ import org.apache.uima.ruta.rule.MatchContext;
  */
 public class AnnotationListLabelExpression extends AbstractAnnotationListExpression {
 
-private String label;
-  
+  private String label;
+
   public AnnotationListLabelExpression(String label) {
     super();
     this.label = label;
   }
- 
+
   @SuppressWarnings("unchecked")
   @Override
   public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
     return context.getParent().getEnvironment().getVariableValue(label, List.class, stream);
   }
-  
+
   public String getLabel() {
     return label;
   }
-
-
- 
 
 }

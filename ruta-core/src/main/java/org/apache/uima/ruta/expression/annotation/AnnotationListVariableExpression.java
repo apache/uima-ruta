@@ -19,6 +19,7 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.cas.text.AnnotationFS;
@@ -35,13 +36,20 @@ public class AnnotationListVariableExpression extends AbstractAnnotationListExpr
     this.var = var;
   }
 
-  
   @Override
   public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    @SuppressWarnings("unchecked")
-    List<AnnotationFS> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
-    return list;
+    List<?> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
+    List<AnnotationFS> result = new ArrayList<>();
+    for (Object each : list) {
+      if (each instanceof IAnnotationExpression) {
+        result.add(((IAnnotationExpression) each).getAnnotation(context, stream));
+      }
+      if (each instanceof AnnotationFS) {
+        result.add((AnnotationFS) each);
+      }
+    }
+    return result;
   }
 
 }

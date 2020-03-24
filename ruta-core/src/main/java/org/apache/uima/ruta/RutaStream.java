@@ -66,6 +66,7 @@ import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.IBooleanListExpression;
 import org.apache.uima.ruta.expression.feature.CoveredTextFeature;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
+import org.apache.uima.ruta.expression.feature.FeatureMatchExpression;
 import org.apache.uima.ruta.expression.feature.GenericFeatureExpression;
 import org.apache.uima.ruta.expression.feature.LazyFeature;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
@@ -75,6 +76,7 @@ import org.apache.uima.ruta.expression.number.INumberListExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
 import org.apache.uima.ruta.expression.string.IStringListExpression;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
+import org.apache.uima.ruta.expression.type.ITypeListExpression;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
 import org.apache.uima.ruta.rule.MatchContext;
@@ -1225,8 +1227,7 @@ public class RutaStream {
   }
 
   public void assignVariable(String var, IRutaExpression expression, MatchContext context) {
-    RuleElement element = context.getElement();
-    RutaBlock parent = element.getParent();
+    RutaBlock parent = context.getParent();
     RutaEnvironment environment = parent.getEnvironment();
     Class<?> clazz = environment.getVariableType(var);
     if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
@@ -1257,9 +1258,71 @@ public class RutaStream {
         List<AnnotationFS> v = ((IAnnotationListExpression) expression).getAnnotationList(context,
                 this);
         environment.setVariableValue(var, v);
+      } else if (variableGenericType.equals(Boolean.class)
+              && expression instanceof IBooleanListExpression) {
+        List<Boolean> v = ((IBooleanListExpression) expression).getBooleanList(context, this);
+        environment.setVariableValue(var, v);
+      } else if (Number.class.isAssignableFrom(variableGenericType)
+              && expression instanceof INumberListExpression) {
+        List<Number> v = ((INumberListExpression) expression).getNumberList(context, this);
+        environment.setVariableValue(var, v);
+      } else if (variableGenericType.equals(String.class)
+              && expression instanceof IStringListExpression) {
+        List<String> v = ((IStringListExpression) expression).getStringList(context, this);
+        environment.setVariableValue(var, v);
+      } else if (variableGenericType.equals(Type.class)
+              && expression instanceof ITypeListExpression) {
+        List<Type> v = ((ITypeListExpression) expression).getTypeList(context, this);
+        environment.setVariableValue(var, v);
       }
-      // TODO assign also other lists
+    } else if (clazz.equals(Boolean.class) && expression instanceof AnnotationTypeExpression) {
+      // special not yet supported use case: b = a1==a2
+      // TODO: this should be solved by having a boolean expression and an atomic feature
+      // expression?
+      AnnotationTypeExpression ate = (AnnotationTypeExpression) expression;
+      AnnotationFS annotation = ate.getAnnotation(context, this);
+      FeatureExpression featureExpression = ate.getFeatureExpression();
+      if (featureExpression instanceof FeatureMatchExpression) {
+        FeatureMatchExpression fme = (FeatureMatchExpression) featureExpression;
+        IRutaExpression arg = fme.getArg();
+        if (arg instanceof IAnnotationExpression) {
+          AnnotationFS argAnnotation = ((IAnnotationExpression) arg).getAnnotation(context, this);
+          if (StringUtils.equals(fme.getOp(), "==")) {
+            environment.setVariableValue(var, annotation == argAnnotation);
+          } else if (StringUtils.equals(fme.getOp(), "!=")) {
+            environment.setVariableValue(var, annotation != argAnnotation);
+          }
+        }
+      }
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T extends Object> T getExpressionValue(Class<T> clazz, IRutaExpression expression,
+          MatchContext context) {
+    if (clazz.equals(Double.class) && expression instanceof INumberExpression) {
+      double v = ((INumberExpression) expression).getDoubleValue(context, this);
+      return (T) Double.valueOf(v);
+    } else if (clazz.equals(Float.class) && expression instanceof INumberExpression) {
+      float v = (float) ((INumberExpression) expression).getDoubleValue(context, this);
+      return (T) Float.valueOf(v);
+    } else if (clazz.equals(Integer.class) && expression instanceof INumberExpression) {
+      int v = ((INumberExpression) expression).getIntegerValue(context, this);
+      return (T) Integer.valueOf(v);
+    } else if (clazz.equals(Type.class) && expression instanceof ITypeExpression) {
+      Type v = ((ITypeExpression) expression).getType(context, this);
+      return (T) v;
+    } else if (clazz.equals(Boolean.class) && expression instanceof IBooleanExpression) {
+      boolean v = ((IBooleanExpression) expression).getBooleanValue(context, this);
+      return (T) Boolean.valueOf(v);
+    } else if (clazz.equals(String.class) && expression instanceof IStringExpression) {
+      String v = ((IStringExpression) expression).getStringValue(context, this);
+      return (T) v;
+    } else if (clazz.equals(AnnotationFS.class) && expression instanceof IAnnotationExpression) {
+      AnnotationFS v = ((IAnnotationExpression) expression).getAnnotation(context, this);
+      return (T) v;
+    }
+    return null;
   }
 
   public AnnotationFS getSingleAnnotationByTypeInContext(Type type, MatchContext context) {

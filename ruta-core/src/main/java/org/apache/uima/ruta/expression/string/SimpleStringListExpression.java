@@ -47,4 +47,5 @@ public class SimpleStringListExpression extends AbstractStringListExpression {
   public List<IStringExpression> getList() {
     return list;
   }
+
 }

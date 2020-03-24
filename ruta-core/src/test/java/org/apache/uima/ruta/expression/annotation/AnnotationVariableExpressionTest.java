@@ -270,4 +270,25 @@ public class AnnotationVariableExpressionTest {
 
   }
 
+  @Test
+  public void testCompareGlobalVariableInAction() throws Exception {
+
+    String document = "Some text.";
+    String script = "";
+    script += "ANNOTATION a1, a2;\n";
+    script += "BOOLEAN b1, b2;\n";
+    script += "d:Document{-> a1=d};\n";
+    script += "Document{-> b1 = a1==a2};\n";
+    script += "Document{-> b2 = a1!=a2};\n";
+    script += "Document{b1==false-> T1};\n";
+    script += "Document{b2==true -> T2};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1);
+
+  }
+
 }

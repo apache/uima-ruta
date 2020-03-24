@@ -35,11 +35,10 @@ public class StringListVariableExpression extends AbstractStringListExpression {
     this.var = var;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public List<String> getList(MatchContext context, RutaStream stream) {
     RutaBlock parent = context.getParent();
-    List<Object> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
+    List<?> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
     List<String> result = new ArrayList<String>();
     for (Object each : list) {
       if (each instanceof AbstractStringExpression) {
@@ -56,5 +55,4 @@ public class StringListVariableExpression extends AbstractStringListExpression {
     return var;
   }
 
-  
 }

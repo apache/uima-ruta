@@ -40,7 +40,7 @@ public class AnnotationListFeatureExpression extends AbstractAnnotationListExpre
     super();
     this.fe = fe;
   }
-  
+
   @Override
   public List<AnnotationFS> getList(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = context.getAnnotation();
@@ -57,10 +57,5 @@ public class AnnotationListFeatureExpression extends AbstractAnnotationListExpre
   public void setFeatureExpression(FeatureExpression fe) {
     this.fe = fe;
   }
-
-
-
-  
-  
 
 }

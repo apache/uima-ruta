@@ -184,6 +184,11 @@ public void setExternalFactory(RutaExternalFactory factory) {
     	      String msg = "Error in "+name+",  line " + line + ", \"" + text + "\": missing " + stringMissing
                     + ", but found " + stringFound;
     	      emitErrorMessage(msg);
+    	    } else if (e instanceof FailedPredicateException) {
+	      FailedPredicateException fpe = (FailedPredicateException) e;
+	      String msg = "Error in " + name + ",  line " + line + ", \"" + text + "\": Failed predicate: "
+	              + fpe.predicateText;
+	      emitErrorMessage(msg);
 	    } else {
 	      emitErrorMessage(e.getMessage());
 	    }
@@ -1707,11 +1712,19 @@ conditionFeature returns [AbstractRutaCondition cond = null]
     ;   
 
 conditionParse returns [AbstractRutaCondition cond = null]
-    :
-    PARSE LPAREN {isVariable($blockDeclaration::env,input.LT(1).getText())}? id = Identifier 
+options {
+	backtrack = true;
+}   :
+    PARSE LPAREN
+    ( 
+    se = stringExpression COMMA
+    {isVariable($blockDeclaration::env,input.LT(1).getText())}? id = Identifier 
+    |
+    {isVariable($blockDeclaration::env,input.LT(1).getText())}? id = Identifier 
+    )
     (COMMA locale = stringExpression)?
     RPAREN
-    {cond = conditionFactory.createConditionParse(id, locale, $blockDeclaration::env);}
+    {cond = conditionFactory.createConditionParse(se, id, locale, $blockDeclaration::env);}
     ;
 
 conditionIs returns [AbstractRutaCondition cond = null]
@@ -2172,6 +2185,15 @@ actionAssign returns [AbstractRutaAction action = null]
     {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "DOUBLE")}? 
         nv = Identifier COMMA e5 = numberExpression 
         {action = actionFactory.createAssignAction(nv, e5,$blockDeclaration::env);}
+    |
+    {isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "BOOLEANLIST")||
+     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "INTLIST")||
+     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "DOUBLELIST")||
+     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "FLOATLIST")||
+     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "STRINGLIST")||
+     isVariableOfType($blockDeclaration::env, input.LT(1).getText(), "TYPELIST")}? 
+        nv = Identifier COMMA e7 = listExpression 
+        {action = actionFactory.createAssignAction(nv, e7,$blockDeclaration::env);}
     ) RPAREN
     ;
 

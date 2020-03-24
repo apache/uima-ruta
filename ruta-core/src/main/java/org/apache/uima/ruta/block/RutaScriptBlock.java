@@ -28,6 +28,7 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.rule.AbstractRule;
 import org.apache.uima.ruta.rule.AbstractRuleMatch;
+import org.apache.uima.ruta.rule.MatchContext;
 import org.apache.uima.ruta.rule.RuleApply;
 import org.apache.uima.ruta.rule.RuleMatch;
 import org.apache.uima.ruta.rule.RutaMatcher;
@@ -46,6 +47,7 @@ public class RutaScriptBlock extends RutaBlock {
   @Override
   public ScriptApply apply(RutaStream stream, InferenceCrowd crowd) {
     BlockApply result = new BlockApply(this);
+    getEnvironment().ensureMaterializedInitialValues(new MatchContext(this), stream);
     crowd.beginVisit(this, result);
     RuleApply apply = rule.apply(stream, crowd, true);
     for (AbstractRuleMatch<? extends AbstractRule> eachMatch : apply.getList()) {

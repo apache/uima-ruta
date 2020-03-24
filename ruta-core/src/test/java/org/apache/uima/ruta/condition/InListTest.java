@@ -27,22 +27,14 @@ import org.junit.Test;
 public class InListTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50, false, false, null, namespace + "/");
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
+
+    CAS cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+            namespace + "/" + name + ".txt", 50, false, false, null, namespace + "/");
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "INLIST", "condition");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "INLIST");
-    
-    cas.release();
   }
 }

@@ -33,34 +33,11 @@ public class ManualAnchoringTest {
     script += "CW{-> T1};\n";
     script += "\"and\"{-> T2};\n";
     script += "T1 (COMMA T1)* @T2 T1 {->MARK(T3,1,4)};\n";
-
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "A, B and C");
+
+    cas.release();
   }
-
-  @Test
-  public void testInWindow() throws Exception {
-    String document = "A, B and C. A, B and C.";
-    String script = "";
-    script += "ANY+{-PARTOF({PERIOD,T1}) -> T1};\n";
-    script += "BLOCK(block) T1{}{\n";
-    script += "SW CW{-> T2};\n";
-    script += "SW @CW{-> T3};\n";
-    script += "}\n";
-    script += "T1->{\n";
-    script += "SW CW{-> T4};\n";
-    script += "SW @CW{-> T5};\n";
-    script += "};\n";
-
-    CAS cas = RutaTestUtils.getCAS(document);
-    Ruta.apply(cas, script);
-
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "C", "C");
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "C", "C");
-    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "C", "C");
-    RutaTestUtils.assertAnnotationsEquals(cas, 5, 2, "C", "C");
-  }
-
 }

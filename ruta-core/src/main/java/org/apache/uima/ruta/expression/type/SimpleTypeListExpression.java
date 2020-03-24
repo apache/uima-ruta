@@ -47,4 +47,5 @@ public class SimpleTypeListExpression extends AbstractTypeListExpression {
   public List<ITypeExpression> getList() {
     return list;
   }
+
 }

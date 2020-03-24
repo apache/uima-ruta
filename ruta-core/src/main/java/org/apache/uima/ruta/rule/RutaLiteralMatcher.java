@@ -69,7 +69,6 @@ public class RutaLiteralMatcher implements RutaMatcher {
 
   private AnnotationFS getAnnotation(int begin, int end, RutaStream stream) {
     RutaBasic beginAnchor = stream.getBeginAnchor(begin);
-
     if (beginAnchor != null && beginAnchor.getEnd() == end) {
       return beginAnchor;
     }
@@ -79,6 +78,7 @@ public class RutaLiteralMatcher implements RutaMatcher {
       // unintended behavior
       return null;
     }
+
     CAS cas = stream.getCas();
     return cas.createAnnotation(cas.getAnnotationType(), begin, end);
   }

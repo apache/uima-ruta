@@ -256,8 +256,13 @@ public class ConditionFactory {
 
   public AbstractRutaCondition createConditionParse(Token id, IStringExpression localeExpr,
           RutaBlock env) {
+    return createConditionParse(null, id, localeExpr, env);
+  }
+
+  public AbstractRutaCondition createConditionParse(IStringExpression se, Token id,
+          IStringExpression localeExpr, RutaBlock env) {
     String var = id == null ? "" : id.getText();
-    return new ParseCondition(var, localeExpr);
+    return new ParseCondition(se, var, localeExpr);
   }
 
   public AbstractRutaCondition createConditionIs(ITypeExpression type,

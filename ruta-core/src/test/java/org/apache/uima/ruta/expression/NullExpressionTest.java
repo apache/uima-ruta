@@ -33,7 +33,7 @@ import org.junit.Test;
 public class NullExpressionTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String document = "Some text.";
     String script = "";
     script += "CREATE(A, \"a\" = \"test\", \"b\" = SW), CREATE(B, \"a\" = \"test\", \"b\" = SW);\n";
@@ -46,13 +46,12 @@ public class NullExpressionTest {
     script += "B{FEATURE(\"a\", null)-> T3};";
     script += "B{FEATURE(\"b\", null)-> T4};";
 
-    
     Map<String, String> typeMap = new TreeMap<String, String>();
     String typeName1 = "A";
     typeMap.put(typeName1, "uima.tcas.Annotation");
     String typeName2 = "B";
     typeMap.put(typeName2, "uima.tcas.Annotation");
-    
+
     Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
     List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
     featureMap.put(typeName1, list);
@@ -61,15 +60,9 @@ public class NullExpressionTest {
     list.add(new TestFeature(fn1, "", "uima.cas.String"));
     String fn2 = "b";
     list.add(new TestFeature(fn2, "", "uima.tcas.Annotation"));
-    
-    
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Some text.");
@@ -78,6 +71,5 @@ public class NullExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "Some text.");
     RutaTestUtils.assertAnnotationsEquals(cas, 6, 1, "Some text.");
 
-    cas.release();
   }
 }

@@ -34,17 +34,24 @@ import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class ParseCondition extends AbstractRutaCondition {
 
+  private IStringExpression stringExpression;
+
   private final String var;
 
   private IStringExpression localeExpr;
 
   public ParseCondition(String var) {
-    super();
-    this.var = var;
+    this(null, var, null);
   }
 
   public ParseCondition(String var, IStringExpression localeExpr) {
+    this(null, var, localeExpr);
+  }
+
+  public ParseCondition(IStringExpression stringExpression, String var,
+          IStringExpression localeExpr) {
     super();
+    this.stringExpression = stringExpression;
     this.var = var;
     this.localeExpr = localeExpr;
   }
@@ -53,12 +60,17 @@ public class ParseCondition extends AbstractRutaCondition {
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
 
-    if (annotation == null) {
+    if (stringExpression == null && annotation == null) {
       return new EvaluatedCondition(this, false);
     }
 
     RuleElement element = context.getElement();
-    String text = annotation.getCoveredText();
+    String text = "";
+    if (stringExpression != null) {
+      text = stringExpression.getStringValue(context, stream);
+    } else {
+      text = annotation.getCoveredText();
+    }
     RutaEnvironment env = element.getParent().getEnvironment();
     Class<?> type = env.getVariableType(var);
     NumberFormat nf = null;

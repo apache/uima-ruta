@@ -30,7 +30,7 @@ public class NoSeedersTest {
   public void test() throws Exception {
     CAS cas = RutaTestUtils.getCAS("This is a test.");
     JCas jcas = cas.getJCas();
-
+    
     String script = "";
     script += "\"This\"-> T1;";
     script += "\"is\"-> T2;";
@@ -41,12 +41,13 @@ public class NoSeedersTest {
     script += "T1{-> T7};";
     script += "T2 T3{-> T8};";
     script += "T1 # T4{-> T9};";
-
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
-            script, RutaEngine.PARAM_SEEDERS, new String[0]);
-
+    
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, 
+            RutaEngine.PARAM_RULES, script,
+            RutaEngine.PARAM_SEEDERS, new String[0]);
+    
     ae.process(jcas);
-
+    
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "is", "is");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "a");
@@ -56,7 +57,7 @@ public class NoSeedersTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 7, 1, "This");
     RutaTestUtils.assertAnnotationsEquals(cas, 8, 1, "a");
     RutaTestUtils.assertAnnotationsEquals(cas, 9, 1, "test");
-
+    
   }
-
+  
 }

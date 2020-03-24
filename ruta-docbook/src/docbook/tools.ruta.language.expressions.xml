@@ -19,8 +19,8 @@
 <section id="ugr.tools.ruta.language.expressions">
   <title>Expressions</title>
   <para>
-    UIMA Ruta provides five different kinds of expressions. These are
-    type expressions, number expressions, string expressions,
+    UIMA Ruta provides six different kinds of expressions. These are
+    type expressions, annotations expressions, number expressions, string expressions,
     boolean expressions and list expressions.
   </para>
   <para>

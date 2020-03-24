@@ -89,4 +89,18 @@ public class LiteralStringMatchTest {
             "colorectal, endometrial, and ovarian cancers.",
             "colorectal, endometrial and ovarian cancers.");
   }
+
+  @Test
+  public void testMatcherCombination() throws Exception {
+    // see UIMA-6195
+    String document = "PI_____I How to test it?\nP I_____I How to test it?\n";
+    String script = "";
+    script += "\"____+\" -> T1;";
+    script += "\"I\" T1 \"I\"? { -> MARKONCE(T2,1,2)};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "I_____");
+  }
 }

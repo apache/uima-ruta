@@ -25,8 +25,9 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.list.ListExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public abstract class AbstractBooleanListExpression extends ListExpression<Boolean> implements IBooleanListExpression{
-  
+public abstract class AbstractBooleanListExpression extends ListExpression<Boolean>
+        implements IBooleanListExpression {
+
   @Override
   public List<Boolean> getBooleanList(MatchContext context, RutaStream stream) {
     return getList(context, stream);
