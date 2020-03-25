@@ -72,8 +72,8 @@ public class RutaLiteralMatcher implements RutaMatcher {
     if (beginAnchor != null && beginAnchor.getEnd() == end) {
       return beginAnchor;
     }
-    RutaBasic endAnchor = stream.getEndAnchor(begin);
-    if (beginAnchor == null && endAnchor == null) {
+    RutaBasic endAnchor = stream.getEndAnchor(end);
+    if (beginAnchor == null || endAnchor == null) {
       // do not detect text passages that are not covered by internal segmentation in order to avoid
       // unintended behavior
       return null;
