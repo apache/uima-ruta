@@ -103,4 +103,41 @@ public class LiteralStringMatchTest {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "I_____");
   }
+
+  @Test
+  public void testInRutaBasicMatch() throws Exception {
+
+    String document = "1 abcd 2";
+    String script = "";
+    script += "\"ab\" {-> T1};";
+    script += "\"cd\" {-> T2};";
+    script += "\"1 ab\" {-> T3};";
+    script += "\"cd 2\" {-> T4};";
+    script += "NUM \"ab\" {-> T5};";
+    script += "\"cd\" {-> T6} @NUM;";
+
+    script += "\"ac\" {-> T7};";
+    script += "\"bd\" {-> T8};";
+    script += "\"1 ac\" {-> T9};";
+    script += "\"bd 2\" {-> T10};";
+    script += "NUM \"ac\" {-> T11};";
+    script += "\"bd\" {-> T6} @NUM;";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 0);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 8, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 9, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 10, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 11, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 12, 0);
+  }
 }
