@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.apache.uima</groupId>
 		<artifactId>ruta-parent</artifactId>
-		<version>3.0.1-SNAPSHOT</version>
+		<version>3.0.1</version>
 		<relativePath>../../ruta-parent/pom.xml</relativePath>
 	</parent>
 	<url>${uimaWebsiteUrl}</url>
@@ -25,9 +25,9 @@
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
 	<scm>
-		<url>http://svn.apache.org/viewvc/uima/uv3/ruta-v3/trunk/example-projects/ruta-maven-example</url>
-		<connection>scm:svn:http://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/example-projects/ruta-maven-example</connection>
-		<developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/example-projects/ruta-maven-example</developerConnection>
+		<url>http://svn.apache.org/viewvc/uima/uv3/ruta-v3/tags/ruta-3.0.1/example-projects/ruta-maven-example</url>
+		<connection>scm:svn:http://svn.apache.org/repos/asf/uima/uv3/ruta-v3/tags/ruta-3.0.1/example-projects/ruta-maven-example</connection>
+		<developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/uv3/ruta-v3/tags/ruta-3.0.1/example-projects/ruta-maven-example</developerConnection>
 	</scm>
 	<dependencies>
 		<dependency>
