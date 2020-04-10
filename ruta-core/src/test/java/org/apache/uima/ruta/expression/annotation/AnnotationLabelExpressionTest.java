@@ -795,4 +795,17 @@ public class AnnotationLabelExpressionTest {
 
   }
 
+  @Test
+  @Ignore
+  public void testInlineWithQuantifier() throws Exception {
+    
+    String script = "";
+    script += "CW{-> Struct1, Struct1.a=sw} sw:SW;\n";
+    script += "sw:SW{-> Struct1, Struct1.a=sw};\n";
+    script += "p:PERIOD{-> Struct1, Struct1.a=p};\n";
+    script += "(s1:Struct1<-{u1:s1.a;} (s2:Struct1<-{u2:s2.a{u2.ct==u1.ct};})+){-> T1};\n";
+    CAS cas = this.applyOnStruct4Cas(script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text");
+  }
+  
 }
