@@ -1,12 +1,15 @@
 
-Apache UIMA Ruta (TM) v2.8.0
+Apache UIMA Ruta (TM) v3.0.0
 -------------------------------------------------------------------------
+
+This release is compatible with UIMA v3, but not compatible with UIMA v2. 
+For compatibility to UIMA v2, please refer to the latest UIMA Ruta v2 release, e.g., 2.8.0.
 
 Building from the Source Distribution
 -------------------------------------
 
 We use Maven 3.0 and Java 8 or later for building; download this if needed, 
-and set the environment variable MAVEN_OPTS to -Xmx800m -XX:MaxPermSize=256m.
+and set the environment variable MAVEN_OPTS to -Xmx800m.
 
 Then do the build by going into the UIMA Ruta directory, and issuing the command
    
@@ -48,4 +51,24 @@ or the UIMA Ruta type system descriptors should explicitly be excluded:
     <typeSystemExclude>/**/InternalTypeSystem.xml</typeSystemExclude>
   </typeSystemExcludes>
 </configuration>
+
+-------------------------------------
+
+If you use the uimaFIT JCasGenPomFriendly in Maven and want to use UIMA Ruta 
+as a standalone annotator you have to exclude the generated UIMA Ruta basic 
+type files from the build, e.g., by adding:
+
+
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <version>3.0</version>
+  <configuration>
+    <excludes>
+      <exclude>org/apache/uima/ruta/type/*.java</exclude>
+    </excludes>
+  </configuration>
+</plugin> 
+
+
 

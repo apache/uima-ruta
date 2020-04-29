@@ -106,95 +106,67 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
     if (annotation.getEnd() == stream.getDocumentAnnotation().getEnd()) {
       return Collections.emptyList();
     }
-    RutaBasic lastBasic = stream.getEndAnchor(annotation.getEnd());
-    int end = 0;
-    if (lastBasic == null) {
-      if (annotation.getEnd() != 0) {
-        return Collections.emptyList();
-      }
-    } else {
-      end = lastBasic.getEnd();
-    }
-    if (end == stream.getDocumentAnnotation().getBegin()) {
-      // non existing wildcard match
-      stream.moveToFirst();
-    } else if (annotation.getEnd() > 0) {
-      stream.moveTo(lastBasic);
-      if (stream.isVisible(lastBasic) && stream.isValid()
-              && stream.get().getEnd() == lastBasic.getEnd()) {
-        stream.moveToNext();
-      }
-    } else {
-      stream.moveToFirst();
+    RutaBasic nextBasic = stream.getBasicNextTo(false, annotation);
+    if (nextBasic == null) {
+      return Collections.emptyList();
     }
 
-    if (stream.isValid()) {
-      RutaBasic nextBasic = (RutaBasic) stream.get();
-      // TODO HOTFIX for annotation of length 0
-      while (stream.isValid() && nextBasic.getBegin() < end) {
-        stream.moveToNext();
-        if (stream.isValid()) {
-          nextBasic = (RutaBasic) stream.get();
+    MatchContext context = new MatchContext(parent);
+    // just for forcing expression top initialize
+    expression.getType(context, stream);
+    if (expression.getAnnotationExpression() != null) {
+
+      AnnotationFS ref = expression.getAnnotation(context, stream);
+      if (ref != null) {
+        boolean beginsWith = nextBasic.getBegin() == ref.getBegin();
+        if (beginsWith) {
+          Collection<AnnotationFS> result = new ArrayList<>(1);
+          result.add(ref);
+          return result;
         }
       }
-
-      MatchContext context = new MatchContext(parent);
-      // just for forcing expression top initialize
-      expression.getType(context, stream);
-      if (expression.getAnnotationExpression() != null) {
-
-        AnnotationFS ref = expression.getAnnotation(context, stream);
-        if (ref != null) {
-          boolean beginsWith = nextBasic.getBegin() == ref.getBegin();
-          if (beginsWith) {
-            Collection<AnnotationFS> result = new ArrayList<>(1);
-            result.add(ref);
-            return result;
-          }
+    } else if (expression.getAnnotationListExpression() != null) {
+      List<AnnotationFS> annotations = expression.getAnnotationList(context, stream);
+      Collection<AnnotationFS> result = new ArrayList<>();
+      for (AnnotationFS each : annotations) {
+        boolean beginsWith = nextBasic.getBegin() == each.getBegin();
+        if (beginsWith) {
+          result.add(each);
         }
-      } else if (expression.getAnnotationListExpression() != null) {
-        List<AnnotationFS> annotations = expression.getAnnotationList(context, stream);
-        Collection<AnnotationFS> result = new ArrayList<>();
-        for (AnnotationFS each : annotations) {
-          boolean beginsWith = nextBasic.getBegin() == each.getBegin();
-          if (beginsWith) {
-            result.add(each);
-          }
-        }
-        return result;
+      }
+      return result;
+    } else {
+      List<Type> types = null;
+      if (expression.getTypeListExpression() != null) {
+        types = expression.getTypeListExpression().getTypeList(context, stream);
       } else {
-        List<Type> types = null;
-        if (expression.getTypeListExpression() != null) {
-          types = expression.getTypeListExpression().getTypeList(context, stream);
-        } else {
-          Type type = getType(context.getParent(), stream);
-          types = new ArrayList<>(1);
-          types.add(type);
-        }
-        List<AnnotationFS> annotations = new ArrayList<>();
-        for (Type type : types) {
-          Collection<AnnotationFS> anchors = new ArrayList<>();
-          Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(type);
-          if (beginAnchors != null) {
-            for (AnnotationFS afs : beginAnchors) {
-              if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()
-                      && afs.getEnd() <= stream.getDocumentAnnotation().getEnd()) {
-                anchors.add(afs);
-              }
+        Type type = getType(context.getParent(), stream);
+        types = new ArrayList<>(1);
+        types.add(type);
+      }
+      List<AnnotationFS> annotations = new ArrayList<>();
+      for (Type type : types) {
+        Collection<AnnotationFS> anchors = new ArrayList<>();
+        Collection<AnnotationFS> beginAnchors = nextBasic.getBeginAnchors(type);
+        if (beginAnchors != null) {
+          for (AnnotationFS afs : beginAnchors) {
+            if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()
+                    && afs.getEnd() <= stream.getDocumentAnnotation().getEnd()) {
+              anchors.add(afs);
             }
           }
-          if (expression.getFeatureExpression() != null) {
-            annotations.addAll(expression.getFeatureExpression().getAnnotations(anchors,
-                    CHECK_ON_FEATURE, context, stream));
-          } else {
-            annotations.addAll(anchors);
-          }
-
         }
-        return annotations;
-      }
+        if (expression.getFeatureExpression() != null) {
+          annotations.addAll(expression.getFeatureExpression().getAnnotations(anchors,
+                  CHECK_ON_FEATURE, context, stream));
+        } else {
+          annotations.addAll(anchors);
+        }
 
+      }
+      return annotations;
     }
+
     return Collections.emptyList();
   }
 
@@ -204,80 +176,61 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
     if (annotation.getBegin() == stream.getDocumentAnnotation().getBegin()) {
       return Collections.emptyList();
     }
-    RutaBasic firstBasic = stream.getBeginAnchor(annotation.getBegin());
-    if (firstBasic == null) {
+    RutaBasic nextBasic = stream.getBasicNextTo(true, annotation);
+    if (nextBasic == null) {
       return Collections.emptyList();
     }
-    stream.moveTo(firstBasic);
-    if (stream.isVisible(firstBasic)) {
-      stream.moveToPrevious();
-    }
-    if (firstBasic.getBegin() == stream.getDocumentAnnotation().getEnd()) {
-      // non existing wildcard match
-      stream.moveToLast();
-    }
 
-    if (stream.isValid()) {
-      RutaBasic nextBasic = (RutaBasic) stream.get();
-      // TODO HOTFIX for annotation of length 0
-      while (stream.isValid() && nextBasic.getEnd() > firstBasic.getBegin()) {
-        stream.moveToPrevious();
-        if (stream.isValid()) {
-          nextBasic = (RutaBasic) stream.get();
-        }
+    MatchContext context = new MatchContext(parent);
+    // just for forcing expression top initialize
+    expression.getType(context, stream);
+    if (expression.getAnnotationExpression() != null) {
+      AnnotationFS ref = expression.getAnnotationExpression().getAnnotation(context, stream);
+      boolean endsWith = nextBasic.getEnd() == ref.getEnd();
+      if (endsWith) {
+        Collection<AnnotationFS> result = new ArrayList<>(1);
+        result.add(ref);
+        return result;
       }
-
-      MatchContext context = new MatchContext(parent);
-      // just for forcing expression top initialize
-      expression.getType(context, stream);
-      if (expression.getAnnotationExpression() != null) {
-        AnnotationFS ref = expression.getAnnotationExpression().getAnnotation(context, stream);
-        boolean endsWith = nextBasic.getEnd() == ref.getEnd();
+    } else if (expression.getAnnotationListExpression() != null) {
+      List<AnnotationFS> annotations = expression.getAnnotationListExpression()
+              .getAnnotationList(context, stream);
+      for (AnnotationFS each : annotations) {
+        boolean endsWith = nextBasic.getEnd() == each.getEnd();
         if (endsWith) {
-          Collection<AnnotationFS> result = new ArrayList<>(1);
-          result.add(ref);
+          Collection<AnnotationFS> result = new ArrayList<>();
+          result.add(each);
           return result;
         }
-      } else if (expression.getAnnotationListExpression() != null) {
-        List<AnnotationFS> annotations = expression.getAnnotationListExpression()
-                .getAnnotationList(context, stream);
-        for (AnnotationFS each : annotations) {
-          boolean endsWith = nextBasic.getEnd() == each.getEnd();
-          if (endsWith) {
-            Collection<AnnotationFS> result = new ArrayList<>();
-            result.add(each);
-            return result;
-          }
-        }
+      }
+    } else {
+      List<Type> types = null;
+      if (expression.getTypeListExpression() != null) {
+        types = expression.getTypeListExpression().getTypeList(context, stream);
       } else {
-        List<Type> types = null;
-        if (expression.getTypeListExpression() != null) {
-          types = expression.getTypeListExpression().getTypeList(context, stream);
-        } else {
-          Type type = getType(context.getParent(), stream);
-          types = new ArrayList<>(1);
-          types.add(type);
-        }
-        List<AnnotationFS> annotations = new ArrayList<>();
-        for (Type type : types) {
-          Collection<AnnotationFS> anchors = new ArrayList<>();
-          Collection<AnnotationFS> endAnchors = nextBasic.getEndAnchors(type);
-          if (endAnchors != null) {
-            for (AnnotationFS afs : endAnchors) {
-              if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()) {
-                anchors.add(afs);
-              }
+        Type type = getType(context.getParent(), stream);
+        types = new ArrayList<>(1);
+        types.add(type);
+      }
+      List<AnnotationFS> annotations = new ArrayList<>();
+      for (Type type : types) {
+        Collection<AnnotationFS> anchors = new ArrayList<>();
+        Collection<AnnotationFS> endAnchors = nextBasic.getEndAnchors(type);
+        if (endAnchors != null) {
+          for (AnnotationFS afs : endAnchors) {
+            if (afs.getBegin() >= stream.getDocumentAnnotation().getBegin()) {
+              anchors.add(afs);
             }
           }
-          if (expression.getFeatureExpression() != null) {
-            annotations.addAll(expression.getFeatureExpression().getAnnotations(anchors,
-                    CHECK_ON_FEATURE, context, stream));
-          } else {
-            annotations.addAll(anchors);
-          }
         }
-        return annotations;
+        if (expression.getFeatureExpression() != null) {
+          annotations.addAll(expression.getFeatureExpression().getAnnotations(anchors,
+                  CHECK_ON_FEATURE, context, stream));
+        } else {
+          annotations.addAll(anchors);
+        }
       }
+      return annotations;
     }
     return Collections.emptyList();
   }

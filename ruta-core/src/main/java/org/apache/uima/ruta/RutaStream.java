@@ -50,7 +50,6 @@ import org.apache.uima.cas.IntArrayFS;
 import org.apache.uima.cas.StringArrayFS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
-import org.apache.uima.cas.impl.FSIteratorImplBase;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.util.CasUtil;
@@ -87,7 +86,7 @@ import org.apache.uima.ruta.utils.RutaListUtils;
 import org.apache.uima.ruta.utils.UIMAUtils;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
-public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
+public class RutaStream {
 
   private final CAS cas;
 
@@ -200,7 +199,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   private void updateIterators(CAS cas, Type basicType, FilterManager filter,
           AnnotationFS additionalWindow) {
     if (additionalWindow != null) {
-      this.basicIt = cas.getAnnotationIndex(basicType).subiterator(additionalWindow);
+      this.basicIt = cas.getAnnotationIndex(basicType).select().coveredBy(additionalWindow)
+              .fsIterator();
+      // was: this.basicIt = cas.getAnnotationIndex(basicType).subiterator(additionalWindow);
     } else {
       this.basicIt = cas.getAnnotationIndex(basicType).iterator();
     }
@@ -493,8 +494,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return stream;
   }
 
-  @Override
-  public FSIterator<AnnotationFS> copy() {
+  public RutaStream copy() {
     RutaStream stream = new RutaStream(cas, basicType, beginAnchors, endAnchors, filter,
             lowMemoryProfile, simpleGreedyForComposed, emptyIsInvisible, typeUsage, crowd);
     stream.setDynamicAnchoring(dynamicAnchoring);
@@ -505,17 +505,14 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     return stream;
   }
 
-  @Override
   public AnnotationFS get() throws NoSuchElementException {
     return currentIt.get();
   }
 
-  @Override
   public boolean isValid() {
     return currentIt.isValid();
   }
 
-  @Override
   public void moveTo(FeatureStructure fs) {
     try {
       currentIt.moveTo(fs);
@@ -524,22 +521,26 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
   }
 
-  @Override
+  public boolean hasNext() {
+    return currentIt.hasNext();
+  }
+
+  public AnnotationFS next() {
+    return currentIt.next();
+  }
+
   public void moveToFirst() {
     currentIt.moveToFirst();
   }
 
-  @Override
   public void moveToLast() {
     currentIt.moveToLast();
   }
 
-  @Override
   public void moveToNext() {
     currentIt.moveToNext();
   }
 
-  @Override
   public void moveToPrevious() {
     currentIt.moveToPrevious();
   }
@@ -691,7 +692,10 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
     FSMatchConstraint defaultConstraint = filter.getDefaultConstraint();
     FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(
-            cas.getAnnotationIndex(basicType).subiterator(windowAnnotation), defaultConstraint);
+            cas.getAnnotationIndex(basicType).select().coveredBy(windowAnnotation).fsIterator(),
+            defaultConstraint);
+//    FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(
+//            cas.getAnnotationIndex(basicType).subiterator(windowAnnotation), defaultConstraint);
 
     while (iterator.isValid()) {
       result.add((RutaBasic) iterator.get());
@@ -726,6 +730,10 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   public FSIterator<AnnotationFS> getUnfilteredBasicIterator() {
     return basicIt;
+  }
+
+  public FSIterator<AnnotationFS> getCurrentIterator() {
+    return currentIt;
   }
 
   public AnnotationFS getDocumentAnnotation() {
@@ -890,6 +898,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     Set<Type> currentHiddenTypes = filter.getCurrentHiddenTypes();
     RutaBasic beginAnchor = getBeginAnchor(begin);
     if (beginAnchor != null) {
+      if (beginAnchor.isEmpty() && emptyIsInvisible) {
+        return false;
+      }
       for (Type type : currentHiddenTypes) {
         boolean partOf = beginAnchor.isPartOf(type);
         if (partOf) {
@@ -899,6 +910,9 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
     RutaBasic endAnchor = getEndAnchor(end);
     if (endAnchor != null) {
+      if (endAnchor.isEmpty() && emptyIsInvisible) {
+        return false;
+      }
       for (Type type : currentHiddenTypes) {
         boolean partOf = endAnchor.isPartOf(type);
         if (partOf) {
@@ -933,9 +947,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
                     || windowAnnotation.getEnd() != cas.getDocumentAnnotation().getEnd())) {
       AnnotationFS frame = cas.createAnnotation(cas.getTypeSystem().getType(RutaEngine.FRAME_TYPE),
               windowAnnotation.getBegin(), windowAnnotation.getEnd());
-      FSIterator<AnnotationFS> subiterator = cas.getAnnotationIndex(type).subiterator(frame);
-      while (subiterator.hasNext()) {
-        AnnotationFS each = subiterator.next();
+      FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(type).select().coveredBy(frame)
+              .fsIterator();
+      // was: FSIterator<AnnotationFS> subiterator =
+      // cas.getAnnotationIndex(type).subiterator(frame);
+
+      while (iterator.hasNext()) {
+        AnnotationFS each = iterator.next();
         if (isVisible(each)) {
           result.add(each);
         }
@@ -1008,12 +1026,12 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (value instanceof IStringListExpression) {
         IStringListExpression stringListExpr = (IStringListExpression) value;
         List<String> stringList = stringListExpr.getStringList(context, this);
-        StringArrayFS stringArray = FSCollectionFactory.createStringArray(cas, stringList);
+        StringArrayFS stringArray = FSCollectionFactory.createStringArrayFS(cas, stringList);
         annotation.setFeatureValue(feature, stringArray);
       } else if (value instanceof IStringExpression) {
         IStringExpression stringExpr = (IStringExpression) value;
         String string = stringExpr.getStringValue(context, this);
-        StringArrayFS array = FSCollectionFactory.createStringArray(cas, new String[] { string });
+        StringArrayFS array = FSCollectionFactory.createStringArrayFS(cas, new String[] { string });
         annotation.setFeatureValue(feature, array);
       }
     } else if (rangeName.equals(CAS.TYPE_NAME_INTEGER) || rangeName.equals(CAS.TYPE_NAME_LONG)
@@ -1035,12 +1053,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         int v = numberExpr.getIntegerValue(context, this);
-        IntArrayFS array = FSCollectionFactory.createIntArray(cas, new int[] { v });
+        IntArrayFS array = FSCollectionFactory.createIntArrayFS(cas, new int[] { v });
         annotation.setFeatureValue(feature, array);
       } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
         List<Number> list = expr.getNumberList(context, this);
-        IntArrayFS array = FSCollectionFactory.createIntArray(cas, RutaListUtils.toIntArray(list));
+        IntArrayFS array = FSCollectionFactory.createIntArrayFS(cas,
+                RutaListUtils.toIntArray(list));
         annotation.setFeatureValue(feature, array);
       }
     } else if (rangeName.equals(CAS.TYPE_NAME_DOUBLE)) {
@@ -1053,12 +1072,12 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         double v = numberExpr.getDoubleValue(context, this);
-        DoubleArrayFS array = FSCollectionFactory.createDoubleArray(cas, new double[] { v });
+        DoubleArrayFS array = FSCollectionFactory.createDoubleArrayFS(cas, new double[] { v });
         annotation.setFeatureValue(feature, array);
       } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
         List<Number> list = expr.getNumberList(context, this);
-        DoubleArrayFS array = FSCollectionFactory.createDoubleArray(cas,
+        DoubleArrayFS array = FSCollectionFactory.createDoubleArrayFS(cas,
                 RutaListUtils.toDoubleArray(list));
         annotation.setFeatureValue(feature, array);
       }
@@ -1072,12 +1091,12 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         float v = numberExpr.getFloatValue(context, this);
-        FloatArrayFS array = FSCollectionFactory.createFloatArray(cas, new float[] { v });
+        FloatArrayFS array = FSCollectionFactory.createFloatArrayFS(cas, new float[] { v });
         annotation.setFeatureValue(feature, array);
       } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
         List<Number> list = expr.getNumberList(context, this);
-        FloatArrayFS array = FSCollectionFactory.createFloatArray(cas,
+        FloatArrayFS array = FSCollectionFactory.createFloatArrayFS(cas,
                 RutaListUtils.toFloatArray(list));
         annotation.setFeatureValue(feature, array);
       }
@@ -1091,12 +1110,12 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       if (value instanceof IBooleanListExpression) {
         IBooleanListExpression expr = (IBooleanListExpression) value;
         List<Boolean> list = expr.getBooleanList(context, this);
-        BooleanArrayFS array = FSCollectionFactory.createBooleanArray(cas, list);
+        BooleanArrayFS array = FSCollectionFactory.createBooleanArrayFS(cas, list);
         annotation.setFeatureValue(feature, array);
       } else if (value instanceof IBooleanExpression) {
         IBooleanExpression expr = (IBooleanExpression) value;
         Boolean v = expr.getBooleanValue(context, this);
-        BooleanArrayFS array = FSCollectionFactory.createBooleanArray(cas, new boolean[] { v });
+        BooleanArrayFS array = FSCollectionFactory.createBooleanArrayFS(cas, new boolean[] { v });
         annotation.setFeatureValue(feature, array);
       }
     } else if (value instanceof AnnotationTypeExpression && !range.isPrimitive()) {

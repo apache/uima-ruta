@@ -21,10 +21,10 @@
    -->
 
 <head>
-  <title>Apache UIMA Ruta v2.8.0 Release Notes</title>
+  <title>Apache UIMA Ruta v3.0.0 Release Notes</title>
 </head>
 <body>
-<h1>Apache UIMA Ruta&#8482; v2.8.0 Release Notes</h1>
+<h1>Apache UIMA Ruta&#8482; v3.0.0 Release Notes</h1>
 
 <h2>Contents</h2>
 <p>
@@ -37,37 +37,35 @@
    
 <h2><a name="what.is.uima-ruta">1. What is UIMA Ruta?</a></h2>
 
-     <p>
-  			Apache UIMA Ruta&#8482; is a rule-based script language supported by Eclipse-based tooling.
-      The language is designed to enable rapid development of text processing applications within Apache UIMA&#8482;. 
-      A special focus lies on the intuitive and flexible domain specific language for defining 
-      patterns of annotations. The Eclipse-based tooling for Ruta, called the Ruta Workbench,
-      was created to support the user and to facilitate every step when writing Ruta rules. Both the 
-      Ruta rule language and the Ruta Workbench integrate smoothly with Apache UIMA.
-			</p>
+<p>
+  Apache UIMA Ruta&#8482; is a rule-based script language supported by Eclipse-based tooling.
+  The language is designed to enable rapid development of text processing applications within Apache UIMA&#8482;. 
+  A special focus lies on the intuitive and flexible domain specific language for defining 
+  patterns of annotations. The Eclipse-based tooling for Ruta, called the Ruta Workbench,
+  was created to support the user and to facilitate every step when writing Ruta rules. Both the 
+  Ruta rule language and the Ruta Workbench integrate smoothly with Apache UIMA.
+</p>
 
 <h2><a name="major.changes">2. Major Changes in this Release</a></h2>
 <p>
-    This release contains changed in the analysis engine descriptor and the type system descriptors 
-    and therefore requires an update of the Ruta projects. This can be accomplished for example by 
-    right-click on the Ruta project, selecting "UIMA Ruta" and then "Update Project".
+  This release provides compatibility to UIMA v3. An upgrade from UIMA Ruta v2 to this version requires 
+  also an update to UIMA v3 of the overall application or Eclipse installation. Please refer to the 
+  UIMA v3 user's guide for detailed information: https://uima.apache.org/d/uimaj-3.0.0/version_3_users_guide.html
+</p>
+<p>
+  This release contains changed in the analysis engine descriptor and the type system descriptors 
+  and therefore requires an update of the Ruta projects. This can be accomplished, for example, by 
+  right-clicking on the Ruta project, selecting "UIMA Ruta" and then "Update Project".
 </p>
 <p>
   <p>UIMA Ruta Language and Analysis Engine:</p>
   <ul>
-  	<li>The analysis engine is able to generate debug information about inlined rules which includes also an extension of the ruta type system.</li>
-    <li>Type expressions in dot notation for annotation expressions a new supported: a1:ANY a2:ANY{a1.type==a2.type -> Type};</li>
-    <li>Matching on string literals is no more restricted to single RutaBasic annotations, e.g., it is not possible to write: "This is a test"{-> Test};</li>
-    <li>Dictionary matching is now more robust concerning white spaces in the word list. The parameter dictRemoveWS is now also set to true by default.</li>
-    <li>Fixed anchors at composed rule elements.</li>
-    <li>Labels at macro actions are supported now.</li>
-    <li>Fixed several bugs.</li>
+    <li>Depends on UIMA 3.1.1 and uimaFIT 3.0.0</li>
+    <li>Provides compatibility to UIMA v3</li>
   </ul>
   <p>UIMA Ruta Workbench:</p>
   <ul>
-  	<li>New view for visualizing the explanation of inlined rules.</li>
-    <li>Fixed problem with blocked build processes in Ruta projects with many scripts.</li>
-    <li>Fixed bugs.</li>
+    <li>Depends on UIMA v3 and provides compatibility to UIMA v3</li>
   </ul>
 </p>
  
@@ -91,7 +89,8 @@ issues you find at
 <h2><a name="list.issues">5. List of JIRA Issues Fixed in this Release</a></h2>
 
 Click <a href="issuesFixed/jira-report.html">issuesFixed/jira-report.html</a> for the list of 
-issues fixed in this release.
+issues fixed in this release. This list contains all issues that have been fixed to prepare the synchronous releases
+of UIMA Ruta 2.8.0 and UIMA Ruta 3.0.0.
 
 </body>
 </html>

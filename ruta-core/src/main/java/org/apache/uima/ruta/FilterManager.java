@@ -194,8 +194,10 @@ public class FilterManager {
 
   public FSIterator<AnnotationFS> createFilteredIterator(CAS cas, Type basicType) {
     if (windowAnnotation != null) {
-      FSIterator<AnnotationFS> windowIt = cas.getAnnotationIndex(basicType)
-              .subiterator(windowAnnotation);
+      FSIterator<AnnotationFS> windowIt = cas.getAnnotationIndex(basicType).select()
+              .coveredBy(windowAnnotation).fsIterator();
+//     was: FSIterator<AnnotationFS> windowIt = cas.getAnnotationIndex(basicType)
+//              .subiterator(windowAnnotation);
       FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(windowIt,
               createCurrentConstraint(false));
       return iterator;

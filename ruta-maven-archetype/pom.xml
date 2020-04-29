@@ -14,7 +14,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>2.8.1-SNAPSHOT</version>
+    <version>3.0.0</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <properties>
@@ -22,9 +22,9 @@
   </properties>
   <url>${uimaWebsiteUrl}</url>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-maven-archetype</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-maven-archetype</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-maven-archetype</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/uv3/ruta-v3/tags/ruta-3.0.0/ruta-maven-archetype</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/uv3/ruta-v3/tags/ruta-3.0.0/ruta-maven-archetype</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/uv3/ruta-v3/tags/ruta-3.0.0/ruta-maven-archetype</developerConnection>
   </scm>
   <build>
     <extensions>

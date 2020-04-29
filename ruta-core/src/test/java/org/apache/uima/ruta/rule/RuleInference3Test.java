@@ -31,7 +31,5 @@ public class RuleInference3Test {
     CAS cas = RutaTestUtils.processTestScript(this.getClass());
 
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 4, "[1]", "[2]", "[3]", "[4]");
-
-    cas.release();
   }
 }
