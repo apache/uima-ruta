@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,6 +18,9 @@
  */
 
 package org.apache.uima.ruta.rule;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,15 +65,13 @@ public class RutaOptionalRuleElement extends RutaRuleElement {
           InferenceCrowd crowd) {
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
     result.setRuleAnchor(ruleAnchor);
-    List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
+    List<EvaluatedCondition> evaluatedConditions = new ArrayList<>(
             conditions.size());
     boolean base = true;
     MatchContext context = new MatchContext(annotation, this, ruleMatch, after);
 
-    List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
-    if (annotation != null) {
-      textsMatched.add(annotation);
-    }
+    List<AnnotationFS> textsMatched = annotation != null ? asList(annotation) : emptyList();
+
     // already set the matched text and inform others
     result.setMatchInfo(base, textsMatched, stream);
     RutaEnvironment environment = context.getParent().getEnvironment();

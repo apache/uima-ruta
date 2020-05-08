@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -19,7 +19,9 @@
 
 package org.apache.uima.ruta.rule;
 
-import java.util.ArrayList;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+
 import java.util.List;
 
 import org.apache.uima.ruta.condition.AbstractRutaCondition;
@@ -33,8 +35,6 @@ public class EvaluatedCondition {
 
   private final List<EvaluatedCondition> conditions;
 
-  private final List<EvaluatedCondition> noConditions = new ArrayList<EvaluatedCondition>(0);
-
   public EvaluatedCondition(AbstractRutaCondition condition, boolean value,
           List<EvaluatedCondition> conditions) {
     super();
@@ -47,15 +47,14 @@ public class EvaluatedCondition {
     super();
     this.condition = condition;
     this.value = value;
-    this.conditions = noConditions;
+    conditions = emptyList();
   }
 
   public EvaluatedCondition(NotCondition condition, boolean value, EvaluatedCondition eval) {
     super();
     this.condition = condition;
     this.value = value;
-    this.conditions = new ArrayList<EvaluatedCondition>();
-    conditions.add(eval);
+    conditions = asList(eval);
   }
 
   public AbstractRutaCondition getCondition() {
@@ -69,5 +68,4 @@ public class EvaluatedCondition {
   public List<EvaluatedCondition> getConditions() {
     return conditions;
   }
-
 }

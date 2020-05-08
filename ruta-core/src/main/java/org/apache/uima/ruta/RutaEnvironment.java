@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -188,23 +188,23 @@ public class RutaEnvironment {
     super();
     this.owner = owner;
 
-    types = new HashMap<String, Type>();
-    namespaces = new HashMap<String, String>();
-    ambiguousTypeAlias = new HashMap<String, Set<String>>();
-    typesystems = new HashSet<String>();
-    scripts = new HashSet<String>();
-    typeImports = new HashMap<String, List<Alias>>();
-    packageImports = new HashMap<String, List<String>>();
-    declaredAnnotationTypes = new HashSet<String>();
-    wordLists = new HashMap<String, RutaWordList>();
-    tables = new HashMap<String, RutaTable>();
-    variableValues = new HashMap<String, Object>();
-    tempVariableValues = new HashMap<String, Object>();
-    variableTypes = new HashMap<String, Class<?>>();
-    variableGenericTypes = new HashMap<String, Class<?>>();
+    types = new HashMap<>();
+    namespaces = new HashMap<>();
+    ambiguousTypeAlias = new HashMap<>();
+    typesystems = new HashSet<>();
+    scripts = new HashSet<>();
+    typeImports = new HashMap<>();
+    packageImports = new HashMap<>();
+    declaredAnnotationTypes = new HashSet<>();
+    wordLists = new HashMap<>();
+    tables = new HashMap<>();
+    variableValues = new HashMap<>();
+    tempVariableValues = new HashMap<>();
+    variableTypes = new HashMap<>();
+    variableGenericTypes = new HashMap<>();
     macroConditions = new HashMap<>();
     macroActions = new HashMap<>();
-    availableTypes = new HashMap<String, Class<?>>();
+    availableTypes = new HashMap<>();
     availableTypes.put(RutaConstants.RUTA_VARIABLE_ANNOTATION, AnnotationFS.class);
     availableTypes.put("INT", Integer.class);
     availableTypes.put("STRING", String.class);
@@ -223,7 +223,7 @@ public class RutaEnvironment {
     availableTypes.put("FLOATLIST", List.class);
     availableTypes.put("STRINGLIST", List.class);
     availableTypes.put(RutaConstants.RUTA_VARIABLE_TYPE_LIST, List.class);
-    availableListTypes = new HashMap<String, Class<?>>();
+    availableListTypes = new HashMap<>();
     availableListTypes.put(RutaConstants.RUTA_VARIABLE_ANNOTATION_LIST, AnnotationFS.class);
     availableListTypes.put("BOOLEANLIST", Boolean.class);
     availableListTypes.put("INTLIST", Integer.class);
@@ -232,7 +232,7 @@ public class RutaEnvironment {
     availableListTypes.put("STRINGLIST", String.class);
     availableListTypes.put(RutaConstants.RUTA_VARIABLE_TYPE_LIST, Type.class);
     resourcePaths = getResourcePaths();
-    initializedVariables = new HashMap<String, Object>();
+    initializedVariables = new HashMap<>();
     variableAliases = new HashMap<>();
 
     // Always import BasicTypeSystem
@@ -527,7 +527,7 @@ public class RutaEnvironment {
 
       if (existing != null && !existing.equals(longName)) {
         // shortName can now be resolved to "existing" or "longName"
-        targets = new HashSet<String>(2);
+        targets = new HashSet<>(2);
         targets.add(existing);
         targets.add(longName);
 
@@ -556,7 +556,7 @@ public class RutaEnvironment {
     List<Alias> aliases = typeImports.get(key);
 
     if (aliases == null) {
-      aliases = new ArrayList<Alias>();
+      aliases = new ArrayList<>();
       typeImports.put(key, aliases);
     }
 
@@ -634,8 +634,9 @@ public class RutaEnvironment {
    */
   public void importPackage(String packageName, String alias) {
     List<String> aliases = packageImports.get(packageName);
+
     if (aliases == null) {
-      aliases = new ArrayList<String>(1);
+      aliases = new ArrayList<>(1);
       packageImports.put(packageName, aliases);
     }
 
@@ -753,7 +754,7 @@ public class RutaEnvironment {
     Object init = initializedVariables.get(name);
     if (init != null) {
       if (init instanceof List) {
-        ArrayList<Object> list = new ArrayList<Object>();
+        ArrayList<Object> list = new ArrayList<>();
         list.addAll((Collection<? extends Object>) init);
         return list;
       }
@@ -772,7 +773,7 @@ public class RutaEnvironment {
     } else if (Type.class.equals(type)) {
       return null;
     } else if (List.class.equals(type)) {
-      return new ArrayList<Object>();
+      return new ArrayList<>();
     }
     return null;
   }
@@ -964,7 +965,7 @@ public class RutaEnvironment {
   public void setInitialVariableValue(String var, Object value) {
     if (ownsVariable(var)) {
       if (value instanceof List) {
-        List<Object> initValue = new ArrayList<Object>();
+        List<Object> initValue = new ArrayList<>();
         initValue.addAll((Collection<? extends Object>) value);
         initializedVariables.put(var, initValue);
       } else {
@@ -1057,16 +1058,12 @@ public class RutaEnvironment {
 
   public void addMacroAction(String name, Map<String, String> def, Set<String> vars,
           List<AbstractRutaAction> actions) {
-    macroActions.put(name,
-            new ImmutableTriple<Map<String, String>, List<AbstractRutaAction>, Set<String>>(def,
-                    actions, vars));
+    macroActions.put(name, new ImmutableTriple<>(def, actions, vars));
   }
 
   public void addMacroCondition(String name, Map<String, String> def, Set<String> vars,
           List<AbstractRutaCondition> conditions) {
-    macroConditions.put(name,
-            new ImmutableTriple<Map<String, String>, List<AbstractRutaCondition>, Set<String>>(def,
-                    conditions, vars));
+    macroConditions.put(name, new ImmutableTriple<>(def, conditions, vars));
   }
 
   public boolean isMacroAction(String name) {

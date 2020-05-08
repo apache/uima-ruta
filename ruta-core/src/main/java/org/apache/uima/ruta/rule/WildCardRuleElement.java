@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,6 +18,9 @@
  */
 
 package org.apache.uima.ruta.rule;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,14 +92,14 @@ public class WildCardRuleElement extends AbstractRuleElement {
     if (nextElement == null) {
       nextDepth = 0;
     }
-    return new ImmutablePair<RuleElement, Integer>(nextElement, Integer.valueOf(nextDepth));
+    return new ImmutablePair<>(nextElement, Integer.valueOf(nextDepth));
   }
 
   private List<RuleMatch> tryWithNextRuleElement(RuleElement nextElement, boolean after,
           AnnotationFS annotation, RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, int nextDepth, RuleElement sideStepOrigin,
           RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     // what is the next stuff that should match?
     if (nextElement == null) {
       AnnotationFS afs = getCoveredByWildCard(after, annotation, null, stream);
@@ -133,7 +136,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
           ComposedRuleElement cre, RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, int nextDepth, RuleElement sideStepOrigin,
           RutaStream stream, InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     AnnotationFS nextOne = annotation;
     boolean doneHere = false;
     while (!doneHere
@@ -210,7 +213,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
     } else if (conjunct != null && !conjunct) {
       // disjunctive
       List<RuleElement> ruleElements = cre.getRuleElements();
-      List<AnnotationFS> nextPostions = new ArrayList<AnnotationFS>();
+      List<AnnotationFS> nextPostions = new ArrayList<>();
       for (RuleElement ruleElement : ruleElements) {
         if (ruleElement instanceof ComposedRuleElement) {
           AnnotationFS nextPositionForComposed = getNextPositionForComposed(
@@ -307,7 +310,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RuleElement nextElement, Type defaultType, RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, int nextDepth, RuleElement sideStepOrigin,
           RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     FSIterator<AnnotationFS> iterator = getIterator(after, annotation, nextElement, defaultType,
             stream);
     // already matched something maybe, but now at the end of the document
@@ -602,7 +605,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
           RutaRuleElement nextElement, RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, int nextDepth, RuleElement sideStepOrigin,
           RutaStream stream, InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     RutaLiteralMatcher matcher = (RutaLiteralMatcher) nextElement.getMatcher();
     if (matcher == null) {
       return result;
@@ -745,16 +748,14 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
     result.setRuleAnchor(ruleAnchor);
-    List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
+    List<EvaluatedCondition> evaluatedConditions = new ArrayList<>(
             conditions.size());
     boolean base = true;
 
     MatchContext context = new MatchContext(annotation, this, ruleMatch, true);
 
-    List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
-    if (annotation != null) {
-      textsMatched.add(annotation);
-    }
+    List<AnnotationFS> textsMatched = annotation != null ? asList(annotation) : emptyList();
+
     result.setMatchInfo(base, textsMatched, stream);
     RutaEnvironment environment = context.getParent().getEnvironment();
     environment.addMatchToVariable(ruleMatch, this, context, stream);
