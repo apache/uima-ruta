@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,6 +18,9 @@
  */
 
 package org.apache.uima.ruta.rule;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,7 +59,7 @@ public class RutaRuleElement extends AbstractRuleElement {
   public List<RuleMatch> startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     Collection<? extends AnnotationFS> anchors = getAnchors(stream);
     boolean useAlternatives = anchors.size() != 1;
     for (AnnotationFS eachAnchor : anchors) {
@@ -72,7 +75,7 @@ public class RutaRuleElement extends AbstractRuleElement {
         extendedMatch = ruleMatch.copy(extendedContainerMatch, true);
       }
       doMatch(true, eachAnchor, extendedMatch, extendedContainerMatch, true, stream, crowd);
-      if (this.equals(entryPoint) && ruleApply == null) {
+      if (equals(entryPoint) && ruleApply == null) {
         result.add(extendedMatch);
       } else if (extendedMatch.matched()) {
         RuleElement after = getContainer().getNextElement(true, this);
@@ -129,7 +132,7 @@ public class RutaRuleElement extends AbstractRuleElement {
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     MatchContext context = new MatchContext(this, ruleMatch, after);
     if (quantifier.continueMatch(after, context, annotation, containerMatch, stream, crowd)) {
       boolean stopMatching = false;
@@ -156,7 +159,7 @@ public class RutaRuleElement extends AbstractRuleElement {
           lastAnchor = eachAnchor;
           eachAnchor = nextAnnotations.iterator().next();
           doMatch(after, eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
-          if (this.equals(entryPoint)) {
+          if (equals(entryPoint)) {
             result.add(extendedMatch);
           } else if (extendedMatch.matched()) {
             if (quantifier.continueMatch(after, context, eachAnchor, extendedContainerMatch, stream,
@@ -189,7 +192,7 @@ public class RutaRuleElement extends AbstractRuleElement {
           AnnotationFS eachAnchor, RuleMatch extendedMatch, RuleApply ruleApply,
           ComposedRuleElementMatch extendedContainerMatch, RuleElement sideStepOrigin,
           RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     RuleElement nextRuleElement = getContainer().getNextElement(after, this);
     if (nextRuleElement != null) {
       result = nextRuleElement.continueMatch(after, eachAnchor, extendedMatch, ruleApply,
@@ -206,7 +209,7 @@ public class RutaRuleElement extends AbstractRuleElement {
   public List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch, RuleElement sideStepOrigin,
           RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     // if() for really lazy quantifiers
     MatchContext context = new MatchContext(this, ruleMatch, after);
     if (quantifier.continueMatch(after, context, annotation, containerMatch, stream, crowd)) {
@@ -231,7 +234,7 @@ public class RutaRuleElement extends AbstractRuleElement {
         }
         doMatch(after, eachAnchor, extendedMatch, extendedContainerMatch, false, stream, crowd);
 
-        if (this.equals(entryPoint) && ruleApply == null) {
+        if (equals(entryPoint) && ruleApply == null) {
           result.add(extendedMatch);
         } else if (extendedMatch.matched()) {
           context = new MatchContext(this, extendedMatch, after);
@@ -247,7 +250,7 @@ public class RutaRuleElement extends AbstractRuleElement {
             result.addAll(continueMatchSomewhereElse);
           }
         } else {
-          if (this.equals(entryPoint)) {
+          if (equals(entryPoint)) {
             // hotfix for UIMA-3820
             result.add(extendedMatch);
           } else {
@@ -272,8 +275,8 @@ public class RutaRuleElement extends AbstractRuleElement {
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RuleElement sideStepOrigin, RutaStream stream, InferenceCrowd crowd,
           RuleElement entryPoint) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
-    if (this.equals(entryPoint) && ruleApply == null) {
+    List<RuleMatch> result = new ArrayList<>();
+    if (equals(entryPoint) && ruleApply == null) {
       result.add(ruleMatch);
       return result;
     }
@@ -332,16 +335,14 @@ public class RutaRuleElement extends AbstractRuleElement {
           InferenceCrowd crowd) {
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
     result.setRuleAnchor(ruleAnchor);
-    List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
+    List<EvaluatedCondition> evaluatedConditions = new ArrayList<>(
             conditions.size());
     // boolean base = matcher.match(annotation, stream, getParent());
     boolean base = true;
     MatchContext context = new MatchContext(annotation, this, ruleMatch, after);
 
-    List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
-    if (annotation != null) {
-      textsMatched.add(annotation);
-    }
+    List<AnnotationFS> textsMatched = annotation != null ? asList(annotation) : emptyList();
+
     // already set the matched text and inform others
     result.setMatchInfo(base, textsMatched, stream);
     RutaEnvironment environment = context.getParent().getEnvironment();

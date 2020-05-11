@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -19,7 +19,8 @@
 
 package org.apache.uima.ruta.expression;
 
-import java.util.ArrayList;
+import static java.util.Arrays.asList;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -45,9 +46,7 @@ public class RutaExpression extends RutaElement implements IRutaExpression {
       IAnnotationListExpression annotationListExpression = sfe.getMatchReference()
               .getAnnotationListExpression(context, stream);
       if (annotationExpression != null) {
-        List<AnnotationFS> as = new ArrayList<>(1);
-        as.add(annotationExpression.getAnnotation(context, stream));
-        return as;
+        return asList(annotationExpression.getAnnotation(context, stream));
       } else if (annotationListExpression != null) {
         return annotationListExpression.getAnnotationList(context, stream);
       }
@@ -65,19 +64,15 @@ public class RutaExpression extends RutaElement implements IRutaExpression {
     AnnotationFS documentAnnotation = stream.getCas().getDocumentAnnotation();
     Type docType = documentAnnotation.getType();
     if (docType.equals(type)) {
-      List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);
       AnnotationFS windowAnnotation = stream.getFilter().getWindowAnnotation();
+
       if (windowAnnotation == null) {
-        result.add(documentAnnotation);
-        return result;
-      } else {
-        result.add(windowAnnotation);
-        return result;
+        return asList(documentAnnotation);
       }
+
+      return asList(windowAnnotation);
     }
 
     return stream.getBestGuessedAnnotationsAt(matchedAnnotation, type);
-
   }
-
 }

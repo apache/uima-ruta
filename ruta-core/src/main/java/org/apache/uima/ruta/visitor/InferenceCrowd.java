@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,6 +18,8 @@
  */
 
 package org.apache.uima.ruta.visitor;
+
+import static java.util.Arrays.asList;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,13 +33,14 @@ import org.apache.uima.ruta.rule.AbstractRuleMatch;
 
 public class InferenceCrowd implements RutaInferenceVisitor {
 
-  public static InferenceCrowd emptyCrowd = new InferenceCrowd(Collections.<RutaInferenceVisitor>emptyList());
-  
-  private final List<RutaInferenceVisitor> visitors;
+  public static InferenceCrowd emptyCrowd = new InferenceCrowd(
+          Collections.<RutaInferenceVisitor> emptyList());
+
+  private final RutaInferenceVisitor[] visitors;
 
   public InferenceCrowd(List<RutaInferenceVisitor> visitors) {
     super();
-    this.visitors = visitors;
+    this.visitors = visitors.toArray(new RutaInferenceVisitor[visitors.size()]);
   }
 
   @Override
@@ -55,8 +58,9 @@ public class InferenceCrowd implements RutaInferenceVisitor {
   }
 
   public void finished(RutaStream stream) {
+    List<RutaInferenceVisitor> visitorList = asList(visitors);
     for (RutaInferenceVisitor each : visitors) {
-      each.finished(stream, visitors);
+      each.finished(stream, visitorList);
     }
   }
 
@@ -68,13 +72,8 @@ public class InferenceCrowd implements RutaInferenceVisitor {
   @Override
   public void annotationAdded(AnnotationFS annotation,
           AbstractRuleMatch<? extends AbstractRule> creator) {
-    if (visitors.isEmpty()) {
-      return;
-    }
     for (RutaInferenceVisitor each : visitors) {
       each.annotationAdded(annotation, creator);
     }
-
   }
-
 }

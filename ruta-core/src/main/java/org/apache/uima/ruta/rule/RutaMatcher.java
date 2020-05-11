@@ -29,6 +29,10 @@ import org.apache.uima.ruta.expression.IRutaExpression;
 
 public interface RutaMatcher {
 
+  /**
+   * @return a collection containing the matching annotations. Note that there is no
+   *         guarantee that the returned collection is modifiable.
+   */
   Collection<? extends AnnotationFS> getMatchingAnnotations(RutaBlock parent, RutaStream stream);
 
   Type getType(RutaBlock parent, RutaStream stream);
@@ -37,9 +41,17 @@ public interface RutaMatcher {
 
   long estimateAnchors(RutaBlock parent, RutaStream stream);
 
+  /**
+   * @return a collection containing the matching annotations. Note that there is no
+   *         guarantee that the returned collection is modifiable.
+   */
   Collection<? extends AnnotationFS> getAnnotationsAfter(RutaRuleElement ruleElement,
           AnnotationFS annotation, RutaBlock parent, RutaStream stream);
 
+  /**
+   * @return a collection containing the matching annotations. Note that there is no
+   *         guarantee that the returned collection is modifiable.
+   */
   Collection<? extends AnnotationFS> getAnnotationsBefore(RutaRuleElement ruleElement,
           AnnotationFS annotation, RutaBlock parent, RutaStream stream);
 

@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,6 +18,8 @@
  */
 
 package org.apache.uima.ruta.rule;
+
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,10 +70,10 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     this.container = container;
     this.parent = parent;
     if (this.conditions == null) {
-      this.conditions = new ArrayList<AbstractRutaCondition>();
+      this.conditions = new ArrayList<>();
     }
     if (this.actions == null) {
-      this.actions = new ArrayList<AbstractRutaAction>();
+      this.actions = new ArrayList<>();
     }
     if (this.quantifier == null) {
       this.quantifier = new NormalQuantifier();
@@ -82,7 +84,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
   public List<RuleMatch> continueSideStep(boolean after, RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     boolean newDirection = !after;
     List<AnnotationFS> matchedAnnotationsOf = ruleMatch.getMatchedAnnotationsOfElement(this);
     AnnotationFS annotation = null;
@@ -251,13 +253,11 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   @Override
   public List<Integer> getSelfIndexList() {
-    List<Integer> result = new ArrayList<Integer>(1);
     if (getContainer() == null) {
       return null;
     }
-    int indexOf = getContainer().getRuleElements().indexOf(this);
-    result.add(indexOf + 1);
-    return result;
+
+    return asList(getContainer().getRuleElements().indexOf(this) + 1);
   }
 
   @Override
@@ -364,7 +364,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   @Override
   public void setStartAnchor(boolean start) {
-    this.startAnchor = start;
+    startAnchor = start;
   }
 
   @Override
@@ -384,7 +384,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   @Override
   public void addInlinedConditionRules(List<RutaStatement> innerRules) {
-    this.inlinedConditionRuleBlocks.add(innerRules);
+    inlinedConditionRuleBlocks.add(innerRules);
   }
 
   @Override
@@ -394,7 +394,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   @Override
   public void addInlinedActionRules(List<RutaStatement> innerRules) {
-    this.inlinedActionRuleBlocks.add(innerRules);
+    inlinedActionRuleBlocks.add(innerRules);
   }
 
   @Override

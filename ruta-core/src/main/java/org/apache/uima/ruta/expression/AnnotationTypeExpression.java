@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,6 +18,9 @@
  */
 
 package org.apache.uima.ruta.expression;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -74,10 +77,8 @@ public class AnnotationTypeExpression extends RutaExpression
     if (annotationExpression != null) {
       AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
       if (featureExpression != null) {
-        List<AnnotationFS> annotations = new ArrayList<>(1);
-        annotations.add(annotation);
-        Collection<? extends AnnotationFS> result = featureExpression.getAnnotations(annotations,
-                true, context, stream);
+        Collection<? extends AnnotationFS> result = featureExpression
+                .getAnnotations(asList(annotation), true, context, stream);
         if (result != null && !result.isEmpty()) {
           return result.iterator().next();
         }
@@ -110,11 +111,9 @@ public class AnnotationTypeExpression extends RutaExpression
         types = typeListExpression.getTypeList(context, stream);
       } else {
         Type type = getType(context, stream);
-        types = new ArrayList<>(1);
-        if (type != null) {
-          types.add(type);
-        }
+        types = type != null ? asList(type) : emptyList();
       }
+
       for (Type type : types) {
 
         if (type != null) {
@@ -131,8 +130,8 @@ public class AnnotationTypeExpression extends RutaExpression
             bestGuessedAnnotations = stream.getBestGuessedAnnotationsAt(context.getAnnotation(),
                     type);
             if (bestGuessedAnnotations.isEmpty()) {
-              bestGuessedAnnotations = new ArrayList<>(1);
-              bestGuessedAnnotations.add(stream.getSingleAnnotationByTypeInContext(type, context));
+              bestGuessedAnnotations = asList(
+                      stream.getSingleAnnotationByTypeInContext(type, context));
             }
           }
 
@@ -215,8 +214,7 @@ public class AnnotationTypeExpression extends RutaExpression
       }
     } else if (annotationExpression != null) {
       AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
-      List<AnnotationFS> result = new ArrayList<AnnotationFS>(1);
-      result.add(annotation);
+      List<AnnotationFS> result = asList(annotation);
       if (featureExpression != null) {
         return new ArrayList<>(featureExpression.getAnnotations(result, true, context, stream));
       } else {
@@ -228,9 +226,7 @@ public class AnnotationTypeExpression extends RutaExpression
       if (typeListExpression != null) {
         types = typeListExpression.getTypeList(context, stream);
       } else {
-        Type type = getType(context, stream);
-        types = new ArrayList<>(1);
-        types.add(type);
+        types = asList(getType(context, stream));
       }
 
       List<AnnotationFS> annotations = new ArrayList<>();
