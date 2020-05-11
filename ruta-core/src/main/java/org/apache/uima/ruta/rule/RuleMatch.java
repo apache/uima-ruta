@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -19,7 +19,10 @@
 
 package org.apache.uima.ruta.rule;
 
+import static java.util.Arrays.asList;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +47,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
 
   public RuleMatch(RutaRule rule) {
     super(rule);
-    delegateApply = new HashMap<RutaElement, ScriptApply>(0);
+    delegateApply = new HashMap<>(0);
   }
 
   @Override
@@ -94,7 +97,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
 
   public List<AnnotationFS> getMatchedAnnotations(List<Integer> indexes,
           RuleElementContainer container) {
-    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
+    List<AnnotationFS> result = new ArrayList<>();
     indexes = extendIndexes(indexes);
     if (container == null) {
       container = rule.getRoot();
@@ -103,7 +106,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     // TODO refactor this!
     if (indexes == null) {
       List<RuleElement> ruleElements = container.getRuleElements();
-      indexes = new ArrayList<Integer>();
+      indexes = new ArrayList<>();
       for (RuleElement ruleElement : ruleElements) {
         indexes.add(ruleElements.indexOf(ruleElement) + 1);
       }
@@ -130,7 +133,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     }
 
     // TODO rethink the reverse
-    List<List<List<RuleElementMatch>>> reverseList = new ArrayList<List<List<RuleElementMatch>>>();
+    List<List<List<RuleElementMatch>>> reverseList = new ArrayList<>();
     for (Integer index : indexes) {
       if (index > container.getRuleElements().size()) {
         continue;
@@ -155,7 +158,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
       boolean mergingRequired = list.size() > 1;
       for (List<RuleElementMatch> list2 : list) {
         if (list2 != null) {
-          if(list2.size()>1) {
+          if (list2.size() > 1) {
             mergingRequired = true;
           }
           if (list2.size() == 1 && !mergingRequired) {
@@ -167,7 +170,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
               mergingRequired = true;
             }
           }
-          if(mergingRequired) {
+          if (mergingRequired) {
             for (RuleElementMatch ruleElementMatch : list2) {
               List<AnnotationFS> textsMatched = ruleElementMatch.getTextsMatched();
               if (textsMatched != null && !textsMatched.isEmpty()) {
@@ -239,7 +242,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     if (indexes == null || indexes.size() <= 1) {
       return indexes;
     }
-    List<Integer> result = new ArrayList<Integer>();
+    List<Integer> result = new ArrayList<>();
     int pointer = indexes.get(0);
     for (Integer each : indexes) {
       while (pointer < each - 1) {
@@ -281,8 +284,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
       copy.setRootMatch(rootMatch.copy2(extendedContainerMatch, after));
     }
 
-    Map<RutaElement, ScriptApply> newDelegateApply = new HashMap<RutaElement, ScriptApply>(
-            delegateApply);
+    Map<RutaElement, ScriptApply> newDelegateApply = new HashMap<>(delegateApply);
     copy.setDelegateApply(newDelegateApply);
     return copy;
   }
@@ -291,8 +293,7 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
     RuleMatch copy = new RuleMatch(rule);
     copy.setMatched(matched);
     copy.setRootMatch(rootMatch.copy());
-    Map<RutaElement, ScriptApply> newDelegateApply = new HashMap<RutaElement, ScriptApply>(
-            delegateApply);
+    Map<RutaElement, ScriptApply> newDelegateApply = new HashMap<>(delegateApply);
     copy.setDelegateApply(newDelegateApply);
     return copy;
   }
@@ -331,29 +332,28 @@ public class RuleMatch extends AbstractRuleMatch<RutaRule> {
 
   public List<List<RuleElementMatch>> getMatchInfo(RuleElementMatch rootMatch,
           RuleElement element) {
-    List<List<RuleElementMatch>> result = new ArrayList<List<RuleElementMatch>>();
-    RuleElement root = rootMatch.getRuleElement();
-    if (element.equals(root)) {
-      List<RuleElementMatch> list = new ArrayList<RuleElementMatch>(1);
-      list.add(rootMatch);
-      result.add(list);
-    } else if (rootMatch instanceof ComposedRuleElementMatch) {
+    if (element.equals(rootMatch.getRuleElement())) {
+      return asList(asList(rootMatch));
+    }
+
+    if (rootMatch instanceof ComposedRuleElementMatch) {
+      List<List<RuleElementMatch>> result = new ArrayList<>();
       ComposedRuleElementMatch crem = (ComposedRuleElementMatch) rootMatch;
       Set<Entry<RuleElement, List<RuleElementMatch>>> entrySet = crem.getInnerMatches().entrySet();
       for (Entry<RuleElement, List<RuleElementMatch>> entry : entrySet) {
         List<RuleElementMatch> value = entry.getValue();
         if (element.equals(entry.getKey())) {
           result.add(value);
-        } else {
-          if (value != null) {
-            for (RuleElementMatch eachMatch : value) {
-              result.addAll(getMatchInfo(eachMatch, element));
-            }
+        } else if (value != null) {
+          for (RuleElementMatch eachMatch : value) {
+            result.addAll(getMatchInfo(eachMatch, element));
           }
         }
       }
+      return result;
     }
-    return result;
+
+    return Collections.emptyList();
   }
 
   public RuleElementMatch getLastMatch(RuleElement ruleElement, boolean direction) {
