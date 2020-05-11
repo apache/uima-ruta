@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,6 +18,9 @@
  */
 
 package org.apache.uima.ruta;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptySet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,9 +105,9 @@ public class RutaStream {
 
   private Type basicType;
 
-  private NavigableMap<Integer, RutaBasic> beginAnchors = new TreeMap<Integer, RutaBasic>();
+  private NavigableMap<Integer, RutaBasic> beginAnchors = new TreeMap<>();
 
-  private NavigableMap<Integer, RutaBasic> endAnchors = new TreeMap<Integer, RutaBasic>();
+  private NavigableMap<Integer, RutaBasic> endAnchors = new TreeMap<>();
 
   private FilterManager filter;
 
@@ -220,7 +223,7 @@ public class RutaStream {
       reindexTypeList = removeSubsumedTypes(Arrays.asList(reindexOnly), cas.getTypeSystem());
     }
 
-    final List<AnnotationFS> allAnnotations = new LinkedList<AnnotationFS>();
+    final List<AnnotationFS> allAnnotations = new LinkedList<>();
     for (Type type : reindexTypeList) {
       AnnotationIndex<AnnotationFS> annotationIndex = null;
       if (StringUtils.equals(type.getName(), CAS.TYPE_NAME_ANNOTATION)) {
@@ -236,7 +239,7 @@ public class RutaStream {
     }
 
     if (basicIndex.size() == 0) {
-      TreeSet<Integer> anchors = new TreeSet<Integer>();
+      TreeSet<Integer> anchors = new TreeSet<>();
       for (AnnotationFS a : allAnnotations) {
         anchors.add(a.getBegin());
         anchors.add(a.getEnd());
@@ -548,7 +551,7 @@ public class RutaStream {
   }
 
   public List<AnnotationFS> getOverappingAnnotations(AnnotationFS window, Type type) {
-    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
+    List<AnnotationFS> result = new ArrayList<>();
     AnnotationFS newWindow = cas.createAnnotation(type, window.getBegin(), window.getEnd() - 1);
     FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(type).iterator(newWindow);
     if (!iterator.isValid()) {
@@ -568,7 +571,7 @@ public class RutaStream {
   }
 
   public List<Annotation> getAnnotationsFollowing(Annotation annotation) {
-    List<Annotation> result = new ArrayList<Annotation>();
+    List<Annotation> result = new ArrayList<>();
     moveTo(annotation);
     while (currentIt.isValid()) {
       currentIt.moveToNext();
@@ -598,7 +601,7 @@ public class RutaStream {
   }
 
   public List<AnnotationFS> getAllofType(Type type) {
-    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
+    List<AnnotationFS> result = new ArrayList<>();
     FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(type).iterator();
     while (iterator.isValid()) {
       FeatureStructure featureStructure = iterator.get();
@@ -613,34 +616,32 @@ public class RutaStream {
     if (windowAnnotation == null || type == null) {
       return Collections.emptyList();
     }
-    TypeSystem typeSystem = this.getCas().getTypeSystem();
-    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
+    TypeSystem typeSystem = getCas().getTypeSystem();
+    List<AnnotationFS> result = new ArrayList<>();
     if (typeSystem.subsumes(type, windowAnnotation.getType())) {
       result.add(windowAnnotation);
     }
-    result.addAll(CasUtil.selectCovered(this.cas, type, windowAnnotation));
+    result.addAll(CasUtil.selectCovered(cas, type, windowAnnotation));
     return result;
   }
 
   public Collection<RutaBasic> getAllBasicsInWindow(AnnotationFS windowAnnotation) {
     if (windowAnnotation.getBegin() >= windowAnnotation.getEnd()) {
-      return Collections.emptySet();
+      return emptySet();
     }
+
     RutaBasic beginAnchor = getBeginAnchor(windowAnnotation.getBegin());
     if (beginAnchor != null && beginAnchor.getEnd() == windowAnnotation.getEnd()) {
-      Collection<RutaBasic> result = new ArrayList<RutaBasic>(1);
-      result.add(beginAnchor);
-      return result;
+      return asList(beginAnchor);
     }
-    Collection<RutaBasic> subSet = null;
+
     if (windowAnnotation.getEnd() == cas.getDocumentAnnotation().getEnd()
             && windowAnnotation.getBegin() == 0) {
-      subSet = beginAnchors.values();
-    } else {
-      subSet = beginAnchors
-              .subMap(windowAnnotation.getBegin(), true, windowAnnotation.getEnd(), false).values();
+      return beginAnchors.values();
     }
-    return subSet;
+
+    return beginAnchors.subMap(windowAnnotation.getBegin(), true, windowAnnotation.getEnd(), false)
+            .values();
   }
 
   public RutaBasic getBasicNextTo(boolean before, AnnotationFS annotation) {
@@ -687,7 +688,7 @@ public class RutaStream {
   }
 
   public List<RutaBasic> getBasicsInWindow(AnnotationFS windowAnnotation) {
-    List<RutaBasic> result = new ArrayList<RutaBasic>();
+    List<RutaBasic> result = new ArrayList<>();
     if (windowAnnotation instanceof RutaBasic) {
       result.add((RutaBasic) windowAnnotation);
       return result;
@@ -726,7 +727,7 @@ public class RutaStream {
     if (annotation != null) {
       return getBasicsInWindow(annotation);
     } else {
-      return new ArrayList<RutaBasic>();
+      return new ArrayList<>();
     }
   }
 
@@ -834,7 +835,7 @@ public class RutaStream {
   }
 
   public void setGreedyRuleElement(Boolean greedyAnchoring) {
-    this.greedyRuleElement = greedyAnchoring;
+    greedyRuleElement = greedyAnchoring;
   }
 
   public boolean isGreedyRule() {
@@ -842,7 +843,7 @@ public class RutaStream {
   }
 
   public void setGreedyRule(Boolean greedyAnchoring) {
-    this.greedyRule = greedyAnchoring;
+    greedyRule = greedyAnchoring;
   }
 
   public void setIndexPenalty(double indexPenalty) {
@@ -954,7 +955,7 @@ public class RutaStream {
   }
 
   public Collection<AnnotationFS> getAnnotations(Type type) {
-    Collection<AnnotationFS> result = new LinkedList<AnnotationFS>();
+    Collection<AnnotationFS> result = new LinkedList<>();
     AnnotationFS windowAnnotation = filter.getWindowAnnotation();
     if (windowAnnotation != null
             && (windowAnnotation.getBegin() != cas.getDocumentAnnotation().getBegin()
@@ -1136,7 +1137,7 @@ public class RutaStream {
       AnnotationTypeExpression ate = (AnnotationTypeExpression) value;
       if (range.isArray()) {
         List<AnnotationFS> annotations = ate.getAnnotationList(context, this);
-        annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), annotations));
+        annotation.setFeatureValue(feature, UIMAUtils.toFSArray(getJCas(), annotations));
       } else {
         AnnotationFS a = ate.getAnnotation(context, this);
         annotation.setFeatureValue(feature, a);
@@ -1155,7 +1156,7 @@ public class RutaStream {
       if (range.isArray()) {
         List<FeatureStructure> c = new ArrayList<>();
         c.add(a);
-        annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), c));
+        annotation.setFeatureValue(feature, UIMAUtils.toFSArray(getJCas(), c));
       } else {
         annotation.setFeatureValue(feature, a);
       }
@@ -1164,7 +1165,7 @@ public class RutaStream {
       List<AnnotationFS> annotations = ale.getAnnotationList(context, this);
       if (annotations != null) {
         if (range.isArray()) {
-          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), annotations));
+          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(getJCas(), annotations));
         } else {
           if (annotations.isEmpty()) {
             annotation.setFeatureValue(feature, null);
@@ -1182,7 +1183,7 @@ public class RutaStream {
     } else if (value instanceof GenericFeatureExpression && !range.isPrimitive()) {
       FeatureExpression fe = ((GenericFeatureExpression) value).getFeatureExpression();
       Type t = fe.getInitialType(context, this);
-      List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), t);
+      List<AnnotationFS> inWindow = getAnnotationsInWindow(context.getAnnotation(), t);
       if (fe instanceof SimpleFeatureExpression) {
         SimpleFeatureExpression sfe = (SimpleFeatureExpression) fe;
         List<? extends FeatureStructure> featureAnnotations = null;
@@ -1193,15 +1194,14 @@ public class RutaStream {
           featureAnnotations = inWindow;
         }
         if (range.isArray()) {
-          annotation.setFeatureValue(feature,
-                  UIMAUtils.toFSArray(this.getJCas(), featureAnnotations));
+          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(getJCas(), featureAnnotations));
         } else if (!featureAnnotations.isEmpty()) {
           FeatureStructure a = featureAnnotations.get(0);
           annotation.setFeatureValue(feature, a);
         }
       } else {
         if (range.isArray()) {
-          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), inWindow));
+          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(getJCas(), inWindow));
         } else {
           AnnotationFS a = inWindow.get(0);
           annotation.setFeatureValue(feature, a);
@@ -1213,9 +1213,9 @@ public class RutaStream {
   private void assignAnnotationByTypeInWindow(FeatureStructure annotation, Feature feature,
           MatchContext context, Type type) {
 
-    List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), type);
+    List<AnnotationFS> inWindow = getAnnotationsInWindow(context.getAnnotation(), type);
     if (feature.getRange().isArray()) {
-      annotation.setFeatureValue(feature, UIMAUtils.toFSArray(this.getJCas(), inWindow));
+      annotation.setFeatureValue(feature, UIMAUtils.toFSArray(getJCas(), inWindow));
     } else {
       if (inWindow != null && !inWindow.isEmpty()) {
         AnnotationFS a = inWindow.get(0);
@@ -1326,7 +1326,7 @@ public class RutaStream {
   }
 
   public AnnotationFS getSingleAnnotationByTypeInContext(Type type, MatchContext context) {
-    List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), type);
+    List<AnnotationFS> inWindow = getAnnotationsInWindow(context.getAnnotation(), type);
     if (inWindow != null && !inWindow.isEmpty()) {
       return inWindow.get(0);
     }
@@ -1334,12 +1334,12 @@ public class RutaStream {
   }
 
   public List<AnnotationFS> getAnnotationsByTypeInContext(Type type, MatchContext context) {
-    List<AnnotationFS> inWindow = this.getAnnotationsInWindow(context.getAnnotation(), type);
+    List<AnnotationFS> inWindow = getAnnotationsInWindow(context.getAnnotation(), type);
     return inWindow;
   }
 
   public List<AnnotationFS> getBestGuessedAnnotationsAt(AnnotationFS window, Type type) {
-    List<AnnotationFS> result = new ArrayList<AnnotationFS>();
+    List<AnnotationFS> result = new ArrayList<>();
     if (window == null || type == null) {
       return result;
     }
@@ -1444,8 +1444,8 @@ public class RutaStream {
 
   public RutaAnnotation getRutaAnnotationFor(AnnotationFS annotation, boolean create,
           RutaStream stream) {
-    Type heuristicType = this.cas.getTypeSystem().getType(RutaAnnotation.class.getName());
-    List<AnnotationFS> ras = CasUtil.selectAt(this.cas, heuristicType, annotation.getBegin(),
+    Type heuristicType = cas.getTypeSystem().getType(RutaAnnotation.class.getName());
+    List<AnnotationFS> ras = CasUtil.selectAt(cas, heuristicType, annotation.getBegin(),
             annotation.getEnd());
     for (AnnotationFS each : ras) {
       if (((RutaAnnotation) each).getAnnotation() == annotation) {
@@ -1471,10 +1471,10 @@ public class RutaStream {
   }
 
   public long getMaxRuleMatches() {
-    return this.maxRuleMatches;
+    return maxRuleMatches;
   }
 
   public long getMaxRuleElementMatches() {
-    return this.maxRuleElementMatches;
+    return maxRuleElementMatches;
   }
 }

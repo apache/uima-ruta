@@ -19,10 +19,14 @@
 
 package org.apache.uima.ruta.rule;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
@@ -48,55 +52,54 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
   @Override
   public Collection<? extends AnnotationFS> getMatchingAnnotations(RutaBlock parent,
           RutaStream stream) {
-    Collection<AnnotationFS> result = null;
     MatchContext context = new MatchContext(parent);
     // just for forcing expression top initialize
     // TODO this is maybe a bit expensive sometimes
     expression.getType(context, stream);
     if (expression.getAnnotationListExpression() != null) {
-      result = expression.getAnnotationList(context, stream);
-      if (result == null) {
-        // avoid null lists here
-        result = Collections.emptyList();
-      }
-    } else if (expression.getAnnotationExpression() != null) {
-      result = new ArrayList<>(1);
-      result.add(expression.getAnnotation(context, stream));
-    } else {
-
-      // TODO defer to getter of expression?
-      List<Type> types = null;
-      if (expression.getTypeListExpression() != null) {
-        types = expression.getTypeListExpression().getTypeList(context, stream);
-      } else {
-        Type type = getType(context.getParent(), stream);
-        types = new ArrayList<>(1);
-        if (type != null) {
-          types.add(type);
-        }
-      }
-      result = new ArrayList<>();
-      for (Type type : types) {
-        if (type != null) {
-
-          Type overallDAType = stream.getCas().getDocumentAnnotation().getType();
-          String name = type.getName();
-          if (StringUtils.equals(CAS.TYPE_NAME_DOCUMENT_ANNOTATION, name)
-                  || "org.apache.uima.ruta.type.Document".equals(name)
-                  || overallDAType.equals(type)) {
-            // TODO what about dynamic windowing?
-            result.add(stream.getDocumentAnnotation());
-          } else {
-            result.addAll(stream.getAnnotations(type));
-          }
-          if (expression.getFeatureExpression() != null) {
-            result = new ArrayList<>(expression.getFeatureExpression().getAnnotations(result,
-                    CHECK_ON_FEATURE, context, stream));
-          }
-        }
-      }
-
+      Collection<AnnotationFS> result = expression.getAnnotationList(context, stream);
+      // avoid null lists here
+      return result != null ? result : emptyList();
     }
+    
+    if (expression.getAnnotationExpression() != null) {
+      return asList(expression.getAnnotation(context, stream));
+    }
+    
+    // TODO defer to getter of expression?
+    List<Type> types;
+    if (expression.getTypeListExpression() != null) {
+      types = expression.getTypeListExpression().getTypeList(context, stream);
+    } else {
+      types = asList(getType(context.getParent(), stream));
+    }
+    
+    Collection<AnnotationFS> result = new ArrayList<>();
+    for (Type type : types) {
+      if (type == null) {
+        continue;
+      }
+
+      Type overallDAType = stream.getCas().getDocumentAnnotation().getType();
+      String name = type.getName();
+      if (CAS.TYPE_NAME_DOCUMENT_ANNOTATION.equals(name)
+              || "org.apache.uima.ruta.type.Document".equals(name)
+              || overallDAType.equals(type)) {
+        // TODO what about dynamic windowing?
+        result.add(stream.getDocumentAnnotation());
+      } else {
+        result.addAll(stream.getAnnotations(type));
+      }
+      
+      // TODO: Throwing away the result so far in this for loop seems odd
+      if (expression.getFeatureExpression() != null) {
+        @SuppressWarnings("unchecked")
+        Collection<AnnotationFS> r = (Collection<AnnotationFS>) expression.getFeatureExpression()
+                .getAnnotations(result, CHECK_ON_FEATURE, context, stream);
+        result = r;
+      }
+    }
+    
     return result;
   }
 
@@ -294,5 +297,4 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
 
     return null;
   }
-
 }

@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,6 +18,8 @@
  */
 
 package org.apache.uima.ruta.rule;
+
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,7 +58,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           RuleElementContainer container, RutaBlock parent) {
     super(quantifier, conditions, actions, container, parent);
     this.elements = elements;
-    this.caretaker = new RuleElementCaretaker(this);
+    caretaker = new RuleElementCaretaker(this);
   }
 
   @Override
@@ -69,7 +71,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
   public List<RuleMatch> startMatch(RuleMatch ruleMatch, RuleApply ruleApply,
           ComposedRuleElementMatch containerMatch, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     if (conjunct == null) {
       ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch,
               stream);
@@ -78,7 +80,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
               crowd);
     } else if (!conjunct) {
       // disjunctive
-      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new LinkedHashMap<RuleMatch, ComposedRuleElementMatch>();
+      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new LinkedHashMap<>();
       for (RuleElement each : elements) {
         ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
         RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, true);
@@ -114,7 +116,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       }
     } else if (conjunct) {
       // conjunctive
-      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new LinkedHashMap<RuleMatch, ComposedRuleElementMatch>();
+      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new LinkedHashMap<>();
       RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
 
       ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch,
@@ -188,7 +190,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
   public List<RuleMatch> continueMatch(boolean after, AnnotationFS annotation, RuleMatch ruleMatch,
           RuleApply ruleApply, ComposedRuleElementMatch containerMatch, RuleElement sideStepOrigin,
           RuleElement entryPoint, RutaStream stream, InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     if (conjunct == null) {
       // inner next sequential
       RuleElement nextElement = getNextElement(after, this);
@@ -203,7 +205,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       }
     } else if (!conjunct) {
       // disjunctive
-      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
+      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<>();
       for (RuleElement each : elements) {
         ComposedRuleElementMatch extendedContainerMatch = containerMatch.copy();
         RuleMatch extendedMatch = ruleMatch.copy(extendedContainerMatch, after);
@@ -238,7 +240,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       }
     } else if (conjunct) {
       // conjunctive
-      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<RuleMatch, ComposedRuleElementMatch>();
+      Map<RuleMatch, ComposedRuleElementMatch> ruleMatches = new HashMap<>();
 
       RuleElement anchoringRuleElement = getAnchoringRuleElement(stream);
       ComposedRuleElementMatch composedMatch = createComposedMatch(ruleMatch, containerMatch,
@@ -325,7 +327,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           Map<RuleMatch, ComposedRuleElementMatch> ruleMatches, boolean direction,
           RutaStream stream) {
     // TODO hotfix: this needs a correct implementation
-    Map<RuleMatch, ComposedRuleElementMatch> result = new TreeMap<RuleMatch, ComposedRuleElementMatch>(
+    Map<RuleMatch, ComposedRuleElementMatch> result = new TreeMap<>(
             ruleMatchComparator);
     Set<Entry<RuleMatch, ComposedRuleElementMatch>> entrySet = ruleMatches.entrySet();
     Entry<RuleMatch, ComposedRuleElementMatch> largestEntry = null;
@@ -365,7 +367,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     if (!stream.isSimpleGreedyForComposed()) {
       result = continueMatch(after, annotation, ruleMatch, ruleApply, containerMatch,
               sideStepOrigin, entryPoint, stream, crowd);
@@ -415,10 +417,10 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
+    List<RuleMatch> result = new ArrayList<>();
     RuleElementContainer container = getContainer();
     doMatch(after, annotation, ruleMatch, containerMatch, isStartAnchor(), stream, crowd);
-    if (this.equals(entryPoint) && ruleApply == null) {
+    if (equals(entryPoint) && ruleApply == null) {
       result.add(ruleMatch);
     } else if (container == null) {
       result = fallback(after, failed, annotation, ruleMatch, ruleApply, containerMatch,
@@ -456,7 +458,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
                     sideStepOrigin, entryPoint, stream, crowd);
           }
         } else {
-          if (this.equals(entryPoint)) {
+          if (equals(entryPoint)) {
             // hotfix for UIMA-3820
             result.add(ruleMatch);
           } else {
@@ -515,22 +517,22 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           RuleMatch ruleMatch, RuleApply ruleApply, ComposedRuleElementMatch containerMatch,
           RuleElement sideStepOrigin, RuleElement entryPoint, RutaStream stream,
           InferenceCrowd crowd) {
-    List<RuleMatch> result = new ArrayList<RuleMatch>();
     RuleElementContainer parentContainer = getContainer();
     if (parentContainer instanceof ComposedRuleElement) {
       ComposedRuleElement parentElement = (ComposedRuleElement) parentContainer;
-      result = parentElement.fallbackContinue(after, failed, annotation, ruleMatch, ruleApply,
+      return parentElement.fallbackContinue(after, failed, annotation, ruleMatch, ruleApply,
               containerMatch, sideStepOrigin, entryPoint, stream, crowd);
-    } else if (sideStepOrigin != null && !failed) {
-      result = sideStepOrigin.continueSideStep(after, ruleMatch, ruleApply, containerMatch,
-              entryPoint, stream, crowd);
-    } else {
-      // take care that failed matches wont be applied
-      ruleMatch.setMatched(ruleMatch.matched && !failed);
-      result.add(ruleMatch);
-      doneMatching(ruleMatch, ruleApply, stream, crowd);
     }
-    return result;
+
+    if (sideStepOrigin != null && !failed) {
+      return sideStepOrigin.continueSideStep(after, ruleMatch, ruleApply, containerMatch,
+              entryPoint, stream, crowd);
+    }
+
+    // take care that failed matches wont be applied
+    ruleMatch.setMatched(ruleMatch.matched && !failed);
+    doneMatching(ruleMatch, ruleApply, stream, crowd);
+    return asList(ruleMatch);
   }
 
   private void includeMatch(RuleMatch ruleMatch, ComposedRuleElementMatch containerMatch,
@@ -563,7 +565,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     RutaEnvironment environment = context.getParent().getEnvironment();
     environment.addMatchToVariable(ruleMatch, this, context, stream);
 
-    List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
+    List<EvaluatedCondition> evaluatedConditions = new ArrayList<>(
             conditions.size());
     for (AbstractRutaCondition condition : conditions) {
       crowd.beginVisit(condition, null);
@@ -652,7 +654,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
   @Override
   public RuleElement getNextElement(boolean after, RuleElement ruleElement) {
     // return caretaker.getNextElement(after, ruleElement);
-    if (conjunct == null || this.equals(ruleElement)) {
+    if (conjunct == null || equals(ruleElement)) {
       return caretaker.getNextElement(after, ruleElement);
     } else {
       return null;
