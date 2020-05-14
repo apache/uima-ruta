@@ -44,30 +44,36 @@ public class ResourcesFromDataPathTest {
     FileUtils.copyFile(
             new File("src/test/resources/org/apache/uima/ruta/action/MarkFastTestList.txt"),
             new File(datapath + "MarkFastTestList.txt"));
-    ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
-
-      @Override
-      public ResourceManager newResourceManager() throws ResourceInitializationException {
-
-        ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
-        try {
-          resourceManager.setDataPath(datapath);
-        } catch (MalformedURLException e) {
-          throw new ResourceInitializationException(e);
+    ResourceManagerCreator oldCreator = ResourceManagerFactory.getResourceManagerCreator();
+    try {
+      ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
+  
+        @Override
+        public ResourceManager newResourceManager() throws ResourceInitializationException {
+  
+          ResourceManager resourceManager = UIMAFramework.newDefaultResourceManager();
+          try {
+            resourceManager.setDataPath(datapath);
+          } catch (MalformedURLException e) {
+            throw new ResourceInitializationException(e);
+          }
+          return resourceManager;
         }
-        return resourceManager;
-      }
-    });
-
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
-            RutaEngine.PARAM_MAIN_SCRIPT, "MarkFastTest");
-    CAS cas = RutaTestUtils.getCAS(FileUtils.readFileToString(
-            new File("src/test/resources/org/apache/uima/ruta/action/MarkFastTest.txt")));
-    ae.process(cas);
-
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 0 0", "100", "2 0 0");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "1 0 0", "100", "2 0 0");
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "100");
-    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "100");
+      });
+  
+      AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
+              RutaEngine.PARAM_MAIN_SCRIPT, "MarkFastTest");
+      CAS cas = RutaTestUtils.getCAS(FileUtils.readFileToString(
+              new File("src/test/resources/org/apache/uima/ruta/action/MarkFastTest.txt")));
+      ae.process(cas);
+  
+      RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 0 0", "100", "2 0 0");
+      RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "1 0 0", "100", "2 0 0");
+      RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "100");
+      RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "100");
+    }
+    finally {
+      ResourceManagerFactory.setResourceManagerCreator(oldCreator);
+    }
   }
 }

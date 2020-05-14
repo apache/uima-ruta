@@ -47,32 +47,38 @@ public class HandleDataPathTest {
   }
 
   private void assertDataPathEntries(boolean modify, String[] expected) throws ResourceInitializationException {
-    ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
-
-      @Override
-      public ResourceManager newResourceManager() throws ResourceInitializationException {
-
-        URL[] urls = new URL[1];
-        urls[0] = HandleDataPathTest.class.getResource("/org/apache/uima/ruta/CustomViewTest.ruta");
-        ResourceManager resourceManager = new ResourceManager_impl(new URLClassLoader(urls));
-        try {
-          resourceManager.setDataPath("datapath");
-        } catch (MalformedURLException e) {
-          throw new ResourceInitializationException(e);
+    ResourceManagerCreator oldCreator = ResourceManagerFactory.getResourceManagerCreator();
+    try {
+      ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
+  
+        @Override
+        public ResourceManager newResourceManager() throws ResourceInitializationException {
+  
+          URL[] urls = new URL[1];
+          urls[0] = HandleDataPathTest.class.getResource("/org/apache/uima/ruta/CustomViewTest.ruta");
+          ResourceManager resourceManager = new ResourceManager_impl(new URLClassLoader(urls));
+          try {
+            resourceManager.setDataPath("datapath");
+          } catch (MalformedURLException e) {
+            throw new ResourceInitializationException(e);
+          }
+          return resourceManager;
         }
-        return resourceManager;
+      });
+      AnalysisEngine ruta = AnalysisEngineFactory.createEngine(RutaEngine.class,
+              RutaEngine.PARAM_MODIFY_DATAPATH, modify, RutaEngine.PARAM_DESCRIPTOR_PATHS,
+              new String[] { "desc1", "desc2" });
+      String dataPath = ruta.getResourceManager().getDataPath();
+      String[] paths = dataPath.split(Pattern.quote(File.pathSeparator));
+      Assert.assertEquals(expected.length, paths.length);
+      for (int i = 0; i < expected.length; i++) {
+        String e = expected[i];
+        String dp = paths[i];
+        Assert.assertEquals(e, dp);
       }
-    });
-    AnalysisEngine ruta = AnalysisEngineFactory.createEngine(RutaEngine.class,
-            RutaEngine.PARAM_MODIFY_DATAPATH, modify, RutaEngine.PARAM_DESCRIPTOR_PATHS,
-            new String[] { "desc1", "desc2" });
-    String dataPath = ruta.getResourceManager().getDataPath();
-    String[] paths = dataPath.split(Pattern.quote(File.pathSeparator));
-    Assert.assertEquals(expected.length, paths.length);
-    for (int i = 0; i < expected.length; i++) {
-      String e = expected[i];
-      String dp = paths[i];
-      Assert.assertEquals(e, dp);
+    }
+    finally {
+      ResourceManagerFactory.setResourceManagerCreator(oldCreator);
     }
   }
 
