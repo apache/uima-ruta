@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Licensed to the Apache Software Foundation (ASF) under one
-   or more contributor license agreements.  See the NOTICE file
-   distributed with this work for additional information
-   regarding copyright ownership.  The ASF licenses this file
-   to you under the Apache License, Version 2.0 (the
-   "License"); you may not use this file except in compliance
-   with the License.  You may obtain a copy of the License at
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements. See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership. The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License. You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+  http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing,
-   software distributed under the License is distributed on an
-   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-   KIND, either express or implied.  See the License for the
-   specific language governing permissions and limitations
-   under the License.
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations
+  under the License.
 -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -34,35 +35,37 @@
   <url>${uimaWebsiteUrl}</url>
   <inceptionYear>2011</inceptionYear>
   <description>The common parent pom for the UIMA Ruta Eclipse Plugins</description>
-  
-  <!-- Special inheritance note
-       even though the <scm> element that follows is exactly the
-       same as those in super poms, it cannot be inherited because
-       there is some special code that computes the connection elements
-       from the chain of parent poms, if this is omitted.
 
-       Keeping this a bit factored allows cutting/pasting the <scm>
-       element, and just changing the following two properties -->
+  <!-- Special inheritance note
+    even though the <scm> element that follows is exactly the
+    same as those in super poms, it cannot be inherited because
+    there is some special code that computes the connection elements
+    from the chain of parent poms, if this is omitted.
+
+    Keeping this a bit factored allows cutting/pasting the <scm>
+    element, and just changing the following two properties -->
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-ep-parent</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-ep-parent</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-ep-parent</developerConnection>
+    <connection>scm:git:git://github.com/apache/uima-ruta</connection>
+    <developerConnection>scm:git:git@github.com:apache/uima-ruta.git</developerConnection>
+    <url>https://github.com/apache/uima-ruta</url>
+    <tag>HEAD</tag>
   </scm>
-  
+
   <properties>
     <dltk.version>[3.0.1,6.0.0)</dltk.version>
   </properties>
-  
+
   <repositories>
-      <!-- Temporary repository that contains osgi bundles like DLTK 5.3. Added to ease building the UIMA Ruta 
+    <!-- Temporary repository that contains osgi bundles like DLTK 5.3. Added to ease building the UIMA 
+      Ruta
       Eclipse plugins that depend on bundles, which are not provided by public maven repositories. -->
     <repository>
       <id>averbis-osgi-releases</id>
       <url>https://maven.averbis.com/m2/</url>
     </repository>
   </repositories>
-  
-  
+
+
   <dependencies>
     <dependency>
       <groupId>org.eclipse.dltk</groupId>
@@ -106,7 +109,7 @@
       <version>${dltk.version}</version>
       <scope>provided</scope>
     </dependency>
-        <dependency>
+    <dependency>
       <groupId>org.eclipse.dltk</groupId>
       <artifactId>console</artifactId>
       <version>${dltk.version}</version>
@@ -119,9 +122,9 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
-  
+
   <dependencyManagement>
-<!--   explicit dependencies for mars.1 -->
+    <!-- explicit dependencies for mars.1 -->
     <dependencies>
       <dependency>
         <groupId>org.eclipse.core</groupId>
@@ -250,7 +253,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  
+
   <build>
     <pluginManagement>
       <plugins>
@@ -262,5 +265,5 @@
       </plugins>
     </pluginManagement>
   </build>
-  
+
 </project>
