@@ -13,11 +13,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>ruta-core</artifactId>
-  <version>2.8.2-SNAPSHOT</version>
+  <version>3.0.2-SNAPSHOT</version>
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>2.8.2-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   
@@ -139,9 +139,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/ruta/trunk/ruta-core</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-core</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/ruta/trunk/ruta-core</developerConnection>
+    <url>http://svn.apache.org/viewvc/uima/uv3/ruta-v3/trunk/ruta-core</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-core</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/uv3/ruta-v3/trunk/ruta-core</developerConnection>
   </scm>
   <build>
     <pluginManagement>
