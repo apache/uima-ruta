@@ -239,7 +239,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
 			the more efficient structures, tree word list and multi tree word
 			list. The usage and configuration is shortly summarized in the
 			following. An exemplary maven project for UIMA Ruta is given here:
-			<code>https://svn.apache.org/repos/asf/uima/ruta/trunk/example-projects/ruta-maven-example</code>
+			<code>https://github.com/apache/uima-ruta/tree/master/example-projects/ruta-maven-example</code>
 		</para>
 		<section>
 		<title>generate goal</title>
