@@ -45,30 +45,36 @@ public class UimaClassLoaderTest {
             .getResource("/org/apache/uima/ruta/engine/UimafitTest.ruta");
     final File cpDir = new File(url.toURI()).getParentFile();
 
-    ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
-
-      @Override
-      public ResourceManager newResourceManager() throws ResourceInitializationException {
-        ResourceManager resourceManager = null;
-        try {
-          resourceManager = UIMAFramework.newDefaultResourceManager();
-          resourceManager.setExtensionClassPath(this.getClass().getClassLoader(), cpDir.getAbsolutePath(), true);
-          resourceManager.setDataPath("datapath");
-        } catch (MalformedURLException e) {
-          throw new ResourceInitializationException(e);
+    ResourceManagerCreator oldCreator = ResourceManagerFactory.getResourceManagerCreator();
+    try {
+      ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
+  
+        @Override
+        public ResourceManager newResourceManager() throws ResourceInitializationException {
+          ResourceManager resourceManager = null;
+          try {
+            resourceManager = UIMAFramework.newDefaultResourceManager();
+            resourceManager.setExtensionClassPath(this.getClass().getClassLoader(), cpDir.getAbsolutePath(), true);
+            resourceManager.setDataPath("datapath");
+          } catch (MalformedURLException e) {
+            throw new ResourceInitializationException(e);
+          }
+          return resourceManager;
         }
-        return resourceManager;
-      }
-    });
-
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
-            RutaEngine.PARAM_MAIN_SCRIPT, "UimafitTest");
-    JCas jcas = ae.newJCas();
-    jcas.setDocumentText("This is a test.");
-    new TruePositive(jcas, 0, 4).addToIndexes();
-    ae.process(jcas);
-    Collection<FalsePositive> select = JCasUtil.select(jcas, FalsePositive.class);
-    Assert.assertTrue(!select.isEmpty());
+      });
+  
+      AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
+              RutaEngine.PARAM_MAIN_SCRIPT, "UimafitTest");
+      JCas jcas = ae.newJCas();
+      jcas.setDocumentText("This is a test.");
+      new TruePositive(jcas, 0, 4).addToIndexes();
+      ae.process(jcas);
+      Collection<FalsePositive> select = JCasUtil.select(jcas, FalsePositive.class);
+      Assert.assertTrue(!select.isEmpty());
+    }
+    finally {
+      ResourceManagerFactory.setResourceManagerCreator(oldCreator);
+    }
   }
   
   @Test
@@ -77,29 +83,35 @@ public class UimaClassLoaderTest {
             .getResource("/org/apache/uima/ruta/action/MarkFastTestList.txt");
     final File cpDir = new File(url.toURI()).getParentFile();
 
-    ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
-
-      @Override
-      public ResourceManager newResourceManager() throws ResourceInitializationException {
-        ResourceManager resourceManager = null;
-        try {
-          resourceManager = UIMAFramework.newDefaultResourceManager();
-          resourceManager.setExtensionClassPath(this.getClass().getClassLoader(), cpDir.getAbsolutePath(), true);
-          resourceManager.setDataPath("datapath");
-        } catch (MalformedURLException e) {
-          throw new ResourceInitializationException(e);
+    ResourceManagerCreator oldCreator = ResourceManagerFactory.getResourceManagerCreator();
+    try {
+      ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
+  
+        @Override
+        public ResourceManager newResourceManager() throws ResourceInitializationException {
+          ResourceManager resourceManager = null;
+          try {
+            resourceManager = UIMAFramework.newDefaultResourceManager();
+            resourceManager.setExtensionClassPath(this.getClass().getClassLoader(), cpDir.getAbsolutePath(), true);
+            resourceManager.setDataPath("datapath");
+          } catch (MalformedURLException e) {
+            throw new ResourceInitializationException(e);
+          }
+          return resourceManager;
         }
-        return resourceManager;
-      }
-    });
-
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
-            RutaEngine.PARAM_RULES, "WORDLIST list1 = 'MarkFastTestList.txt';MARKFAST(FalsePositive, list1, false, 0, true);");
-    JCas jcas = ae.newJCas();
-    jcas.setDocumentText("1 0 0");
-    ae.process(jcas);
-    Collection<FalsePositive> select = JCasUtil.select(jcas, FalsePositive.class);
-    Assert.assertTrue(!select.isEmpty());
+      });
+  
+      AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
+              RutaEngine.PARAM_RULES, "WORDLIST list1 = 'MarkFastTestList.txt';MARKFAST(FalsePositive, list1, false, 0, true);");
+      JCas jcas = ae.newJCas();
+      jcas.setDocumentText("1 0 0");
+      ae.process(jcas);
+      Collection<FalsePositive> select = JCasUtil.select(jcas, FalsePositive.class);
+      Assert.assertTrue(!select.isEmpty());
+    }
+    finally {
+      ResourceManagerFactory.setResourceManagerCreator(oldCreator);
+    }
   }
 
 }
