@@ -1,7 +1,4 @@
-[![Build Status: master](https://builds.apache.org/buildStatus/icon?job=Apache+UIMA+Ruta+%28GitHub+master%29)](https://builds.apache.org/view/S-Z/view/UIMA/job/Apache%20UIMA%20Ruta%20(GitHub%20master)/)
-
-[![Build Status: master-v2](https://builds.apache.org/buildStatus/icon?job=Apache+UIMA+Ruta+%28GitHub+master-v2%29)](https://builds.apache.org/view/S-Z/view/UIMA/job/Apache%20UIMA%20Ruta%20(GitHub%20master-v2)/)
-
+[![Build Status: master](https://builds.apache.org/buildStatus/icon?subject=master&job=Apache+UIMA+Ruta+%28GitHub+master%29)](https://builds.apache.org/view/S-Z/view/UIMA/job/Apache%20UIMA%20Ruta%20(GitHub%20master)/)[![Build Status: master-v2](https://builds.apache.org/buildStatus/icon?subject=master-v2&job=Apache+UIMA+Ruta+%28GitHub+master-v2%29)](https://builds.apache.org/view/S-Z/view/UIMA/job/Apache%20UIMA%20Ruta%20(GitHub%20master-v2)/)
 
 What is Apache UIMA Ruta?
 -------------------------
