@@ -1,0 +1,7 @@
+.project
+.buildpath
+.classpath
+.settings/
+target/
+api-change-report/
+issuesFixed
