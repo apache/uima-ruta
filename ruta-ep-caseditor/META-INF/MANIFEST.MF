@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1589540105622
-Build-Date: 200515_1055
+Bnd-LastModified: 1589714608739
+Build-Date: 200517_1121
 Build-Jdk: 13.0.1
 Built-By: rec
 Bundle-ActivationPolicy: lazy
@@ -13,23 +13,31 @@ Bundle-Name: Apache UIMA Ruta Eclipse: ruta-ep-caseditor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: org.apache.uima.ruta.caseditor;singleton:=true
 Bundle-Vendor: The Apache Software Foundation
-Bundle-Version: 2.8.2.SNAPSHOT
+Bundle-Version: 3.0.2.SNAPSHOT
 Created-By: Apache Maven Bundle Plugin
-Export-Package: org.apache.uima.ruta.caseditor;version="2.8.2",org.apach
- e.uima.ruta.caseditor.view.browser;version="2.8.2",org.apache.uima.ruta
- .caseditor.view.html;version="2.8.2",org.apache.uima.ruta.caseditor.vie
- w.preferences;version="2.8.2",org.apache.uima.ruta.caseditor.view.selec
- tion;version="2.8.2",org.apache.uima.ruta.caseditor.view.tree;version="
- 2.8.2"
+Export-Package: org.apache.uima.ruta.caseditor;version="3.0.2",org.apach
+ e.uima.ruta.caseditor.view.browser;version="3.0.2",org.apache.uima.ruta
+ .caseditor.view.html;version="3.0.2",org.apache.uima.ruta.caseditor.vie
+ w.preferences;version="3.0.2",org.apache.uima.ruta.caseditor.view.selec
+ tion;version="3.0.2",org.apache.uima.ruta.caseditor.view.tree;version="
+ 3.0.2"
 Implementation-License: https://www.apache.org/licenses/LICENSE-2.0.txt
 Implementation-Title: Apache UIMA Ruta Eclipse: ruta-ep-caseditor
 Implementation-Url: https://uima.apache.org
 Implementation-Vendor: The Apache Software Foundation
 Implementation-Vendor-Id: org.apache.uima
-Implementation-Version: 2.8.2-SNAPSHOT
-Import-Package: org.apache.uima.cas,org.apache.uima.cas.text,org.apache.
- uima.ruta.caseditor.view.tree,org.eclipse.core.runtime.preferences;vers
- ion="[3.3,4)"
+Implementation-Version: 3.0.2-SNAPSHOT
+Import-Package: org.apache.commons.lang3;version="[3.1,4)",org.apache.ui
+ ma.cas,org.apache.uima.cas.impl,org.apache.uima.cas.text,org.apache.uim
+ a.resource,org.apache.uima.resource.metadata,org.apache.uima.resource.m
+ etadata.impl,org.apache.uima.ruta.caseditor,org.apache.uima.ruta.casedi
+ tor.view.tree,org.apache.uima.util,org.eclipse.core.resources,org.eclip
+ se.core.runtime.preferences;version="[3.3,4)",org.eclipse.jface.action,
+ org.eclipse.jface.dialogs,org.eclipse.jface.preference,org.eclipse.jfac
+ e.resource,org.eclipse.jface.util,org.eclipse.jface.viewers,org.eclipse
+ .swt.browser,org.eclipse.swt.dnd,org.eclipse.swt.events,org.eclipse.swt
+ .graphics,org.eclipse.swt.layout,org.eclipse.swt.widgets,org.eclipse.ui
+ .plugin,org.xml.sax
 Project-Title: Apache UIMA
 Require-Bundle: org.eclipse.jface.text,org.eclipse.text,org.eclipse.ui.e
  ditors,org.eclipse.ui.workbench.texteditor,org.eclipse.ui,org.eclipse.u

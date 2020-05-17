@@ -35,12 +35,8 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.internal.ResourceManagerFactory;
-import org.apache.uima.fit.internal.ResourceManagerFactory.ResourceManagerCreator;
 import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.RutaProcessRuntimeException;
 import org.apache.uima.ruta.TypeUsageInformation;
@@ -167,15 +163,6 @@ public class RutaEngineTest {
 
   @Test
   public void testResourceManagerWithUimaFITInEXEC() throws Throwable {
-
-    final ResourceManager resourceManager = ResourceManagerFactory.newResourceManager();
-    ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
-
-      @Override
-      public ResourceManager newResourceManager() throws ResourceInitializationException {
-        return resourceManager;
-      }
-    });
 
     String document = "This is some text.";
     String script = "UIMAFIT org.apache.uima.ruta.engine.DummyAnnotator;";
