@@ -39,6 +39,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.ruta.RutaEnvironment;
+import org.apache.uima.ruta.RutaPatternCache;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.ScriptApply;
 import org.apache.uima.ruta.block.RutaBlock;
@@ -85,7 +86,7 @@ public class RegExpRule extends AbstractRule {
     Map<Integer, List<Type>> groupTypes = getGroup2Types(context, stream);
     Map<Integer, Map<Type, Map<String, Object>>> fa = getFeatureAssignmentMap(stream);
 
-    Pattern pattern = Pattern.compile(regexpString, Pattern.MULTILINE | Pattern.DOTALL);
+    Pattern pattern = RutaPatternCache.getPattern(regexpString, false);
     Matcher matcher = pattern.matcher(document);
     int groupCount = matcher.groupCount();
     while (matcher.find()) {
