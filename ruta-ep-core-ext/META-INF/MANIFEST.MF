@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1589540107438
-Build-Date: 200515_1055
+Bnd-LastModified: 1589714616829
+Build-Date: 200517_1121
 Build-Jdk: 13.0.1
 Built-By: rec
 Bundle-ActivationPolicy: lazy
@@ -13,19 +13,19 @@ Bundle-Name: Apache UIMA Ruta Eclipse: ruta-ep-core-ext
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: org.apache.uima.ruta.core.ext;singleton:=true
 Bundle-Vendor: The Apache Software Foundation
-Bundle-Version: 2.8.2.SNAPSHOT
+Bundle-Version: 3.0.2.SNAPSHOT
 Created-By: Apache Maven Bundle Plugin
 Eclipse-BuddyPolicy: registered
 Eclipse-ExtensibleAPI: true
 Eclipse-RegisterBuddy: org.apache.uima.runtime,org.apache.uima.ruta.engi
  ne
-Export-Package: org.apache.uima.ruta;version="2.8.2"
+Export-Package: org.apache.uima.ruta;version="3.0.2"
 Implementation-License: https://www.apache.org/licenses/LICENSE-2.0.txt
 Implementation-Title: Apache UIMA Ruta Eclipse: ruta-ep-core-ext
 Implementation-Url: https://uima.apache.org
 Implementation-Vendor: The Apache Software Foundation
 Implementation-Vendor-Id: org.apache.uima
-Implementation-Version: 2.8.2-SNAPSHOT
+Implementation-Version: 3.0.2-SNAPSHOT
 Project-Title: Apache UIMA
 Require-Bundle: org.apache.uima.runtime,org.apache.uima.ruta.engine,org.
  apache.uima.ruta.ide,org.apache.uima.ruta.ide.ui,org.eclipse.dltk.core;
