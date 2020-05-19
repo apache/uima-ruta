@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.uima.ruta;
+package org.apache.uima.ruta.cache;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +30,10 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.ruta.FilterManager;
+import org.apache.uima.ruta.RutaScriptFactory;
+import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.TypeUsageInformation;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.condition.ConditionFactory;
 import org.apache.uima.ruta.condition.RegExpCondition;
@@ -83,6 +87,8 @@ public class RutaPatternCacheTest {
     regexpRule.setTypeMap(new HashMap<>());
     regexpRule.setFeatureAssignments(new HashMap<>());
 
+    RutaPatternCache.clearCache();
+
     EvaluatedCondition eval1 = regexpCondition1.eval(matchContext, stream, inferenceCrowd);
     EvaluatedCondition eval2 = regexpCondition2.eval(matchContext, stream, inferenceCrowd);
     regexpRule.apply(stream, inferenceCrowd);
@@ -90,11 +96,11 @@ public class RutaPatternCacheTest {
     Assert.assertTrue(eval1.isValue());
     Assert.assertTrue(eval2.isValue());
 
-    Map<String, Pattern> cache = RutaPatternCache.CACHE;
+    Map<PatternCacheKey, Pattern> cache = RutaPatternCache.getChacheMap();
     Assert.assertEquals(1, cache.size());
-    Entry<String, Pattern> entry = cache.entrySet().iterator().next();
-    Assert.assertEquals("A#false", entry.getKey());
-
+    Entry<PatternCacheKey, Pattern> entry = cache.entrySet().iterator().next();
+    Assert.assertEquals("A", entry.getKey().getPatternString());
+    Assert.assertFalse(entry.getKey().isIgnoreCase());
   }
 
 }

@@ -23,8 +23,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.RutaPatternCache;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.cache.RutaPatternCache;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
