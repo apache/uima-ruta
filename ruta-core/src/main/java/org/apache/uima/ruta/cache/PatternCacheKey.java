@@ -22,49 +22,54 @@ public class PatternCacheKey {
 
   private final String patternString;
 
-  private final boolean ignoreCase;
+  private final int flags;
 
-  public PatternCacheKey(String patternString, boolean ignoreCase) {
+  public PatternCacheKey(String patternString, int flags) {
     super();
 
     this.patternString = patternString;
-    this.ignoreCase = ignoreCase;
+    this.flags = flags;
   }
 
   public String getPatternString() {
     return patternString;
   }
 
-  public boolean isIgnoreCase() {
-    return ignoreCase;
+  public int getFlags() {
+    return flags;
   }
-
+  
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + (ignoreCase ? 1231 : 1237);
+    result = prime * result + flags;
     result = prime * result + ((patternString == null) ? 0 : patternString.hashCode());
     return result;
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
     PatternCacheKey other = (PatternCacheKey) obj;
-    if (ignoreCase != other.ignoreCase)
+    if (flags != other.flags) {
       return false;
+    }
     if (patternString == null) {
-      if (other.patternString != null)
+      if (other.patternString != null) {
         return false;
-    } else if (!patternString.equals(other.patternString))
+      }
+    } else if (!patternString.equals(other.patternString)) {
       return false;
+    }
     return true;
   }
-
 }

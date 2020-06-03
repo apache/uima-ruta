@@ -18,6 +18,11 @@
  */
 package org.apache.uima.ruta.cache;
 
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
+import static java.util.regex.Pattern.DOTALL;
+import static java.util.regex.Pattern.MULTILINE;
+import static java.util.regex.Pattern.UNICODE_CASE;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -96,11 +101,12 @@ public class RutaPatternCacheTest {
     Assert.assertTrue(eval1.isValue());
     Assert.assertTrue(eval2.isValue());
 
-    Map<PatternCacheKey, Pattern> cache = RutaPatternCache.getChacheMap();
+    Map<PatternCacheKey, Pattern> cache = RutaPatternCache.getCacheMap();
     Assert.assertEquals(1, cache.size());
     Entry<PatternCacheKey, Pattern> entry = cache.entrySet().iterator().next();
     Assert.assertEquals("A", entry.getKey().getPatternString());
-    Assert.assertFalse(entry.getKey().isIgnoreCase());
+    Assert.assertEquals(0, entry.getKey().getFlags() & (CASE_INSENSITIVE | UNICODE_CASE));
+    Assert.assertEquals(MULTILINE | DOTALL, entry.getKey().getFlags() & (MULTILINE | DOTALL));
   }
 
 }
