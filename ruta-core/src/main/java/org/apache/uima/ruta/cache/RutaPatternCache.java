@@ -23,7 +23,8 @@ import static java.util.regex.Pattern.DOTALL;
 import static java.util.regex.Pattern.MULTILINE;
 import static java.util.regex.Pattern.UNICODE_CASE;
 
-import java.util.concurrent.ConcurrentMap;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -79,11 +80,10 @@ public class RutaPatternCache {
   }
 
   /**
-   * 
-   * @return view on cache map
+   * @return an unmodifiable view of the cache map.
    */
-  public static ConcurrentMap<PatternCacheKey, Pattern> getCacheMap() {
-    return CACHE.asMap();
+  public static Map<PatternCacheKey, Pattern> getCacheMap() {
+    return Collections.unmodifiableMap(CACHE.asMap());
   }
 
   /**
