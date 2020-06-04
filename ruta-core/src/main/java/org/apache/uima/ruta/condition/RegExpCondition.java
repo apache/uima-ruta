@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
+import org.apache.uima.ruta.cache.RutaPatternCache;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.bool.SimpleBooleanExpression;
 import org.apache.uima.ruta.expression.string.IStringExpression;
@@ -68,26 +69,14 @@ public class RegExpCondition extends TerminalRutaCondition {
 
     if (variable == null) {
       String coveredText = annotation.getCoveredText();
-      Pattern regularExpPattern = null;
-      if (ignore) {
-        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL
-                + Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
-      } else {
-        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL);
-      }
+      Pattern regularExpPattern = RutaPatternCache.getPattern(stringValue, ignore);
       matcher = regularExpPattern.matcher(coveredText);
     } else {
       String variableValue = variable.getStringValue(context, stream);
       if (variableValue == null) {
         return new EvaluatedCondition(this, false);
       }
-      Pattern regularExpPattern = null;
-      if (ignore) {
-        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL
-                + Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE);
-      } else {
-        regularExpPattern = Pattern.compile(stringValue, Pattern.MULTILINE + Pattern.DOTALL);
-      }
+      Pattern regularExpPattern = RutaPatternCache.getPattern(stringValue, ignore);
       matcher = regularExpPattern.matcher(variableValue);
     }
     boolean matches = matcher.matches();
