@@ -281,8 +281,8 @@ public class ActionVerbalizer {
       return name + verbalizer.verbalize(a.getStructureType()) + features + ")";
     } else if (action instanceof FilterTypeAction) {
       FilterTypeAction a = (FilterTypeAction) action;
-      return a.getList().isEmpty() ? "FILTERTYPE" : "FILTERTYPE("
-              + verbalizer.verbalizeExpressionList(a.getList()) + ")";
+      return a.getList().isEmpty() ? "FILTERTYPE"
+              : "FILTERTYPE(" + verbalizer.verbalizeExpressionList(a.getList()) + ")";
     } else if (action instanceof AddFilterTypeAction) {
       AddFilterTypeAction a = (AddFilterTypeAction) action;
       return name + verbalizer.verbalizeExpressionList(a.getList()) + ")";
@@ -310,10 +310,10 @@ public class ActionVerbalizer {
         string = ", " + verbalizer.verbalizeExpressionList(a.getList());
       }
       String all = "";
-      if(a.getAll() != null) {
-        all =  ", " + verbalizer.verbalize(a.getAll());
+      if (a.getAll() != null) {
+        all = ", " + verbalizer.verbalize(a.getAll());
       }
-      return name + verbalizer.verbalize(a.getType()) + string + all+ ")";
+      return name + verbalizer.verbalize(a.getType()) + string + all + ")";
     } else if (action instanceof MarkAction) {
       MarkAction a = (MarkAction) action;
       if (a.getScore() != null) {
@@ -356,8 +356,8 @@ public class ActionVerbalizer {
       return name + verbalizer.verbalize(a.getReplacement()) + ")";
     } else if (action instanceof RetainTypeAction) {
       RetainTypeAction a = (RetainTypeAction) action;
-      return a.getList().isEmpty() ? "RETAINTYPE" : "RETAINTYPE("
-              + verbalizer.verbalizeExpressionList(a.getList()) + ")";
+      return a.getList().isEmpty() ? "RETAINTYPE"
+              : "RETAINTYPE(" + verbalizer.verbalizeExpressionList(a.getList()) + ")";
     } else if (action instanceof AddRetainTypeAction) {
       AddRetainTypeAction a = (AddRetainTypeAction) action;
       return name + verbalizer.verbalizeExpressionList(a.getList()) + ")";
@@ -376,23 +376,22 @@ public class ActionVerbalizer {
               + ")";
     } else if (action instanceof UnmarkAction) {
       UnmarkAction a = (UnmarkAction) action;
-      
-      if(a.getExpression()!= null) {
+
+      if (a.getExpression() != null) {
         return name + verbalizer.verbalize(a.getExpression()) + ")";
       }
-      
+
       if (a.getAllAnchor() == null) {
         if (a.getList() == null) {
           return name + verbalizer.verbalize(a.getType()) + ")";
         } else {
-         String l = verbalizer.verbalizeExpressionList(a.getList());
-         if(StringUtils.isBlank(l)) {
-           return name + verbalizer.verbalize(a.getType())+ ")";
-         } else {
-           return name + verbalizer.verbalize(a.getType()) + ", "
-                   + l + ")";
-         }
-         
+          String l = verbalizer.verbalizeExpressionList(a.getList());
+          if (StringUtils.isBlank(l)) {
+            return name + verbalizer.verbalize(a.getType()) + ")";
+          } else {
+            return name + verbalizer.verbalize(a.getType()) + ", " + l + ")";
+          }
+
         }
       } else {
         return name + verbalizer.verbalize(a.getType()) + ", "
@@ -415,9 +414,9 @@ public class ActionVerbalizer {
       }
       return name + map + verbalizer.verbalize(a.getList()) + ", "
               + verbalizer.verbalize(a.getIgnoreCase()) + ", "
-              + verbalizer.verbalize(a.getIgnoreLength()) + ", "
-              + verbalizer.verbalize(a.getEdit()) + ", " + verbalizer.verbalize(a.getDistance())
-              + ", " + verbalizer.verbalize(a.getIgnoreChar()) + ")";
+              + verbalizer.verbalize(a.getIgnoreLength()) + ", " + verbalizer.verbalize(a.getEdit())
+              + ", " + verbalizer.verbalize(a.getDistance()) + ", "
+              + verbalizer.verbalize(a.getIgnoreChar()) + ")";
     } else if (action instanceof AddAction) {
       AddAction a = (AddAction) action;
       return name + a.getListExpr() + ", " + verbalizer.verbalizeExpressionList(a.getElements())
@@ -546,6 +545,15 @@ public class ActionVerbalizer {
         verbalize = verbalizer.verbalizeExpressionList(a.getTypes());
       }
       return name + verbalize + ")";
+    } else if (action instanceof SplitAction) {
+      SplitAction a = (SplitAction) action;
+      ITypeExpression splitOnType = a.getSplitOnType();
+      IBooleanExpression complete = a.getComplete();
+      IBooleanExpression appendToBegin = a.getAppendToBegin();
+      IBooleanExpression appendToEnd = a.getAppendToEnd();
+      return name + verbalizer.verbalize(splitOnType) + ", " + verbalizer.verbalize(complete) + ", "
+              + verbalizer.verbalize(appendToBegin) + ", " + verbalizer.verbalize(appendToEnd)
+              + ")";
     } else if (action instanceof ImplicitMarkAction) {
       ImplicitMarkAction a = (ImplicitMarkAction) action;
       return verbalizer.verbalize(a.getType());

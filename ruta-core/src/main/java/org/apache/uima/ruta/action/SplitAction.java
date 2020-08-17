@@ -41,13 +41,13 @@ import org.apache.uima.util.CasCopier;
 
 public class SplitAction extends AbstractRutaAction {
 
-  private ITypeExpression splitOnType;
+  private final ITypeExpression splitOnType;
 
-  private IBooleanExpression complete;
+  private final IBooleanExpression complete;
 
-  private IBooleanExpression appendToBegin;
+  private final IBooleanExpression appendToBegin;
 
-  private IBooleanExpression appendToEnd;
+  private final IBooleanExpression appendToEnd;
 
   public SplitAction(ITypeExpression splitOnType, IBooleanExpression complete,
           IBooleanExpression appendToBegin, IBooleanExpression appendToEnd) {
@@ -199,6 +199,22 @@ public class SplitAction extends AbstractRutaAction {
       return true;
     }
     return false;
+  }
+
+  public ITypeExpression getSplitOnType() {
+    return splitOnType;
+  }
+
+  public IBooleanExpression getComplete() {
+    return complete;
+  }
+
+  public IBooleanExpression getAppendToBegin() {
+    return appendToBegin;
+  }
+
+  public IBooleanExpression getAppendToEnd() {
+    return appendToEnd;
   }
 
 }

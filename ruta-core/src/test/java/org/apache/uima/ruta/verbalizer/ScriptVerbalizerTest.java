@@ -33,13 +33,13 @@ import org.apache.uima.ruta.type.DebugRuleApply;
 import org.junit.Assert;
 import org.junit.Test;
 
-
 public class ScriptVerbalizerTest {
 
   @Test
-  public void testRuleVerbalization() throws Exception{
+  public void testRuleVerbalization() throws Exception {
     JCas jcas = RutaTestUtils.getCAS("Some text.").getJCas();
-    
+
+    assertRuleVerbalization(jcas, "Document{->SPLIT(COMMA, true, false, false)};");
     assertRuleVerbalization(jcas, "Document{->MARK(T1)};");
     assertRuleVerbalization(jcas, "W{->T1} W{->T2};");
     assertRuleVerbalization(jcas, "T1<-{W PERIOD;};");
@@ -48,24 +48,26 @@ public class ScriptVerbalizerTest {
     assertRuleVerbalization(jcas, "W W? W?? W+ W+? W* W*? W[1,2] W[1,2]? #;");
     assertRuleVerbalization(jcas, "Document{CONTAINS(T1)->T2};");
     assertRuleVerbalization(jcas, "Document{->ADDFILTERTYPE(CW)};");
-    
+
     jcas.release();
   }
 
-  private void assertRuleVerbalization(JCas jcas, String rule) throws AnalysisEngineProcessException, ResourceInitializationException {
+  private void assertRuleVerbalization(JCas jcas, String rule)
+          throws AnalysisEngineProcessException, ResourceInitializationException {
     assertRuleVerbalization(jcas, rule, rule);
   }
-  
-  private void assertRuleVerbalization(JCas jcas, String rule, String expected) throws AnalysisEngineProcessException, ResourceInitializationException {
-    Ruta.applyRule(jcas, rule, RutaEngine.PARAM_DEBUG, true, RutaEngine.PARAM_DEBUG_WITH_MATCHES, true);
+
+  private void assertRuleVerbalization(JCas jcas, String rule, String expected)
+          throws AnalysisEngineProcessException, ResourceInitializationException {
+    Ruta.applyRule(jcas, rule, RutaEngine.PARAM_DEBUG, true, RutaEngine.PARAM_DEBUG_WITH_MATCHES,
+            true);
     Collection<DebugBlockApply> blockApplies = JCasUtil.select(jcas, DebugBlockApply.class);
     Assert.assertEquals(1, blockApplies.size());
-    DebugBlockApply blockApply =  blockApplies.iterator().next();
+    DebugBlockApply blockApply = blockApplies.iterator().next();
     Assert.assertEquals(1, blockApply.getInnerApply().size());
     DebugRuleApply ruleApply = (DebugRuleApply) blockApply.getInnerApply(0);
     Assert.assertEquals(expected, ruleApply.getElement());
     Ruta.removeDebugInformation(jcas);
   }
-  
-  
+
 }
