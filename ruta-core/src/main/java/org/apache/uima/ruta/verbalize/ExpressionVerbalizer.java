@@ -81,7 +81,9 @@ public class ExpressionVerbalizer {
   }
 
   public String verbalize(IRutaExpression expression) {
-    if (expression instanceof GenericFeatureExpression) {
+    if (expression instanceof NullExpression) {
+      return "null";
+    } else if (expression instanceof GenericFeatureExpression) {
       return verbalize(((GenericFeatureExpression) expression).getFeatureExpression());
     } else if (expression instanceof AnnotationTypeExpression) {
       return verbalize((AnnotationTypeExpression) expression);
@@ -107,8 +109,6 @@ public class ExpressionVerbalizer {
       return verbalize((IStringExpression) expression);
     } else if (expression instanceof MatchReference) {
       return verbalize((MatchReference) expression);
-    } else if(expression instanceof NullExpression) {
-      return "null";
     }
     return expression.getClass().getSimpleName();
   }
@@ -299,23 +299,23 @@ public class ExpressionVerbalizer {
     }
     return expression.getClass().getSimpleName();
   }
-  
+
   public String verbalize(MatchReference expression) {
     String match = expression.getMatch();
-    if(match == null) {
+    if (match == null) {
       String string = expression.toString();
-      if(StringUtils.equals(string, CAS.TYPE_NAME_DOCUMENT_ANNOTATION)) {
+      if (StringUtils.equals(string, CAS.TYPE_NAME_DOCUMENT_ANNOTATION)) {
         return "Document";
       } else {
         return string;
       }
     }
-    if(expression.getArgument() != null) {
-     return  match + expression.getComparator() + verbalizer.verbalize(expression.getArgument());
+    if (expression.getArgument() != null) {
+      return match + expression.getComparator() + verbalizer.verbalize(expression.getArgument());
     }
     return match;
   }
-  
+
   public String verbalize(AnnotationTypeExpression expression) {
     return verbalize(expression.getReference());
   }
@@ -325,7 +325,7 @@ public class ExpressionVerbalizer {
     if (expression instanceof SimpleFeatureExpression) {
       SimpleFeatureExpression sfe = (SimpleFeatureExpression) expression;
       sb.append(sfe.getMatchReference().getMatch());
-    } else if(expression instanceof NullExpression) {
+    } else if (expression instanceof NullExpression) {
       sb.append("null");
     }
     return sb.toString();
