@@ -108,25 +108,25 @@ public class SplitAction extends AbstractRutaAction {
     cas.removeFsFromIndexes(annotation);
 
     int overallEnd = annotation.getEnd();
-    Annotation first = annotation;
+    Annotation current = annotation;
 
     for (AnnotationFS each : annotationsInWindow) {
-      int firstEnd = addToEnd ? each.getEnd() : each.getBegin();
-      first.setEnd(firstEnd);
-      boolean valid = trimInvisible(first, stream);
+      int currentEnd = addToEnd ? each.getEnd() : each.getBegin();
+      current.setEnd(currentEnd);
+      boolean valid = trimInvisible(current, stream);
       if (valid) {
-        stream.addAnnotation(first, true, true, match);
+        stream.addAnnotation(current, true, true, match);
       }
 
-      Annotation second = (Annotation) cc.copyFs(first);
-      int secondBegin = addToBegin ? each.getBegin() : each.getEnd();
-      second.setBegin(secondBegin);
-      second.setEnd(overallEnd);
-      valid = trimInvisible(second, stream);
-      if (valid) {
-        stream.addAnnotation(second, true, true, match);
-      }
-      first = second;
+      Annotation next = (Annotation) cc.copyFs(current);
+      int nextBegin = addToBegin ? each.getBegin() : each.getEnd();
+      next.setBegin(nextBegin);
+      next.setEnd(overallEnd);
+
+      current = next;
+    }
+    if (trimInvisible(current, stream)) {
+      stream.addAnnotation(current, true, true, match);
     }
 
   }
@@ -171,7 +171,6 @@ public class SplitAction extends AbstractRutaAction {
   }
 
   private boolean trimInvisible(Annotation annotation, RutaStream stream) {
-    List<RutaBasic> basics = new ArrayList<>(stream.getAllBasicsInWindow(annotation));
 
     int min = annotation.getEnd();
     int max = annotation.getBegin();
@@ -179,6 +178,7 @@ public class SplitAction extends AbstractRutaAction {
     if (min <= max) {
       return false;
     }
+    List<RutaBasic> basics = new ArrayList<>(stream.getAllBasicsInWindow(annotation));
 
     for (RutaBasic each : basics) {
       if (stream.isVisible(each)) {

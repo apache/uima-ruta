@@ -37,7 +37,6 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class SplitTest {
@@ -330,7 +329,6 @@ public class SplitTest {
   }
 
   @Test
-  @Ignore
   public void testMultiSplit() throws Exception {
     String document = "CAP-------------";
     String script = "Document{-> T1};";
@@ -339,10 +337,6 @@ public class SplitTest {
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
-//    Collection<AnnotationFS> select = CasUtil.select(cas, RutaTestUtils.getTestType(cas, 1));
-//    for (AnnotationFS annotationFS : select) {
-//      System.out.println(annotationFS.getCoveredText());
-//    }
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "CAP");
   }
 }
