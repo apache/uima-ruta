@@ -299,6 +299,7 @@
                 <execution>
                   <id>default-cli</id>
                   <configuration>
+                    <consoleOutput>true</consoleOutput>
                     <excludes combine.children="append">
                       <exclude>**/api-change-report/**/*.*</exclude>
                       &gt;
