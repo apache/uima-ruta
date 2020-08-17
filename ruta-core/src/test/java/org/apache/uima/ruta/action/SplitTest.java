@@ -332,14 +332,17 @@ public class SplitTest {
   @Test
   @Ignore
   public void testMultiSplit() throws Exception {
-    String document = "TODO";
+    String document = "CAP-------------";
     String script = "Document{-> T1};";
-    script += "W.ct==\"no\"{-> T2};";
+    script += "(SPECIAL SPECIAL){-> T2};";
     script += "T1{-> SPLIT(T2, true, false, false)};";
-    script += "T1{-> TRIM(COMMA)};";
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
-//    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "c");
+//    Collection<AnnotationFS> select = CasUtil.select(cas, RutaTestUtils.getTestType(cas, 1));
+//    for (AnnotationFS annotationFS : select) {
+//      System.out.println(annotationFS.getCoveredText());
+//    }
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "CAP");
   }
 }
