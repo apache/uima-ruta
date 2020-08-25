@@ -39,6 +39,7 @@ public class ScriptVerbalizerTest {
   public void testRuleVerbalization() throws Exception {
     JCas jcas = RutaTestUtils.getCAS("Some text.").getJCas();
 
+    assertRuleVerbalization(jcas, "Document{->SPLIT(COMMA, true, false, false)};");
     assertRuleVerbalization(jcas, "DocumentAnnotation.language!=null;");
     assertRuleVerbalization(jcas, "Document{->MARK(T1)};");
     assertRuleVerbalization(jcas, "W{->T1} W{->T2};");

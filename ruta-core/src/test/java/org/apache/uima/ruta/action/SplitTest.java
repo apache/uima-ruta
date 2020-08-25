@@ -42,7 +42,7 @@ import org.junit.Test;
 public class SplitTest {
 
   @Test
-  public void testDefault() {
+  public void testDefault() throws Exception {
     String document = "Some text. More text , with 1 , and more. even more text.";
     String script = "PERIOD #{-> T1} PERIOD;";
     script += " #{-> T1} PERIOD;";
@@ -59,13 +59,8 @@ public class SplitTest {
     String fn = "number";
     list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -95,14 +90,10 @@ public class SplitTest {
     assertNotNull(featureValue);
     assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
 
-    if (cas != null) {
-      cas.release();
-    }
-
   }
 
   @Test
-  public void testAddBegin() {
+  public void testAddBegin() throws Exception {
     String document = "Some text. More text , with 1 , and more. even more text.";
     String script = "PERIOD #{-> T1} PERIOD;";
     script += " #{-> T1} PERIOD;";
@@ -119,13 +110,8 @@ public class SplitTest {
     String fn = "number";
     list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -155,14 +141,10 @@ public class SplitTest {
     assertNotNull(featureValue);
     assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
 
-    if (cas != null) {
-      cas.release();
-    }
-
   }
 
   @Test
-  public void testAddEnd() {
+  public void testAddEnd() throws Exception {
     String document = "Some text. More text , with 1 , and more. even more text.";
     String script = "PERIOD #{-> T1} PERIOD;";
     script += " #{-> T1} PERIOD;";
@@ -179,13 +161,8 @@ public class SplitTest {
     String fn = "number";
     list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -214,10 +191,6 @@ public class SplitTest {
     featureValue = next.getFeatureValue(f1);
     assertNotNull(featureValue);
     assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
 
   }
 
@@ -270,14 +243,10 @@ public class SplitTest {
     assertNotNull(featureValue);
     assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
 
-    if (cas != null) {
-      cas.release();
-    }
-
   }
 
   @Test
-  public void testBoundarySplit() {
+  public void testBoundarySplit() throws Exception {
     String document = "Some text. More text , with 1 , and more. even more text.";
     String script = "PERIOD #{-> T1} PERIOD;";
     script += "#{-> T1} PERIOD;";
@@ -296,13 +265,8 @@ public class SplitTest {
     String fn = "number";
     list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -331,10 +295,6 @@ public class SplitTest {
     featureValue = next.getFeatureValue(f1);
     assertNotNull(featureValue);
     assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
-
-    if (cas != null) {
-      cas.release();
-    }
 
   }
 
@@ -366,8 +326,17 @@ public class SplitTest {
     next = iterator.next();
     assertEquals("even more text.", next.getCoveredText());
 
-    cas.release();
-
   }
 
+  @Test
+  public void testMultiSplit() throws Exception {
+    String document = "CAP-------------";
+    String script = "Document{-> T1};";
+    script += "(SPECIAL SPECIAL){-> T2};";
+    script += "T1{-> SPLIT(T2, true, false, false)};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "CAP");
+  }
 }
