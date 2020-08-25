@@ -76,8 +76,9 @@ public class FillAction extends AbstractStructureAction {
           }
         }
       }
-      if (!list.isEmpty()) {
-        AnnotationFS annotationFS = list.get(0);
+
+      for (AnnotationFS annotationFS : list) {
+
         stream.getCas().removeFsFromIndexes(annotationFS);
         context.setAnnotation(matchedAnnotation);
         stream.assignFeatureValues(annotationFS, features, context);
