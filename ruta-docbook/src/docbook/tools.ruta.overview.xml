@@ -887,6 +887,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.indexUpdateMode'>indexUpdateMode</link>
+                  </entry>
+                  <entry>Mode how internal indexing should be applied.
+                  </entry>
+                  <entry>Single String</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.emptyIsInvisible'>emptyIsInvisible</link>
                   </entry>
                   <entry>Option to define empty text positions as invisible.
@@ -1201,6 +1209,15 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
            This parameter specifies annotation types (resolvable mentions are also supported) that should
            be index additionally to types mentioned in the rules. This parameter is only used if the
            parameter 'indexOnlyMentionedTypes' is activated.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.indexUpdateMode">
+          <title>indexUpdateMode</title>
+          <para>
+           This parameter specifies the mode for updating the internal indexing in RutaBasic annotations.
+           This is a technical parameter for optimizing the runtime performance/speed of RutaEngines.
+           Available modes are: COMPLETE, ADDITIVE, SAFE_ADDITIVE, NONE.
+           Default value is ADDITIVE.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.emptyIsInvisible">

@@ -19,11 +19,37 @@
 package org.apache.uima.ruta;
 
 /**
- * The mode how the internal RutaBasics are updated.
+ * The mode how the internal RutaBasics are updated. The update depends on the given relevant types
+ * and annotations which can be specified using various configuration parameters.
  *
  */
 public enum IndexUpdateMode {
 
-  COMPLETE, ADDITIVE;
+  /**
+   * Updates the internal information completely. First all internal indexing information is removed
+   * for all relevant types. Then, all relevant annotations are added anew.
+   */
+  COMPLETE,
+
+  /**
+   * Updates the internal information additively. The relevant annotations are checked if they are
+   * already registers in the internal indexing. If not, then they are added. This mode does not
+   * ensure a valid internal indexing as it can miss modification by previous analysis engines (in
+   * between two RutaEngines)
+   */
+  ADDITIVE,
+
+  /**
+   * This mode compares the internal indexing information with the annotation indexes and removes
+   * relevant annotations that are no longer in the annotation indexes. Then, the ADDITIVE mode is
+   * applied. This mode does not ensure a valid internal indexing as it can miss modification
+   * concerning the offsets of an annotation.
+   */
+  SAFE_ADDITIVE,
+
+  /**
+   * This mode does not update the internal indexing information.
+   */
+  NONE;
 
 }
