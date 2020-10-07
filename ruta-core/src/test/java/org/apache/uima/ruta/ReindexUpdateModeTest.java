@@ -29,13 +29,13 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
-public class IndexUpdateModeTest {
+public class ReindexUpdateModeTest {
 
   @Test
   public void testComplete() throws Exception {
 
     Map<String, Object> params = new LinkedHashMap<>();
-    params.put(RutaEngine.PARAM_INDEX_UPDATE_MODE, IndexUpdateMode.COMPLETE);
+    params.put(RutaEngine.PARAM_REINDEX_UPDATE_MODE, ReindexUpdateMode.COMPLETE);
 
     CAS cas = RutaTestUtils.getCAS("This is 1 TEST.");
 
@@ -132,7 +132,7 @@ public class IndexUpdateModeTest {
   public void testAdditiveWithExternalUpdate() throws Exception {
 
     Map<String, Object> params = new LinkedHashMap<>();
-    params.put(RutaEngine.PARAM_INDEX_UPDATE_MODE, IndexUpdateMode.ADDITIVE);
+    params.put(RutaEngine.PARAM_REINDEX_UPDATE_MODE, ReindexUpdateMode.ADDITIVE);
 
     CAS cas = RutaTestUtils.getCAS("This is 1 TEST.");
 
@@ -233,7 +233,7 @@ public class IndexUpdateModeTest {
   public void testSafeAdditive() throws Exception {
 
     Map<String, Object> params = new LinkedHashMap<>();
-    params.put(RutaEngine.PARAM_INDEX_UPDATE_MODE, IndexUpdateMode.SAFE_ADDITIVE);
+    params.put(RutaEngine.PARAM_REINDEX_UPDATE_MODE, ReindexUpdateMode.SAFE_ADDITIVE);
 
     CAS cas = RutaTestUtils.getCAS("This is 1 TEST.");
 
@@ -330,7 +330,7 @@ public class IndexUpdateModeTest {
   public void testNoneWithExternalUpdate() throws Exception {
 
     Map<String, Object> params = new LinkedHashMap<>();
-    params.put(RutaEngine.PARAM_INDEX_UPDATE_MODE, IndexUpdateMode.NONE);
+    params.put(RutaEngine.PARAM_REINDEX_UPDATE_MODE, ReindexUpdateMode.NONE);
 
     CAS cas = RutaTestUtils.getCAS("This is 1 TEST.");
 

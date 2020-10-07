@@ -23,7 +23,7 @@ package org.apache.uima.ruta;
  * and annotations which can be specified using various configuration parameters.
  *
  */
-public enum IndexUpdateMode {
+public enum ReindexUpdateMode {
 
   /**
    * Updates the internal information completely. First all internal indexing information is removed

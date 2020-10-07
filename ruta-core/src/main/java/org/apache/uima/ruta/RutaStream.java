@@ -216,15 +216,15 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   @Deprecated
   public void initalizeBasics(String[] reindexOnly, boolean reindexOnlyMentionedTypes) {
 
-    initalizeBasics(reindexOnly, reindexOnlyMentionedTypes, IndexUpdateMode.ADDITIVE);
+    initalizeBasics(reindexOnly, reindexOnlyMentionedTypes, ReindexUpdateMode.ADDITIVE);
   }
 
   public void initalizeBasics(String[] reindexOnly, boolean reindexOnlyMentionedTypes,
-          IndexUpdateMode indexUpdateMode) {
+          ReindexUpdateMode indexUpdateMode) {
     AnnotationIndex<AnnotationFS> basicIndex = cas.getAnnotationIndex(basicType);
     boolean basicsAvailable = basicIndex.size() != 0;
 
-    if (indexUpdateMode == IndexUpdateMode.NONE && basicsAvailable) {
+    if (indexUpdateMode == ReindexUpdateMode.NONE && basicsAvailable) {
 
       // there are already some ruta basics and we do not want to update anything, since we know we
       // do not need to. Only set internal maps
@@ -305,7 +305,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   private void updateBasics(AnnotationIndex<AnnotationFS> basicIndex,
           List<FSIndex<AnnotationFS>> relevantIndexes, Collection<Type> completeReindexTypeList,
-          IndexUpdateMode indexUpdateMode) {
+          ReindexUpdateMode indexUpdateMode) {
 
     initializeInternalAnchorMaps(basicIndex);
 

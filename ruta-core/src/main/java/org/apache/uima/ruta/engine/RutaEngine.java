@@ -61,7 +61,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.FilterManager;
-import org.apache.uima.ruta.IndexUpdateMode;
+import org.apache.uima.ruta.ReindexUpdateMode;
 import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaModule;
@@ -475,15 +475,15 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private String[] indexAdditionally;
 
   /**
-   * This parameter specifies annotation types (resolvable mentions are also supported) that should
-   * be index additionally to types mentioned in the rules. This parameter is only used if the
-   * parameter 'indexOnlyMentionedTypes' is activated.
+   * This parameter specifies the mode for updating the internal indexing in RutaBasic annotations.
+   * This is a technical parameter for optimizing the runtime performance/speed of RutaEngines.
+   * Available modes are: COMPLETE, ADDITIVE, SAFE_ADDITIVE, NONE. Default value is ADDITIVE.
    * 
    */
-  public static final String PARAM_INDEX_UPDATE_MODE = "indexUpdateMode";
+  public static final String PARAM_REINDEX_UPDATE_MODE = "reindexUpdateMode";
 
-  @ConfigurationParameter(name = PARAM_INDEX_UPDATE_MODE, mandatory = true, defaultValue = "ADDITIVE")
-  private IndexUpdateMode indexUpdateMode;
+  @ConfigurationParameter(name = PARAM_REINDEX_UPDATE_MODE, mandatory = true, defaultValue = "ADDITIVE")
+  private ReindexUpdateMode reindexUpdateMode;
 
   /**
    * This parameter determines positions as invisible if the internal indexing of the corresponding
@@ -822,7 +822,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     seedTypes = seedAnnotations(cas);
     RutaStream stream = new RutaStream(cas, basicType, filter, lowMemoryProfile,
             simpleGreedyForComposed, emptyIsInvisible, typeUsageInformation, crowd);
-    stream.initalizeBasics(reindexOnly, reindexOnlyMentionedTypes, indexUpdateMode);
+    stream.initalizeBasics(reindexOnly, reindexOnlyMentionedTypes, reindexUpdateMode);
     return stream;
   }
 
