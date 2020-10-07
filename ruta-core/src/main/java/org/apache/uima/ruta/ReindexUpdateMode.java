@@ -44,6 +44,9 @@ public enum ReindexUpdateMode {
    * relevant annotations that are no longer in the annotation indexes. Then, the ADDITIVE mode is
    * applied. This mode does not ensure a valid internal indexing as it can miss modification
    * concerning the offsets of an annotation.
+   * 
+   * It is currently not recommended to use this mode since it's implementation is slower than the
+   * mode COMPLETE.
    */
   SAFE_ADDITIVE,
 
