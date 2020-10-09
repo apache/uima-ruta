@@ -28,50 +28,35 @@ import org.junit.Test;
 
 public class ZeroLengthAnnotationTest {
 
-  
   @Test
-  public void testMatchType() {
+  public void testMatchType() throws Exception {
     String document = "Some text.";
     String script = "";
     script += "W W{-> T1};";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Type type = cas.getTypeSystem().getType("org.apache.uima.ruta.type.W");
-      // call for seeding
-      Ruta.apply(cas, "");
-      addZeroLengthAnnotations(cas, type);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Type type = cas.getTypeSystem().getType("org.apache.uima.ruta.type.W");
+    // call for seeding
+    Ruta.apply(cas, "");
+    addZeroLengthAnnotations(cas, type);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
-
-    cas.release();
   }
 
   @Test
-  public void testOtherType() {
+  public void testOtherType() throws Exception {
     String document = "Some text.";
     String script = "";
     script += "W W{-> T1};";
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Type type = cas.getTypeSystem().getType("org.apache.uima.ruta.type.TruePositive");
-      addZeroLengthAnnotations(cas, type);
-      
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Type type = cas.getTypeSystem().getType("org.apache.uima.ruta.type.TruePositive");
+    addZeroLengthAnnotations(cas, type);
+
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
-
-    cas.release();
   }
-  
+
   private void addZeroLengthAnnotations(CAS cas, Type type) {
     AnnotationFS a0 = cas.createAnnotation(type, 0, 0);
     AnnotationFS a5 = cas.createAnnotation(type, 5, 5);
@@ -81,5 +66,5 @@ public class ZeroLengthAnnotationTest {
     cas.addFsToIndexes(a5);
     cas.addFsToIndexes(a10);
   }
-  
+
 }

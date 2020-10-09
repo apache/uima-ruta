@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"[
+<!ENTITY imgroot "images/tools/ruta/language/" >
+<!ENTITY % uimaents SYSTEM "../../target/docbook-shared/entities.ent" >  
+%uimaents;
+]>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  you under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
+  language governing permissions and limitations under the License. -->
+
+<section id="ugr.tools.ruta.language.internal_indxexing">
+  <title>Internal indexing and reindexing</title>
+  <para>
+   UIMA Ruta, or to be more precise the main analysis engine RutaEngine, creates, 
+   stores and updates additional indexing information directly in the CAS. 
+   This indexing is not related to the annotation indexes of UIMA itself. 
+   The internal indexing provides additional information, which is only utilized 
+   by the Ruta rules. This section provides an overview why and how it is included in
+   UIMA Ruta. And how Ruta can be configured in order to optimize its performance.
+  </para>
+  <section id="ugr.tools.ruta.language.internal_indxexing.why">
+    <title>Why additional indexing?</title>
+    <para>
+	  The internal indexing is utilized for many different parts of functionality within Ruta.
+	  The need for the indexing is motivated by two main and important features. 
+	</para>
+	<para>
+	  Ruta provides different language elements, for example conditions, which are fulfill 
+	  depending on some investigation of the CAS annotation indexes. There are several 
+	  condition like PARTOF which require many index operations in worst case. Here, potentially
+	  the complete index needed to be iterated in order to validate if a specific annotation 
+	  is part of another annotation of a specific type. And this check need to be performed 
+	  for each considered annotation and for each rule match and for each rule where a PARTOF 
+	  condition is used. Without additional internal indexing Ruta would be too slow to 
+	  actually be useful. With this feature, it is just a fast lookup. This situation applies also for many other language elements and 
+	  conditions like STARTSWITH and ENDSWITH.
+    </para>
+    <para>
+      A second necessity is the coverage-based visibility concept of Ruta.
+      Annotations and any text spans are invisible if their begin or end is covered by some 
+      invisible annotation, i.e., an annotation of a type that is configured to be invisible.
+      This is a powerful feature that enables many different engineering approaches and makes
+      rules also more maintainable. For a (reasonably fast) implementation of this features, 
+      it is necessary to know for each position if it is covered by annotations of specific types.
+    </para>
+    <para>
+      The internal indexing comes, however, with some costs. The indexing requires time and memory.
+      the information needs to be collected and/or updated for every Ruta script (RutaEngine) 
+      in a pipeline. This may require many operations if many annotations are available.
+      Straightforward, the storage of this information at potentially all text positions 
+      requires a lot memory. Nevertheless, the advantages outweigh the disadvantages considerably. 
+    </para>
+  </section>
+  <section id="ugr.tools.ruta.language.internal_indxexing.how">
+    <title>How is it stored, created and updated?</title>
+    <para>
+      The internal indexing refers to three types of information that is additionally stored:
+    </para>
+    <orderedlist numeration="arabic">
+    <listitem>
+    <para>
+      All annotations of all relevant types that begin at a position.
+    </para>
+    </listitem>
+    <listitem>
+    <para>
+      All annotations of all relevant types that end at a position.
+    </para>
+    </listitem>
+    <listitem>
+    <para>
+      All types of annotations that cover a position.
+    </para>
+    </listitem>
+    </orderedlist>
+    <para>
+      The information is stored in additional annotations of the type RutaBasic, 
+      which provides by implementation, and not by features, additional fields for
+      these three kinds of information. RutaBasic provide a complete disjunct 
+      partitioning of the document. They begin and end at every position where an 
+      annotation starts and ends. This also includes, for examples, one RutaBasic for each 
+      SPACE annotation, registering which annotation start and end at these offsets.
+      They are automatically created and also extended if new smaller annotations are added.
+      Their initial creation is called <quote>indexing</quote> and their updating
+      if RutaBasics are available, but other Java analysis engines potentially added or
+      removed annotations, is called <quote>reindexing</quote>. 
+    </para>
+    <para> 
+      There are several configuration 
+      parameters (see parameters with INDEX and REINDEX in their name) that can influence what types and annotations are indexed and reindexed.
+      In the default configuration, all annotations are indexed, but only new annotations 
+      are reindexed (ReindexUpdateMode ADDITIVE). This means that if an analysis engine in between
+      two RutaEngine removes some annotations, the second RutaEngine will not be up to date.
+      A rule which relies on the internal indexing will match differently for these annotations,
+      e.g., a PARTOF condition is still fulfilled although the annotation is not present in the 
+      UIMA indexes anymore. This problem can be avoided (if necessary) either by switching to a more costly
+      ReindexUpdateMode COMPLETE, or by updating the internal indexing directly in the Java analysis
+      engine if necessary by using the class RutaBasicUtils.
+    </para>
+  </section>
+  <section id="ugr.tools.ruta.language.internal_indxexing.optimize">
+    <title>How to optimize the performance?</title>
+    <para>
+      The are many different options and possibilities to optimize the runtime performance and
+      memory footprint of Ruta script, by configuring the RutaEngine. The most useful configuration, 
+      however, depends on the actual situation: How much information is available about the pipeline
+      and the types of annotations and their update operations? In the following a selection 
+      of optimizations are discussed.
+    </para>
+    <para>
+      If there is a RutaEngine in a pipeline, and either the previous analysis engine was also 
+      a RutaEngine or it is known that the analysis engines before (until the last RutaEngine) did not
+      modify any (relevant) annotations, then the ReindexUpdateMode NONE can be applied, which simply 
+      skips the internal reindexing. This can improve the runtime performance.
+    </para>
+    <para>
+      The configuration parameters indexOnly can be restricted to relevant types.
+      The parameter indexSkipTypes can be utilized to specify types of annotations that are not relevant. 
+      These types can include more technical annotations for metadata, logging or debug information.
+      Thus, the set of types that need to be considered for internal indexing can be restricted, which
+      makes the indexing faster and requires less memory.
+    </para>
+      For a reindexing/updating step the corresponding reindex parameters need to be considered.
+      Even relevant annotations do not need to be reindexed/updated all the time.
+      The updating can, for example, be restricted to
+      types that have been potentially modified by previous Java analysis engines according to their capabilities.
+      Additionally, some types are rather final considering their offsets. They are only create once 
+      and are not modified by later analysis engines. These types commonly include 
+      Tokens and similar annotations. They do not need to be reindexed, which can be configured using the
+      reindexSkipTypes parameter.
+    <para>
+      An extension to this is the parameter indexOnlyMentionTypes/reindexOnlyMentionedTypes. 
+      Here, the relevant types are collected using the
+      actual script:  the types that are actually used in the rules and thus their internal indexing needs
+      to be up to date. This mainly can increase the indexing speed. This feature is highlighted with example:
+      Considering a larger pipeline with many annotations of different types, and also with many 
+      modifications since the last RutaEngine, a script with one rule does not require much reindexing,
+      only the types that are used in this rule.
+    </para>
+  </section>
+</section>
