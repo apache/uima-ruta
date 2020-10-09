@@ -855,19 +855,19 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.ruta.ae.basic.parameter.reindexOnly'>reindexOnly</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.indexOnly'>indexOnly</link>
                   </entry>
-                  <entry>Option to select annotation types that should be reindex internally in ruta.
+                  <entry>Option to select annotation types that should be indexed internally in ruta.
                   </entry>
                   <entry>Multi String</entry>
                 </row>
                 <row>
                   <entry>
-                    <link linkend='ugr.tools.ruta.ae.basic.parameter.reindexOnlyMentionedTypes'>reindexOnlyMentionedTypes</link>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.indexSkipTypes'>indexSkipTypes</link>
                   </entry>
-                  <entry>Option to reindex only mentioned types internally in ruta.
+                  <entry>Option to skip annotation types in the internal indexing.
                   </entry>
-                  <entry>Single Boolean</entry>
+                  <entry>Multi String</entry>
                 </row>
                 <row>
                   <entry>
@@ -881,7 +881,39 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                   <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.indexAdditionally'>indexAdditionally</link>
                   </entry>
-                  <entry>Option to index types additional to the mentioned ones internally in ruta.
+                  <entry>Option to index types additionally to the mentioned ones internally in ruta.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.reindexOnly'>reindexOnly</link>
+                  </entry>
+                  <entry>Option to select annotation types that should be reindexed internally in ruta.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.reindexSkipTypes'>reindexSkipTypes</link>
+                  </entry>
+                  <entry>Option to skip annotation types in the internal reindexing.
+                  </entry>
+                  <entry>Multi String</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.reindexOnlyMentionedTypes'>reindexOnlyMentionedTypes</link>
+                  </entry>
+                  <entry>Option to reindex only mentioned types internally in ruta.
+                  </entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.reindexAdditionally'>reindexAdditionally</link>
+                  </entry>
+                  <entry>Option to reindex types additionally to the mentioned ones internally in ruta.
                   </entry>
                   <entry>Multi String</entry>
                 </row>
@@ -1175,22 +1207,21 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
             The default value is set to false.
           </para>
         </section>
-        <section id="ugr.tools.ruta.ae.basic.parameter.reindexOnly">
-          <title>reindexOnly</title>
+        <section id="ugr.tools.ruta.ae.basic.parameter.indexOnly">
+          <title>indexOnly</title>
           <para>
-            This parameter specifies the annotation types which should be reindex for ruta's internal annotations
-            All annotation types that changed since the last call of a ruta script need to be listed here. 
-            The value of this parameter needs only be adapted for performance optimization in pipelines that 
-            contains several ruta analysis engines.
-            Default value is uima.tcas.Annotation
+            This parameter specifies the annotation types which should be indexed for ruta's internal
+            annotations. All annotation types that are relevant need to be listed here. The value of this
+            parameter needs only be adapted for performance and memory optimization in pipelines that
+            contains several ruta analysis engines. Default value is uima.tcas.Annotation
           </para>
         </section>
-        <section id="ugr.tools.ruta.ae.basic.parameter.reindexOnlyMentionedTypes">
-          <title>reindexOnlyMentionedTypes</title>
+        <section id="ugr.tools.ruta.ae.basic.parameter.indexSkipTypes">
+          <title>indexSkipTypes</title>
           <para>
-           If this parameter is activated, then only annotations of types are internally reindexed at
-           beginning that are mentioned with in the rules. This parameter overrides the values of the parameter
-           'reindexOnly' with the types that are mentioned in the rules. Default value is false.
+            This parameter specifies annotation types that should not be indexed at all. These types
+            normally include annotations that provide no meaningful semantics for text processing, e.g.,
+            types concerning ruta debug information.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.indexOnlyMentionedTypes">
@@ -1206,9 +1237,43 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
         <section id="ugr.tools.ruta.ae.basic.parameter.indexAdditionally">
           <title>indexAdditionally</title>
           <para>
-           This parameter specifies annotation types (resolvable mentions are also supported) that should
+           This parameter specifies annotation types that should
            be index additionally to types mentioned in the rules. This parameter is only used if the
            parameter 'indexOnlyMentionedTypes' is activated.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.reindexOnly">
+          <title>reindexOnly</title>
+          <para>
+            This parameter specifies the annotation types which should be reindexed for ruta's internal annotations
+            All annotation types that changed since the last call of a ruta script need to be listed here. 
+            The value of this parameter needs only be adapted for performance optimization in pipelines that 
+            contains several ruta analysis engines.
+            Default value is uima.tcas.Annotation
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.reindexSkipTypes">
+          <title>reindexSkipTypes</title>
+          <para>
+            This parameter specifies annotation types that should not be reindexed. These types normally
+            include annotations that are added once and are not changed in the following pipeline, e.g.,
+            Tokens or TokenSeed (like CW).
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.reindexOnlyMentionedTypes">
+          <title>reindexOnlyMentionedTypes</title>
+          <para>
+           If this parameter is activated, then only annotations of types are internally reindexed at
+           beginning that are mentioned with in the rules. This parameter overrides the values of the parameter
+           'reindexOnly' with the types that are mentioned in the rules. Default value is false.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.reindexAdditionally">
+          <title>reindexAdditionally</title>
+          <para>
+            This parameter specifies annotation types that should be reindexed additionally to types
+            mentioned in the rules. This parameter is only used if the parameter
+            'reindexOnlyMentionedTypes' is activated.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.indexUpdateMode">

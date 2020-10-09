@@ -23,7 +23,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptySet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -215,16 +214,19 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
   @Deprecated
   public void initalizeBasics(String[] reindexOnly, boolean reindexOnlyMentionedTypes) {
-
-    initalizeBasics(reindexOnly, reindexOnlyMentionedTypes, ReindexUpdateMode.ADDITIVE);
+    RutaIndexingConfiguration config = new RutaIndexingConfiguration();
+    config.setReindexOnly(reindexOnly);
+    config.setReindexOnlyMentionedTypes(reindexOnlyMentionedTypes);
+    config.setReindexUpdateMode(ReindexUpdateMode.ADDITIVE);
+    initalizeBasics(config);
   }
 
-  public void initalizeBasics(String[] reindexOnly, boolean reindexOnlyMentionedTypes,
-          ReindexUpdateMode indexUpdateMode) {
+  public void initalizeBasics(RutaIndexingConfiguration config) {
+
     AnnotationIndex<AnnotationFS> basicIndex = cas.getAnnotationIndex(basicType);
     boolean basicsAvailable = basicIndex.size() != 0;
 
-    if (indexUpdateMode == ReindexUpdateMode.NONE && basicsAvailable) {
+    if (config.getReindexUpdateMode() == ReindexUpdateMode.NONE && basicsAvailable) {
 
       // there are already some ruta basics and we do not want to update anything, since we know we
       // do not need to. Only set internal maps
@@ -232,43 +234,108 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
       return;
     }
 
-    TypeSystem typeSystem = cas.getTypeSystem();
-    Collection<Type> reindexTypeList;
-    if (reindexOnlyMentionedTypes) {
-      reindexTypeList = convertNamesToTypes(typeUsage.getUsedTypes(), typeSystem);
+    if (!basicsAvailable) {
+      // indexing
+      createBasics(config);
     } else {
-      reindexTypeList = convertNamesToTypes(Arrays.asList(reindexOnly), typeSystem);
+      // reindexing
+      updateBasics(basicIndex, config);
     }
-    Collection<Type> rootReindexTypeList = removeSubsumedTypes(reindexTypeList, typeSystem);
-    Collection<Type> completeReindexTypeList = expandToAllSubtypes(reindexTypeList, typeSystem);
+  }
 
+  private void createBasics(RutaIndexingConfiguration config) {
+    TypeSystem typeSystem = cas.getTypeSystem();
+    Collection<Type> indexTypes;
+    if (config.isIndexOnlyMentionedTypes()) {
+      indexTypes = convertNamesToTypes(typeUsage.getUsedTypes().toArray(new String[0]), typeSystem);
+    } else {
+      indexTypes = convertNamesToTypes(config.getIndexOnly(), typeSystem);
+    }
+    Collection<Type> indexSkipTypes = convertNamesToTypes(config.getIndexSkipTypes(), typeSystem);
+    Collection<Type> indexParentTypes = removeSubsumedTypes(indexTypes, typeSystem);
+    Collection<Type> allIndexTypes = expandToAllSubtypes(indexTypes, indexSkipTypes, typeSystem);
+
+    List<FSIndex<AnnotationFS>> relevantIndexes = getRelevantIndexes(typeSystem, indexParentTypes,
+            indexSkipTypes);
+    createBasics(relevantIndexes, allIndexTypes);
+  }
+
+  private void updateBasics(AnnotationIndex<AnnotationFS> basicIndex,
+          RutaIndexingConfiguration config) {
+    TypeSystem typeSystem = cas.getTypeSystem();
+    Collection<Type> reindexTypes;
+    if (config.isReindexOnlyMentionedTypes()) {
+      reindexTypes = convertNamesToTypes(typeUsage.getUsedTypes().toArray(new String[0]),
+              typeSystem);
+    } else {
+      reindexTypes = convertNamesToTypes(config.getReindexOnly(), typeSystem);
+    }
+    Collection<Type> reindexSkipTypes = convertNamesToTypes(config.getReindexSkipTypes(),
+            typeSystem);
+    Collection<Type> reindexParentTypes = removeSubsumedTypes(reindexTypes, typeSystem);
+    Collection<Type> allReindexTypes = expandToAllSubtypes(reindexTypes, reindexSkipTypes,
+            typeSystem);
+    List<FSIndex<AnnotationFS>> relevantIndexes = getRelevantIndexes(typeSystem, reindexParentTypes,
+            reindexSkipTypes);
+    updateBasics(basicIndex, relevantIndexes, allReindexTypes, config.getReindexUpdateMode());
+
+  }
+
+  private List<FSIndex<AnnotationFS>> getRelevantIndexes(TypeSystem typeSystem,
+          Collection<Type> rootReindexTypeList, Collection<Type> skipTypeList) {
     List<FSIndex<AnnotationFS>> relevantIndexes = new ArrayList<>();
 
     for (Type type : rootReindexTypeList) {
 
-      // collect no ruta basics
-      if (typeSystem.subsumes(basicType, type)) {
+      if (skipTypeForIndexing(type, skipTypeList, typeSystem)) {
         continue;
       }
+
       if (StringUtils.equals(type.getName(), CAS.TYPE_NAME_ANNOTATION)) {
         relevantIndexes.add(cas.getAnnotationIndex().withSnapshotIterators());
       } else {
         relevantIndexes.add(cas.getAnnotationIndex(type).withSnapshotIterators());
       }
     }
-
-    if (!basicsAvailable) {
-      createBasics(relevantIndexes);
-    } else {
-      updateBasics(basicIndex, relevantIndexes, completeReindexTypeList, indexUpdateMode);
-    }
+    return relevantIndexes;
   }
 
-  private void createBasics(List<FSIndex<AnnotationFS>> relevantIndexes) {
+  private boolean skipTypeForIndexing(Type type, Collection<Type> skipTypeList,
+          TypeSystem typeSystem) {
+    // collect no ruta basics
+    if (typeSystem.subsumes(basicType, type)) {
+      return true;
+    }
+    if (skipTypeList != null) {
+      if (skipTypeList.contains(type)) {
+        return true;
+      } else {
+        for (Type skipType : skipTypeList) {
+          if (typeSystem.subsumes(skipType, type)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  private void createBasics(List<FSIndex<AnnotationFS>> relevantIndexes,
+          Collection<Type> allIndexTypes) {
 
     List<Integer> anchors = getSortedUniqueAnchors(relevantIndexes);
     createBasicsForAnchors(anchors);
-    relevantIndexes.forEach(index -> index.forEach(a -> addAnnotation(a, false, false, null)));
+
+    // add all annotations
+    for (FSIndex<AnnotationFS> index : relevantIndexes) {
+      for (AnnotationFS a : index) {
+        // consider skipped types
+        if (allIndexTypes == null || allIndexTypes.contains(a.getType())) {
+          addAnnotation(a, false, false, null);
+        }
+      }
+    }
+
     updateIterators(documentAnnotation);
   }
 
@@ -304,7 +371,7 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   private void updateBasics(AnnotationIndex<AnnotationFS> basicIndex,
-          List<FSIndex<AnnotationFS>> relevantIndexes, Collection<Type> completeReindexTypeList,
+          List<FSIndex<AnnotationFS>> relevantIndexes, Collection<Type> allReindexTypes,
           ReindexUpdateMode indexUpdateMode) {
 
     initializeInternalAnchorMaps(basicIndex);
@@ -313,13 +380,13 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
 
     switch (indexUpdateMode) {
       case COMPLETE:
-        updateBasicsComplete(basicIndex, relevantIndexes, completeReindexTypeList);
+        updateBasicsComplete(basicIndex, relevantIndexes, allReindexTypes);
         break;
       case ADDITIVE:
         updateBasicsAdditive(basicIndex, relevantIndexes);
         break;
       case SAFE_ADDITIVE:
-        updateBasicsSafeAdditive(basicIndex, relevantIndexes, completeReindexTypeList);
+        updateBasicsSafeAdditive(basicIndex, relevantIndexes, allReindexTypes);
         break;
       case NONE:
         // do nothing
@@ -347,7 +414,14 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
     }
 
     // add all annotations
-    relevantIndexes.forEach(index -> index.forEach(a -> addAnnotation(a, false, false, null)));
+    for (FSIndex<AnnotationFS> index : relevantIndexes) {
+      for (AnnotationFS a : index) {
+        // consider skipped types
+        if (completeReindexTypeList.contains(a.getType())) {
+          addAnnotation(a, false, false, null);
+        }
+      }
+    }
   }
 
   private void updateBasicsAdditive(AnnotationIndex<AnnotationFS> basicIndex,
@@ -1554,23 +1628,42 @@ public class RutaStream extends FSIteratorImplBase<AnnotationFS> {
   }
 
   private Collection<Type> expandToAllSubtypes(Collection<Type> reindexTypeList,
-          TypeSystem typeSystem) {
+          Collection<Type> reindexSkipTypes, TypeSystem typeSystem) {
     if (reindexTypeList.isEmpty()) {
       return Collections.emptyList();
     }
 
     Collection<Type> result = new LinkedHashSet<>();
     for (Type type : reindexTypeList) {
+
+      if (skipTypeForIndexing(type, reindexSkipTypes, typeSystem)) {
+        continue;
+      }
+
       result.add(type);
-      result.addAll(typeSystem.getProperlySubsumedTypes(type));
+      List<Type> properlySubsumedTypes = typeSystem.getProperlySubsumedTypes(type);
+      for (Type subType : properlySubsumedTypes) {
+        if (skipTypeForIndexing(subType, reindexSkipTypes, typeSystem)) {
+          continue;
+        }
+        result.add(subType);
+      }
+
+      // if we started with uima.tcas.Annotation, we already collected all
+      if (type.getName().equals(CAS.TYPE_NAME_ANNOTATION)) {
+        return result;
+      }
     }
 
     return result;
   }
 
-  private Collection<Type> convertNamesToTypes(Collection<String> typeNames,
-          TypeSystem typeSystem) {
-    Collection<Type> result = new ArrayList<>(typeNames.size());
+  private Collection<Type> convertNamesToTypes(String[] typeNames, TypeSystem typeSystem) {
+    if (typeNames == null) {
+      return Collections.emptyList();
+    }
+
+    Collection<Type> result = new ArrayList<>(typeNames.length);
     for (String each : typeNames) {
       Type type = typeSystem.getType(each);
       if (type != null) {

@@ -64,6 +64,7 @@ import org.apache.uima.ruta.FilterManager;
 import org.apache.uima.ruta.ReindexUpdateMode;
 import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaEnvironment;
+import org.apache.uima.ruta.RutaIndexingConfiguration;
 import org.apache.uima.ruta.RutaModule;
 import org.apache.uima.ruta.RutaScriptFactory;
 import org.apache.uima.ruta.RutaStream;
@@ -430,6 +431,18 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private String[] varValues;
 
   /**
+   * This parameter specifies the annotation types which should be indexed for ruta's internal
+   * annotations. All annotation types that are relevant need to be listed here. The value of this
+   * parameter needs only be adapted for performance and memory optimization in pipelines that
+   * contains several ruta analysis engines. Default value is uima.tcas.Annotation
+   */
+  public static final String PARAM_INDEX_ONLY = "indexOnly";
+
+  @ConfigurationParameter(name = PARAM_INDEX_ONLY, mandatory = false, defaultValue = {
+      "uima.tcas.Annotation" })
+  private String[] indexOnly;
+
+  /**
    * This parameter specifies the annotation types which should be reindexed for ruta's internal
    * annotations. All annotation types that changed since the last call of a ruta script need to be
    * listed here. The value of this parameter needs only be adapted for performance optimization in
@@ -440,16 +453,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   @ConfigurationParameter(name = PARAM_REINDEX_ONLY, mandatory = false, defaultValue = {
       "uima.tcas.Annotation" })
   private String[] reindexOnly;
-
-  /**
-   * If this parameter is activated, then only annotations of types are internally reindexed at
-   * beginning that are mentioned with in the rules. This parameter overrides the values of the
-   * parameter 'reindexOnly' with the types that are mentioned in the rules.
-   */
-  public static final String PARAM_REINDEX_ONLY_MENTIONED_TYPES = "reindexOnlyMentionedTypes";
-
-  @ConfigurationParameter(name = PARAM_REINDEX_ONLY_MENTIONED_TYPES, mandatory = true, defaultValue = "false")
-  private boolean reindexOnlyMentionedTypes;
 
   /**
    * If this parameter is activated, then only annotations of types are internally indexed that are
@@ -464,8 +467,38 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private boolean indexOnlyMentionedTypes;
 
   /**
+   * If this parameter is activated, then only annotations of types are internally reindexed at
+   * beginning that are mentioned with in the rules. This parameter overrides the values of the
+   * parameter 'reindexOnly' with the types that are mentioned in the rules.
+   */
+  public static final String PARAM_REINDEX_ONLY_MENTIONED_TYPES = "reindexOnlyMentionedTypes";
+
+  @ConfigurationParameter(name = PARAM_REINDEX_ONLY_MENTIONED_TYPES, mandatory = true, defaultValue = "false")
+  private boolean reindexOnlyMentionedTypes;
+
+  /**
+   * This parameter specifies annotation types that should not be indexed at all. These types
+   * normally include annotations that provide no meaningful semantics for text processing, e.g.,
+   * types concerning ruta debug information.
+   */
+  public static final String PARAM_INDEX_SKIP_TYPES = "indexSkipTypes";
+
+  @ConfigurationParameter(name = PARAM_INDEX_SKIP_TYPES, mandatory = true, defaultValue = {})
+  private String[] indexSkipTypes;
+
+  /**
+   * This parameter specifies annotation types that should not be reindexed. These types normally
+   * include annotations that are added once and are not changed in the following pipeline, e.g.,
+   * Tokens or TokenSeed (like CW).
+   */
+  public static final String PARAM_REINDEX_SKIP_TYPES = "reindexSkipTypes";
+
+  @ConfigurationParameter(name = PARAM_REINDEX_SKIP_TYPES, mandatory = true, defaultValue = {})
+  private String[] reindexSkipTypes;
+
+  /**
    * This parameter specifies annotation types (resolvable mentions are also supported) that should
-   * be index additionally to types mentioned in the rules. This parameter is only used if the
+   * be indexed additionally to types mentioned in the rules. This parameter is only used if the
    * parameter 'indexOnlyMentionedTypes' is activated.
    * 
    */
@@ -473,6 +506,16 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(name = PARAM_INDEX_ADDITONALLY, mandatory = false, defaultValue = {})
   private String[] indexAdditionally;
+
+  /**
+   * This parameter specifies annotation types that should be reindexed additionally to types
+   * mentioned in the rules. This parameter is only used if the parameter
+   * 'reindexOnlyMentionedTypes' is activated.
+   */
+  public static final String PARAM_REINDEX_ADDITONALLY = "reindexAdditionally";
+
+  @ConfigurationParameter(name = PARAM_REINDEX_ADDITONALLY, mandatory = false, defaultValue = {})
+  private String[] reindexAdditionally;
 
   /**
    * This parameter specifies the mode for updating the internal indexing in RutaBasic annotations.
@@ -822,8 +865,22 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     seedTypes = seedAnnotations(cas);
     RutaStream stream = new RutaStream(cas, basicType, filter, lowMemoryProfile,
             simpleGreedyForComposed, emptyIsInvisible, typeUsageInformation, crowd);
-    stream.initalizeBasics(reindexOnly, reindexOnlyMentionedTypes, reindexUpdateMode);
+    stream.initalizeBasics(createRutaIndexingConfiguration());
     return stream;
+  }
+
+  private RutaIndexingConfiguration createRutaIndexingConfiguration() {
+    RutaIndexingConfiguration indexingConfig = new RutaIndexingConfiguration();
+    indexingConfig.setIndexOnly(indexOnly);
+    indexingConfig.setIndexSkipTypes(indexSkipTypes);
+    indexingConfig.setIndexOnlyMentionedTypes(indexOnlyMentionedTypes);
+    indexingConfig.setIndexAdditionally(indexAdditionally);
+    indexingConfig.setReindexOnly(reindexOnly);
+    indexingConfig.setReindexSkipTypes(reindexSkipTypes);
+    indexingConfig.setReindexOnlyMentionedTypes(reindexOnlyMentionedTypes);
+    indexingConfig.setReindexAdditionally(reindexAdditionally);
+    indexingConfig.setReindexUpdateMode(reindexUpdateMode);
+    return indexingConfig;
   }
 
   private List<Type> seedAnnotations(CAS cas) throws AnalysisEngineProcessException {
