@@ -145,8 +145,5 @@
       modifications since the last RutaEngine, a script with one rule does not require much reindexing,
       only the types that are used in this rule.
     </para>
-    <para>
-      
-    </para>
   </section>
 </section>
