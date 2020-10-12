@@ -634,7 +634,6 @@ public class RutaEnvironment {
    */
   public void importPackage(String packageName, String alias) {
     List<String> aliases = packageImports.get(packageName);
-
     if (aliases == null) {
       aliases = new ArrayList<>(1);
       packageImports.put(packageName, aliases);
