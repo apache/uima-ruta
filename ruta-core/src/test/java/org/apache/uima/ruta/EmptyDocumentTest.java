@@ -38,7 +38,7 @@ public class EmptyDocumentTest {
     String name = RuleInference1Test.class.getSimpleName();
     String namespace1 = RuleInference1Test.class.getPackage().getName().replaceAll("\\.", "/");
     String namespace2 = EmptyDocumentTest.class.getPackage().getName().replaceAll("\\.", "/");
-    CAS cas  = RutaTestUtils.process(namespace1 + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+    CAS cas = RutaTestUtils.process(namespace1 + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
             namespace2 + "/" + "EmptyDocumentTest.txt", 50);
 
     AnnotationIndex<AnnotationFS> ai = null;
@@ -60,7 +60,6 @@ public class EmptyDocumentTest {
     CAS cas = RutaTestUtils.getCAS("");
     Ruta.apply(cas, "Document{IS(uima.tcas.DocumentAnnotation) -> T1};");
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "");
-
   }
 
 }

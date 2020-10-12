@@ -1361,4 +1361,7 @@ BLOCK(forEACH) W{}{
       </para>
     </section>
   </section>
+  
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tools.ruta.language.internal_indexing.xml" />
+  
 </chapter>

@@ -30,6 +30,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.ruta.FilterManager;
+import org.apache.uima.ruta.ReindexUpdateMode;
+import org.apache.uima.ruta.RutaIndexingConfiguration;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
@@ -89,7 +91,12 @@ public class TreeWordListTest {
     seeder.seed(text, cas);
     InferenceCrowd crowd = new InferenceCrowd(new ArrayList<>());
     RutaStream stream = new RutaStream(cas, basicType, filter, false, false, true, null, crowd);
-    stream.initalizeBasics(new String[] { CAS.TYPE_NAME_ANNOTATION }, false);
+
+    RutaIndexingConfiguration config = new RutaIndexingConfiguration();
+    config.setIndexOnly(new String[] { CAS.TYPE_NAME_ANNOTATION });
+    config.setReindexOnly(new String[] { CAS.TYPE_NAME_ANNOTATION });
+    config.setReindexUpdateMode(ReindexUpdateMode.ADDITIVE);
+    stream.initalizeBasics(config);
     return stream;
   }
 
