@@ -131,7 +131,7 @@
       Creative Commons Attribution 3.0 License.
     </postNoticeText>
     <uimaVersion>2.10.4</uimaVersion>
-    <uimafit-version>2.4.0</uimafit-version>
+    <uimafit-version>2.5.1-SNAPSHOT</uimafit-version>
     <spring-version>4.3.22.RELEASE</spring-version>
     <!--
       BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+)

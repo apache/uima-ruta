@@ -18,14 +18,22 @@
  */
 package org.apache.uima.ruta;
 
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.util.CasUtil;
+import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.type.RutaBasic;
 
 /**
@@ -127,6 +135,114 @@ public class RutaBasicUtils {
     }
 
     return true;
+  }
+
+  /**
+   * This method validated the internal indexing, i.e. the information stored in the RutaBasics, and
+   * throw exceptions if a invalid state is discovered.
+   * 
+   * @param jcas
+   *          the JCas that should be validated
+   * @param ignoreTypeNames
+   *          the names of types that should not be validated
+   * @throws AnalysisEngineProcessException
+   *           if some problem was detected
+   */
+  public static void validateInternalIndexing(JCas jcas, Collection<String> ignoreTypeNames)
+          throws AnalysisEngineProcessException {
+
+    Map<Integer, RutaBasic> beginMap = new LinkedHashMap<>();
+    Map<Integer, RutaBasic> endMap = new LinkedHashMap<>();
+
+    Collection<RutaBasic> basics = JCasUtil.select(jcas, RutaBasic.class);
+
+    if (basics.isEmpty()) {
+      throw new AnalysisEngineProcessException(
+              new IllegalStateException("No RutaBasics available!"));
+    }
+    for (RutaBasic rutaBasic : basics) {
+
+      int begin = rutaBasic.getBegin();
+      int end = rutaBasic.getEnd();
+
+      if (beginMap.get(begin) != null || endMap.get(end) != null) {
+        throw new AnalysisEngineProcessException(new IllegalStateException(
+                "RutaBasic must be disjunct! Problem at offset " + begin));
+      }
+
+      beginMap.put(begin, rutaBasic);
+      endMap.put(end, rutaBasic);
+    }
+
+    for (Annotation annotation : JCasUtil.select(jcas, Annotation.class)) {
+
+      Type type = annotation.getType();
+      if (ignoreType(type, ignoreTypeNames, jcas)) {
+        continue;
+      }
+
+      int begin = annotation.getBegin();
+      int end = annotation.getEnd();
+
+      RutaBasic beginBasic = beginMap.get(begin);
+      RutaBasic endBasic = endMap.get(end);
+      if (beginBasic == null) {
+        throw new AnalysisEngineProcessException(new IllegalStateException(
+                "No RutaBasic for begin of annotation at offset " + begin));
+      }
+      if (endBasic == null) {
+        throw new AnalysisEngineProcessException(
+                new IllegalStateException("No RutaBasic for end of annotation at offset " + end));
+      }
+
+      Collection<AnnotationFS> beginAnchors = beginBasic.getBeginAnchors(type);
+      if (beginAnchors == null || !beginAnchors.contains(annotation)) {
+        throw new AnalysisEngineProcessException(new IllegalStateException("Annotation of type '"
+                + type.getName() + "' not registered as begin at offset " + begin));
+      }
+      Collection<AnnotationFS> endAnchors = endBasic.getEndAnchors(type);
+      if (endAnchors == null || !endAnchors.contains(annotation)) {
+        throw new AnalysisEngineProcessException(new IllegalStateException("Annotation of type '"
+                + type.getName() + "' not registered as end at offset " + begin));
+      }
+
+      List<RutaBasic> coveredBasics = JCasUtil.selectCovered(RutaBasic.class, annotation);
+      for (RutaBasic coveredBasic : coveredBasics) {
+        if (!coveredBasic.isPartOf(type)) {
+          throw new AnalysisEngineProcessException(
+                  new IllegalStateException("Annotation of type '" + type.getName()
+                          + "' not registered as partof at offset [" + begin + "," + end + "]"));
+        }
+      }
+    }
+  }
+
+  private static boolean ignoreType(Type type, Collection<String> ignoreTypeNames, JCas jcas) {
+
+    if (type == null) {
+      return false;
+    }
+
+    if (StringUtils.equals(type.getName(), RutaBasic.class.getName())) {
+      return true;
+    }
+
+    if (ignoreTypeNames == null) {
+      return false;
+    }
+
+    TypeSystem typeSystem = jcas.getTypeSystem();
+
+    for (String typeName : ignoreTypeNames) {
+      Type ignoreType = typeSystem.getType(typeName);
+      if (ignoreType == null) {
+        continue;
+      }
+      if (typeSystem.subsumes(ignoreType, type)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }
