@@ -62,6 +62,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.FilterManager;
 import org.apache.uima.ruta.ReindexUpdateMode;
+import org.apache.uima.ruta.RutaBasicUtils;
 import org.apache.uima.ruta.RutaConstants;
 import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaIndexingConfiguration;
@@ -529,6 +530,17 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private ReindexUpdateMode reindexUpdateMode;
 
   /**
+   * Option to validate the internal indexing in RutaBasic with the current CAS after the indexing
+   * and reindexing is performed. Annotations that are not correctly indexing in RutaBasics cause
+   * Exceptions. Annotations of types listed in parameter 'indexSkipTypes' and 'reindexSkipTypes'
+   * are ignored. Default value is false.
+   */
+  public static final String PARAM_VALIDATE_INTERNAL_INDEXING = "validateInternalIndexing";
+
+  @ConfigurationParameter(name = PARAM_VALIDATE_INTERNAL_INDEXING, mandatory = true, defaultValue = "false")
+  private boolean validateInternalIndexing;
+
+  /**
    * This parameter determines positions as invisible if the internal indexing of the corresponding
    * RutaBasic annotation is empty.
    */
@@ -663,6 +675,14 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     stream.setGreedyRule(greedyRule);
     stream.setMaxRuleMatches(maxRuleMatches);
     stream.setMaxRuleElementMatches(maxRuleElementMatches);
+
+    if (validateInternalIndexing) {
+      Collection<String> ignoreTypeNames = new ArrayList<>();
+      ignoreTypeNames.addAll(Arrays.asList(indexSkipTypes));
+      ignoreTypeNames.addAll(Arrays.asList(reindexSkipTypes));
+      RutaBasicUtils.validateInternalIndexing(jcas, ignoreTypeNames);
+    }
+
     try {
       script.apply(stream, crowd);
     } catch (Throwable e) {

@@ -927,6 +927,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.indexUpdateMode'>validateInternalIndexing</link>
+                  </entry>
+                  <entry>Option to validate the internal indexing.
+                  </entry>
+                  <entry>Single String</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.emptyIsInvisible'>emptyIsInvisible</link>
                   </entry>
                   <entry>Option to define empty text positions as invisible.
@@ -1285,6 +1293,16 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
            Default value is ADDITIVE.
           </para>
         </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.validateInternalIndexing">
+          <title>validateInternalIndexing</title>
+          <para>
+            Option to validate the internal indexing in RutaBasic with the current CAS after the indexing
+            and reindexing is performed. Annotations that are not correctly indexing in RutaBasics cause
+            Exceptions. Annotations of types listed in parameter 'indexSkipTypes' and 'reindexSkipTypes'
+            are ignored. Default value is false.
+          </para>
+        </section>
+        validateInternalIndexing
         <section id="ugr.tools.ruta.ae.basic.parameter.emptyIsInvisible">
           <title>emptyIsInvisible</title>
           <para>

@@ -151,6 +151,24 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-junit</artifactId>
+      <version>${uimafit-version}</version>
+      <scope>test</scope>
+      <!-- Exclude aop stuff, which is not need by uimafit and only introduces a non-asl license -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-aop</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>aopalliance</groupId>
+          <artifactId>aopalliance</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
