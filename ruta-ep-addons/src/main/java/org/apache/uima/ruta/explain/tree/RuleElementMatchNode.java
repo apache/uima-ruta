@@ -27,8 +27,8 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.caseditor.view.tree.IAnnotationNode;
 import org.apache.uima.ruta.explain.ExplainConstants;
 
-public class RuleElementMatchNode extends ExplainAbstractTreeNode implements IEvaluatedNode,
-        IAnnotationNode {
+public class RuleElementMatchNode extends ExplainAbstractTreeNode
+        implements IEvaluatedNode, IAnnotationNode {
 
   private boolean matched;
 
@@ -40,7 +40,8 @@ public class RuleElementMatchNode extends ExplainAbstractTreeNode implements IEv
     matched = baseFS.getBooleanValue(baseFeat);
 
     f = fs.getType().getFeatureByBaseName(ExplainConstants.CONDITIONS);
-    ArrayFS value = (ArrayFS) fs.getFeatureValue(f);
+    @SuppressWarnings("unchecked")
+    ArrayFS<FeatureStructure> value = (ArrayFS<FeatureStructure>) fs.getFeatureValue(f);
     if (value != null) {
       FeatureStructure[] fsarray = value.toArray();
       for (FeatureStructure each : fsarray) {
