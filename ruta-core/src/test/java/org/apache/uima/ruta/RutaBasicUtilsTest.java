@@ -22,17 +22,35 @@ import java.util.Arrays;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.fit.testing.junit.ManagedJCas;
+import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.type.CW;
 import org.apache.uima.ruta.type.RutaBasic;
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
 
 public class RutaBasicUtilsTest {
 
-  public @Rule ManagedJCas managedJCas = new ManagedJCas();
+  // TODO use uimafit when released instead
+  // public @Rule ManagedJCas managedJCas = new ManagedJCas();
+
+  private static ThreadLocal<JCas> managedJCas = new ThreadLocal<>();
+
+  static {
+
+    try {
+      JCas jCas = JCasFactory.createJCas();
+      managedJCas.set(jCas);
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  @Before
+  public void setup() {
+    managedJCas.get().reset();
+  }
 
   @Test(expected = AnalysisEngineProcessException.class)
   public void testBreakOnNoBasics() throws AnalysisEngineProcessException {
