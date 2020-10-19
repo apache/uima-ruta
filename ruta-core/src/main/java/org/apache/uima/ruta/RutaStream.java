@@ -61,7 +61,6 @@ import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.block.RutaBlock;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
@@ -1131,15 +1130,15 @@ public class RutaStream {
     if (windowAnnotation != null
             && (windowAnnotation.getBegin() != cas.getDocumentAnnotation().getBegin()
                     || windowAnnotation.getEnd() != cas.getDocumentAnnotation().getEnd())) {
-      AnnotationFS frame = cas.createAnnotation(cas.getTypeSystem().getType(RutaEngine.FRAME_TYPE),
-              windowAnnotation.getBegin(), windowAnnotation.getEnd());
-      FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(type).select().coveredBy(frame)
-              .fsIterator();
-      // was: FSIterator<AnnotationFS> subiterator =
-      // cas.getAnnotationIndex(type).subiterator(frame);
 
-      while (iterator.hasNext()) {
-        AnnotationFS each = iterator.next();
+      List<AnnotationFS> selectCovered = CasUtil.selectCovered(cas, type, windowAnnotation);
+      if (cas.getTypeSystem().subsumes(type, windowAnnotation.getType())) {
+        if (isVisible(windowAnnotation)) {
+          result.add(windowAnnotation);
+        }
+      }
+
+      for (AnnotationFS each : selectCovered) {
         if (isVisible(each)) {
           result.add(each);
         }
