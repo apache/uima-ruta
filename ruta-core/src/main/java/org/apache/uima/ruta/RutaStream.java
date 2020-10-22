@@ -1139,6 +1139,10 @@ public class RutaStream {
   public List<AnnotationFS> getAnnotationsInWindow(Type type, AnnotationFS windowAnnotation,
           boolean sensitiveToVisibility) {
 
+    if (type == null || windowAnnotation == null) {
+      return Collections.emptyList();
+    }
+
     List<AnnotationFS> result = new LinkedList<>();
 
     if (cas.getTypeSystem().subsumes(type, windowAnnotation.getType())) {
