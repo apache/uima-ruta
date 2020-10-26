@@ -565,7 +565,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
         }
       }
     } else {
-
+      // TODO UIMA-6281 replace select and rewrite complete block
       result = cas.getAnnotationIndex(type).select().coveredBy(stream.getDocumentAnnotation())
               .fsIterator();
       if (annotation == null) {
@@ -745,8 +745,7 @@ public class WildCardRuleElement extends AbstractRuleElement {
 
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
     result.setRuleAnchor(ruleAnchor);
-    List<EvaluatedCondition> evaluatedConditions = new ArrayList<>(
-            conditions.size());
+    List<EvaluatedCondition> evaluatedConditions = new ArrayList<>(conditions.size());
     boolean base = true;
 
     MatchContext context = new MatchContext(annotation, this, ruleMatch, true);

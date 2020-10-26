@@ -61,7 +61,6 @@ import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.block.RutaBlock;
-import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.expression.AnnotationTypeExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
@@ -204,6 +203,7 @@ public class RutaStream {
   private void updateIterators(CAS cas, Type basicType, FilterManager filter,
           AnnotationFS additionalWindow) {
     if (additionalWindow != null) {
+      // TODO UIMA-6281 replace select
       this.basicIt = cas.getAnnotationIndex(basicType).select().coveredBy(additionalWindow)
               .fsIterator();
       // was: this.basicIt = cas.getAnnotationIndex(basicType).subiterator(additionalWindow);
@@ -784,16 +784,7 @@ public class RutaStream {
 
   public List<AnnotationFS> getAnnotationsInWindow(AnnotationFS windowAnnotation, Type type) {
 
-    if (windowAnnotation == null || type == null) {
-      return Collections.emptyList();
-    }
-    TypeSystem typeSystem = getCas().getTypeSystem();
-    List<AnnotationFS> result = new ArrayList<>();
-    if (typeSystem.subsumes(type, windowAnnotation.getType())) {
-      result.add(windowAnnotation);
-    }
-    result.addAll(CasUtil.selectCovered(cas, type, windowAnnotation));
-    return result;
+    return getAnnotationsInWindow(type, windowAnnotation, false);
   }
 
   public Collection<RutaBasic> getAllBasicsInWindow(AnnotationFS windowAnnotation) {
@@ -865,6 +856,7 @@ public class RutaStream {
       return result;
     }
     FSMatchConstraint defaultConstraint = filter.getDefaultConstraint();
+    // TODO UIMA-6281 replace select
     FSIterator<AnnotationFS> iterator = cas.createFilteredIterator(
             cas.getAnnotationIndex(basicType).select().coveredBy(windowAnnotation).fsIterator(),
             defaultConstraint);
@@ -1131,25 +1123,38 @@ public class RutaStream {
     if (windowAnnotation != null
             && (windowAnnotation.getBegin() != cas.getDocumentAnnotation().getBegin()
                     || windowAnnotation.getEnd() != cas.getDocumentAnnotation().getEnd())) {
-      AnnotationFS frame = cas.createAnnotation(cas.getTypeSystem().getType(RutaEngine.FRAME_TYPE),
-              windowAnnotation.getBegin(), windowAnnotation.getEnd());
-      FSIterator<AnnotationFS> iterator = cas.getAnnotationIndex(type).select().coveredBy(frame)
-              .fsIterator();
-      // was: FSIterator<AnnotationFS> subiterator =
-      // cas.getAnnotationIndex(type).subiterator(frame);
 
-      while (iterator.hasNext()) {
-        AnnotationFS each = iterator.next();
-        if (isVisible(each)) {
-          result.add(each);
-        }
-      }
+      return getAnnotationsInWindow(type, windowAnnotation, true);
     } else {
       AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex(type);
       for (AnnotationFS each : annotationIndex) {
         if (isVisible(each)) {
           result.add(each);
         }
+      }
+    }
+    return result;
+  }
+
+  public List<AnnotationFS> getAnnotationsInWindow(Type type, AnnotationFS windowAnnotation,
+          boolean sensitiveToVisibility) {
+
+    if (type == null || windowAnnotation == null) {
+      return Collections.emptyList();
+    }
+
+    List<AnnotationFS> result = new LinkedList<>();
+
+    if (cas.getTypeSystem().subsumes(type, windowAnnotation.getType())) {
+      if (!sensitiveToVisibility || isVisible(windowAnnotation)) {
+        result.add(windowAnnotation);
+      }
+    }
+
+    List<AnnotationFS> selectCovered = CasUtil.selectCovered(cas, type, windowAnnotation);
+    for (AnnotationFS each : selectCovered) {
+      if (!sensitiveToVisibility || isVisible(each)) {
+        result.add(each);
       }
     }
     return result;
