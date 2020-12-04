@@ -796,9 +796,30 @@ public class AnnotationLabelExpressionTest {
   }
 
   @Test
+  public void testComplexLabelReset() throws Exception {
+    // UIMA-6262
+    // Enumeration
+    // <-{dc1:DiagnosisConcept{dc1.negatedBy!=null}; cue:dc1.negatedBy;}
+    // ->{dc2:DiagnosisConcept{dc2.negatedBy==null -> dc2.negatedBy=cue};
+    // };
+    // solved by rewriting
+
+    String document = "Test 1. Test 2. Test 3. Test 4.";
+
+    String script = "";
+    script += "ANY+{-PARTOF(T1),-PARTOF(PERIOD)-> T1};\n";
+    script += "T1<-{n1:NUM{REGEXP(\"1|3\")};}<-{n2:n1;}\n"; // one applies always
+    script += "->{n2{->T2};};"; //
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "1", "3");
+  }
+
+  @Test
   @Ignore
   public void testInlineWithQuantifier() throws Exception {
-    
+
     String script = "";
     script += "CW{-> Struct1, Struct1.a=sw} sw:SW;\n";
     script += "sw:SW{-> Struct1, Struct1.a=sw};\n";
@@ -807,5 +828,5 @@ public class AnnotationLabelExpressionTest {
     CAS cas = this.applyOnStruct4Cas(script);
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text");
   }
-  
+
 }
