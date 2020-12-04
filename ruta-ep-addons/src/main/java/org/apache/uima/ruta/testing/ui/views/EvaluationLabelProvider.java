@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.testing.ui.views;
 
 import org.apache.uima.ruta.caseditor.view.tree.AnnotationTreeNode;
+import org.apache.uima.ruta.caseditor.view.tree.IAnnotationNode;
 import org.apache.uima.ruta.caseditor.view.tree.PrimitiveFeatureTreeNode;
 import org.apache.uima.ruta.caseditor.view.tree.TextUtils;
 import org.apache.uima.ruta.caseditor.view.tree.TypeTreeNode;
@@ -43,8 +44,8 @@ public class EvaluationLabelProvider extends LabelProvider implements ILabelProv
 
   @Override
   public String getText(Object element) {
-    if (element instanceof AnnotationTreeNode) {
-      AnnotationTreeNode fnNode = (AnnotationTreeNode) element;
+    if (element instanceof IAnnotationNode) {
+      IAnnotationNode fnNode = (IAnnotationNode) element;
       if (fnNode.getAnnotation() != null) {
         String typeName = fnNode.getAnnotation().getType().getName();
         String coveredText = fnNode.getAnnotation().getCoveredText();

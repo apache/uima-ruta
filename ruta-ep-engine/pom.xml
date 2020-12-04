@@ -330,7 +330,7 @@
                   !org.aopalliance.*, !org.springframework.aop.*
                 </Import-Package>
                 <!-- -->
-                <Require-Bundle> org.apache.uima.runtime </Require-Bundle>
+                <Require-Bundle>org.apache.uima.runtime</Require-Bundle>
                 <!-- <Import-Package>org.apache.uima, org.apache.uima.analysis_component,
                   org.apache.uima.analysis_engine, org.apache.uima.analysis_engine.annotator,
                   org.apache.uima.analysis_engine.asb, org.apache.uima.analysis_engine.asb.impl,
