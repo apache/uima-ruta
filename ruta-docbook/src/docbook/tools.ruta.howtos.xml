@@ -250,7 +250,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
 		<programlisting><![CDATA[<plugin>
 <groupId>org.apache.uima</groupId>
 <artifactId>ruta-maven-plugin</artifactId>
-<version>2.8.1</version>
+<version>3.0.1</version>
 <configuration>
 
  <!-- This is a exemplary configuration, which explicitly specifies the 
@@ -403,7 +403,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
     <programlisting><![CDATA[<plugin>
 <groupId>org.apache.uima</groupId>
 <artifactId>ruta-maven-plugin</artifactId>
-<version>2.8.1</version>
+<version>3.0.1</version>
 <configuration></configuration>
 <executions>
 <execution>
@@ -456,7 +456,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
     <programlisting><![CDATA[<plugin>
 <groupId>org.apache.uima</groupId>
 <artifactId>ruta-maven-plugin</artifactId>
-<version>2.8.1</version>
+<version>3.0.1</version>
 <configuration></configuration>
 <executions>
 <execution>
@@ -527,7 +527,7 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
     </para>  
     
     <programlisting><![CDATA[mvn archetype:generate -DarchetypeGroupId=org.apache.uima 
-    -DarchetypeArtifactId=ruta-maven-archetype -DarchetypeVersion=2.8.1
+    -DarchetypeArtifactId=ruta-maven-archetype -DarchetypeVersion=3.0.1
     -DgroupId=my.domain -DartifactId=my-ruta-project]]></programlisting>
     
     <para>
