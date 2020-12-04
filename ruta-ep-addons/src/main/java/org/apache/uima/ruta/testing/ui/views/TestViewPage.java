@@ -467,6 +467,7 @@ public class TestViewPage extends Page implements IPageBookViewPage {
   public void dispose() {
     overlay.dispose();
     labelProvider.dispose();
+    super.dispose();
   }
 
   @Override

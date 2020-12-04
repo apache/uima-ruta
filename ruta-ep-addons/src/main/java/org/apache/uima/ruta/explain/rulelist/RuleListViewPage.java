@@ -129,8 +129,8 @@ public class RuleListViewPage extends ApplyViewPage implements Listener {
    */
   @Override
   public void dispose() {
-    super.dispose();
     overlay.dispose();
+    super.dispose();
   }
 
   /*

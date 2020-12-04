@@ -334,12 +334,12 @@ public class AnnotationCheckComposite extends Composite
    */
   @Override
   public void dispose() {
+	  viewPart.getSite().getPage().removeSelectionListener(this);
+	  Collection<Image> values = images.values();
+	  for (Image image : values) {
+		  image.dispose();
+	  }
     super.dispose();
-    viewPart.getSite().getPage().removeSelectionListener(this);
-    Collection<Image> values = images.values();
-    for (Image image : values) {
-      image.dispose();
-    }
   }
 
   public Image getImage(String name) {

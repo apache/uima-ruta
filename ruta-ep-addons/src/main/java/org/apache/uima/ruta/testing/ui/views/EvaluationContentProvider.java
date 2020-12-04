@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.testing.ui.views;
 
 import org.apache.uima.ruta.caseditor.view.tree.AnnotationTreeNode;
+import org.apache.uima.ruta.caseditor.view.tree.FSFeatureTreeNode;
 import org.apache.uima.ruta.caseditor.view.tree.ITreeNode;
 import org.apache.uima.ruta.caseditor.view.tree.TypeTreeNode;
 import org.apache.uima.ruta.testing.ui.views.tree.TestEvaluationTree;
@@ -57,6 +58,10 @@ public class EvaluationContentProvider implements ITreeContentProvider {
     }
     if (parentElement instanceof AnnotationTreeNode) {
       AnnotationTreeNode node = (AnnotationTreeNode) parentElement;
+      return node.getChildren();
+    }
+    if (parentElement instanceof FSFeatureTreeNode) {
+      FSFeatureTreeNode node = (FSFeatureTreeNode) parentElement;
       return node.getChildren();
     }
     return empty;

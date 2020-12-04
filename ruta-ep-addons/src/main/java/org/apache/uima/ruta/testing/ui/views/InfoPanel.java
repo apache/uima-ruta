@@ -89,9 +89,9 @@ public class InfoPanel extends Composite {
 
   @Override
   public void dispose() {
-    super.dispose();
     fErrorIcon.dispose();
     fFailureIcon.dispose();
+    super.dispose();
   }
 
   private Text createLabel(String name, Image image, String init, Composite parent) {
