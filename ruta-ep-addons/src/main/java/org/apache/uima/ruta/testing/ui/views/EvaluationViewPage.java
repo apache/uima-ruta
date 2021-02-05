@@ -43,8 +43,8 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
-public class EvaluationViewPage extends Page implements ICasDocumentListener, ISelectionListener,
-        ICasEditorInputListener {
+public class EvaluationViewPage extends Page
+        implements ICasDocumentListener, ISelectionListener, ICasEditorInputListener {
 
   private CheckboxTreeViewer viewer;
 
@@ -109,10 +109,10 @@ public class EvaluationViewPage extends Page implements ICasDocumentListener, IS
 
   @Override
   public void dispose() {
-    super.dispose();
     getSite().getPage().removeSelectionListener(this);
     document.removeChangeListener(this);
     editor.removeCasEditorInputListener(this);
+    super.dispose();
   }
 
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {

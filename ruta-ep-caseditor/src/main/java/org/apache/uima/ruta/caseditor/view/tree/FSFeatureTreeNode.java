@@ -45,7 +45,10 @@ public class FSFeatureTreeNode extends FSTreeNode implements IAnnotationNode, IA
 
   @Override
   public AnnotationFS getAnnotation() {
-    return (AnnotationFS) fs;
+    if(fs instanceof AnnotationFS) {
+      return (AnnotationFS) fs;
+    }
+    return null;
   }
 
   @Override

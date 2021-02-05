@@ -604,12 +604,12 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
 
   @Override
   public void dispose() {
-    super.dispose();
     if (images != null) {
       for (Image each : images.values()) {
         each.dispose();
       }
     }
+    super.dispose();
   }
 
   public String getDataDirectory() {
