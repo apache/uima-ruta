@@ -174,12 +174,8 @@
             <execution>
               <id>default-cli</id>
               <configuration>
-                <excludes>
-                  <exclude>release.properties</exclude> <!-- release generated artifact -->
+                <excludes combine.children="append">
                   <exclude>src/test/resources/ManualTests/*</exclude> <!-- test data -->
-                  <exclude>marker-file-identifying-*</exclude>
-                  <exclude>META-INF/MANIFEST.MF</exclude>
-                  <exclude>issuesFixed/**</exclude>
                 </excludes>
               </configuration>
             </execution>
