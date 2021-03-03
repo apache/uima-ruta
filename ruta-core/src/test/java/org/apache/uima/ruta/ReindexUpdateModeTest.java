@@ -27,6 +27,7 @@ import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ReindexUpdateModeTest {
@@ -230,6 +231,7 @@ public class ReindexUpdateModeTest {
   }
 
   @Test
+  @Ignore
   public void testSafeAdditive() throws Exception {
 
     Map<String, Object> params = new LinkedHashMap<>();

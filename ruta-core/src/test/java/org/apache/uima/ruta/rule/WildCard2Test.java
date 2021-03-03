@@ -271,4 +271,18 @@ public class WildCard2Test {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
   }
 
+  @Test
+  public void testLastElementAlsoAnnotatedWithLookahead() throws Exception {
+    String document = "a b c. a b c.";
+    String script = "ANY+{-PARTOF({PERIOD, T1})->T1};\n";
+    script += "\"a\" -> T2, T3;\n";
+    script += "\"c\" -> T3;\n";
+    script += "T1 -> { T2 # T3{-> T4};};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document, null, null, false);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "c", "c");
+  }
+
 }

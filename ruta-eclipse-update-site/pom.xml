@@ -30,7 +30,7 @@
   
 	<artifactId>ruta-eclipse-update-site</artifactId>
 	<packaging>pom</packaging>
-	<version>2.8.2-SNAPSHOT</version>
+	<version>3.0.1</version>
   
 	<name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <description>The UIMA Ruta Eclipse update site</description>
@@ -46,7 +46,7 @@
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
     <eclipseUpdateSiteComponent>ruta</eclipseUpdateSiteComponent>
-    <eclipseUpdateSubSite>${project.build.directory}/eclipse-update-site/${eclipseUpdateSiteComponent}</eclipseUpdateSubSite>
+    <eclipseUpdateSubSite>${project.build.directory}/eclipse-update-site-v3/${eclipseUpdateSiteComponent}</eclipseUpdateSubSite>
     <dropPrevVersions>false</dropPrevVersions>
   </properties>
 	<build>
@@ -178,7 +178,7 @@
 	                        <delete dir="${eclipseUpdateSubSite}" quiet="true" />
 	                        <exec executable="svn" failonerror="true">
 	                          <arg value="checkout" />
-	                          <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
+	                          <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site-v3/${eclipseUpdateSiteComponent}" />
 	                          <arg value="${eclipseUpdateSubSite}" />
 	                        </exec> 
 	                        
