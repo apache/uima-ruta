@@ -216,16 +216,14 @@
                 <pluginExecution>
                   <pluginExecutionFilter>
                     <groupId>de.jflex</groupId>
-                    <artifactId>
-                      jflex-maven-plugin
-                    </artifactId>
+                    <artifactId>jflex-maven-plugin</artifactId>
                     <versionRange>[1.6.1,)</versionRange>
                     <goals>
                       <goal>generate</goal>
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore />
+                    <execute />
                   </action>
                 </pluginExecution>
               </pluginExecutions>
