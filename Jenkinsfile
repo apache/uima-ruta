@@ -14,10 +14,11 @@
 // KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations
 // under the License.
-  
+
 @Library('uima-build-jenkins-shared-library') _
 
 defaultPipeline {
   // The Eclipse libraries that our plugins depend unfortunately on required Java 11
   jdk = 'jdk_11_latest'
+  extraMavenArguments = '-Pjacoco,pmd,run-rat-report'
 }
