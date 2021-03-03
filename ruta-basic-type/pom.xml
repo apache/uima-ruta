@@ -75,10 +75,8 @@
             <execution>
               <id>default-cli</id>
               <configuration>
-                <excludes>
+                <excludes combine.children="append">
                   <exclude>src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude>
-                  <exclude>issuesFixed/**</exclude> <!-- generated -->
-                  <exclude>marker-file-identifying-*</exclude>
                 </excludes>
               </configuration>
             </execution>

@@ -133,7 +133,7 @@
             <execution>
               <id>default-cli</id>
               <configuration>
-                <excludes>
+                <excludes combine.children="append">
                   <exclude>src/test/**/*.ruta</exclude> <!-- test data -->
                   <exclude>src/it/**/*.ruta</exclude> <!-- test data -->
                   <exclude>src/it/**/*.txt</exclude> <!-- test data -->

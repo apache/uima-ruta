@@ -186,7 +186,7 @@
             <execution>
               <id>default-cli</id>
               <configuration>
-                <excludes>
+                <excludes combine.children="append">
                   <exclude>src/main/antlr3/org/apache/uima/ruta/parser/RutaLexer.tokens</exclude> <!-- grammar tokens -->
                   <exclude>src/main/antlr3/org/apache/uima/ruta/parser/RutaParser.tokens</exclude> <!-- grammar tokens -->
                   <exclude>src/test/resources/org/apache/uima/ruta/**/*.txt</exclude> <!-- test data -->
@@ -197,11 +197,8 @@
                   <exclude>src/test/resources/org/apache/uima/ruta/engine/*.html</exclude> <!-- test data -->
                   <exclude>src/test/resources/META-INF/org.apache.uima.fit/types.txt</exclude> <!-- test data -->
                   <exclude>src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude>
-                  <exclude>api-change-report/**</exclude>
-                  <exclude>issuesFixed/**</exclude> <!-- generated -->
                   <exclude>input/**</exclude> <!-- temp test data -->
                   <exclude>TypeSystem.xml</exclude> <!-- temp test data -->
-                  <exclude>marker-file-identifying-*</exclude>
                 </excludes>
               </configuration>
             </execution>
