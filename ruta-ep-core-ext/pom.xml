@@ -96,27 +96,6 @@
   <build>
     <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->
     <finalName>org.apache.uima.ruta.core.ext_${parsedVersion.osgiVersion}</finalName>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.rat</groupId>
-          <artifactId>apache-rat-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>default-cli</id>
-              <configuration>
-                <excludes>
-                  <exclude>release.properties</exclude> <!-- release generated artifact -->
-                  <exclude>marker-file-identifying-*</exclude>
-                  <exclude>META-INF/MANIFEST.MF</exclude>
-                  <exclude>issuesFixed/**</exclude>
-                </excludes>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
 
     <plugins>
       <plugin>

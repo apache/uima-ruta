@@ -146,26 +146,34 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <!-- run Release Audit Tool (RAT) -->
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
           <executions>
             <execution>
               <id>default-cli</id>
+                <!-- default configuration -->
               <configuration>
-                <excludes>
-                  <exclude>target/**</exclude>
+                <excludes combine.children="append">
+                  <!--  workaround https://issues.apache.org/jira/browse/RAT-97 -->
                   <exclude>example-projects/**</exclude>
-                  <exclude>README*</exclude>
-                  <exclude>RELEASE_NOTES*</exclude>
-                  <exclude>issuesFixed/**</exclude>
-                  <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
-                  <exclude>marker-file-identifying-*</exclude>
-                  <exclude>ruta-eclipse-update-site/target/**</exclude>
-                  <exclude>ruta-eclipse-update-site/marker-file-identifying-*</exclude>
-                  <exclude>ruta-eclipse-update-site/.settings/**</exclude>
-                  <exclude>ruta-eclipse-update-site/.project</exclude>
-                  <exclude>DEPENDENCIES</exclude>
+                  <exclude>ruta-basic-type/**</exclude>
+                  <exclude>ruta-core/**</exclude>
+                  <exclude>ruta-core-ext/**</exclude>
+                  <exclude>ruta-docbook/**</exclude>
+                  <exclude>ruta-eclipse-feature/**</exclude>
+                  <exclude>ruta-eclipse-update-site/**</exclude>
+                  <exclude>ruta-ep-addons/**</exclude>
+                  <exclude>ruta-ep-caseditor/**</exclude>
+                  <exclude>ruta-ep-core-ext/**</exclude>
+                  <exclude>ruta-ep-engine/**</exclude>
+                  <exclude>ruta-ep-ide/**</exclude>
+                  <exclude>ruta-ep-ide-ui/**</exclude>
+                  <exclude>ruta-ep-parent/**</exclude>
+                  <exclude>ruta-ep-textruler/**</exclude>
+                  <exclude>ruta-maven-archetype/**</exclude>
+                  <exclude>ruta-maven-plugin/**</exclude>
+                  <exclude>ruta-parent/**</exclude>
+                  <exclude>ruta-typesystem/**</exclude>
                 </excludes>
               </configuration>
             </execution>

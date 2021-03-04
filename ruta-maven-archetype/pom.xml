@@ -65,11 +65,9 @@
             <execution>
               <id>default-cli</id>
               <configuration>
-                <excludes>
+                <excludes combine.children="append">
                   <exclude>src/main/resources/archetype-resources/src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude> <!-- uimafit -->
                   <exclude>src/main/resources/archetype-resources/src/main/resources/**/*.txt</exclude> <!-- dictionary -->
-                  <exclude>issuesFixed/**</exclude> <!-- generated -->
-                  <exclude>marker-file-identifying-*</exclude>
                 </excludes>
               </configuration>
             </execution>

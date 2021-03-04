@@ -93,10 +93,9 @@
             <execution>
               <id>default-cli</id>
               <configuration>
-                <excludes>
+                <excludes combine.children="append">
                   <exclude>.buildpath</exclude> <!-- generate IDE file -->
                   <exclude>src/main/resources/FirstNames.txt</exclude> <!-- dictionary -->
-                  <exclude>issuesFixed/**</exclude> <!-- generated -->
                 </excludes>
               </configuration>
             </execution>
