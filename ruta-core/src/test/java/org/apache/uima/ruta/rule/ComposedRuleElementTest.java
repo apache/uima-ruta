@@ -27,6 +27,22 @@ import org.junit.Test;
 public class ComposedRuleElementTest {
 
   @Test
+  public void testDisjunctiveOnDuplicates() throws Exception {
+    // UIMA-6324
+    String text = "A B A B";
+    String script = "\"A\" {-> T1, T1};\n";
+    script += "\"A\" {-> T2};\n";
+    script += "T1{-> T3};\n";
+    script += "(T1 | T2){-> T4};\n";
+
+    CAS cas = RutaTestUtils.getCAS(text);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 4, "A", "A", "A", "A");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "A", "A");
+  }
+
+  @Test
   public void testDisjunctiveSequenceCombination() throws Exception {
     // UIMA-6324
     String text = "A B A B";
