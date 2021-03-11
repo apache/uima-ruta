@@ -22,6 +22,8 @@ package org.apache.uima.ruta.seed;
 import static org.junit.Assert.assertEquals;
 
 import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -171,6 +173,26 @@ public class DefaultSeederTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, " ");
+  }
+
+  @Test
+  public void testMultiLineXmlComment() throws Exception {
+
+    String document = "Text text <!-- some \n\r more text --> text text.";
+    String script = "ALL{-> T1};\n";
+    script += "ADDRETAINTYPE(MARKUP);\n";
+    script += "ALL{-> T2};\n";
+    script += "MARKUP{-> T3};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Map<String, Object> params = new LinkedHashMap<>();
+    params.put(RutaEngine.PARAM_SEEDERS, new String[] { DefaultSeeder.class.getName() });
+    Ruta.apply(cas, script, params);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 5, "Text", "text", "text", "text", ".");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 6, "Text", "text", "<!-- some \n\r more text -->",
+            "text", "text", ".");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "<!-- some \n\r more text -->");
   }
 
 }
