@@ -23,9 +23,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.uima.cas.CAS;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.ruta.type.MARKUP;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class TextSeederTest {
@@ -33,20 +36,24 @@ public class TextSeederTest {
   @Test
   public void testNoMarkupForXmlComment() throws Exception {
 
-    String document = "Text text <! some more text > text text.";
+    String document = "Text text <!-- some more text --> text text.";
     String script = "ALL{-> T1};\n";
     script += "ADDRETAINTYPE(MARKUP);\n";
     script += "ALL{-> T2};\n";
     script += "MARKUP{-> T3};\n";
+
     CAS cas = RutaTestUtils.getCAS(document);
     Map<String, Object> params = new LinkedHashMap<>();
     params.put(RutaEngine.PARAM_SEEDERS, new String[] { TextSeeder.class.getName() });
     Ruta.apply(cas, script, params);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 5, "Text", "text", "text", "text", ".");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 6, "Text", "text", "<", "!", "some", "more",
-            "text", ">", "text", "text", ".");
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 15, "Text", "text", "<", "!", "-", "-", "some",
+            "more", "text", "-", "-", ">", "text", "text", ".");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 15, "Text", "text", "<", "!", "-", "-", "some",
+            "more", "text", "-", "-", ">", "text", "text", ".");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+
+    Assert.assertTrue(JCasUtil.select(cas.getJCas(), MARKUP.class).isEmpty());
   }
 
 }

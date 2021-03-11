@@ -40,6 +40,9 @@ public class DefaultSeeder extends TextSeeder {
   private final Pattern markupPattern = Pattern.compile(
           "</?\\w[\\w-]*((\\s+[\\w-]+(\\s*=\\s*(?:\".*?\"|'.*?'|[^'\">\\s]+))?)+\\s*|\\s*)/?>");
 
+  private final Pattern xmlCommentPattern = Pattern.compile("<!--[\\s\\S\n]*?-->");
+
+  @Override
   public Type seed(String text, CAS cas) {
     Type result = super.seed(text, cas);
     JCas jCas = null;
@@ -52,20 +55,26 @@ public class DefaultSeeder extends TextSeeder {
     // FIXME: lexer rules for html markup won't work. Therefore, those rules where removed in the
     // grammar and the functionality is included directly with regex
     if (text != null) {
-      Matcher matcher = markupPattern.matcher(text);
       Collection<AnnotationFS> toRemove = new LinkedList<AnnotationFS>();
-      while (matcher.find()) {
-        int begin = matcher.start();
-        int end = matcher.end();
-        MARKUP markup = new MARKUP(jCas, begin, end);
-        markup.addToIndexes();
-        List<AnnotationFS> selectCovered = CasUtil.selectCovered(result, markup);
-        toRemove.addAll(selectCovered);
-      }
+      addMarkupAnnotations(text, result, xmlCommentPattern, jCas, toRemove);
+      addMarkupAnnotations(text, result, markupPattern, jCas, toRemove);
       for (AnnotationFS each : toRemove) {
         cas.removeFsFromIndexes(each);
       }
     }
     return result;
+  }
+
+  private void addMarkupAnnotations(String text, Type result, Pattern pattern, JCas jCas,
+          Collection<AnnotationFS> toRemove) {
+    Matcher matcher = pattern.matcher(text);
+    while (matcher.find()) {
+      int begin = matcher.start();
+      int end = matcher.end();
+      MARKUP markup = new MARKUP(jCas, begin, end);
+      markup.addToIndexes();
+      List<AnnotationFS> selectCovered = CasUtil.selectCovered(result, markup);
+      toRemove.addAll(selectCovered);
+    }
   }
 }
