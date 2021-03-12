@@ -24,6 +24,8 @@ import static org.junit.Assert.assertEquals;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -31,6 +33,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.seed.DefaultSeeder;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.Test;
@@ -64,8 +67,10 @@ public class RutaModifierTest {
     ae.reconfigure();
 
     String scriptName = this.getClass().getSimpleName();
+    Map<String, Object> params = new LinkedHashMap<>();
+    params.put(RutaEngine.PARAM_SEEDERS, new String[] { DefaultSeeder.class.getName() });
     CAS cas = RutaTestUtils.process(namespace + "/" + scriptName + RutaEngine.SCRIPT_FILE_EXTENSION,
-            namespace + "/test.html", 50);
+            namespace + "/test.html", params, 50);
     ae.process(cas);
 
     CAS modifiedView = cas.getView(viewName);

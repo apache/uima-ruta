@@ -27,9 +27,9 @@ import org.junit.Test;
 public class TrimTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
 
-    CAS cas = RutaTestUtils.processTestScript(this.getClass());
+    CAS cas = RutaTestUtils.processTestScriptWithDefaultSeeder(this.getClass());
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "some text");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "some text");
@@ -54,9 +54,9 @@ public class TrimTest {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    
+
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
-    
+
   }
 
 }

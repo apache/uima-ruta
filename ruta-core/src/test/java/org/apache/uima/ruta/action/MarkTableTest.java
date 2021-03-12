@@ -22,6 +22,7 @@ package org.apache.uima.ruta.action;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -35,19 +36,20 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.apache.uima.ruta.seed.DefaultSeeder;
 import org.junit.Test;
 
 public class MarkTableTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String name = this.getClass().getSimpleName();
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
 
     Map<String, String> complexTypes = new TreeMap<String, String>();
     String typeName = "org.apache.uima.Person";
     complexTypes.put(typeName, "uima.tcas.Annotation");
-    
+
     Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
     List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
     features.put(typeName, list);
@@ -55,15 +57,12 @@ public class MarkTableTest {
     list.add(new TestFeature(fn1, "", "uima.cas.String"));
     String fn2 = "system";
     list.add(new TestFeature(fn2, "", "uima.cas.String"));
-    
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50, false, false, complexTypes, features, namespace + "/");
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
+
+    Map<String, Object> params = new LinkedHashMap<>();
+    params.put(RutaEngine.PARAM_SEEDERS, new String[] { DefaultSeeder.class.getName() });
+    CAS cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+            namespace + "/" + name + ".txt", params, 50, complexTypes, features, namespace + "/",
+            null);
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
@@ -74,46 +73,45 @@ public class MarkTableTest {
     Feature f1 = t.getFeatureByBaseName(fn1);
     Feature f2 = t.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(t);
-    
+
     assertEquals(6, ai.size());
     iterator = ai.iterator();
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Peter", v1);
     assertEquals("Ruta", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Marshall", v1);
     assertEquals("UIMA", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Joern", v1);
     assertEquals("CAS Editor", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Peter", v1);
     assertEquals("Ruta", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Marshall", v1);
     assertEquals("UIMA", v2);
-    
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
     assertEquals("Joern", v1);
-    assertEquals("CAS Editor", v2);    
-    
-    cas.release();    
+    assertEquals("CAS Editor", v2);
+
   }
 }

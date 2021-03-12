@@ -221,7 +221,7 @@
                 <name>seeders</name>
                 <value>
                     <array>
-                        <string>org.apache.uima.ruta.seed.DefaultSeeder</string>
+                        <string>org.apache.uima.ruta.seed.TextSeeder</string>
                     </array>
                 </value>
             </nameValuePair>
