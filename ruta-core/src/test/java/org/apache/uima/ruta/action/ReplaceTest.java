@@ -34,10 +34,10 @@ import org.junit.Test;
 public class ReplaceTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
 
-    CAS cas = RutaTestUtils.processTestScript(this.getClass());
-    
+    CAS cas = RutaTestUtils.processTestScriptWithDefaultSeeder(this.getClass());
+
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
@@ -50,7 +50,7 @@ public class ReplaceTest {
     Feature feature = t.getFeatureByBaseName("replacement");
     String stringValue = afs.getStringValue(feature);
     assertEquals("MARKUP", stringValue);
-    
-    cas.release();    
+
+    cas.release();
   }
 }

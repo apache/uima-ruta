@@ -26,9 +26,9 @@ import org.junit.Test;
 public class RemoveFilterTypeTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
 
-    CAS cas = RutaTestUtils.processTestScript(this.getClass());
+    CAS cas = RutaTestUtils.processTestScriptWithDefaultSeeder(this.getClass());
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "some text");
 

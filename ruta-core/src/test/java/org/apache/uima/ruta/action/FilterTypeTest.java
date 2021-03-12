@@ -26,12 +26,12 @@ import org.junit.Test;
 public class FilterTypeTest {
 
   @Test
-  public void test() {
-    
-    CAS cas = RutaTestUtils.processTestScript(this.getClass());
-   
+  public void test() throws Exception {
+
+    CAS cas = RutaTestUtils.processTestScriptWithDefaultSeeder(this.getClass());
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, " text<br/>");
-   
+
     cas.release();
   }
 }

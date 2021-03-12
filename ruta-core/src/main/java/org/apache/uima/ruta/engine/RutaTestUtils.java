@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -50,6 +51,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.seed.DefaultSeeder;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.CasIOUtils;
 import org.apache.uima.util.FileUtils;
@@ -343,6 +345,18 @@ public class RutaTestUtils {
     return cas;
   }
 
+  public static CAS processTestScriptWithDefaultSeeder(Class<?> testClass) throws Exception {
+    String name = testClass.getSimpleName();
+    String namespace = testClass.getPackage().getName().replaceAll("\\.", "/");
+    String scriptPath = namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION;
+    String textPath = namespace + "/" + name + ".txt";
+
+    Map<String, Object> params = new LinkedHashMap<>();
+    params.put(RutaEngine.PARAM_SEEDERS, new String[] { DefaultSeeder.class.getName() });
+
+    return RutaTestUtils.process(scriptPath, textPath, params, 50);
+  }
+
   public static void storeCas(CAS cas, String name) {
     File file = new File("input/" + name + ".xmi");
     file.getParentFile().mkdirs();
@@ -356,4 +370,5 @@ public class RutaTestUtils {
       IOUtils.closeQuietly(fos);
     }
   }
+
 }
