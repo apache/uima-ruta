@@ -589,9 +589,9 @@ public class WildCardRuleElement extends AbstractRuleElement {
           }
         } else {
           // uimaj-core 3.2.0
-//          if (!after) {
-//            result.moveToPrevious();
-//          }
+          if (!after) {
+            result.moveToPrevious();
+          }
         }
       }
     }

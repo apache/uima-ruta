@@ -47,13 +47,15 @@ public class WildCardInWindowTest {
     String document = ". A x 1 1 : x 2 % 3 x ; . A x B 1 C 1 : x 4 % 5 x ; .";
     String script = "";
     script += "PERIOD ANY+{-PARTOF(PERIOD) -> T1} PERIOD;";
-    script += "T1 -> {CW{-> T4} # @COLON # NUM{-> T2} SPECIAL NUM{-> T3} # SEMICOLON;};";
+    script += "T1 -> {CW{-> T4} # @COLON;};";
+    script += "T1 -> {CW{-> T5} # @COLON # NUM{-> T2} SPECIAL NUM{-> T3} # SEMICOLON;};";
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "2", "4");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "3", "5");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "A", "C");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 2, "A", "C");
 
   }
 
