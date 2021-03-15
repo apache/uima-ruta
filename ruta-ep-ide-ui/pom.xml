@@ -46,153 +46,121 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.eclipse.dltk</groupId>
-      <artifactId>ui</artifactId>
-      <version>${dltk.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.dltk.validators</groupId>
-      <artifactId>ui</artifactId>
-      <version>${dltk.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.dltk.console</groupId>
-      <artifactId>ui</artifactId>
-      <version>${dltk.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.dltk</groupId>
-      <artifactId>debug</artifactId>
-      <version>${dltk.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.dltk.debug</groupId>
-      <artifactId>ui</artifactId>
-      <version>${dltk.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.dltk</groupId>
-      <artifactId>formatter</artifactId>
-      <version>${dltk.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.dltk</groupId>
-      <artifactId>testing</artifactId>
-      <version>${dltk.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>runtime</artifactId>
-      <version>[3.3.0,5.0.0)</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>jobs</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>resources</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.core.runtime</artifactId>
       <version>[3.3.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
-      <artifactId>search</artifactId>
+      <artifactId>org.eclipse.core.jobs</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.core.resources</artifactId>
+      <version>[3.3.0,5.0.0)</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.search</artifactId>
       <version>[3.2.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
-      <artifactId>ui</artifactId>
+      <artifactId>org.eclipse.ui</artifactId>
       <version>[3.3.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>ide</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.ui.ide</artifactId>
       <version>[3.3.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>views</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.ui.views</artifactId>
       <version>[3.3.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>console</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.ui.console</artifactId>
       <version>[3.2.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.ui.workbench</groupId>
-      <artifactId>texteditor</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.ui.workbench.texteditor</artifactId>
       <version>[3.3.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jface</groupId>
-      <artifactId>text</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.jface.text</artifactId>
       <version>[3.3.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>variables</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.core.variables</artifactId>
       <version>[3.2.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jdt</groupId>
-      <artifactId>launching</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.jdt.launching</artifactId>
+      <version>[3.3.0,5.0.0)</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <!-- 
+            The p2 resolver appears to have trouble with this one and tries to download it with 
+            "tools" as the classifier.
+           -->
+          <groupId>org.eclipse</groupId>
+          <artifactId>org.eclipse.jdt.debug</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.jdt.core</artifactId>
       <version>[3.3.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jdt</groupId>
-      <artifactId>core</artifactId>
-      <version>[3.3.0,5.0.0)</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jdt.debug</groupId>
-      <artifactId>ui</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.jdt.debug.ui</artifactId>
       <version>[3.2.0,5.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>contenttype</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.core.contenttype</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.equinox</groupId>
-      <artifactId>preferences</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.equinox.preferences</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.equinox</groupId>
-      <artifactId>app</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.equinox.app</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.emf.ecore</groupId>
-      <artifactId>xmi</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>filesystem</artifactId>
+      <groupId>org.eclipse</groupId>
+      <artifactId>org.eclipse.core.filesystem</artifactId>
       <version>[1.0.0,3.0.0)</version>
       <scope>provided</scope>
     </dependency>
