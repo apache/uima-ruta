@@ -34,7 +34,8 @@ public class HtmlView extends CasEditorView {
 		super("The instance view is currently not available.");
 	}
 
-	protected IPageBookViewPage doCreatePage(ICasEditor editor) {
+	@Override
+    protected IPageBookViewPage doCreatePage(ICasEditor editor) {
 		IPageBookViewPage result = null;
 		if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
 			HtmlViewPage page = new HtmlViewPage((AnnotationEditor) editor);
@@ -42,4 +43,11 @@ public class HtmlView extends CasEditorView {
 		}
 		return result;
 	}
+
+      // Not sure why we need to add this... but here we go...
+      @Override
+      public Object getAdapter(Class aAdapter)
+      {
+        return super.getAdapter(aAdapter);
+      }
 }

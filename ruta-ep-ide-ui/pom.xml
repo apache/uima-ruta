@@ -137,6 +137,23 @@
       <artifactId>org.eclipse.jdt.debug.ui</artifactId>
       <version>[3.2.0,5.0.0)</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <!-- 
+            The p2 resolver appears to have trouble with the "icu-data" classifier
+           -->
+          <groupId>org.eclipse</groupId>
+          <artifactId>com.ibm.icu</artifactId>
+        </exclusion>
+        <exclusion>
+          <!-- 
+            The p2 resolver appears to have trouble with this one and tries to download it with 
+            "tools" as the classifier.
+           -->
+          <groupId>org.eclipse</groupId>
+          <artifactId>org.eclipse.jdt.debug</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>

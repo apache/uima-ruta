@@ -98,5 +98,11 @@ public class TestPageBookView extends PageBookView {
   protected boolean isImportant(IWorkbenchPart part) {
     return part.getSite().getId().equals("org.apache.uima.ruta.ide.ui.editor.RutaEditor");
   }
-
+  
+  // Not sure why we need to add this... but here we go...
+  @Override
+  public Object getAdapter(Class aAdapter)
+  {
+    return super.getAdapter(aAdapter);
+  }
 }

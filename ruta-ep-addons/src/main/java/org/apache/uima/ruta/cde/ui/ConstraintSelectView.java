@@ -64,4 +64,10 @@ public class ConstraintSelectView extends ViewPart {
     super.init(site, memento);
   }
 
+  // Not sure why we need to add this... but here we go...
+  @Override
+  public Object getAdapter(Class aAdapter)
+  {
+    return super.getAdapter(aAdapter);
+  }
 }

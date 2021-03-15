@@ -43,4 +43,11 @@ public class StatisticsView extends CasEditorView {
     }
     return result;
   }
+  
+  // Not sure why we need to add this... but here we go...
+  @Override
+  public Object getAdapter(Class aAdapter)
+  {
+    return super.getAdapter(aAdapter);
+  }
 }
