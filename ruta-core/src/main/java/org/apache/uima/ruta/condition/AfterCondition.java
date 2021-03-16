@@ -65,20 +65,26 @@ public class AfterCondition extends TypeSentiveCondition {
     if (annotation == null || t == null) {
       return false;
     }
-    boolean result = false;
-    FSIterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(t).iterator(annotation);
-    if (!it.isValid()) {
-      it.moveToLast();
+
+    AnnotationFS window = stream.getDocumentAnnotation();
+
+    FSIterator<AnnotationFS> it = null;
+    if (window == null || window.equals(stream.getCas().getDocumentAnnotation())) {
+      it = stream.getCas().getAnnotationIndex(t).iterator();
+    } else {
+      it = stream.getCas().getAnnotationIndex(t).subiterator(window);
     }
-    while (it.isValid()) {
-      AnnotationFS a = it.get();
-      if (a.getBegin() <= annotation.getBegin()) {
-        result = true;
-        break;
+
+    it.moveToFirst();
+
+    if (it.isValid()) {
+      AnnotationFS first = it.get();
+      if (first.getEnd() <= annotation.getBegin()) {
+        return true;
       }
-      it.moveToPrevious();
     }
-    return result;
+
+    return false;
   }
 
 }

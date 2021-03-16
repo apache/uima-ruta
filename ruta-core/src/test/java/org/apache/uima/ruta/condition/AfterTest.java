@@ -20,6 +20,7 @@
 package org.apache.uima.ruta.condition;
 
 import org.apache.uima.cas.CAS;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.junit.Test;
 
@@ -27,16 +28,40 @@ public class AfterTest {
 
   @Test
   public void test() {
-    
+
     CAS cas = RutaTestUtils.processTestScript(this.getClass());
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, ".", ".");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 8, "So", "every", "word", "from", "here", "on", "is", "marked");
-    RutaTestUtils
-            .assertAnnotationsEquals(cas, 3, 9, "dot", "So", "every", "word", "from", "here", "on", "is", "marked");
-    RutaTestUtils
-            .assertAnnotationsEquals(cas, 4, 9, "dot", "So", "every", "word", "from", "here", "on", "is", "marked");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 8, "So", "every", "word", "from", "here", "on",
+            "is", "marked");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 9, "dot", "So", "every", "word", "from", "here",
+            "on", "is", "marked");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 9, "dot", "So", "every", "word", "from", "here",
+            "on", "is", "marked");
 
-    cas.release();
+  }
+
+  @Test
+  public void testInWindow() throws Exception {
+    String document = "x x . A b 1 . x x";
+    String script = "";
+    script += "PERIOD #{-> T1} PERIOD;";
+    script += "T1->{NUM{AFTER(CW)-> T2};};";
+    script += "T1->{NUM{AFTER(PERIOD)-> T3};};";
+    script += "T1->{SW{AFTER(CW)-> T4};};";
+    script += "T1->{SW{AFTER(SW)-> T5};};";
+    script += "T1->{CW{AFTER(PERIOD)-> T6};};";
+    script += "T1->{CW{AFTER(CW)-> T7};};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "1");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "b");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 0);
+
   }
 }

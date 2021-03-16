@@ -65,17 +65,26 @@ public class BeforeCondition extends TypeSentiveCondition {
     if (annotation == null || t == null) {
       return false;
     }
-    boolean result = false;
-    FSIterator<AnnotationFS> it = stream.getCas().getAnnotationIndex(t).iterator(annotation);
-    while (it.isValid()) {
-      AnnotationFS a = it.get();
-      if (a.getEnd() >= annotation.getBegin()) {
-        result = true;
-        break;
-      }
-      it.moveToNext();
+
+    AnnotationFS window = stream.getDocumentAnnotation();
+
+    FSIterator<AnnotationFS> it = null;
+    if (window == null || window.equals(stream.getCas().getDocumentAnnotation())) {
+      it = stream.getCas().getAnnotationIndex(t).iterator();
+    } else {
+      it = stream.getCas().getAnnotationIndex(t).subiterator(window);
     }
-    return result;
+
+    it.moveToLast();
+
+    if (it.isValid()) {
+      AnnotationFS last = it.get();
+      if (last.getBegin() >= annotation.getEnd()) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }
