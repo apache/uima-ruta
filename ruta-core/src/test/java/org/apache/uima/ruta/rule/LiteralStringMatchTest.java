@@ -19,9 +19,14 @@
 
 package org.apache.uima.ruta.rule;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
+import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.ruta.seed.DefaultSeeder;
 import org.junit.Test;
 
 public class LiteralStringMatchTest {
@@ -57,8 +62,10 @@ public class LiteralStringMatchTest {
     String script = "";
     script += "\"W\"{-> T1};";
 
+    Map<String, Object> params = new LinkedHashMap<>();
+    params.put(RutaEngine.PARAM_SEEDERS, new String[] { DefaultSeeder.class.getName() });
     CAS cas = RutaTestUtils.getCAS(document);
-    Ruta.apply(cas, script);
+    Ruta.apply(cas, script, params);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
   }
