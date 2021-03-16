@@ -40,19 +40,25 @@ public class VoteTest {
   @Test
   public void testInWindowOnly() throws Exception {
 
-    String document = "1 2 . A b C d. 3 4";
+    String document = "1 2 . A b C d . 3 4";
 
     String script = "PERIOD #{-> T1} PERIOD;";
     script += "(CW ANY ANY){->T2};";
     script += "SW{->T3};";
-    script += "T1{VOTE(T2,T3)->T4};";
-    script += "T1{-VOTE(T2,T3)->T5};";
+    script += "\"b\"{->T4};";
+    script += "T1{VOTE(T2,T3)->T5};"; // 1 > 2?
+    script += "T1{-VOTE(T2,T3)->T6};"; // not 1 > 2?
+    script += "T1{VOTE(T2,T4)->T7};"; // 1 > 1?
+    script += "T1{VOTE(T4,T2)->T8};"; // 1 > 1?
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 4, 0);
-    RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "A b C d");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "A b C", "C d .");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 6, 1, "A b C d");
+    RutaTestUtils.assertAnnotationsEquals(cas, 7, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 8, 0);
 
   }
 
