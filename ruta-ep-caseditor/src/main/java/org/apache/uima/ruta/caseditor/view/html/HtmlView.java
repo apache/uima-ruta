@@ -26,20 +26,29 @@ import org.eclipse.ui.part.IPageBookViewPage;
 
 public class HtmlView extends CasEditorView {
 
-	public static final String ID = "org.apache.uima.caseditor.html";
+  public static final String ID = "org.apache.uima.caseditor.html";
 
-	public static final String HTML_SOURCE = "org.apache.uima.caseditor.html.source";
-	
-	public HtmlView() {
-		super("The instance view is currently not available.");
-	}
+  public static final String HTML_SOURCE = "org.apache.uima.caseditor.html.source";
 
-	protected IPageBookViewPage doCreatePage(ICasEditor editor) {
-		IPageBookViewPage result = null;
-		if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
-			HtmlViewPage page = new HtmlViewPage((AnnotationEditor) editor);
-			result = page;
-		}
-		return result;
-	}
+  public HtmlView() {
+    super("The instance view is currently not available.");
+  }
+
+  @Override
+  protected IPageBookViewPage doCreatePage(ICasEditor editor) {
+    IPageBookViewPage result = null;
+    if (editor.getDocument() != null && editor instanceof AnnotationEditor) {
+      HtmlViewPage page = new HtmlViewPage((AnnotationEditor) editor);
+      result = page;
+    }
+    return result;
+  }
+
+//Not sure why we need to add this... but here we go...
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public Object getAdapter(Class aAdapter) {
+    return super.getAdapter(aAdapter);
+  }
+
 }

@@ -92,7 +92,6 @@ public class ArrayFeatureTreeNode implements ITreeNode {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (ArrayFeatureTreeNode.class.equals(adapter)) {
