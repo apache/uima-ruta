@@ -33,5 +33,5 @@ public class DummySeeder implements RutaAnnotationSeeder{
     cas.addFsToIndexes(annotation);
     return type;
   }
-
+  
 }
