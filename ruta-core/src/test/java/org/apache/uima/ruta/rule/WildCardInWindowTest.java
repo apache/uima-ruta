@@ -118,8 +118,8 @@ public class WildCardInWindowTest {
     script += "CW{->T2};";
     script += "NUM{->T3};";
     script += "T1->{";
-    script += "CW # n1:NUM ANY[0,5]{-PARTOF(NUM)} COLON # n2:@NUM{-> UNMARK(n2)};";
-    script += "CW # n:NUM{ -> UNMARK(n)} COLON;";
+    script += "T2 # n1:T3 ANY[0,5]{-PARTOF(T3)} COLON # n2:@T3{-> UNMARK(n2)};";
+    script += "T2 # n:T3{ -> UNMARK(n)} COLON;";
     script += "};";
 
     CAS cas = RutaTestUtils.getCAS(document);
