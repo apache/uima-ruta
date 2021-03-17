@@ -69,7 +69,7 @@ public class TestPageBookView extends PageBookView {
 
   @Override
   protected void doDestroyPage(IWorkbenchPart part, PageRec pageRecord) {
-    TestViewPage testViewPage = (TestViewPage)pageRecord.page;
+    TestViewPage testViewPage = (TestViewPage) pageRecord.page;
     testViewPage.saveState(memento);
     testViewPage.dispose();
   }
@@ -99,4 +99,10 @@ public class TestPageBookView extends PageBookView {
     return part.getSite().getId().equals("org.apache.uima.ruta.ide.ui.editor.RutaEditor");
   }
 
+//Not sure why we need to add this... but here we go...
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public Object getAdapter(Class aAdapter) {
+    return super.getAdapter(aAdapter);
+  }
 }

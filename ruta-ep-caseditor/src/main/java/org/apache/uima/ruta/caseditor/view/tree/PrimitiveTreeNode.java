@@ -72,7 +72,6 @@ public class PrimitiveTreeNode implements ITreeNode {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (PrimitiveTreeNode.class.equals(adapter)) {

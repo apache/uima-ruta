@@ -53,14 +53,14 @@ public class QueryView extends ViewPart {
 
   @Override
   public void setFocus() {
-    if(viewContent != null) {
+    if (viewContent != null) {
       viewContent.setFocus();
     }
   }
 
   @Override
   public void saveState(IMemento memento) {
-    if(viewContent != null) {
+    if (viewContent != null) {
       viewContent.saveState(memento);
     }
   }
@@ -73,5 +73,12 @@ public class QueryView extends ViewPart {
 
   public QueryComposite getComposite() {
     return viewContent;
+  }
+
+//Not sure why we need to add this... but here we go...
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public Object getAdapter(Class aAdapter) {
+    return super.getAdapter(aAdapter);
   }
 }

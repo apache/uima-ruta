@@ -21,7 +21,6 @@ package org.apache.uima.ruta.cde.ui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.part.ViewPart;
 
 public class ResultView extends ViewPart {
@@ -31,7 +30,7 @@ public class ResultView extends ViewPart {
   @Override
   public void createPartControl(Composite parent) {
     this.resultViewComposite = new ResultViewComposite(parent, SWT.FILL);
-    getSite().getPage().addSelectionListener((ISelectionListener) resultViewComposite);
+    getSite().getPage().addSelectionListener(resultViewComposite);
   }
 
   public ResultViewComposite getResultComposite() {
@@ -41,6 +40,12 @@ public class ResultView extends ViewPart {
   @Override
   public void setFocus() {
     this.resultViewComposite.setFocus();
+  }
 
+//Not sure why we need to add this... but here we go...
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public Object getAdapter(Class aAdapter) {
+    return super.getAdapter(aAdapter);
   }
 }
