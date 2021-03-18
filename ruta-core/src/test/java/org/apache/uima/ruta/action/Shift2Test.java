@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -33,22 +34,22 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.apache.uima.ruta.seed.DefaultSeeder;
 import org.junit.Test;
 
 public class Shift2Test {
 
   @Test
-  public void test() {
-    String name = this.getClass().getSimpleName();
-    String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-    
+  public void test() throws Exception {
+
     Map<String, String> complexTypes = new HashMap<String, String>();
     String typeName = "org.apache.uima.FS";
     complexTypes.put(typeName, "uima.tcas.Annotation");
-    
+
     Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
     List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
     features.put(typeName, list);
@@ -56,15 +57,17 @@ public class Shift2Test {
     list.add(new TestFeature(fn1, "", "uima.tcas.Annotation"));
     String fn2 = "lang";
     list.add(new TestFeature(fn2, "", "uima.cas.String"));
-    
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50, false, false, complexTypes, features, namespace + "/");
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
+
+    Map<String, Object> params = new LinkedHashMap<>();
+    params.put(RutaEngine.PARAM_SEEDERS, new String[] { DefaultSeeder.class.getName() });
+
+    CAS cas = RutaTestUtils.getCAS("only some text<br/>", complexTypes, features);
+    String script = "";
+    script += "CREATE(FS, \"doc\" = Document, \"lang\" = \"unknown\");\r\n";
+    script += "RETAINTYPE(MARKUP);\r\n";
+    script += "W{STARTSWITH(FS) -> SHIFT(FS, 1, 2, true)} W+ MARKUP;";
+    Ruta.apply(cas, script, params);
+
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
 
@@ -76,11 +79,11 @@ public class Shift2Test {
     assertEquals(1, ai.size());
     AnnotationFS next = iterator.next();
     AnnotationFS v1 = (AnnotationFS) next.getFeatureValue(f1);
-    String v2 = next.getStringValue(f2); 
+    String v2 = next.getStringValue(f2);
     assertEquals("only some text<br/>", v1.getCoveredText());
     assertEquals("unknown", v2);
     assertEquals("only some text", next.getCoveredText());
-    
+
     cas.release();
   }
 }

@@ -27,12 +27,12 @@
     <version>14</version>
     <relativePath />
   </parent>
-  
-	<artifactId>ruta-eclipse-update-site</artifactId>
-	<packaging>pom</packaging>
-	<version>3.0.1</version>
-  
-	<name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
+
+  <artifactId>ruta-eclipse-update-site</artifactId>
+  <packaging>pom</packaging>
+  <version>3.0.2-SNAPSHOT</version>
+
+  <name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <description>The UIMA Ruta Eclipse update site</description>
   <url>${uimaWebsiteUrl}</url>
 
@@ -149,8 +149,8 @@
             <goals>
               <goal>run</goal>
             </goals>
-            <configuration combine.self="override">
-              <target>
+            <configuration>
+              <target combine.self="override">
                 <taskdef classname="net.sf.antcontrib.logic.IfTask" name="if" />
                 
                 <condition property="eclipse.home" value="${uima-maven-build-eclipse-home}">

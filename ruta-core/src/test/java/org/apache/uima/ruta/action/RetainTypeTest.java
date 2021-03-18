@@ -26,13 +26,13 @@ import org.junit.Test;
 public class RetainTypeTest {
 
   @Test
-  public void test() {
-    
-    CAS cas = RutaTestUtils.processTestScript(this.getClass());
-        
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, " some"," text");
+  public void test() throws Exception {
+
+    CAS cas = RutaTestUtils.processTestScriptWithDefaultSeeder(this.getClass());
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, " some", " text");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "text<br/>");
-    
+
     cas.release();
   }
 }

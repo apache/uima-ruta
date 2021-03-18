@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.uima.ruta.caseditor.view.browser;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
@@ -50,4 +49,10 @@ public class AnnotationBrowserView extends CasEditorView {
     return page;
   }
 
+  // Not sure why we need to add this... but here we go...
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public Object getAdapter(Class aAdapter) {
+    return super.getAdapter(aAdapter);
+  }
 }

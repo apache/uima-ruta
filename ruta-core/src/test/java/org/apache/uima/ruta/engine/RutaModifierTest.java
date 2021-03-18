@@ -24,6 +24,8 @@ import static org.junit.Assert.assertEquals;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -31,6 +33,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.ruta.seed.DefaultSeeder;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.Test;
@@ -42,13 +45,13 @@ public class RutaModifierTest {
     String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     URL url = HtmlAnnotator.class.getClassLoader().getResource("Modifier.xml");
     if (url == null) {
-      url = HtmlAnnotator.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/Modifier.xml");
+      url = HtmlAnnotator.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/Modifier.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
     AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
-    
+
     TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().getTypeSystem();
     for (int i = 1; i <= 20; i++) {
       basicTypeSystem.addType(RutaTestUtils.TYPE + i, "Type for Testing", "uima.tcas.Annotation");
@@ -62,26 +65,21 @@ public class RutaModifierTest {
     String viewName = "modified_for_testing";
     ae.setConfigParameterValue(RutaModifier.PARAM_OUTPUT_VIEW, viewName);
     ae.reconfigure();
-    
+
     String scriptName = this.getClass().getSimpleName();
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.process(namespace + "/" + scriptName + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/test.html", 50);
-    } catch (Exception e) {
-      e.printStackTrace();
-      assert (false);
-    }
+    Map<String, Object> params = new LinkedHashMap<>();
+    params.put(RutaEngine.PARAM_SEEDERS, new String[] { DefaultSeeder.class.getName() });
+    CAS cas = RutaTestUtils.process(namespace + "/" + scriptName + RutaEngine.SCRIPT_FILE_EXTENSION,
+            namespace + "/test.html", params, 50);
     ae.process(cas);
-    
+
     CAS modifiedView = cas.getView(viewName);
     String text = modifiedView.getDocumentText();
-    
-    assertEquals("start of bodynormal BOLDend of body" , text);
-    
-    
+
+    assertEquals("start of bodynormal BOLDend of body", text);
+
     cas.release();
     ae.destroy();
   }
 
-  
 }

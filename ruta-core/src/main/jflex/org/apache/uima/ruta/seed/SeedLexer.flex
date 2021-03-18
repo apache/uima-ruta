@@ -19,8 +19,6 @@
 
 
 package org.apache.uima.ruta.seed;
-import java.util.*;
-import java.util.regex.*;
 
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
@@ -32,7 +30,6 @@ import org.apache.uima.ruta.type.COLON;
 import org.apache.uima.ruta.type.COMMA;
 import org.apache.uima.ruta.type.CW;
 import org.apache.uima.ruta.type.EXCLAMATION;
-import org.apache.uima.ruta.type.MARKUP;
 import org.apache.uima.ruta.type.NBSP;
 import org.apache.uima.ruta.type.NUM;
 import org.apache.uima.ruta.type.PERIOD;
@@ -68,23 +65,6 @@ SPACE=[ \t]
 
 <YYINITIAL> {
     
-    \<[/][!][^>]*> {
-                MARKUP t = new MARKUP(cas);
-                t.setBegin(yychar);
-                t.setEnd(yychar + yytext().length());
-                
-                return t;
-    }
-                    
-    \<[!][^>]*> {
-                MARKUP t = new MARKUP(cas);
-                t.setBegin(yychar);
-                t.setEnd(yychar + yytext().length());
-                
-                return t;
-    }
-    
-                                       
     \u00A0|\u202F|\uFEFF|\u2007|\u180E|&nbsp;|&NBSP; {
                 NBSP t = new NBSP(cas);
                 t.setBegin(yychar);
