@@ -40,6 +40,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.apache.uima.ruta.seed.DefaultSeeder;
 import org.apache.uima.util.InvalidXMLException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -47,7 +48,8 @@ import org.xml.sax.SAXException;
 public class WSDictionaryTest {
 
   @Test
-  public void test() throws SAXException, ResourceInitializationException, InvalidXMLException, IOException {
+  public void test()
+          throws SAXException, ResourceInitializationException, InvalidXMLException, IOException {
     String document = "Peter Kluegl, Marshall Schor, Joern Kottmann\n";
     document += "PeterKluegl, MarshallSchor, JoernKottmann\n";
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
@@ -81,7 +83,8 @@ public class WSDictionaryTest {
   }
 
   @Test
-  public void testTableWithWS() throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
+  public void testTableWithWS()
+          throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
     String document = "Peter Kluegl, Marshall Schor, Joern Kottmann\n";
     document += "PeterKluegl, MarshallSchor, JoernKottmann\n";
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
@@ -177,6 +180,7 @@ public class WSDictionaryTest {
     try {
       Map<String, Object> map = new HashMap<>();
       map.put(RutaEngine.PARAM_DICT_REMOVE_WS, true);
+      map.put(RutaEngine.PARAM_SEEDERS, new String[] { DefaultSeeder.class.getName() });
       Ruta.apply(cas, script, map);
     } catch (Exception e) {
       fail("Failed to execute analysis engine. Reason: " + e.getMessage());

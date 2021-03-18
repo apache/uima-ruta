@@ -19,15 +19,12 @@
 
 package org.apache.uima.ruta.condition;
 
-import java.util.List;
-
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.EvaluatedCondition;
 import org.apache.uima.ruta.rule.MatchContext;
-import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
 public class VoteCondition extends TerminalRutaCondition {
@@ -45,22 +42,15 @@ public class VoteCondition extends TerminalRutaCondition {
   @Override
   public EvaluatedCondition eval(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
     AnnotationFS annotation = context.getAnnotation();
-    int count1 = 0;
-    int count2 = 0;
     Type t1 = type1.getType(context, stream);
     Type t2 = type2.getType(context, stream);
 
-    if (annotation != null && t1 != null && t2 != null) {
-      List<RutaBasic> annotations = stream.getBasicsInWindow(annotation);
-      for (RutaBasic each : annotations) {
-        if (each.beginsWith(t1)) {
-          count1++;
-        }
-        if (each.beginsWith(t2)) {
-          count2++;
-        }
-      }
+    if (t1 == null || t2 == null) {
+      return new EvaluatedCondition(this, false);
     }
+
+    int count1 = stream.getAnnotations(t1, annotation).size();
+    int count2 = stream.getAnnotations(t2, annotation).size();
     return new EvaluatedCondition(this, count1 > count2);
   }
 

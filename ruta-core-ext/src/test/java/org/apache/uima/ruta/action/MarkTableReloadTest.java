@@ -36,6 +36,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.apache.uima.ruta.seed.DefaultSeeder;
 import org.junit.Test;
 
 public class MarkTableReloadTest {
@@ -63,6 +64,7 @@ public class MarkTableReloadTest {
       String textFileName = namespace + "/" + name + ".txt";
       Map<String, Object> parameters = new HashMap<>();
       parameters.put(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS, new String[] {MarkReloadExtension.class.getName()});
+      parameters.put(RutaEngine.PARAM_SEEDERS, new String[] {DefaultSeeder.class.getName()});
       cas = RutaTestUtils.process(ruleFileName, textFileName, parameters, 50, complexTypes, features, namespace + "/", null);
     } catch (Exception e) {
       e.printStackTrace();

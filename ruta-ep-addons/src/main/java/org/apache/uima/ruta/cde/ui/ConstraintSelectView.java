@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.uima.ruta.cde.ui;
 
 import org.eclipse.swt.SWT;
@@ -55,13 +54,21 @@ public class ConstraintSelectView extends ViewPart {
     return consSelectComp;
   }
 
+  @Override
   public void saveState(IMemento memento) {
     consSelectComp.saveState(memento);
   }
 
+  @Override
   public void init(IViewSite site, IMemento memento) throws PartInitException {
     this.memento = memento;
     super.init(site, memento);
   }
 
+  //Not sure why we need to add this... but here we go...
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public Object getAdapter(Class aAdapter) {
+    return super.getAdapter(aAdapter);
+  }
 }

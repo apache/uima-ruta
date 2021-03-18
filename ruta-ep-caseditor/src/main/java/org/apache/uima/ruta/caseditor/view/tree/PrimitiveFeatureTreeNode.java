@@ -57,7 +57,6 @@ public class PrimitiveFeatureTreeNode implements ITreeNode {
     return f.getShortName() + ": " + value;
   }
 
-
   @Override
   public ITreeNode getParent() {
     return parent;
@@ -90,7 +89,6 @@ public class PrimitiveFeatureTreeNode implements ITreeNode {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (PrimitiveFeatureTreeNode.class.equals(adapter)) {

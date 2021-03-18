@@ -1194,8 +1194,8 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <title>seeders</title>
           <para>
             This list of string values refers to implementations of the interface "org.apache.uima.ruta.seed.RutaAnnotationSeeder", 
-            which can be used to automatically add annotations to the CAS. The default value of the parameter is a single seeder, namely "org.apache.uima.ruta.seed.DefaultSeeder"
-            that adds annotations for token classes like CW, MARKUP or SEMICOLON. Remember that additional annotations can also be added with 
+            which can be used to automatically add annotations to the CAS. The default value of the parameter is a single seeder, namely "org.apache.uima.ruta.seed.TextSeeder"
+            that adds annotations for token classes like CW, NUM and SEMICOLON, but not MARKUP. Remember that additional annotations can also be added with 
             an additional engine that is executed by a UIMA Ruta rule.
           </para>
         </section>

@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.uima.ruta.caseditor.view.selection;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
@@ -43,5 +42,12 @@ public final class SelectionView extends CasEditorView {
       result = page;
     }
     return result;
+  }
+
+  //Not sure why we need to add this... but here we go...
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public Object getAdapter(Class aAdapter) {
+    return super.getAdapter(aAdapter);
   }
 }

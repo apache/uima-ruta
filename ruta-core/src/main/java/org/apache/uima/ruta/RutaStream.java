@@ -1118,8 +1118,12 @@ public class RutaStream {
   }
 
   public Collection<AnnotationFS> getAnnotations(Type type) {
+
+    return getAnnotations(type, filter.getWindowAnnotation());
+  }
+
+  public Collection<AnnotationFS> getAnnotations(Type type, AnnotationFS windowAnnotation) {
     Collection<AnnotationFS> result = new LinkedList<>();
-    AnnotationFS windowAnnotation = filter.getWindowAnnotation();
     if (windowAnnotation != null
             && (windowAnnotation.getBegin() != cas.getDocumentAnnotation().getBegin()
                     || windowAnnotation.getEnd() != cas.getDocumentAnnotation().getEnd())) {

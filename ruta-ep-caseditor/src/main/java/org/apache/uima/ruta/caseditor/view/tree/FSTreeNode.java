@@ -123,7 +123,6 @@ public class FSTreeNode extends AbstractTreeNode implements IAdaptable {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
     if (FSTreeNode.class.equals(adapter)) {
       return this;
