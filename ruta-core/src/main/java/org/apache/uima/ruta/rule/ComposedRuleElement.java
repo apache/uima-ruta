@@ -254,12 +254,12 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
             continue;
           }
           ComposedRuleElementMatch startElementMatch = (ComposedRuleElementMatch) eachStartRuleMatch
-                  .getLastMatch(this, true);
-          List<RuleMatch> continueMatch = each.continueMatch(true, annotation, eachStartRuleMatch,
+                  .getLastMatch(this, after);
+          List<RuleMatch> continueMatch = each.continueMatch(after, annotation, eachStartRuleMatch,
                   null, startElementMatch, null, this, stream, crowd);
           for (RuleMatch startRuleMatch : continueMatch) {
             ComposedRuleElementMatch elementMatch = (ComposedRuleElementMatch) startRuleMatch
-                    .getLastMatch(this, true);
+                    .getLastMatch(this, after);
             ruleMatches.put(startRuleMatch, elementMatch);
           }
         }
@@ -327,8 +327,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
           Map<RuleMatch, ComposedRuleElementMatch> ruleMatches, boolean direction,
           RutaStream stream) {
     // TODO hotfix: this needs a correct implementation
-    Map<RuleMatch, ComposedRuleElementMatch> result = new TreeMap<>(
-            ruleMatchComparator);
+    Map<RuleMatch, ComposedRuleElementMatch> result = new TreeMap<>(ruleMatchComparator);
     Set<Entry<RuleMatch, ComposedRuleElementMatch>> entrySet = ruleMatches.entrySet();
     Entry<RuleMatch, ComposedRuleElementMatch> largestEntry = null;
     AnnotationFS largestAnnotation = null;
@@ -336,7 +335,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
       RuleMatch ruleMatch = entry.getKey();
       ComposedRuleElementMatch elementMatch = entry.getValue();
       if (elementMatch.matched()) {
-        result.put(ruleMatch, elementMatch);
+        result.putIfAbsent(ruleMatch, elementMatch);
       } else {
         MatchContext context = new MatchContext(getFirstElement(), ruleMatch, direction);
         AnnotationFS lastMatchedAnnotation = ruleMatch.getLastMatchedAnnotation(context, stream);
@@ -565,8 +564,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     RutaEnvironment environment = context.getParent().getEnvironment();
     environment.addMatchToVariable(ruleMatch, this, context, stream);
 
-    List<EvaluatedCondition> evaluatedConditions = new ArrayList<>(
-            conditions.size());
+    List<EvaluatedCondition> evaluatedConditions = new ArrayList<>(conditions.size());
     for (AbstractRutaCondition condition : conditions) {
       crowd.beginVisit(condition, null);
       EvaluatedCondition eval = condition.eval(context, stream, crowd);

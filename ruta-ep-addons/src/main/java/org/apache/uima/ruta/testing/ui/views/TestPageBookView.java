@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.uima.ruta.testing.ui.views;
 
 import org.eclipse.core.resources.IResource;
@@ -98,11 +97,11 @@ public class TestPageBookView extends PageBookView {
   protected boolean isImportant(IWorkbenchPart part) {
     return part.getSite().getId().equals("org.apache.uima.ruta.ide.ui.editor.RutaEditor");
   }
-  
-  // Not sure why we need to add this... but here we go...
+
+  //Not sure why we need to add this... but here we go...
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public Object getAdapter(Class aAdapter)
-  {
+  public Object getAdapter(Class aAdapter) {
     return super.getAdapter(aAdapter);
   }
 }

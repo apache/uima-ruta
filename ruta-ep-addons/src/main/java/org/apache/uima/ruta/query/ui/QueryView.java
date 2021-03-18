@@ -19,8 +19,9 @@
 
 package org.apache.uima.ruta.query.ui;
 
+import java.awt.Composite;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
@@ -53,14 +54,14 @@ public class QueryView extends ViewPart {
 
   @Override
   public void setFocus() {
-    if(viewContent != null) {
+    if (viewContent != null) {
       viewContent.setFocus();
     }
   }
 
   @Override
   public void saveState(IMemento memento) {
-    if(viewContent != null) {
+    if (viewContent != null) {
       viewContent.saveState(memento);
     }
   }
@@ -74,11 +75,11 @@ public class QueryView extends ViewPart {
   public QueryComposite getComposite() {
     return viewContent;
   }
-  
-  // Not sure why we need to add this... but here we go...
+
+  //Not sure why we need to add this... but here we go...
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public Object getAdapter(Class aAdapter)
-  {
+  public Object getAdapter(Class aAdapter) {
     return super.getAdapter(aAdapter);
   }
 }

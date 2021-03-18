@@ -247,7 +247,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   public static final String PARAM_SEEDERS = "seeders";
 
   @ConfigurationParameter(name = PARAM_SEEDERS, mandatory = false, defaultValue = {
-      "org.apache.uima.ruta.seed.DefaultSeeder" })
+      "org.apache.uima.ruta.seed.TextSeeder" })
   private String[] seeders;
 
   /**

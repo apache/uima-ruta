@@ -19,8 +19,9 @@
 
 package org.apache.uima.ruta.cde.ui;
 
+import java.awt.Composite;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
@@ -35,6 +36,7 @@ public class DocumentView extends ViewPart {
     super();
   }
 
+  @Override
   public void createPartControl(Composite parent) {
     this.docComposite = new DocumentSelectComposite(parent, SWT.FILL);
     getSite().setSelectionProvider(docComposite.getViewer());
@@ -44,6 +46,7 @@ public class DocumentView extends ViewPart {
     }
   }
 
+  @Override
   public void dispose() {
     super.dispose();
   }
@@ -57,19 +60,22 @@ public class DocumentView extends ViewPart {
     return docComposite;
   }
 
+  @Override
   public void saveState(IMemento memento) {
     docComposite.saveState(memento);
   }
 
+  @Override
   public void init(IViewSite site, IMemento memento) throws PartInitException {
     this.memento = memento;
     super.init(site, memento);
   }
-  
-  // Not sure why we need to add this... but here we go...
+
+
+  //Not sure why we need to add this... but here we go...
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public Object getAdapter(Class aAdapter)
-  {
+  public Object getAdapter(Class aAdapter) {
     return super.getAdapter(aAdapter);
   }
 }

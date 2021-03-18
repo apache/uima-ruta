@@ -62,36 +62,36 @@
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse</groupId>
+      <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.equinox.app</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse</groupId>
+      <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.jface.text</artifactId>
-      <version>[3.3.0.0,5.0.0)</version>
+      <version>[3.15.0,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse</groupId>
+      <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.ui.workbench.texteditor</artifactId>
-      <version>[3.3.0,5.0.0)</version>
+      <version>[3.11.200,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse</groupId>
+      <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.ui.editors</artifactId>
-      <version>[3.3.0,5.0.0)</version>
+      <version>[3.11.300,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse</groupId>
+      <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.ui.views</artifactId>
-      <version>[3.3.0.0,5.0.0)</version>
+      <version>[3.9.200,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse</groupId>
+      <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
       <scope>provided</scope>
     </dependency>

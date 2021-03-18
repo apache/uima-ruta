@@ -96,7 +96,6 @@ public class TypeOrderedRootTreeNode extends AbstractTreeNode implements IRootTr
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (TypeTreeNode.class.equals(adapter)) {

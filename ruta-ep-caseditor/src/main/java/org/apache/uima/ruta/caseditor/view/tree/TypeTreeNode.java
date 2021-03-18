@@ -61,7 +61,6 @@ public class TypeTreeNode extends AbstractTreeNode {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 
     if (TypeTreeNode.class.equals(adapter)) {

@@ -19,8 +19,9 @@
 
 package org.apache.uima.ruta.check;
 
+import java.awt.Composite;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
@@ -66,11 +67,11 @@ public class AnnotationCheckView extends ViewPart {
     this.memento = memento;
     super.init(site, memento);
   }
-  
-  // Not sure why we need to add this... but here we go...
+
+  //Not sure why we need to add this... but here we go...
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public Object getAdapter(Class aAdapter)
-  {
+  public Object getAdapter(Class aAdapter) {
     return super.getAdapter(aAdapter);
   }
 }

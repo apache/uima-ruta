@@ -77,12 +77,12 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.eclipse</groupId>
+      <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.equinox.app</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse</groupId>
+      <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
       <scope>provided</scope>
     </dependency>
