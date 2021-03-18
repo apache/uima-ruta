@@ -107,13 +107,13 @@
             The p2 resolver appears to have trouble with this one and tries to download it with 
             "tools" as the classifier.
            -->
-          <groupId>org.eclipse</groupId>
+          <groupId>${eclipseP2RepoId}</groupId>
           <artifactId>org.eclipse.jdt.debug</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.eclipse</groupId>
+      <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.jdt.core</artifactId>
       <version>[3.3.0,6.0.0)</version>
       <scope>provided</scope>
