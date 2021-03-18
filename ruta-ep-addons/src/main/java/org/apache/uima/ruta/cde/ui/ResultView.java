@@ -19,9 +19,8 @@
 
 package org.apache.uima.ruta.cde.ui;
 
-import java.awt.Composite;
-
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 public class ResultView extends ViewPart {

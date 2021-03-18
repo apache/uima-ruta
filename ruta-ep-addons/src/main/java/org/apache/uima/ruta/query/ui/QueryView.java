@@ -19,9 +19,8 @@
 
 package org.apache.uima.ruta.query.ui;
 
-import java.awt.Composite;
-
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
@@ -40,14 +39,14 @@ public class QueryView extends ViewPart {
   }
 
   @Override
-  public void createPartControl(Composite parent) {
+public void createPartControl(Composite parent) {
     viewContent = new QueryComposite(parent, SWT.NULL);
     if (memento != null) {
       viewContent.restoreState(memento);
       memento = null;
     }
   }
-
+  
   public void setViewTitle(String title) {
     setPartName(title);
   }

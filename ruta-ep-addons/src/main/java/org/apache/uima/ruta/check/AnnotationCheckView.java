@@ -19,9 +19,8 @@
 
 package org.apache.uima.ruta.check;
 
-import java.awt.Composite;
-
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
