@@ -40,6 +40,7 @@ public class TestRutaInferenceVisitor implements RutaInferenceVisitor {
   public void endVisit(RutaElement element, ScriptApply result) {
     throw new NotImplementedException("Not supported.");
   }
+
   @Override
   public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
     throw new NotImplementedException("Not supported.");

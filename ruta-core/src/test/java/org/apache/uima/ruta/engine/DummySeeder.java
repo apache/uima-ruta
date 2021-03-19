@@ -24,7 +24,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.seed.RutaAnnotationSeeder;
 import org.apache.uima.ruta.seed.TextSeeder;
 
-public class DummySeeder implements RutaAnnotationSeeder{
+public class DummySeeder implements RutaAnnotationSeeder {
 
   @Override
   public Type seed(String text, CAS cas) {
@@ -33,5 +33,4 @@ public class DummySeeder implements RutaAnnotationSeeder{
     cas.addFsToIndexes(annotation);
     return type;
   }
-  
 }
