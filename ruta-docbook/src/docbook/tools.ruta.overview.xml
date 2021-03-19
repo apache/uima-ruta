@@ -959,6 +959,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.typeIgnorePattern'>typeIgnorePattern</link>
+                  </entry>
+                  <entry>Option to ignore types even if they are available in the typesystem/CAS.
+                  </entry>
+                  <entry>Single String</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring'>dynamicAnchoring</link>
                   </entry>
                   <entry>Option to allow rule matches to start at any rule element.</entry>
@@ -1322,6 +1330,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <para>
             This parameter specifies whether short type names should be resolved against the typesystems declared in the script (true) or at runtime in the CAS typesystem (false).
             The default value is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.typeIgnorePattern">
+          <title>typeIgnorePattern</title>
+          <para>
+            An optional pattern (regular expression) which defined types that should be ignored. These 
+            types will not be resolved even if strictImports is set to false. This parameter can be used to 
+            ignore complete namespaces of type that could contain ambiguous short names.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring">
