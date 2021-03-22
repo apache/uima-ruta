@@ -16,21 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.uima.ruta.engine;
+
+package org.apache.uima.ruta;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.ruta.seed.RutaAnnotationSeeder;
-import org.apache.uima.ruta.seed.TextSeeder;
+import org.apache.uima.ruta.engine.Ruta;
+import org.apache.uima.ruta.engine.RutaEngine;
+import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.junit.Test;
 
-public class DummySeeder implements RutaAnnotationSeeder {
+public class TypeIgnorePatternTest {
 
-  @Override
-  public Type seed(String text, CAS cas) {
-    Type type = cas.getTypeSystem().getType(TextSeeder.seedType);
-    AnnotationFS annotation = cas.createAnnotation(type, 0, text.length());
-    cas.addFsToIndexes(annotation);
-    return type;
+  @Test
+  public void test() throws Exception {
+    Map<String, String> complexTypes = new HashMap<>();
+    complexTypes.put("uima.ruta.Type1", CAS.TYPE_NAME_ANNOTATION);
+    complexTypes.put("bad.package.Type1", CAS.TYPE_NAME_ANNOTATION);
+
+    CAS cas = RutaTestUtils.getCAS("text", complexTypes, null);
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put(RutaEngine.PARAM_TYPE_IGNORE_PATTERN, ".*bad.*");
+    Ruta.apply(cas, "W{->Type1};Type1{->T1};", params);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
   }
+
 }
