@@ -42,7 +42,7 @@ public class ResultView extends ViewPart {
     this.resultViewComposite.setFocus();
   }
 
-//Not sure why we need to add this... but here we go...
+  //Not sure why we need to add this... but here we go...
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public Object getAdapter(Class aAdapter) {

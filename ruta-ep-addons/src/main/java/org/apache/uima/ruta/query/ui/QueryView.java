@@ -39,14 +39,14 @@ public class QueryView extends ViewPart {
   }
 
   @Override
-  public void createPartControl(Composite parent) {
+public void createPartControl(Composite parent) {
     viewContent = new QueryComposite(parent, SWT.NULL);
     if (memento != null) {
       viewContent.restoreState(memento);
       memento = null;
     }
   }
-
+  
   public void setViewTitle(String title) {
     setPartName(title);
   }
@@ -75,7 +75,7 @@ public class QueryView extends ViewPart {
     return viewContent;
   }
 
-//Not sure why we need to add this... but here we go...
+  //Not sure why we need to add this... but here we go...
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public Object getAdapter(Class aAdapter) {
