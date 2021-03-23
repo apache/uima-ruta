@@ -420,6 +420,10 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     RuleElementContainer container = getContainer();
     doMatch(after, annotation, ruleMatch, containerMatch, isStartAnchor(), stream, crowd);
     if (equals(entryPoint) && ruleApply == null) {
+      if (failed) {
+        // inform caller about the failed state using the matched info
+        ruleMatch.setMatched(false);
+      }
       result.add(ruleMatch);
     } else if (container == null) {
       result = fallback(after, failed, annotation, ruleMatch, ruleApply, containerMatch,
