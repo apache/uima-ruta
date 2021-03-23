@@ -116,4 +116,33 @@ public class ConjunctRulesTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 8, "A", "A", "B", "B", "B", "B", "A", "A");
   }
 
+  @Test
+  public void testFirstElementMatches() throws Exception {
+
+    String document = "a Bb a Bb";
+    CAS cas = RutaTestUtils.getCAS(document);
+
+    Ruta.apply(cas, "SW{-> T1} % CW{-> T3} CW{-> T4};");
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 0);
+
+    Ruta.apply(cas, "CW{-> T1} CW{-> T2} % SW{-> T3};");
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 0);
+
+    Ruta.apply(cas, "SW{-> T1} SW{-> T2} % CW{-> T3} CW{-> T4};");
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 0);
+
+  }
+
 }
