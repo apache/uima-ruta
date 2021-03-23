@@ -92,7 +92,8 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     IPath outputDirPath = projectPath.append(RutaProjectUtils.getDefaultOutputLocation());
     Collection<String> classPath = RutaProjectUtils.getClassPath(proj.getProject());
     ClassLoader classLoader = RutaProjectUtils.getClassLoader(classPath);
-    IPath analysisEngineDescriptorPath = RutaProjectUtils.getAnalysisEngineDescriptorPath(member.getLocation(), proj.getProject(), classLoader);
+    IPath analysisEngineDescriptorPath = RutaProjectUtils
+            .getAnalysisEngineDescriptorPath(member.getLocation(), proj.getProject(), classLoader);
     String engineDefaultMethod = "null";
     if (analysisEngineDescriptorPath != null) {
       engineDefaultMethod = analysisEngineDescriptorPath.toPortableString();
@@ -107,8 +108,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
     if (StringUtils.isBlank(output)) {
       output = outputDirPath.toPortableString();
     }
-    String engine = configuration.getAttribute(RutaLaunchConstants.DESCRIPTOR,
-            engineDefaultMethod);
+    String engine = configuration.getAttribute(RutaLaunchConstants.DESCRIPTOR, engineDefaultMethod);
     if (StringUtils.isBlank(engine)) {
       engine = engineDefaultMethod;
     }
@@ -152,7 +152,7 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
 
     cmdline.append(RutaLaunchConstants.FORMAT + " ");
     cmdline.append(defaultFormat + " ");
-    
+
     return cmdline.toString();
   }
 
@@ -345,15 +345,15 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
 //        RutaIdeUIPlugin.error(e1);
 //      }
 //    } else {
-      super.launch(configuration, mode, launch, monitor);
+    super.launch(configuration, mode, launch, monitor);
 
-      while (!launch.isTerminated()) {
-        try {
-          Thread.sleep(100);
-        } catch (InterruptedException e) {
-          Thread.interrupted();
-        }
+    while (!launch.isTerminated()) {
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        Thread.interrupted();
       }
+    }
 //    }
     if (ouputFolder != null) {
       ouputFolder.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
@@ -384,6 +384,11 @@ public class RutaLaunchConfigurationDelegate extends JavaLaunchDelegate {
       }
     }
     return result;
+  }
+
+  @Override
+  protected boolean supportsModule() {
+    return false;
   }
 
 }
