@@ -40,6 +40,8 @@ public final class RutaColorConstants {
 
   public static final String RUTA_DEFAULT = DLTKColorConstants.DLTK_DEFAULT;
 
+  public static final String RUTA_DEFAULT_ECLIPSE = "AbstractTextEditor.Color.Foreground";
+
   public static final String RUTA_CONDITION = "ruta_condition"; //$NON-NLS-1$
 
   public static final String RUTA_ACTION = "ruta_action"; //$NON-NLS-1$
