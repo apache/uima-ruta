@@ -24,15 +24,15 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>14-SNAPSHOT</version>
+    <version>14</version>
     <relativePath />
   </parent>
-  
-	<artifactId>ruta-eclipse-update-site</artifactId>
-	<packaging>pom</packaging>
-	<version>2.9.0-SNAPSHOT</version>
-  
-	<name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
+
+  <artifactId>ruta-eclipse-update-site</artifactId>
+  <packaging>pom</packaging>
+  <version>3.1.0-SNAPSHOT</version>
+
+  <name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <description>The UIMA Ruta Eclipse update site</description>
   <url>${uimaWebsiteUrl}</url>
 
@@ -46,7 +46,7 @@
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
     <eclipseUpdateSiteComponent>ruta</eclipseUpdateSiteComponent>
-    <eclipseUpdateSubSite>${project.build.directory}/eclipse-update-site/${eclipseUpdateSiteComponent}</eclipseUpdateSubSite>
+    <eclipseUpdateSubSite>${project.build.directory}/eclipse-update-site-v3/${eclipseUpdateSiteComponent}</eclipseUpdateSubSite>
     <dropPrevVersions>false</dropPrevVersions>
   </properties>
 	<build>
@@ -149,8 +149,8 @@
             <goals>
               <goal>run</goal>
             </goals>
-            <configuration combine.self="override">
-              <target>
+            <configuration>
+              <target combine.self="override">
                 <taskdef classname="net.sf.antcontrib.logic.IfTask" name="if" />
                 
                 <condition property="eclipse.home" value="${uima-maven-build-eclipse-home}">
@@ -178,7 +178,7 @@
 	                        <delete dir="${eclipseUpdateSubSite}" quiet="true" />
 	                        <exec executable="svn" failonerror="true">
 	                          <arg value="checkout" />
-	                          <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
+	                          <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site-v3/${eclipseUpdateSiteComponent}" />
 	                          <arg value="${eclipseUpdateSubSite}" />
 	                        </exec> 
 	                        

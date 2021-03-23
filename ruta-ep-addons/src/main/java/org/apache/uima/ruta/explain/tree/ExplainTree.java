@@ -107,7 +107,7 @@ public class ExplainTree {
             debugInlinedBlock.getAsCondition(), debugInlinedBlock.getMatched(), ts);
     parent.addChild(inlinedBlockNode);
 
-    FSArray inlinedRules = debugInlinedBlock.getInlinedRules();
+    FSArray<DebugScriptApply> inlinedRules = debugInlinedBlock.getInlinedRules();
     if (inlinedRules != null) {
       for (FeatureStructure each : inlinedRules) {
         buildTree(each, inlinedBlockNode, ts, offset, onlyRules);
@@ -234,7 +234,7 @@ public class ExplainTree {
       }
     }
 
-    FSArray inlinedActionBlocks = fs.getInlinedActionBlocks();
+    FSArray<DebugInlinedBlock> inlinedActionBlocks = fs.getInlinedActionBlocks();
     if (inlinedActionBlocks != null) {
       InlinedRootNode inlinedRootNode = new InlinedRootNode(remsNode, ts);
       remsNode.setInlined(inlinedRootNode);
@@ -269,7 +269,7 @@ public class ExplainTree {
         buildTree(each, remNode, ts, offset, onlyRules);
       }
     }
-    FSArray inlinedConditionBlocks = fs.getInlinedConditionBlocks();
+    FSArray<DebugInlinedBlock> inlinedConditionBlocks = fs.getInlinedConditionBlocks();
     if (inlinedConditionBlocks != null) {
       InlinedRootNode inlinedRootNode = new InlinedRootNode(remNode, ts);
       remNode.setInlined(inlinedRootNode);
