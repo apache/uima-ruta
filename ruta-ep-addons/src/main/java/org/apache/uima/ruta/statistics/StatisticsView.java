@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.uima.ruta.statistics;
 
 import org.apache.uima.caseditor.editor.AnnotationEditor;
@@ -43,8 +42,8 @@ public class StatisticsView extends CasEditorView {
     }
     return result;
   }
-
-//Not sure why we need to add this... but here we go...
+  
+  //Not sure why we need to add this... but here we go...
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public Object getAdapter(Class aAdapter) {
