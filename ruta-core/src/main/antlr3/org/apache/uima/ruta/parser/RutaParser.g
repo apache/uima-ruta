@@ -2883,8 +2883,12 @@ booleanAnnotationExpression  returns  [IBooleanExpression expr = null]
 	:
 	e1 = annotationExpression
 	op = (EQUAL | NOTEQUAL)
-	e2 = annotationExpression
+	(e2 = annotationExpression
 	{expr = expressionFactory.createBooleanAnnotationExpression(e1,op,e2);}
+	|
+	e3 = nullExpression
+	{expr = expressionFactory.createBooleanAnnotationExpression(e1,op,e3);}
+	)
 	;
 
 booleanAnnotationListExpression  returns  [IBooleanExpression expr = null]

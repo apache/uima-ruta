@@ -817,6 +817,22 @@ public class AnnotationLabelExpressionTest {
   }
 
   @Test
+  public void testImplicitNullCheck() throws Exception {
+
+    String document = "CW sw 1";
+
+    String script = "";
+    script += "(w:W n:NUM?){n!=null -> T1};";
+    script += "(w:W n:NUM?){n==null -> T2};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "sw 1");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "CW");
+  }
+
+  @Test
   @Ignore
   public void testInlineWithQuantifier() throws Exception {
 
