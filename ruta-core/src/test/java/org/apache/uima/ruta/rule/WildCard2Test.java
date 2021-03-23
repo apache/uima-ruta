@@ -272,6 +272,18 @@ public class WildCard2Test {
   }
 
   @Test
+  public void testLabelForFailedLookahead() throws Exception {
+    String document = "A x B x C x D";
+    String script = "(w1:CW{REGEXP(\"A\")} # w2:CW{REGEXP(\"C\")})->{w1{->T1};};";
+	
+	CAS cas = RutaTestUtils.getCAS(document, null, null, false);
+    Ruta.apply(cas, script);
+	
+	RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "A");
+  }
+
+
+  @Test
   public void testLastElementAlsoAnnotatedWithLookahead() throws Exception {
     String document = "a b c. a b c.";
     String script = "ANY+{-PARTOF({PERIOD, T1})->T1};\n";
