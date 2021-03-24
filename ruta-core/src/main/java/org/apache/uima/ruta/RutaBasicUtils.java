@@ -62,6 +62,11 @@ public class RutaBasicUtils {
     CAS cas = annotation.getCAS();
     TypeSystem typeSystem = cas.getTypeSystem();
     Type basicType = typeSystem.getType(RutaBasic.class.getName());
+
+    if (basicType == null) {
+      return false;
+    }
+
     Type type = annotation.getType();
 
     if (typeSystem.subsumes(basicType, type)) {
@@ -107,6 +112,11 @@ public class RutaBasicUtils {
     CAS cas = annotation.getCAS();
     TypeSystem typeSystem = cas.getTypeSystem();
     Type basicType = typeSystem.getType(RutaBasic.class.getName());
+
+    if (basicType == null) {
+      return false;
+    }
+
     Type type = annotation.getType();
 
     if (typeSystem.subsumes(basicType, type)) {
