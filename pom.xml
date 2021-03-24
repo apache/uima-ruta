@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>2.9.0-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
     <relativePath>ruta-parent/pom.xml</relativePath>
   </parent>
 
@@ -35,10 +35,10 @@
   <description>The top project for Apache UIMA Ruta</description>
   <url>${uimaWebsiteUrl}</url>
   <properties>
-    <jiraVersion>12346562</jiraVersion>
-    <!--
-      <assembly.attach>false</assembly.attach>
-    -->
+    <jiraVersion>12346599</jiraVersion>
+    <!-- 
+     <assembly.attach>false</assembly.attach>
+     -->
   </properties>
 
   <!-- override pom setting in the build project. JIRA 5.1 needs different URL -->
