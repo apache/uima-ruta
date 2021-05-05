@@ -1002,6 +1002,13 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.debugAddToIndexes'>debugAddToIndexes</link>
+                  </entry>
+                  <entry>Option to add all debug information to the indexes.</entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.debugOnlyFor'>debugOnlyFor</link>
                   </entry>
                   <entry>List of rule ids. If provided, then debug information is only created for
@@ -1377,6 +1384,13 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <para>
             This parameter specifies whether the match information (covered text) of the rules should be stored in the CAS.
             The default value of this parameter is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.debugAddToIndexes">
+          <title>debugAddToIndexes</title>
+          <para>
+            This parameter specifies whether all debug annotation should be added to the indexes. By
+            default this parameter is deactivated and only the root script apply is added.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.debugOnlyFor">
