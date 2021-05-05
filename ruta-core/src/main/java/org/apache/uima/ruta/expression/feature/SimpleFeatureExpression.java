@@ -282,7 +282,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
       this.collectFeatureStructures(next, tail, checkOnFeatureValue, collectOnlyAnnotations,
               lastValidFeatureStructure, result, stream, context);
     } else if (value instanceof FSArray && index >= 0) {
-      FSArray array = (FSArray) value;
+      FSArray<?> array = (FSArray<?>) value;
       if (index < array.size()) {
         FeatureStructure fs = array.get(index);
         if (fs instanceof AnnotationFS) {
@@ -292,7 +292,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
         }
       }
     } else if (value instanceof FSArray) {
-      FSArray array = (FSArray) value;
+      FSArray<?> array = (FSArray<?>) value;
       for (int i = 0; i < array.size(); i++) {
         FeatureStructure fs = array.get(i);
         this.collectFeatureStructures(fs, tail, checkOnFeatureValue, collectOnlyAnnotations,

@@ -38,7 +38,6 @@ import org.junit.Test;
 
 public class FeatureStructureTest {
 
-
   @Test
   public void testFeatureStructureFeature() throws Exception {
 
@@ -79,7 +78,7 @@ public class FeatureStructureTest {
     AnnotationFS a2 = cas.createAnnotation(type1, 5, 9);
     FeatureStructure fs1 = cas.createFS(type2);
     FeatureStructure fs2 = cas.createFS(type2);
-    FSArray fsArray1 = FSCollectionFactory.createFSArray(cas.getJCas(),
+    FSArray<FeatureStructure> fsArray1 = FSCollectionFactory.createFSArray(cas.getJCas(),
             new FeatureStructure[] { fs1, fs2 });
     fs1.setStringValue(type2s, "1");
     fs2.setStringValue(type2s, "2");

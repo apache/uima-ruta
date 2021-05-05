@@ -37,7 +37,6 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.internal.util.XMLUtils;
 import org.apache.uima.jcas.tcas.Annotation;
