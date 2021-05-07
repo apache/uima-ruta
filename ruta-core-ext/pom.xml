@@ -40,8 +40,8 @@
   </properties>
 
   <scm>
-    <connection>scm:git:git://github.com/apache/uima-ruta</connection>
-    <developerConnection>scm:git:git@github.com:apache/uima-ruta.git</developerConnection>
+    <connection>scm:git:https://github.com/apache/uima-ruta</connection>
+    <developerConnection>scm:git:https://github.com/apache/uima-ruta.git</developerConnection>
     <url>https://github.com/apache/uima-ruta</url>
     <tag>HEAD</tag>
   </scm>
