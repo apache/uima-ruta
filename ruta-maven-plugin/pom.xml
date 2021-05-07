@@ -17,9 +17,7 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <!-- This artifact name follows the conventions described http://books.sonatype.com/mvnref-book/reference/writing-plugins-sect-custom-plugin.html
     where patterns like xxx-maven-plugin and maven-xxx-plugin can be invoked just using xxx if the right
@@ -34,7 +32,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>3.1.0</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
   <properties>
@@ -46,7 +44,7 @@
     <connection>scm:git:git://github.com/apache/uima-ruta</connection>
     <developerConnection>scm:git:git@github.com:apache/uima-ruta.git</developerConnection>
     <url>https://github.com/apache/uima-ruta</url>
-    <tag>HEAD</tag>
+    <tag>ruta-3.1.0</tag>
   </scm>
 
   <dependencyManagement>
