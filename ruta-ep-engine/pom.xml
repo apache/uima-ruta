@@ -236,6 +236,7 @@
                   org.apache.uima.ruta.condition,
                   org.apache.uima.ruta.constraint,
                   org.apache.uima.ruta.descriptor,
+                  org.apache.uima.ruta.cache,
                   org.apache.uima.ruta.engine,
                   org.apache.uima.ruta.expression,
                   org.apache.uima.ruta.expression.annotation,
@@ -275,7 +276,7 @@
                 </_exportcontents>
 
                 <Import-Package>
-                  <!-- -->
+                  org.slf4j*,
                   org.apache.uima.*,
                   !bsh, !com.sun.net.httpserver,
                   !edu.emory.mathcs.backport.java.util.concurrent,
