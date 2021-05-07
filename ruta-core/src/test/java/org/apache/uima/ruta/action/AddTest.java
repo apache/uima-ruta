@@ -61,7 +61,6 @@ public class AddTest {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Some text.");
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");
   }
 
   @Test
