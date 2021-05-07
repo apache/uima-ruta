@@ -52,9 +52,9 @@
     elements from the chain of parent poms, if this is omitted. Keeping this a bit factored allows cutting/pasting
     the <scm> element, and just changing the following two properties -->
   <scm>
-    <connection>scm:git:https://github.com/apache/uima-ruta</connection>
-    <developerConnection>scm:git:https://github.com/apache/uima-ruta.git</developerConnection>
-    <url>https://github.com/apache/uima-ruta</url>
+    <connection>scm:git:https://github.com/apache/uima-ruta/</connection>
+    <developerConnection>scm:git:https://github.com/apache/uima-ruta/</developerConnection>
+    <url>https://github.com/apache/uima-ruta/</url>
     <tag>HEAD</tag>
   </scm>
 
