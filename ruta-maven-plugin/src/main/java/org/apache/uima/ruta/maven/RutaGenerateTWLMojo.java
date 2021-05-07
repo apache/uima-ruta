@@ -46,8 +46,8 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  */
 @Mojo(name = "twl", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class RutaGenerateTWLMojo extends AbstractMojo {
-  
-  @Parameter( defaultValue = "${project}", readonly = true )
+
+  @Parameter(defaultValue = "${project}", readonly = true)
   private MavenProject project;
 
   @Component
@@ -77,6 +77,13 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
   @Parameter(defaultValue = "true", required = true)
   private boolean compress;
 
+  /**
+   * Fail on error.
+   */
+  @Parameter(defaultValue = "true", required = true)
+  private boolean failOnError;
+
+  @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     if (!outputDirectory.exists()) {
       outputDirectory.mkdirs();
@@ -84,14 +91,14 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
     }
 
     this.project.addCompileSourceRoot(outputDirectory.getPath());
-    
+
     Map<File, File> inputOutputMap = null;
     try {
-      inputOutputMap =  getModifiedFilesMap(inputFiles, outputDirectory, buildContext);
+      inputOutputMap = getModifiedFilesMap(inputFiles, outputDirectory, buildContext);
     } catch (IOException e) {
-      getLog().warn("Error accessing input files.", e);
+      handleError("Error accessing input files.", e);
     }
-    
+
     if (inputOutputMap == null || inputOutputMap.isEmpty()) {
       getLog().debug("No modified files to process... skipping.");
       return;
@@ -106,7 +113,7 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
       try {
         list = new TreeWordList(inputFile.getAbsolutePath(), false);
       } catch (IOException e) {
-        getLog().warn("Error generating twl.", e);
+        handleError("Error generating twl.", e);
       }
       if (list != null) {
         try {
@@ -114,18 +121,19 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
           list.createTWLFile(outputFile.getAbsolutePath(), compress, encoding);
           buildContext.refresh(outputFile);
         } catch (IOException e) {
-          getLog().warn("Error writing twl file.", e);
+          handleError("Error writing twl file.", e);
         }
       }
     }
 
   }
 
-  private Map<File, File> getModifiedFilesMap(FileSet fileSet, File outputDirectory, BuildContext buildContext) throws IOException {
+  private Map<File, File> getModifiedFilesMap(FileSet fileSet, File outputDirectory,
+          BuildContext buildContext) throws IOException {
     Map<File, File> result = new LinkedHashMap<>();
 
     File directory = new File(fileSet.getDirectory());
-    
+
     String includes = Utils.toString(fileSet.getIncludes());
     String excludes = Utils.toString(fileSet.getExcludes());
 
@@ -133,7 +141,8 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
       if (each instanceof File) {
         File inputFile = (File) each;
         File outputFile = getOutputFile(inputFile, directory, outputDirectory);
-        if (outputFile == null || !outputFile.exists() || inputFile.lastModified() > outputFile.lastModified()) {
+        if (outputFile == null || !outputFile.exists()
+                || inputFile.lastModified() > outputFile.lastModified()) {
           result.put(inputFile, outputFile);
         }
       }
@@ -144,11 +153,11 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
   private File getOutputFile(File inputFile, File inputDirectory, File outputDirectory) {
     String inputName = inputFile.getName();
     String outputName = inputName.substring(0, inputName.length() - 3) + "twl";
-    
+
     Path inputFilePath = inputFile.toPath();
     Path inputDirectoryPath = inputDirectory.toPath();
     Path outputDirectoryPath = outputDirectory.toPath();
-    
+
     Path relativize = inputDirectoryPath.relativize(inputFilePath);
     Path resolve = outputDirectoryPath.resolve(relativize);
     Path parent = resolve.getParent();
@@ -156,4 +165,11 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
     return result.toFile();
   }
 
+  private void handleError(String message, Exception e) throws MojoExecutionException {
+    if (failOnError) {
+      throw new MojoExecutionException(message, e);
+    }
+
+    getLog().error(message, e);
+  }
 }
