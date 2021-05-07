@@ -892,7 +892,7 @@ n:NUM{PARSE(n.ct,var,"de")};]]></programlisting>
         <emphasis role="bold">Definition:</emphasis>
       </title>
       <para>
-        <programlisting><![CDATA[TOTALCOUNT(Type(,NumberExpression,NumberExpression(,Variable)?)?)]]></programlisting>
+        <programlisting><![CDATA[TOTALCOUNT(Type(,NumberExpression,NumberExpression)?(,NumberVariable)?)]]></programlisting>
       </para>
     </section>
     <section>
