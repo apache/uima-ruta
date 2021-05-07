@@ -130,7 +130,8 @@
             </configuration>
           </execution>
         </executions>
-			</plugin>
+      </plugin>
+
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
@@ -149,8 +150,8 @@
             <goals>
               <goal>run</goal>
             </goals>
-            <configuration>
-              <target combine.self="override">
+            <configuration combine.self="override">
+              <target>
                 <taskdef classname="net.sf.antcontrib.logic.IfTask" name="if" />
                 
                 <condition property="eclipse.home" value="${uima-maven-build-eclipse-home}">
@@ -182,17 +183,12 @@
 	                          <arg value="${eclipseUpdateSubSite}" />
 	                        </exec> 
 	                        
-	                        <!-- abandon safety for now
-	                        <echo>switching this checkout to ...dev... for safety</echo>
-	                        <exec executable="svn">
-	                          <arg value="switch" />
-	                          <arg value="- -force" />  remove space between 2 dashes if uncommented
-	                          <arg value="- -accept" />  remove space between 2 dashes if uncommented
-	                          <arg value="mine-full" />
-	                          <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
-	                          <arg value="${eclipseUpdateSubSite}" />
-	                        </exec> 
-	                         -->
+                        <echo>Saving original content and artifacts for the site</echo>
+                        <copy todir="${project.build.directory}/saved" failonerror="true">
+                          <fileset dir="${eclipseUpdateSubSite}"
+                            includes="content.jar,artifacts.jar" />
+                        </copy>
+        
 	                      </then>
 	                      <else>
 	                        <echo>skipping checkout of current svn dist release (because not apache-release)</echo>
