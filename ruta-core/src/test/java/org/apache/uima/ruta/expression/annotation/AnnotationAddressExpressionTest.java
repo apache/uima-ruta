@@ -31,9 +31,9 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.impl.AnnotationImpl;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
@@ -55,8 +55,8 @@ public class AnnotationAddressExpressionTest {
     AnnotationFS a1 = cas.createAnnotation(t1, 5, 9);
     cas.addFsToIndexes(a1);
     int ref = 0;
-    if (a1 instanceof AnnotationImpl) {
-      AnnotationImpl aImpl = (AnnotationImpl) a1;
+    if (a1 instanceof Annotation) {
+      Annotation aImpl = (Annotation) a1;
       ref = aImpl.getAddress();
     }
 
@@ -91,8 +91,7 @@ public class AnnotationAddressExpressionTest {
     featureMap.put(typeName, list);
     String fn = "a";
     list.add(new TestFeature(fn, "", "uima.tcas.Annotation"));
-    
-    
+
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
@@ -103,13 +102,13 @@ public class AnnotationAddressExpressionTest {
     AnnotationFS a1 = cas.createAnnotation(t1, 5, 9);
     cas.addFsToIndexes(a1);
     int ref = 0;
-    if (a1 instanceof AnnotationImpl) {
-      AnnotationImpl aImpl = (AnnotationImpl) a1;
+    if (a1 instanceof Annotation) {
+      Annotation aImpl = (Annotation) a1;
       ref = aImpl.getAddress();
     }
 
     String script = "";
-    script += "CREATE(Struct, \"a\" = $"+ref+");";
+    script += "CREATE(Struct, \"a\" = $" + ref + ");";
     try {
       Ruta.apply(cas, script);
     } catch (Exception e) {
@@ -137,5 +136,5 @@ public class AnnotationAddressExpressionTest {
     }
 
   }
-  
+
 }

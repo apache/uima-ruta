@@ -37,7 +37,6 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.internal.util.XMLUtils;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -329,7 +328,7 @@ public class TreeWordList implements RutaWordList {
           char[] ignoreChars, int maxIgnoredChars, boolean ignoreWS) {
     ArrayList<AnnotationFS> results = new ArrayList<AnnotationFS>();
     stream.moveToFirst();
-    FSIterator<AnnotationFS> streamPointer = stream.copy();
+    RutaStream streamPointer = stream.copy();
     while (stream.isValid()) {
       RutaBasic anchorBasic = (RutaBasic) stream.get();
       streamPointer.moveTo(anchorBasic);

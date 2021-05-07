@@ -30,7 +30,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.impl.AnnotationImpl;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
@@ -153,8 +152,7 @@ public class RutaTest {
   public void testSelectWithInjection() throws Exception {
     String document = "Some text.";
     CAS cas = RutaTestUtils.getCAS(document);
-    AnnotationImpl t1 = (AnnotationImpl) cas.createAnnotation(RutaTestUtils.getTestType(cas, 1), 5,
-            9);
+    Annotation t1 = (Annotation) cas.createAnnotation(RutaTestUtils.getTestType(cas, 1), 5, 9);
     cas.addFsToIndexes(t1);
     JCas jcas = cas.getJCas();
     List<Annotation> select1 = Ruta.select(jcas, Ruta.inject("W $;", t1));
@@ -177,8 +175,7 @@ public class RutaTest {
   public void testMatchesWithInjection() throws Exception {
     String document = "Some text.";
     CAS cas = RutaTestUtils.getCAS(document);
-    AnnotationImpl t1 = (AnnotationImpl) cas.createAnnotation(RutaTestUtils.getTestType(cas, 1), 5,
-            9);
+    Annotation t1 = (Annotation) cas.createAnnotation(RutaTestUtils.getTestType(cas, 1), 5, 9);
     cas.addFsToIndexes(t1);
     JCas jcas = cas.getJCas();
     Assert.assertTrue(Ruta.matches(jcas, Ruta.inject("W $;", t1)));
