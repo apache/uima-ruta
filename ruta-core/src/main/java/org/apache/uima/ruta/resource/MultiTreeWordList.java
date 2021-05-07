@@ -38,7 +38,6 @@ import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;

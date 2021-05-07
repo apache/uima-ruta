@@ -35,11 +35,12 @@ public class RutaCodeScanner extends AbstractScriptScanner {
 
   private static String fgTokenProperties[] = new String[] {
       RutaColorConstants.RUTA_SINGLE_LINE_COMMENT, RutaColorConstants.RUTA_DEFAULT,
-      RutaColorConstants.RUTA_KEYWORD, RutaColorConstants.RUTA_KEYWORD_RETURN,
-      RutaColorConstants.RUTA_NUMBER, RutaColorConstants.RUTA_FUNCTION,
-      RutaColorConstants.RUTA_CONDITION, RutaColorConstants.RUTA_ACTION,
-      RutaColorConstants.RUTA_RULE, RutaColorConstants.RUTA_DECLARATION,
-      RutaColorConstants.RUTA_BASICSYMBOL, RutaColorConstants.RUTA_THEN };
+      RutaColorConstants.RUTA_DEFAULT_ECLIPSE, RutaColorConstants.RUTA_KEYWORD,
+      RutaColorConstants.RUTA_KEYWORD_RETURN, RutaColorConstants.RUTA_NUMBER,
+      RutaColorConstants.RUTA_FUNCTION, RutaColorConstants.RUTA_CONDITION,
+      RutaColorConstants.RUTA_ACTION, RutaColorConstants.RUTA_RULE,
+      RutaColorConstants.RUTA_DECLARATION, RutaColorConstants.RUTA_BASICSYMBOL,
+      RutaColorConstants.RUTA_THEN };
 
   public RutaCodeScanner(IColorManager manager, IPreferenceStore store) {
     super(manager, store);
@@ -57,7 +58,8 @@ public class RutaCodeScanner extends AbstractScriptScanner {
     IToken keyword = getToken(RutaColorConstants.RUTA_KEYWORD);
     IToken rule = getToken(RutaColorConstants.RUTA_RULE);
     IToken comment = getToken(RutaColorConstants.RUTA_SINGLE_LINE_COMMENT);
-    IToken other = getToken(RutaColorConstants.RUTA_DEFAULT);
+//    IToken other = getToken(RutaColorConstants.RUTA_DEFAULT);
+    IToken defaultToken = getToken(RutaColorConstants.RUTA_DEFAULT_ECLIPSE);
     IToken declaration = getToken(RutaColorConstants.RUTA_DECLARATION);
     IToken basicSymbol = getToken(RutaColorConstants.RUTA_BASICSYMBOL);
     IToken function = getToken(RutaColorConstants.RUTA_FUNCTION);
@@ -70,7 +72,7 @@ public class RutaCodeScanner extends AbstractScriptScanner {
     // rules.add(new MultiLineRule("/*", "*/", comment, '\\', true));
     // rules.add(new EndOfLineRule("//", comment));
     rules.add(new WhitespaceRule(new RutaWhitespaceDetector()));
-    RutaWordRule wordRule = new RutaWordRule(new RutaWordDetector(), other, rule);
+    RutaWordRule wordRule = new RutaWordRule(new RutaWordDetector(), defaultToken, rule);
 
     for (String each : RutaKeywordsManager.getKeywords(IRutaKeywords.CONDITION)) {
       wordRule.addWord(each, condition);
@@ -101,7 +103,7 @@ public class RutaCodeScanner extends AbstractScriptScanner {
     }
     rules.add(wordRule);
 
-    setDefaultReturnToken(other);
+    setDefaultReturnToken(defaultToken);
     return rules;
   }
 }

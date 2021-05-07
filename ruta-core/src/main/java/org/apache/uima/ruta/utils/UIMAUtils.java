@@ -31,8 +31,9 @@ import org.apache.uima.jcas.cas.StringArray;
 
 public class UIMAUtils {
 
-  public static FSArray toFSArray(JCas jCas, List<? extends FeatureStructure> fsList) {
-    FSArray fsArray = new FSArray(jCas, fsList.size());
+  public static FSArray<? extends FeatureStructure> toFSArray(JCas jCas,
+          List<? extends FeatureStructure> fsList) {
+    FSArray<FeatureStructure> fsArray = new FSArray<FeatureStructure>(jCas, fsList.size());
     fsArray.copyFromArray(fsList.toArray(new FeatureStructure[fsList.size()]), 0, 0, fsList.size());
     return fsArray;
   }
@@ -55,7 +56,8 @@ public class UIMAUtils {
     return uimaSArray;
   }
 
-  public static <T extends FeatureStructure> List<T> toList(FSArray fsArray, Class<T> cls) {
+  public static <T extends FeatureStructure> List<T> toList(FSArray<FeatureStructure> fsArray,
+          Class<T> cls) {
     List<T> list = new ArrayList<T>();
     if (fsArray == null) {
       return list;

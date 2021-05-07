@@ -959,6 +959,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                 </row>
                 <row>
                   <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.typeIgnorePattern'>typeIgnorePattern</link>
+                  </entry>
+                  <entry>Option to ignore types even if they are available in the typesystem/CAS.
+                  </entry>
+                  <entry>Single String</entry>
+                </row>
+                <row>
+                  <entry>
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring'>dynamicAnchoring</link>
                   </entry>
                   <entry>Option to allow rule matches to start at any rule element.</entry>
@@ -990,6 +998,13 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
                     <link linkend='ugr.tools.ruta.ae.basic.parameter.debugWithMatches'>debugWithMatches</link>
                   </entry>
                   <entry>Option to add information about the rule matches to the CAS.</entry>
+                  <entry>Single Boolean</entry>
+                </row>
+                <row>
+                  <entry>
+                    <link linkend='ugr.tools.ruta.ae.basic.parameter.debugAddToIndexes'>debugAddToIndexes</link>
+                  </entry>
+                  <entry>Option to add all debug information to the indexes.</entry>
                   <entry>Single Boolean</entry>
                 </row>
                 <row>
@@ -1324,6 +1339,14 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
             The default value is set to false.
           </para>
         </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.typeIgnorePattern">
+          <title>typeIgnorePattern</title>
+          <para>
+            An optional pattern (regular expression) which defined types that should be ignored. These 
+            types will not be resolved even if strictImports is set to false. This parameter can be used to 
+            ignore complete namespaces of type that could contain ambiguous short names.
+          </para>
+        </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.dynamicAnchoring">
           <title>dynamicAnchoring</title>
           <para>
@@ -1361,6 +1384,13 @@ Document{-> EXEC(MyAnalysisEngine, {MyType1, MyType2})};
           <para>
             This parameter specifies whether the match information (covered text) of the rules should be stored in the CAS.
             The default value of this parameter is set to false.
+          </para>
+        </section>
+        <section id="ugr.tools.ruta.ae.basic.parameter.debugAddToIndexes">
+          <title>debugAddToIndexes</title>
+          <para>
+            This parameter specifies whether all debug annotation should be added to the indexes. By
+            default this parameter is deactivated and only the root script apply is added.
           </para>
         </section>
         <section id="ugr.tools.ruta.ae.basic.parameter.debugOnlyFor">

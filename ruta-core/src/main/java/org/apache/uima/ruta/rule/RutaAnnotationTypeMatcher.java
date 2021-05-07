@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
@@ -61,11 +60,11 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
       // avoid null lists here
       return result != null ? result : emptyList();
     }
-    
+
     if (expression.getAnnotationExpression() != null) {
       return asList(expression.getAnnotation(context, stream));
     }
-    
+
     // TODO defer to getter of expression?
     List<Type> types;
     if (expression.getTypeListExpression() != null) {
@@ -73,7 +72,7 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
     } else {
       types = asList(getType(context.getParent(), stream));
     }
-    
+
     Collection<AnnotationFS> result = new ArrayList<>();
     for (Type type : types) {
       if (type == null) {
@@ -83,14 +82,13 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
       Type overallDAType = stream.getCas().getDocumentAnnotation().getType();
       String name = type.getName();
       if (CAS.TYPE_NAME_DOCUMENT_ANNOTATION.equals(name)
-              || "org.apache.uima.ruta.type.Document".equals(name)
-              || overallDAType.equals(type)) {
+              || "org.apache.uima.ruta.type.Document".equals(name) || overallDAType.equals(type)) {
         // TODO what about dynamic windowing?
         result.add(stream.getDocumentAnnotation());
       } else {
         result.addAll(stream.getAnnotations(type));
       }
-      
+
       // TODO: Throwing away the result so far in this for loop seems odd
       if (expression.getFeatureExpression() != null) {
         @SuppressWarnings("unchecked")
@@ -99,7 +97,7 @@ public class RutaAnnotationTypeMatcher implements RutaMatcher {
         result = r;
       }
     }
-    
+
     return result;
   }
 

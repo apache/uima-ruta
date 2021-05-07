@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.ANTLRStringStream;
@@ -343,6 +344,15 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private Boolean debugWithMatches;
 
   /**
+   * This parameter specifies whether all debug annotation should be added to the indexes. By
+   * default this parameter is deactivated and only the root script apply is added.
+   */
+  public static final String PARAM_DEBUG_ADD_TO_INDEXES = "debugAddToIndexes";
+
+  @ConfigurationParameter(name = PARAM_DEBUG_ADD_TO_INDEXES, mandatory = false, defaultValue = "false")
+  private Boolean debugAddToIndexes;
+
+  /**
    * This parameter specifies a list of rule-ids that enumerate the rule for which debug information
    * should be created. No specific ids are given by default.
    */
@@ -387,6 +397,16 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(name = PARAM_STRICT_IMPORTS, mandatory = false, defaultValue = "false")
   private Boolean strictImports = false;
+
+  /**
+   * An optional pattern (regular expression) which defined types that should be ignored. These
+   * types will not be resolved even if strictImports is set to false. This parameter can be used to
+   * ignore complete namespaces of type that could contain ambiguous short names.
+   */
+  public static final String PARAM_TYPE_IGNORE_PATTERN = "typeIgnorePattern";
+
+  @ConfigurationParameter(name = PARAM_TYPE_IGNORE_PATTERN, mandatory = false)
+  private Pattern typeIgnorePattern;
 
   /**
    * If this parameter is set to true, then whitespaces are removed when dictionaries are loaded.
@@ -792,6 +812,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         initialized.add(name);
       }
     }
+    mainRootBlock.getEnvironment().setTypeIgnorePattern(typeIgnorePattern);
     mainRootBlock.getEnvironment().initializeTypes(cas, strictImports);
 
   }
@@ -841,7 +862,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private InferenceCrowd initializeCrowd() {
     List<RutaInferenceVisitor> visitors = new ArrayList<RutaInferenceVisitor>();
     if (debug) {
-      visitors.add(new DebugInfoCollectorVisitor(debug, debugWithMatches,
+      visitors.add(new DebugInfoCollectorVisitor(debug, debugWithMatches, debugAddToIndexes,
               Arrays.asList(debugOnlyFor), verbalizer));
     }
     if (profile) {

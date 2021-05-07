@@ -33,6 +33,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import org.antlr.runtime.CommonToken;
 import org.apache.commons.lang3.StringUtils;
@@ -183,6 +184,8 @@ public class RutaEnvironment {
   private Map<String, String> variableAliases;
 
   private RutaVerbalizer verbalizer = new RutaVerbalizer();
+
+  private Pattern typeIgnorePattern;
 
   public RutaEnvironment(RutaBlock owner) {
     super();
@@ -475,9 +478,22 @@ public class RutaEnvironment {
     return type;
   }
 
-  public void addType(String string, Type type) {
-    importType(type.getName(), string);
-    types.put(type.getName(), type);
+  public void addType(String shortName, Type type) {
+    String name = type.getName();
+
+    if (ignoreType(name)) {
+      return;
+    }
+
+    importType(name, shortName);
+    types.put(name, type);
+  }
+
+  private boolean ignoreType(String name) {
+    if (typeIgnorePattern == null) {
+      return false;
+    }
+    return typeIgnorePattern.matcher(name).matches();
   }
 
   public void addType(Type type) {
@@ -1229,5 +1245,9 @@ public class RutaEnvironment {
         variableValues.put(var, new ArrayList<>(newList));
       }
     }
+  }
+
+  public void setTypeIgnorePattern(Pattern pattern) {
+    typeIgnorePattern = pattern;
   }
 }

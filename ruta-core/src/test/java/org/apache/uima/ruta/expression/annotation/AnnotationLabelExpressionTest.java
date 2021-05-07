@@ -441,7 +441,7 @@ public class AnnotationLabelExpressionTest {
     FeatureStructure featureValueA = null;
     FeatureStructure featureValueAS = null;
     Annotation a = null;
-    FSArray as = null;
+    FSArray<?> as = null;
 
     type = cas.getTypeSystem().getType("Struct1");
     featureA = type.getFeatureByBaseName("a");
@@ -457,7 +457,7 @@ public class AnnotationLabelExpressionTest {
     Assert.assertTrue(featureValueA instanceof Annotation);
     Assert.assertTrue(featureValueAS instanceof FSArray);
     a = (Annotation) featureValueA;
-    as = (FSArray) featureValueAS;
+    as = (FSArray<?>) featureValueAS;
     Assert.assertEquals("Some text", a.getCoveredText());
     Assert.assertEquals("Annotation", a.getType().getShortName());
     Assert.assertEquals(1, as.size());
@@ -478,7 +478,7 @@ public class AnnotationLabelExpressionTest {
     Assert.assertTrue(featureValueA instanceof Annotation);
     Assert.assertTrue(featureValueAS instanceof FSArray);
     a = (Annotation) featureValueA;
-    as = (FSArray) featureValueAS;
+    as = (FSArray<?>) featureValueAS;
     Assert.assertEquals("Some", a.getCoveredText());
     Assert.assertEquals("CW", a.getType().getShortName());
     Assert.assertEquals(2, as.size());
@@ -501,7 +501,7 @@ public class AnnotationLabelExpressionTest {
     Assert.assertTrue(featureValueA instanceof Annotation);
     Assert.assertTrue(featureValueAS instanceof FSArray);
     a = (Annotation) featureValueA;
-    as = (FSArray) featureValueAS;
+    as = (FSArray<?>) featureValueAS;
     Assert.assertEquals("Some text", a.getCoveredText());
     Assert.assertEquals("Annotation", a.getType().getShortName());
     Assert.assertEquals(1, as.size());
@@ -793,6 +793,56 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "text");
 
+  }
+
+  @Test
+  public void testComplexLabelReset() throws Exception {
+    // UIMA-6262
+    // Enumeration
+    // <-{dc1:DiagnosisConcept{dc1.negatedBy!=null}; cue:dc1.negatedBy;}
+    // ->{dc2:DiagnosisConcept{dc2.negatedBy==null -> dc2.negatedBy=cue};
+    // };
+    // solved by rewriting
+
+    String document = "Test 1. Test 2. Test 3. Test 4.";
+
+    String script = "";
+    script += "ANY+{-PARTOF(T1),-PARTOF(PERIOD)-> T1};\n";
+    script += "T1<-{n1:NUM{REGEXP(\"1|3\")};}<-{n2:n1;}\n"; // one applies always
+    script += "->{n2{->T2};};"; //
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "1", "3");
+  }
+
+  @Test
+  public void testImplicitNullCheck() throws Exception {
+
+    String document = "CW sw 1";
+
+    String script = "";
+    script += "(w:W n:NUM?){n!=null -> T1};";
+    script += "(w:W n:NUM?){n==null -> T2};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "sw 1");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "CW");
+  }
+
+  @Test
+  @Ignore
+  public void testInlineWithQuantifier() throws Exception {
+
+    String script = "";
+    script += "CW{-> Struct1, Struct1.a=sw} sw:SW;\n";
+    script += "sw:SW{-> Struct1, Struct1.a=sw};\n";
+    script += "p:PERIOD{-> Struct1, Struct1.a=p};\n";
+    script += "(s1:Struct1<-{u1:s1.a;} (s2:Struct1<-{u2:s2.a{u2.ct==u1.ct};})+){-> T1};\n";
+    CAS cas = this.applyOnStruct4Cas(script);
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text");
   }
 
 }

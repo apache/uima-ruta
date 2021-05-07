@@ -49,16 +49,10 @@ public class RulesParamTest {
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(specifier);
     ae.setConfigParameterValue(RutaEngine.PARAM_RULES, script);
     ae.reconfigure();
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      ae.process(cas);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    ae.process(cas);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
-
-    cas.release();
   }
 }

@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 package org.apache.uima.ruta.block.fst;
 
 import java.util.ArrayList;
@@ -168,7 +167,8 @@ public class Automaton {
    *          - the RutaBlock (is needed in called functions)
    */
   private void doTransition(TransitionState startState, AnnotationFS anno, RuleElement ruleElement,
-          LinkedList<RuleMatch> matches, RutaStream stream, InferenceCrowd crowd, RutaBlock parent) {
+          LinkedList<RuleMatch> matches, RutaStream stream, InferenceCrowd crowd,
+          RutaBlock parent) {
     for (RuleElement element : startState.getPossibleTransitions()) {
       RutaMatcher matcher = ((RutaRuleElement) element).getMatcher();
       AbstractState targetState = startState.getTransition(element);
@@ -228,12 +228,12 @@ public class Automaton {
   private void doMatch(AnnotationFS annotation, RuleMatch ruleMatch, RuleElement element,
           ComposedRuleElementMatch containerMatch, RutaStream stream, InferenceCrowd crowd) {
     RuleElementMatch result = new RuleElementMatch(element, containerMatch);
-    List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(element
-            .getConditions().size());
+    List<EvaluatedCondition> evaluatedConditions = new ArrayList<EvaluatedCondition>(
+            element.getConditions().size());
     // boolean base = matcher.match(annotation, stream, getParent());
     boolean base = true;
     MatchContext context = new MatchContext(annotation, element, ruleMatch, true);
-        
+
     List<AnnotationFS> textsMatched = new ArrayList<AnnotationFS>(1);
     if (annotation != null) {
       textsMatched.add(annotation);
