@@ -47,6 +47,23 @@ public class AddTest {
   }
 
   @Test
+  public void testFloat() throws Exception {
+    String document = "Some text.";
+    String script = "";
+    script += "FLOATLIST fs;";
+    script += "CW{-> ADD(fs,3)};";
+    script += "Document{SIZE(fs,1,1)->T1};";
+    script += "SW{-> ADD(fs,4)};";
+    script += "Document{SIZE(fs,2,2)->T2};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Some text.");
+  }
+
+  @Test
   public void testVariable() throws Exception {
     String document = "This is a test.";
 

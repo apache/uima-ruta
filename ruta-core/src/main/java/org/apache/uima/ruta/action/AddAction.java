@@ -73,13 +73,15 @@ public class AddAction extends AbstractRutaAction {
         list.add(((INumberExpression) each).getIntegerValue(context, stream));
       } else if (vgtype.equals(Double.class) && each instanceof INumberExpression) {
         list.add(((INumberExpression) each).getDoubleValue(context, stream));
+      } else if (vgtype.equals(Float.class) && each instanceof INumberExpression) {
+        list.add(((INumberExpression) each).getFloatValue(context, stream));
       } else if (vgtype.equals(Type.class) && each instanceof ITypeExpression) {
         list.add(((ITypeExpression) each).getType(context, stream));
       } else if (vgtype.equals(String.class) && each instanceof IStringExpression) {
         list.add(((IStringExpression) each).getStringValue(context, stream));
       } else if (vgtype.equals(AnnotationFS.class) && each instanceof IAnnotationExpression) {
         AnnotationFS annotation = ((IAnnotationExpression) each).getAnnotation(context, stream);
-        if(annotation != null) {
+        if (annotation != null) {
           list.add(annotation);
         }
       } else if (each instanceof ListExpression) {

@@ -92,7 +92,11 @@ public class RemoveAction extends AbstractRutaAction {
   }
 
   private Object getValue(Object obj, Class<?> vgtype, MatchContext context, RutaStream stream) {
-    if (obj instanceof INumberExpression) {
+    if (vgtype.equals(Integer.class) && obj instanceof INumberExpression) {
+      return ((INumberExpression) obj).getIntegerValue(context, stream);
+    } else if (vgtype.equals(Float.class) && obj instanceof INumberExpression) {
+      return ((INumberExpression) obj).getFloatValue(context, stream);
+    } else if (obj instanceof INumberExpression) {
       return ((INumberExpression) obj).getDoubleValue(context, stream);
     } else if (obj instanceof IBooleanExpression) {
       return ((IBooleanExpression) obj).getBooleanValue(context, stream);
