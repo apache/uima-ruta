@@ -198,6 +198,12 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   @Parameter(required = false)
   private String[] buildPaths;
 
+  /**
+   * Fail on error.
+   */
+  @Parameter(defaultValue = "true", required = true)
+  private boolean failOnError;
+
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -267,14 +273,14 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       try {
         factory.setDefaultTypeSystem(typeSystemTemplate.toURI().toURL());
       } catch (MalformedURLException e) {
-        getLog().warn("Failed to get URL of " + typeSystemTemplate, e);
+        handleError("Failed to get URL of " + analysisEngineTemplate, e);
       }
     }
     if (analysisEngineTemplate != null) {
       try {
         factory.setDefaultEngine(analysisEngineTemplate.toURI().toURL());
       } catch (MalformedURLException e) {
-        getLog().warn("Failed to get URL of " + analysisEngineTemplate, e);
+        handleError("Failed to get URL of " + analysisEngineTemplate, e);
       }
     }
 
@@ -303,9 +309,9 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
                 options);
         toBuild.add(descriptorInformation);
       } catch (RecognitionException re) {
-        getLog().warn("Failed to parse UIMA Ruta script file: " + file.getAbsolutePath(), re);
+        handleError("Failed to parse UIMA Ruta script file: " + file.getAbsolutePath(), re);
       } catch (IOException ioe) {
-        getLog().warn("Failed to load UIMA Ruta script file: " + file.getAbsolutePath(), ioe);
+        handleError("Failed to load UIMA Ruta script file: " + file.getAbsolutePath(), ioe);
       }
     }
 
@@ -335,7 +341,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
     for (RutaDescriptorInformation eachFailed : toBuild) {
       String scriptName = eachFailed.getScriptName();
-      getLog().warn("Failed to build UIMA Ruta script: " + scriptName);
+      handleError("Failed to build UIMA Ruta script: " + scriptName);
     }
 
   }
@@ -498,7 +504,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
             RutaGenerateDescriptorMojo.class.getClassLoader());
   }
 
-  private void addRutaNature() {
+  private void addRutaNature() throws MojoExecutionException {
 
     File projectDir = project.getFile().getParentFile();
     File projectFile = new File(projectDir, ".project");
@@ -534,14 +540,14 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
         try {
           FileUtils.fileWrite(projectFile, encoding, string);
         } catch (IOException e) {
-          getLog().warn("Failed to write .project file", e);
+          handleError("Failed to write .project file", e);
         }
       }
       buildContext.refresh(projectFile);
     }
   }
 
-  private void addRutaBuildPath() {
+  private void addRutaBuildPath() throws MojoExecutionException {
     File projectDir = project.getFile().getParentFile();
 
     if (buildPaths == null || buildPaths.length == 0) {
@@ -575,7 +581,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       try {
         FileUtils.fileWrite(buildpathFile, encoding, string);
       } catch (IOException e) {
-        getLog().warn("Failed to write .buildpath file", e);
+        handleError("Failed to write .buildpath file", e);
       }
     }
     buildContext.refresh(buildpathFile);
@@ -610,5 +616,21 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     attribute.setAttribute("value", type);
     attributes.addChild(attribute);
     buildpathNode.addChild(buildpathentry);
+  }
+
+  private void handleError(String message, Exception e) throws MojoExecutionException {
+    if (failOnError) {
+      throw new MojoExecutionException(message, e);
+    }
+
+    getLog().error(message, e);
+  }
+
+  private void handleError(String message) throws MojoExecutionException {
+    if (failOnError) {
+      throw new MojoExecutionException(message);
+    }
+
+    getLog().error(message);
   }
 }

@@ -44,8 +44,8 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  */
 @Mojo(name = "mtwl", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class RutaGenerateMTWLMojo extends AbstractMojo {
-  
-  @Parameter( defaultValue = "${project}", readonly = true )
+
+  @Parameter(defaultValue = "${project}", readonly = true)
   private MavenProject project;
 
   @Component
@@ -75,34 +75,41 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
   @Parameter(defaultValue = "true", required = true)
   private boolean compress;
 
+  /**
+   * Fail on error.
+   */
+  @Parameter(defaultValue = "true", required = true)
+  private boolean failOnError;
+
+  @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     File parentFile = outputFile.getParentFile();
     if (!parentFile.exists()) {
       parentFile.mkdirs();
       buildContext.refresh(parentFile);
     }
-    
+
     this.project.addCompileSourceRoot(parentFile.getPath());
 
     List<File> files = null;
     try {
       files = getFilesIfModifiedOrNotExists(inputFiles, outputFile, buildContext);
     } catch (IOException e) {
-      getLog().warn("Error accessing input files.", e);
+      handleError("Error accessing input files.", e);
     }
 
-    if(files == null || files.isEmpty()) {
+    if (files == null || files.isEmpty()) {
       getLog().info("No modified files to process... skipping.");
       return;
     }
-    
+
     getLog().info("Processing following files: " + files.toString());
-    
+
     MultiTreeWordList trie = null;
     try {
       trie = new MultiTreeWordList(files, new File(inputFiles.getDirectory()));
     } catch (IOException e) {
-      getLog().warn("Error creating MTWL file.", e);
+      handleError("Error creating MTWL file.", e);
     }
 
     if (trie != null) {
@@ -110,18 +117,19 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
         trie.createMTWLFile(outputFile.getAbsolutePath(), compress, encoding);
         buildContext.refresh(outputFile);
       } catch (IOException e) {
-        getLog().warn("Error writing MTWL file.", e);
+        handleError("Error writing MTWL file.", e);
       }
     }
 
   }
-  
-  public static List<File> getFilesIfModifiedOrNotExists(FileSet fileSet, File outputFile, BuildContext buildContext) throws IOException {
+
+  public static List<File> getFilesIfModifiedOrNotExists(FileSet fileSet, File outputFile,
+          BuildContext buildContext) throws IOException {
     List<File> result = new ArrayList<File>();
 
     boolean exists = outputFile.exists();
     long outputModified = outputFile.lastModified();
-    
+
     File directory = new File(fileSet.getDirectory());
     String includes = Utils.toString(fileSet.getIncludes());
     String excludes = Utils.toString(fileSet.getExcludes());
@@ -131,16 +139,25 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
       if (each instanceof File) {
         File file = (File) each;
         long inputModified = file.lastModified();
-        if(inputModified > outputModified) {
+        if (inputModified > outputModified) {
           modified = true;
         }
         result.add(file);
       }
     }
-    if(!exists || modified) {
+    if (!exists || modified) {
       return result;
     } else {
       return Collections.emptyList();
     }
   }
+
+  private void handleError(String message, Exception e) throws MojoExecutionException {
+    if (failOnError) {
+      throw new MojoExecutionException(message, e);
+    }
+
+    getLog().error(message, e);
+  }
+
 }
