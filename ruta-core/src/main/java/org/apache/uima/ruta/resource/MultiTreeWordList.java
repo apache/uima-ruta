@@ -38,7 +38,6 @@ import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
@@ -823,7 +822,7 @@ public class MultiTreeWordList implements RutaWordList {
 
     Collection<AnnotationFS> results = new HashSet<AnnotationFS>();
     stream.moveToFirst();
-    FSIterator<AnnotationFS> streamPointer = stream.copy();
+    RutaStream streamPointer = stream.copy();
 
     while (stream.isValid()) {
       RutaBasic anchorBasic = (RutaBasic) stream.get();

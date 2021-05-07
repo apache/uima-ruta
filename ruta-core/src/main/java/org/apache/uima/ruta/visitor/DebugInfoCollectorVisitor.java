@@ -19,7 +19,6 @@
 
 package org.apache.uima.ruta.visitor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,17 +49,20 @@ public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
 
   private boolean withMatches;
 
+  private boolean addToIndexes;
+
   private ScriptApply rootApply;
 
   private Map<RutaStatement, Stack<ScriptApply>> applies;
 
   private Stack<RutaElement> callStack;
 
-  public DebugInfoCollectorVisitor(boolean createDebugInfo, boolean withMatches, List<String> ids,
-          RutaVerbalizer verbalizer) {
+  public DebugInfoCollectorVisitor(boolean createDebugInfo, boolean withMatches,
+          boolean addToIndexes, List<String> ids, RutaVerbalizer verbalizer) {
     super();
     this.createDebugInfo = createDebugInfo;
     this.withMatches = withMatches;
+    this.addToIndexes = addToIndexes;
     this.ids = ids;
 
     debugFactory = new DebugInfoFactory(verbalizer);
@@ -68,10 +70,9 @@ public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
     callStack = new Stack<RutaElement>();
   }
 
-  public DebugInfoCollectorVisitor(boolean createDebugInfo) {
-    super();
-    this.createDebugInfo = createDebugInfo;
-    this.ids = new ArrayList<String>();
+  public DebugInfoCollectorVisitor(boolean createDebugInfo, boolean withMatches, List<String> ids,
+          RutaVerbalizer verbalizer) {
+    this(createDebugInfo, withMatches, false, ids, verbalizer);
   }
 
   public boolean isCreateDebugInfo() {
@@ -167,7 +168,7 @@ public class DebugInfoCollectorVisitor implements RutaInferenceVisitor {
       Map<RutaElement, Long> timeInfo = getTimeInfo(visitors);
 
       DebugScriptApply debugScriptApply = debugFactory.createDebugScriptApply(rootApply, stream,
-              false, withMatches, timeInfo);
+              addToIndexes, withMatches, timeInfo);
       debugScriptApply.setTimestamp(System.currentTimeMillis());
       debugScriptApply.addToIndexes();
     }

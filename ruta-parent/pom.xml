@@ -31,7 +31,7 @@
 
   <artifactId>ruta-parent</artifactId>
   <packaging>pom</packaging>
-  <version>2.9.0-SNAPSHOT</version>
+  <version>3.1.0-SNAPSHOT</version>
   <name>Apache UIMA Ruta: ${project.artifactId}</name>
   <url>${uimaWebsiteUrl}</url>
   <inceptionYear>2011</inceptionYear>
@@ -114,21 +114,25 @@
       (http://www.famfamfam.com/lab/icons/silk/), licensed under the
       Creative Commons Attribution 3.0 License.
     </postNoticeText>
-    <uimaVersion>2.10.4</uimaVersion>
-    <uimafit-version>2.5.0</uimafit-version>
-    <spring-version>4.3.22.RELEASE</spring-version>
+
+    <uimaVersion>3.2.0</uimaVersion>
+    <uimafit-version>3.2.0</uimafit-version>
+    <spring-version>4.3.30.RELEASE</spring-version>
+    
     <!--
       BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+)
       BACKWARD_COMPATIBLE_USER - minor version (=.+.0)
       NON_BACKWARD_COMPATIBLE - major version (+.0.0)
     -->
 
-    <compat.level>NON_BACKWARD_COMPATIBLE</compat.level>
-    <compat.previous.version>2.6.0</compat.previous.version>
+    <compat.level>BACKWARD_COMPATIBLE_USER</compat.level>
+    <compat.previous.version>3.0.1</compat.previous.version>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
-    <api_check_oldVersion>2.6.1</api_check_oldVersion>
+    
+    <api_check_oldVersion>3.0.1</api_check_oldVersion>
   </properties>
 
   <dependencyManagement>

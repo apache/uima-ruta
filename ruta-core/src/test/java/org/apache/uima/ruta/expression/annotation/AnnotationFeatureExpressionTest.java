@@ -175,7 +175,7 @@ public class AnnotationFeatureExpressionTest {
     AnnotationFS a2 = cas.createAnnotation(type1, 5, 9);
     FeatureStructure fs1 = cas.createFS(type2);
     FeatureStructure fs2 = cas.createFS(type2);
-    FSArray fsArray1 = FSCollectionFactory.createFSArray(cas.getJCas(),
+    FSArray<FeatureStructure> fsArray1 = FSCollectionFactory.createFSArray(cas.getJCas(),
             new FeatureStructure[] { fs1, fs2 });
     fs1.setStringValue(type2s, "1");
     fs2.setStringValue(type2s, "2");
@@ -236,7 +236,7 @@ public class AnnotationFeatureExpressionTest {
     CAS cas = RutaTestUtils.getCAS(document, complexTypes, features);
     Ruta.apply(cas, script);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 1,1, "a");
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "a");
   }
 
   @Test
@@ -257,19 +257,18 @@ public class AnnotationFeatureExpressionTest {
     features.put("Struct1", struct1Features);
     struct1Features.add(new TestFeature("smallW", "", "uima.cas.FSArray"));
     struct1Features.add(new TestFeature("capitalW", "", "uima.cas.FSArray"));
-    
+
     List<TestFeature> wordFeatures = new ArrayList<RutaTestUtils.TestFeature>();
     features.put("Word", wordFeatures);
     wordFeatures.add(new TestFeature("small", "", "uima.cas.Boolean"));
-    
+
     CAS cas = RutaTestUtils.getCAS(document, complexTypes, features);
     Ruta.apply(cas, script);
-    
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "is", "a");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "This", "Test");
   }
-  
-  
+
   @Test
   public void testPartofOnNullMatch() throws Exception {
     String document = "Some text.";
