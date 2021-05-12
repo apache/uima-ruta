@@ -17,7 +17,9 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -35,14 +37,11 @@
   <inceptionYear>2011</inceptionYear>
   <description>The common parent pom for the UIMA Ruta</description>
 
-  <!-- Special inheritance note
-    even though the <scm> element that follows is exactly the
-    same as those in super poms, it cannot be inherited because
-    there is some special code that computes the connection elements
-    from the chain of parent poms, if this is omitted.
-
-    Keeping this a bit factored allows cutting/pasting the <scm>
-    element, and just changing the following two properties -->
+  <!-- Special inheritance note even though the <scm> element that follows 
+    is exactly the same as those in super poms, it cannot be inherited because 
+    there is some special code that computes the connection elements from the 
+    chain of parent poms, if this is omitted. Keeping this a bit factored allows 
+    cutting/pasting the <scm> element, and just changing the following two properties -->
   <scm>
     <connection>scm:git:https://github.com/apache/uima-ruta/</connection>
     <developerConnection>scm:git:https://github.com/apache/uima-ruta/</developerConnection>
@@ -50,11 +49,12 @@
     <tag>HEAD</tag>
   </scm>
 
-  <!-- The repositories and pluginRepositories section is duplicated from the parent pom one, and adds
-    the Apache Snapshot Nexus repository where UIMA snapshots are deployed. This is needed if for instance,
-    a project depends on some new SNAPSHOT level of a build tool, where the users hasn't checked out 
-    the
-    build tooling. This allows maven to find the snapshots when looking for the parent of this pom -->
+  <!-- The repositories and pluginRepositories section is duplicated from 
+    the parent pom one, and adds the Apache Snapshot Nexus repository where UIMA 
+    snapshots are deployed. This is needed if for instance, a project depends 
+    on some new SNAPSHOT level of a build tool, where the users hasn't checked 
+    out the build tooling. This allows maven to find the snapshots when looking 
+    for the parent of this pom -->
   <repositories>
     <!-- modify central repository access: Turn on checksum checking -->
     <repository>
@@ -105,10 +105,12 @@
   <properties>
     <uniWueNoticeText>Portions of UIMA Ruta were originally developed by
       the Universität Würzburg.
-      Copyright (c) 2006, 2011 Universität Würzburg.</uniWueNoticeText>
+      Copyright (c) 2006, 2011 Universität
+      Würzburg.</uniWueNoticeText>
     <postNoticeText>${uniWueNoticeText}
 
-      This product contains icons developed by Mark James
+      This product contains icons
+      developed by Mark James
       (http://www.famfamfam.com/lab/icons/silk/), licensed under the
       Creative Commons Attribution 3.0 License.
     </postNoticeText>
@@ -116,12 +118,19 @@
     <uimaVersion>3.2.0</uimaVersion>
     <uimafit-version>3.2.0</uimafit-version>
     <spring-version>4.3.30.RELEASE</spring-version>
-    
-    <!--
-      BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+)
-      BACKWARD_COMPATIBLE_USER - minor version (=.+.0)
-      NON_BACKWARD_COMPATIBLE - major version (+.0.0)
-    -->
+
+    <antlr-version>3.5.2</antlr-version>
+    <htmlparser-version>1.6</htmlparser-version>
+    <commons-collections-version>3.2.2</commons-collections-version>
+    <commons-text-version>1.9</commons-text-version>
+    <commons-lang3-version>3.12.0</commons-lang3-version>
+    <commons-io-version>2.8.0</commons-io-version>
+    <commons-math3-version>3.6.1</commons-math3-version>
+    <commons-logging-version>1.1.1</commons-logging-version>
+    <commons-logging-api-version>1.1</commons-logging-api-version>
+    <caffeine-version>2.8.3</caffeine-version>
+    <!-- BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+) BACKWARD_COMPATIBLE_USER 
+      - minor version (=.+.0) NON_BACKWARD_COMPATIBLE - major version (+.0.0) -->
 
     <compat.level>BACKWARD_COMPATIBLE_USER</compat.level>
     <compat.previous.version>3.0.1</compat.previous.version>
@@ -129,12 +138,89 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
-    
+
     <api_check_oldVersion>3.0.1</api_check_oldVersion>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr-runtime</artifactId>
+        <version>${antlr-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.htmlparser</groupId>
+        <artifactId>htmlparser</artifactId>
+        <version>${htmlparser-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>${commons-collections-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-text</artifactId>
+        <version>${commons-text-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>uimafit-core</artifactId>
+        <version>${uimafit-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-math3</artifactId>
+        <version>${commons-math3-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>${commons-logging-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging-api</artifactId>
+        <version>${commons-logging-api-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${spring-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-expression</artifactId>
+        <version>${spring-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+        <version>${spring-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>${caffeine-version}</version>
+      </dependency>
+
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
