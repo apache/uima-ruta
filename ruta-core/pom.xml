@@ -61,7 +61,6 @@
     <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr-runtime</artifactId>
-      <version>3.5.2</version>
       <exclusions>
         <exclusion>
           <groupId>org.antlr</groupId>
@@ -73,19 +72,16 @@
     <dependency>
       <groupId>org.htmlparser</groupId>
       <artifactId>htmlparser</artifactId>
-      <version>1.6</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
-      <version>1.6</version>
     </dependency>
 
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
-      <version>3.2.1</version>
     </dependency>
 
     <dependency>
@@ -104,19 +100,16 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.8.1</version>
     </dependency>
     
     <dependency>
       <groupId>com.github.ben-manes.caffeine</groupId>
       <artifactId>caffeine</artifactId>
-      <version>2.8.3</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimafit-core</artifactId>
-      <version>${uimafit-version}</version>
       <!-- Exclude aop stuff, which is not need by uimafit and only introduces a non-asl license -->
       <exclusions>
         <exclusion>
@@ -134,14 +127,12 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.4</version>
     </dependency>
 
     <!-- needed for ruta-ep-textruler/ruta-ep-addons - TODO this should be moved to engine? -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-math3</artifactId>
-      <version>3.0</version>
     </dependency>
 
     <dependency>

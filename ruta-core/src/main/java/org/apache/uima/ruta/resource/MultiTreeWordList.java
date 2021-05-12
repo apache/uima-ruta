@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
@@ -226,9 +225,7 @@ public class MultiTreeWordList implements RutaWordList {
    *           When there is a problem reading the resource.
    */
   private void load(Resource resource, String name) throws IOException {
-    InputStream stream = null;
-    try {
-      stream = resource.getInputStream();
+    try (InputStream stream = resource.getInputStream()) {
       if (name == null) {
         throw new IllegalArgumentException("List does not have a name.");
       } else if (name.endsWith(".txt")) {
@@ -239,8 +236,6 @@ public class MultiTreeWordList implements RutaWordList {
         throw new IllegalArgumentException(
                 "File name should end with .mtwl or .txt, found " + name);
       }
-    } finally {
-      IOUtils.closeQuietly(stream);
     }
   }
 
