@@ -159,7 +159,7 @@ public class FeatureMatchExpression extends SimpleFeatureExpression {
       } else if (!feature.getRange().isPrimitive()
               && typeSystem.subsumes(typeSystem.getType(CAS.TYPE_NAME_FS_ARRAY), featureRangeType)
               && getArg() instanceof IAnnotationListExpression) {
-        ArrayFS fsArray = (ArrayFS) featureValue;
+        ArrayFS<?> fsArray = (ArrayFS<?>) featureValue;
         IAnnotationListExpression ale = (IAnnotationListExpression) getArg();
         List<AnnotationFS> annotationList = ale.getAnnotationList(context, stream);
         return compare(Arrays.asList(fsArray.toArray()), annotationList);

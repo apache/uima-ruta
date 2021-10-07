@@ -344,6 +344,15 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private Boolean debugWithMatches;
 
   /**
+   * This parameter specifies whether all debug annotation should be added to the indexes. By
+   * default this parameter is deactivated and only the root script apply is added.
+   */
+  public static final String PARAM_DEBUG_ADD_TO_INDEXES = "debugAddToIndexes";
+
+  @ConfigurationParameter(name = PARAM_DEBUG_ADD_TO_INDEXES, mandatory = false, defaultValue = "false")
+  private Boolean debugAddToIndexes;
+
+  /**
    * This parameter specifies a list of rule-ids that enumerate the rule for which debug information
    * should be created. No specific ids are given by default.
    */
@@ -853,7 +862,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
   private InferenceCrowd initializeCrowd() {
     List<RutaInferenceVisitor> visitors = new ArrayList<RutaInferenceVisitor>();
     if (debug) {
-      visitors.add(new DebugInfoCollectorVisitor(debug, debugWithMatches,
+      visitors.add(new DebugInfoCollectorVisitor(debug, debugWithMatches, debugAddToIndexes,
               Arrays.asList(debugOnlyFor), verbalizer));
     }
     if (profile) {

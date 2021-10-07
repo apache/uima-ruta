@@ -42,7 +42,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.analysis_engine.metadata.AnalysisEngineMetaData;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.impl.FeatureStructureImpl;
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
@@ -58,6 +58,7 @@ import org.apache.uima.ruta.type.DebugBlockApply;
 import org.apache.uima.ruta.type.DebugMatchedRuleMatch;
 import org.apache.uima.ruta.type.DebugRuleApply;
 import org.apache.uima.ruta.type.DebugRuleMatch;
+import org.apache.uima.ruta.type.DebugScriptApply;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.InvalidXMLException;
@@ -145,7 +146,7 @@ public class Ruta {
     int result = 0;
     if (annotation instanceof DebugBlockApply) {
       DebugBlockApply dba = (DebugBlockApply) annotation;
-      FSArray innerApply = dba.getInnerApply();
+      FSArray<DebugScriptApply> innerApply = dba.getInnerApply();
       for (int i = 0; i < innerApply.size(); i++) {
         Annotation each = (Annotation) innerApply.get(i);
         result += countRuleApplies(each);
@@ -160,14 +161,14 @@ public class Ruta {
   private static void collectRuleMatches(Annotation annotation, List<Annotation> result) {
     if (annotation instanceof DebugBlockApply) {
       DebugBlockApply dba = (DebugBlockApply) annotation;
-      FSArray innerApply = dba.getInnerApply();
+      FSArray<DebugScriptApply> innerApply = dba.getInnerApply();
       for (int i = 0; i < innerApply.size(); i++) {
         Annotation each = (Annotation) innerApply.get(i);
         collectRuleMatches(each, result);
       }
     } else if (annotation instanceof DebugRuleApply) {
       DebugRuleApply dra = (DebugRuleApply) annotation;
-      FSArray rules = dra.getRules();
+      FSArray<DebugRuleMatch> rules = dra.getRules();
       for (int i = 0; i < rules.size(); i++) {
         Annotation each = (Annotation) rules.get(i);
         collectRuleMatches(each, result);
@@ -214,11 +215,11 @@ public class Ruta {
     return sb.toString();
   }
 
-  public static String inject(String script, FeatureStructureImpl... annotations) {
+  public static String inject(String script, FeatureStructure... annotations) {
     return inject(script, "$", getAddresses(annotations));
   }
 
-  private static int[] getAddresses(FeatureStructureImpl[] annotations) {
+  private static int[] getAddresses(FeatureStructure[] annotations) {
     int[] result = new int[annotations.length];
     for (int i = 0; i < annotations.length; i++) {
       result[i] = annotations[i].getAddress();
