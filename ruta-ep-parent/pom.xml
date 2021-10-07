@@ -53,7 +53,7 @@
 
   <properties>
     <eclipseP2RepoId>org.eclipse.p2.201812</eclipseP2RepoId>
-    <eclipseP2RepoUrl>http://download.eclipse.org/releases/2018-12/</eclipseP2RepoUrl>
+    <eclipseP2RepoUrl>https://download.eclipse.org/releases/2018-12/</eclipseP2RepoUrl>
     <dltk.version>[5.11.0,6.0.0)</dltk.version>
   </properties>
 
