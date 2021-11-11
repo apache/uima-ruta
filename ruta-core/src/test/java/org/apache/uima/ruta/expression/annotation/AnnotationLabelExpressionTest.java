@@ -845,4 +845,31 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some text");
   }
 
+  @Test
+  public void testCompareStringFeatures() throws Exception {
+
+    String document = "A b.";
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    typeMap.put("Struct1", "uima.tcas.Annotation");
+    typeMap.put("Struct2", "uima.tcas.Annotation");
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put("Struct1", list);
+    featureMap.put("Struct2", list);
+    list.add(new TestFeature("s", "", "uima.cas.String"));
+
+    String script = "";
+    script += "SW{->CREATE(Struct2, \"s\" = \"b\")};\n";
+    script += "SW{->CREATE(Struct2, \"s\" = \"a\")};\n";
+    script += "CW{->CREATE(Struct1, \"s\" = \"a\")};\n";
+    script += "(s1:Struct1 s2:Struct2){s1.s==s2.s-> T1};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "A b");
+
+  }
+
 }
