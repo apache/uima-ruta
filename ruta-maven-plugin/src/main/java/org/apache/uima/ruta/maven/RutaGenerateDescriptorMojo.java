@@ -18,6 +18,9 @@
  */
 package org.apache.uima.ruta.maven;
 
+import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_RESOURCES;
+import static org.apache.maven.plugins.annotations.ResolutionScope.TEST;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -40,6 +43,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.FileSet;
 import org.apache.maven.model.Resource;
@@ -48,10 +52,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -79,7 +81,7 @@ import org.xml.sax.SAXException;
  * Generate descriptors from UIMA Ruta script files.
  * 
  */
-@Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_RESOURCES, requiresDependencyResolution = ResolutionScope.COMPILE)
+@Mojo(name = "generate", defaultPhase = GENERATE_RESOURCES, requiresDependencyResolution = TEST, requiresDependencyCollection = TEST)
 public class RutaGenerateDescriptorMojo extends AbstractMojo {
   private static final String RUTA_BUILD_VARS = "RUTA_BUILD_VARS";
 
@@ -199,6 +201,13 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   private String[] buildPaths;
 
   /**
+   * Scope threshold to include. The default is "compile" (which implies compile, provided and
+   * system dependencies). Can also be changed to "test" (which implies all dependencies).
+   */
+  @Parameter(defaultValue = "compile", required = true)
+  private String includeScope;
+
+  /**
    * Fail on error.
    */
   @Parameter(defaultValue = "true", required = true)
@@ -284,7 +293,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       }
     }
 
-    URLClassLoader classloader = getClassloader(project, getLog());
+    URLClassLoader classloader = getClassloader(project, getLog(), includeScope);
 
     RutaBuildOptions options = new RutaBuildOptions();
     options.setTypeSystemSuffix(typeSystemSuffix);
@@ -435,7 +444,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     }
   }
 
-  public static URLClassLoader getClassloader(MavenProject project, Log aLog)
+  public static URLClassLoader getClassloader(MavenProject project, Log aLog, String includeScopeThreshold)
           throws MojoExecutionException {
 
     List<URL> urls = new ArrayList<URL>();
@@ -480,26 +489,35 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       throw new MojoExecutionException(
               "Unable to resolve dependencies: " + ExceptionUtils.getRootCauseMessage(e), e);
     }
-    Set<Artifact> artifacts = project.getDependencyArtifacts();
-    if (artifacts != null) {
-      for (Artifact dep : artifacts) {
-        try {
-          if (dep.getFile() == null) {
-            // Unresolved file because it is in the wrong scope (e.g. test?)
-            continue;
-          }
-          if (aLog != null) {
-            aLog.debug("Classpath entry: " + dep.getGroupId() + ":" + dep.getArtifactId() + ":"
-                    + dep.getVersion() + " -> " + dep.getFile());
-          }
-          urls.add(dep.getFile().toURI().toURL());
-        } catch (Exception e) {
-          throw new MojoExecutionException("Unable get dependency artifact location for "
-                  + dep.getGroupId() + ":" + dep.getArtifactId() + ":" + dep.getVersion()
-                  + ExceptionUtils.getRootCauseMessage(e), e);
+    
+    ScopeArtifactFilter filter = new ScopeArtifactFilter(includeScopeThreshold);
+    for (Artifact dep : (Set<Artifact>) project.getArtifacts()) {
+      try {
+        if (!filter.include(dep)) {
+          aLog.debug("Not generating classpath entry for out-of-scope artifact: " + dep.getGroupId()
+                  + ":" + dep.getArtifactId() + ":" + dep.getVersion() + " (" + dep.getScope()
+                  + ")");
+          continue;
         }
+        
+        if (dep.getFile() == null) {
+          aLog.debug("Not generating classpath entry for unresolved artifact: " + dep.getGroupId()
+                  + ":" + dep.getArtifactId() + ":" + dep.getVersion()+ " (" + dep.getScope()
+                  + ")");
+          // Unresolved file because it is in the wrong scope (e.g. test?)
+          continue;
+        }
+                
+        aLog.debug("Classpath entry: " + dep.getGroupId() + ":" + dep.getArtifactId() + ":"
+                + dep.getVersion() + " -> " + dep.getFile());
+        urls.add(dep.getFile().toURI().toURL());
+      } catch (Exception e) {
+        throw new MojoExecutionException("Unable get dependency artifact location for "
+                + dep.getGroupId() + ":" + dep.getArtifactId() + ":" + dep.getVersion()
+                + ExceptionUtils.getRootCauseMessage(e), e);
       }
     }
+    
     return new URLClassLoader(urls.toArray(new URL[] {}),
             RutaGenerateDescriptorMojo.class.getClassLoader());
   }
