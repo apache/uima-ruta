@@ -163,7 +163,7 @@ public class AnnotationVariableExpressionTest {
     iterator = ai.iterator();
     next = iterator.next();
     assertEquals("text", next.getCoveredText());
-    FSArray array = (FSArray) next.getFeatureValue(f1);
+    FSArray<?> array = (FSArray<?>) next.getFeatureValue(f1);
     assertNotNull("Feature value is null!", array);
     assertEquals(2, array.size());
   }
@@ -204,7 +204,7 @@ public class AnnotationVariableExpressionTest {
     iterator = ai.iterator();
     next = iterator.next();
     assertEquals("text", next.getCoveredText());
-    FSArray array = (FSArray) next.getFeatureValue(f1);
+    FSArray<?> array = (FSArray<?>) next.getFeatureValue(f1);
     assertNotNull("Feature value is null!", array);
     assertEquals(2, array.size());
   }

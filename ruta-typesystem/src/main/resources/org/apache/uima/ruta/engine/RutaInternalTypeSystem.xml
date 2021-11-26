@@ -295,8 +295,13 @@
       <features>
         <featureDescription>
           <name>original</name>
-          <description/>
+          <description>The annotation that caused this outcome.</description>
           <rangeTypeName>uima.tcas.Annotation</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>group</name>
+          <description>Identifier for the group of annotations and types in the evaluation.</description>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>

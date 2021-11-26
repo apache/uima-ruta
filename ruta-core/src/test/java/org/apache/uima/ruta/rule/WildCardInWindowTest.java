@@ -46,14 +46,16 @@ public class WildCardInWindowTest {
   public void testMultiMidOut() throws Exception {
     String document = ". A x 1 1 : x 2 % 3 x ; . A x B 1 C 1 : x 4 % 5 x ; .";
     String script = "";
-    script += "PERIOD #{-> T1} PERIOD;";
-    script += "T1 -> {CW{-> T4} # @COLON # NUM{-> T2} SPECIAL NUM{-> T3} # SEMICOLON;};";
+    script += "PERIOD ANY+{-PARTOF(PERIOD) -> T1} PERIOD;";
+    script += "T1 -> {CW{-> T4} # @COLON;};";
+    script += "T1 -> {CW{-> T5} # @COLON # NUM{-> T2} SPECIAL NUM{-> T3} # SEMICOLON;};";
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "2", "4");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "3", "5");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "A", "C");
+    RutaTestUtils.assertAnnotationsEquals(cas, 5, 2, "A", "C");
 
   }
 
@@ -104,6 +106,26 @@ public class WildCardInWindowTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "some text");
+  }
+
+  @Test
+  public void testRightToLeftCombination() throws Exception {
+    String document = "bla . x x x A x x 1 : x x x 2 x x . bla";
+
+    // Both NUM/T3 should be removed
+    String script = "";
+    script += "PERIOD ANY+{-PARTOF(PERIOD) -> T1} PERIOD;";
+    script += "CW{->T2};";
+    script += "NUM{->T3};";
+    script += "T1->{";
+    script += "T2 # n1:T3 ANY[0,5]{-PARTOF(T3)} COLON # n2:@T3{-> UNMARK(n2)};";
+    script += "T2 # n:T3{ -> UNMARK(n)} COLON;";
+    script += "};";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
   }
 
 }

@@ -17,15 +17,13 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>2.9.0-SNAPSHOT</version>
+    <version>3.1.1-SNAPSHOT</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
 
@@ -45,9 +43,9 @@
     Keeping this a bit factored allows cutting/pasting the <scm>
     element, and just changing the following two properties -->
   <scm>
-    <connection>scm:git:git://github.com/apache/uima-ruta</connection>
-    <developerConnection>scm:git:git@github.com:apache/uima-ruta.git</developerConnection>
-    <url>https://github.com/apache/uima-ruta</url>
+    <connection>scm:git:https://github.com/apache/uima-ruta/</connection>
+    <developerConnection>scm:git:https://github.com/apache/uima-ruta/</developerConnection>
+    <url>https://github.com/apache/uima-ruta/</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -168,83 +166,6 @@
         <artifactId>org.eclipse.core.contenttype</artifactId>
         <version>[3.7.200,4.0.0)</version>
       </dependency>
-      <!--  
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.core.commands</artifactId>
-        <version>0.11.0</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.core.di</artifactId>
-        <version>[1.5.0,2.0.0)</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.core.services</artifactId>
-        <version>[2.0.0,3.0.0)</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.ui.bindings</artifactId>
-        <version>0.11.0</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.ui.di</artifactId>
-        <version>1.1.0</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.ui.workbench</artifactId>
-        <version>1.3.0</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.ui.workbench3</artifactId>
-        <version>0.13.0</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.ui.css.core</artifactId>
-        <version>0.11.0</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.ui.css.swt</artifactId>
-        <version>0.12.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.e4.ui.css.swt</groupId>
-        <artifactId>theme</artifactId>
-        <version>0.10.0</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.ui.model.workbench</artifactId>
-        <version>[1.1.100,2.0.0)</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.e4.ui.workbench</groupId>
-        <artifactId>swt</artifactId>
-        <version>0.13.0</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.ui.workbench.addons.swt</artifactId>
-        <version>[1.2.0,2.0.0)</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.ui.workbench.renderers.swt</artifactId>
-        <version>0.13.0</version>
-      </dependency>
-      <dependency>
-        <groupId>${eclipseP2RepoId}</groupId>
-        <artifactId>org.eclipse.e4.ui.widgets</artifactId>
-        <version>[1.1.0,2.0.0)</version>
-      </dependency>
-      -->
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.emf.ecore</artifactId>
@@ -298,7 +219,7 @@
       <plugin>
         <groupId>org.openntf.maven</groupId>
         <artifactId>p2-layout-resolver</artifactId>
-        <version>1.2.0</version>
+        <version>1.3.0</version>
         <extensions>true</extensions>
       </plugin>
     </plugins>
@@ -313,5 +234,4 @@
       </plugins>
     </pluginManagement>
   </build>
-
 </project>

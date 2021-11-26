@@ -17,15 +17,13 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>2.9.0-SNAPSHOT</version>
+    <version>3.1.1-SNAPSHOT</version>
     <relativePath>ruta-parent/pom.xml</relativePath>
   </parent>
 
@@ -35,10 +33,10 @@
   <description>The top project for Apache UIMA Ruta</description>
   <url>${uimaWebsiteUrl}</url>
   <properties>
-    <jiraVersion>12346562</jiraVersion>
-    <!--
-      <assembly.attach>false</assembly.attach>
-    -->
+    <jiraVersion>12348278</jiraVersion>
+    <!-- 
+     <assembly.attach>false</assembly.attach>
+     -->
   </properties>
 
   <!-- override pom setting in the build project. JIRA 5.1 needs different URL -->
@@ -52,9 +50,9 @@
     elements from the chain of parent poms, if this is omitted. Keeping this a bit factored allows cutting/pasting
     the <scm> element, and just changing the following two properties -->
   <scm>
-    <connection>scm:git:git://github.com/apache/uima-ruta</connection>
-    <developerConnection>scm:git:git@github.com:apache/uima-ruta.git</developerConnection>
-    <url>https://github.com/apache/uima-ruta</url>
+    <connection>scm:git:https://github.com/apache/uima-ruta/</connection>
+    <developerConnection>scm:git:https://github.com/apache/uima-ruta/</developerConnection>
+    <url>https://github.com/apache/uima-ruta/</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -254,12 +252,8 @@
                 <phase>package</phase>
                 <configuration>
                   <target>
-                    <zip
-                      destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip"
-                      update="true">
-                      <zipfileset dir="${basedir}/example-projects/ExampleProject/"
-                        includes=".project"
-                        prefix="${project.artifactId}-${project.version}/example-projects/ExampleProject/" />
+                    <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
+                      <zipfileset dir="${basedir}/example-projects/ExampleProject/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/ExampleProject/" />
                     </zip>
                     <!-- <zip -->
                     <!-- destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" -->
@@ -268,14 +262,10 @@
                     <!-- dir="${basedir}/example-projects/ExtensionsExample/" -->
                     <!-- includes=".project" -->
                     <!-- prefix="${project.artifactId}-${project.version}/example-projects/ExtensionsExample/" 
-                      /> -->
+                          /> -->
                     <!-- </zip> -->
-                    <zip
-                      destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip"
-                      update="true">
-                      <zipfileset dir="${basedir}/example-projects/TextRulerExample/"
-                        includes=".project"
-                        prefix="${project.artifactId}-${project.version}/example-projects/TextRulerExample/" />
+                    <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
+                      <zipfileset dir="${basedir}/example-projects/TextRulerExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/TextRulerExample/" />
                     </zip>
                     <!-- <zip -->
                     <!-- destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" -->
@@ -283,14 +273,10 @@
                     <!-- <zipfileset dir="${basedir}/example-projects/GermanNovels/" -->
                     <!-- includes=".project" -->
                     <!-- prefix="${project.artifactId}-${project.version}/example-projects/GermanNovels/" 
-                      /> -->
+                          /> -->
                     <!-- </zip> -->
-                    <zip
-                      destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip"
-                      update="true">
-                      <zipfileset dir="${basedir}/example-projects/Misc/"
-                        includes=".project"
-                        prefix="${project.artifactId}-${project.version}/example-projects/Misc/" />
+                    <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
+                      <zipfileset dir="${basedir}/example-projects/Misc/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/Misc/" />
                     </zip>
                   </target>
                 </configuration>

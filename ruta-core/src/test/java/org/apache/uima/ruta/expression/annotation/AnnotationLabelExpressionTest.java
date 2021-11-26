@@ -441,7 +441,7 @@ public class AnnotationLabelExpressionTest {
     FeatureStructure featureValueA = null;
     FeatureStructure featureValueAS = null;
     Annotation a = null;
-    FSArray as = null;
+    FSArray<?> as = null;
 
     type = cas.getTypeSystem().getType("Struct1");
     featureA = type.getFeatureByBaseName("a");
@@ -457,7 +457,7 @@ public class AnnotationLabelExpressionTest {
     Assert.assertTrue(featureValueA instanceof Annotation);
     Assert.assertTrue(featureValueAS instanceof FSArray);
     a = (Annotation) featureValueA;
-    as = (FSArray) featureValueAS;
+    as = (FSArray<?>) featureValueAS;
     Assert.assertEquals("Some text", a.getCoveredText());
     Assert.assertEquals("Annotation", a.getType().getShortName());
     Assert.assertEquals(1, as.size());
@@ -478,7 +478,7 @@ public class AnnotationLabelExpressionTest {
     Assert.assertTrue(featureValueA instanceof Annotation);
     Assert.assertTrue(featureValueAS instanceof FSArray);
     a = (Annotation) featureValueA;
-    as = (FSArray) featureValueAS;
+    as = (FSArray<?>) featureValueAS;
     Assert.assertEquals("Some", a.getCoveredText());
     Assert.assertEquals("CW", a.getType().getShortName());
     Assert.assertEquals(2, as.size());
@@ -501,7 +501,7 @@ public class AnnotationLabelExpressionTest {
     Assert.assertTrue(featureValueA instanceof Annotation);
     Assert.assertTrue(featureValueAS instanceof FSArray);
     a = (Annotation) featureValueA;
-    as = (FSArray) featureValueAS;
+    as = (FSArray<?>) featureValueAS;
     Assert.assertEquals("Some text", a.getCoveredText());
     Assert.assertEquals("Annotation", a.getType().getShortName());
     Assert.assertEquals(1, as.size());

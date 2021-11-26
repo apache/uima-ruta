@@ -24,34 +24,36 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>14-SNAPSHOT</version>
+    <version>14</version>
     <relativePath />
   </parent>
-  
-	<artifactId>ruta-eclipse-update-site</artifactId>
-	<packaging>pom</packaging>
-	<version>2.9.0-SNAPSHOT</version>
-  
-	<name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
+
+  <artifactId>ruta-eclipse-update-site</artifactId>
+  <packaging>pom</packaging>
+  <version>3.1.0</version>
+
+  <name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <description>The UIMA Ruta Eclipse update site</description>
   <url>${uimaWebsiteUrl}</url>
 
   <scm>
-    <connection>scm:git:git://github.com/apache/uima-ruta</connection>
-    <developerConnection>scm:git:git@github.com:apache/uima-ruta.git</developerConnection>
-    <url>https://github.com/apache/uima-ruta</url>
+    <connection>scm:git:https://github.com/apache/uima-ruta/</connection>
+    <developerConnection>scm:git:https://github.com/apache/uima-ruta/</developerConnection>
+    <url>https://github.com/apache/uima-ruta/</url>
     <tag>HEAD</tag>
   </scm>
   
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
     <eclipseUpdateSiteComponent>ruta</eclipseUpdateSiteComponent>
-    <eclipseUpdateSubSite>${project.build.directory}/eclipse-update-site/${eclipseUpdateSiteComponent}</eclipseUpdateSubSite>
+    <eclipseUpdateSubSite>${project.build.directory}/eclipse-update-site-v3/${eclipseUpdateSiteComponent}</eclipseUpdateSubSite>
     <dropPrevVersions>false</dropPrevVersions>
   </properties>
-	<build>
-		<plugins>
-			<plugin>
+
+  <build>
+    
+    <plugins>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
@@ -130,7 +132,8 @@
             </configuration>
           </execution>
         </executions>
-			</plugin>
+      </plugin>
+
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
@@ -178,21 +181,16 @@
 	                        <delete dir="${eclipseUpdateSubSite}" quiet="true" />
 	                        <exec executable="svn" failonerror="true">
 	                          <arg value="checkout" />
-	                          <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
+	                          <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site-v3/${eclipseUpdateSiteComponent}" />
 	                          <arg value="${eclipseUpdateSubSite}" />
 	                        </exec> 
 	                        
-	                        <!-- abandon safety for now
-	                        <echo>switching this checkout to ...dev... for safety</echo>
-	                        <exec executable="svn">
-	                          <arg value="switch" />
-	                          <arg value="- -force" />  remove space between 2 dashes if uncommented
-	                          <arg value="- -accept" />  remove space between 2 dashes if uncommented
-	                          <arg value="mine-full" />
-	                          <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
-	                          <arg value="${eclipseUpdateSubSite}" />
-	                        </exec> 
-	                         -->
+                        <echo>Saving original content and artifacts for the site</echo>
+                        <copy todir="${project.build.directory}/saved" failonerror="true">
+                          <fileset dir="${eclipseUpdateSubSite}"
+                            includes="content.jar,artifacts.jar" />
+                        </copy>
+        
 	                      </then>
 	                      <else>
 	                        <echo>skipping checkout of current svn dist release (because not apache-release)</echo>
@@ -284,33 +282,9 @@
             </configuration>
           </execution>
         </executions>
-        <dependencies>
-          <dependency>
-            <groupId>ant-contrib</groupId>
-            <artifactId>ant-contrib</artifactId>
-            <version>1.0b3</version>
-            <scope>runtime</scope>
-            <exclusions>
-              <exclusion>
-                <artifactId>ant</artifactId>
-                <groupId>ant</groupId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.ant</groupId>
-            <artifactId>ant-apache-regexp</artifactId>
-            <version>1.9.2</version>
-            <scope>compile</scope>
-          </dependency>
-          <dependency>
-            <groupId>jakarta-regexp</groupId>
-            <artifactId>jakarta-regexp</artifactId>
-            <version>1.4</version>
-            <scope>compile</scope>
-          </dependency>
-        </dependencies>
       </plugin>
-		</plugins>
-	</build>
+
+   </plugins>
+  </build>
+
 </project>
