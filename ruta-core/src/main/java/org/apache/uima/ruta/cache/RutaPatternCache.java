@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -25,7 +25,6 @@ import static java.util.regex.Pattern.UNICODE_CASE;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -37,14 +36,17 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
  */
 public class RutaPatternCache {
 
-  private static final LoadingCache<PatternCacheKey, Pattern> CACHE = Caffeine.newBuilder()
-          .expireAfterAccess(6, TimeUnit.HOURS)
-          .expireAfterWrite(12, TimeUnit.HOURS)
-          .maximumSize(10_000)
+  private static final String PROP_RUTA_PATTERN_CACHE_SIZE = "uima.ruta.pattern_cache_size";
+
+  private static final int RUTA_PATTERN_CACHE_SIZE = Integer
+          .parseInt(System.getProperty(PROP_RUTA_PATTERN_CACHE_SIZE, "10000"));
+
+  private static final LoadingCache<PatternCacheKey, Pattern> CACHE = Caffeine.newBuilder() //
+          .maximumSize(RUTA_PATTERN_CACHE_SIZE) //
           .build(k -> createPattern(k));
 
   /**
-   * 
+   *
    * @param patternString
    *          regular expression as a string
    * @param ignore
@@ -54,16 +56,16 @@ public class RutaPatternCache {
   public static Pattern getPattern(String patternString, boolean ignore) {
 
     int flags = MULTILINE | DOTALL;
-    
+
     if (ignore) {
       flags |= CASE_INSENSITIVE | UNICODE_CASE;
     }
-    
+
     return CACHE.get(new PatternCacheKey(patternString, flags));
   }
 
   /**
-   * 
+   *
    * @param patternString
    *          regular expression as a string
    * @param flags
@@ -93,5 +95,4 @@ public class RutaPatternCache {
     CACHE.invalidateAll();
     CACHE.cleanUp();
   }
-
 }
