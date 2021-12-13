@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -360,14 +359,10 @@ public class RutaTestUtils {
   public static void storeCas(CAS cas, String name) {
     File file = new File("input/" + name + ".xmi");
     file.getParentFile().mkdirs();
-    OutputStream fos = null;
-    try {
-      fos = new FileOutputStream(file);
+    try (OutputStream fos = new FileOutputStream(file)) {
       CasIOUtils.save(cas, fos, SerialFormat.XMI);
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
-    } finally {
-      IOUtils.closeQuietly(fos);
     }
   }
 

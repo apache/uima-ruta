@@ -58,6 +58,12 @@
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
+        <name>debugAddToIndexes</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
         <name>statistics</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
