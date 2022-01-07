@@ -110,7 +110,7 @@ public class RutaRuleElement extends AbstractRuleElement {
               result.addAll(fallbackContinue);
             } else if (getContainer() instanceof RuleElementIsolator) {
               // TODO move and refactor this:
-              doneMatching(extendedMatch, ruleApply, stream, crowd);
+              doneMatching(extendedMatch, ruleApply, entryPoint, stream, crowd);
             }
           }
         }
@@ -322,7 +322,7 @@ public class RutaRuleElement extends AbstractRuleElement {
           result.addAll(fallbackContinue);
         } else {
           // should never happen!
-          doneMatching(ruleMatch, ruleApply, stream, crowd);
+          doneMatching(ruleMatch, ruleApply, entryPoint, stream, crowd);
         }
       }
     }
@@ -335,8 +335,7 @@ public class RutaRuleElement extends AbstractRuleElement {
           InferenceCrowd crowd) {
     RuleElementMatch result = new RuleElementMatch(this, containerMatch);
     result.setRuleAnchor(ruleAnchor);
-    List<EvaluatedCondition> evaluatedConditions = new ArrayList<>(
-            conditions.size());
+    List<EvaluatedCondition> evaluatedConditions = new ArrayList<>(conditions.size());
     // boolean base = matcher.match(annotation, stream, getParent());
     boolean base = true;
     MatchContext context = new MatchContext(annotation, this, ruleMatch, after);

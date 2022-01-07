@@ -275,13 +275,12 @@ public class WildCard2Test {
   public void testLabelForFailedLookahead() throws Exception {
     String document = "A x B x C x D";
     String script = "(w1:CW{REGEXP(\"A\")} # w2:CW{REGEXP(\"C\")})->{w1{->T1};};";
-	
-	CAS cas = RutaTestUtils.getCAS(document, null, null, false);
-    Ruta.apply(cas, script);
-	
-	RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "A");
-  }
 
+    CAS cas = RutaTestUtils.getCAS(document, null, null, false);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "A");
+  }
 
   @Test
   public void testLastElementAlsoAnnotatedWithLookahead() throws Exception {
@@ -295,6 +294,35 @@ public class WildCard2Test {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "c", "c");
+  }
+
+  @Test
+  public void testLookaheadWithFeatureMatch() throws Exception {
+    String document = "a 2 b 3 c 4 d";
+    String script = "";
+    script += "\"2\"{->s:Struct,s.s=\"x\"};\n";
+    script += "\"3\"{->s:Struct};\n";
+    script += "\"4\"{->s:Struct,s.s=\"y\"};\n";
+    script += "s1:Struct.s==\"x\" # s2:Struct.s==\"y\"{->s2.s=s1.s, T1};\n";
+    script += "s:Struct.s==\"x\"{->T2};\n";
+
+    Map<String, String> complexType = new HashMap<>();
+    complexType.put("Struct", CAS.TYPE_NAME_ANNOTATION);
+    Map<String, List<TestFeature>> featureMap = new HashMap<>();
+    List<TestFeature> list = new ArrayList<>();
+    list.add(new TestFeature("s", "", CAS.TYPE_NAME_STRING));
+    featureMap.put("Struct", list);
+
+    CAS cas = RutaTestUtils.getCAS(document, complexType, featureMap);
+    Ruta.apply(cas, script);
+
+    if (RutaTestUtils.DEBUG_MODE) {
+      RutaTestUtils.storeTypeSystem(complexType, featureMap);
+      RutaTestUtils.storeCas(cas, "testLookaheadWithFeatureMatch");
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "4");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "2", "4");
   }
 
 }
