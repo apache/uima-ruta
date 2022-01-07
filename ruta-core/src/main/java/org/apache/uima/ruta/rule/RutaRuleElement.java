@@ -197,6 +197,9 @@ public class RutaRuleElement extends AbstractRuleElement {
     if (nextRuleElement != null) {
       result = nextRuleElement.continueMatch(after, eachAnchor, extendedMatch, ruleApply,
               extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
+    } else if (sideStepOrigin != null && !failed) {
+      result = sideStepOrigin.continueSideStep(after, extendedMatch, ruleApply,
+              extendedContainerMatch, entryPoint, stream, crowd);
     } else if (getContainer() instanceof ComposedRuleElement) {
       ComposedRuleElement composed = (ComposedRuleElement) getContainer();
       result = composed.fallbackContinue(after, failed, eachAnchor, extendedMatch, ruleApply,
