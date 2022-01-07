@@ -316,6 +316,11 @@ public class WildCard2Test {
     CAS cas = RutaTestUtils.getCAS(document, complexType, featureMap);
     Ruta.apply(cas, script);
 
+    if (RutaTestUtils.DEBUG_MODE) {
+      RutaTestUtils.storeTypeSystem(complexType, featureMap);
+      RutaTestUtils.storeCas(cas, "testLookaheadWithFeatureMatch");
+    }
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "4");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "2", "4");
   }

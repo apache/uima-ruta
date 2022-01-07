@@ -534,7 +534,7 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
 
     // take care that failed matches wont be applied
     ruleMatch.setMatched(ruleMatch.matched && !failed);
-    doneMatching(ruleMatch, ruleApply, stream, crowd);
+    doneMatching(ruleMatch, ruleApply, entryPoint, stream, crowd);
     return asList(ruleMatch);
   }
 
