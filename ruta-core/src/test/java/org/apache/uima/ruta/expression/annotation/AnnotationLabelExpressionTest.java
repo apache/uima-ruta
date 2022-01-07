@@ -866,7 +866,12 @@ public class AnnotationLabelExpressionTest {
     script += "(s1:Struct1 s2:Struct2){s1.s==s2.s-> T1};\n";
 
     CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-    Ruta.apply(cas, script);
+    Ruta.apply(cas, script, RutaTestUtils.getDebugParams());
+
+    if (RutaTestUtils.DEBUG_MODE) {
+      RutaTestUtils.storeTypeSystem(typeMap, featureMap);
+      RutaTestUtils.storeCas(cas, "testCompareStringFeatures");
+    }
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "A b");
 

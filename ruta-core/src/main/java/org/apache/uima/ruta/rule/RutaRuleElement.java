@@ -63,6 +63,10 @@ public class RutaRuleElement extends AbstractRuleElement {
     Collection<? extends AnnotationFS> anchors = getAnchors(stream);
     boolean useAlternatives = anchors.size() != 1;
     for (AnnotationFS eachAnchor : anchors) {
+
+      // clean up temp variables since we start a new matching iteration
+      ruleMatch.getRule().clearOwnLabels();
+
       if (earlyExit(eachAnchor, ruleApply, stream)) {
         // ... for different matching paradigms that avoid some matches
         continue;
