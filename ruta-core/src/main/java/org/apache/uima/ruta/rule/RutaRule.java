@@ -19,8 +19,9 @@
 
 package org.apache.uima.ruta.rule;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -45,10 +46,13 @@ public class RutaRule extends AbstractRule {
    */
   private Map<String, Object> labels;
 
+  private Collection<String> ownLabels;
+
   public RutaRule(List<RuleElement> elements, RutaBlock parent, int id) {
     super(parent, id);
     this.root = new ComposedRuleElement(elements, null, null, null, null, parent);
-    this.labels = new HashMap<>();
+    this.labels = new LinkedHashMap<>();
+    this.ownLabels = new ArrayList<>();
   }
 
   @Override
@@ -92,33 +96,39 @@ public class RutaRule extends AbstractRule {
     if (elements != null) {
       // update label map
       for (RuleElement ruleElement : elements) {
-        fillLabelMap(ruleElement);
+        fillLabelMap(ruleElement, true);
       }
     }
 
   }
 
-  private void fillLabelMap(RuleElement ruleElement) {
+  private void fillLabelMap(RuleElement ruleElement, boolean own) {
     if (!StringUtils.isBlank(ruleElement.getLabel())) {
       labels.put(ruleElement.getLabel(), null);
+      if (own) {
+        ownLabels.add(ruleElement.getLabel());
+      }
     }
-    fillLabelMapWithActions(ruleElement.getActions());
+    fillLabelMapWithActions(ruleElement.getActions(), own);
     if (ruleElement instanceof ComposedRuleElement) {
       ComposedRuleElement cre = (ComposedRuleElement) ruleElement;
       List<RuleElement> ruleElements = cre.getRuleElements();
       for (RuleElement each : ruleElements) {
-        fillLabelMap(each);
+        fillLabelMap(each, own);
       }
     }
     fillLabelMapWithInlinedRules(ruleElement.getInlinedConditionRuleBlocks());
     fillLabelMapWithInlinedRules(ruleElement.getInlinedActionRuleBlocks());
   }
 
-  private void fillLabelMapWithActions(List<AbstractRutaAction> actions) {
+  private void fillLabelMapWithActions(List<AbstractRutaAction> actions, boolean own) {
     if (actions != null) {
       for (AbstractRutaAction action : actions) {
         if (action != null && !StringUtils.isBlank(action.getLabel())) {
           labels.put(action.getLabel(), null);
+          if (own) {
+            ownLabels.add(action.getLabel());
+          }
         }
       }
     }
@@ -131,7 +141,7 @@ public class RutaRule extends AbstractRule {
           if (eachInlined instanceof RutaRule) {
             RutaRule inlinedRule = (RutaRule) eachInlined;
             inlinedRule.setInlined(true);
-            fillLabelMap(inlinedRule.getRoot());
+            fillLabelMap(inlinedRule.getRoot(), false);
           }
         }
       }
@@ -191,6 +201,15 @@ public class RutaRule extends AbstractRule {
 
   public Collection<String> getLabels() {
     return labels.keySet();
+  }
+
+  public Collection<String> getOwnLabels() {
+    return ownLabels;
+  }
+
+  public void clearOwnLabels() {
+    RutaEnvironment environment = getParent().getEnvironment();
+    environment.clearTempVariables(ownLabels);
   }
 
 }
