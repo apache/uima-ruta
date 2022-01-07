@@ -41,21 +41,22 @@ public class MinMaxQuantifierTest {
 
   @Test
   public void testMinMaxOnComposedWithAnchor() throws Exception {
-    String document = "omega alpha beta gamma omega alpha beta gamma omega alpha";
+    String document = "1 2 3 4 5 6 7 8 9 10";
     String script = "";
-    script += "(W @W W W)[2,2]{-> T1};\n";
-    script += "(W W @W W)[2,2]{-> T2};\n";
+    script += "(NUM @NUM NUM NUM)[2,2]{-> T1};\n";
+    script += "(NUM NUM @NUM NUM)[2,2]{-> T2};\n";
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3,
-            "omega alpha beta gamma omega alpha beta gamma",
-            "alpha beta gamma omega alpha beta gamma omega",
-            "beta gamma omega alpha beta gamma omega alpha");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3,
-            "omega alpha beta gamma omega alpha beta gamma",
-            "alpha beta gamma omega alpha beta gamma omega",
-            "beta gamma omega alpha beta gamma omega alpha");
+    if (RutaTestUtils.DEBUG_MODE) {
+      RutaTestUtils.storeTypeSystem();
+      RutaTestUtils.storeCas(cas, "testMinMaxOnComposedWithAnchor");
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 2 3 4 5 6 7 8", "2 3 4 5 6 7 8 9",
+            "3 4 5 6 7 8 9 10");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "1 2 3 4 5 6 7 8", "2 3 4 5 6 7 8 9",
+            "3 4 5 6 7 8 9 10");
   }
 }
