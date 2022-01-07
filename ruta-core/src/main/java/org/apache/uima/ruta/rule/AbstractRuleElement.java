@@ -125,19 +125,14 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
     return result;
   }
 
-  protected void doneMatching(RuleMatch ruleMatch, RuleApply ruleApply, RuleElement entryPoint,
-          RutaStream stream, InferenceCrowd crowd) {
+  protected void doneMatching(RuleMatch ruleMatch, RuleApply ruleApply, RutaStream stream,
+          InferenceCrowd crowd) {
     if (!ruleMatch.isApplied()) {
       ruleApply.add(ruleMatch, stream);
       if (ruleMatch.matchedCompletely()) {
         RutaRule rule = ruleMatch.getRule();
         rule.getEnvironment().acceptTempVariableValues(rule.getOwnLabels());
         rule.getRoot().applyRuleElements(ruleMatch, stream, crowd);
-//      } else if (entryPoint == null) {
-        // we may not clear all temp variables. there could be a valid future alternative match
-        // which requires a previous label
-//        // there was no dynamic lookahead, remove temp vars
-//        rule.getEnvironment().clearTempVariables(localVariables);
       }
       ruleMatch.setApplied(true);
     }

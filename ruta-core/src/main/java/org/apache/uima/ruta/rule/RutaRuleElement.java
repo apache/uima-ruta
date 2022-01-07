@@ -114,7 +114,7 @@ public class RutaRuleElement extends AbstractRuleElement {
               result.addAll(fallbackContinue);
             } else if (getContainer() instanceof RuleElementIsolator) {
               // TODO move and refactor this:
-              doneMatching(extendedMatch, ruleApply, entryPoint, stream, crowd);
+              doneMatching(extendedMatch, ruleApply, stream, crowd);
             }
           }
         }
@@ -329,7 +329,7 @@ public class RutaRuleElement extends AbstractRuleElement {
           result.addAll(fallbackContinue);
         } else {
           // should never happen!
-          doneMatching(ruleMatch, ruleApply, entryPoint, stream, crowd);
+          doneMatching(ruleMatch, ruleApply, stream, crowd);
         }
       }
     }
