@@ -95,11 +95,17 @@ public class UnmarkTest {
     list.add(new TestFeature("s", "", CAS.TYPE_NAME_STRING));
 
     CAS cas = RutaTestUtils.getCAS("This is a test.", typeMap, featureMap);
-    String script = "\"is\"{->s:Struct,Struct.s=\"foo\"};";
+    String script = "\"a\"{->s:Struct,Struct.s=\"foo\"};";
     script += "BLOCK(SoftRemove) Struct.s==\"foo\"{} {\r\n"
-            + "    t:Struct.s==\"foo\"{-> UNMARK(t)};\r\n"
+            + "    t:Struct.s==\"foo\"{-> UNMARK(t)};\r\n" //
             + "    t:Struct.s==\"foo\"{-> T1}; \r\n" + "}";
-    Ruta.apply(cas, script);
+
+    Ruta.apply(cas, script, RutaTestUtils.getDebugParams());
+
+    if (RutaTestUtils.DEBUG_MODE) {
+      RutaTestUtils.storeTypeSystem(typeMap, featureMap);
+      RutaTestUtils.storeCas(cas, "testUnmarkWithFeatureMatchInBlock");
+    }
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
   }

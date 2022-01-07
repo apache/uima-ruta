@@ -1151,7 +1151,11 @@ public class RutaStream {
 
     if (cas.getTypeSystem().subsumes(type, windowAnnotation.getType())) {
       if (!sensitiveToVisibility || isVisible(windowAnnotation)) {
-        result.add(windowAnnotation);
+        // the window defined by a BLOCK could actually have already been removed, thus we do not
+        // want to return it
+        if (cas.getAnnotationIndex(windowAnnotation.getType()).contains(windowAnnotation)) {
+          result.add(windowAnnotation);
+        }
       }
     }
 
