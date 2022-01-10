@@ -30,8 +30,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 /**
  * Preference page to manage preferences for the ide plugin.
  */
-public class RutaBuilderPreferencePage extends FieldEditorPreferencePage implements
-        IWorkbenchPreferencePage {
+public class RutaBuilderPreferencePage extends FieldEditorPreferencePage
+        implements IWorkbenchPreferencePage {
 
   private BooleanFieldEditor builderImport;
 
@@ -60,13 +60,16 @@ public class RutaBuilderPreferencePage extends FieldEditorPreferencePage impleme
             RutaCorePreferences.BUILDER_IGNORE_DUPLICATE_SHORTNAMES,
             RutaPreferencesMessages.BuilderIgnoreDuplicateShortnames, getFieldEditorParent());
     addField(builderShortNames);
-    
-    compressWordLists = new BooleanFieldEditor(
-            RutaCorePreferences.COMPRESS_WORDLISTS,
+
+    compressWordLists = new BooleanFieldEditor(RutaCorePreferences.COMPRESS_WORDLISTS,
             RutaPreferencesMessages.CompressWordLists, getFieldEditorParent());
+
+    compressWordLists = new BooleanFieldEditor(RutaCorePreferences.DICT_REMOVE_WS,
+            RutaPreferencesMessages.DictRemoveWS, getFieldEditorParent());
     addField(compressWordLists);
   }
 
+  @Override
   public void init(IWorkbench workbench) {
   }
 
