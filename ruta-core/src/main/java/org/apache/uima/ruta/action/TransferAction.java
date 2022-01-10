@@ -21,6 +21,7 @@ package org.apache.uima.ruta.action;
 
 import java.util.List;
 
+import org.apache.uima.UimaContextHolder;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -79,10 +80,20 @@ public class TransferAction extends TypeSensitiveAction {
       if (newFeature != null) {
         if (feature.getRange().isPrimitive()) {
           String value = oldFS.getFeatureValueAsString(feature);
-          newFS.setFeatureValueFromString(newFeature, value);
+          try {
+            newFS.setFeatureValueFromString(newFeature, value);
+          } catch (Exception e) {
+            UimaContextHolder.getContext().getLogger().debug("Unable to transfer feature {}: {}",
+                    shortName, e.getMessage());
+          }
         } else {
           FeatureStructure value = oldFS.getFeatureValue(feature);
-          newFS.setFeatureValue(newFeature, value);
+          try {
+            newFS.setFeatureValue(newFeature, value);
+          } catch (Exception e) {
+            UimaContextHolder.getContext().getLogger().debug("Unable to transfer feature {}: {}",
+                    shortName, e.getMessage());
+          }
         }
       }
     }
