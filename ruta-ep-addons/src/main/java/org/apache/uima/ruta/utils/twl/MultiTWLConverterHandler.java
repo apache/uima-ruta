@@ -92,7 +92,7 @@ public class MultiTWLConverterHandler implements IHandler {
         if (!paths.isEmpty()) {
           MultiTreeWordList trie;
           try {
-            trie = new MultiTreeWordList(paths.toArray(new String[0]), null);
+            trie = new MultiTreeWordList(paths.toArray(new String[0]), null, dictRemoveWS);
           } catch (IOException e) {
             RutaAddonsPlugin.error(e);
             return Status.CANCEL_STATUS;
