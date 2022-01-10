@@ -21,6 +21,9 @@ package org.apache.uima.ruta.action;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -30,8 +33,10 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
+import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.junit.Test;
 
 public class TransferTest {
@@ -45,8 +50,8 @@ public class TransferTest {
     complexTypes.put(type, CAS.TYPE_NAME_DOCUMENT_ANNOTATION);
     CAS cas = null;
     try {
-      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/" + name
-              + ".txt", 50, false, false, complexTypes, null);
+      cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
+              namespace + "/" + name + ".txt", 50, false, false, complexTypes, null);
     } catch (Exception e) {
       e.printStackTrace();
       assert (false);
@@ -63,7 +68,40 @@ public class TransferTest {
     Feature featureByBaseName = t.getFeatureByBaseName("language");
     String stringValue = afs.getStringValue(featureByBaseName);
     assertEquals("x-unspecified", stringValue);
-   
+
     cas.release();
+  }
+
+  @Test
+  public void testIncompatibleFeatureRanges() throws Exception {
+
+    Map<String, String> typeMap = new LinkedHashMap<String, String>();
+    typeMap.put("Struct11", "uima.tcas.Annotation");
+    typeMap.put("Struct12", "uima.tcas.Annotation");
+    typeMap.put("Struct21", "uima.tcas.Annotation");
+    typeMap.put("Struct22", "uima.tcas.Annotation");
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    featureMap.put("Struct11", Arrays.asList(new TestFeature("f", "", CAS.TYPE_NAME_ANNOTATION)));
+    featureMap.put("Struct12", Arrays.asList(new TestFeature("f", "", CAS.TYPE_NAME_STRING)));
+    featureMap.put("Struct21",
+            Arrays.asList(new TestFeature("array", "", CAS.TYPE_NAME_STRING_ARRAY)));
+    featureMap.put("Struct22",
+            Arrays.asList(new TestFeature("array", "", CAS.TYPE_NAME_BOOLEAN_ARRAY)));
+
+    CAS cas = RutaTestUtils.getCAS("This is a test.", typeMap, featureMap);
+    String script = "CW{->s:Struct11,s.f=CW};";
+    script += "CW{->s:Struct21,s.array={true, false, true}};";
+    script += "Struct11{-> TRANSFER(Struct12)};";
+    script += "Struct21{-> TRANSFER(Struct22)};";
+
+    Ruta.apply(cas, script, RutaTestUtils.getDebugParams());
+
+    if (RutaTestUtils.DEBUG_MODE) {
+      RutaTestUtils.storeTypeSystem(typeMap, featureMap);
+      RutaTestUtils.storeCas(cas, "testIncompatibleFeatureRanges");
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
+
   }
 }
