@@ -50,12 +50,16 @@ public class TWLConverterHandler implements IHandler {
 
   private class ConverterHandlerJob extends Job {
     ExecutionEvent event;
+
     private boolean compress;
 
-    ConverterHandlerJob(ExecutionEvent event, boolean compress) {
+    private boolean dictRemoveWS;
+
+    ConverterHandlerJob(ExecutionEvent event, boolean compress, boolean dictRemoveWS) {
       super("Converting...");
       this.event = event;
       this.compress = compress;
+      this.dictRemoveWS = dictRemoveWS;
       setUser(true);
     }
 
@@ -81,7 +85,7 @@ public class TWLConverterHandler implements IHandler {
         String path = file.getRawLocation().toString();
         TreeWordList list;
         try {
-          list = new TreeWordList(path, false);
+          list = new TreeWordList(path, dictRemoveWS);
         } catch (IOException e) {
           RutaAddonsPlugin.error(e);
           return Status.CANCEL_STATUS;
@@ -109,27 +113,34 @@ public class TWLConverterHandler implements IHandler {
     }
   }
 
+  @Override
   public void addHandlerListener(IHandlerListener handlerListener) {
   }
 
+  @Override
   public void dispose() {
   }
 
+  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
     IPreferenceStore preferenceStore = RutaIdeUIPlugin.getDefault().getPreferenceStore();
     boolean compress = preferenceStore.getBoolean(RutaCorePreferences.COMPRESS_WORDLISTS);
-    new ConverterHandlerJob(event, compress).schedule();
+    boolean dictRemoveWS = preferenceStore.getBoolean(RutaCorePreferences.DICT_REMOVE_WS);
+    new ConverterHandlerJob(event, compress, dictRemoveWS).schedule();
     return null;
   }
 
+  @Override
   public boolean isEnabled() {
     return true;
   }
 
+  @Override
   public boolean isHandled() {
     return true;
   }
 
+  @Override
   public void removeHandlerListener(IHandlerListener handlerListener) {
 
   }

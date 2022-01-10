@@ -78,6 +78,12 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
   private boolean compress;
 
   /**
+   * Remove white spaces while generating dictionaries.
+   */
+  @Parameter(defaultValue = "true", required = true)
+  private boolean dictRemoveWS;
+
+  /**
    * Fail on error.
    */
   @Parameter(defaultValue = "true", required = true)
@@ -111,7 +117,7 @@ public class RutaGenerateTWLMojo extends AbstractMojo {
       File outputFile = each.getValue();
       TreeWordList list = null;
       try {
-        list = new TreeWordList(inputFile.getAbsolutePath(), false);
+        list = new TreeWordList(inputFile.getAbsolutePath(), dictRemoveWS);
       } catch (IOException e) {
         handleError("Error generating twl.", e);
       }

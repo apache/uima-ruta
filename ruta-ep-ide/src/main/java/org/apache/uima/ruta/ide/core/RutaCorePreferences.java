@@ -34,5 +34,7 @@ public class RutaCorePreferences {
 
   public static final String COMPRESS_WORDLISTS = "CompressWordLists";
 
+  public static final String DICT_REMOVE_WS = "dictRemoveWS";
+
   public static final String DEFAULT_CAS_SERIALIZATION_FORMAT = "DefaultCasSerializationFormat";
 }
