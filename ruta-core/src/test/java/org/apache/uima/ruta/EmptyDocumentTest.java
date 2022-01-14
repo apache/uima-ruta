@@ -23,12 +23,15 @@ import static org.junit.Assert.assertEquals;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.SelectFSs;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.rule.RuleInference1Test;
+import org.apache.uima.ruta.type.RutaBasic;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class EmptyDocumentTest {
@@ -60,6 +63,19 @@ public class EmptyDocumentTest {
     CAS cas = RutaTestUtils.getCAS("");
     Ruta.apply(cas, "Document{IS(uima.tcas.DocumentAnnotation) -> T1};");
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "");
+  }
+
+  @Test
+  public void testSpaceWithInvalidAnnotation() throws Exception {
+    CAS cas = RutaTestUtils.getCAS(" ");
+    cas.createAnnotation(cas.getAnnotationType(), -1, 1);
+    Ruta.apply(cas, "Document;");
+
+    SelectFSs<RutaBasic> select = cas.select(RutaBasic.class);
+    Assert.assertEquals(1, select.count());
+    RutaBasic rutaBasic = select.findAny().get();
+    Assert.assertEquals(0, rutaBasic.getBegin());
+    Assert.assertEquals(1, rutaBasic.getEnd());
   }
 
 }
