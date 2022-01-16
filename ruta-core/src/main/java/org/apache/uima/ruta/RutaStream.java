@@ -346,12 +346,13 @@ public class RutaStream {
       createRutaBasic(0, 0);
     } else if (anchors.size() == 1) {
       Integer first = anchors.get(0);
-      createRutaBasic(first, first);
+      if (first >= 0 && first <= cas.getDocumentText().length())
+        createRutaBasic(first, first);
     } else {
       for (int i = 0; i < anchors.size() - 1; i++) {
         Integer first = anchors.get(i);
         Integer second = anchors.get(i + 1);
-        if (first < second) { // not really needed
+        if (first < second && first >= 0 && second <= cas.getDocumentText().length()) {
           createRutaBasic(first, second);
         }
       }

@@ -68,7 +68,8 @@ public class EmptyDocumentTest {
   @Test
   public void testSpaceWithInvalidAnnotation() throws Exception {
     CAS cas = RutaTestUtils.getCAS(" ");
-    cas.createAnnotation(cas.getAnnotationType(), -1, 1);
+    AnnotationFS annotation = cas.createAnnotation(cas.getAnnotationType(), -1, 2);
+    cas.addFsToIndexes(annotation);
     Ruta.apply(cas, "Document;");
 
     SelectFSs<RutaBasic> select = cas.select(RutaBasic.class);
