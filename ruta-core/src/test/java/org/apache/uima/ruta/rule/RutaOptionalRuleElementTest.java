@@ -44,8 +44,7 @@ public class RutaOptionalRuleElementTest {
     String document = "test 05/05 test\n";
     document += "test 06/06 . test\n";
     document += "test . 07/07 test\n";
-    String script = "ADDRETAINTYPE(WS);";
-    script += "_{PARTOF(PM)} (NUM SPECIAL @NUM){-> T1} _{PARTOF({PM})};\n";
+    String script = "_{-PARTOF(PM)} (NUM SPECIAL @NUM){-> T1} _{-PARTOF({PM})};\n";
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
