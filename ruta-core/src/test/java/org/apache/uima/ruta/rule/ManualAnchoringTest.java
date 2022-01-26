@@ -41,7 +41,7 @@ public class ManualAnchoringTest {
   }
 
   @Test
-  public void testComposedInSequence() throws Exception {
+  public void testAcrossComposedInSequence() throws Exception {
     String text = "bla CAP 1-2 bla";
 
     String script = "FOREACH(cap) CAP{}{";
@@ -53,4 +53,16 @@ public class ManualAnchoringTest {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "1-2");
   }
+
+  @Test
+  public void testLeaveComposedInSequence() throws Exception {
+    String text = "bla w CAP w bla";
+    String script = "(W @CAP W) {->T1} ANY{-PARTOF(NUM)};";
+
+    CAS cas = RutaTestUtils.getCAS(text);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "w CAP w");
+  }
+
 }
