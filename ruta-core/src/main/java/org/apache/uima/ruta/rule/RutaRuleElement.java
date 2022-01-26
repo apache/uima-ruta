@@ -201,7 +201,9 @@ public class RutaRuleElement extends AbstractRuleElement {
     if (nextRuleElement != null) {
       result = nextRuleElement.continueMatch(after, eachAnchor, extendedMatch, ruleApply,
               extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
-    } else if (sideStepOrigin != null && !failed) {
+    } else if (sideStepOrigin != null && !failed && containedIn(sideStepOrigin, getContainer())) {
+      // continue directly with the sidestep if it is contained in this container
+      // if not, we might miss matches in the same direction
       result = sideStepOrigin.continueSideStep(after, extendedMatch, ruleApply,
               extendedContainerMatch, entryPoint, stream, crowd);
     } else if (getContainer() instanceof ComposedRuleElement) {
@@ -210,6 +212,26 @@ public class RutaRuleElement extends AbstractRuleElement {
               extendedContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
     }
     return result;
+  }
+
+  private boolean containedIn(RuleElement sideStepOrigin, RuleElementContainer container) {
+    // TODO: should we support this in interface?
+    if (container == null || sideStepOrigin == null) {
+      return false;
+    }
+    List<RuleElement> ruleElements = container.getRuleElements();
+    if (ruleElements.contains(sideStepOrigin)) {
+      return true;
+    } else {
+      for (RuleElement ruleElement : ruleElements) {
+        if (ruleElement instanceof RuleElementContainer) {
+          if (containedIn(sideStepOrigin, (RuleElementContainer) ruleElement)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   @Override
