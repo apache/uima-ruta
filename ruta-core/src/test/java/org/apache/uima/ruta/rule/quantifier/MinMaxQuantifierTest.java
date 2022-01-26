@@ -49,10 +49,10 @@ public class MinMaxQuantifierTest {
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
 
-    if (RutaTestUtils.DEBUG_MODE) {
-      RutaTestUtils.storeTypeSystem();
-      RutaTestUtils.storeCas(cas, "testMinMaxOnComposedWithAnchor");
-    }
+//    if (RutaTestUtils.DEBUG_MODE) {
+//      RutaTestUtils.storeTypeSystem();
+//      RutaTestUtils.storeCas(cas, "testMinMaxOnComposedWithAnchor");
+//    }
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "1 2 3 4 5 6 7 8", "2 3 4 5 6 7 8 9",
             "3 4 5 6 7 8 9 10");

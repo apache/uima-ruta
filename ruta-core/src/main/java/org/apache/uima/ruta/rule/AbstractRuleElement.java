@@ -118,7 +118,7 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
         } else if (getContainer() instanceof ComposedRuleElement) {
           ComposedRuleElement composed = (ComposedRuleElement) getContainer();
           result = composed.fallbackContinue(newDirection, false, annotation, ruleMatch, ruleApply,
-                  sideStepContainerMatch, null, entryPoint, stream, crowd);
+                  sideStepContainerMatch, composed, entryPoint, stream, crowd);
         }
       }
     }
@@ -127,7 +127,8 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   protected void doneMatching(RuleMatch ruleMatch, RuleApply ruleApply, RutaStream stream,
           InferenceCrowd crowd) {
-    if (!ruleMatch.isApplied()) {
+    // do not execute actions if they already have been or if this is just a lookahead (ruleApply==null)
+    if (!ruleMatch.isApplied() && ruleApply != null) {
       ruleApply.add(ruleMatch, stream);
       if (ruleMatch.matchedCompletely()) {
         RutaRule rule = ruleMatch.getRule();
