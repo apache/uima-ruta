@@ -39,4 +39,19 @@ public class RutaOptionalRuleElementTest {
 
   }
 
+  @Test
+  public void testOptionalBeforeComposed() throws Exception {
+    String document = "test 05/05 test\n";
+    document += "test 06/06 . test\n";
+    document += "test . 07/07 test\n";
+    String script = "ADDRETAINTYPE(WS);";
+    script += "_{PARTOF(PM)} (NUM SPECIAL @NUM){-> T1} _{PARTOF({PM})};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "05/05");
+
+  }
+
 }
