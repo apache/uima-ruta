@@ -115,7 +115,7 @@
 
     <uimaVersion>3.2.0</uimaVersion>
     <uimafit-version>3.2.0</uimafit-version>
-    <spring-version>4.3.30.RELEASE</spring-version>
+    <spring-version>5.3.19</spring-version>
 
     <antlr-version>3.5.2</antlr-version>
     <htmlparser-version>1.6</htmlparser-version>
