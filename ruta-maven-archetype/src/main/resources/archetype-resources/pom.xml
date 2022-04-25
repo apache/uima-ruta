@@ -34,7 +34,7 @@
   </parent>
 
   <properties>
-    <junit-version>4.11</junit-version>
+    <junit-version>4.13.1</junit-version>
     <uima-version>3.1.1</uima-version>
     <ruta-version>${archetypeVersion}</ruta-version>
   </properties>
