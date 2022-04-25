@@ -152,6 +152,8 @@
                 <!-- default configuration -->
               <configuration>
                 <excludes combine.children="append">
+                  <!-- These configuration files cannot bear a license header -->
+                  <exclude>.github/**/*</exclude>
                   <!--  workaround https://issues.apache.org/jira/browse/RAT-97 -->
                   <exclude>example-projects/**</exclude>
                   <exclude>ruta-basic-type/**</exclude>
