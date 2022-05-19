@@ -145,8 +145,6 @@
   </dependencies>
 
   <build>
-    <!-- don't use artifactId as first part of finalName, follow instead the eclipse convention -->
-    <finalName>org.apache.uima.ruta.addons_${parsedVersion.osgiVersion}</finalName>
     <resources>
       <resource>
         <directory>.</directory>
