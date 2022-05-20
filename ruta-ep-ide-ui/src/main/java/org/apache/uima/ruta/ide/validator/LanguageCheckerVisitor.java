@@ -774,7 +774,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       List<String> asList = Arrays.asList(keywords);
       if (!StringUtils.isEmpty(conditionName) && !"-".equals(conditionName)
               && !asList.contains(conditionName) && !implicitString.equals(cond.getName())
-              && !conditionExtensions.keySet().contains(cond)) {
+              && !conditionExtensions.keySet().contains(conditionName)) {
         IProblem problem = problemFactory.createUnknownConditionProblem(cond);
         pr.reportProblem(problem);
       }
