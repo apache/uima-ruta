@@ -135,8 +135,6 @@
     <!-- BACKWARD_COMPATIBLE_IMPLEMENTER - patch version (=.=.+) BACKWARD_COMPATIBLE_USER 
       - minor version (=.+.0) NON_BACKWARD_COMPATIBLE - major version (+.0.0) -->
 
-    <compat.level>BACKWARD_COMPATIBLE_USER</compat.level>
-    <compat.previous.version>3.1.0</compat.previous.version>
     <api_check_oldVersion>3.1.0</api_check_oldVersion>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
