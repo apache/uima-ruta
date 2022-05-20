@@ -73,6 +73,24 @@ The UIMA Ruta Workbench can be installed via Eclipse update sites:
 * for UIMA 3: <a href="https://downloads.apache.org/uima/eclipse-update-site-v3/">https://downloads.apache.org/uima/eclipse-update-site-v3/</a>
 
 
+Building from the Source Distribution
+-------------------------------------
+
+We use Maven 3.0 and Java 8 or later for building; download this if needed, 
+and set the environment variable MAVEN_OPTS to -Xmx800m.
+
+Then do the build by going into the UIMA Ruta directory, and issuing the command
+   
+   mvn clean install
+   
+This builds everything except the ...source-release.zip file. If you want that,
+change the command to 
+
+   mvn clean install -Papache-release
+   
+For more details, please see https://uima.apache.org/building-uima.html   
+
+
 Reference
 ---------
 
@@ -94,6 +112,35 @@ If you use UIMA Ruta to support academic research, then please consider citing t
   URL = {https://journals.cambridge.org/article_S1351324914000114},
 }
 ~~~~
+
+
+Useful tips
+-----------
+
+This product was originally released as Apache UIMA TextMarker. The UIMA Ruta Workbench provides
+a command for updating old projects. Please right-click on a project and select "UIMA Ruta -> Update Project". 
+
+The UIMA Ruta analysis engine requires type priorities for the correct execution of rules. 
+If a CAS is created using the CasCreationUtils, please provide the type priorities, e.g., by:
+
+    URL tpUrl = this.getClass().getResource("/org/apache/uima/ruta/engine/TypePriorities.xml");
+    TypePriorities typePriorities = UIMAFramework.getXMLParser().parseTypePriorities(
+        new XMLInputSource(tpUrl));
+    CAS cas = CasCreationUtils.createCas(descriptor, typePriorities, new FsIndexDescription[0]);
+
+Using the `jcasgen-maven-plugin` may cause problems if it creates duplicate classes for the 
+internal UIMA Ruta types (overwriting the implementation of RutaBasic). Depending on the location 
+of the type system descriptors, the plugin should be configured to be limited on the project, 
+or the UIMA Ruta type system descriptors should explicitly be excluded:
+
+    <configuration>
+      <typeSystemExcludes>
+        <typeSystemExclude>/**/BasicTypeSystem.xml</typeSystemExclude>
+        <typeSystemExclude>/**/InternalTypeSystem.xml</typeSystemExclude>
+      </typeSystemExcludes>
+    </configuration>
+
+
 
 Useful links
 ------------
