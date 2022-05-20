@@ -527,7 +527,8 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
               containerMatch, sideStepOrigin, entryPoint, stream, crowd);
     }
 
-    if (sideStepOrigin != null && !failed) {
+    if (sideStepOrigin != null && !failed && sideStepOrigin.getContainer() != null) {
+      // only continue sidestep if we did not yet reach the root
       return sideStepOrigin.continueSideStep(after, ruleMatch, ruleApply, containerMatch,
               entryPoint, stream, crowd);
     }

@@ -28,6 +28,7 @@ public class RutaPreferenceInitializer extends AbstractPreferenceInitializer {
   public RutaPreferenceInitializer() {
   }
 
+  @Override
   public void initializeDefaultPreferences() {
     IPreferenceStore store = RutaIdeCorePlugin.getDefault().getPreferenceStore();
     // TaskTagUtils.initializeDefaultValues(store);
@@ -38,6 +39,7 @@ public class RutaPreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(RutaCorePreferences.NO_VM_IN_DEV_MODE, false);
     store.setDefault(RutaCorePreferences.ADD_SDI, false);
     store.setDefault(RutaCorePreferences.COMPRESS_WORDLISTS, false);
+    store.setDefault(RutaCorePreferences.DICT_REMOVE_WS, false);
   }
 
 }

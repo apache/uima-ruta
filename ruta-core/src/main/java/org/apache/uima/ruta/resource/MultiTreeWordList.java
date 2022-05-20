@@ -63,6 +63,8 @@ public class MultiTreeWordList implements RutaWordList {
   /** The cost model we are using. */
   private EditDistanceCostMap costMap;
 
+  private boolean dictRemoveWS = false;
+
   /**
    * Default constructor.
    * 
@@ -155,9 +157,25 @@ public class MultiTreeWordList implements RutaWordList {
    *           When there is a problem reading a path.
    */
   public MultiTreeWordList(String[] pathnames, File base) throws IOException {
+    this(pathnames, base, false);
+  }
+
+  /**
+   * Constructs a TreeWordList from a file with path = filename
+   * 
+   * @param pathnames
+   *          path of the file to create a TextWordList from
+   * @param base
+   *          - the relative base
+   * @param dictRemoveWS
+   *          remove white spaces
+   * @throws IOException
+   *           When there is a problem reading a path.
+   */
+  public MultiTreeWordList(String[] pathnames, File base, boolean dictRemoveWS) throws IOException {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
-
+    this.dictRemoveWS = dictRemoveWS;
     if (pathnames == null) {
       return;
     }
@@ -177,8 +195,23 @@ public class MultiTreeWordList implements RutaWordList {
    *           - When there is a problem reading the files.
    */
   public MultiTreeWordList(List<File> files, File base) throws IOException {
+    this(files, base, false);
+  }
+
+  /**
+   * @param files
+   *          - the input files
+   * @param base
+   *          - the relative base
+   * @param dictRemoveWS
+   *          - remove white spaces
+   * @throws IOException
+   *           - When there is a problem reading the files.
+   */
+  public MultiTreeWordList(List<File> files, File base, boolean dictRemoveWS) throws IOException {
     this.root = new MultiTextNode();
     this.costMap = new EditDistanceCostMap();
+    this.dictRemoveWS = dictRemoveWS;
 
     if (files == null) {
       return;
@@ -274,6 +307,10 @@ public class MultiTreeWordList implements RutaWordList {
     MultiTextNode pointer = root;
 
     for (Character each : s.toCharArray()) {
+
+      if (dictRemoveWS && Character.isWhitespace(each)) {
+        continue;
+      }
 
       MultiTextNode childNode = pointer.getChildNode(each);
 

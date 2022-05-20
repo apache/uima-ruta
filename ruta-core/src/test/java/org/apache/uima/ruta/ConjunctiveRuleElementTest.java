@@ -97,7 +97,7 @@ public class ConjunctiveRuleElementTest {
   }
 
   @Test
-  public void testWithStartAnchor() {
+  public void testWithStartAnchor() throws Exception {
 
     String document = "Peter did something.";
     String script = "";
@@ -120,18 +120,12 @@ public class ConjunctiveRuleElementTest {
     String fn3 = "tense";
     list.add(new TestFeature(fn3, "", "uima.cas.String"));
 
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
-      Ruta.apply(cas, script);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Peter did");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Peter did");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "did something");
 
-    cas.release();
   }
 }

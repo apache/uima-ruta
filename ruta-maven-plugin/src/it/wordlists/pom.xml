@@ -99,6 +99,7 @@
             </goals>
             <configuration>
               <compress>false</compress>
+              <dictRemoveWS>true</dictRemoveWS>
               <inputFiles>
                 <directory>${basedir}/src/main/resources</directory>
                 <includes>
@@ -117,6 +118,7 @@
             </goals>
             <configuration>
               <compress>false</compress>
+              <dictRemoveWS>true</dictRemoveWS>
               <inputFiles>
                 <directory>${basedir}/src/main/resources</directory>
                 <includes>

@@ -419,7 +419,11 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
   <!-- Compress resulting tree word list. -->
   <!-- default value: true -->
   <compress>true</compress>
-
+  
+  <!-- Remove white spaces when generating word list. -->
+  <!-- default value: true -->
+  <dictRemoveWS>true</dictRemoveWS>
+  
   <!-- The source files for the tree word list. -->
   <!-- default value: none -->
   <inputFiles>
@@ -472,6 +476,10 @@ The|DT rabbit|NN made|VBD up|RP this|DT story|NN .|.</programlisting>
   <!-- Compress resulting tree word list. -->
   <!-- default value: true -->
   <compress>true</compress>
+  
+  <!-- Remove white spaces when generating word list. -->
+  <!-- default value: true -->
+  <dictRemoveWS>true</dictRemoveWS>
 
   <!-- The source files for the multi tree word list. -->
   <!-- default value: none -->

@@ -76,6 +76,12 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
   private boolean compress;
 
   /**
+   * Remove white spaces while generating dictionaries.
+   */
+  @Parameter(defaultValue = "true", required = true)
+  private boolean dictRemoveWS;
+
+  /**
    * Fail on error.
    */
   @Parameter(defaultValue = "true", required = true)
@@ -107,7 +113,7 @@ public class RutaGenerateMTWLMojo extends AbstractMojo {
 
     MultiTreeWordList trie = null;
     try {
-      trie = new MultiTreeWordList(files, new File(inputFiles.getDirectory()));
+      trie = new MultiTreeWordList(files, new File(inputFiles.getDirectory()), dictRemoveWS);
     } catch (IOException e) {
       handleError("Error creating MTWL file.", e);
     }

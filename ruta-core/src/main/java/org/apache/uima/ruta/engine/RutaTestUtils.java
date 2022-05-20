@@ -19,14 +19,18 @@
 
 package org.apache.uima.ruta.engine;
 
+import static org.apache.uima.fit.factory.TypeSystemDescriptionFactory.createTypeSystemDescription;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.management.ManagementFactory;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -34,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -59,6 +64,19 @@ import org.apache.uima.util.XMLInputSource;
 import org.xml.sax.SAXException;
 
 public class RutaTestUtils {
+
+  public static final boolean DEBUG_MODE = isDebugging();
+
+  private static boolean isDebugging() {
+
+    Pattern debugPattern = Pattern.compile("-Xdebug|jdwp");
+    for (String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+      if (debugPattern.matcher(arg).find()) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   public static class TestFeature {
     public String name;
@@ -151,24 +169,8 @@ public class RutaTestUtils {
     AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
 
     TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().getTypeSystem();
-    for (int i = 1; i <= amount; i++) {
-      basicTypeSystem.addType(TYPE + i, "Type for Testing", "uima.tcas.Annotation");
-    }
-
-    if (complexTypes != null) {
-      Set<Entry<String, String>> entrySet = complexTypes.entrySet();
-      for (Entry<String, String> entry : entrySet) {
-        String name = entry.getKey();
-        TypeDescription addType = basicTypeSystem.addType(name, "Type for Testing",
-                entry.getValue());
-        if (features != null) {
-          List<TestFeature> list = features.get(name);
-          for (TestFeature f : list) {
-            addType.addFeature(f.name, f.description, f.range);
-          }
-        }
-      }
-    }
+    addTestTypes(basicTypeSystem);
+    addAdditionalTypes(complexTypes, features, basicTypeSystem);
 
     Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
     tsds.add(basicTypeSystem);
@@ -248,23 +250,8 @@ public class RutaTestUtils {
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
     AnalysisEngineDescription aed = (AnalysisEngineDescription) specifier;
     TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().getTypeSystem();
-    for (int i = 1; i <= 50; i++) {
-      basicTypeSystem.addType("org.apache.uima.T" + i, "Type for Testing", "uima.tcas.Annotation");
-    }
-    if (complexTypes != null) {
-      Set<Entry<String, String>> entrySet = complexTypes.entrySet();
-      for (Entry<String, String> entry : entrySet) {
-        String name = entry.getKey();
-        TypeDescription addType = basicTypeSystem.addType(name, "Type for Testing",
-                entry.getValue());
-        if (features != null) {
-          List<TestFeature> list = features.get(name);
-          for (TestFeature f : list) {
-            addType.addFeature(f.name, f.description, f.range);
-          }
-        }
-      }
-    }
+    addTestTypes(basicTypeSystem);
+    addAdditionalTypes(complexTypes, features, basicTypeSystem);
     Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
     tsds.add(basicTypeSystem);
     TypeSystemDescription mergeTypeSystems = CasCreationUtils.mergeTypeSystems(tsds);
@@ -280,6 +267,31 @@ public class RutaTestUtils {
     CAS cas = ae.newCAS();
     cas.setDocumentText(document);
     return cas;
+  }
+
+  public static void addTestTypes(TypeSystemDescription typeSystemDescription) {
+    for (int i = 1; i <= 50; i++) {
+      typeSystemDescription.addType("org.apache.uima.T" + i, "Type for Testing",
+              "uima.tcas.Annotation");
+    }
+  }
+
+  private static void addAdditionalTypes(Map<String, String> complexTypes,
+          Map<String, List<TestFeature>> features, TypeSystemDescription typeSystemDescription) {
+    if (complexTypes != null) {
+      Set<Entry<String, String>> entrySet = complexTypes.entrySet();
+      for (Entry<String, String> entry : entrySet) {
+        String name = entry.getKey();
+        TypeDescription addType = typeSystemDescription.addType(name, "Type for Testing",
+                entry.getValue());
+        if (features != null) {
+          List<TestFeature> list = features.get(name);
+          for (TestFeature f : list) {
+            addType.addFeature(f.name, f.description, f.range);
+          }
+        }
+      }
+    }
   }
 
   public static void printAnnotations(CAS cas, int typeId) {
@@ -364,6 +376,36 @@ public class RutaTestUtils {
     } catch (IOException e) {
       throw new IllegalArgumentException(e);
     }
+  }
+
+  public static void storeTypeSystem() {
+    storeTypeSystem(Collections.emptyMap(), Collections.emptyMap());
+  }
+
+  public static void storeTypeSystem(Map<String, String> complexTypes,
+          Map<String, List<TestFeature>> features) {
+
+    File tsFile = new File("TypeSystem.xml");
+
+    try {
+
+      TypeSystemDescription typeSystemDescription = createTypeSystemDescription();
+      addTestTypes(typeSystemDescription);
+      addAdditionalTypes(complexTypes, features, typeSystemDescription);
+      try (OutputStream os = new FileOutputStream(tsFile)) {
+        typeSystemDescription.toXML(os);
+      }
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  public static Map<String, Object> getDebugParams() {
+    Map<String, Object> params = new LinkedHashMap<>();
+    params.put(RutaEngine.PARAM_DEBUG, true);
+    params.put(RutaEngine.PARAM_DEBUG_WITH_MATCHES, true);
+    params.put(RutaEngine.PARAM_CREATED_BY, true);
+    return params;
   }
 
 }
