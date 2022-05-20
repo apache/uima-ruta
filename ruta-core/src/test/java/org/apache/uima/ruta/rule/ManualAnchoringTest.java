@@ -38,6 +38,31 @@ public class ManualAnchoringTest {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "A, B and C");
 
-    cas.release();
   }
+
+  @Test
+  public void testAcrossComposedInSequence() throws Exception {
+    String text = "bla CAP 1-2 bla";
+
+    String script = "FOREACH(cap) CAP{}{";
+    script += "ANY{-PARTOF(SPECIAL)} @cap (NUM SPECIAL NUM){-> T1} ANY{-PARTOF(SPECIAL)};";
+    script += "}";
+
+    CAS cas = RutaTestUtils.getCAS(text);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "1-2");
+  }
+
+  @Test
+  public void testLeaveComposedInSequence() throws Exception {
+    String text = "bla w CAP w bla";
+    String script = "(W @CAP W) {->T1} ANY{-PARTOF(NUM)};";
+
+    CAS cas = RutaTestUtils.getCAS(text);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "w CAP w");
+  }
+
 }

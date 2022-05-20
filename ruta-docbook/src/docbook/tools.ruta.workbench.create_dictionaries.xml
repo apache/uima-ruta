@@ -90,5 +90,8 @@ Martin
     <quote>generated.mtwl</quote>
     will be created.
   </para>
+  <para>
+    The preferences page provides the option to remove white spaces when generating the word lists.
+  </para>
 
 </section>

@@ -22,7 +22,6 @@ package org.apache.uima.ruta.rule;
 import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -114,12 +113,16 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
       } else {
         RuleElement nextRuleElement = getContainer().getNextElement(newDirection, this);
         if (nextRuleElement != null) {
+          RuleElement sideStepOrigin = null;
+          if (getContainer() instanceof RuleElement) {
+            sideStepOrigin = (RuleElement) getContainer();
+          }
           result = nextRuleElement.continueMatch(newDirection, annotation, ruleMatch, ruleApply,
-                  sideStepContainerMatch, null, null, stream, crowd);
+                  sideStepContainerMatch, sideStepOrigin, entryPoint, stream, crowd);
         } else if (getContainer() instanceof ComposedRuleElement) {
           ComposedRuleElement composed = (ComposedRuleElement) getContainer();
           result = composed.fallbackContinue(newDirection, false, annotation, ruleMatch, ruleApply,
-                  sideStepContainerMatch, null, entryPoint, stream, crowd);
+                  sideStepContainerMatch, composed, entryPoint, stream, crowd);
         }
       }
     }
@@ -128,15 +131,14 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
 
   protected void doneMatching(RuleMatch ruleMatch, RuleApply ruleApply, RutaStream stream,
           InferenceCrowd crowd) {
-    if (!ruleMatch.isApplied()) {
+    // do not execute actions if they already have been or if this is just a lookahead
+    // (ruleApply==null)
+    if (!ruleMatch.isApplied() && ruleApply != null) {
       ruleApply.add(ruleMatch, stream);
-      RutaRule rule = ruleMatch.getRule();
-      Collection<String> localVariables = rule.getLabels();
       if (ruleMatch.matchedCompletely()) {
-        rule.getEnvironment().acceptTempVariableValues(localVariables);
+        RutaRule rule = ruleMatch.getRule();
+        rule.getEnvironment().acceptTempVariableValues(rule.getOwnLabels());
         rule.getRoot().applyRuleElements(ruleMatch, stream, crowd);
-      } else {
-        rule.getEnvironment().clearTempVariables(localVariables);
       }
       ruleMatch.setApplied(true);
     }
@@ -188,10 +190,15 @@ public abstract class AbstractRuleElement extends RutaElement implements RuleEle
         for (RutaStatement each : inlinedRules) {
           ScriptApply apply = each.apply(windowStream, crowd);
           blockResult.add(apply);
+          if (each instanceof RutaRule) {
+            // clean up temp variables produced by failed rules
+            ((RutaRule) each).clearOwnLabels();
+          }
         }
         result.add(blockResult);
       }
     }
+
     return result;
   }
 
