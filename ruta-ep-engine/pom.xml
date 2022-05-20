@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>3.1.1-SNAPSHOT</version>
+    <version>3.2.0-SNAPSHOT</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
 
@@ -90,9 +90,8 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
-      <scope>compile</scope>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -193,9 +192,6 @@
   </dependencies>
 
   <build>
-    <!-- don't use artifactId as first part of finalName, follow instead
-      the eclipse convention -->
-    <finalName>org.apache.uima.ruta.engine_${parsedVersion.osgiVersion}</finalName>
     <resources>
       <resource>
         <directory>src/main/readme_src</directory>
@@ -212,8 +208,8 @@
             <configuration>
               <instructions>
                 <_nouses>true</_nouses>
-                <_exportcontents>org.apache.uima.ruta,
-                  org.apache.uima.ruta.cache,
+                <_exportcontents>
+                  org.apache.uima.ruta,
                   org.apache.uima.ruta.action,
                   org.apache.uima.ruta.condition,
                   org.apache.uima.ruta.constraint,
@@ -258,38 +254,63 @@
                 </_exportcontents>
 
                 <Import-Package>
-                  org.apache.uima.*,
-                  !bsh, !com.sun.net.httpserver,
+                  !org.apache.uima.fit.*,
+                  !bsh, 
+                  !com.sun.net.httpserver,
                   !edu.emory.mathcs.backport.java.util.concurrent,
-                  !groovy.lang, !javax.annotation,
+                  !groovy.lang, 
+                  !javax.annotation,
                   !javax.ejb,
-                  !javax.el, !javax.inject,
-                  !javax.interceptor, !javax.jms,
-                  !javax.management, !javax.management.modelmbean, !javax.management.openmbean,
+                  !javax.el, 
+                  !javax.inject,
+                  !javax.interceptor, 
+                  !javax.jms,
+                  !javax.management, 
+                  !javax.management.modelmbean, !javax.management.openmbean,
                   !javax.management.remote,
-                  !javax.naming, !javax.persistence.spi, !javax.rmi,
+                  !javax.naming, 
+                  !javax.persistence.spi, !javax.rmi,
                   !javax.servlet,
-                  !javax.swing, !javax.swing.border,
+                  !javax.swing, 
+                  !javax.swing.border,
                   !javax.swing.event,
-                  !javax.swing.text, !javax.swing.tree, !javax.validation,
+                  !javax.swing.text, 
+                  !javax.swing.tree, 
+                  !javax.validation,
                   !javax.validation.bootstrap,
-                  !javax.validation.metadata, !javax.xml.namespace,
-                  !javax.xml.parsers, !javax.xml.stream,
+                  !javax.validation.metadata, 
+                  !javax.xml.namespace,
+                  !javax.xml.parsers, 
+                  !javax.xml.stream,
                   !javax.xml.stream.events,
                   !javax.xml.stream.util,
-                  !javax.xml.transform, !javax.xml.transform.sax,
+                  !javax.xml.transform, 
+                  !javax.xml.transform.sax,
                   !javax.xml.transform.stax,
-                  !javax.xml.ws, !javax.xml.*, !joptsimple,
-                  !net.sf.cglib.*, !net.sf.ehcache.*,
+                  !javax.xml.ws, 
+                  !javax.xml.*, 
+                  !joptsimple,
+                  !net.sf.cglib.*, 
+                  !net.sf.ehcache.*,
                   !org.antlr.stringtemplate,
                   !org.apache.avalon.framework.logger,
-                  !org.apache.log, !org.apache.log4j,
+                  !org.apache.log, 
+                  !org.apache.log4j,
                   !org.apache.log4j.xml,
-                  !org.aspectj.*, !org.codehaus.groovy.*, !org.hibernate.* ,
-                  !org.joda.*, !org.jruby.*, !org.omg.CORBA,
+                  !org.aspectj.*, 
+                  !org.codehaus.groovy.*, 
+                  !org.hibernate.* ,
+                  !org.joda.*, 
+                  !org.jruby.*, 
+                  !org.omg.CORBA,
                   !org.springframework.instrument,
-                  !org.w3c.dom, !org.xml.sax, !org.xml.sax.ext, !org.xml.sax.helpers,
-                  !org.aopalliance.*, !org.springframework.aop.*
+                  !org.w3c.dom, 
+                  !org.xml.sax, 
+                  !org.xml.sax.ext, 
+                  !org.xml.sax.helpers,
+                  !org.aopalliance.*, 
+                  !org.springframework.aop.*,
+                  org.apache.uima.*
                 </Import-Package>
                 <!-- -->
                 <Require-Bundle>org.apache.uima.runtime</Require-Bundle>
