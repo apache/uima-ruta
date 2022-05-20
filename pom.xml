@@ -33,7 +33,7 @@
   <description>The top project for Apache UIMA Ruta</description>
   <url>${uimaWebsiteUrl}</url>
   <properties>
-    <jiraVersion>3.2.0ruta</jiraVersion>
+    <jiraVersion>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}ruta</jiraVersion>
   </properties>
 
   <!-- override pom setting in the build project. JIRA 5.1 needs different URL -->
