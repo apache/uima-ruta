@@ -22,7 +22,7 @@ package org.apache.uima.ruta.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.bool.IBooleanExpression;
 import org.apache.uima.ruta.expression.list.ListExpression;
