@@ -36,6 +36,8 @@
 
   <properties>
     <postNoticeText>${uniWueNoticeText}</postNoticeText>
+    <!-- https://issues.apache.org/jira/browse/UIMA-6462 -->
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
   <dependencies>
