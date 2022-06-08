@@ -1,4 +1,6 @@
-[![Build Status: master](https://builds.apache.org/buildStatus/icon?subject=master&job=Apache+UIMA+Ruta+%28GitHub+master%29)](https://builds.apache.org/view/S-Z/view/UIMA/job/Apache%20UIMA%20Ruta%20(GitHub%20master)/)[![Build Status: master-v2](https://builds.apache.org/buildStatus/icon?subject=master-v2&job=Apache+UIMA+Ruta+%28GitHub+master-v2%29)](https://builds.apache.org/view/S-Z/view/UIMA/job/Apache%20UIMA%20Ruta%20(GitHub%20master-v2)/)
+[![Maven Central](https://img.shields.io/maven-central/v/org.apache.uima/ruta-core?style=for-the-badge)](https://search.maven.org/search?q=g:org.apache.uima%20a:ruta*)
+
+[![Build Status](https://ci-builds.apache.org/buildStatus/icon?job=UIMA%2Fuima-ruta%2Fmain&subject=main%20build)](https://ci-builds.apache.org/job/UIMA/job/uima-ruta/job/main/) [![Build Status](https://ci-builds.apache.org/buildStatus/icon?job=UIMA%2Fuima-ruta%2Fmain-v2&subject=main-v2%20build)](https://ci-builds.apache.org/job/UIMA/job/uima-ruta/job/main-v2/)
 
 What is Apache UIMA Ruta?
 -------------------------
