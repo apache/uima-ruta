@@ -19,44 +19,41 @@
 ***************************************************************
 -->
    
-# Apache UIMA Ruta v3.2.0 Release Notes
+# Apache UIMA Ruta (TM) v3.2.0
 
-## Contents
+Apache UIMA Ruta&#8482; is a rule-based script language supported by Eclipse-based tooling.
+The language is designed to enable rapid development of text processing applications within Apache UIMA&#8482;. 
+A special focus lies on the intuitive and flexible domain specific language for defining 
+patterns of annotations. The Eclipse-based tooling for Ruta, called the Ruta Workbench,
+was created to support the user and to facilitate every step when writing Ruta rules. Both the 
+Ruta rule language and the Ruta Workbench integrate smoothly with Apache UIMA.
 
-[What is UIMA Ruta?](#what.is.uima-ruta)  
-[Major Changes in this Release](#major.changes)  
-[List of JIRA Issues Fixed in this Release](#list.issues)  
-[How to Get Involved](#get.involved)  
-[How to Report Issues](#report.issues)  
+This is a feature and bugfix release.
 
-## <a id="what.is.uima-ruta">What is UIMA Ruta?</a>
+## Notable changes in this release
 
-  Apache UIMA Ruta&#8482; is a rule-based script language supported by Eclipse-based tooling.
-  The language is designed to enable rapid development of text processing applications within Apache UIMA&#8482;. 
-  A special focus lies on the intuitive and flexible domain specific language for defining 
-  patterns of annotations. The Eclipse-based tooling for Ruta, called the Ruta Workbench,
-  was created to support the user and to facilitate every step when writing Ruta rules. Both the 
-  Ruta rule language and the Ruta Workbench integrate smoothly with Apache UIMA.
+* [UIMA-6411] - Avoid creation of `RutaBasics` for bad annotations
+* [UIMA-6406] - Removing an annotation inside a `BLOCK` only takes effect outside the block
+* [UIMA-6408] - No type check of features in `TRANSFER`
+* [UIMA-6409] - Possible endless wildcard lookahead in combination with subtokens
+* [UIMA-6414] - Missing match for optional after sidestep out of composed
+* [UIMA-6404] - `@` with quantifier ignores matches
+* [UIMA-6405] - Local variable not captured properly in a wildcard matching condition.
+* [UIMA-6461] - Wrong argument to `contains()`
+* [UIMA-6399] - `RutaPatternCache` prevents `CPEEngine` from terminating
+* [UIMA-6383] - TRIE - Wordlist entry not annotated
+* [UIMA-6394] - Label assignment in alternative match causes problems
+
+A [full list of issues](https://issues.apache.org/jira/issues/?jql=project%20%3D%20UIMA%20AND%20fixVersion%20%3D%203.2.0ruta) addressed in this release can be found on issue tracker.
+
+Please use the [mailing lists](https://uima.apache.org/mail-lists.html) for feedback and the [issue tracker](https://issues.apache.org/jira/browse/uima) to report bugs.
 
 
-## <a id="major.changes">Notable changes in this release</a>
+## Supported Platforms
 
-* ...
+UIMA Ruta 3.2.0 should be used in combination with
 
-## <a id="list.issues">Full list of JIRA Issues affecting this Release</a>
-
-Click [issuesFixed/jira-report.hmtl](issuesFixed/jira-report.html) for the list of issues affecting
-this release.
-
-Please use the mailing lists ( http://uima.apache.org/mail-lists.html ) for feedback.
-
-## <a id="get.involved">How to Get Involved</a>
-
-The Apache UIMA project really needs and appreciates any contributions, including documentation 
-help, source code and feedback. If you are interested in contributing, please visit 
-[http://uima.apache.org/get-involved.html](http://uima.apache.org/get-involved.html).
-
-## <a id="report.issues">How to Report Issues</a>
-
-The Apache UIMA project uses JIRA for issue tracking. Please report any issues you find at 
-[http://issues.apache.org/jira/browse/uima](http://issues.apache.org/jira/browse/uima).
+- Java 1.8 or higher
+- UIMA Java SDK 3.3.0 or higher
+- uimaFIT 3.3.0 or higher
+- Spring Framework 5.3.20 or higher

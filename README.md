@@ -91,27 +91,19 @@ change the command to
 For more details, please see https://uima.apache.org/building-uima.html   
 
 
-Reference
----------
+How to Get Involved
+-------------------
 
-If you use UIMA Ruta to support academic research, then please consider citing the following paper as appropriate:
+The Apache UIMA project really needs and appreciates any contributions, including documentation 
+help, source code and feedback. If you are interested in contributing, please visit 
+[http://uima.apache.org/get-involved.html](http://uima.apache.org/get-involved.html).
 
-~~~~
-@article{NLE:10051335,
-  author = {Kluegl, Peter and Toepfer, Martin and Beck, Philip-Daniel and Fette, Georg and Puppe, Frank},
-  title = {UIMA Ruta: Rapid development of rule-based information extraction applications},
-  journal = {Natural Language Engineering},
-  volume = {22},
-  issue = {01},
-  month = {1},
-  year = {2016},
-  issn = {1469-8110},
-  pages = {1--40},
-  numpages = {40},
-  doi = {10.1017/S1351324914000114},
-  URL = {https://journals.cambridge.org/article_S1351324914000114},
-}
-~~~~
+
+How to Report Issues
+--------------------
+
+The Apache UIMA project uses JIRA for issue tracking. Please report any issues you find at 
+[our issue tracker](http://issues.apache.org/jira/browse/uima).
 
 
 Useful tips
@@ -141,10 +133,32 @@ or the UIMA Ruta type system descriptors should explicitly be excluded:
     </configuration>
 
 
-
 Useful links
 ------------
 
 * [Apache UIMA](https://uima.apache.org)
 * [Apache UIMA Ruta Documentation](https://uima.apache.org/d/ruta-current/tools.ruta.book.html)
 * [Averbis Ruta Training material](https://github.com/averbis/ruta-training) (external)
+
+
+Reference
+---------
+
+If you use UIMA Ruta to support academic research, then please consider citing the following paper as appropriate:
+
+~~~~
+@article{NLE:10051335,
+  author = {Kluegl, Peter and Toepfer, Martin and Beck, Philip-Daniel and Fette, Georg and Puppe, Frank},
+  title = {UIMA Ruta: Rapid development of rule-based information extraction applications},
+  journal = {Natural Language Engineering},
+  volume = {22},
+  issue = {01},
+  month = {1},
+  year = {2016},
+  issn = {1469-8110},
+  pages = {1--40},
+  numpages = {40},
+  doi = {10.1017/S1351324914000114},
+  URL = {https://journals.cambridge.org/article_S1351324914000114},
+}
+~~~~
