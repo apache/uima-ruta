@@ -1,4 +1,6 @@
-[![Build Status: master](https://builds.apache.org/buildStatus/icon?subject=master&job=Apache+UIMA+Ruta+%28GitHub+master%29)](https://builds.apache.org/view/S-Z/view/UIMA/job/Apache%20UIMA%20Ruta%20(GitHub%20master)/)[![Build Status: master-v2](https://builds.apache.org/buildStatus/icon?subject=master-v2&job=Apache+UIMA+Ruta+%28GitHub+master-v2%29)](https://builds.apache.org/view/S-Z/view/UIMA/job/Apache%20UIMA%20Ruta%20(GitHub%20master-v2)/)
+[![Maven Central](https://img.shields.io/maven-central/v/org.apache.uima/ruta-core?style=for-the-badge)](https://search.maven.org/search?q=g:org.apache.uima%20a:ruta*)
+
+[![Build Status](https://ci-builds.apache.org/buildStatus/icon?job=UIMA%2Fuima-ruta%2Fmain&subject=main%20build)](https://ci-builds.apache.org/job/UIMA/job/uima-ruta/job/main/) [![Build Status](https://ci-builds.apache.org/buildStatus/icon?job=UIMA%2Fuima-ruta%2Fmain-v2&subject=main-v2%20build)](https://ci-builds.apache.org/job/UIMA/job/uima-ruta/job/main-v2/)
 
 What is Apache UIMA Ruta?
 -------------------------
@@ -73,6 +75,74 @@ The UIMA Ruta Workbench can be installed via Eclipse update sites:
 * for UIMA 3: <a href="https://downloads.apache.org/uima/eclipse-update-site-v3/">https://downloads.apache.org/uima/eclipse-update-site-v3/</a>
 
 
+Building from the Source Distribution
+-------------------------------------
+
+We use Maven 3.0 and Java 8 or later for building; download this if needed, 
+and set the environment variable MAVEN_OPTS to -Xmx800m.
+
+Then do the build by going into the UIMA Ruta directory, and issuing the command
+   
+   mvn clean install
+   
+This builds everything except the ...source-release.zip file. If you want that,
+change the command to 
+
+   mvn clean install -Papache-release
+   
+For more details, please see https://uima.apache.org/building-uima.html   
+
+
+How to Get Involved
+-------------------
+
+The Apache UIMA project really needs and appreciates any contributions, including documentation 
+help, source code and feedback. If you are interested in contributing, please visit 
+[http://uima.apache.org/get-involved.html](http://uima.apache.org/get-involved.html).
+
+
+How to Report Issues
+--------------------
+
+The Apache UIMA project uses JIRA for issue tracking. Please report any issues you find at 
+[our issue tracker](http://issues.apache.org/jira/browse/uima).
+
+
+Useful tips
+-----------
+
+This product was originally released as Apache UIMA TextMarker. The UIMA Ruta Workbench provides
+a command for updating old projects. Please right-click on a project and select "UIMA Ruta -> Update Project". 
+
+The UIMA Ruta analysis engine requires type priorities for the correct execution of rules. 
+If a CAS is created using the CasCreationUtils, please provide the type priorities, e.g., by:
+
+    URL tpUrl = this.getClass().getResource("/org/apache/uima/ruta/engine/TypePriorities.xml");
+    TypePriorities typePriorities = UIMAFramework.getXMLParser().parseTypePriorities(
+        new XMLInputSource(tpUrl));
+    CAS cas = CasCreationUtils.createCas(descriptor, typePriorities, new FsIndexDescription[0]);
+
+Using the `jcasgen-maven-plugin` may cause problems if it creates duplicate classes for the 
+internal UIMA Ruta types (overwriting the implementation of RutaBasic). Depending on the location 
+of the type system descriptors, the plugin should be configured to be limited on the project, 
+or the UIMA Ruta type system descriptors should explicitly be excluded:
+
+    <configuration>
+      <typeSystemExcludes>
+        <typeSystemExclude>/**/BasicTypeSystem.xml</typeSystemExclude>
+        <typeSystemExclude>/**/InternalTypeSystem.xml</typeSystemExclude>
+      </typeSystemExcludes>
+    </configuration>
+
+
+Useful links
+------------
+
+* [Apache UIMA](https://uima.apache.org)
+* [Apache UIMA Ruta Documentation](https://uima.apache.org/d/ruta-current/tools.ruta.book.html)
+* [Averbis Ruta Training material](https://github.com/averbis/ruta-training) (external)
+
+
 Reference
 ---------
 
@@ -94,10 +164,3 @@ If you use UIMA Ruta to support academic research, then please consider citing t
   URL = {https://journals.cambridge.org/article_S1351324914000114},
 }
 ~~~~
-
-Useful links
-------------
-
-* [Apache UIMA](https://uima.apache.org)
-* [Apache UIMA Ruta Documentation](https://uima.apache.org/d/ruta-current/tools.ruta.book.html)
-* [Averbis Ruta Training material](https://github.com/averbis/ruta-training) (external)

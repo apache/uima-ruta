@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>3.2.1-SNAPSHOT</version>
     <relativePath>ruta-parent/pom.xml</relativePath>
   </parent>
 
@@ -33,7 +33,7 @@
   <description>The top project for Apache UIMA Ruta</description>
   <url>${uimaWebsiteUrl}</url>
   <properties>
-    <jiraVersion>3.2.0ruta</jiraVersion>
+    <jiraVersion>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}ruta</jiraVersion>
   </properties>
 
   <!-- override pom setting in the build project. JIRA 5.1 needs different URL -->
@@ -200,17 +200,17 @@
                     <mkdir dir="${staging-local-root}/${staging-folder}" />
                     <copy todir="${staging-local-root}/${staging-folder}">
                       <fileset dir="${project.build.directory}">
-                        <include name="ruta-${project.version}-*.zip"/>
-                        <include name="ruta-${project.version}-*.zip.asc"/>
-                        <include name="ruta-${project.version}-*.zip.sha512"/>
-                        <include name="ruta-${project.version}-*.tar.gz"/>
-                        <include name="ruta-${project.version}-*.tar.gz.asc"/>
-                        <include name="ruta-${project.version}-*.tar.gz.sha512"/>
+                        <include name="ruta-${project.version}-*.zip" />
+                        <include name="ruta-${project.version}-*.zip.asc" />
+                        <include name="ruta-${project.version}-*.zip.sha512" />
+                        <include name="ruta-${project.version}-*.tar.gz" />
+                        <include name="ruta-${project.version}-*.tar.gz.asc" />
+                        <include name="ruta-${project.version}-*.tar.gz.sha512" />
                       </fileset>
                     </copy>
                     <copy todir="${staging-local-root}/${staging-folder}/eclipse-update-site">
                       <fileset dir="ruta-eclipse-update-site/target/repository">
-                        <include name="**/*"/>
+                        <include name="**/*" />
                       </fileset>
                     </copy>
                   </target>
@@ -231,7 +231,7 @@
                     <!-- dir="${basedir}/example-projects/ExtensionsExample/" -->
                     <!-- includes=".project" -->
                     <!-- prefix="${project.artifactId}-${project.version}/example-projects/ExtensionsExample/" 
-                          /> -->
+                            /> -->
                     <!-- </zip> -->
                     <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
                       <zipfileset dir="${basedir}/example-projects/TextRulerExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/TextRulerExample/" />
@@ -242,7 +242,7 @@
                     <!-- <zipfileset dir="${basedir}/example-projects/GermanNovels/" -->
                     <!-- includes=".project" -->
                     <!-- prefix="${project.artifactId}-${project.version}/example-projects/GermanNovels/" 
-                          /> -->
+                            /> -->
                     <!-- </zip> -->
                     <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
                       <zipfileset dir="${basedir}/example-projects/Misc/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/Misc/" />
