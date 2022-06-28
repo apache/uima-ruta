@@ -20,7 +20,7 @@
 <feature
       id="org.apache.uima.ruta.feature"
       label="UIMA Ruta Workbench"
-      version="3.2.1.qualifier"
+      version="3.3.0.qualifier"
       provider-name="Apache Software Foundation">
 
    <description url="http://uima.apache.org">
