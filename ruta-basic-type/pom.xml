@@ -17,75 +17,104 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>ruta-basic-type</artifactId>
-  <parent>
-    <groupId>org.apache.uima</groupId>
-    <artifactId>ruta-parent</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
-    <relativePath>../ruta-parent/pom.xml</relativePath>
-  </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <properties>
-    <uimaScmProject>${project.artifactId}</uimaScmProject>
-  </properties>
+	<parent>
+		<groupId>org.apache.uima</groupId>
+		<artifactId>ruta-parent</artifactId>
+		<version>3.3.0-SNAPSHOT</version>
+		<relativePath>../ruta-parent/pom.xml</relativePath>
+	</parent>
 
-  <url>${uimaWebsiteUrl}</url>
-  <description>The RutaBasic type provided by ruta-core.</description>
-  <name>Apache UIMA Ruta: ${project.artifactId}</name>
+	<artifactId>ruta-basic-type</artifactId>
+	<packaging>bundle</packaging>
 
-  <scm>
-    <connection>scm:git:https://github.com/apache/uima-ruta/</connection>
-    <developerConnection>scm:git:https://github.com/apache/uima-ruta/</developerConnection>
-    <url>https://github.com/apache/uima-ruta/</url>
-    <tag>HEAD</tag>
-  </scm>
+	<name>Apache UIMA Ruta: ${project.artifactId}</name>
+	<description>The RutaBasic type provided by ruta-core.</description>
+	<url>${uimaWebsiteUrl}</url>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.uima</groupId>
-      <artifactId>uimaj-core</artifactId>
-      <version>${uimaVersion}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+	<properties>
+		<uimaScmProject>${project.artifactId}</uimaScmProject>
+	</properties>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <configuration>
-            <excludePackageNames>org.apache.uima.ruta.type</excludePackageNames>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.rat</groupId>
-          <artifactId>apache-rat-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>default-cli</id>
-              <configuration>
-                <excludes combine.children="append">
-                  <exclude>src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude>
-                </excludes>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
-  </build>
+	<scm>
+		<connection>scm:git:https://github.com/apache/uima-ruta/</connection>
+		<developerConnection>scm:git:https://github.com/apache/uima-ruta/</developerConnection>
+		<url>https://github.com/apache/uima-ruta/</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.uima</groupId>
+			<artifactId>uimaj-core</artifactId>
+			<version>${uimaVersion}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<configuration>
+						<excludePackageNames>org.apache.uima.ruta.type</excludePackageNames>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.rat</groupId>
+					<artifactId>apache-rat-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>default-cli</id>
+							<configuration>
+								<excludes combine.children="append">
+									<exclude>src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude>
+								</excludes>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Fragment-Host>org.apache.uima.ruta-core</Fragment-Host>
+						<Export-Package>
+							org.apache.uima.ruta.type
+						</Export-Package>
+						<Require-Capability>
+							osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)"
+						</Require-Capability>
+						<Provide-Capability>
+							osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.JCasClassProvider
+						</Provide-Capability>
+					</instructions>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+	</build>
 </project>
