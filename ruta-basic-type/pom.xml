@@ -17,9 +17,11 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>ruta-basic-type</artifactId>
+
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
@@ -27,13 +29,16 @@
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
 
+  <artifactId>ruta-basic-type</artifactId>
+  <packaging>bundle</packaging>
+
+  <name>Apache UIMA Ruta: ${project.artifactId}</name>
+  <description>The RutaBasic type provided by ruta-core.</description>
+  <url>${uimaWebsiteUrl}</url>
+
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
-
-  <url>${uimaWebsiteUrl}</url>
-  <description>The RutaBasic type provided by ruta-core.</description>
-  <name>Apache UIMA Ruta: ${project.artifactId}</name>
 
   <scm>
     <connection>scm:git:https://github.com/apache/uima-ruta/</connection>
@@ -82,6 +87,44 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Fragment-Host>org.apache.uima.ruta-core</Fragment-Host>
+            <Export-Package>
+              org.apache.uima.ruta.type
+            </Export-Package>
+            <Require-Capability>
+              osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)"
+            </Require-Capability>
+            <Provide-Capability>
+              osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.JCasClassProvider
+            </Provide-Capability>
+          </instructions>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <configuration>
+              <excludes combine.children="append">
+                <exclude>src/main/resources/META-INF/services/org.apache.uima.spi.JCasClassProvider</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
     <resources>
       <resource>
         <directory>src/main/resources</directory>
