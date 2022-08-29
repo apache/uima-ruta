@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -31,13 +31,15 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
  * found.
  */
 public class RutaResourceLoader implements ResourceLoader {
-  
+
   private final ResourceLoader wrapped;
 
   private final ResourceLoader fallback;
 
+  private final ResourceLoader fallback2;
+
   private final ClassLoader classLoader;
-  
+
   /**
    * @param paths
    *          paths to search in priority.
@@ -53,8 +55,9 @@ public class RutaResourceLoader implements ResourceLoader {
       this.classLoader = classLoader;
     }
     this.fallback = new DefaultResourceLoader(this.classLoader);
+    this.fallback2 = new DefaultResourceLoader();
   }
-  
+
   /**
    * @param paths
    *          paths to search in priority.
@@ -63,13 +66,19 @@ public class RutaResourceLoader implements ResourceLoader {
     this(paths, null);
   }
 
-  
+
   @Override
   public Resource getResource(String location) {
     Resource resource = this.wrapped.getResource(location);
+
     if (!resource.exists()) {
       resource = fallback.getResource(location);
     }
+
+    if (!resource.exists()) {
+      resource = fallback2.getResource(location);
+    }
+
     return resource;
   }
 
@@ -77,7 +86,7 @@ public class RutaResourceLoader implements ResourceLoader {
     String path = location.replaceAll("[.]", "/") + extension;
     return getResource(path);
   }
-  
+
   @Override
   public ClassLoader getClassLoader() {
     return classLoader;
