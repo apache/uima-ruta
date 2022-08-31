@@ -104,7 +104,8 @@
           <instructions>
             <Fragment-Host>org.apache.uima.ruta-core</Fragment-Host>
             <Import-Package>
-              org.apache.uima.ruta.type;-split-package:=merge-first
+              org.apache.uima.ruta.type;-split-package:=merge-first,
+              *
             </Import-Package>
             <Export-Package>
               org.apache.uima.ruta.type;-split-package:=merge-first,
