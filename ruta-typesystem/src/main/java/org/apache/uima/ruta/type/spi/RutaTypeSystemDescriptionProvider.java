@@ -18,21 +18,16 @@
  */
 package org.apache.uima.ruta.type.spi;
 
-import java.io.IOException;
-import java.net.URL;
+import static org.apache.uima.util.TypeSystemUtil.loadTypeSystemDescriptionsFromClasspath;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.UIMAFramework;
 import org.apache.uima.jcas.cas.TOP;
-import org.apache.uima.resource.ResourceManager;
-import org.apache.uima.resource.impl.ResourceManager_impl;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.spi.JCasClassProvider;
 import org.apache.uima.spi.TypeSystemDescriptionProvider;
-import org.apache.uima.util.InvalidXMLException;
-import org.apache.uima.util.XMLInputSource;
 
 public class RutaTypeSystemDescriptionProvider
         implements TypeSystemDescriptionProvider, JCasClassProvider {
@@ -50,7 +45,8 @@ public class RutaTypeSystemDescriptionProvider
             "/org/apache/uima/ruta/engine/SourceDocumentInformation.xml");
   }
 
-  @Override
+  @SuppressWarnings("unchecked")
+@Override
   public List<Class<? extends TOP>> listJCasClasses() {
 
     List<Class<? extends TOP>> classes = new ArrayList<>();
@@ -68,37 +64,5 @@ public class RutaTypeSystemDescriptionProvider
     }
 
     return classes;
-  }
-
-  public static List<TypeSystemDescription> loadTypeSystemDescriptionsFromClasspath(
-          Class<?> aContext, String... typeSystemDescriptionFiles) {
-
-    ResourceManager resMgr = new ResourceManager_impl(aContext.getClassLoader());
-    try {
-      List<TypeSystemDescription> typeSystemDescriptions = new ArrayList<>();
-
-      for (String typeSystem : typeSystemDescriptionFiles) {
-        URL resource = aContext.getResource(typeSystem);
-        if (resource == null) {
-          UIMAFramework.getLogger()
-                  .error("Unable to locate type system description as a resource [{}]", typeSystem);
-          continue;
-        }
-
-        try {
-          TypeSystemDescription tsd = UIMAFramework.getXMLParser()
-                  .parseTypeSystemDescription(new XMLInputSource(resource));
-          tsd.resolveImports(resMgr);
-          typeSystemDescriptions.add(tsd);
-        } catch (InvalidXMLException | IOException e) {
-          UIMAFramework.getLogger().error("Error loading type system description [{}] from [{}]",
-                  typeSystem, resource, e);
-        }
-      }
-
-      return typeSystemDescriptions;
-    } finally {
-      resMgr.destroy();
-    }
   }
 }
