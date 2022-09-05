@@ -112,13 +112,6 @@
               org.apache.uima.ruta.type.html,
               org.apache.uima.ruta.engine;-split-package:=merge-first
             </Export-Package>
-            <Require-Capability>
-              osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)"
-            </Require-Capability>
-            <Provide-Capability>
-              osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.TypeSystemDescriptionProvider,
-              osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.JCasClassProvider
-            </Provide-Capability>
           </instructions>
         </configuration>
       </plugin>
