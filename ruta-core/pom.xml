@@ -252,6 +252,17 @@
               org.apache.uima.ruta,
               org.apache.uima.ruta.*
             </Export-Package>
+            <!--
+              - These capabilities need to be declared here due to  
+              - https://issues.apache.org/jira/browse/ARIES-2082
+              -->
+            <Require-Capability>
+              osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)";resolution:=optional
+            </Require-Capability>
+            <Provide-Capability>
+              osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.TypeSystemDescriptionProvider,
+              osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.JCasClassProvider
+            </Provide-Capability>
           </instructions>
         </configuration>
       </plugin>

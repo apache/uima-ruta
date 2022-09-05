@@ -99,12 +99,6 @@
             <Export-Package>
               org.apache.uima.ruta.type
             </Export-Package>
-            <Require-Capability>
-              osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)"
-            </Require-Capability>
-            <Provide-Capability>
-              osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.JCasClassProvider
-            </Provide-Capability>
           </instructions>
         </configuration>
       </plugin>
