@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,6 +18,9 @@
  */
 
 package org.apache.uima.ruta.engine;
+
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.joining;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -521,7 +524,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
    * This parameter specifies annotation types (resolvable mentions are also supported) that should
    * be indexed additionally to types mentioned in the rules. This parameter is only used if the
    * parameter 'indexOnlyMentionedTypes' is activated.
-   * 
+   *
    */
   public static final String PARAM_INDEX_ADDITONALLY = "indexAdditionally";
 
@@ -542,7 +545,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
    * This parameter specifies the mode for updating the internal indexing in RutaBasic annotations.
    * This is a technical parameter for optimizing the runtime performance/speed of RutaEngines.
    * Available modes are: COMPLETE, ADDITIVE, SAFE_ADDITIVE, NONE. Default value is ADDITIVE.
-   * 
+   *
    */
   public static final String PARAM_REINDEX_UPDATE_MODE = "reindexUpdateMode";
 
@@ -582,7 +585,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
    * This parameter specifies optional class names implementing the interface
    * <code>org.apache.uima.ruta.visitor.RutaInferenceVisitor</code>, which will be notified during
    * applying the rules.
-   * 
+   *
    */
   public static final String PARAM_INFERENCE_VISITORS = "inferenceVisitors";
 
@@ -836,7 +839,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     }
     for (String each : additionalExtensions) {
       try {
-        Class<?> forName = getClassLoader().loadClass(each);
+        Class<?> forName = loadClass(each);
         if (IRutaExtension.class.isAssignableFrom(forName)) {
           IRutaExtension extension = (IRutaExtension) forName.newInstance();
           verbalizer.addExternalVerbalizers(extension);
@@ -848,15 +851,6 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
         getLogger().log(Level.WARNING, "Failed to initialize extension " + each);
       }
     }
-  }
-
-  private ClassLoader getClassLoader() {
-    ClassLoader extensionClassLoader = resourceManager.getExtensionClassLoader();
-    if (extensionClassLoader == null) {
-      return this.getClass().getClassLoader();
-    }
-    return extensionClassLoader;
-
   }
 
   private InferenceCrowd initializeCrowd() {
@@ -877,7 +871,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     if (inferenceVisitors != null && inferenceVisitors.length != 0) {
       for (String eachClassName : inferenceVisitors) {
         try {
-          Class<?> forName = getClassLoader().loadClass(eachClassName);
+          Class<?> forName = loadClass(eachClassName);
           if (RutaInferenceVisitor.class.isAssignableFrom(forName)) {
             RutaInferenceVisitor visitor = (RutaInferenceVisitor) forName.newInstance();
             visitors.add(visitor);
@@ -930,7 +924,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       for (String seederClass : seeders) {
         Class<?> loadClass = null;
         try {
-          loadClass = getClassLoader().loadClass(seederClass);
+          loadClass = loadClass(seederClass);
         } catch (ClassNotFoundException e) {
           throw new AnalysisEngineProcessException(e);
         }
@@ -1099,9 +1093,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
           throws AnalysisEngineProcessException {
     AnalysisEngine eachEngine = null;
     try {
-      @SuppressWarnings("unchecked")
-      Class<? extends AnalysisComponent> uimafitClass = (Class<? extends AnalysisComponent>) getClassLoader()
-              .loadClass(eachUimafitEngine);
+      Class<? extends AnalysisComponent> uimafitClass = loadClass(eachUimafitEngine);
       List<String> configurationData = script.getConfigurationData(eachUimafitEngine);
       AnalysisEngineDescription aed = AnalysisEngineFactory.createEngineDescription(uimafitClass,
               configurationData.toArray());
@@ -1110,6 +1102,43 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
       throw new AnalysisEngineProcessException(e);
     }
     addAnalysisEngineToMap(additionalEnginesMap, eachUimafitEngine, eachEngine);
+  }
+
+  @SuppressWarnings("unchecked")
+  private static <T> Class<T> loadClass(String className, ClassLoader... classLoaders)
+          throws ClassNotFoundException {
+    List<String> errors = new ArrayList<>();
+    List<ClassLoader> classLoadersTried = new ArrayList<>();
+    for (ClassLoader cl : classLoaders) {
+      if (cl == null) {
+        continue;
+      }
+
+      classLoadersTried.add(cl);
+      try {
+        return (Class<T>) cl.loadClass(className);
+      } catch (ClassNotFoundException e) {
+        errors.add(e.getMessage());
+        // Class not found in the resource manager's extension classloader - try next
+      }
+    }
+
+    String classLoaderList = asList(classLoadersTried).stream() //
+            .map(Object::toString) //
+            .collect(joining(", "));
+    String errorList = errors.stream().collect(joining("\n- ", "\n- ", ""));
+
+    throw new ClassNotFoundException(className + " cannot be found by any of the classloaders ["
+            + classLoaderList + "]: " + errorList);
+  }
+
+  private <T> Class<T> loadClass(String className)
+          throws ClassNotFoundException {
+    ClassLoader extCl = resourceManager.getExtensionClassLoader();
+    ClassLoader tccl = Thread.currentThread().getContextClassLoader();
+    ClassLoader local = getClass().getClassLoader();
+
+    return loadClass(className, extCl, tccl, local);
   }
 
   private String getModuleName(String completeNamespace) {
