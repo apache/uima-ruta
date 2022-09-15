@@ -16,13 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.uima.ruta.type;
+package org.apache.uima.ruta.type.spi;
 
 import static java.util.Arrays.asList;
 
 import java.util.List;
 
 import org.apache.uima.jcas.cas.TOP;
+import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.spi.JCasClassProvider;
 
 public class RutaBasicTypeProvider implements JCasClassProvider {
