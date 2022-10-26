@@ -21,10 +21,12 @@ package org.apache.uima.ruta.rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -33,6 +35,7 @@ import org.apache.uima.ruta.RutaEnvironment;
 import org.apache.uima.ruta.RutaStatement;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.action.AbstractRutaAction;
+import org.apache.uima.ruta.action.MacroAction;
 import org.apache.uima.ruta.block.RutaBlock;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
 
@@ -109,7 +112,7 @@ public class RutaRule extends AbstractRule {
         ownLabels.add(ruleElement.getLabel());
       }
     }
-    fillLabelMapWithActions(ruleElement.getActions(), own);
+    fillLabelMapWithActions(ruleElement.getActions(), own, new HashSet<>());
     if (ruleElement instanceof ComposedRuleElement) {
       ComposedRuleElement cre = (ComposedRuleElement) ruleElement;
       List<RuleElement> ruleElements = cre.getRuleElements();
@@ -121,14 +124,25 @@ public class RutaRule extends AbstractRule {
     fillLabelMapWithInlinedRules(ruleElement.getInlinedActionRuleBlocks());
   }
 
-  private void fillLabelMapWithActions(List<AbstractRutaAction> actions, boolean own) {
+  private void fillLabelMapWithActions(List<AbstractRutaAction> actions, boolean own,
+          Set<AbstractRutaAction> processedActions) {
     if (actions != null) {
       for (AbstractRutaAction action : actions) {
+        // TODO recursive declarations are not supported right now, but we should check it anyways
+        if (processedActions.contains(action)) {
+          continue;
+        }
+        processedActions.add(action);
+
         if (action != null && !StringUtils.isBlank(action.getLabel())) {
           labels.put(action.getLabel(), null);
           if (own) {
             ownLabels.add(action.getLabel());
           }
+        }
+        if (action instanceof MacroAction) {
+          MacroAction macroAction = (MacroAction) action;
+          fillLabelMapWithActions(macroAction.getActions(), own, processedActions);
         }
       }
     }
