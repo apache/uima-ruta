@@ -269,23 +269,19 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
       @Override
       public void keyPressed(KeyEvent e) {
+    	  
         int keyCode = e.keyCode;
         // backspace or delete: delete annotations
         if (keyCode == SWT.BS || keyCode == SWT.DEL) {
           deleteSelectedAnnotations();
         }
         // ctrl and c: copy type name to clipboard
-        if ((e.stateMask & SWT.CTRL) == SWT.CTRL && keyCode == 'c') {
+        if (e.stateMask == SWT.CTRL && (e.keyCode == 'c' || e.keyCode == 'C')) {
           TreeItem[] selection = treeView.getTree().getSelection();
-          if (selection != null && selection.length == 1) {
-            Object obj = selection[0].getData();
-            if (obj instanceof TypeTreeNode) {
-              TypeTreeNode typeTreeNode = (TypeTreeNode) obj;
-              Type type = typeTreeNode.getType();
-              TextTransfer textTransfer = TextTransfer.getInstance();
-              clipboard.setContents(new Object[] { type.getName() },
-                      new Transfer[] { textTransfer });
-            }
+          if (selection != null) {
+            Object[] contents = getContents(selection);
+            TextTransfer textTransfer = TextTransfer.getInstance();
+            clipboard.setContents(contents, new Transfer[] { textTransfer });
           }
         }
         // ctrl and c: copy type name to clipboard:
@@ -300,6 +296,25 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
             modifyAnnotation(ModifyAnnotationOperation.WIDE_R);
           }
         }
+      }
+
+      private Object[] getContents(TreeItem[] selection) {
+        
+        List<String> list = new ArrayList<>();
+        for (TreeItem item : selection) {
+          Object data = item.getData();
+          if(data instanceof TypeTreeNode) {
+            list.add(((TypeTreeNode) data).getType().getName());
+          } else if(data instanceof PrimitiveFeatureTreeNode) {
+            list.add(((PrimitiveFeatureTreeNode) data).getValue());
+          } else if(data instanceof AnnotationTreeNode) {
+            list.add(((AnnotationTreeNode) data).getAnnotation().getCoveredText());
+          } else if(data instanceof ITreeNode) {
+            list.add(((ITreeNode) data).getName());
+          }
+        }
+        
+        return new Object[]{StringUtils.join(list, "\n")};
       }
 
     });
