@@ -19,14 +19,16 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>ruta-core</artifactId>
 
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>3.2.1-SNAPSHOT</version>
+    <version>3.3.0-SNAPSHOT</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
+
+  <artifactId>ruta-core</artifactId>
+  <packaging>bundle</packaging>
 
   <properties>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
@@ -45,7 +47,6 @@
   </scm>
 
   <dependencies>
-
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-typesystem</artifactId>
@@ -189,6 +190,8 @@
                   <exclude>src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude>
                   <exclude>input/**</exclude> <!-- temp test data -->
                   <exclude>TypeSystem.xml</exclude> <!-- temp test data -->
+                  <exclude>src/main/resources/META-INF/services/org.apache.uima.spi.JCasClassProvider</exclude>
+                  <exclude>src/main/resources/META-INF/services/org.apache.uima.spi.TypeSystemDescriptionProvider</exclude>
                 </excludes>
               </configuration>
             </execution>
@@ -222,12 +225,57 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
     <resources>
       <resource>
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+
     <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+        
+          <instructions>
+            <Bundle-RequiredExecutionEnvironment>JavaSE-1.8</Bundle-RequiredExecutionEnvironment>
+            <_dsannotations>*</_dsannotations>
+            <_metatypeannotations>*</_metatypeannotations>
+            <!--  
+            <Import-Package>
+              !com.apple.eio,
+              org.slf4j.impl;resolution:=optional,
+              org.apache.logging.log4j.*;resolution:=optional,
+              org.apache.logging.slf4j.*;resolution:=optional,
+              *
+            </Import-Package>
+            -->
+            <Private-Package>
+              org.apache.uima.ruta.engine;-split-package:=merge-first,
+              org.apache.uima.ruta.type;-split-package:=merge-first,
+            </Private-Package>
+            <Export-Package>
+              org.apache.uima.ruta.engine;-split-package:=merge-first,
+              org.apache.uima.ruta.type;-split-package:=merge-first,
+              org.apache.uima.ruta,
+              org.apache.uima.ruta.*
+            </Export-Package>
+            <!--
+              - These capabilities need to be declared here due to  
+              - https://issues.apache.org/jira/browse/ARIES-2082
+              -->
+            <Require-Capability>
+              osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)";resolution:=optional
+            </Require-Capability>
+            <Provide-Capability>
+              osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.TypeSystemDescriptionProvider,
+              osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.JCasClassProvider
+            </Provide-Capability>
+          </instructions>
+        </configuration>
+      </plugin>
+    
       <!-- generate java code for antlr grammars -->
       <plugin>
         <groupId>org.antlr</groupId>
