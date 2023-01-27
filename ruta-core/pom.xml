@@ -49,12 +49,6 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>ruta-typesystem</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
       <version>${uimaVersion}</version>
     </dependency>
@@ -251,13 +245,7 @@
               *
             </Import-Package>
             -->
-            <Private-Package>
-              org.apache.uima.ruta.engine;-split-package:=merge-first,
-              org.apache.uima.ruta.type;-split-package:=merge-first,
-            </Private-Package>
             <Export-Package>
-              org.apache.uima.ruta.engine;-split-package:=merge-first,
-              org.apache.uima.ruta.type;-split-package:=merge-first,
               org.apache.uima.ruta,
               org.apache.uima.ruta.*
             </Export-Package>
@@ -273,6 +261,41 @@
               osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.JCasClassProvider
             </Provide-Capability>
           </instructions>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>jcasgen-maven-plugin</artifactId>
+        <version>${uimaVersion}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <!-- runs in phase process-resources by default -->
+            <configuration>
+              <!-- one or more ant-like file patterns identifying top level descriptors -->
+              <typeSystemIncludes>
+                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/RutaInternalTypeSystem.xml</typeSystemInclude>
+                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/DefaultSeederTypeSystem.xml</typeSystemInclude>
+                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/HtmlTypeSystem.xml</typeSystemInclude>
+                <typeSystemInclude>src/main/resources/org/apache/uima/ruta/engine/PlainTextTypeSystem.xml</typeSystemInclude>
+              </typeSystemIncludes>
+              <limitToProject>true</limitToProject>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <!-- Exclude generated jcas classes -->
+          <sourceFileExcludes>
+            <sourceFileExclude>**/org/apache/uima/ruta/type/*.java</sourceFileExclude>
+          </sourceFileExcludes>
         </configuration>
       </plugin>
     
