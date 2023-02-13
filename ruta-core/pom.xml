@@ -368,15 +368,20 @@
           <argLine>-Xmx650M</argLine>
         </configuration>
       </plugin>
+
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <!-- Exclude generated jcas classes -->
-          <sourceFileExcludes>
-            <sourceFileExclude>**/org/apache/uima/ruta/type/*.java</sourceFileExclude>
-          </sourceFileExcludes>
-        </configuration>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <configuration>
+              <excludes combine.children="append">
+                <exclude>src/test/resources/org/apache/uima/ruta/action/*.*</exclude> <!-- test data -->
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

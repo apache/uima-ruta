@@ -140,6 +140,7 @@
                 <excludes combine.children="append">
                   <!-- These configuration files cannot bear a license header -->
                   <exclude>.github/**/*</exclude>
+                  <exclude>src/main/eclipse/*.prefs</exclude>
                   <!--  workaround https://issues.apache.org/jira/browse/RAT-97 -->
                   <exclude>example-projects/**</exclude>
                   <exclude>ruta-core/**</exclude>

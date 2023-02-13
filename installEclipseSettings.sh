@@ -17,10 +17,10 @@
 # under the License.
 
 # Formatter settings
-JDT_CORE_PREFS="/Users/rec/uima-code-style-settings/org.eclipse.jdt.core.prefs"
+JDT_CORE_PREFS="src/main/eclipse/org.eclipse.jdt.core.prefs"
 
 # Save actions
-JDT_UI_PREFS="/Users/rec/uima-code-style-settings/org.eclipse.jdt.ui.prefs"
+JDT_UI_PREFS="src/main/eclipse/org.eclipse.jdt.ui.prefs"
 
 function installPrefs {
   mkdir -p $1/.settings/
@@ -29,7 +29,6 @@ function installPrefs {
 }
 
 installPrefs example-projects
-installPrefs ruta-basic-type
 installPrefs ruta-core
 installPrefs ruta-core-ext
 installPrefs ruta-docbook
@@ -46,4 +45,3 @@ installPrefs ruta-ep-textruler
 installPrefs ruta-maven-archetype
 installPrefs ruta-maven-plugin
 installPrefs ruta-parent
-installPrefs ruta-typesystem
