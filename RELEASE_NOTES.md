@@ -40,12 +40,17 @@ This is a feature and bugfix release.
 * ⚙️ Issue #122: Resolve split package between ruta-core and ruta-core-ext
 * 🩹 Issue #104: Upgrade dependencies
 
-
 **Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.2.0...ruta-3.3.0
-
 
 Please use the [mailing lists](https://uima.apache.org/mail-lists.html) for feedback and the [issue tracker](https://github.com/apache/uima-ruta/issues) to report bugs.
 
+## Compatibility notes
+* The modules `ruta-typesystem` and `ruta-basic-type` do no longer exist as separate modules. They have
+  been merged into the `ruta-core` module.
+* Parts of the `ruta-core-ext` module have been merged into the `ruta-core` module as well. The merged
+  extensions remain extensions and did not become part of the Ruta language. Check what remains in
+  the `ruta-core-ext` module and remove any dependencies on it if you do not need the extensions it
+  provides.
 
 ## Supported Platforms
 
