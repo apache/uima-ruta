@@ -36,12 +36,6 @@
     <jiraVersion>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}ruta</jiraVersion>
   </properties>
 
-  <!-- override pom setting in the build project. JIRA 5.1 needs different URL -->
-  <issueManagement>
-    <system>Jira</system>
-    <url>https://issues.apache.org/jira/browse/UIMA</url>
-  </issueManagement>
-
   <!-- Special inheritance note even though the <scm> element that follows is exactly the same as those
     in super poms, it cannot be inherited because there is some special code that computes the connection
     elements from the chain of parent poms, if this is omitted. Keeping this a bit factored allows cutting/pasting
