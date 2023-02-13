@@ -57,18 +57,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
-      <artifactId>ruta-typesystem</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.uima</groupId>
-      <artifactId>ruta-basic-type</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.uima</groupId>
       <artifactId>ruta-core-ext</artifactId>
       <version>${project.parent.version}</version>
       <scope>compile</scope>
