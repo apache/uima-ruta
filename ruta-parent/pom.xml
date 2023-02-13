@@ -49,12 +49,6 @@
 		<tag>HEAD</tag>
 	</scm>
 
-  <!-- The repositories and pluginRepositories section is duplicated from 
-    the parent pom one, and adds the Apache Snapshot Nexus repository where UIMA 
-    snapshots are deployed. This is needed if for instance, a project depends 
-    on some new SNAPSHOT level of a build tool, where the users hasn't checked 
-    out the build tooling. This allows maven to find the snapshots when looking 
-    for the parent of this pom -->
 	<repositories>
     <!-- modify central repository access: Turn on checksum checking -->
 		<repository>
@@ -73,32 +67,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-
-		<repository>
-			<id>apache.snapshots</id>
-			<url>https://repository.apache.org/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
 	</repositories>
-
-	<!-- Only for testing -->
-	<pluginRepositories>
-		<pluginRepository>
-			<id>apache.snapshots</id>
-			<url>https://repository.apache.org/content/repositories/snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<properties>
 		<uniWueNoticeText>Portions of UIMA Ruta were originally developed by
