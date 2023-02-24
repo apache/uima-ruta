@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.3.1-SNAPSHOT</version>
     <relativePath>../ruta-parent/pom.xml</relativePath>
   </parent>
 
@@ -52,18 +52,6 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-core</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.uima</groupId>
-      <artifactId>ruta-typesystem</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.uima</groupId>
-      <artifactId>ruta-basic-type</artifactId>
       <version>${project.parent.version}</version>
       <scope>compile</scope>
     </dependency>
