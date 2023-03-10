@@ -69,28 +69,25 @@ and, therefore, enable semi-automatic development of rule-based components.
 **Query:** Rules can be used as query statements in order to investigate annotated documents.
 
 
-The UIMA Ruta Workbench can be installed via Eclipse update sites:
-
-* for UIMA 2: <a href="https://downloads.apache.org/uima/eclipse-update-site/">https://downloads.apache.org/uima/eclipse-update-site/</a>
-* for UIMA 3: <a href="https://downloads.apache.org/uima/eclipse-update-site-v3/">https://downloads.apache.org/uima/eclipse-update-site-v3/</a>
+The UIMA Ruta Workbench can be installed via Eclipse update site [https://downloads.apache.org/uima/eclipse-update-site-v3](https://downloads.apache.org/uima/eclipse-update-site-v3).
 
 
 Building from the Source Distribution
 -------------------------------------
 
-We use Maven 3.0 and Java 8 or later for building; download this if needed, 
-and set the environment variable MAVEN_OPTS to -Xmx800m.
+We use Maven 3.6.3 and Java 11 or later for building; download this if needed, 
+and set the environment variable `MAVEN_OPTS` to `-Xmx800m`.
 
 Then do the build by going into the UIMA Ruta directory, and issuing the command
    
    mvn clean install
    
-This builds everything except the ...source-release.zip file. If you want that,
+This builds everything except the `...source-release.zip` file. If you want that,
 change the command to 
 
    mvn clean install -Papache-release
    
-For more details, please see https://uima.apache.org/building-uima.html   
+For more details, please see [https://uima.apache.org/building-uima.html](https://uima.apache.org/building-uima.html).
 
 
 How to Get Involved
@@ -105,7 +102,7 @@ How to Report Issues
 --------------------
 
 The Apache UIMA project uses JIRA for issue tracking. Please report any issues you find at 
-[our issue tracker](http://issues.apache.org/jira/browse/uima).
+[our issue tracker](https://github.com/apache/uima-ruta/issues).
 
 
 Useful tips

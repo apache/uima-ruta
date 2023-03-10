@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.3.1-SNAPSHOT</version>
     <relativePath>ruta-parent/pom.xml</relativePath>
   </parent>
 
@@ -35,12 +35,6 @@
   <properties>
     <jiraVersion>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}ruta</jiraVersion>
   </properties>
-
-  <!-- override pom setting in the build project. JIRA 5.1 needs different URL -->
-  <issueManagement>
-    <system>Jira</system>
-    <url>https://issues.apache.org/jira/browse/UIMA</url>
-  </issueManagement>
 
   <!-- Special inheritance note even though the <scm> element that follows is exactly the same as those
     in super poms, it cannot be inherited because there is some special code that computes the connection
@@ -55,16 +49,6 @@
 
   <!-- dependencies used during assembly -->
   <dependencies>
-    <dependency>
-      <groupId>org.apache.uima</groupId>
-      <artifactId>ruta-basic-type</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.uima</groupId>
-      <artifactId>ruta-typesystem</artifactId>
-      <version>${project.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-core</artifactId>
@@ -114,8 +98,6 @@
 
   <modules>
     <module>ruta-parent</module>
-    <module>ruta-basic-type</module>
-    <module>ruta-typesystem</module>
     <module>ruta-core</module>
     <module>ruta-core-ext</module>
 
@@ -152,9 +134,9 @@
                 <excludes combine.children="append">
                   <!-- These configuration files cannot bear a license header -->
                   <exclude>.github/**/*</exclude>
+                  <exclude>src/main/eclipse/*.prefs</exclude>
                   <!--  workaround https://issues.apache.org/jira/browse/RAT-97 -->
                   <exclude>example-projects/**</exclude>
-                  <exclude>ruta-basic-type/**</exclude>
                   <exclude>ruta-core/**</exclude>
                   <exclude>ruta-core-ext/**</exclude>
                   <exclude>ruta-docbook/**</exclude>
@@ -171,7 +153,6 @@
                   <exclude>ruta-maven-archetype/**</exclude>
                   <exclude>ruta-maven-plugin/**</exclude>
                   <exclude>ruta-parent/**</exclude>
-                  <exclude>ruta-typesystem/**</exclude>
                 </excludes>
               </configuration>
             </execution>
@@ -231,7 +212,7 @@
                     <!-- dir="${basedir}/example-projects/ExtensionsExample/" -->
                     <!-- includes=".project" -->
                     <!-- prefix="${project.artifactId}-${project.version}/example-projects/ExtensionsExample/" 
-                            /> -->
+                              /> -->
                     <!-- </zip> -->
                     <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
                       <zipfileset dir="${basedir}/example-projects/TextRulerExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/TextRulerExample/" />
@@ -242,7 +223,7 @@
                     <!-- <zipfileset dir="${basedir}/example-projects/GermanNovels/" -->
                     <!-- includes=".project" -->
                     <!-- prefix="${project.artifactId}-${project.version}/example-projects/GermanNovels/" 
-                            /> -->
+                              /> -->
                     <!-- </zip> -->
                     <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
                       <zipfileset dir="${basedir}/example-projects/Misc/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/Misc/" />

@@ -19,7 +19,7 @@
 ***************************************************************
 -->
    
-# Apache UIMA Ruta (TM) v3.2.0
+# Apache UIMA Ruta (TM) v3.3.0
 
 Apache UIMA Ruta&#8482; is a rule-based script language supported by Eclipse-based tooling.
 The language is designed to enable rapid development of text processing applications within Apache UIMA&#8482;. 
@@ -30,30 +30,33 @@ Ruta rule language and the Ruta Workbench integrate smoothly with Apache UIMA.
 
 This is a feature and bugfix release.
 
-## Notable changes in this release
+## What's Changed
+* ⭐️ Issue #100: Enable type system discovery via SPI in OSGI
+* ⭐️ Issue #102: RutaResourceLoader should consider TCCL
+* ⭐️ Issue #107: Enable loading uimaFIT annotators and other classes through the TCCL
+* ⭐️ Issue #111: Support copy/paste clipboard for feature values in annotation browser view
+* 🦟 Issue #110: Usage of labels within macro action definition is broken
+* ⚙️ Issue #118: Merge type system modules into core module
+* ⚙️ Issue #122: Resolve split package between ruta-core and ruta-core-ext
+* 🩹 Issue #104: Upgrade dependencies
 
-* [UIMA-6411] - Avoid creation of `RutaBasics` for bad annotations
-* [UIMA-6406] - Removing an annotation inside a `BLOCK` only takes effect outside the block
-* [UIMA-6408] - No type check of features in `TRANSFER`
-* [UIMA-6409] - Possible endless wildcard lookahead in combination with subtokens
-* [UIMA-6414] - Missing match for optional after sidestep out of composed
-* [UIMA-6404] - `@` with quantifier ignores matches
-* [UIMA-6405] - Local variable not captured properly in a wildcard matching condition.
-* [UIMA-6461] - Wrong argument to `contains()`
-* [UIMA-6399] - `RutaPatternCache` prevents `CPEEngine` from terminating
-* [UIMA-6383] - TRIE - Wordlist entry not annotated
-* [UIMA-6394] - Label assignment in alternative match causes problems
+**Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.2.0...ruta-3.3.0
 
-A [full list of issues](https://issues.apache.org/jira/issues/?jql=project%20%3D%20UIMA%20AND%20fixVersion%20%3D%203.2.0ruta) addressed in this release can be found on issue tracker.
+Please use the [mailing lists](https://uima.apache.org/mail-lists.html) for feedback and the [issue tracker](https://github.com/apache/uima-ruta/issues) to report bugs.
 
-Please use the [mailing lists](https://uima.apache.org/mail-lists.html) for feedback and the [issue tracker](https://issues.apache.org/jira/browse/uima) to report bugs.
-
+## Compatibility notes
+* The modules `ruta-typesystem` and `ruta-basic-type` do no longer exist as separate modules. They have
+  been merged into the `ruta-core` module.
+* Parts of the `ruta-core-ext` module have been merged into the `ruta-core` module as well. The merged
+  extensions remain extensions and did not become part of the Ruta language. Check what remains in
+  the `ruta-core-ext` module and remove any dependencies on it if you do not need the extensions it
+  provides.
 
 ## Supported Platforms
 
-UIMA Ruta 3.2.0 should be used in combination with
+UIMA Ruta 3.3.0 should be used in combination with
 
 - Java 1.8 or higher
-- UIMA Java SDK 3.3.0 or higher
-- uimaFIT 3.3.0 or higher
-- Spring Framework 5.3.20 or higher
+- UIMA Java SDK 3.4.0 or higher
+- uimaFIT 3.4.0 or higher
+- Spring Framework 5.3.25 or higher

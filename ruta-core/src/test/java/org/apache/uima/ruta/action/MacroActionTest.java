@@ -34,9 +34,12 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.util.CasUtil;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
+import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
+import org.assertj.core.api.Assertions;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -89,7 +92,7 @@ public class MacroActionTest {
   public void testLabel() throws Exception {
     String document = "Test";
     String script = "";
-    script += "ACTION doit() = MARK(T1);\n";
+    script += "ACTION doit() = t:MARK(T1);\n";
     script += "CW{-> t:doit()}-> {t{->T2};};\n";
 
     CAS cas = RutaTestUtils.getCAS(document);
@@ -97,6 +100,62 @@ public class MacroActionTest {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Test");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Test");
+  }
+
+  @Test
+  public void testLabelCombination() throws Exception {
+    String document = "Father: DM2";
+    String script = "";
+    script += "ACTION link(ANNOTATION diag, ANNOTATION ref) = s:Subject,s.ref=ref,d.subject=s;\n";
+    script += "\"Father\"->T1;\n";
+    script += "\"DM2\"->Diagnosis;\n";
+    script += "t1:T1{-> link(d,t1)} COLON? d:Diagnosis;\n";
+
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    String typeName1 = "Diagnosis";
+    typeMap.put(typeName1, CAS.TYPE_NAME_ANNOTATION);
+    String typeName2 = "Subject";
+    typeMap.put(typeName2, CAS.TYPE_NAME_ANNOTATION);
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
+    List<TestFeature> list1 = new ArrayList<RutaTestUtils.TestFeature>();
+    List<TestFeature> list2 = new ArrayList<RutaTestUtils.TestFeature>();
+    featureMap.put(typeName1, list1);
+    featureMap.put(typeName2, list2);
+    String fn1 = "subject";
+    String fn2 = "ref";
+    list1.add(new TestFeature(fn1, "", typeName2));
+    list2.add(new TestFeature(fn2, "", CAS.TYPE_NAME_ANNOTATION));
+
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
+
+    AnnotationFS actualDiagnosis = CasUtil.selectSingle(cas, CasUtil.getType(cas, typeName1));
+    AnnotationFS subjectValue = (AnnotationFS) actualDiagnosis
+            .getFeatureValue(actualDiagnosis.getType().getFeatureByBaseName(fn1));
+
+    Assertions.assertThat(actualDiagnosis).extracting(AnnotationFS::getCoveredText)
+            .isEqualTo("DM2");
+    Assertions.assertThat(subjectValue).extracting(AnnotationFS::getCoveredText)
+            .isEqualTo("Father");
+
+    AnnotationFS refValue = (AnnotationFS) subjectValue
+            .getFeatureValue(subjectValue.getType().getFeatureByBaseName(fn2));
+
+    Assertions.assertThat(refValue).extracting(AnnotationFS::getCoveredText).isEqualTo("Father");
+  }
+
+  @Test(expected = RutaParseRuntimeException.class)
+  public void testRecursiveDeclaration() throws Exception {
+    String document = "Test";
+    String script = "";
+    script += "ACTION action1() = action2();\n";
+    script += "ACTION action2() = action3();\n";
+    script += "ACTION action3() = action1();\n";
+    script += "CW{-> action1()};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
   }
 
   @Test

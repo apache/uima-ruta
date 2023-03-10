@@ -456,11 +456,11 @@ licensed under the Common Public License.
   after the cause of action arose. Each party waives its rights to a jury trial in
   any resulting litigation.
 
-====================================================================================================   
+=======================================================================
 
-SPRING FRAMEWORK 5.3.20 SUBCOMPONENTS:
+SPRING FRAMEWORK 5.3.25 SUBCOMPONENTS:
 
-Spring Framework 5.3.20 includes a number of subcomponents
+Spring Framework 5.3.25 includes a number of subcomponents
 with separate copyright notices and license terms. The product that
 includes this file does not necessarily use all the open source
 subcomponents referred to below. Your use of the source
@@ -568,7 +568,7 @@ Apache License 2.0:
    has been imported from the Orekit space flight dynamics library.
 
 ===============================================================================
- 
+
 
 
 APACHE COMMONS MATH DERIVATIVE WORKS: 
