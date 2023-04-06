@@ -87,7 +87,7 @@ under the License.
     <section id="ugr.tools.ruta.language.actions.addretaintype">
     <title>ADDRETAINTYPE</title>
     <para>
-      The ADDFILTERTYPE action adds its arguments to the list of retained types, 
+      The ADDRETAINTYPE action adds its arguments to the list of retained types, 
       which extend the visibility of the rules.
     </para>
     <section>
