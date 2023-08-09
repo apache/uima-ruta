@@ -188,7 +188,6 @@ public class RutaEnvironment {
   private Pattern typeIgnorePattern;
 
   public RutaEnvironment(RutaBlock owner) {
-    super();
     this.owner = owner;
 
     types = new HashMap<>();
@@ -313,7 +312,7 @@ public class RutaEnvironment {
       if (type != null) {
         addType(type);
       } else {
-        throw new RuntimeException("Type '" + name + "' not found");
+        throw new RuntimeException("Type '" + name + "' declared in script not found in CAS");
       }
     }
   }
@@ -336,7 +335,8 @@ public class RutaEnvironment {
       if (type != null) {
         addType(type);
       } else {
-        throw new RuntimeException("Type '" + td.getName() + "' not found");
+        throw new RuntimeException(
+                "Type '" + td.getName() + "' from imported type system not found in CAS");
       }
     }
   }

@@ -26,6 +26,7 @@ import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.ProjectBuilder;
 import org.apache.maven.project.ProjectBuildingRequest;
+import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -35,6 +36,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.util.XMLInputSource;
 import org.codehaus.plexus.util.FileUtils;
+import org.eclipse.aether.RepositorySystemSession;
 import org.junit.Assert;
 
 public class RutaGenerateDescriptorMojoTest extends AbstractMojoTestCase {
@@ -79,8 +81,10 @@ public class RutaGenerateDescriptorMojoTest extends AbstractMojoTestCase {
     assertTrue(pomFile.exists());
 
     // create the MavenProject from the pom.xml file
+    RepositorySystemSession session = MavenRepositorySystemUtils.newSession();
     MavenExecutionRequest executionRequest = new DefaultMavenExecutionRequest();
     ProjectBuildingRequest buildingRequest = executionRequest.getProjectBuildingRequest();
+    buildingRequest.setRepositorySession(session);
     ProjectBuilder projectBuilder = this.lookup(ProjectBuilder.class);
     MavenProject project = projectBuilder.build(pomFile, buildingRequest).getProject();
     assertNotNull(project);

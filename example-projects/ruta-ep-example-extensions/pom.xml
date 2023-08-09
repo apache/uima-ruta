@@ -125,7 +125,7 @@
                 <Import-Package>
                 </Import-Package>
                 <Bundle-SymbolicName>org.apache.uima.ruta.example.extensions;singleton:=true</Bundle-SymbolicName>
-                <Bundle-RequiredExecutionEnvironment>JavaSE-1.8</Bundle-RequiredExecutionEnvironment>
+                <Bundle-RequiredExecutionEnvironment>${execution.environment}</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
                 <!-- <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy> -->

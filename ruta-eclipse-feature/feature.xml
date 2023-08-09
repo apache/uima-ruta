@@ -149,8 +149,8 @@ Apache UIMA is a trademark of the Apache Software Foundation in the United State
    </url>
 
    <requires>
-      <import feature="org.apache.uima.tools" version="2.9.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.dltk.core" version="3.0.0" match="greaterOrEqual"/>
+      <import feature="org.apache.uima.tools" version="3.5.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.dltk.core" version="5.11.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

@@ -78,6 +78,12 @@
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    
+    <!-- Eclipse dependencies -->
+    <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.equinox.app</artifactId>
       <scope>provided</scope>
@@ -138,10 +144,6 @@
       <version>[3.1.200,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-    </dependency>
   </dependencies>
 
   <build>
@@ -190,7 +192,7 @@
               <instructions>
                 <Bundle-SymbolicName>org.apache.uima.ruta.addons;singleton:=true</Bundle-SymbolicName>
                 <Bundle-Activator>org.apache.uima.ruta.addons.RutaAddonsPlugin</Bundle-Activator>
-                <Bundle-RequiredExecutionEnvironment>JavaSE-1.8</Bundle-RequiredExecutionEnvironment>
+                <Bundle-RequiredExecutionEnvironment>${execution.environment}</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <_nouses>true</_nouses>
                 <Export-Package>
