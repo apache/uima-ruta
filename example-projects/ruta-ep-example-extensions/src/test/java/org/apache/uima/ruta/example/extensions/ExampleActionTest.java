@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.example.extensions;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ import java.util.Map;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ExampleActionTest {
 
@@ -41,11 +41,10 @@ public class ExampleActionTest {
     CAS cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
             namespace + "/test.txt", parameters, 50);
 
-    assertEquals(84, cas.getAnnotationIndex().size());
+    assertThat(cas.getAnnotationIndex()).hasSize(84);
 
     if (cas != null) {
       cas.release();
     }
-
   }
 }

@@ -18,6 +18,9 @@
  */
 package org.apache.uima.ruta.expression.string;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -38,8 +41,7 @@ import org.apache.uima.ruta.type.FalseNegative;
 import org.apache.uima.ruta.type.FalsePositive;
 import org.apache.uima.ruta.type.TruePositive;
 import org.apache.uima.util.CasCreationUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class StringSubtypeAllowedValuesTest {
 
@@ -60,20 +62,21 @@ public class StringSubtypeAllowedValuesTest {
     Ruta.apply(cas, script);
 
     JCas jcas = cas.getJCas();
-    Assert.assertEquals(4, JCasUtil.select(jcas, TruePositive.class).size());
-    Assert.assertEquals(0, JCasUtil.select(jcas, FalseNegative.class).size());
-    Assert.assertEquals(0, JCasUtil.select(jcas, FalsePositive.class).size());
+    assertThat(JCasUtil.select(jcas, TruePositive.class)).hasSize(4);
+    assertThat(JCasUtil.select(jcas, FalseNegative.class)).hasSize(0);
+    assertThat(JCasUtil.select(jcas, FalsePositive.class)).hasSize(0);
 
   }
 
-  @Test(expected = AnalysisEngineProcessException.class)
+  @Test
   public void testInvalidValue() throws Exception {
 
     CAS cas = createCAS();
 
     String script = "Document{-> CREATE(Test, \"allowed\" = \"D\")};";
 
-    Ruta.apply(cas, script);
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> Ruta.apply(cas, script));
   }
 
   private CAS createCAS() throws ResourceInitializationException {

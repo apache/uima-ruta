@@ -18,6 +18,8 @@
  */
 package org.apache.uima.ruta.engine;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,8 +33,7 @@ import org.apache.uima.fit.internal.ResourceManagerFactory.ResourceManagerCreato
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.resource.impl.ResourceManager_impl;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class HandleDataPathTest {
 
@@ -46,16 +47,18 @@ public class HandleDataPathTest {
     assertDataPathEntries(true, new String[] { "datapath", "desc1", "desc2" });
   }
 
-  private void assertDataPathEntries(boolean modify, String[] expected) throws ResourceInitializationException {
+  private void assertDataPathEntries(boolean modify, String[] expected)
+          throws ResourceInitializationException {
     ResourceManagerCreator oldCreator = ResourceManagerFactory.getResourceManagerCreator();
     try {
       ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
-  
+
         @Override
         public ResourceManager newResourceManager() throws ResourceInitializationException {
-  
+
           URL[] urls = new URL[1];
-          urls[0] = HandleDataPathTest.class.getResource("/org/apache/uima/ruta/CustomViewTest.ruta");
+          urls[0] = HandleDataPathTest.class
+                  .getResource("/org/apache/uima/ruta/CustomViewTest.ruta");
           ResourceManager resourceManager = new ResourceManager_impl(new URLClassLoader(urls));
           try {
             resourceManager.setDataPath("datapath");
@@ -70,16 +73,14 @@ public class HandleDataPathTest {
               new String[] { "desc1", "desc2" });
       String dataPath = ruta.getResourceManager().getDataPath();
       String[] paths = dataPath.split(Pattern.quote(File.pathSeparator));
-      Assert.assertEquals(expected.length, paths.length);
+      assertThat(paths).hasSameSizeAs(expected);
       for (int i = 0; i < expected.length; i++) {
         String e = expected[i];
         String dp = paths[i];
-        Assert.assertEquals(e, dp);
+        assertThat(dp).isEqualTo(e);
       }
-    }
-    finally {
+    } finally {
       ResourceManagerFactory.setResourceManagerCreator(oldCreator);
     }
   }
-
 }

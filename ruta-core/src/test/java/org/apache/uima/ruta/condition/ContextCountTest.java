@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.condition;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
@@ -29,8 +29,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ContextCountTest {
 
@@ -45,12 +44,11 @@ public class ContextCountTest {
 
     Type t = RutaTestUtils.getTestType(cas, 3);
     AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     FSIterator<AnnotationFS> iterator = ai.iterator();
-    assertEquals(
-            "A single sentence." + "And here is another one."
-                    + "Testing the CONTEXTCOUNT condition of Ruta System.",
-            iterator.next().getCoveredText().replaceAll("[\n\r]", ""));
+    assertThat(iterator.next().getCoveredText().replaceAll("[\n\r]", ""))
+            .isEqualTo("A single sentence." + "And here is another one."
+                    + "Testing the CONTEXTCOUNT condition of Ruta System.");
 
     cas.release();
   }
@@ -58,8 +56,9 @@ public class ContextCountTest {
   @Test
   public void testIndex() throws Exception {
     JCas jcas = RutaTestUtils.getCAS("A B C a b c").getJCas();
-    Assert.assertTrue(Ruta.matches(jcas,
-            "INT index; CW{CONTEXTCOUNT(Document,index,index)} # @SW{CONTEXTCOUNT(Document,0,100,index)-> MARK(T1,1,3)};"));
+    assertThat(Ruta.matches(jcas,
+            "INT index; CW{CONTEXTCOUNT(Document,index,index)} # @SW{CONTEXTCOUNT(Document,0,100,index)-> MARK(T1,1,3)};"))
+                    .isTrue();
     RutaTestUtils.assertAnnotationsEquals(jcas.getCas(), 1, 3, "A B C a", "B C a b", "C a b c");
   }
 

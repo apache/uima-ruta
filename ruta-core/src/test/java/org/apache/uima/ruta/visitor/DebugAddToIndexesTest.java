@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.visitor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,8 +33,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.type.DebugRuleApply;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DebugAddToIndexesTest {
 
@@ -54,10 +55,10 @@ public class DebugAddToIndexesTest {
     JCas jcas = cas.getJCas();
 
     Collection<DebugRuleApply> debugRuleApplies = JCasUtil.select(jcas, DebugRuleApply.class);
-    Assert.assertEquals(3, debugRuleApplies.size());
+    assertThat(debugRuleApplies).hasSize(3);
     Iterator<DebugRuleApply> iterator = debugRuleApplies.iterator();
     iterator.next();
-    Assert.assertEquals("Document;", iterator.next().getElement());
-    Assert.assertEquals("CW;", iterator.next().getElement());
+    assertThat(iterator.next().getElement()).isEqualTo("Document;");
+    assertThat(iterator.next().getElement()).isEqualTo("CW;");
   }
 }

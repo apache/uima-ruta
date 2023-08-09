@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.action;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
@@ -29,7 +29,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ReplaceTest {
 
@@ -49,7 +49,7 @@ public class ReplaceTest {
     AnnotationFS afs = iterator.get();
     Feature feature = t.getFeatureByBaseName("replacement");
     String stringValue = afs.getStringValue(feature);
-    assertEquals("MARKUP", stringValue);
+    assertThat(stringValue).isEqualTo("MARKUP");
 
     cas.release();
   }

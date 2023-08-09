@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.verbalizer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -30,27 +32,27 @@ import org.apache.uima.ruta.block.ForEachBlock;
 import org.apache.uima.ruta.block.RutaScriptBlock;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
-import org.junit.Assert;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 
 public class RutaVerbalizerTest {
-  
+
   @Test
-  public void testSimpleScriptVerbalization() throws Exception{
-    
-    AnalysisEngine analysisEngine = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.Verbalize");
-    RutaEngine rutaEngine = (RutaEngine) FieldUtils.readField(analysisEngine, "mAnalysisComponent", true);
+  public void testSimpleScriptVerbalization() throws Exception {
+
+    AnalysisEngine analysisEngine = AnalysisEngineFactory.createEngine(RutaEngine.class,
+            RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.Verbalize");
+    RutaEngine rutaEngine = (RutaEngine) FieldUtils.readField(analysisEngine, "mAnalysisComponent",
+            true);
     RutaModule module = (RutaModule) FieldUtils.readField(rutaEngine, "script", true);
     RutaVerbalizer verbalizer = new RutaVerbalizer();
-    Assert.assertNull(verbalizer.verbalize(module));
-    Assert.assertEquals("BLOCK(Verbalize) Document;", verbalizer.verbalize(module.getRootBlock()));
+    assertThat(verbalizer.verbalize(module)).isNull();
+    assertThat(verbalizer.verbalize(module.getRootBlock())).isEqualTo("BLOCK(Verbalize) Document;");
     List<RutaStatement> elements = module.getRootBlock().getElements();
-    Assert.assertEquals("Document{->CALL(Additional)};", verbalizer.verbalize(elements.get(1)));
-    Assert.assertEquals("CW.ct==\"A\"{->TruePositive};", verbalizer.verbalize(elements.get(2)));
+    assertThat(verbalizer.verbalize(elements.get(1))).isEqualTo("Document{->CALL(Additional)};");
+    assertThat(verbalizer.verbalize(elements.get(2))).isEqualTo("CW.ct==\"A\"{->TruePositive};");
     RutaScriptBlock block = (RutaScriptBlock) elements.get(3);
-    Assert.assertEquals("BLOCK(block) CW;", verbalizer.verbalize(block));
+    assertThat(verbalizer.verbalize(block)).isEqualTo("BLOCK(block) CW;");
     ForEachBlock foreach = (ForEachBlock) elements.get(4);
-    Assert.assertEquals("FOREACH(sw) SW;", verbalizer.verbalize(foreach));
+    assertThat(verbalizer.verbalize(foreach)).isEqualTo("FOREACH(sw) SW;");
   }
 }

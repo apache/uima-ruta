@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.rule;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +30,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class WildCard2Test {
 
@@ -153,8 +154,8 @@ public class WildCard2Test {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "A", "X 2 B", "B");
-    Assert.assertEquals(192,
-            cas.getAnnotationIndex(cas.getTypeSystem().getType(RutaTestUtils.TYPE + "3")).size());
+    assertThat(cas.getAnnotationIndex(cas.getTypeSystem().getType(RutaTestUtils.TYPE + "3")))
+            .hasSize(192);
     cas.release();
   }
 

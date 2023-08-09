@@ -19,11 +19,12 @@
 
 package org.apache.uima.ruta.condition;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ImplicitCondition2Test {
 
@@ -60,8 +61,8 @@ public class ImplicitCondition2Test {
   public void testStringCompare() throws Exception {
     String document = "a b. a b.";
     CAS cas = RutaTestUtils.getCAS(document);
-    Assert.assertTrue(Ruta.matches(cas.getJCas(), "(w:W # W{W.ct==w.ct}){->T1};"));
-    Assert.assertTrue(Ruta.matches(cas.getJCas(), "STRING s1 = \"a\"; (w:W W{s1==w.ct}){->T2};"));
+    assertThat(Ruta.matches(cas.getJCas(), "(w:W # W{W.ct==w.ct}){->T1};")).isTrue();
+    assertThat(Ruta.matches(cas.getJCas(), "STRING s1 = \"a\"; (w:W W{s1==w.ct}){->T2};")).isTrue();
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "a b. a", "b. a b");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "a b", "a b");
   }
@@ -74,7 +75,7 @@ public class ImplicitCondition2Test {
     String rules = "STRING s2;\n";
     rules += "Document{s2 == \"\" -> T10};\n";
     rules += "Document{s2 == null -> T11};\n";
-    Assert.assertTrue(Ruta.matches(cas.getJCas(), rules));
+    assertThat(Ruta.matches(cas.getJCas(), rules)).isTrue();
 
     RutaTestUtils.assertAnnotationsEquals(cas, 10, 0);
     RutaTestUtils.assertAnnotationsEquals(cas, 11, 1, document);

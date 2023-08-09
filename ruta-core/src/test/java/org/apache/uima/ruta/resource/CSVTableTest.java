@@ -18,12 +18,11 @@
  */
 package org.apache.uima.ruta.resource;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CSVTableTest {
   private static final String CUSTOM_SEPARATOR = "#|#";
@@ -70,7 +69,7 @@ public class CSVTableTest {
 
   private void checkValue(CSVTable table, int row, int column, String expectedValue) {
     String actualValue = table.getEntry(row, column);
-    assertThat(actualValue, is(expectedValue));
+    assertThat(actualValue).isEqualTo(expectedValue);
   }
 
 }

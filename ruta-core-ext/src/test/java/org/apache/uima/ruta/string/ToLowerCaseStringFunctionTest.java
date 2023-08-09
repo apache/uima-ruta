@@ -19,25 +19,23 @@
 
 package org.apache.uima.ruta.string;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ToLowerCaseStringFunctionTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String document = "Peter Markus test peter markus test";
     String script = "STRING s;\n";
     script += "STRINGLIST sl;\n";
@@ -47,28 +45,16 @@ public class ToLowerCaseStringFunctionTest {
     Map<String, Object> parameters = new HashMap<String, Object>();
     parameters.put(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS,
             new String[] { StringOperationsExtension.class.getName() });
-    CAS cas = null;
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script, parameters);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script, parameters);
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
-    iterator = ai.iterator();
-    assertEquals("peter", iterator.next().getCoveredText());
-    assertEquals("markus", iterator.next().getCoveredText());
+    Type t = RutaTestUtils.getTestType(cas, 1);
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(t)) //
+            .extracting(AnnotationFS::getCoveredText) //
+            .containsExactly("peter", "markus");
 
     if (cas != null) {
       cas.release();
     }
-
   }
 }

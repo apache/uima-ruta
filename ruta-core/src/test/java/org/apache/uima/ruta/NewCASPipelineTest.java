@@ -18,7 +18,7 @@
  */
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import org.apache.uima.resource.metadata.ResourceMetaData;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.util.CasCreationUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests if the script is correctly applied in a pipeline if a new CAS is used.
@@ -79,7 +79,7 @@ public class NewCASPipelineTest {
     SimplePipeline.runPipeline(cas, ae);
 
     t1 = cas.getTypeSystem().getType(TEST_TYPE);
-    assertEquals(1, cas.getAnnotationIndex(t1).size());
+    assertThat(cas.getAnnotationIndex(t1).size()).isEqualTo(1);
 
     // reset the cas and do it again
     cas.reset();
@@ -87,7 +87,7 @@ public class NewCASPipelineTest {
     SimplePipeline.runPipeline(cas, ae);
 
     t1 = cas.getTypeSystem().getType(TEST_TYPE);
-    assertEquals(1, cas.getAnnotationIndex(t1).size());
+    assertThat(cas.getAnnotationIndex(t1).size()).isEqualTo(1);
 
     // create a new cas and force the ae to update its types
     ae.setConfigParameterValue(RutaEngine.PARAM_RELOAD_SCRIPT, true);
@@ -98,7 +98,7 @@ public class NewCASPipelineTest {
     SimplePipeline.runPipeline(cas2, ae);
 
     t1 = cas2.getTypeSystem().getType(TEST_TYPE);
-    assertEquals(1, cas2.getAnnotationIndex(t1).size());
+    assertThat(cas2.getAnnotationIndex(t1).size()).isEqualTo(1);
 
     // create a new cas and do not force the ae to update its types
     ae.setConfigParameterValue(RutaEngine.PARAM_RELOAD_SCRIPT, false);
@@ -108,7 +108,7 @@ public class NewCASPipelineTest {
     SimplePipeline.runPipeline(cas3, ae);
 
     t1 = cas3.getTypeSystem().getType(TEST_TYPE);
-    assertEquals(1, cas3.getAnnotationIndex(t1).size());
+    assertThat(cas3.getAnnotationIndex(t1).size()).isEqualTo(1);
 
     // create a new cas and do not reconfigure the engine
     final CAS cas4 = CasCreationUtils.createCas(metaData);
@@ -116,7 +116,7 @@ public class NewCASPipelineTest {
     SimplePipeline.runPipeline(cas4, ae);
 
     t1 = cas4.getTypeSystem().getType(TEST_TYPE);
-    assertEquals(1, cas4.getAnnotationIndex(t1).size());
+    assertThat(cas4.getAnnotationIndex(t1).size()).isEqualTo(1);
 
     if (ae != null) {
       ae.destroy();

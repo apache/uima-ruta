@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.verbalizer;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +67,7 @@ import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeListExpression;
 import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ConditionVerbalizerTest {
 
@@ -95,15 +95,15 @@ public class ConditionVerbalizerTest {
     // AFTER
     c = new AfterCondition(typeExpr1);
     s = v.verbalize(c);
-    assertEquals("AFTER(Type1)", s);
+    assertThat(s).isEqualTo("AFTER(Type1)");
 
     c = new AfterCondition(typeExpr2);
     s = v.verbalize(c);
-    assertEquals("AFTER(typeVar)", s);
+    assertThat(s).isEqualTo("AFTER(typeVar)");
 
     c = new AfterCondition(typeListExpr);
     s = v.verbalize(c);
-    assertEquals("AFTER({Type1, typeVar})", s);
+    assertThat(s).isEqualTo("AFTER({Type1, typeVar})");
 
     // AND
     List<AbstractRutaCondition> conds = new ArrayList<AbstractRutaCondition>();
@@ -113,176 +113,176 @@ public class ConditionVerbalizerTest {
     conds.add(c2);
     c = new AndCondition(conds);
     s = v.verbalize(c);
-    assertEquals("AND(AFTER(typeVar), AFTER({Type1, typeVar}))", s);
+    assertThat(s).isEqualTo("AND(AFTER(typeVar), AFTER({Type1, typeVar}))");
 
     // BEFORE
     c = new BeforeCondition(typeExpr1);
     s = v.verbalize(c);
-    assertEquals("BEFORE(Type1)", s);
+    assertThat(s).isEqualTo("BEFORE(Type1)");
 
     c = new BeforeCondition(typeExpr2);
     s = v.verbalize(c);
-    assertEquals("BEFORE(typeVar)", s);
+    assertThat(s).isEqualTo("BEFORE(typeVar)");
 
     c = new BeforeCondition(typeListExpr);
     s = v.verbalize(c);
-    assertEquals("BEFORE({Type1, typeVar})", s);
+    assertThat(s).isEqualTo("BEFORE({Type1, typeVar})");
 
     // CONTAINS
     c = new ContainsCondition(typeExpr1, numExpr1, numExpr2, boolExpr1);
     s = v.verbalize(c);
-    assertEquals("CONTAINS(Type1, 4, numVar, true)", s);
+    assertThat(s).isEqualTo("CONTAINS(Type1, 4, numVar, true)");
 
     c = new ContainsCondition(typeExpr2, null, null, null);
     s = v.verbalize(c);
-    assertEquals("CONTAINS(typeVar)", s);
+    assertThat(s).isEqualTo("CONTAINS(typeVar)");
 
     c = new ContainsCondition(typeListExpr, typeExpr2, null, null, null);
     s = v.verbalize(c);
-    assertEquals("CONTAINS({Type1, typeVar}, typeVar)", s);
+    assertThat(s).isEqualTo("CONTAINS({Type1, typeVar}, typeVar)");
 
     // CONTEXTCOUNT
     c = new ContextCountCondition(typeExpr1, numExpr1, numExpr2, var);
     s = v.verbalize(c);
-    assertEquals("CONTEXTCOUNT(Type1, 4, numVar, anyVar)", s);
+    assertThat(s).isEqualTo("CONTEXTCOUNT(Type1, 4, numVar, anyVar)");
 
     // COUNT
     c = new CountCondition(typeExpr1, numExpr1, numExpr2, var);
     s = v.verbalize(c);
-    assertEquals("COUNT(Type1, 4, numVar, anyVar)", s);
+    assertThat(s).isEqualTo("COUNT(Type1, 4, numVar, anyVar)");
 
     c = new CountCondition(typeListExpr, typeExpr2, null, null, null);
     s = v.verbalize(c);
-    assertEquals("COUNT({Type1, typeVar}, typeVar)", s);
+    assertThat(s).isEqualTo("COUNT({Type1, typeVar}, typeVar)");
 
     // CURRENTCOUNT
     c = new CurrentCountCondition(typeExpr1, numExpr1, numExpr2, var);
     s = v.verbalize(c);
-    assertEquals("CURRENTCOUNT(Type1, 4, numVar, anyVar)", s);
+    assertThat(s).isEqualTo("CURRENTCOUNT(Type1, 4, numVar, anyVar)");
 
     // ENDSWITH
     c = new EndsWithCondition(typeExpr1);
     s = v.verbalize(c);
-    assertEquals("ENDSWITH(Type1)", s);
+    assertThat(s).isEqualTo("ENDSWITH(Type1)");
 
     c = new EndsWithCondition(typeListExpr);
     s = v.verbalize(c);
-    assertEquals("ENDSWITH({Type1, typeVar})", s);
+    assertThat(s).isEqualTo("ENDSWITH({Type1, typeVar})");
 
     // FEATURE
     c = new FeatureCondition(stringExpr, stringExpr);
     s = v.verbalize(c);
-    assertEquals("FEATURE(\"string\", \"string\")", s);
+    assertThat(s).isEqualTo("FEATURE(\"string\", \"string\")");
 
     // IF
     c = new IfCondition(boolExpr1);
     s = v.verbalize(c);
-    assertEquals("IF(true)", s);
+    assertThat(s).isEqualTo("IF(true)");
 
     // INLIST
     c = new InListCondition(stringListExpr, stringExpr);
     s = v.verbalize(c);
-    assertEquals("INLIST({\"string\"}, \"string\")", s);
+    assertThat(s).isEqualTo("INLIST({\"string\"}, \"string\")");
 
     // IS
     c = new IsCondition(typeExpr1);
     s = v.verbalize(c);
-    assertEquals("IS(Type1)", s);
+    assertThat(s).isEqualTo("IS(Type1)");
 
     c = new IsCondition(typeListExpr);
     s = v.verbalize(c);
-    assertEquals("IS({Type1, typeVar})", s);
+    assertThat(s).isEqualTo("IS({Type1, typeVar})");
 
     // LAST
     c = new LastCondition(typeExpr1);
     s = v.verbalize(c);
-    assertEquals("LAST(Type1)", s);
+    assertThat(s).isEqualTo("LAST(Type1)");
 
     // MOFN
     c = new MOfNCondition(conds, numExpr1, numExpr2);
     s = v.verbalize(c);
-    assertEquals("MOFN(4, numVar, AFTER(typeVar), AFTER({Type1, typeVar}))", s);
+    assertThat(s).isEqualTo("MOFN(4, numVar, AFTER(typeVar), AFTER({Type1, typeVar}))");
 
     // NEAR
     c = new NearCondition(typeExpr1, numExpr1, numExpr2, boolExpr1, boolExpr1);
     s = v.verbalize(c);
-    assertEquals("NEAR(Type1, 4, numVar, true, true)", s);
+    assertThat(s).isEqualTo("NEAR(Type1, 4, numVar, true, true)");
 
     // NOT
     c = new NotCondition(c1);
     s = v.verbalize(c);
-    assertEquals("-AFTER(typeVar)", s);
+    assertThat(s).isEqualTo("-AFTER(typeVar)");
 
     // OR
     c = new OrCondition(conds);
     s = v.verbalize(c);
-    assertEquals("OR(AFTER(typeVar), AFTER({Type1, typeVar}))", s);
+    assertThat(s).isEqualTo("OR(AFTER(typeVar), AFTER({Type1, typeVar}))");
 
     // PARSE
     c = new ParseCondition(var);
     s = v.verbalize(c);
-    assertEquals("PARSE(anyVar)", s);
+    assertThat(s).isEqualTo("PARSE(anyVar)");
 
     // PARTOF
     c = new PartOfCondition(typeExpr1);
     s = v.verbalize(c);
-    assertEquals("PARTOF(Type1)", s);
+    assertThat(s).isEqualTo("PARTOF(Type1)");
 
     c = new PartOfCondition(typeListExpr);
     s = v.verbalize(c);
-    assertEquals("PARTOF({Type1, typeVar})", s);
+    assertThat(s).isEqualTo("PARTOF({Type1, typeVar})");
 
     // PARTOFNEQ
     c = new PartOfNeqCondition(typeExpr1);
     s = v.verbalize(c);
-    assertEquals("PARTOFNEQ(Type1)", s);
+    assertThat(s).isEqualTo("PARTOFNEQ(Type1)");
 
     c = new PartOfNeqCondition(typeListExpr);
     s = v.verbalize(c);
-    assertEquals("PARTOFNEQ({Type1, typeVar})", s);
+    assertThat(s).isEqualTo("PARTOFNEQ({Type1, typeVar})");
 
     // POSITION
     c = new PositionCondition(typeExpr1, numExpr1, boolExpr1);
     s = v.verbalize(c);
-    assertEquals("POSITION(Type1, 4, true)", s);
+    assertThat(s).isEqualTo("POSITION(Type1, 4, true)");
 
     // REGEXP
     c = new RegExpCondition(stringExpr, boolExpr1);
     s = v.verbalize(c);
-    assertEquals("REGEXP(\"string\", true)", s);
+    assertThat(s).isEqualTo("REGEXP(\"string\", true)");
 
     c = new RegExpCondition(varExpr, stringExpr, boolExpr1);
     s = v.verbalize(c);
-    assertEquals("REGEXP(anyVar, \"string\", true)", s);
+    assertThat(s).isEqualTo("REGEXP(anyVar, \"string\", true)");
 
     // SCORE
     c = new ScoreCondition(numExpr1, numExpr2, var);
     s = v.verbalize(c);
-    assertEquals("SCORE(4, numVar, anyVar)", s);
+    assertThat(s).isEqualTo("SCORE(4, numVar, anyVar)");
 
     // SIZE
     c = new SizeCondition(typeListExpr, numExpr1, numExpr2, var);
     s = v.verbalize(c);
-    assertEquals("SIZE({Type1, typeVar}, 4, numVar, anyVar)", s);
+    assertThat(s).isEqualTo("SIZE({Type1, typeVar}, 4, numVar, anyVar)");
 
     // STARTSWITH
     c = new StartsWithCondition(typeExpr1);
     s = v.verbalize(c);
-    assertEquals("STARTSWITH(Type1)", s);
+    assertThat(s).isEqualTo("STARTSWITH(Type1)");
 
     c = new StartsWithCondition(typeListExpr);
     s = v.verbalize(c);
-    assertEquals("STARTSWITH({Type1, typeVar})", s);
+    assertThat(s).isEqualTo("STARTSWITH({Type1, typeVar})");
 
     // TOTALCOUNT
     c = new TotalCountCondition(typeExpr1, numExpr1, numExpr2, var);
     s = v.verbalize(c);
-    assertEquals("TOTALCOUNT(Type1, 4, numVar, anyVar)", s);
+    assertThat(s).isEqualTo("TOTALCOUNT(Type1, 4, numVar, anyVar)");
 
     // VOTE
     c = new VoteCondition(typeExpr1, typeExpr2);
     s = v.verbalize(c);
-    assertEquals("VOTE(Type1, typeVar)", s);
+    assertThat(s).isEqualTo("VOTE(Type1, typeVar)");
 
   }
 }

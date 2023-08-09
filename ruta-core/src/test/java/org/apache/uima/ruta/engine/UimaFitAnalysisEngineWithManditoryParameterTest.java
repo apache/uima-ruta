@@ -28,8 +28,7 @@ import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.descriptor.RutaBuildOptions;
 import org.apache.uima.ruta.descriptor.RutaDescriptorFactory;
 import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 public class UimaFitAnalysisEngineWithManditoryParameterTest {
 
   @Test

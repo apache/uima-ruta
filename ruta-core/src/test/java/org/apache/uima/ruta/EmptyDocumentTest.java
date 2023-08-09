@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.FSIterator;
@@ -31,8 +31,7 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.rule.RuleInference1Test;
 import org.apache.uima.ruta.type.RutaBasic;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EmptyDocumentTest {
 
@@ -48,9 +47,9 @@ public class EmptyDocumentTest {
     FSIterator<AnnotationFS> iterator = null;
 
     ai = cas.getAnnotationIndex();
-    assertEquals(2, ai.size());
+    assertThat(ai.size()).isEqualTo(2);
     iterator = ai.iterator();
-    assertEquals("", iterator.next().getCoveredText());
+    assertThat(iterator.next().getCoveredText()).isEqualTo("");
 
     if (cas != null) {
       cas.release();
@@ -73,10 +72,10 @@ public class EmptyDocumentTest {
     Ruta.apply(cas, "Document;");
 
     SelectFSs<RutaBasic> select = cas.select(RutaBasic.class);
-    Assert.assertEquals(1, select.count());
+    assertThat(select.count()).isEqualTo(1);
     RutaBasic rutaBasic = select.findAny().get();
-    Assert.assertEquals(0, rutaBasic.getBegin());
-    Assert.assertEquals(1, rutaBasic.getEnd());
+    assertThat(rutaBasic.getBegin()).isEqualTo(0);
+    assertThat(rutaBasic.getEnd()).isEqualTo(1);
   }
 
 }

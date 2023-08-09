@@ -36,7 +36,7 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class IncompletePartitioningTest {
 

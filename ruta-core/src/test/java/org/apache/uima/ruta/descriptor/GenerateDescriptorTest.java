@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.descriptor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,9 +40,8 @@ import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.HtmlAnnotator;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class GenerateDescriptorTest {
 
@@ -48,7 +49,7 @@ public class GenerateDescriptorTest {
 
   private static URL basicTSUrl;
 
-  @BeforeClass
+  @BeforeAll
   public static void setUpClass() {
 
     GenerateDescriptorTest.basicAEUrl = GenerateDescriptorTest.class.getClassLoader()
@@ -89,24 +90,24 @@ public class GenerateDescriptorTest {
 
     String mainScript = (String) cps.getParameterValue(RutaEngine.PARAM_MAIN_SCRIPT);
     String rules = (String) cps.getParameterValue(RutaEngine.PARAM_RULES);
-    Assert.assertNull("mainScript param should be null", mainScript);
-    Assert.assertNotNull("rules param should not null", rules);
+    assertThat(mainScript).as("mainScript param should be null").isNull();
+    assertThat(rules).as("rules param should not null").isNotNull();
 
     String[] additionalEngines = (String[]) cps
             .getParameterValue(RutaEngine.PARAM_ADDITIONAL_ENGINES);
-    Assert.assertNotNull(additionalEngines);
-    Assert.assertEquals("org.apache.uima.ruta.engine.HtmlAnnotator", additionalEngines[0]);
+    assertThat(additionalEngines).isNotNull();
+    assertThat(additionalEngines[0]).isEqualTo("org.apache.uima.ruta.engine.HtmlAnnotator");
 
     String[] additionalUimafitEngines = (String[]) cps
             .getParameterValue(RutaEngine.PARAM_ADDITIONAL_UIMAFIT_ENGINES);
-    Assert.assertNotNull(additionalUimafitEngines);
-    Assert.assertEquals("org.apache.uima.ruta.engine.PlainTextAnnotator",
-            additionalUimafitEngines[0]);
+    assertThat(additionalUimafitEngines).isNotNull();
+    assertThat(additionalUimafitEngines[0])
+            .isEqualTo("org.apache.uima.ruta.engine.PlainTextAnnotator");
 
     String[] additionalScripts = (String[]) cps
             .getParameterValue(RutaEngine.PARAM_ADDITIONAL_SCRIPTS);
-    Assert.assertNotNull(additionalScripts);
-    Assert.assertEquals("org.apache.uiima.ruta.Additional", additionalScripts[0]);
+    assertThat(additionalScripts).isNotNull();
+    assertThat(additionalScripts[0]).isEqualTo("org.apache.uiima.ruta.Additional");
 
   }
 
@@ -135,47 +136,47 @@ public class GenerateDescriptorTest {
     tsd.resolveImports(rm);
 
     TypeDescription tagType = tsd.getType("org.apache.uima.ruta.type.html.TAG");
-    Assert.assertNotNull(tagType);
+    assertThat(tagType).isNotNull();
 
     TypeDescription simpleType = tsd.getType("test.package.Anonymous.SimpleType");
-    Assert.assertNotNull(simpleType);
-    Assert.assertEquals("uima.tcas.Annotation", simpleType.getSupertypeName());
+    assertThat(simpleType).isNotNull();
+    assertThat(simpleType.getSupertypeName()).isEqualTo("uima.tcas.Annotation");
 
     TypeDescription complexType = tsd.getType("test.package.Anonymous.ComplexType");
-    Assert.assertNotNull(complexType);
-    Assert.assertEquals("Type defined in test.package.Anonymous", complexType.getDescription());
-    Assert.assertEquals("test.package.Anonymous.SimpleType", complexType.getSupertypeName());
+    assertThat(complexType).isNotNull();
+    assertThat(complexType.getDescription()).isEqualTo("Type defined in test.package.Anonymous");
+    assertThat(complexType.getSupertypeName()).isEqualTo("test.package.Anonymous.SimpleType");
     FeatureDescription[] features = complexType.getFeatures();
     Map<String, String> featureMap = new HashMap<>();
     featureMap.put("fs", "test.package.Anonymous.SimpleType");
     featureMap.put("s", "uima.cas.String");
     featureMap.put("b", "uima.cas.Boolean");
     featureMap.put("i", "uima.cas.Integer");
-    Assert.assertEquals(4, features.length);
+    assertThat(features).hasSize(4);
     for (FeatureDescription each : features) {
       String f = featureMap.get(each.getName());
-      Assert.assertNotNull(f);
+      assertThat(f).isNotNull();
     }
 
     TypeDescription complexType2 = tsd.getType("test.package.Anonymous.ComplexType2");
-    Assert.assertNotNull(complexType2);
-    Assert.assertEquals("Type defined in test.package.Anonymous", complexType2.getDescription());
-    Assert.assertEquals("uima.tcas.Annotation", complexType2.getSupertypeName());
+    assertThat(complexType2).isNotNull();
+    assertThat(complexType2.getDescription()).isEqualTo("Type defined in test.package.Anonymous");
+    assertThat(complexType2.getSupertypeName()).isEqualTo("uima.tcas.Annotation");
     FeatureDescription[] features2 = complexType2.getFeatures();
     Map<String, String> featureMap2 = new HashMap<>();
     featureMap2.put("fs", "test.package.Anonymous.SimpleType");
     featureMap2.put("s", "uima.cas.String");
     featureMap2.put("b", "uima.cas.Boolean");
     featureMap2.put("i", "uima.cas.Integer");
-    Assert.assertEquals(4, features2.length);
+    assertThat(features2).hasSize(4);
     for (FeatureDescription each : features2) {
       String f = featureMap2.get(each.getName());
-      Assert.assertNotNull(f);
+      assertThat(f).isNotNull();
     }
 
     TypeDescription innerType = tsd.getType("test.package.Anonymous.sub.InnerType");
-    Assert.assertNotNull(innerType);
-    Assert.assertEquals("uima.tcas.Annotation", innerType.getSupertypeName());
+    assertThat(innerType).isNotNull();
+    assertThat(innerType.getSupertypeName()).isEqualTo("uima.tcas.Annotation");
 
   }
 
@@ -199,7 +200,7 @@ public class GenerateDescriptorTest {
     tsd.resolveImports(rm);
 
     TypeDescription tagType = tsd.getType("test.package.SimpleType");
-    Assert.assertNotNull(tagType);
+    assertThat(tagType).isNotNull();
 
   }
 
@@ -222,7 +223,7 @@ public class GenerateDescriptorTest {
     tsd.resolveImports(rm);
 
     TypeDescription tagType = tsd.getType("SimpleType");
-    Assert.assertNotNull(tagType);
+    assertThat(tagType).isNotNull();
 
   }
 
@@ -237,16 +238,17 @@ public class GenerateDescriptorTest {
     RutaBuildOptions options = new RutaBuildOptions();
     Pair<AnalysisEngineDescription, TypeSystemDescription> descriptions = rdf
             .createDescriptions(null, null, descriptorInformation, options, null, null, null);
-    Assert.assertNotNull("Typesystem does not contain declaredtype!",
-            descriptions.getValue().getType("Anonymous.Type"));
-    Assert.assertNotNull("AE typesystem does not contain declared type!", descriptions.getKey()
-            .getAnalysisEngineMetaData().getTypeSystem().getType("Anonymous.Type"));
+    assertThat(descriptions.getValue().getType("Anonymous.Type"))
+            .as("Typesystem does not contain declaredtype!").isNotNull();
+    assertThat(descriptions.getKey().getAnalysisEngineMetaData().getTypeSystem()
+            .getType("Anonymous.Type")).as("AE typesystem does not contain declared type!")
+                    .isNotNull();
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(descriptions.getKey());
     CAS cas = ae.newCAS();
     cas.setDocumentText("This is a test.");
     ae.process(cas);
     Type type = cas.getTypeSystem().getType("Anonymous.Type");
-    Assert.assertEquals(1, CasUtil.select(cas, type).size());
+    assertThat(CasUtil.select(cas, type)).hasSize(1);
     cas.release();
   }
 

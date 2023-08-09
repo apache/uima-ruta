@@ -33,8 +33,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 public class ConflictingShortNameTest {
   
   @Test

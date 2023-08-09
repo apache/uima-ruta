@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.type;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -37,7 +37,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.InvalidXMLException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 public class TypeFromStringFunctionTest {
@@ -66,11 +66,11 @@ public class TypeFromStringFunctionTest {
 
     t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(7, ai.size());
+    assertThat(ai.size()).isEqualTo(7);
 
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(8, ai.size());
+    assertThat(ai.size()).isEqualTo(8);
 
     if (cas != null) {
       cas.release();

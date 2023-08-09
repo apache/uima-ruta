@@ -17,47 +17,49 @@
    under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>test</groupId>
-	<artifactId>wordlists</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	
-	<parent>
-	  <groupId>org.apache.uima</groupId>
-	  <artifactId>parent-pom</artifactId>
-	  <version>12</version>
-	  <relativePath />
-	</parent>
-	
-	<properties>
-	  <maven.compiler.target>1.8</maven.compiler.target>
-	  <maven.compiler.source>1.8</maven.compiler.source>
-	</properties>
-	
-	<dependencies>
-	  <dependency>
-	   <groupId>org.apache.uima</groupId>
-	   <artifactId>ruta-core</artifactId>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.apache.uima</groupId>
+    <artifactId>parent-pom</artifactId>
+    <version>16</version>
+    <relativePath />
+  </parent>
+
+  <groupId>test</groupId>
+  <artifactId>wordlists</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+    
+  <properties>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.release>17</maven.compiler.release>
+  </properties>
+  
+  <dependencies>
+    <dependency>
+     <groupId>org.apache.uima</groupId>
+     <artifactId>ruta-core</artifactId>
      <version>@project.version@</version>
-	  </dependency>
-	  <dependency>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.5</version>
       <scope>test</scope>
     </dependency>
-	</dependencies>
-	<build>
-	  <resources>
-	    <resource>
-	      <directory>src/main/ruta</directory>
-	    </resource>
-	    <resource>
+  </dependencies>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/ruta</directory>
+      </resource>
+      <resource>
         <directory>${project.build.directory}/generated-sources/ruta/descriptor</directory>
       </resource>
-	  </resources>
-		<plugins>
+    </resources>
+    <plugins>
       <plugin>
         <groupId>org.apache.uima</groupId>
         <artifactId>ruta-maven-plugin</artifactId>
@@ -69,27 +71,27 @@
             <goals>
               <goal>generate</goal>
             </goals>
-		        <configuration>
-		          <scriptFiles>
-		            <directory>${basedir}/src/main/ruta</directory>
-		            <includes>
-		              <include>**/*.ruta</include>
-		            </includes>
-		          </scriptFiles>
-		          <typeSystemOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</typeSystemOutputDirectory>
-		          <analysisEngineOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</analysisEngineOutputDirectory>
-		          <descriptorPaths>
-		            <descriptorPath>${project.build.directory}/generated-sources/ruta/descriptor</descriptorPath>
-		          </descriptorPaths>
-		          <resourcePaths>
+            <configuration>
+              <scriptFiles>
+                <directory>${basedir}/src/main/ruta</directory>
+                <includes>
+                  <include>**/*.ruta</include>
+                </includes>
+              </scriptFiles>
+              <typeSystemOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</typeSystemOutputDirectory>
+              <analysisEngineOutputDirectory>${project.build.directory}/generated-sources/ruta/descriptor</analysisEngineOutputDirectory>
+              <descriptorPaths>
+                <descriptorPath>${project.build.directory}/generated-sources/ruta/descriptor</descriptorPath>
+              </descriptorPaths>
+              <resourcePaths>
                 <resourcePath>${project.build.directory}/generated-sources/ruta/resources</resourcePath>
               </resourcePaths>
-		          <analysisEngineSuffix>Engine</analysisEngineSuffix>
-		          <typeSystemSuffix>TypeSystem</typeSystemSuffix>
-		          <encoding>UTF-8</encoding>
-		          <importByName>true</importByName>
-		          <addRutaNature>false</addRutaNature>
-		        </configuration>
+              <analysisEngineSuffix>Engine</analysisEngineSuffix>
+              <typeSystemSuffix>TypeSystem</typeSystemSuffix>
+              <encoding>UTF-8</encoding>
+              <importByName>true</importByName>
+              <addRutaNature>false</addRutaNature>
+            </configuration>
           </execution>
           <execution>
             <id>twl</id>
@@ -132,5 +134,5 @@
         </executions>
       </plugin>
     </plugins>
-	</build>
+  </build>
 </project>

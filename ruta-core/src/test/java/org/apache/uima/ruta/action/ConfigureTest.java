@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.action;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collection;
 
 import org.apache.uima.cas.CAS;
@@ -27,9 +29,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.type.Statistics;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class ConfigureTest {
 
@@ -45,11 +46,11 @@ public class ConfigureTest {
     JCas jcas = cas.getJCas();
     Collection<Statistics> statistics = JCasUtil.select(jcas, Statistics.class);
 
-    Assert.assertFalse(statistics.isEmpty());
+    assertThat(statistics.isEmpty()).isFalse();
   }
 
   @Test
-  @Ignore
+  @Disabled
   public void testSelfConfigure() throws Exception {
 
     RutaTestUtils.processTestScript(this.getClass());

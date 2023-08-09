@@ -19,8 +19,8 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AnnotationVariableExpressionTest {
 
@@ -68,8 +68,6 @@ public class AnnotationVariableExpressionTest {
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-    AnnotationFS next = null;
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
 
@@ -77,13 +75,10 @@ public class AnnotationVariableExpressionTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    next = iterator.next();
-    assertEquals("text", next.getCoveredText());
-    AnnotationFS a = (AnnotationFS) next.getFeatureValue(f1);
-    assertNotNull("Feature value is null!", a);
-    assertEquals("Some", a.getCoveredText());
+    assertThat(ai)
+            .extracting(AnnotationFS::getCoveredText,
+                    a -> ((AnnotationFS) a.getFeatureValue(f1)).getCoveredText())
+            .containsExactly(tuple("text", "Some"));
   }
 
   @Test
@@ -118,13 +113,13 @@ public class AnnotationVariableExpressionTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     iterator = ai.iterator();
     next = iterator.next();
-    assertEquals("text", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("text");
     AnnotationFS a = (AnnotationFS) next.getFeatureValue(f1);
-    assertNotNull("Feature value is null!", a);
-    assertEquals("Some", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo("Some");
   }
 
   @Test
@@ -159,13 +154,13 @@ public class AnnotationVariableExpressionTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     iterator = ai.iterator();
     next = iterator.next();
-    assertEquals("text", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("text");
     FSArray<?> array = (FSArray<?>) next.getFeatureValue(f1);
-    assertNotNull("Feature value is null!", array);
-    assertEquals(2, array.size());
+    assertThat(array).as("Feature value is null!").isNotNull();
+    assertThat(array.size()).isEqualTo(2);
   }
 
   @Test
@@ -200,13 +195,13 @@ public class AnnotationVariableExpressionTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     iterator = ai.iterator();
     next = iterator.next();
-    assertEquals("text", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("text");
     FSArray<?> array = (FSArray<?>) next.getFeatureValue(f1);
-    assertNotNull("Feature value is null!", array);
-    assertEquals(2, array.size());
+    assertThat(array).as("Feature value is null!").isNotNull();
+    assertThat(array.size()).isEqualTo(2);
   }
 
   @Test

@@ -19,8 +19,8 @@
 
 package org.apache.uima.ruta.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +40,8 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
 import org.assertj.core.api.Assertions;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class MacroActionTest {
 
@@ -145,21 +145,23 @@ public class MacroActionTest {
     Assertions.assertThat(refValue).extracting(AnnotationFS::getCoveredText).isEqualTo("Father");
   }
 
-  @Test(expected = RutaParseRuntimeException.class)
+  @Test
   public void testRecursiveDeclaration() throws Exception {
     String document = "Test";
-    String script = "";
-    script += "ACTION action1() = action2();\n";
-    script += "ACTION action2() = action3();\n";
-    script += "ACTION action3() = action1();\n";
-    script += "CW{-> action1()};\n";
+    String script = String.join("\n", //
+            "ACTION action1() = action2();", //
+            "ACTION action2() = action3();", //
+            "ACTION action3() = action1();", //
+            "CW{-> action1()};\n");
 
     CAS cas = RutaTestUtils.getCAS(document);
-    Ruta.apply(cas, script);
+
+    assertThatExceptionOfType(RutaParseRuntimeException.class)
+            .isThrownBy(() -> Ruta.apply(cas, script));
   }
 
   @Test
-  @Ignore
+  @Disabled
   public void testShareSameNameArgumentAndLabel() throws Exception {
     String document = "Day 5";
     String script = "ACTION CreateDate(ANNOTATION day) = CREATE(Date, \"day\"=day);\n";
@@ -192,9 +194,9 @@ public class MacroActionTest {
     AnnotationFS nextFS = iterator.next();
 
     FeatureStructure fv1 = nextFS.getFeatureValue(feat);
-    assertNotNull(fv1);
+    assertThat(fv1).isNotNull();
 
-    assertEquals("5", ((AnnotationFS) fv1).getCoveredText());
+    assertThat(((AnnotationFS) fv1).getCoveredText()).isEqualTo("5");
   }
 
 }

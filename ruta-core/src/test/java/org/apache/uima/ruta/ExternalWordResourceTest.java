@@ -22,8 +22,7 @@ package org.apache.uima.ruta;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 public class ExternalWordResourceTest {
 
   @Test
@@ -47,9 +46,9 @@ public class ExternalWordResourceTest {
 //
 //    t = RutaTestUtils.getTestType(cas, 1);
 //    ai = cas.getAnnotationIndex(t);
-//    assertEquals(1, ai.size());
+//    assertThat(ai.size()).isEqualTo(1);
 //    iterator = ai.iterator();
-//    assertEquals("Some", iterator.next().getCoveredText());
+//    assertThat(iterator.next().getCoveredText()).isEqualTo("Some");
 
     if (cas != null) {
       cas.release();

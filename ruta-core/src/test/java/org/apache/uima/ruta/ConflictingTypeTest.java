@@ -18,8 +18,7 @@
  */
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -29,7 +28,7 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * There is no warning when short type names are ambiguous.
@@ -66,12 +65,10 @@ public class ConflictingTypeTest {
     cas.setDocumentText("text is not relevant here");
 
     try {
-      ae.process(cas);
-      fail("An IllegalArgumentException should be triggered because W is ambiguous.");
-    } catch (AnalysisEngineProcessException e) {
-      // we are expecting an IllegalArgumentException because both org.apache.uima.ruta.type.W and
-      // org.apache.uima.ruta.type.conflicting.W are imported into RUTA's namespace as W;
-      assertTrue(e.getCause() instanceof IllegalArgumentException);
+      assertThatExceptionOfType(AnalysisEngineProcessException.class)
+              .as("An IllegalArgumentException should be triggered because W is ambiguous.")
+              .isThrownBy(() -> ae.process(cas))
+              .withCauseInstanceOf(IllegalArgumentException.class);
     } finally {
       cas.release();
       ae.destroy();

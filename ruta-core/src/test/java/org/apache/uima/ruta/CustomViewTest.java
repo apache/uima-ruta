@@ -19,10 +19,9 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -34,9 +33,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.type.W;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests Ruta when it is runned on another view than _InitialView.
@@ -64,14 +63,14 @@ public class CustomViewTest {
     return builder.createAggregate();
   }
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     final String name = this.getClass().getSimpleName();
     final String namespace = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     engine = createAE(String.format("%s/%s", namespace, name));
   }
 
-  @After
+  @AfterEach
   public void tearDown() throws Exception {
     engine.destroy();
   }
@@ -89,8 +88,8 @@ public class CustomViewTest {
         words.add(a.getCoveredText());
       }
 
-      assertEquals("Checking run " + i, words,
-              Arrays.asList("This", "is", "a", "short", "document"));
+      assertThat(words).as("Checking run " + i).containsExactly("This", "is", "a", "short",
+              "document");
     }
   }
 }

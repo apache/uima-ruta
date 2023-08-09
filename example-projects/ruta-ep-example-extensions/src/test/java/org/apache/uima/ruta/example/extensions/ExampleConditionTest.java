@@ -19,19 +19,18 @@
 
 package org.apache.uima.ruta.example.extensions;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ExampleConditionTest {
 
@@ -45,19 +44,12 @@ public class ExampleConditionTest {
     CAS cas = RutaTestUtils.process(namespace + "/" + name + RutaEngine.SCRIPT_FILE_EXTENSION,
             namespace + "/test.txt", parameters, 50);
 
-    Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
-    FSIterator<AnnotationFS> iterator = null;
-
-    t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
-    iterator = ai.iterator();
-    assertEquals("1900/12/24", iterator.next().getCoveredText());
+    Type t = RutaTestUtils.getTestType(cas, 1);
+    AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t);
+    assertThat(ai).extracting(AnnotationFS::getCoveredText).containsExactly("1900/12/24");
 
     if (cas != null) {
       cas.release();
     }
-
   }
 }

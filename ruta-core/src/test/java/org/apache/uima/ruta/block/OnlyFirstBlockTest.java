@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.block;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OnlyFirstBlockTest {
 
@@ -61,13 +61,13 @@ public class OnlyFirstBlockTest {
 
     t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     iterator = ai.iterator();
-    assertEquals("some text", iterator.next().getCoveredText());
+    assertThat(iterator.next().getCoveredText()).isEqualTo("some text");
 
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(0, ai.size());
+    assertThat(ai.size()).isEqualTo(0);
 
     if (cas != null) {
       cas.release();

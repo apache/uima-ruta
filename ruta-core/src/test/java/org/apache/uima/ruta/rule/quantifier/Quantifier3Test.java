@@ -21,7 +21,7 @@ package org.apache.uima.ruta.rule.quantifier;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class Quantifier3Test {
   @Test

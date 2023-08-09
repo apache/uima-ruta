@@ -21,13 +21,13 @@ package org.apache.uima.ruta.engine;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class RecursiveConfigureTest {
 
   @Test
-  @Ignore
+  @Disabled
   public void test() throws Exception {
 
     AnalysisEngineDescription aed = AnalysisEngineFactory.createEngineDescriptionFromPath(

@@ -22,13 +22,12 @@ package org.apache.uima.ruta.expression;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 public class IndexedListExpressionTest {
 
   @Test
-  @Ignore
+  @Disabled
   public void test() throws Exception{
     String document = "Some text.";
     String script = "";

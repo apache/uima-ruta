@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URL;
 
@@ -32,21 +32,20 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TypeAliasTest {
 
   @Test
   public void test() throws Exception {
     URL url = this.getClass().getResource("TypeAliasTestEngine.xml");
-    AnalysisEngineDescription aed = (AnalysisEngineDescription) UIMAFramework.getXMLParser().parse(
-            new XMLInputSource(url));
+    AnalysisEngineDescription aed = (AnalysisEngineDescription) UIMAFramework.getXMLParser()
+            .parse(new XMLInputSource(url));
 
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
     CAS cas = ae.newCAS();
     cas.setDocumentText("Peter");
     ae.process(cas);
-    
 
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
@@ -54,25 +53,25 @@ public class TypeAliasTest {
 
     t = cas.getTypeSystem().getType("org.apache.uima.ruta.TypeAliasTest.T1");
     ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
+    assertThat(ai.size()).isEqualTo(2);
     iterator = ai.iterator();
-    assertEquals("Peter", iterator.next().getCoveredText());
-    assertEquals("Peter", iterator.next().getCoveredText());
-    
+    assertThat(iterator.next().getCoveredText()).isEqualTo("Peter");
+    assertThat(iterator.next().getCoveredText()).isEqualTo("Peter");
+
     t = cas.getTypeSystem().getType("org.apache.uima.ruta.TypeAliasTest.T2");
     ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
+    assertThat(ai.size()).isEqualTo(2);
     iterator = ai.iterator();
-    assertEquals("Peter", iterator.next().getCoveredText());
-    assertEquals("Peter", iterator.next().getCoveredText());
-    
+    assertThat(iterator.next().getCoveredText()).isEqualTo("Peter");
+    assertThat(iterator.next().getCoveredText()).isEqualTo("Peter");
+
     t = cas.getTypeSystem().getType("org.apache.uima.ruta.TypeAliasTest.T3");
     ai = cas.getAnnotationIndex(t);
-    assertEquals(2, ai.size());
+    assertThat(ai.size()).isEqualTo(2);
     iterator = ai.iterator();
-    assertEquals("Peter", iterator.next().getCoveredText());
-    assertEquals("Peter", iterator.next().getCoveredText());
-    
+    assertThat(iterator.next().getCoveredText()).isEqualTo("Peter");
+    assertThat(iterator.next().getCoveredText()).isEqualTo("Peter");
+
     cas.release();
   }
 }

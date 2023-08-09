@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.condition;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -31,7 +31,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PartOfNEQ2Test {
 
@@ -42,7 +42,7 @@ public class PartOfNEQ2Test {
     script += "\"> 51%\" -> Leaf1;\n";
     script += "\"51%\" -> Leaf2;\n";
     script += "Base{PARTOFNEQ(Base) -> UNMARK(Base)};\n";
-    
+
     Map<String, String> complexTypes = new TreeMap<String, String>();
     String typeName1 = "uima.ruta.Base";
     complexTypes.put(typeName1, "uima.tcas.Annotation");
@@ -50,7 +50,7 @@ public class PartOfNEQ2Test {
     complexTypes.put(typeName2, typeName1);
     String typeName3 = "uima.ruta.Leaf2";
     complexTypes.put(typeName3, typeName1);
-    
+
     CAS cas = null;
     try {
       cas = RutaTestUtils.getCAS(document, complexTypes, null);
@@ -62,12 +62,12 @@ public class PartOfNEQ2Test {
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
-    
+
     t = cas.getTypeSystem().getType(typeName1);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     iterator = ai.iterator();
-    assertEquals("> 51%", iterator.next().getCoveredText());
+    assertThat(iterator.next().getCoveredText()).isEqualTo("> 51%");
 
     cas.release();
   }

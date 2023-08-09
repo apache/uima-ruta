@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.action;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class GatherTest {
 
@@ -70,13 +70,13 @@ public class GatherTest {
     Feature f1 = t.getFeatureByBaseName(fn1);
     Feature f2 = t.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     iterator = ai.iterator();
     next = iterator.next();
     v1 = (AnnotationFS) next.getFeatureValue(f1);
     v2 = (AnnotationFS) next.getFeatureValue(f2);
-    assertEquals("A", v1.getCoveredText());
-    assertEquals("B", v2.getCoveredText());
+    assertThat(v1.getCoveredText()).isEqualTo("A");
+    assertThat(v2.getCoveredText()).isEqualTo("B");
 
   }
 
@@ -111,13 +111,13 @@ public class GatherTest {
     Feature f1 = t.getFeatureByBaseName(fn1);
     Feature f2 = t.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     iterator = ai.iterator();
     next = iterator.next();
     v1 = (AnnotationFS) next.getFeatureValue(f1);
     v2 = (AnnotationFS) next.getFeatureValue(f2);
-    assertEquals("A", v1.getCoveredText());
-    assertEquals(null, v2);
+    assertThat(v1.getCoveredText()).isEqualTo("A");
+    assertThat(v2).isEqualTo(null);
 
     cas.release();
   }

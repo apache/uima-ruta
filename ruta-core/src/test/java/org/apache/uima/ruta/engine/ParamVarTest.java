@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.engine;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,12 +28,12 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.type.CW;
 import org.apache.uima.ruta.type.SW;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ParamVarTest {
 
   @Test
-  public void test() {
+  public void test() throws Exception {
     String document = "Some text.";
     String script = "";
     script += "BLOCK(First) Document{}{\n";
@@ -59,12 +61,8 @@ public class ParamVarTest {
     params.put(RutaEngine.PARAM_VAR_VALUES,
             new String[] { "Some", "text", "Some", "0", "true", SW.class.getName(), "CW" });
 
-    try {
-      cas = RutaTestUtils.getCAS(document);
-      Ruta.apply(cas, script, params);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script, params);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Some");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "text");
@@ -96,28 +94,28 @@ public class ParamVarTest {
     cas.release();
   }
 
-  @Test(expected = AnalysisEngineProcessException.class)
+  @Test
   public void testWithStrictImport() throws Exception {
-    String document = "Some text.";
-    String script = "";
-    script += "TYPE t1;";
-    script += "TYPE t2;";
-    script += "TYPELIST tl;";
-    script += "CW{ -> t1};";
-    script += "SW{ -> t2};";
-    script += "ANY{PARTOF(tl) -> T3};";
-    Map<String, Object> params = new HashMap<String, Object>();
-    params.put(RutaEngine.PARAM_STRICT_IMPORTS, true);
-    params.put(RutaEngine.PARAM_VAR_NAMES, new String[] { "t1", "t2", "tl" });
-    params.put(RutaEngine.PARAM_VAR_VALUES, new String[] { "org.apache.uima.T1",
-        "org.apache.uima.T2", "org.apache.uima.T1,org.apache.uima.T2" });
+    var document = "Some text.";
+    var script = """
+            TYPE t1;
+            TYPE t2;
+            TYPELIST tl;
+            CW{ -> t1};
+            SW{ -> t2};
+            ANY{PARTOF(tl) -> T3};
+            """;
+
+    Map<String, Object> params = Map.of( //
+            RutaEngine.PARAM_STRICT_IMPORTS, true, //
+            RutaEngine.PARAM_VAR_NAMES, new String[] { "t1", "t2", "tl" }, //
+            RutaEngine.PARAM_VAR_VALUES, new String[] { "org.apache.uima.T1", "org.apache.uima.T2",
+                "org.apache.uima.T1,org.apache.uima.T2" });
 
     CAS cas = RutaTestUtils.getCAS(document);
-    Ruta.apply(cas, script, params);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "Some", "text");
-
-    cas.release();
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> Ruta.apply(cas, script, params));
   }
 
   @Test

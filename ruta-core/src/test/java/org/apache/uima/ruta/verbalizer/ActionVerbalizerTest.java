@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.verbalizer;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,7 +83,7 @@ import org.apache.uima.ruta.expression.type.SimpleTypeExpression;
 import org.apache.uima.ruta.expression.type.SimpleTypeListExpression;
 import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ActionVerbalizerTest {
 
@@ -129,178 +129,179 @@ public class ActionVerbalizerTest {
     // ADD
     a = new AddAction(var, exprList);
     s = v.verbalize(a);
-    assertEquals("ADD(anyVar, Type1)", s);
+    assertThat(s).isEqualTo("ADD(anyVar, Type1)");
 
     // ASSIGN
     a = new AssignAction(var, stringExpr);
     s = v.verbalize(a);
-    assertEquals("ASSIGN(anyVar, \"string\")", s);
+    assertThat(s).isEqualTo("ASSIGN(anyVar, \"string\")");
 
     // CALL
     a = new CallAction(var);
     s = v.verbalize(a);
-    assertEquals("CALL(anyVar)", s);
+    assertThat(s).isEqualTo("CALL(anyVar)");
 
     // CLEAR
     a = new ClearAction(var);
     s = v.verbalize(a);
-    assertEquals("CLEAR(anyVar)", s);
+    assertThat(s).isEqualTo("CLEAR(anyVar)");
 
     // COLOR
     a = new ColorAction(typeExpr1, stringExpr, stringExpr, boolExpr1);
     s = v.verbalize(a);
-    assertEquals("COLOR(Type1, \"string\", \"string\", true)", s);
+    assertThat(s).isEqualTo("COLOR(Type1, \"string\", \"string\", true)");
 
     // CONFIGURE
     a = new ConfigureAction(var, stringExprMap);
     s = v.verbalize(a);
-    assertEquals("CONFIGURE(anyVar, \"string\" = \"string\")", s);
+    assertThat(s).isEqualTo("CONFIGURE(anyVar, \"string\" = \"string\")");
 
     // CREATE
     a = new CreateAction(typeExpr1, stringExprMap, indexes);
     s = v.verbalize(a);
-    assertEquals("CREATE(Type1, 4, numVar, \"string\" = \"string\")", s);
+    assertThat(s).isEqualTo("CREATE(Type1, 4, numVar, \"string\" = \"string\")");
 
     // DEL
     a = new DelAction();
     s = v.verbalize(a);
-    assertEquals("DEL", s);
+    assertThat(s).isEqualTo("DEL");
 
     // DYNAMICANCHORING
     a = new DynamicAnchoringAction(boolExpr1, numExpr1, numExpr2);
     s = v.verbalize(a);
-    assertEquals("DYNAMICANCHORING(true, 4, numVar)", s);
+    assertThat(s).isEqualTo("DYNAMICANCHORING(true, 4, numVar)");
 
     // EXEC
     a = new ExecAction(var, typeListExpr, stringExpr);
     s = v.verbalize(a);
-    assertEquals("EXEC(\"string\", anyVar, {Type1, typeVar})", s);
+    assertThat(s).isEqualTo("EXEC(\"string\", anyVar, {Type1, typeVar})");
 
     // FILL
     a = new FillAction(typeExpr1, stringExprMap);
     s = v.verbalize(a);
-    assertEquals("FILL(Type1, \"string\" = \"string\")", s);
+    assertThat(s).isEqualTo("FILL(Type1, \"string\" = \"string\")");
 
     // FILTERTYPE
     a = new FilterTypeAction(typeExprList);
     s = v.verbalize(a);
-    assertEquals("FILTERTYPE(Type1, typeVar)", s);
+    assertThat(s).isEqualTo("FILTERTYPE(Type1, typeVar)");
 
     // GATHER
     a = new GatherAction(typeExpr1, stringExprMap, indexes);
     s = v.verbalize(a);
-    assertEquals("GATHER(Type1, 4, numVar, \"string\" = \"string\")", s);
+    assertThat(s).isEqualTo("GATHER(Type1, 4, numVar, \"string\" = \"string\")");
 
     // GET
     a = new GetAction(listExpr, var, stringExpr);
     s = v.verbalize(a);
-    assertEquals("GET({Type1, typeVar}, anyVar, \"string\")", s);
+    assertThat(s).isEqualTo("GET({Type1, typeVar}, anyVar, \"string\")");
 
     // GETFEATURE
     a = new GetFeatureAction(stringExpr, var);
     s = v.verbalize(a);
-    assertEquals("GETFEATURE(\"string\", anyVar)", s);
+    assertThat(s).isEqualTo("GETFEATURE(\"string\", anyVar)");
 
     // GETLIST
     a = new GetListAction(var, stringExpr);
     s = v.verbalize(a);
-    assertEquals("GETLIST(anyVar, \"string\")", s);
+    assertThat(s).isEqualTo("GETLIST(anyVar, \"string\")");
 
     // LOG
     a = new LogAction(stringExpr, Level.INFO);
     s = v.verbalize(a);
-    assertEquals("LOG(\"string\", INFO)", s);
+    assertThat(s).isEqualTo("LOG(\"string\", INFO)");
 
     // MARK
     a = new MarkAction(typeExpr1, null, indexes);
     s = v.verbalize(a);
-    assertEquals("MARK(Type1, 4, numVar)", s);
+    assertThat(s).isEqualTo("MARK(Type1, 4, numVar)");
 
     // MARKFAST
     a = new MarkFastAction(typeExpr1, stringListExpr, boolExpr1, numExpr1, boolExpr1);
     s = v.verbalize(a);
-    assertEquals("MARKFAST(Type1, {\"string\"}, true, 4, true)", s);
+    assertThat(s).isEqualTo("MARKFAST(Type1, {\"string\"}, true, 4, true)");
 
     // MARKLAST
     a = new MarkLastAction(typeExpr1);
     s = v.verbalize(a);
-    assertEquals("MARKLAST(Type1)", s);
+    assertThat(s).isEqualTo("MARKLAST(Type1)");
 
     // MARKONCE
     a = new MarkOnceAction(typeExpr1, null, indexes);
     s = v.verbalize(a);
-    assertEquals("MARKONCE(Type1, 4, numVar)", s);
+    assertThat(s).isEqualTo("MARKONCE(Type1, 4, numVar)");
 
     // MARKSCORE
     a = new MarkAction(typeExpr1, numExpr1, indexes);
     s = v.verbalize(a);
-    assertEquals("MARKSCORE(4, Type1, 4, numVar)", s);
+    assertThat(s).isEqualTo("MARKSCORE(4, Type1, 4, numVar)");
 
     // MARKTABLE
     a = new MarkTableAction(typeExpr1, numExpr1, wordTableExpr, stringExprNumExprMap, boolExpr1,
             numExpr1, stringExpr, numExpr1);
     s = v.verbalize(a);
-    assertEquals("MARKTABLE(Type1, 4, anyVar, \"string\" = 4, , true, 4, \"string\", 4)", s);
+    assertThat(s)
+            .isEqualTo("MARKTABLE(Type1, 4, anyVar, \"string\" = 4, , true, 4, \"string\", 4)");
 
     // MATCHEDTEXT
     a = new MatchedTextAction(var, indexes);
     s = v.verbalize(a);
-    assertEquals("MATCHEDTEXT(anyVar, 4, numVar)", s);
+    assertThat(s).isEqualTo("MATCHEDTEXT(anyVar, 4, numVar)");
 
     a = new MatchedTextAction(var, null);
     s = v.verbalize(a);
-    assertEquals("MATCHEDTEXT(anyVar)", s);
+    assertThat(s).isEqualTo("MATCHEDTEXT(anyVar)");
 
     // MERGE
     a = new MergeAction(boolExpr1, var, listExprList);
     s = v.verbalize(a);
-    assertEquals("MERGE(true, anyVar, {Type1, typeVar})", s);
+    assertThat(s).isEqualTo("MERGE(true, anyVar, {Type1, typeVar})");
 
     // REMOVEDUPLICATE
     a = new RemoveDuplicateAction(var);
     s = v.verbalize(a);
-    assertEquals("REMOVEDUPLICATE(anyVar)", s);
+    assertThat(s).isEqualTo("REMOVEDUPLICATE(anyVar)");
 
     // REPLACE
     a = new ReplaceAction(stringExpr);
     s = v.verbalize(a);
-    assertEquals("REPLACE(\"string\")", s);
+    assertThat(s).isEqualTo("REPLACE(\"string\")");
 
     // RETAINTYPE
     a = new RetainTypeAction(typeExprList);
     s = v.verbalize(a);
-    assertEquals("RETAINTYPE(Type1, typeVar)", s);
+    assertThat(s).isEqualTo("RETAINTYPE(Type1, typeVar)");
 
     // SETFEATURE
     a = new SetFeatureAction(stringExpr, typeExpr1);
     s = v.verbalize(a);
-    assertEquals("SETFEATURE(\"string\", Type1)", s);
+    assertThat(s).isEqualTo("SETFEATURE(\"string\", Type1)");
 
     // SHIFT
     a = new ShiftAction(typeExpr1, indexes, null);
     s = v.verbalize(a);
-    assertEquals("SHIFT(Type1, 4, numVar)", s);
+    assertThat(s).isEqualTo("SHIFT(Type1, 4, numVar)");
 
     // TRANSFER
     a = new TransferAction(typeExpr1);
     s = v.verbalize(a);
-    assertEquals("TRANSFER(Type1)", s);
+    assertThat(s).isEqualTo("TRANSFER(Type1)");
 
     // TRIE
     a = new TrieAction(wordListExpr, stringExprTypeExprMap, boolExpr1, numExpr1, boolExpr1,
             numExpr1, stringExpr);
     s = v.verbalize(a);
-    assertEquals("TRIE(\"string\" = Type1, anyVar, true, 4, true, 4, \"string\")", s);
+    assertThat(s).isEqualTo("TRIE(\"string\" = Type1, anyVar, true, 4, true, 4, \"string\")");
 
     // UNMARK
     a = new UnmarkAction(typeExpr1, indexes, boolExpr1);
     s = v.verbalize(a);
-    assertEquals("UNMARK(Type1, 4, numVar, true)", s);
+    assertThat(s).isEqualTo("UNMARK(Type1, 4, numVar, true)");
 
     // UNMARKALL
     a = new UnmarkAllAction(typeExpr1, typeListExpr);
     s = v.verbalize(a);
-    assertEquals("UNMARKALL(Type1, {Type1, typeVar})", s);
+    assertThat(s).isEqualTo("UNMARKALL(Type1, {Type1, typeVar})");
 
   }
 }

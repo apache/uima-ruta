@@ -18,10 +18,11 @@
  */
 package org.apache.uima.ruta.engine;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -43,8 +44,7 @@ import org.apache.uima.ruta.TypeUsageInformation;
 import org.apache.uima.ruta.descriptor.RutaBuildOptions;
 import org.apache.uima.ruta.descriptor.RutaDescriptorFactory;
 import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RutaEngineTest {
 
@@ -70,14 +70,12 @@ public class RutaEngineTest {
             "typeUsageInformation", true);
 
     List<String> mentionedTypes = typeUsageInformation.getMentionedTypes();
-    Collections.sort(mentionedTypes);
-    Assert.assertEquals(
-            Arrays.asList("COMMA", "CW", "Document", "Document", "SW", "SW.ct", "TruePositive", "W",
-                    "W.begin", "WS", "org", "org.apache", "org.apache.uima", "org.apache.uima.ruta",
-                    "org.apache.uima.ruta.type", "org.apache.uima.ruta.type.BREAK",
-                    "org.apache.uima.ruta.type.FalseNegative", "org.apache.uima.ruta.type.MARKUP",
-                    "org.apache.uima.ruta.type.SPACE", "uima.tcas.DocumentAnnotation"),
-            mentionedTypes);
+    assertThat(mentionedTypes).containsExactlyInAnyOrder("COMMA", "CW", "Document", "Document",
+            "SW", "SW.ct", "TruePositive", "W", "W.begin", "WS", "org", "org.apache",
+            "org.apache.uima", "org.apache.uima.ruta", "org.apache.uima.ruta.type",
+            "org.apache.uima.ruta.type.BREAK", "org.apache.uima.ruta.type.FalseNegative",
+            "org.apache.uima.ruta.type.MARKUP", "org.apache.uima.ruta.type.SPACE",
+            "uima.tcas.DocumentAnnotation");
 
     CAS cas = RutaTestUtils.getCAS("This is a test.");
     JCas jcas = cas.getJCas();
@@ -85,38 +83,34 @@ public class RutaEngineTest {
 
     Collection<String> usedTypes = typeUsageInformation.getUsedTypes();
     List<String> usedTypesList = new ArrayList<>(usedTypes);
-    Collections.sort(usedTypesList);
-    Assert.assertEquals(Arrays.asList("org.apache.uima.ruta.type.BREAK",
+    assertThat(usedTypesList).containsExactlyInAnyOrder("org.apache.uima.ruta.type.BREAK",
             "org.apache.uima.ruta.type.COMMA", "org.apache.uima.ruta.type.CW",
             "org.apache.uima.ruta.type.FalseNegative", "org.apache.uima.ruta.type.MARKUP",
             "org.apache.uima.ruta.type.SPACE", "org.apache.uima.ruta.type.SW",
             "org.apache.uima.ruta.type.TruePositive", "org.apache.uima.ruta.type.W",
-            "org.apache.uima.ruta.type.WS", "uima.tcas.DocumentAnnotation"), usedTypesList);
-
+            "org.apache.uima.ruta.type.WS", "uima.tcas.DocumentAnnotation");
   }
 
-  @Test(expected = NotImplementedException.class)
+  @Test()
   public void testInferenceVisitors() throws Throwable {
 
     String document = "Some text.";
     String script = "CW;";
 
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
-            script, RutaEngine.PARAM_INFERENCE_VISITORS,
-            new String[] { TestRutaInferenceVisitor.class.getName() });
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine( //
+            RutaEngine.class, //
+            RutaEngine.PARAM_RULES, script, //
+            RutaEngine.PARAM_INFERENCE_VISITORS, TestRutaInferenceVisitor.class);
 
     CAS cas = RutaTestUtils.getCAS(document);
 
-    try {
-      ae.process(cas);
-    } catch (AnalysisEngineProcessException e) {
-      Throwable cause = e.getCause();
-      throw cause;
-    }
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> ae.process(cas)) //
+            .withCauseInstanceOf(NotImplementedException.class);
   }
 
   @Test
-  public void testMaxRuleMatches() throws Throwable {
+  public void testMaxRuleMatches() throws Exception {
 
     String document = "This is some text.";
     String script = "W;";
@@ -126,16 +120,10 @@ public class RutaEngineTest {
 
     CAS cas = RutaTestUtils.getCAS(document);
 
-    try {
-      ae.process(cas);
-    } catch (AnalysisEngineProcessException e) {
-      Throwable cause = e.getCause();
-      Assert.assertTrue(cause instanceof RutaProcessRuntimeException);
-      String message = cause.getMessage();
-      Assert.assertTrue(message.startsWith("Rule exceeded the allowed amount of matches"));
-      return;
-    }
-    Assert.fail("expected RutaProcessRuntimeException");
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> ae.process(cas))
+            .withCauseInstanceOf(RutaProcessRuntimeException.class).havingCause()
+            .withMessageStartingWith("Rule exceeded the allowed amount of matches");
   }
 
   @Test
@@ -149,16 +137,10 @@ public class RutaEngineTest {
 
     CAS cas = RutaTestUtils.getCAS(document);
 
-    try {
-      ae.process(cas);
-    } catch (AnalysisEngineProcessException e) {
-      Throwable cause = e.getCause();
-      Assert.assertTrue(cause instanceof RutaProcessRuntimeException);
-      String message = cause.getMessage();
-      Assert.assertTrue(message.startsWith("Rule element exceeded the allowed amount of matches"));
-      return;
-    }
-    Assert.fail("expected RutaProcessRuntimeException");
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> ae.process(cas))
+            .withCauseInstanceOf(RutaProcessRuntimeException.class).havingCause()
+            .withMessageStartingWith("Rule element exceeded the allowed amount of matches");
   }
 
   @Test
@@ -196,9 +178,9 @@ public class RutaEngineTest {
     ae.process(cas);
 
     Type type = cas.getTypeSystem().getType("MyType");
-    Assert.assertNotNull(type);
+    assertThat(type).isNotNull();
     Collection<AnnotationFS> select = CasUtil.select(cas, type);
-    Assert.assertEquals(3, select.size());
+    assertThat(select).hasSize(3);
 
   }
 
@@ -222,9 +204,9 @@ public class RutaEngineTest {
     ae.process(cas);
 
     Type type = cas.getTypeSystem().getType("pack.MyType");
-    Assert.assertNotNull(type);
+    assertThat(type).isNotNull();
     Collection<AnnotationFS> select = CasUtil.select(cas, type);
-    Assert.assertEquals(3, select.size());
+    assertThat(select).hasSize(3);
 
   }
 

@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.expression.resource;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class WordTableStringExpressionTest {
 
@@ -78,26 +78,26 @@ public class WordTableStringExpressionTest {
     Feature f2 = t.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Peter", v1);
-    assertEquals("Ruta", v2);
+    assertThat(v1).isEqualTo("Peter");
+    assertThat(v2).isEqualTo("Ruta");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Marshall", v1);
-    assertEquals("UIMA", v2);
+    assertThat(v1).isEqualTo("Marshall");
+    assertThat(v2).isEqualTo("UIMA");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Joern", v1);
-    assertEquals("CAS Editor", v2);
+    assertThat(v1).isEqualTo("Joern");
+    assertThat(v2).isEqualTo("CAS Editor");
 
     cas.release();
 
@@ -142,26 +142,26 @@ public class WordTableStringExpressionTest {
     Feature f2 = t.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Peter", v1);
-    assertEquals("Ruta", v2);
+    assertThat(v1).isEqualTo("Peter");
+    assertThat(v2).isEqualTo("Ruta");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Marshall", v1);
-    assertEquals("UIMA", v2);
+    assertThat(v1).isEqualTo("Marshall");
+    assertThat(v2).isEqualTo("UIMA");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Joern", v1);
-    assertEquals("CAS Editor", v2);
+    assertThat(v1).isEqualTo("Joern");
+    assertThat(v2).isEqualTo("CAS Editor");
 
     cas.release();
 

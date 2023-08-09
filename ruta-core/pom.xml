@@ -50,7 +50,6 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
-      <version>${uima-version}</version>
     </dependency>
 
     <dependency>
@@ -82,14 +81,6 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-tools</artifactId>
-      <version>${uima-version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.uima</groupId>
-      <artifactId>uimaj-test-util</artifactId>
-      <version>${uima-version}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -131,32 +122,28 @@
     </dependency>
 
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
-    
-<!--     <dependency> -->
-<!--       <groupId>org.apache.uima</groupId> -->
-<!--       <artifactId>uimafit-junit</artifactId> -->
-<!--       <version>${uimafit-version}</version> -->
-<!--       <scope>test</scope> -->
-<!--       Exclude aop stuff, which is not need by uimafit and only introduces a non-asl license -->
-<!--       <exclusions> -->
-<!--         <exclusion> -->
-<!--           <groupId>org.springframework</groupId> -->
-<!--           <artifactId>spring-aop</artifactId> -->
-<!--         </exclusion> -->
-<!--         <exclusion> -->
-<!--           <groupId>aopalliance</groupId> -->
-<!--           <artifactId>aopalliance</artifactId> -->
-<!--         </exclusion> -->
-<!--       </exclusions> -->
-<!--     </dependency> -->
-
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-test-util</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-junit</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

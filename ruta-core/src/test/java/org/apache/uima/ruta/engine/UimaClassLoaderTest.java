@@ -18,6 +18,8 @@
  */
 package org.apache.uima.ruta.engine;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,8 +36,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
 import org.apache.uima.ruta.type.FalsePositive;
 import org.apache.uima.ruta.type.TruePositive;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class UimaClassLoaderTest {
 
@@ -48,13 +49,14 @@ public class UimaClassLoaderTest {
     ResourceManagerCreator oldCreator = ResourceManagerFactory.getResourceManagerCreator();
     try {
       ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
-  
+
         @Override
         public ResourceManager newResourceManager() throws ResourceInitializationException {
           ResourceManager resourceManager = null;
           try {
             resourceManager = UIMAFramework.newDefaultResourceManager();
-            resourceManager.setExtensionClassPath(this.getClass().getClassLoader(), cpDir.getAbsolutePath(), true);
+            resourceManager.setExtensionClassPath(this.getClass().getClassLoader(),
+                    cpDir.getAbsolutePath(), true);
             resourceManager.setDataPath("datapath");
           } catch (MalformedURLException e) {
             throw new ResourceInitializationException(e);
@@ -62,7 +64,7 @@ public class UimaClassLoaderTest {
           return resourceManager;
         }
       });
-  
+
       AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
               RutaEngine.PARAM_MAIN_SCRIPT, "UimafitTest");
       JCas jcas = ae.newJCas();
@@ -70,13 +72,12 @@ public class UimaClassLoaderTest {
       new TruePositive(jcas, 0, 4).addToIndexes();
       ae.process(jcas);
       Collection<FalsePositive> select = JCasUtil.select(jcas, FalsePositive.class);
-      Assert.assertTrue(!select.isEmpty());
-    }
-    finally {
+      assertThat(select).isNotEmpty();
+    } finally {
       ResourceManagerFactory.setResourceManagerCreator(oldCreator);
     }
   }
-  
+
   @Test
   public void testResource() throws Exception {
     URL url = UimaClassLoaderTest.class
@@ -86,13 +87,14 @@ public class UimaClassLoaderTest {
     ResourceManagerCreator oldCreator = ResourceManagerFactory.getResourceManagerCreator();
     try {
       ResourceManagerFactory.setResourceManagerCreator(new ResourceManagerCreator() {
-  
+
         @Override
         public ResourceManager newResourceManager() throws ResourceInitializationException {
           ResourceManager resourceManager = null;
           try {
             resourceManager = UIMAFramework.newDefaultResourceManager();
-            resourceManager.setExtensionClassPath(this.getClass().getClassLoader(), cpDir.getAbsolutePath(), true);
+            resourceManager.setExtensionClassPath(this.getClass().getClassLoader(),
+                    cpDir.getAbsolutePath(), true);
             resourceManager.setDataPath("datapath");
           } catch (MalformedURLException e) {
             throw new ResourceInitializationException(e);
@@ -100,16 +102,16 @@ public class UimaClassLoaderTest {
           return resourceManager;
         }
       });
-  
+
       AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class,
-              RutaEngine.PARAM_RULES, "WORDLIST list1 = 'MarkFastTestList.txt';MARKFAST(FalsePositive, list1, false, 0, true);");
+              RutaEngine.PARAM_RULES,
+              "WORDLIST list1 = 'MarkFastTestList.txt';MARKFAST(FalsePositive, list1, false, 0, true);");
       JCas jcas = ae.newJCas();
       jcas.setDocumentText("1 0 0");
       ae.process(jcas);
       Collection<FalsePositive> select = JCasUtil.select(jcas, FalsePositive.class);
-      Assert.assertTrue(!select.isEmpty());
-    }
-    finally {
+      assertThat(!select.isEmpty()).isTrue();
+    } finally {
       ResourceManagerFactory.setResourceManagerCreator(oldCreator);
     }
   }

@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.example;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +36,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import uima.ruta.example.Author;
 import uima.ruta.example.Bibtex;
@@ -49,46 +49,46 @@ public class ExampleTest {
     File aeFile = new File(
             "target/generated-sources/ruta/descriptor/uima/ruta/example/MainEngine.xml");
 
-    AnalysisEngineDescription aed = UIMAFramework.getXMLParser().parseAnalysisEngineDescription(
-            new XMLInputSource(aeFile));
+    AnalysisEngineDescription aed = UIMAFramework.getXMLParser()
+            .parseAnalysisEngineDescription(new XMLInputSource(aeFile));
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
     CAS cas = ae.newCAS();
-    cas.setDocumentText("Ogren, P.V., Wetzler, P.G., Bethard, S.: ClearTK: A UIMA Toolkit for Statistical Natural Language Processing. In: UIMA for NLP workshop at LREC 08. (2008)");
+    cas.setDocumentText(
+            "Ogren, P.V., Wetzler, P.G., Bethard, S.: ClearTK: A UIMA Toolkit for Statistical Natural Language Processing. In: UIMA for NLP workshop at LREC 08. (2008)");
     ae.process(cas);
 
     JCas jCas = cas.getJCas();
     Collection<Bibtex> bibtexs = JCasUtil.select(jCas, Bibtex.class);
-    assertEquals(1, bibtexs.size());
+    assertThat(bibtexs.size()).isEqualTo(1);
     Bibtex bibtex = bibtexs.iterator().next();
-    assertEquals(
-            "Ogren, P.V., Wetzler, P.G., Bethard, S.: ClearTK: A UIMA Toolkit for Statistical Natural Language Processing. In: UIMA for NLP workshop at LREC 08. (2008)",
-            bibtex.getCoveredText());
-    assertEquals("Ogren, P.V., Wetzler, P.G., Bethard, S.:", bibtex.getAuthor().getCoveredText());
-    assertEquals("ClearTK: A UIMA Toolkit for Statistical Natural Language Processing.", bibtex
-            .getTitle().getCoveredText());
-    assertEquals("(2008)", bibtex.getYear().getCoveredText());
+    assertThat(bibtex.getCoveredText()).isEqualTo(
+            "Ogren, P.V., Wetzler, P.G., Bethard, S.: ClearTK: A UIMA Toolkit for Statistical Natural Language Processing. In: UIMA for NLP workshop at LREC 08. (2008)");
+    assertThat(bibtex.getAuthor().getCoveredText())
+            .isEqualTo("Ogren, P.V., Wetzler, P.G., Bethard, S.:");
+    assertThat(bibtex.getTitle().getCoveredText())
+            .isEqualTo("ClearTK: A UIMA Toolkit for Statistical Natural Language Processing.");
+    assertThat(bibtex.getYear().getCoveredText()).isEqualTo("(2008)");
   }
-  
+
   @Test
-  public void testAuthorWithMTWL() throws InvalidXMLException, IOException, ResourceInitializationException,
-          AnalysisEngineProcessException, CASException {
+  public void testAuthorWithMTWL() throws InvalidXMLException, IOException,
+          ResourceInitializationException, AnalysisEngineProcessException, CASException {
     File aeFile = new File(
             "target/generated-sources/ruta/descriptor/uima/ruta/example/AuthorWithMTWLEngine.xml");
 
-    AnalysisEngineDescription aed = UIMAFramework.getXMLParser().parseAnalysisEngineDescription(
-            new XMLInputSource(aeFile));
+    AnalysisEngineDescription aed = UIMAFramework.getXMLParser()
+            .parseAnalysisEngineDescription(new XMLInputSource(aeFile));
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
     CAS cas = ae.newCAS();
-    cas.setDocumentText("Stephen Soderland, Claire Cardie, and Raymond Mooney. Learning Information Extraction Rules for Semi-Structured and Free Text. In Machine Learning, volume 34, pages 233–272, 1999.");
+    cas.setDocumentText(
+            "Stephen Soderland, Claire Cardie, and Raymond Mooney. Learning Information Extraction Rules for Semi-Structured and Free Text. In Machine Learning, volume 34, pages 233–272, 1999.");
     ae.process(cas);
 
     JCas jCas = cas.getJCas();
     Collection<Author> authors = JCasUtil.select(jCas, Author.class);
-    assertEquals(1, authors.size());
+    assertThat(authors).hasSize(1);
     Author author = authors.iterator().next();
-    assertEquals(
-            "Stephen Soderland, Claire Cardie, and Raymond Mooney.",
-            author.getCoveredText());
+    assertThat(author.getCoveredText())
+            .isEqualTo("Stephen Soderland, Claire Cardie, and Raymond Mooney.");
   }
-
 }

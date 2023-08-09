@@ -19,11 +19,10 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -45,9 +44,8 @@ import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.type.FalsePositive;
 import org.apache.uima.ruta.type.TruePositive;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test various import statements syntaxes (see UIMA-3303).
@@ -90,7 +88,7 @@ public class ImportStatementsTest {
       cas.setDocumentText("Word");
       ae.process(cas);
 
-      assertEquals(Arrays.asList("Word"), selectText(cas, "org.apache.uima.ruta.Type1"));
+      assertThat(selectText(cas, "org.apache.uima.ruta.Type1")).containsExactly("Word");
     } finally {
       ae.destroy();
     }
@@ -104,7 +102,7 @@ public class ImportStatementsTest {
       cas.setDocumentText("Word");
       ae.process(cas);
 
-      assertEquals(Arrays.asList("Word"), selectText(cas, "org.apache.uima.ruta.Type1"));
+      assertThat(selectText(cas, "org.apache.uima.ruta.Type1")).containsExactly("Word");
     } finally {
       ae.destroy();
     }
@@ -134,8 +132,8 @@ public class ImportStatementsTest {
       cas.setDocumentText("First Second");
       ae.process(cas);
 
-      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.Type1"));
-      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.Type2"));
+      assertThat(selectText(cas, "org.apache.uima.ruta.Type1")).containsExactly("First");
+      assertThat(selectText(cas, "org.apache.uima.ruta.Type2")).containsExactly("Second");
     } finally {
       ae.destroy();
     }
@@ -150,8 +148,8 @@ public class ImportStatementsTest {
       cas.setDocumentText("First Second");
       ae.process(cas);
 
-      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.Type1"));
-      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.Type2"));
+      assertThat(selectText(cas, "org.apache.uima.ruta.Type1")).containsExactly("First");
+      assertThat(selectText(cas, "org.apache.uima.ruta.Type2")).containsExactly("Second");
     } finally {
       ae.destroy();
     }
@@ -165,8 +163,8 @@ public class ImportStatementsTest {
       cas.setDocumentText("First Second");
       ae.process(cas);
 
-      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.Type1"));
-      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.Type2"));
+      assertThat(selectText(cas, "org.apache.uima.ruta.Type1")).containsExactly("First");
+      assertThat(selectText(cas, "org.apache.uima.ruta.Type2")).containsExactly("Second");
     } finally {
       ae.destroy();
     }
@@ -181,8 +179,8 @@ public class ImportStatementsTest {
       cas.setDocumentText("First Second");
       ae.process(cas);
 
-      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.other.Type1"));
-      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.other.Type2"));
+      assertThat(selectText(cas, "org.apache.uima.ruta.other.Type1")).containsExactly("First");
+      assertThat(selectText(cas, "org.apache.uima.ruta.other.Type2")).containsExactly("Second");
     } finally {
       ae.destroy();
     }
@@ -197,8 +195,8 @@ public class ImportStatementsTest {
       cas.setDocumentText("First Second");
       ae.process(cas);
 
-      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.other.Type1"));
-      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.other2.Type1"));
+      assertThat(selectText(cas, "org.apache.uima.ruta.other.Type1")).containsExactly("First");
+      assertThat(selectText(cas, "org.apache.uima.ruta.other2.Type1")).containsExactly("Second");
     } finally {
       ae.destroy();
     }
@@ -213,8 +211,8 @@ public class ImportStatementsTest {
       cas.setDocumentText("First Second");
       ae.process(cas);
 
-      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.Type1"));
-      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.Type2"));
+      assertThat(selectText(cas, "org.apache.uima.ruta.Type1")).containsExactly("First");
+      assertThat(selectText(cas, "org.apache.uima.ruta.Type2")).containsExactly("Second");
     } finally {
       ae.destroy();
     }
@@ -228,8 +226,8 @@ public class ImportStatementsTest {
       cas.setDocumentText("First Second");
       ae.process(cas);
 
-      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.other.Type1"));
-      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.other2.Type1"));
+      assertThat(selectText(cas, "org.apache.uima.ruta.other.Type1")).containsExactly("First");
+      assertThat(selectText(cas, "org.apache.uima.ruta.other2.Type1")).containsExactly("Second");
     } finally {
       ae.destroy();
     }
@@ -243,8 +241,8 @@ public class ImportStatementsTest {
       cas.setDocumentText("First Second");
       ae.process(cas);
 
-      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.other3.Type1"));
-      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.other4.Type2"));
+      assertThat(selectText(cas, "org.apache.uima.ruta.other3.Type1")).containsExactly("First");
+      assertThat(selectText(cas, "org.apache.uima.ruta.other4.Type2")).containsExactly("Second");
     } finally {
       ae.destroy();
     }
@@ -259,8 +257,8 @@ public class ImportStatementsTest {
       cas.setDocumentText("First Second");
       ae.process(cas);
 
-      assertEquals(Arrays.asList("First"), selectText(cas, "org.apache.uima.ruta.other3.Type1"));
-      assertEquals(Arrays.asList("Second"), selectText(cas, "org.apache.uima.ruta.other4.Type2"));
+      assertThat(selectText(cas, "org.apache.uima.ruta.other3.Type1")).containsExactly("First");
+      assertThat(selectText(cas, "org.apache.uima.ruta.other4.Type2")).containsExactly("Second");
     } finally {
       ae.destroy();
     }
@@ -289,7 +287,7 @@ public class ImportStatementsTest {
   }
 
   @Test
-  @Ignore
+  @Disabled
   public void testDeclareWithAliasParent() throws Exception {
 
     String document = "This is a test.";
@@ -316,8 +314,8 @@ public class ImportStatementsTest {
 
     analysisEngine.process(cas);
 
-    Assert.assertEquals(1, JCasUtil.select(cas.getJCas(), TruePositive.class).size());
-    Assert.assertEquals(1, JCasUtil.select(cas.getJCas(), FalsePositive.class).size());
+    assertThat(JCasUtil.select(cas.getJCas(), TruePositive.class)).hasSize(1);
+    assertThat(JCasUtil.select(cas.getJCas(), FalsePositive.class)).hasSize(1);
   }
 
   private List<String> selectText(CAS cas, String type) {

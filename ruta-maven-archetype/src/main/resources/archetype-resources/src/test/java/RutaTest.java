@@ -29,8 +29,7 @@ import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.junit.Assert;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import ${package}.${projectNameCamelCase}Main.RutaMention;
 
 public class RutaTest {

@@ -19,8 +19,7 @@
 
 package org.apache.uima.ruta.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SplitTest {
 
@@ -70,25 +69,25 @@ public class SplitTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
-    assertEquals("More text", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("More text");
     FeatureStructure featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
     next = iterator.next();
-    assertEquals("with 1", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("with 1");
     featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
     next = iterator.next();
-    assertEquals("and more", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("and more");
     featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
   }
 
@@ -121,25 +120,25 @@ public class SplitTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
-    assertEquals("More text", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("More text");
     FeatureStructure featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
     next = iterator.next();
-    assertEquals(", with 1", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo(", with 1");
     featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
     next = iterator.next();
-    assertEquals(", and more", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo(", and more");
     featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
   }
 
@@ -172,25 +171,25 @@ public class SplitTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
-    assertEquals("More text ,", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("More text ,");
     FeatureStructure featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
     next = iterator.next();
-    assertEquals("with 1 ,", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("with 1 ,");
     featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
     next = iterator.next();
-    assertEquals("and more", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("and more");
     featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
   }
 
@@ -223,25 +222,25 @@ public class SplitTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
-    assertEquals("More text ,", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("More text ,");
     FeatureStructure featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
     next = iterator.next();
-    assertEquals(", with 1 ,", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo(", with 1 ,");
     featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
     next = iterator.next();
-    assertEquals(", and more", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo(", and more");
     featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
   }
 
@@ -276,25 +275,25 @@ public class SplitTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
-    assertEquals("More text ,", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("More text ,");
     FeatureStructure featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
     next = iterator.next();
-    assertEquals("with 1", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("with 1");
     featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
     next = iterator.next();
-    assertEquals(", and more", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo(", and more");
     featureValue = next.getFeatureValue(f1);
-    assertNotNull(featureValue);
-    assertEquals("1", ((AnnotationFS) featureValue).getCoveredText());
+    assertThat(featureValue).isNotNull();
+    assertThat(((AnnotationFS) featureValue).getCoveredText()).isEqualTo("1");
 
   }
 
@@ -315,16 +314,16 @@ public class SplitTest {
     t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
-    assertEquals("Some text.", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("Some text.");
 
     next = iterator.next();
-    assertEquals("More text , with 1 , and more.", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("More text , with 1 , and more.");
 
     next = iterator.next();
-    assertEquals("even more text.", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("even more text.");
 
   }
 
