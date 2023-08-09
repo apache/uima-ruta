@@ -40,11 +40,6 @@
     <url>https://github.com/apache/uima-ruta/issues</url>
   </issueManagement>
 
-  <!-- Special inheritance note even though the <scm> element that follows 
-    is exactly the same as those in super poms, it cannot be inherited because 
-    there is some special code that computes the connection elements from the 
-    chain of parent poms, if this is omitted. Keeping this a bit factored allows 
-    cutting/pasting the <scm> element, and just changing the following two properties -->
   <scm>
     <connection>scm:git:https://github.com/apache/uima-ruta/</connection>
     <developerConnection>scm:git:https://github.com/apache/uima-ruta/</developerConnection>
@@ -71,6 +66,23 @@
       </snapshots>
     </repository>
     
+    <!--
+      - The Eclipse Plugin modules use version ranges for their dependencies. These could resolve to
+      - SNAPSHOT versions if we have a SNAPSHOT repo declaration here. Thus, this repo should only
+      - be enabled when really needed.
+      -->
+    <repository>
+      <id>apache.snapshots</id>
+      <name>Apache Snapshot Repository</name>
+      <url>https://repository.apache.org/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+
     <repository>
       <id>${eclipseP2RepoId}</id>
       <url>https://download.eclipse.org/releases/2018-12/</url>
@@ -118,13 +130,16 @@
       Creative Commons Attribution 3.0 License.
     </postNoticeText>
 
-    <uimaVersion>3.5.0-SNAPSHOT</uimaVersion>
+    <uima-version>3.5.0-SNAPSHOT</uima-version>
     <uimafit-version>3.4.0</uimafit-version>
     <spring-version>5.3.25</spring-version>
-    <junit-version>4.13.2</junit-version>
     <slf4j-version>1.7.36</slf4j-version>
     <maven.version>3.2.5</maven.version>
 
+    <junit-version>5.10.0</junit-version>
+    <junit-vintage-version>4.13.2</junit-vintage-version>
+    <assertj-version>3.24.2</assertj-version>
+ 
     <antlr-version>3.5.3</antlr-version>
     <htmlparser-version>1.6</htmlparser-version>
     <commons-collections-version>3.2.2</commons-collections-version>
@@ -151,6 +166,49 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit-vintage-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj-version}</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>${slf4j-version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>uimaj-bom</artifactId>
+        <version>${uima-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>uimafit-core</artifactId>
+        <version>${uimafit-version}</version>
+      </dependency>
+      
       <dependency>
         <groupId>org.antlr</groupId>
         <artifactId>antlr-runtime</artifactId>
@@ -181,11 +239,7 @@
         <artifactId>commons-lang3</artifactId>
         <version>${commons-lang3-version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimafit-core</artifactId>
-        <version>${uimafit-version}</version>
-      </dependency>
+      
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
@@ -234,6 +288,16 @@
       </dependency>
 
       <dependency>
+        <groupId>org.sonatype.plexus</groupId>
+        <artifactId>plexus-build-api</artifactId>
+        <version>0.0.7</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.plugin-testing</groupId>
+        <artifactId>maven-plugin-testing-harness</artifactId>
+        <version>3.3.0</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-plugin-api</artifactId>
         <version>${maven.version}</version>
@@ -248,32 +312,31 @@
         <artifactId>maven-compat</artifactId>
         <version>${maven.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.sonatype.plexus</groupId>
-        <artifactId>plexus-build-api</artifactId>
-        <version>0.0.7</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven.plugin-testing</groupId>
-        <artifactId>maven-plugin-testing-harness</artifactId>
-        <version>3.3.0</version>
-      </dependency>
-
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-jdk14</artifactId>
-        <version>${slf4j-version}</version>
-        <scope>test</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-engine</artifactId>
+              <version>${junit-version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.junit.vintage</groupId>
+              <artifactId>junit-vintage-engine</artifactId>
+              <version>${junit-version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>org.openntf.maven</groupId>

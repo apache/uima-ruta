@@ -46,42 +46,42 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-runtime</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-jcasgen</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-debug</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-configurator</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-cas-editor</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-cas-editor-ide</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-pear-packager</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-launcher</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>

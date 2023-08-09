@@ -44,7 +44,7 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
@@ -54,12 +54,12 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-cas-editor-ide</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-cas-editor</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>

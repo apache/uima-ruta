@@ -50,7 +50,7 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
 
     <dependency>
@@ -82,13 +82,13 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-tools</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-test-util</artifactId>
-      <version>${uimaVersion}</version>
+      <version>${uima-version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -266,7 +266,7 @@
       <plugin>
         <groupId>org.apache.uima</groupId>
         <artifactId>jcasgen-maven-plugin</artifactId>
-        <version>${uimaVersion}</version>
+        <version>${uima-version}</version>
         <executions>
           <execution>
             <goals>

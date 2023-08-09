@@ -277,7 +277,7 @@
       <plugin>
         <groupId>org.apache.uima</groupId>
         <artifactId>jcasgen-maven-plugin</artifactId>
-        <version>${uimaVersion}</version>
+        <version>${uima-version}</version>
         <executions>
           <execution>
             <goals>
