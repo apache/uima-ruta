@@ -16,12 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.uima.ruta.maven;
 
-import java.io.File;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.Assert.*;
+import java.io.File;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -32,23 +31,24 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.jupiter.api.Test;
+
 public class OneEngineTest {
   
   @Test
   public void test() throws Exception{
     File descDirectory = new File("target/generated-sources/ruta/descriptor");
     File aeFile1 = new File(descDirectory, "my/package/one/OneEngine.xml");
-    assertTrue(aeFile1.exists());
+    assertThat(aeFile1).exists();
     File aeFile2 = new File(descDirectory, "my/package/two/TwoEngine.xml");
-    assertTrue(aeFile2.exists());
+    assertThat(aeFile2).exists();
     File aeFile3 = new File(descDirectory, "my/package/three/ThreeEngine.xml");
-    assertTrue(aeFile3.exists());
+    assertThat(aeFile3).exists();
     File tsFile1 = new File(descDirectory, "my/package/one/OneTypeSystem.xml");
-    assertTrue(tsFile1.exists());
+    assertThat(tsFile1).exists();
     File tsFile2 = new File(descDirectory, "my/package/two/TwoTypeSystem.xml");
-    assertTrue(tsFile2.exists());
+    assertThat(tsFile2).exists();
     File tsFile3 = new File(descDirectory, "my/package/three/ThreeTypeSystem.xml");
-    assertTrue(tsFile3.exists());
+    assertThat(tsFile3).exists();
     
     AnalysisEngineDescription aed = UIMAFramework.getXMLParser().parseAnalysisEngineDescription(new XMLInputSource(aeFile1));
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
@@ -57,21 +57,20 @@ public class OneEngineTest {
     ae.process(cas);
     
     Type type1 = cas.getTypeSystem().getType("my.package.one.One.Type1");
-    AnnotationIndex<AnnotationFS> ai1 = cas.getAnnotationIndex(type1);
-    assertEquals(1, ai1.size());
-    assertEquals("This", ai1.iterator().next().getCoveredText());
-    
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(type1)) //
+      .extracting(AnnotationFS::getCoveredText) //
+      .containsExactly("This");
+        
     Type type2 = cas.getTypeSystem().getType("my.package.two.Two.Type2");
-    AnnotationIndex<AnnotationFS> ai2 = cas.getAnnotationIndex(type2);
-    assertEquals(1, ai2.size());
-    assertEquals("This", ai2.iterator().next().getCoveredText());
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(type2)) //
+      .extracting(AnnotationFS::getCoveredText) //
+      .containsExactly("This");
     
     Type type3 = cas.getTypeSystem().getType("my.package.three.Three.Type3");
-    AnnotationIndex<AnnotationFS> ai3 = cas.getAnnotationIndex(type3);
-    assertEquals(1, ai3.size());
-    assertEquals("This", ai3.iterator().next().getCoveredText());
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(type3)) //
+      .extracting(AnnotationFS::getCoveredText) //
+      .containsExactly("This");
     
     cas.release();
   }
-  
 }

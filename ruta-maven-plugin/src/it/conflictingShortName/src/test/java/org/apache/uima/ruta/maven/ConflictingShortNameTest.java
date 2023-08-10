@@ -16,11 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.uima.ruta.maven;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 
@@ -34,43 +32,44 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.util.XMLInputSource;
 import org.junit.jupiter.api.Test;
+
 public class ConflictingShortNameTest {
   
   @Test
   public void test() throws Exception{
     File descDirectory = new File("target/generated-sources/ruta/descriptor");
     File aeFile1 = new File(descDirectory, "my/package/MainEngine.xml");
-    assertTrue(aeFile1.exists());
+    assertThat(aeFile1).exists();
     
     AnalysisEngineDescription aed = UIMAFramework.getXMLParser().parseAnalysisEngineDescription(new XMLInputSource(aeFile1));
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
     ae.setConfigParameterValue(RutaEngine.PARAM_STRICT_IMPORTS, true);
     ae.reconfigure();
+
     CAS cas = ae.newCAS();
     cas.setDocumentText("Test");
     ae.process(cas);
     
     Type type1 = cas.getTypeSystem().getType("my.package.One.LocalType");
-    AnnotationIndex<AnnotationFS> ai1 = cas.getAnnotationIndex(type1);
-    assertEquals(1, ai1.size());
-    assertEquals("Test", ai1.iterator().next().getCoveredText());
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(type1)) //
+      .extracting(AnnotationFS::getCoveredText) //
+      .containsExactly("Test");
     
     Type type2 = cas.getTypeSystem().getType("my.package.Two.LocalType");
-    AnnotationIndex<AnnotationFS> ai2 = cas.getAnnotationIndex(type2);
-    assertEquals(1, ai2.size());
-    assertEquals("Test", ai2.iterator().next().getCoveredText());
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(type2)) //
+      .extracting(AnnotationFS::getCoveredText) //
+      .containsExactly("Test");
     
     Type type3 = cas.getTypeSystem().getType("my.package.one.ExternalType");
-    AnnotationIndex<AnnotationFS> ai3 = cas.getAnnotationIndex(type3);
-    assertEquals(1, ai3.size());
-    assertEquals("Test", ai3.iterator().next().getCoveredText());
-    
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(type3)) //
+      .extracting(AnnotationFS::getCoveredText) //
+      .containsExactly("Test");
+
     Type type4 = cas.getTypeSystem().getType("my.package.two.ExternalType");
-    AnnotationIndex<AnnotationFS> ai4 = cas.getAnnotationIndex(type4);
-    assertEquals(1, ai4.size());
-    assertEquals("Test", ai4.iterator().next().getCoveredText());
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(type4)) //
+      .extracting(AnnotationFS::getCoveredText) //
+      .containsExactly("Test");
     
     cas.release();
-  }
-  
+  }  
 }

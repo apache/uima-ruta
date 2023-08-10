@@ -45,6 +45,11 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
+      <artifactId>org.apache.uima.tools</artifactId>
+      <version>${uima-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-runtime</artifactId>
       <version>${uima-version}</version>
     </dependency>
