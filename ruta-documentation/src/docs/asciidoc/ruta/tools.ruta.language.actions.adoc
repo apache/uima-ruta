@@ -1,0 +1,1097 @@
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements. See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership. The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License. You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied. See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+[[_ugr.tools.ruta.language.actions]]
+= Actions
+
+[[_ugr.tools.ruta.language.actions.add]]
+== ADD
+
+The ADD action adds all the elements of the passed RutaExpressions to a given list.
+For example, this expressions could be a string, an integer variable or a list.
+For a complete overview on UIMA Ruta expressions see <<_ugr.tools.ruta.language.expressions>>. 
+
+.Definition
+[source]
+----
+ADD(ListVariable,(RutaExpression)+)
+----
+
+.Example
+[source]
+----
+Document{->ADD(list, var)};
+----
+
+In this example, the variable 'var' is added to the list 'list'. 
+
+[[_ugr.tools.ruta.language.actions.addfiltertype]]
+== ADDFILTERTYPE
+
+The ADDFILTERTYPE action adds its arguments to the list of filtered types,  which restrict the visibility of the rules. 
+
+.Definition
+[source]
+----
+ADDFILTERTYPE(TypeExpression(,TypeExpression)*)
+----
+
+.Example
+[source]
+----
+Document{->ADDFILTERTYPE(CW)};
+----
+
+After applying this rule, capitalized words are invisible additionally to the previously filtered types. 
+
+[[_ugr.tools.ruta.language.actions.addretaintype]]
+== ADDRETAINTYPE
+
+The ADDRETAINTYPE action adds its arguments to the list of retained types,  which extend the visibility of the rules. 
+
+.Definition
+[source]
+----
+ADDRETAINTYPE(TypeExpression(,TypeExpression)*)
+----
+
+.Example
+[source]
+----
+Document{->ADDRETAINTYPE(MARKUP)};
+----
+
+After applying this rule, markup is visible additionally to the previously retained types. 
+
+[[_ugr.tools.ruta.language.actions.assign]]
+== ASSIGN
+
+The ASSIGN action assigns the value of the passed expression to a variable of the same type. 
+
+.Definition
+[source]
+----
+ASSIGN(BooleanVariable,BooleanExpression)
+----
+
+
+[source]
+----
+ASSIGN(NumberVariable,NumberExpression)
+----
+
+
+[source]
+----
+ASSIGN(StringVariable,StringExpression)
+----
+
+
+[source]
+----
+ASSIGN(TypeVariable,TypeExpression)
+----
+
+.Example
+[source]
+----
+Document{->ASSIGN(amount, (amount/2))};
+----
+
+In this example, the value of the variable 'amount' is divided in half. 
+
+[[_ugr.tools.ruta.language.actions.call]]
+== CALL
+
+The CALL action initiates the execution of a different script file or script block.
+Currently, only complete script files are supported. 
+
+.Definition
+[source]
+----
+CALL(DifferentFile)
+----
+
+
+[source]
+----
+CALL(Block)
+----
+
+.Example
+[source]
+----
+Document{->CALL(NamedEntities)};
+----
+
+Here, a script 'NamedEntities' for named entity recognition is executed. 
+
+[[_ugr.tools.ruta.language.actions.clear]]
+== CLEAR
+
+The CLEAR action removes all elements of the given list.
+If the list was initialized as it was declared,  then it is reset to its initial value. 
+
+.Definition
+[source]
+----
+CLEAR(ListVariable)
+----
+
+.Example
+[source]
+----
+Document{->CLEAR(SomeList)};
+----
+
+This rule clears the list 'SomeList'. 
+
+[[_ugr.tools.ruta.language.actions.color]]
+== COLOR
+
+The COLOR action sets the color of an annotation type in the modified view, if the rule has fired.
+The background color is passed as the second parameter.
+The font color can be changed by passing a further color as a third parameter.
+The supported colors are: black, silver, gray, white, maroon, red, purple, fuchsia, green, lime, olive, yellow, navy, blue, aqua, lightblue, lightgreen, orange, pink, salmon, cyan, violet, tan, brown, white and mediumpurple. 
+
+.Definition
+[source]
+----
+COLOR(TypeExpression,StringExpression(, StringExpression
+          (, BooleanExpression)?)?)
+----
+
+.Example
+[source]
+----
+Document{->COLOR(Headline, "red", "green", true)};
+----
+
+This rule colors all Headline annotations in the modified view.
+Thereby, the background color is set to red, font color is set to green and all 'Headline' annotations are selected when opening the modified view. 
+
+[[_ugr.tools.ruta.language.actions.configure]]
+== CONFIGURE
+
+The CONFIGURE action can be used to configure the analysis engine of the given namespace (first parameter). The parameters that should be configured with corresponding values are passed as name-value pairs. 
+
+.Definition
+[source]
+----
+CONFIGURE(AnalysisEngine(,StringExpression = Expression)+)
+----
+
+.Example
+[source]
+----
+ENGINE utils.HtmlAnnotator;
+Document{->CONFIGURE(HtmlAnnotator, "onlyContent" = false)};
+----
+
+The former rule changes the value of configuration parameter "`onlyContent`" to false and reconfigure the analysis engine. 
+
+[[_ugr.tools.ruta.language.actions.create]]
+== CREATE
+
+The CREATE action is similar to the MARK action.
+It also annotates the matched text fragments with a type annotation, but additionally assigns values to a chosen subset of the type's feature elements. 
+
+.Definition
+[source]
+----
+CREATE(TypeExpression(,NumberExpression)*
+                         (,StringExpression = Expression)+)
+----
+
+.Example
+[source]
+----
+Paragraph{COUNT(ANY,0,10000,cnt)->CREATE(Headline,"size" = cnt)};
+----
+
+This rule counts the number of tokens of type ANY in a Paragraph annotation and assigns the counted value to the int variable 'cnt'. If the counted number is between 0 and 10000, a Headline annotation is created for this Paragraph.
+Moreover, the feature named 'size' of Headline is set to the value of 'cnt'. 
+
+[[_ugr.tools.ruta.language.actions.del]]
+== DEL
+
+The DEL action deletes the matched text fragments in the modified view.
+For removing annotations see UNMARK. 
+
+.Definition
+[source]
+----
+DEL
+----
+
+.Example
+[source]
+----
+Name{->DEL};
+----
+
+This rule deletes all text fragments that are annotated with a Name annotation. 
+
+[[_ugr.tools.ruta.language.actions.dynamicanchoring]]
+== DYNAMICANCHORING
+
+The DYNAMICANCHORING action turns dynamic anchoring on or off (first parameter) and assigns the anchoring parameters penalty (second parameter) and factor (third parameter). 
+
+.Definition
+[source]
+----
+DYNAMICANCHORING(BooleanExpression
+              (,NumberExpression(,NumberExpression)?)?)
+----
+
+.Example
+[source]
+----
+Document{->DYNAMICANCHORING(true)};
+----
+
+The above mentioned example activates dynamic anchoring. 
+
+[[_ugr.tools.ruta.language.actions.exec]]
+== EXEC
+
+The EXEC action initiates the execution of a different script file or analysis engine on the complete input document, independent from the matched text and the current filtering settings.
+If the imported component (DifferentFile) refers to another script file, it is applied on a new representation of the document: the complete text of the original CAS with the default filtering settings of the UIMA Ruta analysis engine.
+If it refers to an  external analysis engine, then it is applied on the complete document.
+The optional, first argument is is a string expression, which specifies the view the component should be applied on.
+The optional, third argument is a list of types, which should be reindexed by Ruta (not UIMA itself). 
+
+[NOTE]
+====
+Annotations created by the external analysis engine are not accessible for UIMA Ruta rules in the same script.
+The types of these annotations need to be provided in the second argument in order to be visible to the Ruta rules. 
+====
+
+.Definition
+[source]
+----
+EXEC((StringExpression,)? DifferentFile(, TypeListExpression)?)
+----
+
+.Example
+[source]
+----
+ENGINE NamedEntities;
+Document{->EXEC(NamedEntities, {Person, Location})};
+----
+
+Here, an analysis engine for named entity recognition is executed once on the complete document and the annotations of the types Person and Location (and all subtypes)  are reindexed in UIMA Ruta.
+Without this list of types, the annotations are added to the CAS, but cannot be accessed by Ruta rules. 
+
+[[_ugr.tools.ruta.language.actions.fill]]
+== FILL
+
+The FILL action fills a chosen subset of the given type's feature elements. 
+
+.Definition
+[source]
+----
+FILL(TypeExpression(,StringExpression = Expression)+)
+----
+
+.Example
+[source]
+----
+Headline{COUNT(ANY,0,10000,tokenCount)
+          ->FILL(Headline,"size" = tokenCount)};
+----
+
+Here, the number of tokens within an Headline annotation is counted and stored in variable 'tokenCount'. If the number of tokens is within the interval [0;10000], the FILL action fills the Headline's feature 'size' with the value of 'tokenCount'. 
+
+[[_ugr.tools.ruta.language.actions.filtertype]]
+== FILTERTYPE
+
+This action filters the given types of annotations.
+They are now ignored by rules.
+Expressions are not yet supported.
+This action is related to RETAINTYPE (see <<_ugr.tools.ruta.language.actions.retaintype>>). 
+
+[NOTE]
+====
+The visibility of types is calculated using three lists:  A list "`default`" for the initially filtered types,  which is specified in the configuration parameters of the analysis engine, the list "`filtered`", which is  specified by the FILTERTYPE action, and the list "`retained`", which is specified by the RETAINTYPE action.
+For determining the actual visibility of types, list "`filtered`" is added to list "`default`"  and then all elements of list "`retained`" are removed.
+The annotations of the types in the resulting list are not visible.
+Please note that the actions FILTERTYPE and RETAINTYPE replace all elements of the respective lists and that RETAINTYPE  overrides FILTERTYPE. 
+====
+
+.Definition
+[source]
+----
+FILTERTYPE((TypeExpression(,TypeExpression)*))?
+----
+
+.Example
+[source]
+----
+Document{->FILTERTYPE(SW)};
+----
+
+This rule filters all small written words in the input document.
+They are further ignored by every rule. 
+
+
+[source]
+----
+Document{->FILTERTYPE};
+----
+
+Here, the the action (without parentheses) specifies that no additional types should be filtered. 
+
+[[_ugr.tools.ruta.language.actions.gather]]
+== GATHER
+
+This action creates a complex structure: an annotation with features.
+The optionally passed indexes (NumberExpressions after the TypeExpression) can be used to create an annotation that spans the matched information of several rule elements.
+The features are collected using the indexes of the rule elements of the complete rule. 
+
+.Definition
+[source]
+----
+GATHER(TypeExpression(,NumberExpression)*
+          (,StringExpression = NumberExpression)+)
+----
+
+.Example
+[source]
+----
+DECLARE Annotation A;
+DECLARE Annotation B;
+DECLARE Annotation C(Annotation a, Annotation b);
+W{REGEXP("A")->MARK(A)};
+W{REGEXP("B")->MARK(B)};
+A B{-> GATHER(C, 1, 2, "a" = 1, "b" = 2)};
+----
+
+Two annotations A and B are declared and annotated.
+The last rule creates an annotation C spanning the elements A (index 1 since it is the first rule element) and B (index 2) with its features 'a' set to annotation A (again index 1) and 'b' set to annotation B (again index 2). 
+
+[[_ugr.tools.ruta.language.actions.get]]
+== GET
+
+The GET action retrieves an element of the given list dependent on a given strategy. 
+
+.Currently supported strategies
+[cols="1,1", frame="all", options="header"]
+|===
+| Strategy
+| Functionality
+
+|dominant
+|finds the most occurring element
+|===
+
+.Definition
+[source]
+----
+GET(ListExpression, Variable, StringExpression)
+----
+
+.Example
+[source]
+----
+Document{->GET(list, var, "dominant")};
+----
+
+In this example, the element of the list 'list' that occurs most is stored in the variable 'var'. 
+
+[[_ugr.tools.ruta.language.actions.getfeature]]
+== GETFEATURE
+
+The GETFEATURE action stores the value of the matched annotation's feature (first paramter) in the given variable (second parameter). 
+
+.Definition
+[source]
+----
+GETFEATURE(StringExpression, Variable)
+----
+
+.Example
+[source]
+----
+Document{->GETFEATURE("language", stringVar)};
+----
+
+In this example, variable 'stringVar' will contain the value of the feature 'language'. 
+
+[[_ugr.tools.ruta.language.actions.getlist]]
+== GETLIST
+
+This action retrieves a list of types dependent on a given strategy. 
+
+.Currently supported strategies
+[cols="1,1", frame="all", options="header"]
+|===
+| Strategy
+| Functionality
+
+|Types
+|get all types within the matched annotation
+
+|Types:End
+|get all types that end at the same offset as the matched
+                annotation 
+
+|Types:Begin
+|get all types that start at the same offset as the
+                matched
+                annotation 
+|===
+
+.Definition
+[source]
+----
+GETLIST(ListVariable, StringExpression)
+----
+
+.Example
+[source]
+----
+Document{->GETLIST(list, "Types")};
+----
+
+Here, a list of all types within the document is created and assigned to list variable 'list'. 
+
+[[_ugr.tools.ruta.language.actions.greedyanchoring]]
+== GREEDYANCHORING
+
+The GREEDYANCHORING action turns greedy anchoring on or off.
+If the first parameter is set to true, then start positions already matched by the same rule element will be ignored.
+This situation  occurs mostly for rules that start with a quantifier.
+The second optional parameter activates greedy acnhoring for the complete rule.
+Later rule matches are only possible after previous matches. 
+
+.Definition
+[source]
+----
+GREEDYANCHORING(BooleanExpression(,BooleanExpression)?)
+----
+
+.Example
+[source]
+----
+Document{->GREEDYANCHORING(true, true)};
+        ANY+;
+        CW CW;
+----
+
+The above mentioned example activates dynamic anchoring and the second rule will then only match once  since the next positions, e.g., the second token, are already covered by the first attempt.
+The third rule will not match on capitalized word that have benn already considered by previous matches of the rule. 
+
+[[_ugr.tools.ruta.language.actions.log]]
+== LOG
+
+The LOG action writes a log message. 
+
+.Definition
+[source]
+----
+LOG(StringExpression)
+----
+
+.Example
+[source]
+----
+Document{->LOG("processed")};
+----
+
+This rule writes a log message with the string "processed". 
+
+[[_ugr.tools.ruta.language.actions.mark]]
+== MARK
+
+The MARK action is the most important action in the UIMA Ruta system.
+It creates a new annotation of the given type.
+The optionally passed indexes (NumberExpressions after the TypeExpression) can be used to create an annotation that spanns the matched information of several rule elements. 
+
+.Definition
+[source]
+----
+MARK(TypeExpression(,NumberExpression)*)
+----
+
+.Example
+[source]
+----
+Freeline Paragraph{->MARK(ParagraphAfterFreeline,1,2)};
+----
+
+This rule matches on a free line followed by a Paragraph annotation and annotates both in a single ParagraphAfterFreeline annotation.
+The two numerical expressions at the end of the mark action state that the matched text of the first and the second rule elements are joined to create the boundaries of the new annotation. 
+
+[[_ugr.tools.ruta.language.actions.markfast]]
+== MARKFAST
+
+The MARKFAST action creates annotations of the given type (first parameter), if an element of the passed list (second parameter) occurs within the window of the matched annotation.
+Thereby, the created annotation does not cover the whole matched annotation.
+Instead, it only covers the text of the found occurrence.
+The third parameter is optional.
+It defines, whether the MARKFAST action should ignore the case, whereby its default value is false.
+The optional fourth parameter specifies a character threshold for the ignorence of the case.
+It is only relevant, if the ignore-case value is set to true.
+The last parameter is set to true by default and specifies whether whitespaces in the entries of the dictionary should be ignored.
+For more information on lists see <<_ugr.tools.ruta.language.declarations.ressource>>.
+Additionally to external word lists, string lists variables can be used. 
+
+.Definition
+[source]
+----
+MARKFAST(TypeExpression,ListExpression(,BooleanExpression
+          (,NumberExpression,(BooleanExpression)?)?)?)
+----
+[source]
+----
+MARKFAST(TypeExpression,StringListExpression(,BooleanExpression
+          (,NumberExpression,(BooleanExpression)?)?)?)
+----
+
+.Example
+[source]
+----
+WORDLIST FirstNameList = 'FirstNames.txt';
+DECLARE FirstName;
+Document{-> MARKFAST(FirstName, FirstNameList, true, 2)};
+----
+
+This rule annotates all first names listed in the list 'FirstNameList' within the document and ignores the case, if the length of the word is greater than 2. 
+
+[[_ugr.tools.ruta.language.actions.markfirst]]
+== MARKFIRST
+
+The MARKFIRST action annotates the first token (basic annotation) of the matched annotation with the given type. 
+
+.Definition
+[source]
+----
+MARKFIRST(TypeExpression)
+----
+
+.Example
+[source]
+----
+Document{->MARKFIRST(First)};
+----
+
+This rule annotates the first token of the document with the annotation First. 
+
+[[_ugr.tools.ruta.language.actions.marklast]]
+== MARKLAST
+
+The MARKLAST action annotates the last token of the matched annotation with the given type. 
+
+.Definition
+[source]
+----
+MARKLAST(TypeExpression)
+----
+
+.Example
+[source]
+----
+Document{->MARKLAST(Last)};
+----
+
+This rule annotates the last token of the document with the annotation Last. 
+
+[[_ugr.tools.ruta.language.actions.markonce]]
+== MARKONCE
+
+The MARKONCE action has the same functionality as the MARK action, but creates a new annotation only,  if each part of the matched annotation is not yet part of the given type. 
+
+.Definition
+[source]
+----
+MARKONCE(NumberExpression,TypeExpression(,NumberExpression)*)
+----
+
+.Example
+[source]
+----
+Freeline Paragraph{->MARKONCE(ParagraphAfterFreeline,1,2)};
+----
+
+This rule matches on a free line followed by a Paragraph and annotates both in a single ParagraphAfterFreeline annotation, if no part  is not already annotated with ParagraphAfterFreeline annotation.
+The two numerical expressions at the end of the MARKONCE action state that the matched text of the first and the second rule elements are joined to create the boundaries of the new annotation. 
+
+[[_ugr.tools.ruta.language.actions.markscore]]
+== MARKSCORE
+
+The MARKSCORE action is similar to the MARK action.
+It also creates a new annotation of the given type, but only if it is not yet existing.
+The optionally passed indexes (parameters after the TypeExpression) can be used to create an annotation that spanns the matched information of several rule elements.
+Additionally, a score value (first parameter) is added to the heuristic score value of the annotation.
+For more information on heuristic scores see <<_ugr.tools.ruta.language.score>> . 
+
+.Definition
+[source]
+----
+MARKSCORE(NumberExpression,TypeExpression(,NumberExpression)*)
+----
+
+.Example
+[source]
+----
+Freeline Paragraph{->MARKSCORE(10,ParagraphAfterFreeline,1,2)};
+----
+
+This rule matches on a free line followed by a paragraph and annotates both in a single ParagraphAfterFreeline annotation.
+The two number expressions at the end of the mark action indicate that the matched text of the first and the second rule elements are joined to create the boundaries of the new annotation.
+Additionally, the score '10' is added to the heuristic threshold of this annotation. 
+
+[[_ugr.tools.ruta.language.actions.marktable]]
+== MARKTABLE
+
+The MARKTABLE action creates annotations of the given type (first parameter), if an element of the given column (second parameter) of a passed table (third parameter) occures within the window of the matched annotation.
+Thereby, the created annotation does not cover the whole matched annotation.
+Instead, it only covers the text of the found occurrence.
+Optionally the MARKTABLE action is able to assign entries of the given table to features of the created annotation.
+For more information on tables see <<_ugr.tools.ruta.language.declarations.ressource>>.
+Additionally, several configuration parameters are possible.
+(See example.) 
+
+.Definition
+[source]
+----
+MARKTABLE(TypeExpression, NumberExpression, TableExpression 
+          (,BooleanExpression, NumberExpression, 
+          StringExpression, NumberExpression)? 
+          (,StringExpression = NumberExpression)+)
+----
+
+.Example
+[source]
+----
+WORDTABLE TestTable = 'TestTable.csv';
+DECLARE Annotation Struct(STRING first);
+Document{-> MARKTABLE(Struct, 1, TestTable, 
+    true, 4, ".,-", 2, "first" = 2)};
+----
+
+In this example, the whole document is searched for all occurrences of the entries of the first column of the given table 'TestTable'. For each occurrence, an annotation of the type Struct is created and its feature 'first' is filled with the entry of the second column.
+Moreover, the case of the word is ignored if the length of the word exceeds 4.
+Additionally, the chars '.', ',' and '-' are ignored, but maximally two of them. 
+
+[[_ugr.tools.ruta.language.actions.matchedtext]]
+== MATCHEDTEXT
+
+The MATCHEDTEXT action saves the text of the matched annotation in a passed String variable.
+The optionally passed indexes can be used to match the text of several rule elements. 
+
+.Definition
+[source]
+----
+MATCHEDTEXT(StringVariable(,NumberExpression)*)
+----
+
+.Example
+[source]
+----
+Headline Paragraph{->MATCHEDTEXT(stringVariable,1,2)};
+----
+
+The text covered by the Headline (rule element 1) and the Paragraph (rule element 2) annotation is saved in variable 'stringVariable'. 
+
+[[_ugr.tools.ruta.language.actions.merge]]
+== MERGE
+
+The MERGE action merges a number of given lists.
+The first parameter defines, if the merge is done as intersection (false) or as union (true). The second parameter is the list variable that will contain the result. 
+
+.Definition
+[source]
+----
+MERGE(BooleanExpression, ListVariable, ListExpression, (ListExpression)+)
+----
+
+.Example
+[source]
+----
+Document{->MERGE(false, listVar, list1, list2, list3)};
+----
+
+The elements that occur in all three lists will be placed in the list 'listVar'. 
+
+[[_ugr.tools.ruta.language.actions.remove]]
+== REMOVE
+
+The REMOVE action removes lists or single values from a given list. 
+
+.Definition
+[source]
+----
+REMOVE(ListVariable,(Argument)+)
+----
+
+.Example
+[source]
+----
+Document{->REMOVE(list, var)};
+----
+
+In this example, the variable 'var' is removed from the list 'list'. 
+
+[[_ugr.tools.ruta.language.actions.removeduplicate]]
+== REMOVEDUPLICATE
+
+This action removes all duplicates within a given list. 
+
+.Definition
+[source]
+----
+REMOVEDUPLICATE(ListVariable)
+----
+
+.Example
+[source]
+----
+Document{->REMOVEDUPLICATE(list)};
+----
+
+Here, all duplicates within the list 'list' are removed. 
+
+[[_ugr.tools.ruta.language.actions.removefiltertype]]
+== REMOVEFILTERTYPE
+
+The REMOVEFILTERTYPE action removes its arguments from the list of filtered types,  which restrict the visibility of the rules. 
+
+.Definition
+[source]
+----
+REMOVEFILTERTYPE(TypeExpression(,TypeExpression)*)
+----
+
+.Example
+[source]
+----
+Document{->REMOVEFILTERTYPE(W)};
+----
+
+After applying this rule, words are possibly visible again depending on the current filtering settings. 
+
+[[_ugr.tools.ruta.language.actions.removeretaintype]]
+== REMOVERETAINTYPE
+
+The REMOVEFILTERTYPE action removes its arguments from the list of retained types,  which extend the visibility of the rules. 
+
+.Definition
+[source]
+----
+REMOVERETAINTYPE(TypeExpression(,TypeExpression)*)
+----
+
+.Example
+[source]
+----
+Document{->REMOVERETAINTYPE(W)};
+----
+
+After applying this rule, words are possibly not visible anymore depending on the current filtering settings. 
+
+[[_ugr.tools.ruta.language.actions.replace]]
+== REPLACE
+
+The REPLACE action replaces the text of all matched annotations with the given StringExpression.
+It remembers the modification for the matched annotations and shows them in the modified view (see <<_ugr.tools.ruta.language.modification>>). 
+
+.Definition
+[source]
+----
+REPLACE(StringExpression)
+----
+
+.Example
+[source]
+----
+FirstName{->REPLACE("first name")};
+----
+
+This rule replaces all first names with the string 'first name'. 
+
+[[_ugr.tools.ruta.language.actions.retaintype]]
+== RETAINTYPE
+
+The RETAINTYPE action retains the given types.
+This means that they are now not ignored by rules.
+This action is related to FILTERTYPE (see <<_ugr.tools.ruta.language.actions.filtertype>>). 
+
+[NOTE]
+====
+The visibility of types is calculated using three lists:  A list "`default`" for the initially filtered types,  which is specified in the configuration parameters of the analysis engine, the list "`filtered`", which is  specified by the FILTERTYPE action, and the list "`retained`", which is specified by the RETAINTYPE action.
+For determining the actual visibility of types, list "`filtered`" is added to list "`default`"  and then all elements of list "`retained`" are removed.
+The annotations of the types in the resulting list are not visible.
+Please note that the actions FILTERTYPE and RETAINTYPE replace all elements of the respective lists and that RETAINTYPE  overrides FILTERTYPE. 
+====
+
+.Definition
+[source]
+----
+RETAINTYPE((TypeExpression(,TypeExpression)*))?
+----
+
+.Example
+[source]
+----
+Document{->RETAINTYPE(SPACE)};
+----
+
+Here, all spaces are retained and can be matched by rules. 
+
+
+[source]
+----
+Document{->RETAINTYPE};
+----
+
+Here, the the action (without parentheses) specifies that no types should be retained. 
+
+[[_ugr.tools.ruta.language.actions.setfeature]]
+== SETFEATURE
+
+The SETFEATURE action sets the value of a feature of the matched complex structure. 
+
+.Definition
+[source]
+----
+SETFEATURE(StringExpression,Expression)
+----
+
+.Example
+[source]
+----
+Document{->SETFEATURE("language","en")};
+----
+
+Here, the feature 'language' of the input document is set to English. 
+
+[[_ugr.tools.ruta.language.actions.shift]]
+== SHIFT
+
+The SHIFT action can be used to change the offsets of an annotation.
+The two number expressions, which point the rule elements of the rule, specify the new offsets of the annotation.
+The annotations that will be modified have to start or end at the match of the rule element of the action if the boolean option is set to true.
+By default, only the matched annotation of the given type will be modified.
+In either way, this means that the action  has to be placed at a matching condition, which will be used to specify the annotations to be changed. 
+
+.Definition
+[source]
+----
+SHIFT(TypeExpression,NumberExpression,NumberExpression,BooleanExpression?)
+----
+
+.Example
+[source]
+----
+Author{-> SHIFT(Author,1,2)} PM;
+----
+
+In this example, an annotation of the type "`Author`" is expanded  in order to cover the following punctuation mark. 
+
+
+[source]
+----
+W{STARTSWITH(FS) -> SHIFT(FS, 1, 2, true)} W+ MARKUP;
+----
+
+In this example, an annotation of the type "`FS`" that consists mostly of words  is shrinked by removing the last MARKUP annotation. 
+
+[[_ugr.tools.ruta.language.actions.split]]
+== SPLIT
+
+The SPLIT action is able to split the matched annotation for each occurrence of annotation  of the given type.
+There are three additional parameters: The first one specifies if complete annotations of the given type  should be used to split the matched annotations.
+If set to false, then even the boundary of an annotation will cause splitting.
+The third (addToBegin) and fourth (addToEnd) argument specify if the complete annotation (for splitting)  will be added to the begin or end of the split annotation.
+The latter two are only utilized if the first one is set to true.. If omitted, the first argument is true and the other two arguments are false by default. 
+
+.Definition
+[source]
+----
+SPLIT(TypeExpression(,BooleanExpression, 
+          (BooleanExpression, BooleanExpression)? )?
+----
+
+.Example
+[source]
+----
+Sentence{-> SPLIT(PERIOD, true, false, true)};
+----
+
+In this example, an annotation of the type "`Sentence`" is  split for each occurrence of a period, which is added to the end of the new sentence. 
+
+[[_ugr.tools.ruta.language.actions.transfer]]
+== TRANSFER
+
+The TRANSFER action creates a new feature structure and adds all compatible features of the matched annotation. 
+
+.Definition
+[source]
+----
+TRANSFER(TypeExpression)
+----
+
+.Example
+[source]
+----
+Document{->TRANSFER(LanguageStorage)};
+----
+
+Here, a new feature structure "`LanguageStorage`" is created and the compatible features of the Document annotation are copied.
+E.g., if LanguageStorage defined a feature named 'language', then the feature value of the Document annotation is copied. 
+
+[[_ugr.tools.ruta.language.actions.trie]]
+== TRIE
+
+The TRIE action uses an external multi tree word list to annotate the matched annotation and provides several configuration parameters. 
+
+.Definition
+[source]
+----
+TRIE((String = (TypeExpression|{TypeExpression,StringExpression,
+          Expression}))+,ListExpression,BooleanExpression,NumberExpression,
+          BooleanExpression,NumberExpression,StringExpression)
+----
+
+.Example
+[source]
+----
+Document{->TRIE("FirstNames.txt" = FirstName, "Companies.txt" = Company, 
+          'Dictionary.mtwl', true, 4, false, 0, ".,-/")};
+----
+
+Here, the dictionary 'Dictionary.mtwl' that contains word lists for first names and companies is used to annotate the document.
+The words previously contained in the file 'FirstNames.txt' are annotated with the type FirstName and the words in the file 'Companies.txt' with the type Company.
+The case of the word is ignored, if the length of the word exceeds 4.
+The edit distance is deactivated.
+The cost of an edit operation can currently not be configured by an argument.
+The last argument additionally defines several chars that will be ignored. 
+
+
+[source]
+----
+Document{->TRIE("FirstNames.txt" = {A, "a", "first"}, "LastNames.txt" = 
+          {B, "b", true}, "CompleteNames.txt" = {C, "c", 6},
+          list1, true, 4, false, 0, ":")};
+----
+
+Here, the dictionary 'list1' is applied on the document.
+Matches originated in dictionary 'FirstNames.txt' result in annotations of type A wheras their features 'a' are set to 'first'. The other two dictionaries  create annotations of type 'B' and 'C' for the corresponding dictionaries with a boolean feature value  and a integer feature value. 
+
+[[_ugr.tools.ruta.language.actions.trim]]
+== TRIM
+
+The TRIM action changes the offsets on the matched annotations by removing annotations, whose types are specified by the given parameters. 
+
+.Definition
+[source]
+----
+TRIM(TypeExpression ( , TypeExpression)*)
+----
+[source]
+----
+TRIM(TypeListExpression)
+----
+
+.Example
+[source]
+----
+Keyword{-> TRIM(SPACE)};
+----
+
+This rule removes all spaces at the beginning and at the end of Keyword annotations and thus changes the offsets of the matched annotations. 
+
+[[_ugr.tools.ruta.language.actions.unmark]]
+== UNMARK
+
+The UNMARK action removes the annotation of the given type overlapping the matched annotation.
+There are two additional configurations: If additional indexes are given, then the span of the specified rule elements are applied, similar the the MARK action.
+If instead a boolean is given as an additional argument, then all annotations of the given type are removed that start at the matched position. 
+
+.Definition
+[source]
+----
+UNMARK(AnnotationExpression)
+----
+
+[source]
+----
+UNMARK(TypeExpression)
+----
+
+[source]
+----
+UNMARK(TypeExpression (,NumberExpression)*)
+----
+
+[source]
+----
+UNMARK(TypeExpression, BooleanExpression)
+----
+
+.Example
+[source]
+----
+Headline{->UNMARK(Headline)};
+----
+
+Here, the Headline annotation is removed. 
+
+
+[source]
+----
+CW ANY+? QUESTION{->UNMARK(Headline,1,3)};
+----
+
+Here, all Headline annotations are removed that start with a capitalized word and end with a question mark. 
+
+
+[source]
+----
+CW{->UNMARK(Headline,true)};
+----
+
+Here, all Headline annotations are removed that start with a capitalized word. 
+
+
+[source]
+----
+Complex{->UNMARK(Complex.inner)};
+----
+
+Here, the annotation stored in the feature `inner` will be removed. 
+
+[[_ugr.tools.ruta.language.actions.unmarkall]]
+== UNMARKALL
+
+The UNMARKALL action removes all the annotations of the given type and all of its descendants overlapping the matched annotation, except the annotation is of at least one type in the passed list. 
+
+.Definition
+[source]
+----
+UNMARKALL(TypeExpression, TypeListExpression)
+----
+
+.Example
+[source]
+----
+Annotation{->UNMARKALL(Annotation, {Headline})};
+----
+
+Here, all annotations except from headlines are removed. 
