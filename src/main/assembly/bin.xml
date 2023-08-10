@@ -58,7 +58,7 @@ under the License.
       <outputFileNameMapping>${artifact.build.finalName}.jar</outputFileNameMapping>
       <useProjectArtifact>false</useProjectArtifact>
       <fileMode>644</fileMode> 
-      <directoryMode>755</directoryMode>        
+      <directoryMode>755</directoryMode>
     </dependencySet>
   </dependencySets>
   
@@ -70,10 +70,10 @@ under the License.
       <directory>src/main/readme</directory>
       <outputDirectory></outputDirectory>
       <fileMode>644</fileMode>
-      <directoryMode>755</directoryMode>      
+      <directoryMode>755</directoryMode>
     </fileSet>
     
-    <!-- copy standard top level files -->        
+    <!-- copy standard top level files -->
     <fileSet>
       <directory>.</directory>
       <outputDirectory></outputDirectory>
@@ -84,16 +84,16 @@ under the License.
         <include>readme*</include>
         <include>RELEASE_NOTES*</include>
         <include>Release-Notes*</include>
-        <include>issuesFixed/**</include>      
-      </includes>       
+        <include>issuesFixed/**</include>
+      </includes>
     </fileSet>
 
-    <!-- docbooks -->
+    <!-- documentation -->
     <fileSet>
-      <directory>ruta-docbook/target/site/</directory>
+      <directory>ruta-documentation/target/site/</directory>
       <outputDirectory>docs</outputDirectory>
       <fileMode>644</fileMode>
-      <directoryMode>755</directoryMode>        
+      <directoryMode>755</directoryMode>
     </fileSet>
         
     <!-- examples -->

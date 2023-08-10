@@ -154,6 +154,10 @@
 
     <dltk.version>[5.11.0,6.0.0)</dltk.version>
 
+    <asciidoctor.plugin.version>2.2.4</asciidoctor.plugin.version>
+    <asciidoctor.version>2.5.10</asciidoctor.version>
+    <asciidoctor.pdf.version>2.3.9</asciidoctor.pdf.version>
+
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.release>17</maven.compiler.release>

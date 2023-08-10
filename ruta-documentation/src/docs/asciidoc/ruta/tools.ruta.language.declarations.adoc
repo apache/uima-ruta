@@ -1,0 +1,161 @@
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements. See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership. The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License. You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied. See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+[[_ugr.tools.ruta.language.declarations]]
+= Declarations
+
+There are three different kinds of declarations in the UIMA Ruta system: Declarations of types with optional feature definitions, declarations of variables and declarations for importing external resources, further UIMA Ruta scripts and UIMA components such as type systems and analysis engines. 
+
+[[_ugr.tools.ruta.language.declarations.type]]
+== Types
+
+Type declarations define new kinds of annotation types and optionally their features. 
+
+.Example
+[source]
+----
+DECLARE SimpleType1, SimpleType2; // <- two new types with the parent 
+                                  // type "Annotation"
+DECLARE ParentType NewType (SomeType feature1, INT feature2); 
+  // a new type "NewType" with parent type "ParentType" and two features
+----
+
+Attention: Types with features need a parent type in their declarations.
+If no special parent type is requested, just use type Annotation as default parent type. 
+
+[[_ugr.tools.ruta.language.declarations.variable]]
+== Variables
+
+Variable declarations define new variables.
+There are 12 kinds of variables: 
+
+* Type variable: A variable that represents an annotation type. 
+* Type list variable: A variable that represents a list of annotation types. 
+* Integer variable: A variable that represents an integer. 
+* Integer list variable: A variable that represents a list of integers. 
+* Float variable: A variable that represents a floating-point number. 
+* Float list variable: A variable that represents a list of floating-point numbers in single precision. 
+* Double variable: A variable that represents a floating-point number. 
+* Double list variable: A variable that represents a list of floating-point numbers in double precision. 
+* String variable: A variable that represents a string. 
+* String list: A variable that represents a list of strings. 
+* Boolean variable: A variable that represents a boolean. 
+* Boolean list variable: A variable that represents a list of booleans. 
+* Annotation variable: A variable that represents an annotation. 
+* Annotation list variable: A variable that represents a list of annotations. 
+
+
+.Example
+[source]
+----
+TYPE newTypeVariable;
+TYPELIST newTypeList;
+INT newIntegerVariable;
+INTLIST newIntList;
+FLOAT newFloatVariable;
+FLOATLIST newFloatList;
+DOUBLE newDoubleVariable;
+DOUBLELIST newDoubleList;
+STRING newStringVariable;
+STRINGLIST newStringList;
+BOOLEAN newBooleanVariable;
+BOOLEANLIST newBooleanList;
+ANNOTATION newAnnotationVariable;
+ANNOTATIONLIST newAnnotationList;
+----
+
+[[_ugr.tools.ruta.language.declarations.ressource]]
+== Resources
+
+There are two kinds of resource declarations that make external resources available in the UIMA Ruta system: 
+
+* List: A list represents a normal text file with an entry per line or a compiled tree of a word list. 
+* Table: A table represents a comma separated file. 
+
+
+.Example
+[source]
+----
+WORDLIST listName = 'someWordList.txt';
+WORDTABLE tableName = 'someTable.csv';
+----
+
+[[_ugr.tools.ruta.language.declarations.scripts]]
+== Scripts
+
+Additional scripts can be imported and reused with the CALL action.
+The types of the imported rules are also available so that it is not necessary to import the Type System of the additional rule script. 
+
+.Example
+[source]
+----
+SCRIPT my.package.AnotherScript; // "AnotherScript.ruta" in the  
+                     //package "my.package"
+Document{->CALL(AnotherScript)}; // <- rule executes "AnotherScript.ruta"
+----
+
+[[_ugr.tools.ruta.language.declarations.components]]
+== Components
+
+There are three kinds of UIMA components that can be imported in a UIMA Ruta script: 
+
+* Type System (IMPORT or TYPESYSTEM): includes the types defined in an external type system. You can select which types or packages to import from a type system and how to alias them. If use IMPORT statements, consider enabling <<_ugr.tools.ruta.ae.basic.parameter.strictimports,strictImports>>. 
+* Analysis Engine (ENGINE): loads the given descriptor and creates an external analysis engine. The descriptor  must be located in the descriptor paths. The type system needed for the analysis engine has to be imported separately. Please mind the filtering setting when calling an external analysis engine. 
+* Analysis Engine (UIMAFIT): loads the given class and creates an external analysis engine. Please mind that the implementation of the analysis engine needs to be available. The type system needed for the analysis engine has to be imported separately. Please mind the filtering setting when calling an external analysis engine. 
+
+
+.Type System Example
+[source]
+----
+// Imports all the types from "ExternalTypeSystem.xml"
+TYPESYSTEM my.package.ExternalTypeSystem;
+IMPORT * FROM my.package.ExternalTypeSystem;
+
+// Import my.package.SomeType from "ExternalTypeSystem.xml"
+IMPORT my.package.SomeType FROM my.package.ExternalTypeSystem;
+
+// Import my.package.SomeType from the typesystem available to
+// the CAS at runtime. This can be useful when typesystems are
+// loaded by uimaFIT
+IMPORT my.package.SomeType;
+
+// Import my.package.SomeType from "ExternalTypeSystem.xml" 
+// and alias it to T1
+IMPORT my.package.SomeType FROM my.package.ExternalTypeSystem AS T1;
+
+// Import all types in my.package from "ExternalTypeSystem.xml"
+IMPORT PACKAGE my.package FROM my.package.ExternalTypeSystem;
+
+// Import package my.package from "ExternalTypeSystem.xml" 
+// and alias it to p1 (p1.SomeType can now be used)
+IMPORT PACKAGE my.package FROM my.package.ExternalTypeSystem AS p1; 
+
+// Import all packages from "ExternalTypeSystem.xml" and alias them to p2
+IMPORT PACKAGE * FROM my.package.ExternalTypeSystem AS p2;
+----
+
+.Analysis Engine Example
+[source]
+----
+ENGINE my.package.ExternalEngine; // <- "ExternalEngine.xml" in the 
+// "my.package" package (in the descriptor folder)
+UIMAFIT my.implementation.AnotherEngine;
+
+Document{->RETAINTYPE(SPACE,BREAK),CALL(ExternalEngine)}; 
+// calls ExternalEngine, but retains white spaces
+Document{-> EXEC(AnotherEngine, {SomeType})};
+----

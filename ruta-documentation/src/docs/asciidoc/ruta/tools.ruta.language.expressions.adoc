@@ -1,0 +1,303 @@
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements. See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership. The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License. You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied. See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+[[_ugr.tools.ruta.language.expressions]]
+= Expressions
+
+UIMA Ruta provides six different kinds of expressions.
+These are type expressions, annotations expressions, number expressions, string expressions, boolean expressions and list expressions. 
+
+*Definition:*
+[source]
+----
+RutaExpression  ->   TypeExpression | AnnotationExpression 
+                     | StringExpression | BooleanExpression 
+                     | NumberExpression | ListExpression
+----
+
+[[_ugr.tools.ruta.language.expressions.type]]
+== Type Expressions
+
+UIMA Ruta provides several kinds of type expressions. 
+
+. xref:#_ugr.tools.ruta.language.declarations.type[xrefstyle=full]
+. xref:#_ugr.tools.ruta.language.declarations.variable[xrefstyle=full]
+. xref:#_ugr.tools.ruta.language.expressions.features[xrefstyle=full]
+
+
+.Definition
+[source]
+----
+TypeExpression  ->  AnnotationType | TypeVariable
+                    | AnnotationExpression.type
+----
+
+.Examples
+[source]
+----
+DECLARE Author;  // Author defines a type, therefore it is 
+                 // a type expression
+TYPE typeVar;    // type variable typeVar is a type expression 
+Document{->ASSIGN(typeVar, Author)};
+----
+
+
+[source]
+----
+e:Entity{-> e.type}; // the dot notation type refers to the type 
+          // of the anotation stored in the label a. In this example, 
+          // this type expression refers to the type Entity or a specific 
+          // subtype of Entity.
+----
+
+[[_ugr.tools.ruta.language.expressions.annotation]]
+== Annotation Expressions
+
+UIMA Ruta provides several kinds of annotation expressions. 
+
+. xref:#_ugr.tools.ruta.language.declarations.variable[xrefstyle=full]
+. xref:#_ugr.tools.ruta.language.labels[xrefstyle=full]
+. xref:#_ugr.tools.ruta.language.expressions.type[xrefstyle=full]
+. xref:#_ugr.tools.ruta.language.expressions.features[xrefstyle=full]
+
+
+.Definition
+[source]
+----
+AnnotationExpression  ->  AnnotationVariable | LabelExpression 
+                          | TypeExpression | FeatureExpression
+----
+
+.Examples
+[source]
+----
+ANNOTATION anno; // a variable declaration for storing an annotation.
+e:Entity; // label expression e stored the annotation matched by the 
+          // rule element with the matching condition Entity.
+er:EmplRelation{-> er.employer = Employer}; // the type expression 
+          // Employer implicitly refers to annotations of the 
+          // type Employer in the context of the EmplRelation match.
+e:EmplRelation.employer; // this feature expression represents the 
+                         // annotation stored in the feature employer.
+----
+
+[[_ugr.tools.ruta.language.expressions.number]]
+== Number Expressions
+
+UIMA Ruta provides several possibilities to define number expressions.
+As expected, every number expression evaluates to a number.
+UIMA Ruta supports integer and floating-point numbers.
+A floating-point number can be in single or in double precision.
+To get a complete overview, have a look at the following syntax definition of number expressions. 
+
+.Definition
+[source]
+----
+NumberExpression         -> AdditiveExpression
+AdditiveExpression       -> MultiplicativeExpression ( ( "+" | "-" ) 
+                            MultiplicativeExpression )*
+MultiplicativeExpression -> SimpleNumberExpression ( ( "*" | "/" | "%" ) 
+                            SimpleNumberExpression )*
+                            | ( "EXP" | "LOGN" | "SIN" | "COS" | "TAN" ) 
+                            "(" NumberExpression ")"
+SimpleNumberExpression   -> "-"? ( DecimalLiteral | FloatingPointLiteral 
+                            | NumberVariable) | "(" NumberExpression ")"
+DecimalLiteral        -> ('0' | '1'..'9' Digit*) IntegerTypeSuffix?
+IntegerTypeSuffix     ->  ('l'|'L')
+FloatingPointLiteral  -> Digit+ '.' Digit* Exponent? FloatTypeSuffix?
+                         |   '.' Digit+ Exponent? FloatTypeSuffix?
+                         |   Digit+ Exponent FloatTypeSuffix?
+                         |   Digit+ Exponent? FloatTypeSuffix
+FloatTypeSuffix       ->  ('f'|'F'|'d'|'D')
+Exponent              -> ('e'|'E') ('+'|'-')? Digit+
+Digit                 -> ('0'..'9')
+----
+
+For more information on number variables, see <<_ugr.tools.ruta.language.declarations.variable>> . 
+
+.Examples
+[source]
+----
+98     // a integer number literal
+104   // a integer number literal
+170.02   // a floating-point number literal
+1.0845 // a floating-point number literal
+----
+
+
+[source]
+----
+INT intVar1;
+INT intVar2;
+...
+Document{->ASSIGN(intVar1, 12 * intVar1 - SIN(intVar2))};
+----
+
+[[_ugr.tools.ruta.language.expressions.string]]
+== String Expressions
+
+There are two kinds of string expressions in UIMA Ruta. 
+
+. String literals: String literals are defined by any sequence of characters within quotation marks. 
+. String variables (see <<_ugr.tools.ruta.language.declarations.variable>> ) 
+
+
+.Definition
+[source]
+----
+StringExpression   ->   SimpleStringExpression
+SimpleStringExpression  ->  StringLiteral ("+" StringExpression)* 
+                            | StringVariable
+----
+
+.Example
+[source]
+----
+STRING strVar; // define string variable
+// add prefix "strLiteral" to variable strVar
+Document{->ASSIGN(strVar, "strLiteral" + strVar)};
+----
+
+[[_ugr.tools.ruta.language.expressions.boolean]]
+== Boolean Expressions
+
+UIMA Ruta provides several possibilities to define boolean expressions.
+As expected, every boolean expression evaluates to either true or false.
+To get a complete overview, have a look at the following syntax definition of boolean expressions. 
+
+.Definition
+[source]
+----
+BooleanExpression          ->  ComposedBooleanExpression 
+                               | SimpleBooleanExpression
+ComposedBooleanExpression  ->  BooleanCompare | BooleanTypeExpression 
+                               | BooleanNumberExpression | BooleanFunction
+SimpleBooleanExpression     ->  BooleanLiteral | BooleanVariable
+BooleanCompare           ->  SimpleBooleanExpression ( "==" | "!=" ) 
+                               BooleanExpression
+BooleanTypeExpression    ->  TypeExpression ( "==" | "!=" ) TypeExpression
+BooleanNumberExpression  ->  "(" NumberExpression ( "<" | "<=" | ">" 
+                               | ">=" | "==" | "!=" ) NumberExpression ")"
+BooleanFunction   ->  XOR "(" BooleanExpression "," BooleanExpression ")"
+BooleanLiteral    ->  "true" | "false"
+----
+
+Boolean variables are defined in <<_ugr.tools.ruta.language.declarations.variable>> . 
+
+.Examples
+[source]
+----
+Document{->ASSIGN(boolVar, false)};
+----
+
+The boolean literal 'false' is assigned to boolean variable boolVar. 
+
+
+[source]
+----
+Document{->ASSIGN(boolVar, typeVar == Author)};
+----
+
+If the type variable typeVar represents annotation type Author, the boolean type expression evaluates to true, otherwise it evaluates to false.
+The result is assigned to boolean variable boolVar. 
+
+
+[source]
+----
+Document{->ASSIGN(boolVar, (intVar == 10))};
+----
+
+This rule shows a boolean number expression.
+If the value in variable intVar is equal to 10, the boolean number expression evaluates to true, otherwise it evaluates to false.
+The result is assigned to boolean variable boolVar.
+The brackets surrounding the number expression are necessary. 
+
+
+[source]
+----
+Document{->ASSIGN(booleanVar1, booleanVar2 == (10 > intVar))};
+----
+
+This rule shows a more complex boolean expression.
+If the value in variable intVar is equal to 10, the boolean number expression evaluates to true, otherwise it evaluates to false.
+The result of this evaluation is compared to booleanVar2.
+The end result is assigned to boolean variable boolVar1.
+Realize that the syntax definition defines exactly this order.
+It is not possible to have the boolean number expression on the left side of the complex number expression. 
+
+[[_ugr.tools.ruta.language.expressions.lists]]
+== List Expressions
+
+List expression are a rather simple kind of expression. 
+
+.Definition
+[source]
+----
+ListExpression  ->   WordListExpression | WordTableExpression 
+                     | TypeListExpression | AnnotationListExpression
+                     | NumberListExpression | StringListExpression 
+                     | BooleanListExpression
+WordListExpression     ->  RessourceLiteral | WordListVariable
+WordTableExpression    ->  RessourceLiteral | WordTableVariable
+TypeListExpression     ->  TypeListVariable
+                           | "{" TypeExpression ("," TypeExpression)* "}"
+NumberListExpression   ->  IntListVariable | FloatListVariable 
+                           | DoubleListVariable
+                           | "{" NumberExpression 
+                              ("," NumberExpression)* "}"
+StringListExpression   ->  StringListVariable
+                           | "{" StringExpression 
+                              ("," StringExpression)* "}"
+BooleanListExpression  ->  BooleanListVariable
+                           | "{" BooleanExpression 
+                              ("," BooleanExpression)* "}"
+AnnotationListExpression  ->  AnnotationListVariable
+                           | "{" AnnotationExpression 
+                              ("," AnnotationExpression)* "}"
+----
+A ResourceLiteral is something like 'folder/file.txt' (Attention: Use single quotes). 
+
+List variables are defined in <<_ugr.tools.ruta.language.declarations.variable>>. 
+
+[[_ugr.tools.ruta.language.expressions.features]]
+== Feature Expressions
+
+Feature expression can be used in different situations, e.g., for restricting the match of a rule element,  as an implicit condition or as an implicit action. 
+[source]
+----
+FeatureExpression           -> TypeExpression "." DottedIdentifier
+FeatureMatchExpression      -> FeatureExpression 
+                               ("==" | "!=" | "<=" | "<" | ">=" | ">") 
+                               Expression
+FeatureAssignmentExpression -> FeatureExpression "=" Expression
+----
+
+Ruta allows the access of two special attributes of an annotation with the feature notation: The covered text of an annotation can be accessed as a string expression and the type of  an annotation can be accessed as an type expression. 
+
+The covered text of an annotation can be referred to with "coveredText" or "ct".  The latter one is an abbreviation and returns the covered text of an annotation only if the type of the annotation does not define a feature with the name "ct".  The following example creates an annotation of the type TypeA for each word with the  covered text "A". 
+
+[source]
+----
+W.ct == "A" {-> TypeA};
+----
+
+The type of an annotation can be referred to with "type".  The following example creates an annotation of the type TypeA for each pair of ANY annotation. 
+
+[source]
+----
+(a1:ANY a2:ANY){a1.type == a2.type -> TypeA};
+----
