@@ -45,17 +45,21 @@
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-core</artifactId>
       <version>${project.version}</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-core-ext</artifactId>
       <version>${project.version}</version>
-      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -64,7 +68,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
 
   <build>
     <resources>
@@ -277,7 +280,7 @@
       <plugin>
         <groupId>org.apache.uima</groupId>
         <artifactId>jcasgen-maven-plugin</artifactId>
-        <version>${uimaVersion}</version>
+        <version>${uima-version}</version>
         <executions>
           <execution>
             <goals>

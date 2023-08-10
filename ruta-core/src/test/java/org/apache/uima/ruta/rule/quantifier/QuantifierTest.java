@@ -19,14 +19,15 @@
 
 package org.apache.uima.ruta.rule.quantifier;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class QuantifierTest {
 
@@ -34,15 +35,15 @@ public class QuantifierTest {
   public void testRightToLeftMinMaxReluctantToLiteral() throws Exception {
 
     JCas jcas = RutaTestUtils.getCAS("a b c d e.").getJCas();
-    Assert.assertEquals("a b c d e.",
-            Ruta.select(jcas, "\"a\" W[0,5]? @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("b c d e.",
-            Ruta.select(jcas, "\"b\" W[0,5]? @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("c d e.",
-            Ruta.select(jcas, "\"c\" W[0,5]? @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("d e.",
-            Ruta.select(jcas, "\"d\" W[0,5]? @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("e.", Ruta.select(jcas, "\"e\" W[0,5]? @PERIOD;").get(0).getCoveredText());
+    assertThat(Ruta.select(jcas, "\"a\" W[0,5]? @PERIOD;").get(0).getCoveredText())
+            .isEqualTo("a b c d e.");
+    assertThat(Ruta.select(jcas, "\"b\" W[0,5]? @PERIOD;").get(0).getCoveredText())
+            .isEqualTo("b c d e.");
+    assertThat(Ruta.select(jcas, "\"c\" W[0,5]? @PERIOD;").get(0).getCoveredText())
+            .isEqualTo("c d e.");
+    assertThat(Ruta.select(jcas, "\"d\" W[0,5]? @PERIOD;").get(0).getCoveredText())
+            .isEqualTo("d e.");
+    assertThat(Ruta.select(jcas, "\"e\" W[0,5]? @PERIOD;").get(0).getCoveredText()).isEqualTo("e.");
 
     jcas.release();
   }
@@ -51,14 +52,15 @@ public class QuantifierTest {
   public void testRightToLeftMinMaxGreedyToLiteral() throws Exception {
 
     JCas jcas = RutaTestUtils.getCAS("a b c d e.").getJCas();
-    Assert.assertEquals("a b c d e.",
-            Ruta.select(jcas, "\"a\" W[0,4] @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("b c d e.",
-            Ruta.select(jcas, "\"b\" W[0,3] @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("c d e.",
-            Ruta.select(jcas, "\"c\" W[0,2] @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("d e.", Ruta.select(jcas, "\"d\" W[0,1] @PERIOD;").get(0).getCoveredText());
-    Assert.assertEquals("e.", Ruta.select(jcas, "\"e\" W[0,0] @PERIOD;").get(0).getCoveredText());
+    assertThat(Ruta.select(jcas, "\"a\" W[0,4] @PERIOD;").get(0).getCoveredText())
+            .isEqualTo("a b c d e.");
+    assertThat(Ruta.select(jcas, "\"b\" W[0,3] @PERIOD;").get(0).getCoveredText())
+            .isEqualTo("b c d e.");
+    assertThat(Ruta.select(jcas, "\"c\" W[0,2] @PERIOD;").get(0).getCoveredText())
+            .isEqualTo("c d e.");
+    assertThat(Ruta.select(jcas, "\"d\" W[0,1] @PERIOD;").get(0).getCoveredText())
+            .isEqualTo("d e.");
+    assertThat(Ruta.select(jcas, "\"e\" W[0,0] @PERIOD;").get(0).getCoveredText()).isEqualTo("e.");
 
     jcas.release();
   }
@@ -67,7 +69,7 @@ public class QuantifierTest {
   public void testReluctantGreedyInComposed() throws Exception {
     JCas jcas = RutaTestUtils.getCAS("a B B . a B . a .").getJCas();
     List<Annotation> select = Ruta.select(jcas, "SW (CW+?) PERIOD;");
-    Assert.assertEquals(2, select.size());
+    assertThat(select).hasSize(2);
   }
 
 }

@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.visitor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,8 +41,7 @@ import org.apache.uima.ruta.type.DebugRuleElementMatch;
 import org.apache.uima.ruta.type.DebugRuleElementMatches;
 import org.apache.uima.ruta.type.DebugRuleMatch;
 import org.apache.uima.ruta.type.DebugScriptApply;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class InlinedRulesExplanationTest {
 
@@ -61,38 +62,38 @@ public class InlinedRulesExplanationTest {
     JCas jcas = cas.getJCas();
 
     Collection<DebugScriptApply> debugScriptApplies = JCasUtil.select(jcas, DebugScriptApply.class);
-    Assert.assertEquals(1, debugScriptApplies.size());
+    assertThat(debugScriptApplies).hasSize(1);
     DebugScriptApply debugScriptApply = debugScriptApplies.iterator().next();
-    Assert.assertTrue(debugScriptApply instanceof DebugBlockApply);
+    assertThat(debugScriptApply instanceof DebugBlockApply).isTrue();
     DebugBlockApply debugBlockApply = (DebugBlockApply) debugScriptApply;
 
     FSArray<DebugScriptApply> innerApply = debugBlockApply.getInnerApply();
-    Assert.assertEquals(1, innerApply.size());
+    assertThat(innerApply).hasSize(1);
     FeatureStructure innerApplyFS = innerApply.get(0);
-    Assert.assertTrue(debugScriptApply instanceof DebugRuleApply);
+    assertThat(debugScriptApply instanceof DebugRuleApply).isTrue();
     DebugRuleApply debugRuleApply = (DebugRuleApply) innerApplyFS;
 
     FSArray<DebugRuleMatch> rules = debugRuleApply.getRules();
-    Assert.assertEquals(1, rules.size());
+    assertThat(rules).hasSize(1);
     FeatureStructure ruleMatchFS = rules.get(0);
-    Assert.assertTrue(ruleMatchFS instanceof DebugMatchedRuleMatch);
+    assertThat(ruleMatchFS instanceof DebugMatchedRuleMatch).isTrue();
     DebugMatchedRuleMatch debugMatchedRuleMatch = (DebugMatchedRuleMatch) ruleMatchFS;
-    Assert.assertEquals(0, debugMatchedRuleMatch.getDelegates().size());
+    assertThat(debugMatchedRuleMatch.getDelegates()).hasSize(0);
 
     FSArray<DebugRuleElementMatches> reMatchesArray = debugMatchedRuleMatch.getElements();
-    Assert.assertEquals(2, reMatchesArray.size());
+    assertThat(reMatchesArray).hasSize(2);
     FeatureStructure reMatches1FS = reMatchesArray.get(0);
     FeatureStructure reMatches2FS = reMatchesArray.get(1);
-    Assert.assertTrue(reMatches1FS instanceof DebugRuleElementMatches);
-    Assert.assertTrue(reMatches2FS instanceof DebugRuleElementMatches);
+    assertThat(reMatches1FS instanceof DebugRuleElementMatches).isTrue();
+    assertThat(reMatches2FS instanceof DebugRuleElementMatches).isTrue();
     DebugRuleElementMatches re1Matches = (DebugRuleElementMatches) reMatches1FS;
     DebugRuleElementMatches re2Matches = (DebugRuleElementMatches) reMatches2FS;
 
     FSArray<DebugInlinedBlock> inlinedActionRules1 = re1Matches.getInlinedActionBlocks();
     FSArray<DebugInlinedBlock> inlinedActionRules2 = re2Matches.getInlinedActionBlocks();
 
-    Assert.assertEquals(1, inlinedActionRules1.size());
-    Assert.assertEquals(2, inlinedActionRules2.size());
+    assertThat(inlinedActionRules1).hasSize(1);
+    assertThat(inlinedActionRules2).hasSize(2);
 
     DebugRuleElementMatch re1Match = (DebugRuleElementMatch) re1Matches.getMatches().get(0);
     DebugRuleElementMatch re2Match = (DebugRuleElementMatch) re2Matches.getMatches().get(0);
@@ -100,8 +101,8 @@ public class InlinedRulesExplanationTest {
     FSArray<DebugInlinedBlock> inlinedConditionRules1 = re1Match.getInlinedConditionBlocks();
     FSArray<DebugInlinedBlock> inlinedConditionRules2 = re2Match.getInlinedConditionBlocks();
 
-    Assert.assertEquals(2, inlinedConditionRules1.size());
-    Assert.assertEquals(1, inlinedConditionRules2.size());
+    assertThat(inlinedConditionRules1).hasSize(2);
+    assertThat(inlinedConditionRules2).hasSize(1);
 
   }
 }

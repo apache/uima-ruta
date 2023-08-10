@@ -19,10 +19,11 @@
 
 package org.apache.uima.ruta.string.bool;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.uima.ruta.expression.string.SimpleStringExpression;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class VerbalizerTest {
 
@@ -34,6 +35,6 @@ public class VerbalizerTest {
     BooleanOperationsExtension extension = new BooleanOperationsExtension();
     String verbalize = extension.verbalize(f, new RutaVerbalizer());
 
-    Assert.assertEquals("contains(\"abc\",\"def\")", verbalize);
+    assertThat(verbalize).isEqualTo("contains(\"abc\",\"def\")");
   }
 }

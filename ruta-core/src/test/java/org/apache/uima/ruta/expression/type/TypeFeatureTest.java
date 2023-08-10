@@ -18,11 +18,13 @@
  */
 package org.apache.uima.ruta.expression.type;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TypeFeatureTest {
 
@@ -46,7 +48,7 @@ public class TypeFeatureTest {
 
   }
 
-  @Test(expected = AnalysisEngineProcessException.class)
+  @Test
   public void testAssignType() throws Exception {
 
     String document = "This is a test.";
@@ -54,7 +56,8 @@ public class TypeFeatureTest {
     String script = "cw:CW{-> cw.type = SW};\n";
 
     CAS cas = RutaTestUtils.getCAS(document);
-    Ruta.apply(cas, script);
-  }
 
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> Ruta.apply(cas, script));
+  }
 }

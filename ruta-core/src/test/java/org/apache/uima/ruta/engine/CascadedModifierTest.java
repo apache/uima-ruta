@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.engine;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URL;
 
@@ -32,7 +32,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CascadedModifierTest {
 
@@ -54,10 +54,10 @@ public class CascadedModifierTest {
     Type cwswType = cas.getTypeSystem().getType("Simple.CwSw");
     CAS lastCas = cas.getView("global3");
     AnnotationIndex<AnnotationFS> ai = lastCas.getAnnotationIndex(cwswType);
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     FSIterator<AnnotationFS> iterator = ai.iterator();
     AnnotationFS a = iterator.next();
-    assertEquals("CW SW", a.getCoveredText());
+    assertThat(a.getCoveredText()).isEqualTo("CW SW");
 
     cas.release();
     ae.destroy();

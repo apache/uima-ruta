@@ -22,8 +22,8 @@ package org.apache.uima.ruta.expression;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class VariableInitialValueTest {
 
@@ -49,7 +49,7 @@ public class VariableInitialValueTest {
   }
 
   @Test
-  @Ignore
+  @Disabled
   public void testIntVariableAsInitialValueOfList() throws Exception {
     String document = "This is a test.";
 
@@ -67,7 +67,5 @@ public class VariableInitialValueTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This is a test.");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "This is a test.");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
-
   }
-
 }

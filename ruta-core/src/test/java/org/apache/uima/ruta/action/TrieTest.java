@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.action;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TrieTest {
 
@@ -49,17 +49,17 @@ public class TrieTest {
 
       CAS cas = null;
       try {
-        cas = RutaTestUtils.process(
-                namespace + "/" + scriptname + RutaEngine.SCRIPT_FILE_EXTENSION, namespace + "/"
-                        + name + ".txt", 50, false, false, null, namespace + "/");
+        cas = RutaTestUtils.process(namespace + "/" + scriptname + RutaEngine.SCRIPT_FILE_EXTENSION,
+                namespace + "/" + name + ".txt", 50, false, false, null, namespace + "/");
       } catch (Exception e) {
         e.printStackTrace();
         assert (false);
       }
-      
+
       RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Peter", "Marshall", "Joern");
       RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Kluegl", "Schor", "Kottmann");
-      RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "Peter Kluegl", "Marshall Schor", "Joern Kottmann");
+      RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "Peter Kluegl", "Marshall Schor",
+              "Joern Kottmann");
       RutaTestUtils.assertAnnotationsEquals(cas, 4, 3, "Peter Kluegl: Ruta", "Marshall Schor: UIMA",
               "Joern Kottmann: CAS Editor");
 
@@ -110,47 +110,47 @@ public class TrieTest {
     t = cas.getTypeSystem().getType(typeNameA);
     feature = t.getFeatureByBaseName("a");
     ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
     next = iterator.next();
-    assertEquals("Peter", next.getCoveredText());
-    assertEquals("first", next.getStringValue(feature));
+    assertThat(next.getCoveredText()).isEqualTo("Peter");
+    assertThat(next.getStringValue(feature)).isEqualTo("first");
     next = iterator.next();
-    assertEquals("Marshall", next.getCoveredText());
-    assertEquals("first", next.getStringValue(feature));
+    assertThat(next.getCoveredText()).isEqualTo("Marshall");
+    assertThat(next.getStringValue(feature)).isEqualTo("first");
     next = iterator.next();
-    assertEquals("Joern", next.getCoveredText());
-    assertEquals("first", next.getStringValue(feature));
+    assertThat(next.getCoveredText()).isEqualTo("Joern");
+    assertThat(next.getStringValue(feature)).isEqualTo("first");
 
     t = cas.getTypeSystem().getType(typeNameB);
     feature = t.getFeatureByBaseName("b");
     ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
     next = iterator.next();
-    assertEquals("Kluegl", next.getCoveredText());
-    assertEquals(true, next.getBooleanValue(feature));
+    assertThat(next.getCoveredText()).isEqualTo("Kluegl");
+    assertThat(next.getBooleanValue(feature)).isEqualTo(true);
     next = iterator.next();
-    assertEquals("Schor", next.getCoveredText());
-    assertEquals(true, next.getBooleanValue(feature));
+    assertThat(next.getCoveredText()).isEqualTo("Schor");
+    assertThat(next.getBooleanValue(feature)).isEqualTo(true);
     next = iterator.next();
-    assertEquals("Kottmann", next.getCoveredText());
-    assertEquals(true, next.getBooleanValue(feature));
+    assertThat(next.getCoveredText()).isEqualTo("Kottmann");
+    assertThat(next.getBooleanValue(feature)).isEqualTo(true);
 
     t = cas.getTypeSystem().getType(typeNameC);
     feature = t.getFeatureByBaseName("c");
     ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
     next = iterator.next();
-    assertEquals("Peter Kluegl", next.getCoveredText());
-    assertEquals(6, next.getIntValue(feature));
+    assertThat(next.getCoveredText()).isEqualTo("Peter Kluegl");
+    assertThat(next.getIntValue(feature)).isEqualTo(6);
     next = iterator.next();
-    assertEquals("Marshall Schor", next.getCoveredText());
-    assertEquals(6, next.getIntValue(feature));
+    assertThat(next.getCoveredText()).isEqualTo("Marshall Schor");
+    assertThat(next.getIntValue(feature)).isEqualTo(6);
     next = iterator.next();
-    assertEquals("Joern Kottmann", next.getCoveredText());
-    assertEquals(6, next.getIntValue(feature));
+    assertThat(next.getCoveredText()).isEqualTo("Joern Kottmann");
+    assertThat(next.getIntValue(feature)).isEqualTo(6);
 
     cas.release();
   }

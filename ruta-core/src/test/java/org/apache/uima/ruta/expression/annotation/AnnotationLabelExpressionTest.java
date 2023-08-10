@@ -19,6 +19,9 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,9 +44,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class AnnotationLabelExpressionTest {
 
@@ -74,13 +76,13 @@ public class AnnotationLabelExpressionTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    Assert.assertEquals(1, ai.size());
+    assertThat(ai).hasSize(1);
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
-    Assert.assertEquals("text", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("text");
     AnnotationFS a = (AnnotationFS) next.getFeatureValue(f1);
-    Assert.assertNotNull("Feature value is null!", a);
-    Assert.assertEquals("Some", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo("Some");
   }
 
   @Test
@@ -141,7 +143,7 @@ public class AnnotationLabelExpressionTest {
 
     t = cas.getTypeSystem().getType(typeName);
     ai = cas.getAnnotationIndex(t);
-    Assert.assertEquals(1, ai.size());
+    assertThat(ai).hasSize(1);
     iterator = ai.iterator();
 
     AnnotationFS a = null;
@@ -149,27 +151,27 @@ public class AnnotationLabelExpressionTest {
     Feature f = null;
 
     next = iterator.next();
-    Assert.assertEquals("text", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("text");
 
     f = t.getFeatureByBaseName("a");
     a = (AnnotationFS) next.getFeatureValue(f);
-    Assert.assertNotNull("Feature value is null!", a);
-    Assert.assertEquals("Some", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo("Some");
 
     f = t.getFeatureByBaseName("b");
     a = (AnnotationFS) next.getFeatureValue(f);
-    Assert.assertNotNull("Feature value is null!", a);
-    Assert.assertEquals("text", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo("text");
 
     f = t.getFeatureByBaseName("c");
     a = (AnnotationFS) next.getFeatureValue(f);
-    Assert.assertNotNull("Feature value is null!", a);
-    Assert.assertEquals(".", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo(".");
 
     f = t.getFeatureByBaseName("d");
     a = (AnnotationFS) next.getFeatureValue(f);
-    Assert.assertNotNull("Feature value is null!", a);
-    Assert.assertEquals("Some text.", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo("Some text.");
 
   }
 
@@ -192,41 +194,41 @@ public class AnnotationLabelExpressionTest {
 
     t = cas.getTypeSystem().getType("Struct1");
     ai = cas.getAnnotationIndex(t);
-    Assert.assertEquals(1, ai.size());
+    assertThat(ai).hasSize(1);
     iterator = ai.iterator();
     next = iterator.next();
-    Assert.assertEquals("text", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("text");
     f = t.getFeatureByBaseName("a");
     a = (AnnotationFS) next.getFeatureValue(f);
-    Assert.assertNotNull("Feature value is null!", a);
-    Assert.assertEquals("Some", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo("Some");
 
     t = cas.getTypeSystem().getType("Struct2");
     ai = cas.getAnnotationIndex(t);
-    Assert.assertEquals(1, ai.size());
+    assertThat(ai).hasSize(1);
     iterator = ai.iterator();
     next = iterator.next();
-    Assert.assertEquals("text", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("text");
     f = t.getFeatureByBaseName("a");
     a = (AnnotationFS) next.getFeatureValue(f);
-    Assert.assertNotNull("Feature value is null!", a);
-    Assert.assertEquals("Some", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo("Some");
 
     t = cas.getTypeSystem().getType("Struct3");
     ai = cas.getAnnotationIndex(t);
-    Assert.assertEquals(1, ai.size());
+    assertThat(ai).hasSize(1);
     iterator = ai.iterator();
     next = iterator.next();
-    Assert.assertEquals("text", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("text");
     f = t.getFeatureByBaseName("a");
     a = (AnnotationFS) next.getFeatureValue(f);
-    Assert.assertNotNull("Feature value is null!", a);
-    Assert.assertEquals("Some", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo("Some");
 
   }
 
   @Test
-  @Ignore
+  @Disabled
   public void testInsideOut() throws Exception {
 
     String document = "Some text.";
@@ -270,25 +272,25 @@ public class AnnotationLabelExpressionTest {
 
     t = cas.getTypeSystem().getType("Struct1");
     ai = cas.getAnnotationIndex(t);
-    Assert.assertEquals(1, ai.size());
+    assertThat(ai).hasSize(1);
     iterator = ai.iterator();
     next = iterator.next();
-    Assert.assertEquals("Some text.", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("Some text.");
     f = t.getFeatureByBaseName("a");
     a = (AnnotationFS) next.getFeatureValue(f);
-    Assert.assertNotNull("Feature value is null!", a);
-    Assert.assertEquals("text", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo("text");
 
     t = cas.getTypeSystem().getType("Struct2");
     ai = cas.getAnnotationIndex(t);
-    Assert.assertEquals(1, ai.size());
+    assertThat(ai).hasSize(1);
     iterator = ai.iterator();
     next = iterator.next();
-    Assert.assertEquals(".", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo(".");
     f = t.getFeatureByBaseName("a");
     a = (AnnotationFS) next.getFeatureValue(f);
-    Assert.assertNotNull("Feature value is null!", a);
-    Assert.assertEquals("Some text.", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo("Some text.");
 
   }
 
@@ -296,7 +298,7 @@ public class AnnotationLabelExpressionTest {
   public void testFeature() throws Exception {
 
     CAS cas = RutaTestUtils.getCAS("Some text.");
-    Assert.assertTrue(Ruta.matches(cas.getJCas(), "a:W b:W{a.end == (b.begin-1)-> T1};"));
+    assertThat(Ruta.matches(cas.getJCas(), "a:W b:W{a.end == (b.begin-1)-> T1};")).isTrue();
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
   }
 
@@ -305,22 +307,24 @@ public class AnnotationLabelExpressionTest {
 
     String script = "a:W W{-> CREATE(Struct1, \"a\"=a)};";
     CAS cas = this.applyOnStruct4Cas(script);
-    Assert.assertTrue(Ruta.matches(cas.getJCas(), "a:Struct1{a.a.begin == 0 -> T1};"));
+    assertThat(Ruta.matches(cas.getJCas(), "a:Struct1{a.a.begin == 0 -> T1};")).isTrue();
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "text");
   }
 
-  @Test(expected = AnalysisEngineProcessException.class)
+  @Test
   public void testWrongFeature() throws Exception {
 
     CAS cas = RutaTestUtils.getCAS("Some text.");
-    Ruta.matches(cas.getJCas(), "a:W b:W{a.x == (b.y-1)-> T1};");
+
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> Ruta.matches(cas.getJCas(), "a:W b:W{a.x == (b.y-1)-> T1};"));
   }
 
   @Test
   public void testSequentialLabelSelfMatch() throws Exception {
 
     CAS cas = RutaTestUtils.getCAS("Some text.");
-    Assert.assertFalse(Ruta.matches(cas.getJCas(), "e:CW e;"));
+    assertThat(Ruta.matches(cas.getJCas(), "e:CW e;")).isFalse();
   }
 
   @Test
@@ -387,11 +391,11 @@ public class AnnotationLabelExpressionTest {
     Type type2 = cas.getTypeSystem().getType("Struct2");
     Feature feature2 = type2.getFeatureByBaseName("a");
     Collection<AnnotationFS> select = CasUtil.select(cas, type2);
-    Assert.assertEquals(3, select.size());
+    assertThat(select).hasSize(3);
     Iterator<AnnotationFS> iterator = select.iterator();
-    Assert.assertEquals("1", iterator.next().getFeatureValue(feature2).getStringValue(feature1));
-    Assert.assertEquals("2", iterator.next().getFeatureValue(feature2).getStringValue(feature1));
-    Assert.assertEquals("3", iterator.next().getFeatureValue(feature2).getStringValue(feature1));
+    assertThat(iterator.next().getFeatureValue(feature2).getStringValue(feature1)).isEqualTo("1");
+    assertThat(iterator.next().getFeatureValue(feature2).getStringValue(feature1)).isEqualTo("2");
+    assertThat(iterator.next().getFeatureValue(feature2).getStringValue(feature1)).isEqualTo("3");
     cas.release();
   }
 
@@ -447,66 +451,66 @@ public class AnnotationLabelExpressionTest {
     featureA = type.getFeatureByBaseName("a");
     featureAS = type.getFeatureByBaseName("as");
     iterator = CasUtil.select(cas, type).iterator();
-    Assert.assertTrue(iterator.hasNext());
+    assertThat(iterator.hasNext()).isTrue();
     next = iterator.next();
-    Assert.assertFalse(iterator.hasNext());
+    assertThat(iterator.hasNext()).isFalse();
     featureValueA = next.getFeatureValue(featureA);
     featureValueAS = next.getFeatureValue(featureAS);
-    Assert.assertNotNull(featureValueA);
-    Assert.assertNotNull(featureValueAS);
-    Assert.assertTrue(featureValueA instanceof Annotation);
-    Assert.assertTrue(featureValueAS instanceof FSArray);
+    assertThat(featureValueA).isNotNull();
+    assertThat(featureValueAS).isNotNull();
+    assertThat(featureValueA instanceof Annotation).isTrue();
+    assertThat(featureValueAS instanceof FSArray).isTrue();
     a = (Annotation) featureValueA;
     as = (FSArray<?>) featureValueAS;
-    Assert.assertEquals("Some text", a.getCoveredText());
-    Assert.assertEquals("Annotation", a.getType().getShortName());
-    Assert.assertEquals(1, as.size());
-    Assert.assertEquals("Some text", ((AnnotationFS) as.get(0)).getCoveredText());
-    Assert.assertEquals("Annotation", as.get(0).getType().getShortName());
+    assertThat(a.getCoveredText()).isEqualTo("Some text");
+    assertThat(a.getType().getShortName()).isEqualTo("Annotation");
+    assertThat(as).hasSize(1);
+    assertThat(((AnnotationFS) as.get(0)).getCoveredText()).isEqualTo("Some text");
+    assertThat(as.get(0).getType().getShortName()).isEqualTo("Annotation");
 
     type = cas.getTypeSystem().getType("Struct2");
     featureA = type.getFeatureByBaseName("a");
     featureAS = type.getFeatureByBaseName("as");
     iterator = CasUtil.select(cas, type).iterator();
-    Assert.assertTrue(iterator.hasNext());
+    assertThat(iterator.hasNext()).isTrue();
     next = iterator.next();
-    Assert.assertFalse(iterator.hasNext());
+    assertThat(iterator.hasNext()).isFalse();
     featureValueA = next.getFeatureValue(featureA);
     featureValueAS = next.getFeatureValue(featureAS);
-    Assert.assertNotNull(featureValueA);
-    Assert.assertNotNull(featureValueAS);
-    Assert.assertTrue(featureValueA instanceof Annotation);
-    Assert.assertTrue(featureValueAS instanceof FSArray);
+    assertThat(featureValueA).isNotNull();
+    assertThat(featureValueAS).isNotNull();
+    assertThat(featureValueA instanceof Annotation).isTrue();
+    assertThat(featureValueAS instanceof FSArray).isTrue();
     a = (Annotation) featureValueA;
     as = (FSArray<?>) featureValueAS;
-    Assert.assertEquals("Some", a.getCoveredText());
-    Assert.assertEquals("CW", a.getType().getShortName());
-    Assert.assertEquals(2, as.size());
-    Assert.assertEquals("text", ((AnnotationFS) as.get(0)).getCoveredText());
-    Assert.assertEquals("Some", ((AnnotationFS) as.get(1)).getCoveredText());
-    Assert.assertEquals("SW", as.get(0).getType().getShortName());
-    Assert.assertEquals("CW", as.get(1).getType().getShortName());
+    assertThat(a.getCoveredText()).isEqualTo("Some");
+    assertThat(a.getType().getShortName()).isEqualTo("CW");
+    assertThat(as).hasSize(2);
+    assertThat(((AnnotationFS) as.get(0)).getCoveredText()).isEqualTo("text");
+    assertThat(((AnnotationFS) as.get(1)).getCoveredText()).isEqualTo("Some");
+    assertThat(as.get(0).getType().getShortName()).isEqualTo("SW");
+    assertThat(as.get(1).getType().getShortName()).isEqualTo("CW");
 
     type = cas.getTypeSystem().getType("Struct3");
     featureA = type.getFeatureByBaseName("a");
     featureAS = type.getFeatureByBaseName("as");
     iterator = CasUtil.select(cas, type).iterator();
-    Assert.assertTrue(iterator.hasNext());
+    assertThat(iterator.hasNext()).isTrue();
     next = iterator.next();
-    Assert.assertFalse(iterator.hasNext());
+    assertThat(iterator.hasNext()).isFalse();
     featureValueA = next.getFeatureValue(featureA);
     featureValueAS = next.getFeatureValue(featureAS);
-    Assert.assertNotNull(featureValueA);
-    Assert.assertNotNull(featureValueAS);
-    Assert.assertTrue(featureValueA instanceof Annotation);
-    Assert.assertTrue(featureValueAS instanceof FSArray);
+    assertThat(featureValueA).isNotNull();
+    assertThat(featureValueAS).isNotNull();
+    assertThat(featureValueA instanceof Annotation).isTrue();
+    assertThat(featureValueAS instanceof FSArray).isTrue();
     a = (Annotation) featureValueA;
     as = (FSArray<?>) featureValueAS;
-    Assert.assertEquals("Some text", a.getCoveredText());
-    Assert.assertEquals("Annotation", a.getType().getShortName());
-    Assert.assertEquals(1, as.size());
-    Assert.assertEquals("Some text", ((AnnotationFS) as.get(0)).getCoveredText());
-    Assert.assertEquals("Annotation", as.get(0).getType().getShortName());
+    assertThat(a.getCoveredText()).isEqualTo("Some text");
+    assertThat(a.getType().getShortName()).isEqualTo("Annotation");
+    assertThat(as).hasSize(1);
+    assertThat(((AnnotationFS) as.get(0)).getCoveredText()).isEqualTo("Some text");
+    assertThat(as.get(0).getType().getShortName()).isEqualTo("Annotation");
 
     cas.release();
   }
@@ -524,43 +528,46 @@ public class AnnotationLabelExpressionTest {
     Feature feature1 = type1.getFeatureByBaseName("a");
 
     List<AnnotationFS> select1 = new ArrayList<>(CasUtil.select(cas, type1));
-    Assert.assertEquals(2, select1.size());
+    assertThat(select1).hasSize(2);
 
     AnnotationFS a11 = select1.get(0);
-    Assert.assertEquals("Some", a11.getCoveredText());
+    assertThat(a11.getCoveredText()).isEqualTo("Some");
     AnnotationFS featureValue11 = (AnnotationFS) a11.getFeatureValue(feature1);
-    Assert.assertEquals("text", featureValue11.getCoveredText());
+    assertThat(featureValue11.getCoveredText()).isEqualTo("text");
 
     AnnotationFS a21 = select1.get(1);
-    Assert.assertEquals("text", a21.getCoveredText());
+    assertThat(a21.getCoveredText()).isEqualTo("text");
     AnnotationFS featureValue21 = (AnnotationFS) a21.getFeatureValue(feature1);
-    Assert.assertNull(featureValue21);
+    assertThat(featureValue21).isNull();
 
     Type type2 = cas.getTypeSystem().getType("Struct2");
     Feature feature2 = type2.getFeatureByBaseName("a");
 
     List<AnnotationFS> select2 = new ArrayList<>(CasUtil.select(cas, type2));
-    Assert.assertEquals(2, select2.size());
+    assertThat(select2).hasSize(2);
 
     AnnotationFS a12 = select2.get(0);
-    Assert.assertEquals("Some", a12.getCoveredText());
+    assertThat(a12.getCoveredText()).isEqualTo("Some");
     AnnotationFS featureValue12 = (AnnotationFS) a12.getFeatureValue(feature2);
-    Assert.assertEquals("text.", featureValue12.getCoveredText());
+    assertThat(featureValue12.getCoveredText()).isEqualTo("text.");
 
     AnnotationFS a22 = select2.get(1);
-    Assert.assertEquals("text", a22.getCoveredText());
+    assertThat(a22.getCoveredText()).isEqualTo("text");
     AnnotationFS featureValue22 = (AnnotationFS) a22.getFeatureValue(feature2);
-    Assert.assertNull(featureValue22);
+    assertThat(featureValue22).isNull();
 
   }
 
-  @Test(expected = AnalysisEngineProcessException.class)
+  @Test
   public void testInvalidLabelWithQuantifier1() throws Exception {
 
-    String script = "";
-    script += "w:ANY{->Struct1, Struct1.a = w};";
-    script += "s1:Struct1{PARTOF(CW)->T1} s2:Struct1*{s2.a.ct == \"text\"};";
-    this.applyOnStruct4Cas(script);
+    String script = """
+            w:ANY{->Struct1, Struct1.a = w};
+            s1:Struct1{PARTOF(CW)->T1} s2:Struct1*{s2.a.ct == \"text\"};
+            """;
+
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> this.applyOnStruct4Cas(script));
   }
 
   @Test
@@ -718,11 +725,11 @@ public class AnnotationLabelExpressionTest {
     script += "ps:T3{-> ps.end = a.end} a:ANY+{-PARTOF(T3)};\n";
     script += "a:ANY+{-PARTOF(T4)} ps:@T4{-> ps.begin = a.begin};\n";
 
-//    script += "ps:T5{-> ps.end = a.end} a:ANY?{-PARTOF(T5)};\n";
-//    script += "a:ANY?{-PARTOF(T6)} ps:@T6{-> ps.begin = a.begin};\n";
+    // script += "ps:T5{-> ps.end = a.end} a:ANY?{-PARTOF(T5)};\n";
+    // script += "a:ANY?{-PARTOF(T6)} ps:@T6{-> ps.begin = a.begin};\n";
 
-//    script += "ps:T7{-> ps.end = a.end} a:ANY*?{-PARTOF(T7)};\n";
-//    script += "a:ANY*?{-PARTOF(T8)} ps:@T8{-> ps.begin = a.begin};\n";
+    // script += "ps:T7{-> ps.end = a.end} a:ANY*?{-PARTOF(T7)};\n";
+    // script += "a:ANY*?{-PARTOF(T8)} ps:@T8{-> ps.begin = a.begin};\n";
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
@@ -733,11 +740,11 @@ public class AnnotationLabelExpressionTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "1 a a", "1 a a", "1 a");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 3, "a 1", "a a 1", "a a 1");
 
-//    RutaTestUtils.assertAnnotationsEquals(cas, 5, 6, "a 1", "a", "a 1", "a", "a 1", "a");
-//    RutaTestUtils.assertAnnotationsEquals(cas, 6, 6, "a", "1 a", "a", "1 a", "a", "1 a");
+    // RutaTestUtils.assertAnnotationsEquals(cas, 5, 6, "a 1", "a", "a 1", "a", "a 1", "a");
+    // RutaTestUtils.assertAnnotationsEquals(cas, 6, 6, "a", "1 a", "a", "1 a", "a", "1 a");
 
-//    RutaTestUtils.assertAnnotationsEquals(cas, 7, 3, "1 a a", "1 a a", "1 a");
-//    RutaTestUtils.assertAnnotationsEquals(cas, 8, 3, "a 1", "a a 1", "a a 1");
+    // RutaTestUtils.assertAnnotationsEquals(cas, 7, 3, "1 a a", "1 a a", "1 a");
+    // RutaTestUtils.assertAnnotationsEquals(cas, 8, 3, "a 1", "a a 1", "a a 1");
   }
 
   @Test
@@ -833,7 +840,7 @@ public class AnnotationLabelExpressionTest {
   }
 
   @Test
-  @Ignore
+  @Disabled
   public void testInlineWithQuantifier() throws Exception {
 
     String script = "";

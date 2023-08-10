@@ -19,10 +19,8 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,21 +33,17 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.apache.uima.ruta.seed.DefaultSeeder;
-import org.apache.uima.util.InvalidXMLException;
-import org.junit.Test;
-import org.xml.sax.SAXException;
+import org.junit.jupiter.api.Test;
 
 public class WSDictionaryTest {
 
   @Test
-  public void test()
-          throws SAXException, ResourceInitializationException, InvalidXMLException, IOException {
+  public void test() throws Exception {
     String document = "Peter Kluegl, Marshall Schor, Joern Kottmann\n";
     document += "PeterKluegl, MarshallSchor, JoernKottmann\n";
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
@@ -83,8 +77,7 @@ public class WSDictionaryTest {
   }
 
   @Test
-  public void testTableWithWS()
-          throws ResourceInitializationException, IOException, InvalidXMLException, SAXException {
+  public void testTableWithWS() throws Exception {
     String document = "Peter Kluegl, Marshall Schor, Joern Kottmann\n";
     document += "PeterKluegl, MarshallSchor, JoernKottmann\n";
     document += "Peter<x>Kluegl, Marshall<x>Schor, Joern<x>Kottmann\n";
@@ -116,75 +109,71 @@ public class WSDictionaryTest {
     Feature f2 = t.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(9, ai.size());
+    assertThat(ai.size()).isEqualTo(9);
     iterator = ai.iterator();
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Peter Kluegl", v1);
-    assertEquals("UIMA Ruta", v2);
+    assertThat(v1).isEqualTo("Peter Kluegl");
+    assertThat(v2).isEqualTo("UIMA Ruta");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Marshall Schor", v1);
-    assertEquals("UIMA Core", v2);
+    assertThat(v1).isEqualTo("Marshall Schor");
+    assertThat(v2).isEqualTo("UIMA Core");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Joern Kottmann", v1);
-    assertEquals("CAS Editor", v2);
+    assertThat(v1).isEqualTo("Joern Kottmann");
+    assertThat(v2).isEqualTo("CAS Editor");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Peter Kluegl", v1);
-    assertEquals("UIMA Ruta", v2);
+    assertThat(v1).isEqualTo("Peter Kluegl");
+    assertThat(v2).isEqualTo("UIMA Ruta");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Marshall Schor", v1);
-    assertEquals("UIMA Core", v2);
+    assertThat(v1).isEqualTo("Marshall Schor");
+    assertThat(v2).isEqualTo("UIMA Core");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Joern Kottmann", v1);
-    assertEquals("CAS Editor", v2);
+    assertThat(v1).isEqualTo("Joern Kottmann");
+    assertThat(v2).isEqualTo("CAS Editor");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Peter Kluegl", v1);
-    assertEquals("UIMA Ruta", v2);
+    assertThat(v1).isEqualTo("Peter Kluegl");
+    assertThat(v2).isEqualTo("UIMA Ruta");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Marshall Schor", v1);
-    assertEquals("UIMA Core", v2);
+    assertThat(v1).isEqualTo("Marshall Schor");
+    assertThat(v2).isEqualTo("UIMA Core");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Joern Kottmann", v1);
-    assertEquals("CAS Editor", v2);
+    assertThat(v1).isEqualTo("Joern Kottmann");
+    assertThat(v2).isEqualTo("CAS Editor");
 
     cas.release();
   }
 
-  private CAS executeAnalysis(CAS cas, String script) {
-    try {
-      Map<String, Object> map = new HashMap<>();
-      map.put(RutaEngine.PARAM_DICT_REMOVE_WS, true);
-      map.put(RutaEngine.PARAM_SEEDERS, new String[] { DefaultSeeder.class.getName() });
-      Ruta.apply(cas, script, map);
-    } catch (Exception e) {
-      fail("Failed to execute analysis engine. Reason: " + e.getMessage());
-    }
+  private CAS executeAnalysis(CAS cas, String script) throws Exception {
+    Map<String, Object> map = new HashMap<>();
+    map.put(RutaEngine.PARAM_DICT_REMOVE_WS, true);
+    map.put(RutaEngine.PARAM_SEEDERS, new String[] { DefaultSeeder.class.getName() });
+    Ruta.apply(cas, script, map);
     return cas;
   }
 

@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.engine;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,7 +37,7 @@ import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ViewWriterTest {
 
@@ -76,11 +76,11 @@ public class ViewWriterTest {
     FileInputStream stream = new FileInputStream(tempFile);
     XmiCasDeserializer.deserialize(stream, cas, true);
 
-    assertEquals("This is a new view.", cas.getDocumentText());
+    assertThat(cas.getDocumentText()).isEqualTo("This is a new view.");
     type = cas.getTypeSystem().getType(TEST_TYPE);
     AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(type);
     AnnotationFS next = ai.iterator().next();
-    assertEquals("is", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("is");
 
     if (cas != null) {
       cas.release();
@@ -149,12 +149,12 @@ public class ViewWriterTest {
     FileInputStream stream = new FileInputStream(xmiOutputFile);
     XmiCasDeserializer.deserialize(stream, cas, true);
 
-    assertEquals("This is a new view.", cas.getDocumentText());
+    assertThat(cas.getDocumentText()).isEqualTo("This is a new view.");
     type = cas.getTypeSystem().getType(TEST_TYPE);
     AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(type);
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     AnnotationFS next = ai.iterator().next();
-    assertEquals("new", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("new");
 
     if (cas != null) {
       cas.release();

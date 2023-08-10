@@ -28,8 +28,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 public class ConditionedAnnotationTypeExpressionTest {
 
   @Test

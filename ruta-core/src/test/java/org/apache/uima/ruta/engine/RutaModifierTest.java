@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.engine;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.seed.DefaultSeeder;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RutaModifierTest {
 
@@ -76,7 +76,7 @@ public class RutaModifierTest {
     CAS modifiedView = cas.getView(viewName);
     String text = modifiedView.getDocumentText();
 
-    assertEquals("start of bodynormal BOLDend of body", text);
+    assertThat(text).isEqualTo("start of bodynormal BOLDend of body");
 
     cas.release();
     ae.destroy();

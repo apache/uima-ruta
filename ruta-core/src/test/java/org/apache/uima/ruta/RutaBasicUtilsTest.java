@@ -18,106 +18,102 @@
  */
 package org.apache.uima.ruta;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 import java.util.Arrays;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.fit.factory.JCasFactory;
+import org.apache.uima.fit.testing.junit.ManagedJCas;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.type.CW;
 import org.apache.uima.ruta.type.RutaBasic;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 public class RutaBasicUtilsTest {
 
-  // TODO use uimafit when released instead
-  // public @Rule ManagedJCas managedJCas = new ManagedJCas();
+  private static @RegisterExtension ManagedJCas managedJCas = new ManagedJCas();
 
-  private static ThreadLocal<JCas> managedJCas = new ThreadLocal<>();
-
-  static {
-
-    try {
-      JCas jCas = JCasFactory.createJCas();
-      managedJCas.set(jCas);
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
-    }
-  }
-
-  @Before
-  public void setup() {
-    managedJCas.get().reset();
-  }
-
-  @Test(expected = AnalysisEngineProcessException.class)
-  public void testBreakOnNoBasics() throws AnalysisEngineProcessException {
-
-    RutaBasicUtils.validateInternalIndexing(managedJCas.get(), null);
-  }
-
-  @Test(expected = AnalysisEngineProcessException.class)
-  public void testBreakOnDuplicateBasics() throws AnalysisEngineProcessException {
-    JCas jcas = managedJCas.get();
-    new RutaBasic(jcas, 0, 1).addToIndexes();
-    new RutaBasic(jcas, 0, 1).addToIndexes();
-    RutaBasicUtils.validateInternalIndexing(jcas, null);
-  }
-
-  @Test(expected = AnalysisEngineProcessException.class)
-  public void testBreakOnMissingBasicAtBegin() throws AnalysisEngineProcessException {
-    JCas jcas = managedJCas.get();
-    new RutaBasic(jcas, 1, 2).addToIndexes();
-    new CW(jcas, 0, 2).addToIndexes();
-    RutaBasicUtils.validateInternalIndexing(jcas, null);
-  }
-
-  @Test(expected = AnalysisEngineProcessException.class)
-  public void testBreakOnMissingBasicAtEnd() throws AnalysisEngineProcessException {
-    JCas jcas = managedJCas.get();
-    new RutaBasic(jcas, 0, 1).addToIndexes();
-    new CW(jcas, 0, 2).addToIndexes();
-    RutaBasicUtils.validateInternalIndexing(jcas, null);
-  }
-
-  @Test(expected = AnalysisEngineProcessException.class)
-  public void testBreakOnMissingAnnotationAtBegin() throws AnalysisEngineProcessException {
-    JCas jcas = managedJCas.get();
-    CW cw = new CW(jcas, 0, 1);
-    cw.addToIndexes();
-    RutaBasic rb = new RutaBasic(jcas, 0, 1);
-    rb.addEnd(cw, cw.getType());
-    rb.addToIndexes();
-    RutaBasicUtils.validateInternalIndexing(jcas, null);
-  }
-
-  @Test(expected = AnalysisEngineProcessException.class)
-  public void testBreakOnMissingAnnotationAtEnd() throws AnalysisEngineProcessException {
-    JCas jcas = managedJCas.get();
-    CW cw = new CW(jcas, 0, 1);
-    cw.addToIndexes();
-    RutaBasic rb = new RutaBasic(jcas, 0, 1);
-    rb.addBegin(cw, cw.getType());
-    rb.addToIndexes();
-    RutaBasicUtils.validateInternalIndexing(jcas, null);
-  }
-
-  @Test(expected = AnalysisEngineProcessException.class)
-  public void testBreakOnMissingPartof() throws AnalysisEngineProcessException {
-    JCas jcas = managedJCas.get();
-    CW cw = new CW(jcas, 0, 1);
-    cw.addToIndexes();
-    RutaBasic rb = new RutaBasic(jcas, 0, 1);
-    rb.addBegin(cw, cw.getType());
-    rb.addEnd(cw, cw.getType());
-    rb.addToIndexes();
-    RutaBasicUtils.validateInternalIndexing(jcas, null);
+  @Test
+  public void testBreakOnNoBasics() throws Exception {
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> RutaBasicUtils.validateInternalIndexing(managedJCas.get(), null));
   }
 
   @Test
-  public void testIgnoreTypeNames() throws AnalysisEngineProcessException {
+  public void testBreakOnDuplicateBasics() throws Exception {
+    JCas jcas = managedJCas.get();
+    new RutaBasic(jcas, 0, 1).addToIndexes();
+    new RutaBasic(jcas, 0, 1).addToIndexes();
+
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> RutaBasicUtils.validateInternalIndexing(jcas, null));
+  }
+
+  @Test
+  public void testBreakOnMissingBasicAtBegin() throws Exception {
+    JCas jcas = managedJCas.get();
+    new RutaBasic(jcas, 1, 2).addToIndexes();
+    new CW(jcas, 0, 2).addToIndexes();
+
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> RutaBasicUtils.validateInternalIndexing(jcas, null));
+  }
+
+  @Test
+  public void testBreakOnMissingBasicAtEnd() throws Exception {
+    JCas jcas = managedJCas.get();
+    new RutaBasic(jcas, 0, 1).addToIndexes();
+    new CW(jcas, 0, 2).addToIndexes();
+
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> RutaBasicUtils.validateInternalIndexing(jcas, null));
+  }
+
+  @Test
+  public void testBreakOnMissingAnnotationAtBegin() throws Exception {
+    JCas jcas = managedJCas.get();
+    CW cw = new CW(jcas, 0, 1);
+    cw.addToIndexes();
+    RutaBasic rb = new RutaBasic(jcas, 0, 1);
+    rb.addEnd(cw, cw.getType());
+    rb.addToIndexes();
+
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> RutaBasicUtils.validateInternalIndexing(jcas, null));
+  }
+
+  @Test
+  public void testBreakOnMissingAnnotationAtEnd() throws Exception {
+    JCas jcas = managedJCas.get();
+    CW cw = new CW(jcas, 0, 1);
+    cw.addToIndexes();
+    RutaBasic rb = new RutaBasic(jcas, 0, 1);
+    rb.addBegin(cw, cw.getType());
+    rb.addToIndexes();
+
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> RutaBasicUtils.validateInternalIndexing(jcas, null));
+  }
+
+  @Test
+  public void testBreakOnMissingPartof() throws Exception {
+    JCas jcas = managedJCas.get();
+    CW cw = new CW(jcas, 0, 1);
+    cw.addToIndexes();
+    RutaBasic rb = new RutaBasic(jcas, 0, 1);
+    rb.addBegin(cw, cw.getType());
+    rb.addEnd(cw, cw.getType());
+    rb.addToIndexes();
+
+    assertThatExceptionOfType(AnalysisEngineProcessException.class)
+            .isThrownBy(() -> RutaBasicUtils.validateInternalIndexing(jcas, null));
+  }
+
+  @Test
+  public void testIgnoreTypeNames() throws Exception {
     JCas jcas = managedJCas.get();
     new RutaBasic(jcas, 0, 1).addToIndexes();
     new CW(jcas, 0, 1).addToIndexes();

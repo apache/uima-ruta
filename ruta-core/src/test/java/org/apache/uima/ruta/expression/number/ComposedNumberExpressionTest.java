@@ -18,12 +18,12 @@
  */
 package org.apache.uima.ruta.expression.number;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 
 public class ComposedNumberExpressionTest {
 
@@ -33,7 +33,7 @@ public class ComposedNumberExpressionTest {
     list.add(new SimpleNumberExpression(Integer.valueOf(1)));
     ComposedNumberExpression expr = new ComposedNumberExpression(list, new ArrayList<String>());
     String string = expr.getStringValue(null, null);
-    Assert.assertEquals("1", string);
+    assertThat(string).isEqualTo("1");
   }
-  
+
 }

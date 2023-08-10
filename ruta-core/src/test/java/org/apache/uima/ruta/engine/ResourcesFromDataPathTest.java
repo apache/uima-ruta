@@ -30,8 +30,7 @@ import org.apache.uima.fit.internal.ResourceManagerFactory;
 import org.apache.uima.fit.internal.ResourceManagerFactory.ResourceManagerCreator;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 public class ResourcesFromDataPathTest {
 
   @Test

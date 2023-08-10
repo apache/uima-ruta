@@ -45,3 +45,6 @@ installPrefs ruta-ep-textruler
 installPrefs ruta-maven-archetype
 installPrefs ruta-maven-plugin
 installPrefs ruta-parent
+installPrefs example-projects/ruta-ep-example-extensions
+installPrefs example-projects/ruta-maven-example
+installPrefs example-projects/ruta-tutorial-GermanNovels

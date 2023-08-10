@@ -16,12 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.uima.ruta.maven;
 
-import java.io.File;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.Assert.*;
+import java.io.File;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -31,8 +30,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OneEngineTest {
   
@@ -40,16 +38,16 @@ public class OneEngineTest {
   public void test() throws Exception{
     File descDirectory = new File("target/generated-sources/ruta/descriptor");
     File aeFile1 = new File(descDirectory, "my/package/one/OneEngine.xml");
-    assertTrue(aeFile1.exists());
+    assertThat(aeFile1).exists();
     File tsFile1 = new File(descDirectory, "my/package/one/OneTypeSystem.xml");
-    assertTrue(tsFile1.exists());
+    assertThat(tsFile1).exists();
     File resourcesDirectory = new File("target/generated-sources/ruta/resources");
     File twlFile1 = new File(resourcesDirectory, "twl1.twl");
-    assertTrue(twlFile1.getName() + " is missing!", twlFile1.exists());
+    assertThat(twlFile1).exists();
     File twlFile2 = new File(resourcesDirectory, "my/package/one/twl2.twl");
-    assertTrue(twlFile2.getName() + " is missing!", twlFile2.exists());
+    assertThat(twlFile2).exists();
     File mtwlFile1 = new File(resourcesDirectory, "generated.mtwl");
-    assertTrue(mtwlFile1.getName() + " is missing!", mtwlFile1.exists());
+    assertThat(mtwlFile1).exists();
     
     
     AnalysisEngineDescription aed = UIMAFramework.getXMLParser().parseAnalysisEngineDescription(new XMLInputSource(aeFile1));
@@ -59,26 +57,25 @@ public class OneEngineTest {
     ae.process(cas);
     
     Type type1 = cas.getTypeSystem().getType("my.package.one.One.Twl1");
-    AnnotationIndex<AnnotationFS> ai1 = cas.getAnnotationIndex(type1);
-    assertEquals(1, ai1.size());
-    assertEquals("1", ai1.iterator().next().getCoveredText());
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(type1)) //
+      .extracting(AnnotationFS::getCoveredText) //
+      .containsExactly("1");
     
     Type type2 = cas.getTypeSystem().getType("my.package.one.One.Twl2");
-    AnnotationIndex<AnnotationFS> ai2 = cas.getAnnotationIndex(type2);
-    assertEquals(1, ai2.size());
-    assertEquals("2", ai2.iterator().next().getCoveredText());
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(type2)) //
+      .extracting(AnnotationFS::getCoveredText) //
+      .containsExactly("2");
     
     Type type3 = cas.getTypeSystem().getType("my.package.one.One.Mtwl1");
-    AnnotationIndex<AnnotationFS> ai3 = cas.getAnnotationIndex(type3);
-    assertEquals(1, ai3.size());
-    assertEquals("1", ai3.iterator().next().getCoveredText());
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(type3)) //
+      .extracting(AnnotationFS::getCoveredText) //
+      .containsExactly("1");
     
     Type type4 = cas.getTypeSystem().getType("my.package.one.One.Mtwl2");
-    AnnotationIndex<AnnotationFS> ai4 = cas.getAnnotationIndex(type4);
-    assertEquals(1, ai4.size());
-    assertEquals("2", ai4.iterator().next().getCoveredText());
+    assertThat(cas.<AnnotationFS> getAnnotationIndex(type3)) //
+      .extracting(AnnotationFS::getCoveredText) //
+      .containsExactly("2");
     
     cas.release();
-  }
-  
+  }  
 }

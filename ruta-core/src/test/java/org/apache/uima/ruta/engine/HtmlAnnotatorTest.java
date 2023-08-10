@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.engine;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.net.URL;
@@ -34,7 +34,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class HtmlAnnotatorTest {
 
@@ -47,8 +47,8 @@ public class HtmlAnnotatorTest {
     String html = FileUtils.file2String(textFile, "UTF-8");
     URL url = HtmlAnnotator.class.getClassLoader().getResource("HtmlAnnotator.xml");
     if (url == null) {
-      url = HtmlAnnotator.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/HtmlAnnotator.xml");
+      url = HtmlAnnotator.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/HtmlAnnotator.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -65,37 +65,36 @@ public class HtmlAnnotatorTest {
     ae.process(cas);
     ai = cas.getAnnotationIndex(tagType);
     iterator = ai.iterator();
-    assertEquals(7, ai.size());
+    assertThat(ai.size()).isEqualTo(7);
     AnnotationFS a = iterator.next();
-    assertEquals("HTML", a.getType().getShortName());
-    assertEquals(0, a.getBegin());
-    assertEquals(127, a.getEnd());
+    assertThat(a.getType().getShortName()).isEqualTo("HTML");
+    assertThat(a.getBegin()).isEqualTo(0);
+    assertThat(a.getEnd()).isEqualTo(127);
     a = iterator.next();
-    assertEquals("HEAD", a.getType().getShortName());
-    assertEquals(8, a.getBegin());
-    assertEquals(39, a.getEnd());
+    assertThat(a.getType().getShortName()).isEqualTo("HEAD");
+    assertThat(a.getBegin()).isEqualTo(8);
+    assertThat(a.getEnd()).isEqualTo(39);
     a = iterator.next();
-    assertEquals("REMARK", a.getType().getShortName());
-    assertEquals(16, a.getBegin());
-    assertEquals(30, a.getEnd());
+    assertThat(a.getType().getShortName()).isEqualTo("REMARK");
+    assertThat(a.getBegin()).isEqualTo(16);
+    assertThat(a.getEnd()).isEqualTo(30);
     a = iterator.next();
-    assertEquals("BODY", a.getType().getShortName());
-    assertEquals(41, a.getBegin());
-    assertEquals(118, a.getEnd());
+    assertThat(a.getType().getShortName()).isEqualTo("BODY");
+    assertThat(a.getBegin()).isEqualTo(41);
+    assertThat(a.getEnd()).isEqualTo(118);
     a = iterator.next();
-    assertEquals("BR", a.getType().getShortName());
-    assertEquals(64, a.getBegin());
-    assertEquals(69, a.getEnd());
+    assertThat(a.getType().getShortName()).isEqualTo("BR");
+    assertThat(a.getBegin()).isEqualTo(64);
+    assertThat(a.getEnd()).isEqualTo(69);
     a = iterator.next();
-    assertEquals("B", a.getType().getShortName());
-    assertEquals(78, a.getBegin());
-    assertEquals(89, a.getEnd());
+    assertThat(a.getType().getShortName()).isEqualTo("B");
+    assertThat(a.getBegin()).isEqualTo(78);
+    assertThat(a.getEnd()).isEqualTo(89);
     a = iterator.next();
-    assertEquals("BR", a.getType().getShortName());
-    assertEquals(91, a.getBegin());
-    assertEquals(96, a.getEnd());
+    assertThat(a.getType().getShortName()).isEqualTo("BR");
+    assertThat(a.getBegin()).isEqualTo(91);
+    assertThat(a.getEnd()).isEqualTo(96);
 
-    
     ae.setConfigParameterValue("onlyContent", true);
     ae.reconfigure();
     cas.reset();
@@ -103,24 +102,24 @@ public class HtmlAnnotatorTest {
     ae.process(cas);
     ai = cas.getAnnotationIndex(tagType);
     iterator = ai.iterator();
-    assertEquals(4, ai.size());
+    assertThat(ai.size()).isEqualTo(4);
     a = iterator.next();
-    assertEquals("HTML", a.getType().getShortName());
-    assertEquals(6, a.getBegin());
-    assertEquals(120, a.getEnd());
+    assertThat(a.getType().getShortName()).isEqualTo("HTML");
+    assertThat(a.getBegin()).isEqualTo(6);
+    assertThat(a.getEnd()).isEqualTo(120);
     a = iterator.next();
-    assertEquals("HEAD", a.getType().getShortName());
-    assertEquals(14, a.getBegin());
-    assertEquals(32, a.getEnd());
+    assertThat(a.getType().getShortName()).isEqualTo("HEAD");
+    assertThat(a.getBegin()).isEqualTo(14);
+    assertThat(a.getEnd()).isEqualTo(32);
     a = iterator.next();
-    assertEquals("BODY", a.getType().getShortName());
-    assertEquals(47, a.getBegin());
-    assertEquals(111, a.getEnd());
+    assertThat(a.getType().getShortName()).isEqualTo("BODY");
+    assertThat(a.getBegin()).isEqualTo(47);
+    assertThat(a.getEnd()).isEqualTo(111);
     a = iterator.next();
-    assertEquals("B", a.getType().getShortName());
-    assertEquals(81, a.getBegin());
-    assertEquals(85, a.getEnd());
-    
+    assertThat(a.getType().getShortName()).isEqualTo("B");
+    assertThat(a.getBegin()).isEqualTo(81);
+    assertThat(a.getEnd()).isEqualTo(85);
+
     cas.release();
   }
 }

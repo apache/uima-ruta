@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.example.extensions;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +30,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ExampleNumberFunctionTest {
 
@@ -45,15 +45,13 @@ public class ExampleNumberFunctionTest {
             namespace + "/test.txt", parameters, 50);
 
     Type t = null;
-    AnnotationIndex<AnnotationFS> ai = null;
 
     t = RutaTestUtils.getTestType(cas, 1);
-    ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
+    AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t);
+    assertThat(ai).hasSize(1);
 
     if (cas != null) {
       cas.release();
     }
-
   }
 }

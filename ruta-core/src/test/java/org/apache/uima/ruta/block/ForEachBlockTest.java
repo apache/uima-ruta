@@ -31,9 +31,8 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.apache.uima.ruta.seed.TextSeeder;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 public class ForEachBlockTest {
 
   private String text = "Some text 4 more text.";
@@ -60,7 +59,7 @@ public class ForEachBlockTest {
   }
 
   @Test
-  @Ignore
+  @Disabled
   public void testPerformance() throws Exception {
 
     int lines = 10000;

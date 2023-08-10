@@ -19,8 +19,7 @@
 package org.apache.uima.ruta.engine;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,7 +45,7 @@ import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
 import org.apache.uima.ruta.type.FalsePositive;
 import org.apache.uima.ruta.type.TruePositive;
 import org.apache.uima.util.CasCreationUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class UimafitTest {
 
@@ -80,8 +79,8 @@ public class UimafitTest {
     // Test the result
     AnnotationIndex<Annotation> ai = jcas.getAnnotationIndex(FalsePositive.type);
     FSIterator<Annotation> iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("This is a test.", iterator.next().getCoveredText());
+    assertThat(ai.size()).isEqualTo(1);
+    assertThat(iterator.next().getCoveredText()).isEqualTo("This is a test.");
 
   }
 
@@ -110,10 +109,8 @@ public class UimafitTest {
     // Type type = cas.getTypeSystem().getType(RutaDescriptorFactory.ANONYMOUS + ".MyType");
     Type type = cas.getTypeSystem().getType("Anonymous" + ".MyType");
 
-    assertNotNull(type);
+    assertThat(type).isNotNull();
     AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex(type);
-    assertEquals(4, annotationIndex.size());
-
+    assertThat(annotationIndex.size()).isEqualTo(4);
   }
-
 }

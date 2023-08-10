@@ -18,14 +18,18 @@
  */
 package org.apache.uima.ruta.maven;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_RESOURCES;
 import static org.apache.maven.plugins.annotations.ResolutionScope.TEST;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -555,8 +559,8 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       String string = sw.toString();
       // Xpp3DomWriter creates empty string with file writer, check before writing to file
       if (!StringUtils.isBlank(string)) {
-        try {
-          FileUtils.fileWrite(projectFile, encoding, string);
+        try (Writer os = new OutputStreamWriter(new FileOutputStream(projectFile), UTF_8)) {
+            os.write(string);
         } catch (IOException e) {
           handleError("Failed to write .project file", e);
         }
@@ -596,9 +600,9 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     String string = sw.toString();
     // Xpp3DomWriter creates empty string with file writer, check before writing to file
     if (!StringUtils.isBlank(string)) {
-      try {
-        FileUtils.fileWrite(buildpathFile, encoding, string);
-      } catch (IOException e) {
+        try (Writer os = new OutputStreamWriter(new FileOutputStream(buildpathFile), UTF_8)) {
+            os.write(string);
+        } catch (IOException e) {
         handleError("Failed to write .buildpath file", e);
       }
     }

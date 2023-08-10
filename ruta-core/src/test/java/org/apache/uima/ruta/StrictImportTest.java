@@ -19,11 +19,10 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,8 +45,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.type.TruePositive;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test the strict import option of {@link org.apache.uima.ruta.engine.RutaEngine}.
@@ -115,8 +113,8 @@ public class StrictImportTest {
       }
     }
 
-    assertEquals(Arrays.asList("Word"), selectText(cas, "org.apache.uima.ruta.MyType"));
-    assertEquals(Arrays.asList("Word"), selectText(cas, script.replaceAll("/", ".") + ".T1"));
+    assertThat(selectText(cas, "org.apache.uima.ruta.MyType")).containsExactly("Word");
+    assertThat(selectText(cas, script.replaceAll("/", ".") + ".T1")).containsExactly("Word");
   }
 
   @Test
@@ -134,8 +132,8 @@ public class StrictImportTest {
       }
     }
 
-    assertEquals(Arrays.asList("Word"), selectText(cas, "org.apache.uima.ruta.MyType"));
-    assertEquals(Arrays.asList("Word"), selectText(cas, script.replaceAll("/", ".") + ".T1"));
+    assertThat(selectText(cas, "org.apache.uima.ruta.MyType")).containsExactly("Word");
+    assertThat(selectText(cas, script.replaceAll("/", ".") + ".T1")).containsExactly("Word");
   }
 
   private List<String> selectText(CAS cas, String type) {
@@ -169,8 +167,8 @@ public class StrictImportTest {
     Type t1 = cas.getTypeSystem().getType(s1);
     Type t2 = cas.getTypeSystem().getType(s2);
 
-    Assert.assertEquals(1, cas.getAnnotationIndex(t1).size());
-    Assert.assertEquals(1, cas.getAnnotationIndex(t2).size());
+    assertThat(cas.getAnnotationIndex(t1)).hasSize(1);
+    assertThat(cas.getAnnotationIndex(t2)).hasSize(1);
 
     cas.release();
   }
@@ -184,7 +182,7 @@ public class StrictImportTest {
     Ruta.apply(cas, "Document{->TruePositive};", params);
     AnnotationIndex<Annotation> annotationIndex = cas.getJCas()
             .getAnnotationIndex(TruePositive.type);
-    Assert.assertEquals(2, annotationIndex.size());
+    assertThat(annotationIndex).hasSize(2);
     cas.release();
   }
 

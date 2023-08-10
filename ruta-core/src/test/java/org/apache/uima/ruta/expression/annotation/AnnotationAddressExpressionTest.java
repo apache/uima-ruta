@@ -19,8 +19,7 @@
 
 package org.apache.uima.ruta.expression.annotation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AnnotationAddressExpressionTest {
 
@@ -123,13 +122,13 @@ public class AnnotationAddressExpressionTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     iterator = ai.iterator();
     AnnotationFS next = iterator.next();
-    assertEquals("Some text.", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("Some text.");
     AnnotationFS a = (AnnotationFS) next.getFeatureValue(f1);
-    assertNotNull("Feature value is null!", a);
-    assertEquals("text", a.getCoveredText());
+    assertThat(a).as("Feature value is null!").isNotNull();
+    assertThat(a.getCoveredText()).isEqualTo("text");
 
     if (cas != null) {
       cas.release();

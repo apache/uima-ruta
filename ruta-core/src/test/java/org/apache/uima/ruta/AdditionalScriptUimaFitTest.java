@@ -20,7 +20,7 @@
 package org.apache.uima.ruta;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -31,26 +31,26 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AdditionalScriptUimaFitTest {
 
   @Test
   public void test() throws Exception {
-    
+
     AnalysisEngineDescription aed = createEngineDescription(RutaEngine.class,
-            RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.Main", RutaEngine.PARAM_DEBUG, false,
-            RutaEngine.PARAM_ADDITIONAL_SCRIPTS, new String[] {"org.apache.uima.ruta.Additional"}
-//            , RutaEngine.PARAM_STRICT_IMPORTS, true
-            );
-    
-    
+            RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.Main", RutaEngine.PARAM_DEBUG,
+            false, RutaEngine.PARAM_ADDITIONAL_SCRIPTS,
+            new String[] { "org.apache.uima.ruta.Additional" }
+    // , RutaEngine.PARAM_STRICT_IMPORTS, true
+    );
+
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
     CAS cas = ae.newCAS();
     cas.setDocumentText("Some text 10.");
-    
+
     ae.process(cas);
-  
+
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
@@ -58,34 +58,33 @@ public class AdditionalScriptUimaFitTest {
     t = cas.getTypeSystem().getType("org.apache.uima.ruta.Additional.NewType1");
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("10", iterator.next().getCoveredText());
-    
+    assertThat(ai.size()).isEqualTo(1);
+    assertThat(iterator.next().getCoveredText()).isEqualTo("10");
+
     t = cas.getTypeSystem().getType("org.apache.uima.ruta.Additional.NewType2");
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Some", iterator.next().getCoveredText());
+    assertThat(ai.size()).isEqualTo(1);
+    assertThat(iterator.next().getCoveredText()).isEqualTo("Some");
 
     cas.release();
   }
-  
+
   @Test
   public void testStrictImport() throws Exception {
-    
+
     AnalysisEngineDescription aed = createEngineDescription(RutaEngine.class,
-            RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.Main", RutaEngine.PARAM_DEBUG, false,
-            RutaEngine.PARAM_ADDITIONAL_SCRIPTS, new String[] {"org.apache.uima.ruta.Additional"}
-            , RutaEngine.PARAM_STRICT_IMPORTS, true
-            );
-    
-    
+            RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.Main", RutaEngine.PARAM_DEBUG,
+            false, RutaEngine.PARAM_ADDITIONAL_SCRIPTS,
+            new String[] { "org.apache.uima.ruta.Additional" }, RutaEngine.PARAM_STRICT_IMPORTS,
+            true);
+
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
     CAS cas = ae.newCAS();
     cas.setDocumentText("Some text 10.");
-    
+
     ae.process(cas);
-  
+
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
@@ -93,32 +92,31 @@ public class AdditionalScriptUimaFitTest {
     t = cas.getTypeSystem().getType("org.apache.uima.ruta.Additional.NewType1");
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("10", iterator.next().getCoveredText());
-    
+    assertThat(ai.size()).isEqualTo(1);
+    assertThat(iterator.next().getCoveredText()).isEqualTo("10");
+
     t = cas.getTypeSystem().getType("org.apache.uima.ruta.Additional.NewType2");
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Some", iterator.next().getCoveredText());
+    assertThat(ai.size()).isEqualTo(1);
+    assertThat(iterator.next().getCoveredText()).isEqualTo("Some");
 
     cas.release();
   }
-  
+
   @Test
   public void testOnlyScriptImport() throws Exception {
-    
+
     AnalysisEngineDescription aed = createEngineDescription(RutaEngine.class,
-            RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.Main", RutaEngine.PARAM_DEBUG, false
-            );
-    
-    
+            RutaEngine.PARAM_MAIN_SCRIPT, "org.apache.uima.ruta.Main", RutaEngine.PARAM_DEBUG,
+            false);
+
     AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
     CAS cas = ae.newCAS();
     cas.setDocumentText("Some text 10.");
-    
+
     ae.process(cas);
-  
+
     Type t = null;
     AnnotationIndex<AnnotationFS> ai = null;
     FSIterator<AnnotationFS> iterator = null;
@@ -126,14 +124,14 @@ public class AdditionalScriptUimaFitTest {
     t = cas.getTypeSystem().getType("org.apache.uima.ruta.Additional.NewType1");
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("10", iterator.next().getCoveredText());
-    
+    assertThat(ai.size()).isEqualTo(1);
+    assertThat(iterator.next().getCoveredText()).isEqualTo("10");
+
     t = cas.getTypeSystem().getType("org.apache.uima.ruta.Additional.NewType2");
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals("Some", iterator.next().getCoveredText());
+    assertThat(ai.size()).isEqualTo(1);
+    assertThat(iterator.next().getCoveredText()).isEqualTo("Some");
 
     cas.release();
   }

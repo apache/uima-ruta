@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>16</version>
+    <version>17-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -35,22 +35,17 @@
   <inceptionYear>2011</inceptionYear>
   <description>The common parent pom for the UIMA Ruta</description>
 
-  <!-- Special inheritance note even though the <scm> element that follows 
-    is exactly the same as those in super poms, it cannot be inherited because 
-    there is some special code that computes the connection elements from the 
-    chain of parent poms, if this is omitted. Keeping this a bit factored allows 
-    cutting/pasting the <scm> element, and just changing the following two properties -->
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/apache/uima-ruta/issues</url>
+  </issueManagement>
+
   <scm>
     <connection>scm:git:https://github.com/apache/uima-ruta/</connection>
     <developerConnection>scm:git:https://github.com/apache/uima-ruta/</developerConnection>
     <url>https://github.com/apache/uima-ruta/</url>
     <tag>HEAD</tag>
   </scm>
-
-  <issueManagement>
-    <system>Github</system>
-    <url>https://github.com/apache/uima-ruta/issues</url>
-  </issueManagement>
 
   <repositories>
     <!-- modify central repository access: Turn on checksum checking -->
@@ -70,8 +65,58 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    
+    <!--
+      - The Eclipse Plugin modules use version ranges for their dependencies. These could resolve to
+      - SNAPSHOT versions if we have a SNAPSHOT repo declaration here. Thus, this repo should only
+      - be enabled when really needed.
+      -->
+    <repository>
+      <id>apache.snapshots</id>
+      <name>Apache Snapshot Repository</name>
+      <url>https://repository.apache.org/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
+      <id>${eclipseP2RepoId}</id>
+      <url>https://download.eclipse.org/releases/2018-12/</url>
+      <layout>p2</layout>
+    </repository>
   </repositories>
 
+  <pluginRepositories>
+    <!--
+      - The Eclipse Plugin modules use version ranges for their dependencies. These could resolve to
+      - SNAPSHOT versions if we have a SNAPSHOT repo declaration here. Thus, this repo should only
+      - be enabled when really needed.
+    <pluginRepository>
+      <id>apache.snapshots.plugins</id>
+      <name>Apache Snapshot Repository - Maven plugins</name>
+      <url>https://repository.apache.org/snapshots</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+        <updatePolicy>never</updatePolicy>        
+      </snapshots>
+    </pluginRepository>
+    -->
+    <pluginRepository>
+      <id>artifactory.openntf.org</id>
+      <name>artifactory.openntf.org</name>
+      <url>https://artifactory.openntf.org/openntf</url>
+    </pluginRepository>
+  </pluginRepositories>
+  
   <properties>
     <uniWueNoticeText>Portions of UIMA Ruta were originally developed by
       the Universität Würzburg.
@@ -85,33 +130,93 @@
       Creative Commons Attribution 3.0 License.
     </postNoticeText>
 
-    <uimaVersion>3.4.0</uimaVersion>
+    <uima-version>3.5.0-SNAPSHOT</uima-version>
     <uimafit-version>3.4.0</uimafit-version>
     <spring-version>5.3.25</spring-version>
-    <junit-version>4.13.2</junit-version>
     <slf4j-version>1.7.36</slf4j-version>
+    <maven.version>3.2.5</maven.version>
 
+    <junit-version>5.10.0</junit-version>
+    <junit-vintage-version>4.13.2</junit-vintage-version>
+    <assertj-version>3.24.2</assertj-version>
+ 
     <antlr-version>3.5.3</antlr-version>
     <htmlparser-version>1.6</htmlparser-version>
     <commons-collections-version>3.2.2</commons-collections-version>
     <commons-collections4-version>4.4</commons-collections4-version>
-    <commons-text-version>1.9</commons-text-version>
-    <commons-lang3-version>3.12.0</commons-lang3-version>
-    <commons-io-version>2.11.0</commons-io-version>
+    <commons-text-version>1.10.0</commons-text-version>
+    <commons-lang3-version>3.13.0</commons-lang3-version>
+    <commons-io-version>2.13.0</commons-io-version>
     <commons-math3-version>3.6.1</commons-math3-version>
     <commons-logging-version>1.1.1</commons-logging-version>
     <commons-logging-api-version>1.1</commons-logging-api-version>
-    <caffeine-version>2.9.3</caffeine-version>
+    <caffeine-version>3.1.7</caffeine-version>
 
-    <api_check_oldVersion>3.2.0</api_check_oldVersion>
+    <dltk.version>[5.11.0,6.0.0)</dltk.version>
 
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.release>17</maven.compiler.release>
+    <execution.environment>JavaSE-17</execution.environment>
+
+    <eclipseP2RepoId>org.eclipse.p2.201812</eclipseP2RepoId>
+
+    <api_check_oldVersion>3.3.0</api_check_oldVersion>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit-vintage-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-bom</artifactId>
+        <version>${assertj-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>${slf4j-version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>uimaj-bom</artifactId>
+        <version>${uima-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>uimafit-core</artifactId>
+        <version>${uimafit-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>uimafit-junit</artifactId>
+        <version>${uimafit-version}</version>
+      </dependency>
+      
       <dependency>
         <groupId>org.antlr</groupId>
         <artifactId>antlr-runtime</artifactId>
@@ -142,11 +247,7 @@
         <artifactId>commons-lang3</artifactId>
         <version>${commons-lang3-version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimafit-core</artifactId>
-        <version>${uimafit-version}</version>
-      </dependency>
+      
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
@@ -195,15 +296,29 @@
       </dependency>
 
       <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit-version}</version>
+        <groupId>org.sonatype.plexus</groupId>
+        <artifactId>plexus-build-api</artifactId>
+        <version>0.0.7</version>
       </dependency>
       <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-jdk14</artifactId>
-        <version>${slf4j-version}</version>
-        <scope>test</scope>
+        <groupId>org.apache.maven.plugin-testing</groupId>
+        <artifactId>maven-plugin-testing-harness</artifactId>
+        <version>3.3.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-plugin-api</artifactId>
+        <version>${maven.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-core</artifactId>
+        <version>${maven.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-compat</artifactId>
+        <version>${maven.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -212,36 +327,57 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.apache.uima</groupId>
-          <artifactId>uima-build-helper-maven-plugin</artifactId>
-          <version>7</version>
-        </plugin>
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>${maven.compiler.source}</source>
-            <target>${maven.compiler.target}</target>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>attach-javadocs</id>
-              <configuration>
-                <source>${maven.compiler.source}</source>
-              </configuration>
-            </execution>
-          </executions>
-          <configuration>
-            <source>${maven.compiler.source}</source>
-          </configuration>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-engine</artifactId>
+              <version>${junit-version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.junit.vintage</groupId>
+              <artifactId>junit-vintage-engine</artifactId>
+              <version>${junit-version}</version>
+            </dependency>
+          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>
+
     <plugins>
+      <plugin>
+        <groupId>org.openntf.maven</groupId>
+        <artifactId>p2-layout-resolver</artifactId>
+        <version>1.7.0</version>
+        <extensions>true</extensions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <environments>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
+        </configuration>
+      </plugin>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-toolchains-plugin</artifactId>
@@ -260,6 +396,7 @@
           </toolchains>
         </configuration>
       </plugin>
+
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
@@ -287,21 +424,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>spotbugs</id>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>com.github.spotbugs</groupId>
-              <artifactId>spotbugs-maven-plugin</artifactId>
-              <version>4.7.0.0</version>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-      </build>
-    </profile>
-  </profiles>
 </project>

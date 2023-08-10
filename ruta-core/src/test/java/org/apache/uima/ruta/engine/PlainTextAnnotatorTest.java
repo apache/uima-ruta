@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.engine;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.net.URL;
@@ -32,7 +32,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PlainTextAnnotatorTest {
 
@@ -45,8 +45,8 @@ public class PlainTextAnnotatorTest {
     String text = FileUtils.file2String(textFile, "UTF-8");
     URL url = PlainTextAnnotator.class.getClassLoader().getResource("PlainTextAnnotator.xml");
     if (url == null) {
-      url = HtmlAnnotator.class.getClassLoader().getResource(
-              "org/apache/uima/ruta/engine/PlainTextAnnotator.xml");
+      url = HtmlAnnotator.class.getClassLoader()
+              .getResource("org/apache/uima/ruta/engine/PlainTextAnnotator.xml");
     }
     XMLInputSource in = new XMLInputSource(url);
     ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
@@ -56,21 +56,21 @@ public class PlainTextAnnotatorTest {
 
     cas.setDocumentText(text);
     ae.process(cas);
-    
+
     ai = cas.getAnnotationIndex(cas.getTypeSystem().getType("org.apache.uima.ruta.type.AnyLine"));
-    assertEquals(18, ai.size());
+    assertThat(ai.size()).isEqualTo(18);
 
     ai = cas.getAnnotationIndex(cas.getTypeSystem().getType("org.apache.uima.ruta.type.Line"));
-    assertEquals(10, ai.size());
+    assertThat(ai.size()).isEqualTo(10);
 
     ai = cas.getAnnotationIndex(cas.getTypeSystem().getType("org.apache.uima.ruta.type.EmptyLine"));
-    assertEquals(8, ai.size());
+    assertThat(ai.size()).isEqualTo(8);
 
     ai = cas.getAnnotationIndex(cas.getTypeSystem().getType("org.apache.uima.ruta.type.WSLine"));
-    assertEquals(5, ai.size());
+    assertThat(ai.size()).isEqualTo(5);
 
     ai = cas.getAnnotationIndex(cas.getTypeSystem().getType("org.apache.uima.ruta.type.Paragraph"));
-    assertEquals(4, ai.size());
+    assertThat(ai.size()).isEqualTo(4);
 
     ae.destroy();
     cas.release();

@@ -21,11 +21,12 @@ package org.apache.uima.ruta;
 
 import static org.apache.uima.ruta.engine.Ruta.apply;
 import static org.apache.uima.ruta.engine.RutaTestUtils.getCAS;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.extensions.RutaParseRuntimeException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /** Tests for exceptions thrown when parsing a Ruta script */
 public class RutaParsingErrorTest {
@@ -38,9 +39,11 @@ public class RutaParsingErrorTest {
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "aaaa.");
   }
 
-  @Test(expected = RutaParseRuntimeException.class)
+  @Test
   public void testEscapedDot() throws Exception {
     CAS cas = getCAS("aaaa");
-    apply(cas, "\"aaaa\\.\" -> T1;");
+
+    assertThatExceptionOfType(RutaParseRuntimeException.class)
+            .isThrownBy(() -> apply(cas, "\"aaaa\\.\" -> T1;"));
   }
 }

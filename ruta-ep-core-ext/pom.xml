@@ -83,11 +83,6 @@
       <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -114,7 +109,7 @@
                 <Import-Package>
                 </Import-Package>
                 <Bundle-SymbolicName>org.apache.uima.ruta.core.ext;singleton:=true</Bundle-SymbolicName>
-                <Bundle-RequiredExecutionEnvironment>JavaSE-1.8</Bundle-RequiredExecutionEnvironment>
+                <Bundle-RequiredExecutionEnvironment>${execution.environment}</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
                 <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>

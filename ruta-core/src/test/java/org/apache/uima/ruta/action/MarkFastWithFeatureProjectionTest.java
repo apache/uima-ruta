@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.action;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MarkFastWithFeatureProjectionTest {
 
@@ -80,28 +80,28 @@ public class MarkFastWithFeatureProjectionTest {
     Feature f1 = t.getFeatureByBaseName(fn);
     ai = cas.getAnnotationIndex(t);
 
-    assertEquals(4, ai.size());
+    assertThat(ai.size()).isEqualTo(4);
     iterator = ai.iterator();
-    
+
     AnnotationFS next = iterator.next();
-    assertEquals("c", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("c");
     String featureValue = next.getStringValue(f1);
-    assertEquals("X", featureValue);
+    assertThat(featureValue).isEqualTo("X");
 
     next = iterator.next();
-    assertEquals("c", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("c");
     featureValue = next.getStringValue(f1);
-    assertEquals("X", featureValue);
+    assertThat(featureValue).isEqualTo("X");
 
     next = iterator.next();
-    assertEquals("c", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("c");
     featureValue = next.getStringValue(f1);
-    assertEquals("X", featureValue);
-    
+    assertThat(featureValue).isEqualTo("X");
+
     next = iterator.next();
-    assertEquals("c", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("c");
     featureValue = next.getStringValue(f1);
-    assertEquals("X", featureValue);
+    assertThat(featureValue).isEqualTo("X");
 
     if (cas != null) {
       cas.release();

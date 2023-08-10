@@ -50,7 +50,6 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
-      <version>${uimaVersion}</version>
     </dependency>
 
     <dependency>
@@ -82,14 +81,6 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-tools</artifactId>
-      <version>${uimaVersion}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.uima</groupId>
-      <artifactId>uimaj-test-util</artifactId>
-      <version>${uimaVersion}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -131,32 +122,28 @@
     </dependency>
 
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
-    
-<!--     <dependency> -->
-<!--       <groupId>org.apache.uima</groupId> -->
-<!--       <artifactId>uimafit-junit</artifactId> -->
-<!--       <version>${uimafit-version}</version> -->
-<!--       <scope>test</scope> -->
-<!--       Exclude aop stuff, which is not need by uimafit and only introduces a non-asl license -->
-<!--       <exclusions> -->
-<!--         <exclusion> -->
-<!--           <groupId>org.springframework</groupId> -->
-<!--           <artifactId>spring-aop</artifactId> -->
-<!--         </exclusion> -->
-<!--         <exclusion> -->
-<!--           <groupId>aopalliance</groupId> -->
-<!--           <artifactId>aopalliance</artifactId> -->
-<!--         </exclusion> -->
-<!--       </exclusions> -->
-<!--     </dependency> -->
-
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-test-util</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-junit</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -231,9 +218,8 @@
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <configuration>
-        
           <instructions>
-            <Bundle-RequiredExecutionEnvironment>JavaSE-1.8</Bundle-RequiredExecutionEnvironment>
+            <Bundle-RequiredExecutionEnvironment>${execution.environment}</Bundle-RequiredExecutionEnvironment>
             <_dsannotations>*</_dsannotations>
             <_metatypeannotations>*</_metatypeannotations>
             <!--  
@@ -267,7 +253,7 @@
       <plugin>
         <groupId>org.apache.uima</groupId>
         <artifactId>jcasgen-maven-plugin</artifactId>
-        <version>${uimaVersion}</version>
+        <version>${uima-version}</version>
         <executions>
           <execution>
             <goals>

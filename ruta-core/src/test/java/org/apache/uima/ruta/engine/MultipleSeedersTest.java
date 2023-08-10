@@ -18,6 +18,8 @@
  */
 package org.apache.uima.ruta.engine;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
@@ -26,25 +28,24 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.ruta.type.ALL;
 import org.apache.uima.ruta.type.TruePositive;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MultipleSeedersTest {
 
   @Test
   public void test() throws ResourceInitializationException, AnalysisEngineProcessException {
-    
-    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, 
-            RutaEngine.PARAM_RULES, "TokenSeed{-> TruePositive};",
-            RutaEngine.PARAM_SEEDERS, new String[] {DummySeeder.class.getName(),DummySeeder.class.getName()});
-    
+
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(RutaEngine.class, RutaEngine.PARAM_RULES,
+            "TokenSeed{-> TruePositive};", RutaEngine.PARAM_SEEDERS,
+            new String[] { DummySeeder.class.getName(), DummySeeder.class.getName() });
+
     JCas jcas = ae.newJCas();
     jcas.setDocumentText("Dummy text.");
     ae.process(jcas);
-    
-    Assert.assertEquals(2, JCasUtil.select(jcas, TruePositive.class).size());
-    Assert.assertEquals(0, JCasUtil.select(jcas, ALL.class).size());
-    
+
+    assertThat(JCasUtil.select(jcas, TruePositive.class)).hasSize(2);
+    assertThat(JCasUtil.select(jcas, ALL.class)).hasSize(0);
+
   }
-  
+
 }

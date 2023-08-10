@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.engine;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collection;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -27,36 +29,34 @@ import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.ruta.type.TruePositive;
-import org.junit.Assert;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 
 public class RutaCutterTest {
 
   @Test
   public void test() throws Exception {
-    
+
     JCas jcas = JCasFactory.createJCas();
-    AnalysisEngine cutter = AnalysisEngineFactory.createEngine(RutaCutter.class, RutaCutter.PARAM_KEEP, TruePositive.class.getName());
+    AnalysisEngine cutter = AnalysisEngineFactory.createEngine(RutaCutter.class,
+            RutaCutter.PARAM_KEEP, TruePositive.class.getName());
     jcas.setDocumentText("Some text.");
     Ruta.apply(jcas.getCas(), "SW{-> TruePositive};");
     cutter.process(jcas);
 
     Collection<TruePositive> select = JCasUtil.select(jcas, TruePositive.class);
-    Assert.assertEquals(1, select.size());
+    assertThat(select).hasSize(1);
     TruePositive truePositive = select.iterator().next();
-    Assert.assertEquals(5, truePositive.getBegin());
-    
+    assertThat(truePositive.getBegin()).isEqualTo(5);
+
     JCas cuttedView = jcas.getView("cutted");
-    Assert.assertEquals("text", cuttedView.getDocumentText());
+    assertThat(cuttedView.getDocumentText()).isEqualTo("text");
     select = JCasUtil.select(cuttedView, TruePositive.class);
-    Assert.assertEquals(1, select.size());
+    assertThat(select).hasSize(1);
     truePositive = select.iterator().next();
-    Assert.assertEquals(0, truePositive.getBegin());
-    
+    assertThat(truePositive.getBegin()).isEqualTo(0);
+
     jcas.release();
     cutter.destroy();
   }
 
-  
 }

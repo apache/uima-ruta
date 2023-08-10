@@ -17,50 +17,75 @@
    under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>test</groupId>
-	<artifactId>conflictingShortName</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	
-	<parent>
-	  <groupId>org.apache.uima</groupId>
-	  <artifactId>parent-pom</artifactId>
-	  <version>12</version>
-	  <relativePath />
-	</parent>
-	
-	<properties>
-	  <maven.compiler.target>1.8</maven.compiler.target>
-	  <maven.compiler.source>1.8</maven.compiler.source>
-	</properties>
-	
-	<dependencies>
-	  <dependency>
-	   <groupId>org.apache.uima</groupId>
-	   <artifactId>ruta-core</artifactId>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>org.apache.uima</groupId>
+    <artifactId>parent-pom</artifactId>
+    <version>16</version>
+    <relativePath />
+  </parent>
+  
+  <groupId>test</groupId>
+  <artifactId>conflictingShortName</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+    
+  <properties>
+    <junit-version>5.10.0</junit-version>
+    <assertj-version>3.24.2</assertj-version>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.release>17</maven.compiler.release>
+  </properties>
+  
+  <dependencies>
+    <dependency>
+     <groupId>org.apache.uima</groupId>
+     <artifactId>ruta-core</artifactId>
      <version>@project.version@</version>
-	  </dependency>
-	  <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit-version}</version>
       <scope>test</scope>
     </dependency>
-	</dependencies>
-	<build>
-	  <resources>
-	    <resource>
-	      <directory>src/main/ruta</directory>
-	    </resource>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj-version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/ruta</directory>
+      </resource>
       <resource>
         <directory>src/main/resources</directory>
       </resource>
-	    <resource>
+      <resource>
         <directory>${project.build.directory}/generated-sources/ruta/descriptor</directory>
       </resource>
-	  </resources>
-		<plugins>
+    </resources>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-engine</artifactId>
+              <version>${junit-version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
       <plugin>
         <groupId>org.apache.uima</groupId>
         <artifactId>ruta-maven-plugin</artifactId>
@@ -94,5 +119,5 @@
         </executions>
       </plugin>
     </plugins>
-	</build>
+  </build>
 </project>

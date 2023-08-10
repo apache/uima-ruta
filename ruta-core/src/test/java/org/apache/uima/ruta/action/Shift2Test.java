@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.action;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.apache.uima.ruta.seed.DefaultSeeder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class Shift2Test {
 
@@ -76,13 +76,13 @@ public class Shift2Test {
     Feature f2 = type.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(type);
     iterator = ai.iterator();
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     AnnotationFS next = iterator.next();
     AnnotationFS v1 = (AnnotationFS) next.getFeatureValue(f1);
     String v2 = next.getStringValue(f2);
-    assertEquals("only some text<br/>", v1.getCoveredText());
-    assertEquals("unknown", v2);
-    assertEquals("only some text", next.getCoveredText());
+    assertThat(v1.getCoveredText()).isEqualTo("only some text<br/>");
+    assertThat(v2).isEqualTo("unknown");
+    assertThat(next.getCoveredText()).isEqualTo("only some text");
 
     cas.release();
   }

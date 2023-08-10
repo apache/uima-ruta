@@ -29,8 +29,7 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.type.EvalAnnotation;
 import org.apache.uima.ruta.type.FalseNegative;
 import org.apache.uima.ruta.type.TruePositive;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 public class IndexSkipTypesTest {
 
   @Test

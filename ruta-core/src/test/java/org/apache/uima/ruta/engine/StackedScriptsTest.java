@@ -33,8 +33,7 @@ import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 public class StackedScriptsTest {
 
   private static final String DOC_TEXT = "This is a simple test.";

@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.engine;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.net.URL;
@@ -37,8 +37,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class HtmlConverterTest {
 
@@ -56,7 +56,7 @@ public class HtmlConverterTest {
 
   private String outputViewName = "raw_testing";
 
-  @BeforeClass
+  @BeforeAll
   public static void setUpClass() throws Exception {
     // get resource
     String namespace = HtmlConverterTest.class.getPackage().getName().replaceAll("\\.", "/");
@@ -120,10 +120,11 @@ public class HtmlConverterTest {
 
     String expectedText = "start of body\nnormal normal bold\nend of body 3&#8364;&#160;&auml;&ouml;&uuml;";
     AnnotationFS documentAnnotation = modifiedView.getDocumentAnnotation();
-    assertEquals(String.format("begin of annotation is %d, %d expected.",
-            documentAnnotation.getBegin(), 0), documentAnnotation.getBegin(), 0);
-    assertEquals(documentAnnotation.getEnd(), text.length());
-    assertEquals(expectedText, text);
+    assertThat(documentAnnotation.getBegin())
+            .as("begin of annotation is %d, %d expected.", documentAnnotation.getBegin(), 0)
+            .isZero();
+    assertThat(text.length()).isEqualTo(documentAnnotation.getEnd());
+    assertThat(text).isEqualTo(expectedText);
 
     // fini
     cas.release();
@@ -155,10 +156,11 @@ public class HtmlConverterTest {
 
     String expectedText = "start of body\nnormal\u00A0normal bold\nend of body 3\u20AC\u00A0äöü";
     AnnotationFS documentAnnotation = modifiedView.getDocumentAnnotation();
-    assertEquals(String.format("begin of annotation is %d, %d expected.",
-            documentAnnotation.getBegin(), 0), documentAnnotation.getBegin(), 0);
-    assertEquals(documentAnnotation.getEnd(), text.length());
-    assertEquals(expectedText, text);
+    assertThat(documentAnnotation.getBegin())
+            .as("begin of annotation is %d, %d expected.", documentAnnotation.getBegin(), 0)
+            .isZero();
+    assertThat(text.length()).isEqualTo(documentAnnotation.getEnd());
+    assertThat(text).isEqualTo(expectedText);
 
     // fini
     cas.release();
@@ -190,10 +192,11 @@ public class HtmlConverterTest {
 
     String expectedText = "start of body\nnormal bold\nend of body";
     AnnotationFS documentAnnotation = modifiedView.getDocumentAnnotation();
-    assertEquals(String.format("begin of annotation is %d, %d expected.",
-            documentAnnotation.getBegin(), 0), documentAnnotation.getBegin(), 0);
-    assertEquals(documentAnnotation.getEnd(), text.length());
-    assertEquals(expectedText, text);
+    assertThat(documentAnnotation.getBegin())
+            .as("begin of annotation is %d, %d expected.", documentAnnotation.getBegin(), 0)
+            .isZero();
+    assertThat(text.length()).isEqualTo(documentAnnotation.getEnd());
+    assertThat(text).isEqualTo(expectedText);
 
     // fini
     cas.release();
@@ -225,10 +228,11 @@ public class HtmlConverterTest {
 
     String expectedText = "start of body\nnormal bold\nend of body";
     AnnotationFS documentAnnotation = modifiedView.getDocumentAnnotation();
-    assertEquals(String.format("begin of annotation is %d, %d expected.",
-            documentAnnotation.getBegin(), 0), documentAnnotation.getBegin(), 0);
-    assertEquals(documentAnnotation.getEnd(), text.length());
-    assertEquals(expectedText, text);
+    assertThat(documentAnnotation.getBegin())
+            .as("begin of annotation is %d, %d expected.", documentAnnotation.getBegin(), 0)
+            .isZero();
+    assertThat(text.length()).isEqualTo(documentAnnotation.getEnd());
+    assertThat(text).isEqualTo(expectedText);
 
     // fini
     cas.release();
@@ -260,10 +264,11 @@ public class HtmlConverterTest {
 
     String expectedText = "start of body\nnormal bold\nend of body";
     AnnotationFS documentAnnotation = modifiedView.getDocumentAnnotation();
-    assertEquals(String.format("begin of annotation is %d, %d expected.",
-            documentAnnotation.getBegin(), 0), documentAnnotation.getBegin(), 0);
-    assertEquals(documentAnnotation.getEnd(), text.length());
-    assertEquals(expectedText, text);
+    assertThat(documentAnnotation.getBegin())
+            .as("begin of annotation is %d, %d expected.", documentAnnotation.getBegin(), 0)
+            .isZero();
+    assertThat(text.length()).isEqualTo(documentAnnotation.getEnd());
+    assertThat(text).isEqualTo(expectedText);
 
     // fini
     cas.release();
@@ -296,10 +301,11 @@ public class HtmlConverterTest {
 
     String expectedText = "start of body\nnormal bold\nend of body";
     AnnotationFS documentAnnotation = modifiedView.getDocumentAnnotation();
-    assertEquals(String.format("begin of annotation is %d, %d expected.",
-            documentAnnotation.getBegin(), 0), documentAnnotation.getBegin(), 0);
-    assertEquals(documentAnnotation.getEnd(), text.length());
-    assertEquals(expectedText, text);
+    assertThat(documentAnnotation.getBegin())
+            .as("begin of annotation is %d, %d expected.", documentAnnotation.getBegin(), 0)
+            .isZero();
+    assertThat(text.length()).isEqualTo(documentAnnotation.getEnd());
+    assertThat(text).isEqualTo(expectedText);
 
     // fini
     cas.release();
@@ -331,10 +337,11 @@ public class HtmlConverterTest {
 
     String expectedText = "start of body\nnormal bold\nend of body";
     AnnotationFS documentAnnotation = modifiedView.getDocumentAnnotation();
-    assertEquals(String.format("begin of annotation is %d, %d expected.",
-            documentAnnotation.getBegin(), 0), documentAnnotation.getBegin(), 0);
-    assertEquals(documentAnnotation.getEnd(), text.length());
-    assertEquals(expectedText, text);
+    assertThat(documentAnnotation.getBegin())
+            .as("begin of annotation is %d, %d expected.", documentAnnotation.getBegin(), 0)
+            .isZero();
+    assertThat(text.length()).isEqualTo(documentAnnotation.getEnd());
+    assertThat(text).isEqualTo(expectedText);
 
     // fini
     cas.release();
@@ -373,13 +380,13 @@ public class HtmlConverterTest {
       CAS modifiedView = cas.getView(outputViewName);
       AnnotationIndex<AnnotationFS> ai = modifiedView.getAnnotationIndex(boldType);
       FSIterator<AnnotationFS> iterator = ai.iterator();
-      assertEquals(true, iterator.hasNext());
+      assertThat(iterator.hasNext()).isEqualTo(true);
       AnnotationFS next = iterator.next();
-      assertEquals("B", next.getType().getShortName());
-      assertEquals(21, next.getBegin());
-      assertEquals(25, next.getEnd());
-      assertEquals(next.getCoveredText(), "bold");
-      assertEquals(next.getCoveredText().length(), 4);
+      assertThat(next.getType().getShortName()).isEqualTo("B");
+      assertThat(next.getBegin()).isEqualTo(21);
+      assertThat(next.getEnd()).isEqualTo(25);
+      assertThat("bold").isEqualTo(next.getCoveredText());
+      assertThat(4).isEqualTo(next.getCoveredText().length());
 
       // fini
       cas.release();
@@ -427,28 +434,28 @@ public class HtmlConverterTest {
     // _____________________________ BB _________________________ BB ___________
     //
     CAS modifiedView = cas.getView(outputViewName);
-//    String modifiedText = modifiedView.getDocumentText();
-//    int modLength = modifiedText.length();
-//    int modLengthCodepoints = modifiedText.codePointCount(0, modLength);
+    // String modifiedText = modifiedView.getDocumentText();
+    // int modLength = modifiedText.length();
+    // int modLengthCodepoints = modifiedText.codePointCount(0, modLength);
     AnnotationIndex<AnnotationFS> ai = modifiedView.getAnnotationIndex(boldType);
     FSIterator<AnnotationFS> iterator = ai.iterator();
-    assertEquals(true, iterator.hasNext());
+    assertThat(iterator.hasNext()).isEqualTo(true);
     // check first bold annotation
     AnnotationFS next = iterator.next();
-    assertEquals("B", next.getType().getShortName());
-    assertEquals(28, next.getBegin());
-    assertEquals(32, next.getEnd());
-    assertEquals(next.getCoveredText(), "bold");
-    assertEquals(next.getCoveredText().length(), 4);
+    assertThat(next.getType().getShortName()).isEqualTo("B");
+    assertThat(next.getBegin()).isEqualTo(28);
+    assertThat(next.getEnd()).isEqualTo(32);
+    assertThat("bold").isEqualTo(next.getCoveredText());
+    assertThat(4).isEqualTo(next.getCoveredText().length());
     // check second bold annotation
     next = iterator.next();
     int begin = next.getBegin();
     int end = next.getEnd();
-    assertEquals("B", next.getType().getShortName());
-    assertEquals(56, begin); // map[279] == 56
-    assertEquals(60, end); // map[290] == 60
-    assertEquals(next.getCoveredText(), "bold");
-    assertEquals(next.getCoveredText().length(), 4);
+    assertThat(next.getType().getShortName()).isEqualTo("B");
+    assertThat(begin).isEqualTo(56); // map[279] == 56
+    assertThat(end).isEqualTo(60); // map[290] == 60
+    assertThat("bold").isEqualTo(next.getCoveredText());
+    assertThat(4).isEqualTo(next.getCoveredText().length());
 
     // fini
     cas.release();
@@ -485,10 +492,11 @@ public class HtmlConverterTest {
 
     String expectedText = "start of body\nnormal bold\nend of body";
     AnnotationFS documentAnnotation = modifiedView.getDocumentAnnotation();
-    assertEquals(String.format("begin of annotation is %d, %d expected.",
-            documentAnnotation.getBegin(), 0), documentAnnotation.getBegin(), 0);
-    assertEquals(documentAnnotation.getEnd(), text.length());
-    assertEquals(expectedText, text);
+    assertThat(documentAnnotation.getBegin())
+            .as("begin of annotation is %d, %d expected.", documentAnnotation.getBegin(), 0)
+            .isZero();
+    assertThat(text.length()).isEqualTo(documentAnnotation.getEnd());
+    assertThat(text).isEqualTo(expectedText);
 
     // fini
     cas.release();
@@ -520,7 +528,7 @@ public class HtmlConverterTest {
     String text = modifiedView.getDocumentText();
 
     String expectedText = "Hello world";
-    assertEquals(expectedText, text);
+    assertThat(text).isEqualTo(expectedText);
 
     cas.release();
   }

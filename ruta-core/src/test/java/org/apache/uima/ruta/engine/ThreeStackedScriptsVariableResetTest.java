@@ -18,6 +18,8 @@
  */
 package org.apache.uima.ruta.engine;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.File;
 import java.nio.file.Paths;
 
@@ -36,8 +38,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.descriptor.RutaBuildOptions;
 import org.apache.uima.ruta.descriptor.RutaDescriptorFactory;
 import org.apache.uima.ruta.descriptor.RutaDescriptorInformation;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ThreeStackedScriptsVariableResetTest {
 
@@ -81,7 +82,6 @@ public class ThreeStackedScriptsVariableResetTest {
     Feature feature = type.getFeatureByBaseName("value");
     FeatureStructure fs = CasUtil.selectSingle(cas, type);
     String stringValue = fs.getStringValue(feature);
-    Assert.assertNull(stringValue);
+    assertThat(stringValue).isNull();
   }
-
 }

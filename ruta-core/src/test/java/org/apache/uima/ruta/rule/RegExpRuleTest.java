@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.rule;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +36,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RegExpRuleTest {
 
@@ -67,15 +66,15 @@ public class RegExpRuleTest {
 
     t = RutaTestUtils.getTestType(cas, 1);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     iterator = ai.iterator();
-    assertEquals(28, iterator.next().getCoveredText().length());
+    assertThat(iterator.next().getCoveredText().length()).isEqualTo(28);
 
     t = RutaTestUtils.getTestType(cas, 2);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
-    assertEquals(1, ai.size());
-    assertEquals(26, iterator.next().getCoveredText().length());
+    assertThat(ai.size()).isEqualTo(1);
+    assertThat(iterator.next().getCoveredText().length()).isEqualTo(26);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 2, "y", "z");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 2, "y", "z");
@@ -86,54 +85,54 @@ public class RegExpRuleTest {
     t = cas.getTypeSystem().getType(typeName);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
-    assertEquals(5, ai.size());
+    assertThat(ai.size()).isEqualTo(5);
     AnnotationFS next = null;
     String stringValue = null;
     Boolean booleanValue = null;
     AnnotationFS afs = null;
 
     next = iterator.next();
-    assertEquals("y", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("y");
     stringValue = next.getStringValue(t.getFeatureByBaseName(fn3));
-    assertEquals("ByBB", stringValue);
+    assertThat(stringValue).isEqualTo("ByBB");
     booleanValue = next.getBooleanValue(t.getFeatureByBaseName(fn2));
-    assertEquals(true, booleanValue);
+    assertThat(booleanValue).isEqualTo(true);
     afs = (AnnotationFS) next.getFeatureValue(t.getFeatureByBaseName(fn1));
-    assertEquals("B", afs.getCoveredText());
+    assertThat(afs.getCoveredText()).isEqualTo("B");
 
     next = iterator.next();
-    assertEquals("B", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("B");
     stringValue = next.getStringValue(t.getFeatureByBaseName(fn3));
-    assertEquals("ByBB", stringValue);
+    assertThat(stringValue).isEqualTo("ByBB");
     booleanValue = next.getBooleanValue(t.getFeatureByBaseName(fn2));
-    assertEquals(false, booleanValue);
+    assertThat(booleanValue).isEqualTo(false);
     afs = (AnnotationFS) next.getFeatureValue(t.getFeatureByBaseName(fn1));
-    assertEquals("y", afs.getCoveredText());
+    assertThat(afs.getCoveredText()).isEqualTo("y");
 
     next = iterator.next();
-    assertEquals("z", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("z");
     stringValue = next.getStringValue(t.getFeatureByBaseName(fn3));
-    assertEquals("BzBB", stringValue);
+    assertThat(stringValue).isEqualTo("BzBB");
     booleanValue = next.getBooleanValue(t.getFeatureByBaseName(fn2));
-    assertEquals(true, booleanValue);
+    assertThat(booleanValue).isEqualTo(true);
     afs = (AnnotationFS) next.getFeatureValue(t.getFeatureByBaseName(fn1));
-    assertEquals("B", afs.getCoveredText());
+    assertThat(afs.getCoveredText()).isEqualTo("B");
 
     next = iterator.next();
-    assertEquals("B", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("B");
     stringValue = next.getStringValue(t.getFeatureByBaseName(fn3));
-    assertEquals("BzBB", stringValue);
+    assertThat(stringValue).isEqualTo("BzBB");
     booleanValue = next.getBooleanValue(t.getFeatureByBaseName(fn2));
-    assertEquals(false, booleanValue);
+    assertThat(booleanValue).isEqualTo(false);
     afs = (AnnotationFS) next.getFeatureValue(t.getFeatureByBaseName(fn1));
-    assertEquals("z", afs.getCoveredText());
+    assertThat(afs.getCoveredText()).isEqualTo("z");
 
     next = iterator.next();
-    assertEquals("B", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("B");
     stringValue = next.getStringValue(t.getFeatureByBaseName(fn3));
-    assertEquals("BBB", stringValue);
+    assertThat(stringValue).isEqualTo("BBB");
     booleanValue = next.getBooleanValue(t.getFeatureByBaseName(fn2));
-    assertEquals(false, booleanValue);
+    assertThat(booleanValue).isEqualTo(false);
 
     cas.release();
   }
@@ -163,8 +162,8 @@ public class RegExpRuleTest {
     Ruta.apply(cas, script);
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 4, "11", "11", "11", "11");
-    Assert.assertEquals(10,
-            cas.getAnnotationIndex(cas.getTypeSystem().getType(RutaTestUtils.TYPE + "2")).size());
+    assertThat(cas.getAnnotationIndex(cas.getTypeSystem().getType(RutaTestUtils.TYPE + "2")))
+            .hasSize(10);
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 4, "11", "11ab", "1122", "11");
   }
 }

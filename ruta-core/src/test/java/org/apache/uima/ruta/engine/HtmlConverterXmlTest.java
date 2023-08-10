@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.engine;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URL;
 
@@ -33,7 +33,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.util.XMLInputSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class HtmlConverterXmlTest {
 
@@ -84,15 +84,15 @@ public class HtmlConverterXmlTest {
 
     CAS plainTextCas = cas.getView(HtmlConverter.DEFAULT_MODIFIED_VIEW);
 
-    assertEquals("$Some content$$More content.", plainTextCas.getDocumentText());
+    assertThat(plainTextCas.getDocumentText()).isEqualTo("$Some content$$More content.");
 
     ai = plainTextCas.getAnnotationIndex(tagType);
     iterator = ai.iterator();
-    assertEquals(4, ai.size());
-    assertEquals("$Some content$$More content.", iterator.next().getCoveredText());
-    assertEquals("$Some content", iterator.next().getCoveredText());
-    assertEquals("$", iterator.next().getCoveredText());
-    assertEquals("$More content.", iterator.next().getCoveredText());
+    assertThat(ai.size()).isEqualTo(4);
+    assertThat(iterator.next().getCoveredText()).isEqualTo("$Some content$$More content.");
+    assertThat(iterator.next().getCoveredText()).isEqualTo("$Some content");
+    assertThat(iterator.next().getCoveredText()).isEqualTo("$");
+    assertThat(iterator.next().getCoveredText()).isEqualTo("$More content.");
 
     cas.release();
   }
@@ -143,29 +143,28 @@ public class HtmlConverterXmlTest {
 
     CAS plainTextCas = cas.getView(HtmlConverter.DEFAULT_MODIFIED_VIEW);
 
-    assertEquals("Some contentMore content.", plainTextCas.getDocumentText());
+    assertThat(plainTextCas.getDocumentText()).isEqualTo("Some contentMore content.");
 
     ai = plainTextCas.getAnnotationIndex(tagType);
     iterator = ai.iterator();
-    assertEquals(4, ai.size());
+    assertThat(ai.size()).isEqualTo(4);
     AnnotationFS next = null;
     next = iterator.next();
-    assertEquals(false, next.getBooleanValue(expandedFeature));
-    assertEquals("Some contentMore content.", next.getCoveredText());
+    assertThat(next.getBooleanValue(expandedFeature)).isEqualTo(false);
+    assertThat(next.getCoveredText()).isEqualTo("Some contentMore content.");
     next = iterator.next();
-    assertEquals(false, next.getBooleanValue(expandedFeature));
-    assertEquals("Some content", next.getCoveredText());
+    assertThat(next.getBooleanValue(expandedFeature)).isEqualTo(false);
+    assertThat(next.getCoveredText()).isEqualTo("Some content");
     next = iterator.next();
     boolean b1 = next.getBooleanValue(expandedFeature);
-    assertEquals("More content.", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("More content.");
     next = iterator.next();
     boolean b2 = next.getBooleanValue(expandedFeature);
-    assertEquals("More content.", next.getCoveredText());
+    assertThat(next.getCoveredText()).isEqualTo("More content.");
     // for one of these two annotation (with same offsets) the feature must be set to true
-    assertEquals(true, b1 || b2);
+    assertThat(b1 || b2).isEqualTo(true);
 
     cas.release();
   }
-
 
 }

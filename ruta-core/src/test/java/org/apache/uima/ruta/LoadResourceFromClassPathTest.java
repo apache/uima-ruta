@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class LoadResourceFromClassPathTest {
 
@@ -50,11 +50,11 @@ public class LoadResourceFromClassPathTest {
     script += "TRIE(\"FirstNames.txt\" = T1, \"LastNames.txt\" = T2, list, true, 4, false, 0, \".,-/\");\n";
     script += "MARKTABLE(Person, 1, table, true, 0, \"\", 0, \"firstname\" = 2, \"system\" = 3);\n";
     script += "MARKFAST(T3, list2);\n";
-    
+
     Map<String, String> complexTypes = new TreeMap<String, String>();
     String typeName = "org.apache.uima.Person";
     complexTypes.put(typeName, "uima.tcas.Annotation");
-    
+
     Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
     List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
     features.put(typeName, list);
@@ -64,7 +64,7 @@ public class LoadResourceFromClassPathTest {
     list.add(new TestFeature(fn2, "", "uima.cas.String"));
 
     CAS cas = executeAnalysis(document, script, complexTypes, features);
-    
+
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Peter", "Marshall", "Joern");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Kluegl", "Schor", "Kottmann");
 
@@ -79,26 +79,26 @@ public class LoadResourceFromClassPathTest {
     Feature f1 = t.getFeatureByBaseName(fn1);
     Feature f2 = t.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Peter", v1);
-    assertEquals("Ruta", v2);
-    
+    assertThat(v1).isEqualTo("Peter");
+    assertThat(v2).isEqualTo("Ruta");
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Marshall", v1);
-    assertEquals("UIMA", v2);
-    
+    assertThat(v1).isEqualTo("Marshall");
+    assertThat(v2).isEqualTo("UIMA");
+
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Joern", v1);
-    assertEquals("CAS Editor", v2);
-    
+    assertThat(v1).isEqualTo("Joern");
+    assertThat(v2).isEqualTo("CAS Editor");
+
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "Peter", "Marshall", "Joern");
 
     cas.release();
@@ -142,32 +142,33 @@ public class LoadResourceFromClassPathTest {
     Feature f1 = t.getFeatureByBaseName(fn1);
     Feature f2 = t.getFeatureByBaseName(fn2);
     ai = cas.getAnnotationIndex(t);
-    assertEquals(3, ai.size());
+    assertThat(ai.size()).isEqualTo(3);
     iterator = ai.iterator();
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Peter", v1);
-    assertEquals("Ruta", v2);
+    assertThat(v1).isEqualTo("Peter");
+    assertThat(v2).isEqualTo("Ruta");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Marshall", v1);
-    assertEquals("UIMA", v2);
+    assertThat(v1).isEqualTo("Marshall");
+    assertThat(v2).isEqualTo("UIMA");
 
     next = iterator.next();
     v1 = next.getStringValue(f1);
     v2 = next.getStringValue(f2);
-    assertEquals("Joern", v1);
-    assertEquals("CAS Editor", v2);
+    assertThat(v1).isEqualTo("Joern");
+    assertThat(v2).isEqualTo("CAS Editor");
 
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 3, "Peter", "Marshall", "Joern");
 
     cas.release();
   }
 
-  private CAS executeAnalysis(String document, String script, Map<String, String> complexTypes, Map<String, List<TestFeature>> features) {
+  private CAS executeAnalysis(String document, String script, Map<String, String> complexTypes,
+          Map<String, List<TestFeature>> features) {
     CAS cas = null;
     try {
       Map<String, Object> map = new HashMap<>();

@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.action;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -37,7 +37,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TransferTest {
 
@@ -63,11 +63,11 @@ public class TransferTest {
     t = cas.getTypeSystem().getType(type);
     ai = cas.getAnnotationIndex(t);
     iterator = ai.iterator();
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     AnnotationFS afs = iterator.next();
     Feature featureByBaseName = t.getFeatureByBaseName("language");
     String stringValue = afs.getStringValue(featureByBaseName);
-    assertEquals("x-unspecified", stringValue);
+    assertThat(stringValue).isEqualTo("x-unspecified");
 
     cas.release();
   }

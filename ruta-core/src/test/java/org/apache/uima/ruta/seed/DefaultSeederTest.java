@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.seed;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,8 +32,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DefaultSeederTest {
 
@@ -47,51 +46,51 @@ public class DefaultSeederTest {
 
     DefaultSeeder seeder = new DefaultSeeder();
     Type type = seeder.seed(text, cas);
-    assertEquals("org.apache.uima.ruta.type.TokenSeed", type.getName());
+    assertThat(type.getName()).isEqualTo("org.apache.uima.ruta.type.TokenSeed");
     AnnotationIndex<AnnotationFS> annotationIndex = cas.getAnnotationIndex(type);
-    assertEquals(40, annotationIndex.size());
+    assertThat(annotationIndex.size()).isEqualTo(40);
     FSIterator<AnnotationFS> iterator = annotationIndex.iterator();
 
-    assertEquals("CW", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("SW", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("SW", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("SW", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("SW", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("CW", iterator.next().getType().getShortName());
-    assertEquals("CAP", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("SPECIAL", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("AMP", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("SPECIAL", iterator.next().getType().getShortName());
-    assertEquals("SW", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("EXCLAMATION", iterator.next().getType().getShortName());
-    assertEquals("QUESTION", iterator.next().getType().getShortName());
-    assertEquals("PERIOD", iterator.next().getType().getShortName());
-    assertEquals("SEMICOLON", iterator.next().getType().getShortName());
-    assertEquals("COLON", iterator.next().getType().getShortName());
-    assertEquals("COMMA", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("SW", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("SW", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("MARKUP", iterator.next().getType().getShortName());
-    assertEquals("SW", iterator.next().getType().getShortName());
-    assertEquals("SPACE", iterator.next().getType().getShortName());
-    assertEquals("MARKUP", iterator.next().getType().getShortName());
-    assertEquals("SW", iterator.next().getType().getShortName());
-    assertEquals("MARKUP", iterator.next().getType().getShortName());
-    assertEquals("MARKUP", iterator.next().getType().getShortName());
-    assertEquals("MARKUP", iterator.next().getType().getShortName());
-    assertEquals("BREAK", iterator.next().getType().getShortName());
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("CW");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SW");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SW");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SW");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SW");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("CW");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("CAP");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPECIAL");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("AMP");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPECIAL");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SW");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("EXCLAMATION");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("QUESTION");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("PERIOD");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SEMICOLON");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("COLON");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("COMMA");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SW");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SW");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("MARKUP");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SW");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SPACE");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("MARKUP");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("SW");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("MARKUP");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("MARKUP");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("MARKUP");
+    assertThat(iterator.next().getType().getShortName()).isEqualTo("BREAK");
 
   }
 
@@ -135,7 +134,7 @@ public class DefaultSeederTest {
 
     Type t1 = RutaTestUtils.getTestType(cas, 1);
     AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t1);
-    Assert.assertEquals(2000, ai.size());
+    assertThat(ai).hasSize(2000);
 
     cas.release();
 

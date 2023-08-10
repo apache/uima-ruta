@@ -31,8 +31,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.util.FileUtils;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 public class TimeTest {
 
   private static final int numOfTests = 1;

@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.verbalizer;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ import org.apache.uima.ruta.expression.type.SimpleTypeListExpression;
 import org.apache.uima.ruta.expression.type.TypeListVariableExpression;
 import org.apache.uima.ruta.expression.type.TypeVariableExpression;
 import org.apache.uima.ruta.verbalize.RutaVerbalizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ExpressionVerbalizerTest {
 
@@ -124,17 +124,17 @@ public class ExpressionVerbalizerTest {
     INumberExpression numExpr6 = new ComposedNumberExpression(numExprList2, opList2);
 
     s = v.verbalize(numExpr1);
-    assertEquals("4", s);
+    assertThat(s).isEqualTo("4");
     s = v.verbalize(numExpr2);
-    assertEquals("numVar", s);
+    assertThat(s).isEqualTo("numVar");
     s = v.verbalize(numExpr3);
-    assertEquals("4.9", s);
+    assertThat(s).isEqualTo("4.9");
     s = v.verbalize(numExpr4);
-    assertEquals("-4", s);
+    assertThat(s).isEqualTo("-4");
     s = v.verbalize(numExpr5);
-    assertEquals("4 + numVar", s);
+    assertThat(s).isEqualTo("4 + numVar");
     s = v.verbalize(numExpr6);
-    assertEquals("4.9 * 4 + numVar", s);
+    assertThat(s).isEqualTo("4.9 * 4 + numVar");
 
     IBooleanExpression boolExpr1 = new SimpleBooleanExpression(true);
     IBooleanExpression boolExpr2 = new SimpleBooleanExpression(false);
@@ -149,27 +149,27 @@ public class ExpressionVerbalizerTest {
     IBooleanExpression boolExpr11 = new BooleanTypeExpression(typeExpr1, "!=", typeExpr2);
 
     s = v.verbalize(boolExpr1);
-    assertEquals("true", s);
+    assertThat(s).isEqualTo("true");
     s = v.verbalize(boolExpr2);
-    assertEquals("false", s);
+    assertThat(s).isEqualTo("false");
     s = v.verbalize(boolExpr3);
-    assertEquals("anyVar", s);
+    assertThat(s).isEqualTo("anyVar");
     s = v.verbalize(boolExpr4);
-    assertEquals("4 == numVar", s);
+    assertThat(s).isEqualTo("4 == numVar");
     s = v.verbalize(boolExpr5);
-    assertEquals("4 != numVar", s);
+    assertThat(s).isEqualTo("4 != numVar");
     s = v.verbalize(boolExpr6);
-    assertEquals("4 <= numVar", s);
+    assertThat(s).isEqualTo("4 <= numVar");
     s = v.verbalize(boolExpr7);
-    assertEquals("4 >= numVar", s);
+    assertThat(s).isEqualTo("4 >= numVar");
     s = v.verbalize(boolExpr8);
-    assertEquals("4 < numVar", s);
+    assertThat(s).isEqualTo("4 < numVar");
     s = v.verbalize(boolExpr9);
-    assertEquals("4 > numVar", s);
+    assertThat(s).isEqualTo("4 > numVar");
     s = v.verbalize(boolExpr10);
-    assertEquals("Type1 == typeVar", s);
+    assertThat(s).isEqualTo("Type1 == typeVar");
     s = v.verbalize(boolExpr11);
-    assertEquals("Type1 != typeVar", s);
+    assertThat(s).isEqualTo("Type1 != typeVar");
 
     List<IStringExpression> stringExprList = new ArrayList<IStringExpression>();
     AbstractStringExpression stringExpr1 = new SimpleStringExpression("string");
@@ -179,18 +179,18 @@ public class ExpressionVerbalizerTest {
     AbstractStringExpression stringExpr3 = new ComposedStringExpression(stringExprList);
 
     s = v.verbalize(stringExpr1);
-    assertEquals("\"string\"", s);
+    assertThat(s).isEqualTo("\"string\"");
     s = v.verbalize(stringExpr2);
-    assertEquals("anyVar", s);
+    assertThat(s).isEqualTo("anyVar");
     s = v.verbalize(stringExpr3);
-    assertEquals("\"string\" + anyVar", s);
+    assertThat(s).isEqualTo("\"string\" + anyVar");
 
     AbstractStringListExpression sle1 = new SimpleStringListExpression(stringExprList);
     AbstractStringListExpression sle2 = new StringListVariableExpression(var);
     s = v.verbalize(sle1);
-    assertEquals("{\"string\", anyVar}", s);
+    assertThat(s).isEqualTo("{\"string\", anyVar}");
     s = v.verbalize(sle2);
-    assertEquals("anyVar", s);
+    assertThat(s).isEqualTo("anyVar");
 
     List<IBooleanExpression> boolExprList = new ArrayList<IBooleanExpression>();
     boolExprList.add(boolExpr1);
@@ -198,9 +198,9 @@ public class ExpressionVerbalizerTest {
     AbstractBooleanListExpression ble1 = new SimpleBooleanListExpression(boolExprList);
     AbstractBooleanListExpression ble2 = new BooleanListVariableExpression(var);
     s = v.verbalize(ble1);
-    assertEquals("{true, anyVar}", s);
+    assertThat(s).isEqualTo("{true, anyVar}");
     s = v.verbalize(ble2);
-    assertEquals("anyVar", s);
+    assertThat(s).isEqualTo("anyVar");
 
     List<INumberExpression> numExprList = new ArrayList<INumberExpression>();
     numExprList.add(numExpr1);
@@ -208,9 +208,9 @@ public class ExpressionVerbalizerTest {
     AbstractNumberListExpression nle1 = new SimpleNumberListExpression(numExprList);
     AbstractNumberListExpression nle2 = new NumberListVariableExpression(var);
     s = v.verbalize(nle1);
-    assertEquals("{4, 4.9}", s);
+    assertThat(s).isEqualTo("{4, 4.9}");
     s = v.verbalize(nle2);
-    assertEquals("anyVar", s);
+    assertThat(s).isEqualTo("anyVar");
 
     List<ITypeExpression> typeExprList = new ArrayList<ITypeExpression>();
     typeExprList.add(typeExpr1);
@@ -218,27 +218,29 @@ public class ExpressionVerbalizerTest {
     AbstractTypeListExpression tle1 = new SimpleTypeListExpression(typeExprList);
     AbstractTypeListExpression tle2 = new TypeListVariableExpression(var);
     s = v.verbalize(tle1);
-    assertEquals("{Type1, typeVar}", s);
+    assertThat(s).isEqualTo("{Type1, typeVar}");
     s = v.verbalize(tle2);
-    assertEquals("anyVar", s);
+    assertThat(s).isEqualTo("anyVar");
 
   }
 
   @Test
   public void testAnnotationExpression() {
     RutaVerbalizer v = new RutaVerbalizer();
-    assertEquals("l", v.verbalize(new AnnotationLabelExpression("l")));
-    assertEquals("l", v.verbalize(new AnnotationVariableExpression("l")));
+    assertThat(v.verbalize(new AnnotationLabelExpression("l"))).isEqualTo("l");
+    assertThat(v.verbalize(new AnnotationVariableExpression("l"))).isEqualTo("l");
   }
 
   @Test
   public void testGenericFeatureExpression() {
     RutaVerbalizer v = new RutaVerbalizer();
-    assertEquals("abc.d", v.verbalize(new GenericFeatureExpression(
-            new SimpleFeatureExpression(new MatchReference("abc.d")))));
-    assertEquals("abc.d", v.verbalize(new GenericFeatureExpression(new FeatureMatchExpression(
-            new MatchReference("abc.d"), "==", new SimpleStringExpression("y")))));
-    assertEquals("", v.verbalize(new GenericFeatureExpression(null)));
+    assertThat(v.verbalize(
+            new GenericFeatureExpression(new SimpleFeatureExpression(new MatchReference("abc.d")))))
+                    .isEqualTo("abc.d");
+    assertThat(v.verbalize(
+            new GenericFeatureExpression(new FeatureMatchExpression(new MatchReference("abc.d"),
+                    "==", new SimpleStringExpression("y"))))).isEqualTo("abc.d");
+    assertThat(v.verbalize(new GenericFeatureExpression(null))).isEqualTo("");
   }
 
 }

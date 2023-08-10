@@ -29,8 +29,7 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.type.CW;
 import org.apache.uima.ruta.type.SW;
 import org.apache.uima.ruta.type.TokenSeed;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 public class ReindexSkipTypesTest {
 
   @Test

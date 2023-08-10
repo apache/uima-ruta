@@ -19,7 +19,7 @@
 
 package org.apache.uima.ruta.action;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * There was a {@link NullPointerException} when calling
@@ -52,9 +52,9 @@ public class ShiftWithLowMemoryProfileTest {
 
     Type t = cas.getTypeSystem().getType("org.apache.uima.ruta.type.W");
     AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(t);
-    assertEquals(1, ai.size());
+    assertThat(ai.size()).isEqualTo(1);
     FSIterator<AnnotationFS> iterator = ai.iterator();
-    assertEquals("A", iterator.next().getCoveredText());
+    assertThat(iterator.next().getCoveredText()).isEqualTo("A");
     cas.release();
   }
 }

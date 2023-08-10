@@ -22,6 +22,7 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.DOTALL;
 import static java.util.regex.Pattern.MULTILINE;
 import static java.util.regex.Pattern.UNICODE_CASE;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -51,8 +52,7 @@ import org.apache.uima.ruta.seed.TextSeeder;
 import org.apache.uima.ruta.type.ANY;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RutaPatternCacheTest {
 
@@ -98,15 +98,15 @@ public class RutaPatternCacheTest {
     EvaluatedCondition eval2 = regexpCondition2.eval(matchContext, stream, inferenceCrowd);
     regexpRule.apply(stream, inferenceCrowd);
 
-    Assert.assertTrue(eval1.isValue());
-    Assert.assertTrue(eval2.isValue());
+    assertThat(eval1.isValue()).isTrue();
+    assertThat(eval2.isValue()).isTrue();
 
     Map<PatternCacheKey, Pattern> cache = RutaPatternCache.getCacheMap();
-    Assert.assertEquals(1, cache.size());
+    assertThat(cache).hasSize(1);
     Entry<PatternCacheKey, Pattern> entry = cache.entrySet().iterator().next();
-    Assert.assertEquals("A", entry.getKey().getPatternString());
-    Assert.assertEquals(0, entry.getKey().getFlags() & (CASE_INSENSITIVE | UNICODE_CASE));
-    Assert.assertEquals(MULTILINE | DOTALL, entry.getKey().getFlags() & (MULTILINE | DOTALL));
+    assertThat(entry.getKey().getPatternString()).isEqualTo("A");
+    assertThat(entry.getKey().getFlags() & (CASE_INSENSITIVE | UNICODE_CASE)).isEqualTo(0);
+    assertThat(entry.getKey().getFlags() & (MULTILINE | DOTALL)).isEqualTo(MULTILINE | DOTALL);
   }
 
 }

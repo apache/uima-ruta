@@ -24,7 +24,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class LongGreedy1Test {
 
@@ -47,10 +47,10 @@ public class LongGreedy1Test {
 
 //    t = RutaTestUtils.getTestType(cas, 1);
 //    ai = cas.getAnnotationIndex(t);
-//    assertEquals(1, ai.size());
+//    assertThat(ai.size()).isEqualTo(1);
 //    iterator = ai.iterator();
 //    String coveredText = iterator.next().getCoveredText();
-//    assertEquals(64998, coveredText.length());
+//    assertThat(coveredText.length()).isEqualTo(64998);
     
     if (cas != null) {
       cas.release();

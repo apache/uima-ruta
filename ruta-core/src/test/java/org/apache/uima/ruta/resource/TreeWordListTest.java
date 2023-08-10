@@ -18,6 +18,8 @@
  */
 package org.apache.uima.ruta.resource;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,8 +40,7 @@ import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.seed.TextSeeder;
 import org.apache.uima.ruta.type.RutaBasic;
 import org.apache.uima.ruta.visitor.InferenceCrowd;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TreeWordListTest {
 
@@ -69,16 +70,16 @@ public class TreeWordListTest {
     RutaStream stream = createStream(text, cas);
 
     List<AnnotationFS> result1 = twl.find(stream, false, 0, null, 0, false);
-    Assert.assertEquals(1, result1.size());
-    Assert.assertEquals(text, result1.get(0).getCoveredText());
+    assertThat(result1).hasSize(1);
+    assertThat(result1.get(0).getCoveredText()).isEqualTo(text);
 
     List<AnnotationFS> result2 = twl.find(stream, false, 0, null, 0, true);
-    Assert.assertEquals(1, result2.size());
-    Assert.assertEquals(text, result2.get(0).getCoveredText());
+    assertThat(result2).hasSize(1);
+    assertThat(result2.get(0).getCoveredText()).isEqualTo(text);
 
     List<AnnotationFS> result3 = twl.find(stream, true, 0, null, 0, false);
-    Assert.assertEquals(1, result3.size());
-    Assert.assertEquals(text, result3.get(0).getCoveredText());
+    assertThat(result3).hasSize(1);
+    assertThat(result3.get(0).getCoveredText()).isEqualTo(text);
   }
 
   private RutaStream createStream(String text, CAS cas) {

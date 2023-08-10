@@ -203,7 +203,7 @@
               <instructions>
                 <Bundle-SymbolicName>org.apache.uima.ruta.ide;singleton:=true</Bundle-SymbolicName>
                 <Bundle-Activator>org.apache.uima.ruta.ide.RutaIdeCorePlugin</Bundle-Activator>
-                <Bundle-RequiredExecutionEnvironment>JavaSE-1.8</Bundle-RequiredExecutionEnvironment>
+                <Bundle-RequiredExecutionEnvironment>${execution.environment}</Bundle-RequiredExecutionEnvironment>
                 <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
                 <_nouses>true</_nouses>
                 <Export-Package>

@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.verbalizer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collection;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -30,8 +32,7 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.type.DebugBlockApply;
 import org.apache.uima.ruta.type.DebugRuleApply;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ScriptVerbalizerTest {
 
@@ -63,11 +64,11 @@ public class ScriptVerbalizerTest {
     Ruta.applyRule(jcas, rule, RutaEngine.PARAM_DEBUG, true, RutaEngine.PARAM_DEBUG_WITH_MATCHES,
             true);
     Collection<DebugBlockApply> blockApplies = JCasUtil.select(jcas, DebugBlockApply.class);
-    Assert.assertEquals(1, blockApplies.size());
+    assertThat(blockApplies).hasSize(1);
     DebugBlockApply blockApply = blockApplies.iterator().next();
-    Assert.assertEquals(1, blockApply.getInnerApply().size());
+    assertThat(blockApply.getInnerApply()).hasSize(1);
     DebugRuleApply ruleApply = (DebugRuleApply) blockApply.getInnerApply(0);
-    Assert.assertEquals(expected, ruleApply.getElement());
+    assertThat(ruleApply.getElement()).isEqualTo(expected);
     Ruta.removeDebugInformation(jcas);
   }
 

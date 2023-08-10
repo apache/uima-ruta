@@ -19,6 +19,8 @@
 
 package org.apache.uima.ruta.seed;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,8 +30,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.type.MARKUP;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TextSeederTest {
 
@@ -53,7 +54,7 @@ public class TextSeederTest {
             "more", "text", "-", "-", ">", "text", "text", ".");
     RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
 
-    Assert.assertTrue(JCasUtil.select(cas.getJCas(), MARKUP.class).isEmpty());
+    assertThat(JCasUtil.select(cas.getJCas(), MARKUP.class).isEmpty()).isTrue();
   }
 
   @Test
