@@ -47,6 +47,7 @@
       <groupId>org.apache.uima</groupId>
       <artifactId>org.apache.uima.tools</artifactId>
       <version>${uima-version}</version>
+      <type>eclipse-feature</type>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
