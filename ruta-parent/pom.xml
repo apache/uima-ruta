@@ -48,24 +48,6 @@
   </scm>
 
   <repositories>
-    <!-- modify central repository access: Turn on checksum checking -->
-    <repository>
-      <id>central</id>
-      <name>Maven Repository Switchboard</name>
-      <layout>default</layout>
-      <url>https://repo1.maven.org/maven2</url>
-
-      <releases>
-        <enabled>true</enabled>
-        <checksumPolicy>fail</checksumPolicy>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    
     <!--
       - The Eclipse Plugin modules use version ranges for their dependencies. These could resolve to
       - SNAPSHOT versions if we have a SNAPSHOT repo declaration here. Thus, this repo should only
