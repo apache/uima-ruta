@@ -48,24 +48,6 @@
   </scm>
 
   <repositories>
-    <!-- modify central repository access: Turn on checksum checking -->
-    <repository>
-      <id>central</id>
-      <name>Maven Repository Switchboard</name>
-      <layout>default</layout>
-      <url>https://repo1.maven.org/maven2</url>
-
-      <releases>
-        <enabled>true</enabled>
-        <checksumPolicy>fail</checksumPolicy>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    
     <!--
       - The Eclipse Plugin modules use version ranges for their dependencies. These could resolve to
       - SNAPSHOT versions if we have a SNAPSHOT repo declaration here. Thus, this repo should only
@@ -132,9 +114,9 @@
 
     <uima-version>3.5.0-SNAPSHOT</uima-version>
     <uimafit-version>3.4.0</uimafit-version>
-    <spring-version>5.3.25</spring-version>
+    <spring-version>5.3.30</spring-version>
     <slf4j-version>1.7.36</slf4j-version>
-    <maven.version>3.2.5</maven.version>
+    <maven.version>3.8.1</maven.version>
 
     <junit-version>5.10.0</junit-version>
     <junit-vintage-version>4.13.2</junit-vintage-version>
