@@ -67,6 +67,11 @@
 
     <repository>
       <id>${eclipseP2RepoId}</id>
+      <url>https://download.eclipse.org/releases/2023-12/</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>${dltkP2RepoId}</id>
       <url>https://download.eclipse.org/releases/2018-12/</url>
       <layout>p2</layout>
     </repository>
@@ -145,7 +150,8 @@
     <maven.compiler.release>17</maven.compiler.release>
     <execution.environment>JavaSE-17</execution.environment>
 
-    <eclipseP2RepoId>org.eclipse.p2.201812</eclipseP2RepoId>
+    <eclipseP2RepoId>org.eclipse.p2.202312</eclipseP2RepoId>
+    <dltkP2RepoId>org.eclipse.p2.201812</dltkP2RepoId>
 
     <api_check_oldVersion>3.3.0</api_check_oldVersion>
   </properties>

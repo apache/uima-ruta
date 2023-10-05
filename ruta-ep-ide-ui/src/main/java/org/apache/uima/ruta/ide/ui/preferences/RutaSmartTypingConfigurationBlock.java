@@ -19,13 +19,13 @@
 
 package org.apache.uima.ruta.ide.ui.preferences;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.ruta.ide.RutaIdeUIPlugin;
 import org.apache.uima.ruta.ide.ui.RutaPreferenceConstants;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlock;
@@ -76,6 +76,7 @@ class RutaSmartTypingConfigurationBlock extends AbstractConfigurationBlock {
             .toArray(new OverlayPreferenceStore.OverlayKey[keys.size()]);
   }
 
+  @Override
   public Control createControl(Composite parent) {
     Composite control = new Composite(parent, SWT.NONE);
     GridLayout layout = new GridLayout();
@@ -148,14 +149,15 @@ class RutaSmartTypingConfigurationBlock extends AbstractConfigurationBlock {
     String text;
     String indentMode = RutaIdeUIPlugin.getDefault().getPreferenceStore()
             .getString(CodeFormatterConstants.FORMATTER_TAB_CHAR);
-    if (CodeFormatterConstants.TAB.equals(indentMode))
-      text = Messages.format(
+    if (CodeFormatterConstants.TAB.equals(indentMode)) {
+      text = MessageFormat.format(
               PreferencesMessages.SmartTypingConfigurationBlock_tabs_message_tab_text,
-              new String[] { Integer.toString(getTabDisplaySize()) });
-    else
-      text = Messages.format(
+              Integer.toString(getTabDisplaySize()));
+    } else {
+      text = MessageFormat.format(
               PreferencesMessages.SmartTypingConfigurationBlock_tabs_message_others_text,
-              new String[] { Integer.toString(getTabDisplaySize()), getIndentMode() });
+              Integer.toString(getTabDisplaySize()), getIndentMode());
+    }
 
     final Link link = new Link(composite, SWT.NONE);
     link.setText(text);
@@ -175,11 +177,14 @@ class RutaSmartTypingConfigurationBlock extends AbstractConfigurationBlock {
     final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
       private boolean fHasRun = false;
 
+      @Override
       public void propertyChange(PropertyChangeEvent event) {
-        if (fHasRun)
+        if (fHasRun) {
           return;
-        if (composite.isDisposed())
+        }
+        if (composite.isDisposed()) {
           return;
+        }
         String property = event.getProperty();
         if (CodeFormatterConstants.FORMATTER_TAB_CHAR.equals(property)
                 || CodeFormatterConstants.FORMATTER_TAB_SIZE.equals(property)) {
@@ -194,6 +199,7 @@ class RutaSmartTypingConfigurationBlock extends AbstractConfigurationBlock {
     };
     combinedStore.addPropertyChangeListener(propertyChangeListener);
     link.addDisposeListener(new DisposeListener() {
+      @Override
       public void widgetDisposed(org.eclipse.swt.events.DisposeEvent e) {
         combinedStore.removePropertyChangeListener(propertyChangeListener);
       }
@@ -204,14 +210,17 @@ class RutaSmartTypingConfigurationBlock extends AbstractConfigurationBlock {
     String indentMode = RutaIdeUIPlugin.getDefault().getPreferenceStore()
             .getString(CodeFormatterConstants.FORMATTER_TAB_CHAR);
 
-    if (CodeFormatterConstants.SPACE.equals(indentMode))
+    if (CodeFormatterConstants.SPACE.equals(indentMode)) {
       return PreferencesMessages.SmartTypingConfigurationBlock_tabs_message_spaces;
+    }
 
-    if (CodeFormatterConstants.TAB.equals(indentMode))
+    if (CodeFormatterConstants.TAB.equals(indentMode)) {
       return PreferencesMessages.SmartTypingConfigurationBlock_tabs_message_tabs;
+    }
 
-    if (CodeFormatterConstants.MIXED.equals(indentMode))
+    if (CodeFormatterConstants.MIXED.equals(indentMode)) {
       return PreferencesMessages.SmartTypingConfigurationBlock_tabs_message_tabsAndSpaces;
+    }
 
     Assert.isTrue(false, "Illegal indent mode - must not happen"); //$NON-NLS-1$
     return null;
