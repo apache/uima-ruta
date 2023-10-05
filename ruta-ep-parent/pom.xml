@@ -51,13 +51,13 @@
 
   <dependencies>
     <dependency>
-      <groupId>${eclipseP2RepoId}</groupId>
+      <groupId>${dltkP2RepoId}</groupId>
       <artifactId>org.eclipse.dltk.core</artifactId>
       <version>${dltk.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>${eclipseP2RepoId}</groupId>
+      <groupId>${dltkP2RepoId}</groupId>
       <artifactId>org.eclipse.dltk.ui</artifactId>
       <version>${dltk.version}</version>
       <scope>provided</scope>
@@ -66,25 +66,25 @@
           <!-- 
             The p2 resolver appears to have trouble with the "icu-data" classifier
            -->
-          <groupId>${eclipseP2RepoId}</groupId>
+          <groupId>${dltkP2RepoId}</groupId>
           <artifactId>com.ibm.icu</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>${eclipseP2RepoId}</groupId>
+      <groupId>${dltkP2RepoId}</groupId>
       <artifactId>org.eclipse.dltk.debug</artifactId>
       <version>${dltk.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>${eclipseP2RepoId}</groupId>
+      <groupId>${dltkP2RepoId}</groupId>
       <artifactId>org.eclipse.dltk.annotations</artifactId>
       <version>${dltk.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>${eclipseP2RepoId}</groupId>
+      <groupId>${dltkP2RepoId}</groupId>
       <artifactId>org.eclipse.dltk.launching</artifactId>
       <version>${dltk.version}</version>
       <scope>provided</scope>
@@ -99,31 +99,31 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>${eclipseP2RepoId}</groupId>
+      <groupId>${dltkP2RepoId}</groupId>
       <artifactId>org.eclipse.dltk.core.manipulation</artifactId>
       <version>${dltk.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>${eclipseP2RepoId}</groupId>
+      <groupId>${dltkP2RepoId}</groupId>
       <artifactId>org.eclipse.dltk.validators.core</artifactId>
       <version>${dltk.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>${eclipseP2RepoId}</groupId>
+      <groupId>${dltkP2RepoId}</groupId>
       <artifactId>org.eclipse.dltk.console</artifactId>
       <version>${dltk.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>${eclipseP2RepoId}</groupId>
+      <groupId>${dltkP2RepoId}</groupId>
       <artifactId>org.eclipse.dltk.formatter</artifactId>
       <version>${dltk.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>${eclipseP2RepoId}</groupId>
+      <groupId>${dltkP2RepoId}</groupId>
       <artifactId>org.eclipse.dltk.testing</artifactId>
       <version>${dltk.version}</version>
       <scope>provided</scope>
