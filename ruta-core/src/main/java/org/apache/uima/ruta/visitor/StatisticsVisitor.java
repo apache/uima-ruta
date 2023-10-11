@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -62,12 +62,12 @@ public class StatisticsVisitor implements RutaInferenceVisitor {
   public StatisticsVisitor(RutaVerbalizer verbalizer) {
     super();
     this.verbalizer = verbalizer;
-    conditionTime = new HashMap<String, Long>();
-    actionTime = new HashMap<String, Long>();
-    conditionAmount = new HashMap<String, Integer>();
-    actionAmount = new HashMap<String, Integer>();
-    conditionDelta = new HashMap<String, Long>();
-    actionDelta = new HashMap<String, Long>();
+    conditionTime = new HashMap<>();
+    actionTime = new HashMap<>();
+    conditionAmount = new HashMap<>();
+    actionAmount = new HashMap<>();
+    conditionDelta = new HashMap<>();
+    actionDelta = new HashMap<>();
   }
 
   @Override
@@ -76,8 +76,9 @@ public class StatisticsVisitor implements RutaInferenceVisitor {
       AbstractRutaCondition c = (AbstractRutaCondition) element;
       String name = verbalizer.verbalizeName(c);
       Integer amount = conditionAmount.get(name);
-      if (amount == null)
+      if (amount == null) {
         amount = 0;
+      }
       amount++;
       conditionAmount.put(name, amount);
       conditionDelta.put(name, System.currentTimeMillis());
@@ -85,8 +86,9 @@ public class StatisticsVisitor implements RutaInferenceVisitor {
       AbstractRutaAction a = (AbstractRutaAction) element;
       String name = verbalizer.verbalizeName(a);
       Integer amount = actionAmount.get(name);
-      if (amount == null)
+      if (amount == null) {
         amount = 0;
+      }
       amount++;
       actionAmount.put(name, amount);
       actionDelta.put(name, System.currentTimeMillis());
@@ -101,8 +103,9 @@ public class StatisticsVisitor implements RutaInferenceVisitor {
       Long start = conditionDelta.get(name);
       long delta = System.currentTimeMillis() - start;
       Long total = conditionTime.get(name);
-      if (total == null)
+      if (total == null) {
         total = 0L;
+      }
       total += delta;
       conditionTime.put(name, total);
     } else if (element instanceof AbstractRutaAction) {
@@ -111,8 +114,9 @@ public class StatisticsVisitor implements RutaInferenceVisitor {
       Long start = actionDelta.get(name);
       long delta = System.currentTimeMillis() - start;
       Long total = actionTime.get(name);
-      if (total == null)
+      if (total == null) {
         total = 0L;
+      }
       total += delta;
       actionTime.put(name, total);
     }
@@ -120,10 +124,10 @@ public class StatisticsVisitor implements RutaInferenceVisitor {
 
   @Override
   public void finished(RutaStream stream, List<RutaInferenceVisitor> visitors) {
-    List<String> names = new ArrayList<String>();
-    List<Double> totals = new ArrayList<Double>();
-    List<Integer> amounts = new ArrayList<Integer>();
-    List<Double> parts = new ArrayList<Double>();
+    List<String> names = new ArrayList<>();
+    List<Double> totals = new ArrayList<>();
+    List<Integer> amounts = new ArrayList<>();
+    List<Double> parts = new ArrayList<>();
     for (String each : conditionTime.keySet()) {
       double total = conditionTime.get(each);
       double amount = conditionAmount.get(each);

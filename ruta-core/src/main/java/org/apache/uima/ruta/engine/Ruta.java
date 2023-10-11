@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -68,7 +68,7 @@ public class Ruta {
 
   /**
    * This applies the given rule on the given JCas object
-   * 
+   *
    * @param jcas
    *          - the current document
    * @param rule
@@ -181,7 +181,7 @@ public class Ruta {
 
   /**
    * Removes all debug annotations from the index.
-   * 
+   *
    * @param jcas
    *          - the current document
    */
@@ -230,7 +230,7 @@ public class Ruta {
 
   /**
    * This method returns the spans of successful rule applies.
-   * 
+   *
    * @param jcas
    *          - the current document
    * @param rule
@@ -255,7 +255,7 @@ public class Ruta {
 
   /**
    * This method returns true if the rule (or one of the rules) was able to match.
-   * 
+   *
    * @param jcas
    *          - the current document
    * @param rule
@@ -341,7 +341,7 @@ public class Ruta {
     String name = scriptFile.getName().substring(0, scriptFile.getName().length() - 5);
     settings.setParameterValue(RutaEngine.PARAM_MAIN_SCRIPT, name);
     if (tsds != null) {
-      List<TypeSystemDescription> tsdList = new ArrayList<TypeSystemDescription>();
+      List<TypeSystemDescription> tsdList = new ArrayList<>();
       tsdList.add(metaData.getTypeSystem());
       tsdList.addAll(Arrays.asList(tsds));
       TypeSystemDescription typeSystemDescription = CasCreationUtils.mergeTypeSystems(tsdList);

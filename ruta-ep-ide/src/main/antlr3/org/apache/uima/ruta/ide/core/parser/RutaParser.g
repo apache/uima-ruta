@@ -2284,6 +2284,7 @@ argument returns [Expression expr = null]
 	:
 	(conditionedAnnotationType)=>cat = conditionedAnnotationType{expr = cat;		}
 	| (nullExpression) => a5 = nullExpression {expr = a5;}
+	| (complexStringExpression) => cse = complexStringExpression {expr = cse;}
 	| (featureExpression)=> fe = featureExpression {expr = fe;}
 	| (booleanExpression)=> a2 = booleanExpression {expr = a2;}
 	| (numberExpression)=> a3 = numberExpression {expr = a3;}
@@ -2310,8 +2311,8 @@ simpleArgument returns [Expression expr = null]
 	:
 	 (nullExpression) => a5 = nullExpression {expr = a5;}
 	| (featureExpression)=> fe = featureExpression {expr = fe;}
-	| (booleanExpression)=> a2 = booleanExpression {expr = a2;}
-	| (numberExpression)=> a3 = numberExpression {expr = a3;}
+	| (simpleBooleanExpression)=> a2 = simpleBooleanExpression {expr = a2;}
+	| (simpleNumberExpression)=> a3 = simpleNumberExpression {expr = a3;}
 	| (stringExpression)=> a4 = stringExpression {expr = a4;}
 	| (listExpression)=> l = listExpression {expr = l;}
 	| a1 = typeExpression {expr = a1;}
@@ -2616,6 +2617,19 @@ List<Expression> exprList = new ArrayList<Expression>();
 	{expr = ExpressionFactory.createStringExpression(exprList);}
 	;
 
+complexStringExpression returns [Expression expr = null]
+options {
+	backtrack = true;
+}
+@init {
+List<Expression> exprList = new ArrayList<Expression>();
+{expr = ExpressionFactory.createEmptyStringExpression(input.LT(1));}
+}
+	:
+	a1 = simpleArgument {exprList.add(a1);}
+	((PLUS)=>PLUS an = simpleArgument {exprList.add(an);})+
+	{expr = ExpressionFactory.createStringExpression(exprList);}
+	;
 
 // not checked
 stringFunction returns [Expression expr = null]

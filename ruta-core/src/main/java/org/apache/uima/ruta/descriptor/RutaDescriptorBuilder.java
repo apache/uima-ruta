@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -97,14 +97,14 @@ public class RutaDescriptorBuilder {
       }
       rm.setDataPath(dataPath);
     }
-    Map<String, String> typeNameMap = new HashMap<String, String>();
+    Map<String, String> typeNameMap = new HashMap<>();
     TypeSystemDescription initialTypeSystem = UIMAFramework.getXMLParser()
             .parseTypeSystemDescription(new XMLInputSource(defaultTypeSystem));
     CAS cas = CasCreationUtils.createCas(initialTypeSystem, null, new FsIndexDescription[0]);
     fillTypeNameMap(typeNameMap, cas.getTypeSystem());
     cas.release();
-    List<TypeSystemDescription> toInclude = new ArrayList<TypeSystemDescription>();
-    List<Import> importList = new ArrayList<Import>();
+    List<TypeSystemDescription> toInclude = new ArrayList<>();
+    List<Import> importList = new ArrayList<>();
     Import_impl import_impl = new Import_impl();
     if (options.isImportByName()) {
       String name = initialTypeSystem.getName();
@@ -229,12 +229,12 @@ public class RutaDescriptorBuilder {
     }
 
     // TODO hotfixes: where do I get the final types??
-    Set<String> finalTypes = new HashSet<String>();
-    finalTypes.addAll(Arrays.asList(new String[] { "uima.cas.Boolean", "uima.cas.Byte",
-        "uima.cas.Short", "uima.cas.Integer", "uima.cas.Long", "uima.cas.Float", "uima.cas.Double",
-        "uima.cas.BooleanArray", "uima.cas.ByteArray", "uima.cas.ShortArray",
-        "uima.cas.IntegerArray", "uima.cas.LongArray", "uima.cas.FloatArray",
-        "uima.cas.DoubleArray", "uima.cas.StringArray", "uima.cas.FSArray" }));
+    Set<String> finalTypes = new HashSet<>();
+    finalTypes.addAll(Arrays.asList("uima.cas.Boolean", "uima.cas.Byte", "uima.cas.Short",
+            "uima.cas.Integer", "uima.cas.Long", "uima.cas.Float", "uima.cas.Double",
+            "uima.cas.BooleanArray", "uima.cas.ByteArray", "uima.cas.ShortArray",
+            "uima.cas.IntegerArray", "uima.cas.LongArray", "uima.cas.FloatArray",
+            "uima.cas.DoubleArray", "uima.cas.StringArray", "uima.cas.FSArray"));
 
     int typeIndex = 0;
     for (String eachType : desc.getTypeShortNames()) {
@@ -261,8 +261,8 @@ public class RutaDescriptorBuilder {
       typeIndex++;
     }
 
-    Set<String> names = new HashSet<String>();
-    Collection<TypeDescription> types = new HashSet<TypeDescription>();
+    Set<String> names = new HashSet<>();
+    Collection<TypeDescription> types = new HashSet<>();
     for (TypeDescription each : typeSystemDescription.getTypes()) {
       String name = each.getName();
       if (!names.contains(name)) {
@@ -489,7 +489,7 @@ public class RutaDescriptorBuilder {
     }
     String[] parameterValue = (String[]) analysisEngineDescription.getAnalysisEngineMetaData()
             .getConfigurationParameterSettings().getParameterValue(RutaEngine.PARAM_RESOURCE_PATHS);
-    Set<String> resourceLocations = new HashSet<String>();
+    Set<String> resourceLocations = new HashSet<>();
 
     if (parameterValue != null && parameterValue.length != 0) {
       resourceLocations.addAll(Arrays.asList(parameterValue));
@@ -557,7 +557,7 @@ public class RutaDescriptorBuilder {
     String[] extensions = (String[]) configurationParameterSettings
             .getParameterValue(RutaEngine.PARAM_ADDITIONAL_EXTENSIONS);
 
-    List<String> es = new ArrayList<String>();
+    List<String> es = new ArrayList<>();
     if (extensions != null) {
       es.addAll(Arrays.asList(extensions));
     }

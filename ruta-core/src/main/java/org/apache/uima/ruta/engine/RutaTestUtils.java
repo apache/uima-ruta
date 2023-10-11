@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -134,7 +134,7 @@ public class RutaTestUtils {
           String resourceDirName, CAS cas) throws URISyntaxException, IOException,
           InvalidXMLException, ResourceInitializationException, AnalysisEngineProcessException,
           ResourceConfigurationException {
-    final Map<String, Object> parameters = new HashMap<String, Object>();
+    final Map<String, Object> parameters = new HashMap<>();
     parameters.put(RutaEngine.PARAM_DYNAMIC_ANCHORING, dynamicAnchoring);
     parameters.put(RutaEngine.PARAM_SIMPLE_GREEDY_FOR_COMPOSED, simpleGreedyForComposed);
 
@@ -172,7 +172,7 @@ public class RutaTestUtils {
     addTestTypes(basicTypeSystem);
     addAdditionalTypes(complexTypes, features, basicTypeSystem);
 
-    Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
+    Collection<TypeSystemDescription> tsds = new ArrayList<>();
     tsds.add(basicTypeSystem);
     TypeSystemDescription mergeTypeSystems = CasCreationUtils.mergeTypeSystems(tsds);
     aed.getAnalysisEngineMetaData().setTypeSystem(mergeTypeSystems);
@@ -211,7 +211,7 @@ public class RutaTestUtils {
 
   /**
    * Helper to get the test type, e.g. org.apache.uima.T1, org.apache.uima.T2, ...
-   * 
+   *
    * @param cas
    *          - The CAS object containing the type system
    * @param i
@@ -219,8 +219,9 @@ public class RutaTestUtils {
    * @return the test type object with the given counter
    */
   public static Type getTestType(CAS cas, int i) {
-    if (cas == null)
+    if (cas == null) {
       return null;
+    }
     return cas.getTypeSystem().getType(TYPE + i);
   }
 
@@ -252,7 +253,7 @@ public class RutaTestUtils {
     TypeSystemDescription basicTypeSystem = aed.getAnalysisEngineMetaData().getTypeSystem();
     addTestTypes(basicTypeSystem);
     addAdditionalTypes(complexTypes, features, basicTypeSystem);
-    Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
+    Collection<TypeSystemDescription> tsds = new ArrayList<>();
     tsds.add(basicTypeSystem);
     TypeSystemDescription mergeTypeSystems = CasCreationUtils.mergeTypeSystems(tsds);
 
@@ -304,7 +305,7 @@ public class RutaTestUtils {
 
   /**
    * Helper for common assertion in JUnit tests
-   * 
+   *
    * @param cas
    *          - The CAS object containing the type system
    * @param typeId
@@ -336,7 +337,7 @@ public class RutaTestUtils {
 
   /**
    * Helper to run Ruta on a tests script
-   * 
+   *
    * @param testClass
    *          - the class of the unit test
    * @return the annotated {@link CAS}

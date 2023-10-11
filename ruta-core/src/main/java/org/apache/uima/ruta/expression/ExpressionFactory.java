@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -116,9 +116,8 @@ public class ExpressionFactory {
     SimpleNumberExpression simpleNumberExpression = new SimpleNumberExpression(valueOf);
     if (minus != null) {
       return new NegativeNumberExpression(simpleNumberExpression);
-    } else {
-      return simpleNumberExpression;
     }
+    return simpleNumberExpression;
   }
 
   public INumberExpression createDoubleExpression(Token number, Token minus) {
@@ -126,23 +125,21 @@ public class ExpressionFactory {
     SimpleNumberExpression simpleNumberExpression = new SimpleNumberExpression(valueOf);
     if (minus != null) {
       return new NegativeNumberExpression(simpleNumberExpression);
-    } else {
-      return simpleNumberExpression;
     }
+    return simpleNumberExpression;
   }
 
   public INumberExpression createReferenceNumberExpression(Token var, Token minus) {
     NumberVariableExpression simpleNumberExpression = new NumberVariableExpression(var.getText());
     if (minus != null) {
       return new NegativeNumberExpression(simpleNumberExpression);
-    } else {
-      return simpleNumberExpression;
     }
+    return simpleNumberExpression;
   }
 
   public INumberExpression createComposedNumberExpression(List<INumberExpression> expressions,
           List<Token> opTokens) {
-    List<String> ops = new ArrayList<String>();
+    List<String> ops = new ArrayList<>();
     for (Token token : opTokens) {
       ops.add(token.getText());
     }
@@ -151,8 +148,8 @@ public class ExpressionFactory {
 
   public INumberExpression createComposedNumberExpression(INumberExpression expression,
           Token opToken) {
-    List<String> ops = new ArrayList<String>();
-    List<INumberExpression> exprList = new ArrayList<INumberExpression>();
+    List<String> ops = new ArrayList<>();
+    List<INumberExpression> exprList = new ArrayList<>();
     ops.add(opToken.getText());
     exprList.add(expression);
     return new ComposedNumberExpression(exprList, ops);
@@ -160,8 +157,8 @@ public class ExpressionFactory {
 
   public INumberExpression createComposedNumberExpression(INumberExpression expression1,
           Token opToken, INumberExpression expression2) {
-    List<String> ops = new ArrayList<String>();
-    List<INumberExpression> exprList = new ArrayList<INumberExpression>();
+    List<String> ops = new ArrayList<>();
+    List<INumberExpression> exprList = new ArrayList<>();
     ops.add(opToken.getText());
     exprList.add(expression1);
     exprList.add(expression2);
@@ -176,6 +173,19 @@ public class ExpressionFactory {
 
   public IStringExpression createComposedStringExpression(List<IStringExpression> expressions) {
     return new ComposedStringExpression(expressions);
+  }
+
+  public IStringExpression createGenericComposedStringExpression(
+          List<IRutaExpression> expressions) {
+    List<IStringExpression> stringExpression = new ArrayList<>();
+    for (IRutaExpression each : expressions) {
+      if (each instanceof IStringExpression) {
+        stringExpression.add((IStringExpression) each);
+      } else {
+        System.out.println();
+      }
+    }
+    return new ComposedStringExpression(stringExpression);
   }
 
   public AbstractStringExpression createReferenceStringExpression(Token var) {

@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -66,7 +66,7 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
 
   boolean getDictWSParamValue(MatchContext context) {
     Object configParameterValue = context.getParent().getContext()
-                                         .getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
+            .getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
     if (configParameterValue instanceof Boolean) {
       return (Boolean) configParameterValue;
     }
@@ -76,7 +76,7 @@ public abstract class AbstractMarkAction extends TypeSensitiveAction {
   protected List<Integer> getIndexList(MatchContext context, List<INumberExpression> list,
           RutaStream stream) {
     RuleElement element = context.getElement();
-    List<Integer> indexList = new ArrayList<Integer>();
+    List<Integer> indexList = new ArrayList<>();
     if (list == null || list.isEmpty()) {
       int self = element.getContainer().getRuleElements().indexOf(element) + 1;
       indexList.add(self);

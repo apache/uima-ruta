@@ -22,6 +22,7 @@ package org.apache.uima.ruta.expression.string;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
@@ -45,10 +46,10 @@ public class StringFeatureExpression extends AbstractStringExpression {
   public String getStringValue(MatchContext context, RutaStream stream) {
 
     AnnotationFS annotation = context.getAnnotation();
-    Feature feature = this.fe.getFeature(context, stream);
-    List<AnnotationFS> list = this.getTargetAnnotation(annotation, this.fe, context, stream);
-    Collection<? extends FeatureStructure> featureStructures = this.fe.getFeatureStructures(list,
-            false, context, stream);
+    Feature feature = fe.getFeature(context, stream);
+    List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
+    Collection<? extends FeatureStructure> featureStructures = fe.getFeatureStructures(list, false,
+            context, stream);
     if (!featureStructures.isEmpty()) {
       FeatureStructure next = featureStructures.iterator().next();
       // if (next instanceof AnnotationFS && !next.getType().equals(annotation.getType())) {
@@ -61,16 +62,18 @@ public class StringFeatureExpression extends AbstractStringExpression {
       }
       if (next instanceof AnnotationFS && feature instanceof CoveredTextFeature) {
         return ((AnnotationFS) next).getCoveredText();
-      } else {
+      }
+      if (feature.getRange().getName().equals(CAS.TYPE_NAME_STRING)) {
         return next.getStringValue(feature);
       }
+      return next.getFeatureValueAsString(feature);
     }
     return null;
   }
 
   public FeatureExpression getFe() {
 
-    return this.fe;
+    return fe;
   }
 
   public void setFe(FeatureExpression fe) {
