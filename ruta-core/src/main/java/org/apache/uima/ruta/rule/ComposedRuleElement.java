@@ -23,6 +23,7 @@ import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -498,6 +499,42 @@ public class ComposedRuleElement extends AbstractRuleElement implements RuleElem
     if (evaluateMatches.isEmpty()) {
       return annotation;
     }
+
+    // ensure correct ordering
+    Collections.sort(evaluateMatches, new Comparator<RuleElementMatch>() {
+
+      @Override
+      public int compare(RuleElementMatch rem1, RuleElementMatch rem2) {
+        List<AnnotationFS> textsMatched1 = rem1.getTextsMatched();
+        List<AnnotationFS> textsMatched2 = rem2.getTextsMatched();
+        if ((textsMatched1 == null || textsMatched1.isEmpty())
+                && (textsMatched2 == null || textsMatched2.isEmpty())) {
+          return 0;
+        }
+        if (textsMatched1 == null
+                || textsMatched1.isEmpty() && !(textsMatched2 == null || textsMatched2.isEmpty())) {
+          return -1;
+        }
+        if (!(textsMatched1 == null || textsMatched1.isEmpty())
+                && (textsMatched2 == null || textsMatched2.isEmpty())) {
+          return 1;
+        }
+        if (textsMatched1.equals(textsMatched2)) {
+          return 0;
+        }
+        AnnotationFS first1 = textsMatched1.get(0);
+        AnnotationFS last1 = textsMatched1.get(textsMatched1.size() - 1);
+        AnnotationFS first2 = textsMatched2.get(0);
+        AnnotationFS last2 = textsMatched2.get(textsMatched2.size() - 1);
+        int compareBegin = Integer.compare(first1.getBegin(), first2.getBegin());
+        if (compareBegin != 0) {
+          return compareBegin;
+        }
+        int compareEnd = Integer.compare(last1.getEnd(), last2.getEnd());
+        return compareEnd;
+      }
+    });
+
     if (after) {
       List<AnnotationFS> textsMatched = evaluateMatches.get(evaluateMatches.size() - 1)
               .getTextsMatched();

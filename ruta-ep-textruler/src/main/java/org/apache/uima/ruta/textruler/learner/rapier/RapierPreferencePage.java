@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -35,8 +35,8 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class RapierPreferencePage extends FieldEditorPreferencePage implements
-        IWorkbenchPreferencePage {
+public class RapierPreferencePage extends FieldEditorPreferencePage
+        implements IWorkbenchPreferencePage {
 
   public static String ID = "org.apache.uima.ruta.textruler.preference.rapier";
 
@@ -44,20 +44,22 @@ public class RapierPreferencePage extends FieldEditorPreferencePage implements
 
   private IPreferenceStore store;
 
-  private ArrayList<FieldEditor> fields = new ArrayList<FieldEditor>();
+  private ArrayList<FieldEditor> fields = new ArrayList<>();
 
   public RapierPreferencePage() {
     super(FieldEditorPreferencePage.GRID);
     TextRulerLearnerController ctrl = TextRulerController
             .getControllerForID("org.apache.uima.ruta.textruler.rapier");
-    this.algorithmController = ctrl;
+    algorithmController = ctrl;
     store = TextRulerPlugin.getDefault().getPreferenceStore();
     setPreferenceStore(store);
   }
 
+  @Override
   public void init(IWorkbench workbench) {
   }
 
+  @Override
   protected void createFieldEditors() {
     TextRulerLearnerFactory f = algorithmController.getFactory();
     TextRulerLearnerParameter[] params = f.getAlgorithmParameters();
@@ -79,6 +81,7 @@ public class RapierPreferencePage extends FieldEditorPreferencePage implements
 
           case ML_FLOAT_PARAM:
           case ML_INT_PARAM:
+          case ML_DOUBLE_PARAM:
           case ML_STRING_PARAM: {
             l = new StringFieldEditor(id, p.name, getFieldEditorParent());
             fields.add(l);
@@ -96,15 +99,17 @@ public class RapierPreferencePage extends FieldEditorPreferencePage implements
 
   @Override
   protected void performDefaults() {
-    for (FieldEditor f : fields)
+    for (FieldEditor f : fields) {
       f.loadDefault();
-    // super.performDefaults();
+      // super.performDefaults();
+    }
   }
 
   @Override
   public boolean performOk() {
-    for (FieldEditor f : fields)
+    for (FieldEditor f : fields) {
       f.store();
+    }
     // return super.performOk();
     return true;
   }
