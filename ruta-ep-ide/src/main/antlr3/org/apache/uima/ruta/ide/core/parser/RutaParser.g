@@ -817,7 +817,7 @@ String label = null;
 	| re3 = ruleElementComposed {re = re3;}
 	| re4 = ruleElementSpecial {re = re4;}
 	)
-	{re.setLabel(label);}
+	{if(re!=null) {re.setLabel(label);}}
 	
 	(
 	t = THEN2 LCURLY 
@@ -2282,9 +2282,9 @@ varArgumentList returns [List<Expression> args = new ArrayList<Expression>()]
 
 argument returns [Expression expr = null] 
 	:
-	(conditionedAnnotationType)=>cat = conditionedAnnotationType{expr = cat;		}
+	(complexStringExpression) => cse = complexStringExpression {expr = cse;}
+	| (conditionedAnnotationType)=>cat = conditionedAnnotationType{expr = cat;		}
 	| (nullExpression) => a5 = nullExpression {expr = a5;}
-	| (complexStringExpression) => cse = complexStringExpression {expr = cse;}
 	| (featureExpression)=> fe = featureExpression {expr = fe;}
 	| (booleanExpression)=> a2 = booleanExpression {expr = a2;}
 	| (numberExpression)=> a3 = numberExpression {expr = a3;}
@@ -2313,7 +2313,7 @@ simpleArgument returns [Expression expr = null]
 	| (featureExpression)=> fe = featureExpression {expr = fe;}
 	| (simpleBooleanExpression)=> a2 = simpleBooleanExpression {expr = a2;}
 	| (simpleNumberExpression)=> a3 = simpleNumberExpression {expr = a3;}
-	| (stringExpression)=> a4 = stringExpression {expr = a4;}
+	| (simpleStringExpression)=> a4 = simpleStringExpression {expr = a4;}
 	| (listExpression)=> l = listExpression {expr = l;}
 	| a1 = typeExpression {expr = a1;}
 	;
