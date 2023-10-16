@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -324,6 +324,24 @@ public class WildCard2Test {
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "4");
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 2, "2", "4");
+  }
+
+  @Test
+  public void testLookaheadInlined() throws Exception {
+    String document = "My first question. Is this a test?";
+    String script = "";
+    script += "(ANY+{-PARTOF(PM)} PM){-PARTOF(T1)-> T1};\n";
+    script += "T1->{CW{-> T2} # QUESTION _{-PARTOF(NUM)};};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    if (RutaTestUtils.DEBUG_MODE) {
+      RutaTestUtils.storeCas(cas, "testLookaheadInlined");
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 2, "My first question.", "Is this a test?");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Is");
   }
 
 }

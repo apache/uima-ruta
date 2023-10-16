@@ -174,9 +174,7 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
     } else {
       viewer.setAutoExpandLevel(1);
     }
-    if (tree != null) {
-      viewer.setInput(root);
-    }
+    viewer.setInput(root);
     viewer.addDoubleClickListener(this);
     getSite().setSelectionProvider(viewer);
     getSite().getPage().addSelectionListener(this);
