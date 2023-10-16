@@ -2431,7 +2431,7 @@ options {
 	| match = dottedIdWithIndex2 (comp = LESS | comp = GREATER | comp = GREATEREQUAL | comp = LESSEQUAL |comp =  EQUAL | comp = NOTEQUAL) arg = argument
 	{MatchReference mr = expressionFactory.createMatchReference(match, comp, arg);
 	expr = expressionFactory.createAnnotationTypeExpression(mr);}
-
+        | (complexStringExpression) => cse = complexStringExpression {expr = cse;}
 	| (featureExpression)=> fe = featureExpression {expr = expressionFactory.createGenericFeatureExpression(fe);}
 	| a2 = booleanExpression {expr = a2;}
 	| a3 = numberExpression {expr = a3;}
@@ -2455,8 +2455,8 @@ options {
 }
 	:
 	(featureExpression)=> fe = featureExpression {expr = expressionFactory.createGenericFeatureExpression(fe);}
-	| a2 = booleanExpression {expr = a2;}
-	| a3 = numberExpression {expr = a3;}
+	| a2 = simpleBooleanExpression {expr = a2;}
+	| a3 = simpleNumberExpression {expr = a3;}
 	| a4 = stringExpression {expr = a4;}
 	| (listExpression)=> l = listExpression {expr = l;}
 	| a5 = nullExpression {expr = a5;}
@@ -2777,6 +2777,18 @@ List<IStringExpression> exprs = new ArrayList<IStringExpression>();
 	{expr = expressionFactory.createComposedStringExpression(exprs);}
 	|(e = stringFunction)=> e = stringFunction{expr = e;} 
 	;
+
+complexStringExpression returns [IStringExpression expr = null]
+options {
+	backtrack = true;
+}
+@init {List<IRutaExpression> list = new ArrayList<IRutaExpression>();}
+	:
+	a1 = simpleArgument {list.add(a1);}
+	((PLUS)=>PLUS an = simpleArgument {list.add(an);})+
+	{expr = expressionFactory.createGenericComposedStringExpression(list);}
+	;
+
 
 // not checked
 stringFunction returns [IStringExpression expr = null]

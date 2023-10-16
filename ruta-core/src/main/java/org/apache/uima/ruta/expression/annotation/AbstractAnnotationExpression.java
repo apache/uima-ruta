@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -25,21 +25,21 @@ import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.RutaExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
-public abstract class AbstractAnnotationExpression extends RutaExpression implements IAnnotationExpression {
+public abstract class AbstractAnnotationExpression extends RutaExpression
+        implements IAnnotationExpression {
 
   @Override
   public FeatureStructure getFeatureStructure(MatchContext context, RutaStream stream) {
     return getAnnotation(context, stream);
   }
-  
+
   @Override
   public String getStringValue(MatchContext context, RutaStream stream) {
     AnnotationFS annotation = getAnnotation(context, stream);
-    if(annotation != null) {
+    if (annotation != null) {
       return annotation.getCoveredText();
-    } else {
-      return "null";
     }
+    return "null";
   }
-  
+
 }

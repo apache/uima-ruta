@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -106,7 +106,7 @@ public class RutaScriptFactory {
     if (ruleElement != null) {
       rule = createRule(ruleElement, parent);
     }
-    List<RutaStatement> elements = new ArrayList<RutaStatement>();
+    List<RutaStatement> elements = new ArrayList<>();
     if (body != null) {
       for (RutaStatement each : body) {
         if (each != null) {
@@ -121,7 +121,7 @@ public class RutaScriptFactory {
     String defaultNamespace = getDefaultNamespace(module, pack);
 
     RutaScriptBlock result = createScriptBlock(module, null, null, null, defaultNamespace);
-    List<RuleElement> ruleElements = new ArrayList<RuleElement>();
+    List<RuleElement> ruleElements = new ArrayList<>();
     RuleElementIsolator container = new RuleElementIsolator();
     ITypeExpression documentExpression = expressionFactory
             .createSimpleTypeExpression(CAS.TYPE_NAME_DOCUMENT_ANNOTATION, null);
@@ -167,13 +167,13 @@ public class RutaScriptFactory {
   }
 
   public RutaRule createRule(RuleElement element, RutaBlock parent) {
-    List<RuleElement> elements = new ArrayList<RuleElement>();
+    List<RuleElement> elements = new ArrayList<>();
     elements.add(element);
     return createRule(elements, parent);
   }
 
   public RutaStatement createImplicitRule(List<AbstractRutaAction> actions, RutaBlock parent) {
-    List<RuleElement> elements = new ArrayList<RuleElement>();
+    List<RuleElement> elements = new ArrayList<>();
     ITypeExpression documentExpression = expressionFactory.createSimpleTypeExpression("Document",
             parent);
     MatchReference mr = expressionFactory.createMatchReference(documentExpression);
@@ -293,15 +293,15 @@ public class RutaScriptFactory {
     if (!isConjunct) {
       return reList;
     }
-    Map<Integer, List<RuleElement>> map = new TreeMap<Integer, List<RuleElement>>();
-    List<String> connectors = new ArrayList<String>();
+    Map<Integer, List<RuleElement>> map = new TreeMap<>();
+    List<String> connectors = new ArrayList<>();
     int reCounter = 0;
     int conCounter = 0;
     for (Token token : conList) {
       if (token == null) {
         List<RuleElement> list = map.get(conCounter);
         if (list == null) {
-          list = new ArrayList<RuleElement>();
+          list = new ArrayList<>();
           map.put(conCounter, list);
         }
         RuleElement e = reList.get(reCounter);
@@ -312,7 +312,7 @@ public class RutaScriptFactory {
         conCounter++;
       }
     }
-    List<RuleElement> elements = new ArrayList<RuleElement>();
+    List<RuleElement> elements = new ArrayList<>();
 
     ConjunctRulesRuleElement cr = new ConjunctRulesRuleElement(null, container, env);
     for (List<RuleElement> each : map.values()) {
@@ -324,7 +324,7 @@ public class RutaScriptFactory {
     }
     cr.setElements(elements);
     cr.setContainer(null);
-    List<RuleElement> result = new ArrayList<RuleElement>();
+    List<RuleElement> result = new ArrayList<>();
     result.add(cr);
     return result;
   }

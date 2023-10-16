@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -42,7 +42,7 @@ import org.apache.uima.util.XMLSerializer;
  * folder, dependent on the execution of the rules, e.g., whether a pattern of annotations occurs or
  * not. A descriptor file for this Analysis Engine is located in the folder
  * <code>descriptor/utils</code> of a UIMA Ruta project.
- * 
+ *
  */
 public class XMIWriter extends JCasAnnotator_ImplBase {
 
@@ -70,7 +70,7 @@ public class XMIWriter extends JCasAnnotator_ImplBase {
     }
     if (aContext != null) {
       output = (String) aContext.getConfigParameterValue(PARAM_OUTPUT);
-      this.context = aContext;
+      context = aContext;
     }
   }
 

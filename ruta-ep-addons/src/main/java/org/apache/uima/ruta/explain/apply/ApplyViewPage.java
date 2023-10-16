@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -39,6 +39,7 @@ import org.apache.uima.ruta.engine.RutaEngine;
 import org.apache.uima.ruta.explain.ExplainConstants;
 import org.apache.uima.ruta.explain.ExplainUtils;
 import org.apache.uima.ruta.explain.tree.ExplainTree;
+import org.apache.uima.ruta.explain.tree.IExplainTreeNode;
 import org.apache.uima.ruta.explain.tree.RuleApplyNode;
 import org.apache.uima.ruta.ide.core.builder.RutaProjectUtils;
 import org.apache.uima.ruta.resource.RutaResourceLoader;
@@ -89,11 +90,11 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
   public ApplyViewPage(AnnotationEditor editor) {
     super();
     this.editor = editor;
-    this.document = editor.getDocument();
+    document = editor.getDocument();
   }
 
   private void initImages() {
-    images = new HashMap<String, Image>();
+    images = new HashMap<>();
     ImageDescriptor desc;
     Image image;
     String name;
@@ -167,10 +168,13 @@ public class ApplyViewPage extends Page implements ISelectionListener, ICasEdito
 
     ExplainTree tree = new ExplainTree(getJCas());
 
-    viewer.setAutoExpandLevel(2);
-    if (tree != null) {
-      viewer.setInput(tree.getRoot());
+    IExplainTreeNode root = tree.getRoot();
+    if (root.getChildren().size() < 3) {
+      viewer.setAutoExpandLevel(2);
+    } else {
+      viewer.setAutoExpandLevel(1);
     }
+    viewer.setInput(root);
     viewer.addDoubleClickListener(this);
     getSite().setSelectionProvider(viewer);
     getSite().getPage().addSelectionListener(this);

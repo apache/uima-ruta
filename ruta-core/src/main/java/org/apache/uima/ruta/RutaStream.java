@@ -204,11 +204,10 @@ public class RutaStream {
           AnnotationFS additionalWindow) {
     if (additionalWindow != null) {
       // TODO UIMA-6281 replace select
-      this.basicIt = cas.getAnnotationIndex(basicType).select().coveredBy(additionalWindow)
-              .fsIterator();
+      basicIt = cas.getAnnotationIndex(basicType).select().coveredBy(additionalWindow).fsIterator();
       // was: this.basicIt = cas.getAnnotationIndex(basicType).subiterator(additionalWindow);
     } else {
-      this.basicIt = cas.getAnnotationIndex(basicType).iterator();
+      basicIt = cas.getAnnotationIndex(basicType).iterator();
     }
     currentIt = filter.createFilteredIterator(cas, basicType);
   }
@@ -346,8 +345,9 @@ public class RutaStream {
       createRutaBasic(0, 0);
     } else if (anchors.size() == 1) {
       Integer first = anchors.get(0);
-      if (first >= 0 && first <= cas.getDocumentText().length())
+      if (first >= 0 && first <= cas.getDocumentText().length()) {
         createRutaBasic(first, first);
+      }
     } else {
       for (int i = 0; i < anchors.size() - 1; i++) {
         Integer first = anchors.get(i);
@@ -1231,7 +1231,7 @@ public class RutaStream {
       } else if (value instanceof IStringExpression) {
         IStringExpression stringExpr = (IStringExpression) value;
         String string = stringExpr.getStringValue(context, this);
-        StringArrayFS array = FSCollectionFactory.createStringArrayFS(cas, new String[] { string });
+        StringArrayFS array = FSCollectionFactory.createStringArrayFS(cas, string);
         annotation.setFeatureValue(feature, array);
       }
     } else if (rangeName.equals(CAS.TYPE_NAME_INTEGER) || rangeName.equals(CAS.TYPE_NAME_LONG)
@@ -1253,7 +1253,7 @@ public class RutaStream {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         int v = numberExpr.getIntegerValue(context, this);
-        IntArrayFS array = FSCollectionFactory.createIntArrayFS(cas, new int[] { v });
+        IntArrayFS array = FSCollectionFactory.createIntArrayFS(cas, v);
         annotation.setFeatureValue(feature, array);
       } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
@@ -1272,7 +1272,7 @@ public class RutaStream {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         double v = numberExpr.getDoubleValue(context, this);
-        DoubleArrayFS array = FSCollectionFactory.createDoubleArrayFS(cas, new double[] { v });
+        DoubleArrayFS array = FSCollectionFactory.createDoubleArrayFS(cas, v);
         annotation.setFeatureValue(feature, array);
       } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
@@ -1291,7 +1291,7 @@ public class RutaStream {
       if (value instanceof INumberExpression) {
         INumberExpression numberExpr = (INumberExpression) value;
         float v = numberExpr.getFloatValue(context, this);
-        FloatArrayFS array = FSCollectionFactory.createFloatArrayFS(cas, new float[] { v });
+        FloatArrayFS array = FSCollectionFactory.createFloatArrayFS(cas, v);
         annotation.setFeatureValue(feature, array);
       } else if (value instanceof INumberListExpression) {
         INumberListExpression expr = (INumberListExpression) value;
@@ -1305,6 +1305,9 @@ public class RutaStream {
         IBooleanExpression expr = (IBooleanExpression) value;
         Boolean v = expr.getBooleanValue(context, this);
         annotation.setBooleanValue(feature, v);
+      } else if (value instanceof IStringExpression) {
+        String stringValue = ((IStringExpression) value).getStringValue(context, this);
+        annotation.setBooleanValue(feature, Boolean.parseBoolean(stringValue));
       }
     } else if (rangeName.equals(CAS.TYPE_NAME_BOOLEAN_ARRAY)) {
       if (value instanceof IBooleanListExpression) {
@@ -1315,7 +1318,7 @@ public class RutaStream {
       } else if (value instanceof IBooleanExpression) {
         IBooleanExpression expr = (IBooleanExpression) value;
         Boolean v = expr.getBooleanValue(context, this);
-        BooleanArrayFS array = FSCollectionFactory.createBooleanArrayFS(cas, new boolean[] { v });
+        BooleanArrayFS array = FSCollectionFactory.createBooleanArrayFS(cas, v);
         annotation.setFeatureValue(feature, array);
       }
     } else if (value instanceof AnnotationTypeExpression && !range.isPrimitive()) {

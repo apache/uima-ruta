@@ -817,7 +817,7 @@ String label = null;
 	| re3 = ruleElementComposed {re = re3;}
 	| re4 = ruleElementSpecial {re = re4;}
 	)
-	{re.setLabel(label);}
+	{if(re!=null) {re.setLabel(label);}}
 	
 	(
 	t = THEN2 LCURLY 
@@ -2282,7 +2282,8 @@ varArgumentList returns [List<Expression> args = new ArrayList<Expression>()]
 
 argument returns [Expression expr = null] 
 	:
-	(conditionedAnnotationType)=>cat = conditionedAnnotationType{expr = cat;		}
+	(complexStringExpression) => cse = complexStringExpression {expr = cse;}
+	| (conditionedAnnotationType)=>cat = conditionedAnnotationType{expr = cat;		}
 	| (nullExpression) => a5 = nullExpression {expr = a5;}
 	| (featureExpression)=> fe = featureExpression {expr = fe;}
 	| (booleanExpression)=> a2 = booleanExpression {expr = a2;}
@@ -2310,9 +2311,9 @@ simpleArgument returns [Expression expr = null]
 	:
 	 (nullExpression) => a5 = nullExpression {expr = a5;}
 	| (featureExpression)=> fe = featureExpression {expr = fe;}
-	| (booleanExpression)=> a2 = booleanExpression {expr = a2;}
-	| (numberExpression)=> a3 = numberExpression {expr = a3;}
-	| (stringExpression)=> a4 = stringExpression {expr = a4;}
+	| (simpleBooleanExpression)=> a2 = simpleBooleanExpression {expr = a2;}
+	| (simpleNumberExpression)=> a3 = simpleNumberExpression {expr = a3;}
+	| (simpleStringExpression)=> a4 = simpleStringExpression {expr = a4;}
 	| (listExpression)=> l = listExpression {expr = l;}
 	| a1 = typeExpression {expr = a1;}
 	;
@@ -2616,6 +2617,19 @@ List<Expression> exprList = new ArrayList<Expression>();
 	{expr = ExpressionFactory.createStringExpression(exprList);}
 	;
 
+complexStringExpression returns [Expression expr = null]
+options {
+	backtrack = true;
+}
+@init {
+List<Expression> exprList = new ArrayList<Expression>();
+{expr = ExpressionFactory.createEmptyStringExpression(input.LT(1));}
+}
+	:
+	a1 = simpleArgument {exprList.add(a1);}
+	((PLUS)=>PLUS an = simpleArgument {exprList.add(an);})+
+	{expr = ExpressionFactory.createStringExpression(exprList);}
+	;
 
 // not checked
 stringFunction returns [Expression expr = null]

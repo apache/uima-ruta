@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -49,113 +49,123 @@ import org.springframework.core.io.ResourceLoader;
 
 public class MarkFastReloadAction extends AbstractMarkAction {
 
-    private static ConcurrentHashMap<String, TwlCacheEntry> twlCache = new ConcurrentHashMap<String, TwlCacheEntry>();
+  private static ConcurrentHashMap<String, TwlCacheEntry> twlCache = new ConcurrentHashMap<>();
 
-    private IStringExpression listName;
+  private IStringExpression listName;
 
-    private IStringListExpression stringList;
+  private IStringListExpression stringList;
 
-    private IBooleanExpression ignore;
+  private IBooleanExpression ignore;
 
-    private INumberExpression ignoreLength;
+  private INumberExpression ignoreLength;
 
-    private IBooleanExpression ignoreWS;
+  private IBooleanExpression ignoreWS;
 
-    private class TwlCacheEntry {
-        private TreeWordList twl;
-        private long lastModified;
+  private class TwlCacheEntry {
+    private TreeWordList twl;
 
-        public TwlCacheEntry(TreeWordList twl, long lastModified) {
-            this.lastModified = lastModified;
-            this.twl = twl;
-        }
+    private long lastModified;
+
+    public TwlCacheEntry(TreeWordList twl, long lastModified) {
+      this.lastModified = lastModified;
+      this.twl = twl;
     }
+  }
 
-    public MarkFastReloadAction(ITypeExpression type, IStringExpression listName, IBooleanExpression ignore, INumberExpression ignoreLength, IBooleanExpression ignoreWS) {
-        super(type);
-        this.listName = listName;
-        this.ignore = ignore == null ? new SimpleBooleanExpression(false) : ignore;
-        this.ignoreLength = ignoreLength == null ? new SimpleNumberExpression(Integer.valueOf(0)) : ignoreLength;
-        this.ignoreWS = ignoreWS == null ? new SimpleBooleanExpression(true) : ignoreWS;
-    }
+  public MarkFastReloadAction(ITypeExpression type, IStringExpression listName,
+          IBooleanExpression ignore, INumberExpression ignoreLength, IBooleanExpression ignoreWS) {
+    super(type);
+    this.listName = listName;
+    this.ignore = ignore == null ? new SimpleBooleanExpression(false) : ignore;
+    this.ignoreLength = ignoreLength == null ? new SimpleNumberExpression(Integer.valueOf(0))
+            : ignoreLength;
+    this.ignoreWS = ignoreWS == null ? new SimpleBooleanExpression(true) : ignoreWS;
+  }
 
-    @Override
-    public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
-      
-        TreeWordList wl = null;
+  @Override
+  public void execute(MatchContext context, RutaStream stream, InferenceCrowd crowd) {
 
-        RuleMatch match = context.getRuleMatch();
-        RuleElement element = context.getElement();
-        String listNameValue = listName.getStringValue(context, stream);
+    TreeWordList wl = null;
 
-        ResourceLoader resourceLoader = new RutaResourceLoader(element.getParent().getEnvironment().getResourcePaths());
-        Resource resource = resourceLoader.getResource(listNameValue);
-        if (resource.exists()) {
-            File resourceFile = null;
-            try {
-                resourceFile = resource.getFile();
-            } catch (IOException e1) {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Unable to obtain file from resource: " + listNameValue, e1);
-            }
+    RuleMatch match = context.getRuleMatch();
+    RuleElement element = context.getElement();
+    String listNameValue = listName.getStringValue(context, stream);
 
-            TwlCacheEntry cacheEntry = twlCache.get(listNameValue);
-            if (cacheEntry == null || cacheEntry != null && resourceFile.lastModified() > cacheEntry.lastModified) {
-                Logger.getLogger(this.getClass().getName()).info("Creating Tree Word List from resource: " + listNameValue);
+    ResourceLoader resourceLoader = new RutaResourceLoader(
+            element.getParent().getEnvironment().getResourcePaths());
+    Resource resource = resourceLoader.getResource(listNameValue);
+    if (resource.exists()) {
+      File resourceFile = null;
+      try {
+        resourceFile = resource.getFile();
+      } catch (IOException e1) {
+        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                "Unable to obtain file from resource: " + listNameValue, e1);
+      }
 
-                UimaContext uimaContext = element.getParent().getContext();
-                Boolean dictRemoveWS = false;
-                if (uimaContext != null) {
-                    dictRemoveWS = (Boolean) uimaContext.getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
-                    if (dictRemoveWS == null) {
-                        dictRemoveWS = false;
-                    }
-                }
+      TwlCacheEntry cacheEntry = twlCache.get(listNameValue);
+      if (cacheEntry == null
+              || cacheEntry != null && resourceFile.lastModified() > cacheEntry.lastModified) {
+        Logger.getLogger(this.getClass().getName())
+                .info("Creating Tree Word List from resource: " + listNameValue);
 
-                try {
-                    wl = new TreeWordList(resource, dictRemoveWS);
-                } catch (IOException e) {
-                    Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Unable to create TWL: " + listNameValue, e);
-                }
-
-                twlCache.put(listNameValue, new TwlCacheEntry(wl, resourceFile.lastModified()));
-            } else {
-                wl = cacheEntry.twl;
-            }
-
-        } else {
-            Logger.getLogger(this.getClass().getName()).severe("Can't find resource: " + listNameValue);
+        UimaContext uimaContext = element.getParent().getContext();
+        Boolean dictRemoveWS = false;
+        if (uimaContext != null) {
+          dictRemoveWS = (Boolean) uimaContext
+                  .getConfigParameterValue(RutaEngine.PARAM_DICT_REMOVE_WS);
+          if (dictRemoveWS == null) {
+            dictRemoveWS = false;
+          }
         }
 
-        List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
-        for (AnnotationFS annotationFS : matchedAnnotationsOf) {
-            RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
-            Collection<AnnotationFS> found = wl.find(windowStream, this.getIgnore().getBooleanValue(context, stream),
-                    this.getIgnoreLength().getIntegerValue(context, stream), null, 0, this.getIgnoreWS().getBooleanValue(context, stream));
-            for (AnnotationFS annotation : found) {
-                createAnnotation(annotation, context, windowStream);
-            }
+        try {
+          wl = new TreeWordList(resource, dictRemoveWS);
+        } catch (IOException e) {
+          Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                  "Unable to create TWL: " + listNameValue, e);
         }
+
+        twlCache.put(listNameValue, new TwlCacheEntry(wl, resourceFile.lastModified()));
+      } else {
+        wl = cacheEntry.twl;
+      }
+
+    } else {
+      Logger.getLogger(this.getClass().getName()).severe("Can't find resource: " + listNameValue);
     }
 
-    public IStringExpression getListName() {
-        return listName;
+    List<AnnotationFS> matchedAnnotationsOf = match.getMatchedAnnotationsOfElement(element);
+    for (AnnotationFS annotationFS : matchedAnnotationsOf) {
+      RutaStream windowStream = stream.getWindowStream(annotationFS, annotationFS.getType());
+      Collection<AnnotationFS> found = wl.find(windowStream,
+              getIgnore().getBooleanValue(context, stream),
+              getIgnoreLength().getIntegerValue(context, stream), null, 0,
+              getIgnoreWS().getBooleanValue(context, stream));
+      for (AnnotationFS annotation : found) {
+        createAnnotation(annotation, context, windowStream);
+      }
     }
+  }
 
-    public IStringListExpression getStringList() {
-        return stringList;
-    }
+  public IStringExpression getListName() {
+    return listName;
+  }
 
-    public IBooleanExpression getIgnore() {
-        return ignore;
-    }
+  public IStringListExpression getStringList() {
+    return stringList;
+  }
 
-    public INumberExpression getIgnoreLength() {
-        return ignoreLength;
-    }
+  public IBooleanExpression getIgnore() {
+    return ignore;
+  }
 
-    public IBooleanExpression getIgnoreWS() {
-        return ignoreWS;
-    }
+  public INumberExpression getIgnoreLength() {
+    return ignoreLength;
+  }
 
-    
+  public IBooleanExpression getIgnoreWS() {
+    return ignoreWS;
+  }
+
 }

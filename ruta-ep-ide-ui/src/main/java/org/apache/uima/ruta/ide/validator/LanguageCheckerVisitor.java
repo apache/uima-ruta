@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -207,19 +207,19 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   public LanguageCheckerVisitor(IProblemReporter problemReporter, ISourceLineTracker linetracker,
           ISourceModule sourceModule, ClassLoader classLoader) {
     super();
-    this.pr = problemReporter;
+    pr = problemReporter;
     this.linetracker = linetracker;
     this.sourceModule = sourceModule;
     this.classLoader = classLoader;
-    this.problemFactory = new RutaCheckerProblemFactory(sourceModule.getElementName(), linetracker);
+    problemFactory = new RutaCheckerProblemFactory(sourceModule.getElementName(), linetracker);
 
-    namespaces = new TreeMap<String, String>();
-    ambiguousTypeAlias = new TreeMap<String, Set<String>>();
-    allLongTypeNames = new HashSet<String>();
-    knownLocalVariables = new Stack<Map<String, Integer>>();
-    knownLocalVariables.push(new HashMap<String, Integer>());
-    blocks = new Stack<String>();
-    rules = new Stack<RutaRule>();
+    namespaces = new TreeMap<>();
+    ambiguousTypeAlias = new TreeMap<>();
+    allLongTypeNames = new HashSet<>();
+    knownLocalVariables = new Stack<>();
+    knownLocalVariables.push(new HashMap<>());
+    blocks = new Stack<>();
+    rules = new Stack<>();
     packagePathString = "";
 
     initializePredefinedInformation();
@@ -245,7 +245,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   @Override
   public boolean visit(Statement s) throws Exception {
     if (s instanceof RutaPackageDeclaration) {
-      this.packageName = ((RutaPackageDeclaration) s).getName();
+      packageName = ((RutaPackageDeclaration) s).getName();
       checkPackage(s);
       return false;
     }
@@ -371,7 +371,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         return false;
       }
       List<RutaFeatureDeclaration> features = newType.getFeatures();
-      Set<FeatureDescription> feats = new HashSet<FeatureDescription>();
+      Set<FeatureDescription> feats = new HashSet<>();
       if (parentTypeInDeclaration != null) {
         Set<FeatureDescription> set = featureDescriptionMap.get(parentTypeInDeclaration);
         if (set != null) {
@@ -504,7 +504,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   }
 
   private List<String> checkOnAmbiguousShortNames(TypeSystemDescription tsDesc) {
-    List<String> checkDuplicateShortNames = new ArrayList<String>();
+    List<String> checkDuplicateShortNames = new ArrayList<>();
     for (TypeDescription each : tsDesc.getTypes()) {
       String longName = each.getName();
       String shortName = getShortName(longName);
@@ -939,8 +939,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     }
 
     // match expression against local annotation variables cannot be checked
-    if (variableType2 == RutaTypeConstants.RUTA_TYPE_UA
-            || variableType2 == RutaTypeConstants.RUTA_TYPE_UAL) {
+    if (variableType2 != null && (variableType2 == RutaTypeConstants.RUTA_TYPE_UA
+            || variableType2 == RutaTypeConstants.RUTA_TYPE_UAL)) {
       return;
     }
 
@@ -1018,7 +1018,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
     if (s instanceof RutaBlock) {
       RutaBlock b = (RutaBlock) s;
       String name = b.getName();
-      HashMap<String, Integer> map = new HashMap<String, Integer>();
+      HashMap<String, Integer> map = new HashMap<>();
       if (b instanceof ForEachBlock) {
         map.put(name, RutaTypeConstants.RUTA_TYPE_UA);
       }
@@ -1101,7 +1101,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
   /**
    * Import a type in the current namespace.
-   * 
+   *
    * @param longName
    *          Complete type name.
    * @param shortName
@@ -1124,7 +1124,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
       if (existing != null && !existing.equals(longName)) {
         // shortName can now be resolved to "existing" or "longName"
-        targets = new HashSet<String>(2);
+        targets = new HashSet<>(2);
         targets.add(existing);
         targets.add(longName);
 
@@ -1178,8 +1178,8 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
   private void initializePredefinedInformation() {
 
-    typeDescriptionMap = new HashMap<String, TypeDescription>();
-    featureDescriptionMap = new HashMap<String, Set<FeatureDescription>>();
+    typeDescriptionMap = new HashMap<>();
+    featureDescriptionMap = new HashMap<>();
 
     try {
       typeSystemDescription = getTypeSystemOfScript();
@@ -1198,7 +1198,9 @@ public class LanguageCheckerVisitor extends ASTVisitor {
         // not in a common ruta project
         // try to find the file in the classpath
         URL resource = classLoader.getResource("org/apache/uima/ruta/engine/BasicTypeSystem.xml");
-        importCompleteTypeSystem(null, resource);
+        if (resource != null) {
+          importCompleteTypeSystem(null, resource);
+        }
       }
     } catch (Exception e) {
       RutaIdeUIPlugin.error(e);
@@ -1217,28 +1219,29 @@ public class LanguageCheckerVisitor extends ASTVisitor {
       }
     }
 
-    List<String> uimaPredefTypes = Arrays.asList(new String[] { "uima.cas.Boolean", "uima.cas.Byte",
-        "uima.cas.Short", "uima.cas.Integer", "uima.cas.Long", "uima.cas.Float", "uima.cas.Double",
-        "uima.cas.String", "uima.cas.BooleanArray", "uima.cas.ByteArray", "uima.cas.ShortArray",
-        "uima.cas.IntegerArray", "uima.cas.LongArray", "uima.cas.FloatArray",
-        "uima.cas.DoubleArray", "uima.cas.StringArray", "uima.cas.FSArray",
-        "uima.cas.AnnotationBase", "uima.tcas.Annotation", "uima.tcas.DocumentAnnotation",
-        "uima.cas.FloatList", "uima.cas.IntegerList", "uima.cas.StringList", "uima.cas.FSList",
-        "uima.cas.EmptyFloatList", "uima.cas.EmptyIntegerList", "uima.cas.EmptyStringList",
-        "uima.cas.EmptyFSList", "uima.cas.NonEmptyFloatList", "uima.cas.NonEmptyIntegerList",
-        "uima.cas.NonEmptyStringList", "uima.cas.NonEmptyFSList" });
+    List<String> uimaPredefTypes = Arrays.asList("uima.cas.Boolean", "uima.cas.Byte",
+            "uima.cas.Short", "uima.cas.Integer", "uima.cas.Long", "uima.cas.Float",
+            "uima.cas.Double", "uima.cas.String", "uima.cas.BooleanArray", "uima.cas.ByteArray",
+            "uima.cas.ShortArray", "uima.cas.IntegerArray", "uima.cas.LongArray",
+            "uima.cas.FloatArray", "uima.cas.DoubleArray", "uima.cas.StringArray",
+            "uima.cas.FSArray", "uima.cas.AnnotationBase", "uima.tcas.Annotation",
+            "uima.tcas.DocumentAnnotation", "uima.cas.FloatList", "uima.cas.IntegerList",
+            "uima.cas.StringList", "uima.cas.FSList", "uima.cas.EmptyFloatList",
+            "uima.cas.EmptyIntegerList", "uima.cas.EmptyStringList", "uima.cas.EmptyFSList",
+            "uima.cas.NonEmptyFloatList", "uima.cas.NonEmptyIntegerList",
+            "uima.cas.NonEmptyStringList", "uima.cas.NonEmptyFSList");
     for (String longName : uimaPredefTypes) {
       String shortName = getShortName(longName);
       importType(longName, shortName);
     }
 
-    this.finalTypes = new HashSet<String>();
-    Set<String> uimaFinalTypes = new HashSet<String>();
-    uimaFinalTypes.addAll(Arrays.asList(new String[] { "uima.cas.Boolean", "uima.cas.Byte",
-        "uima.cas.Short", "uima.cas.Integer", "uima.cas.Long", "uima.cas.Float", "uima.cas.Double",
-        "uima.cas.BooleanArray", "uima.cas.ByteArray", "uima.cas.ShortArray",
-        "uima.cas.IntegerArray", "uima.cas.LongArray", "uima.cas.FloatArray",
-        "uima.cas.DoubleArray", "uima.cas.StringArray", "uima.cas.FSArray" }));
+    finalTypes = new HashSet<>();
+    Set<String> uimaFinalTypes = new HashSet<>();
+    uimaFinalTypes.addAll(Arrays.asList("uima.cas.Boolean", "uima.cas.Byte", "uima.cas.Short",
+            "uima.cas.Integer", "uima.cas.Long", "uima.cas.Float", "uima.cas.Double",
+            "uima.cas.BooleanArray", "uima.cas.ByteArray", "uima.cas.ShortArray",
+            "uima.cas.IntegerArray", "uima.cas.LongArray", "uima.cas.FloatArray",
+            "uima.cas.DoubleArray", "uima.cas.StringArray", "uima.cas.FSArray"));
 
     for (String string : uimaFinalTypes) {
       int indexOf = string.lastIndexOf('.');
@@ -1253,13 +1256,13 @@ public class LanguageCheckerVisitor extends ASTVisitor {
   }
 
   private void initializeExtensionInformation() {
-    conditionExtensions = new HashMap<String, IIDEConditionExtension>();
-    actionExtensions = new HashMap<String, IIDEActionExtension>();
-    numberFunctionExtensions = new HashMap<String, IIDENumberFunctionExtension>();
-    booleanFunctionExtensions = new HashMap<String, IIDEBooleanFunctionExtension>();
-    stringFunctionExtensions = new HashMap<String, IIDEStringFunctionExtension>();
-    typeFunctionExtensions = new HashMap<String, IIDETypeFunctionExtension>();
-    blockExtensions = new HashMap<String, IIDEBlockExtension>();
+    conditionExtensions = new HashMap<>();
+    actionExtensions = new HashMap<>();
+    numberFunctionExtensions = new HashMap<>();
+    booleanFunctionExtensions = new HashMap<>();
+    stringFunctionExtensions = new HashMap<>();
+    typeFunctionExtensions = new HashMap<>();
+    blockExtensions = new HashMap<>();
     IIDEConditionExtension[] cextensions = RutaExtensionManager.getDefault()
             .getIDEConditionExtensions();
     for (IIDEConditionExtension each : cextensions) {
@@ -1319,7 +1322,7 @@ public class LanguageCheckerVisitor extends ASTVisitor {
 
   private Set<FeatureDescription> getAllDeclaredFeatures(TypeDescription typeDescription,
           Map<String, TypeDescription> typeMap) {
-    Set<FeatureDescription> result = new HashSet<FeatureDescription>();
+    Set<FeatureDescription> result = new HashSet<>();
     if (typeDescription == null) {
       return result;
     }
