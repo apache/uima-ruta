@@ -42,6 +42,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    
+    <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-ep-cas-editor</artifactId>
       <version>${uima-version}</version>
@@ -49,59 +54,47 @@
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.core.runtime</artifactId>
-      <version>[3.15.100,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.core.resources</artifactId>
-      <version>[3.13.200,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.ui</artifactId>
-      <version>[3.111.0,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.ui.ide</artifactId>
-      <version>[3.14.200,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.ui.views</artifactId>
-      <version>[3.9.200,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.ui.workbench.texteditor</artifactId>
-      <version>[3.11.200,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.ui.workbench</artifactId>
-      <version>[3.112.100,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.jface.text</artifactId>
-      <version>[3.15.0,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.equinox.app</artifactId>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
     </dependency>
   </dependencies>
 
@@ -184,7 +177,6 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
 </project>
