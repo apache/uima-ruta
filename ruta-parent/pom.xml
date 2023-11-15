@@ -118,7 +118,7 @@
     </postNoticeText>
 
     <uima-version>3.5.0</uima-version>
-    <uimafit-version>3.5.0</uimafit-version>
+    <uimafit-version>3.4.0</uimafit-version>
     <spring-version>5.3.30</spring-version>
     <slf4j-version>1.7.36</slf4j-version>
     <maven.version>3.8.1</maven.version>
