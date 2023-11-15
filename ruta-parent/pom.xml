@@ -117,8 +117,6 @@
       Creative Commons Attribution 3.0 License.
     </postNoticeText>
 
-    <tycho-version>4.0.4</tycho-version>
-
     <uima-version>3.5.0</uima-version>
     <uimafit-version>3.5.0</uimafit-version>
     <spring-version>5.3.30</spring-version>
