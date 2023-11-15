@@ -52,7 +52,6 @@
       - The Eclipse Plugin modules use version ranges for their dependencies. These could resolve to
       - SNAPSHOT versions if we have a SNAPSHOT repo declaration here. Thus, this repo should only
       - be enabled when really needed.
-      -->
     <repository>
       <id>apache.snapshots</id>
       <name>Apache Snapshot Repository</name>
@@ -64,6 +63,7 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+      -->
 
     <repository>
       <id>${eclipseP2RepoId}</id>
@@ -117,10 +117,10 @@
       Creative Commons Attribution 3.0 License.
     </postNoticeText>
 
-    <tycho-version>4.0.3</tycho-version>
+    <tycho-version>4.0.4</tycho-version>
 
-    <uima-version>3.5.0-SNAPSHOT</uima-version>
-    <uimafit-version>3.4.0</uimafit-version>
+    <uima-version>3.5.0</uima-version>
+    <uimafit-version>3.5.0</uimafit-version>
     <spring-version>5.3.30</spring-version>
     <slf4j-version>1.7.36</slf4j-version>
     <maven.version>3.8.1</maven.version>
