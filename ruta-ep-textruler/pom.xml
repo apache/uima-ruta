@@ -19,7 +19,7 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>ruta-ep-textruler</artifactId>
+
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-ep-parent</artifactId>
@@ -27,6 +27,7 @@
     <relativePath>../ruta-ep-parent/pom.xml</relativePath>
   </parent>
 
+  <artifactId>ruta-ep-textruler</artifactId>
   <name>Apache UIMA Ruta Eclipse: ${project.artifactId}</name>
   <url>${uimaWebsiteUrl}</url>
   <description>UIMA Ruta TextRuler plugin for rule learning</description>
@@ -47,7 +48,6 @@
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-core</artifactId>
       <version>${project.parent.version}</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
@@ -67,25 +67,21 @@
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.jface.text</artifactId>
-      <version>[3.15.0,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.ui.workbench.texteditor</artifactId>
-      <version>[3.11.200,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.ui.editors</artifactId>
-      <version>[3.11.300,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${eclipseP2RepoId}</groupId>
       <artifactId>org.eclipse.ui.views</artifactId>
-      <version>[3.9.200,4.0.0)</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -154,5 +150,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>
