@@ -330,37 +330,37 @@
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.core.filesystem</artifactId>
-        <version>1.9.500.v20220817-1539</version>
+        <version>1.10.100.v20230717-1727</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.core.jobs</artifactId>
-        <version>3.13.100.v20220817-1539</version>
+        <version>3.15.0.v20230808-1403</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.core.contenttype</artifactId>
-        <version>3.8.200.v20220817-1539</version>
+        <version>3.9.100.v20230630-1232</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.core.resources</artifactId>
-        <version>3.18.0.v20220828-0546</version>
+        <version>3.19.100.v20230814-1312</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.core.runtime</artifactId>
-        <version>3.26.0.v20220813-0916</version>
+        <version>3.29.0.v20230726-0617</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.core.variables</artifactId>
-        <version>3.5.100.v20210721-1355</version>
+        <version>3.6.100.v20230726-0617</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.debug.ui</artifactId>
-        <version>3.17.0.v20220817-1312</version>
+        <version>3.18.100.v20230802-1257</version>
       </dependency>
       <dependency>
         <groupId>${dltkP2RepoId}</groupId>
@@ -433,42 +433,42 @@
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.emf.ecore</artifactId>
-        <version>2.28.0.v20220817-1401</version>
+        <version>2.35.0.v20230829-0934</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.emf.ecore.change</artifactId>
-        <version>2.14.0.v20190528-0725</version>
+        <version>2.15.0.v20230211-1150</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-        <version>2.17.0.v20220817-1334</version>
+        <version>2.35.0.v20230801-1141</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.equinox.app</artifactId>
-        <version>1.6.200.v20220720-2012</version>
+        <version>1.6.300.v20230630-1303</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.equinox.common</artifactId>
-        <version>3.16.200.v20220817-1601</version>
+        <version>3.18.100.v20230730-1117</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.equinox.preferences</artifactId>
-        <version>3.10.100.v20220710-1223</version>
+        <version>3.10.300.v20230630-1303</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.jdt.core</artifactId>
-        <version>3.31.0.v20220831-1439</version>
+        <version>3.35.0.v20230814-1356</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.jdt.debug.ui</artifactId>
-        <version>3.12.800.v20220813-1738</version>
+        <version>3.13.100.v20230809-1849</version>
         <exclusions>
           <exclusion>
             <!-- 
@@ -490,7 +490,7 @@
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.jdt.launching</artifactId>
-        <version>3.19.700.v20220730-1850</version>
+        <version>3.20.100.v20230814-1810</version>
         <exclusions>
           <exclusion>
             <!-- 
@@ -505,52 +505,52 @@
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.jface.text</artifactId>
-        <version>3.21.0.v20220817-1340</version>
+        <version>3.24.100.v20230727-0604</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.search</artifactId>
-        <version>3.14.200.v20220817-1340</version>
+        <version>3.15.200.v20230825-1346</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
-        <version>3.121.0.v20220829-1402</version>
+        <version>3.124.100.v20230825-1346</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.ui</artifactId>
-        <version>3.201.100.v20220826-1037</version>
+        <version>3.204.0.v20230821-1342</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.ui.console</artifactId>
-        <version>3.11.300.v20220811-1921</version>
+        <version>3.13.0.v20230726-0617</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.ui.editors</artifactId>
-        <version>3.14.400.v20220730-1844</version>
+        <version>3.17.0.v20230821-1342</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.ui.ide</artifactId>
-        <version>3.19.100.v20220820-0412</version>
+        <version>3.21.100.v20230825-1346</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.ui.views</artifactId>
-        <version>3.11.200.v20220817-1444</version>
+        <version>3.12.100.v20230821-1342</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.ui.workbench</artifactId>
-        <version>3.126.0.v20220823-0718</version>
+        <version>3.130.0.v20230822-0911</version>
       </dependency>
       <dependency>
         <groupId>${eclipseP2RepoId}</groupId>
         <artifactId>org.eclipse.ui.workbench.texteditor</artifactId>
-        <version>3.16.600.v20220809-1658</version>
+        <version>3.17.100.v20230821-0745</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
