@@ -67,7 +67,7 @@
 
     <repository>
       <id>${eclipseP2RepoId}</id>
-      <url>https://download.eclipse.org/releases/2022-09/</url>
+      <url>https://download.eclipse.org/releases/2023-09/</url>
       <layout>p2</layout>
     </repository>
     <repository>
@@ -116,6 +116,9 @@
       (http://www.famfamfam.com/lab/icons/silk/), licensed under the
       Creative Commons Attribution 3.0 License.
     </postNoticeText>
+    
+    <tycho-version>4.0.4</tycho-version>
+
 
     <uima-version>3.5.0</uima-version>
     <uimafit-version>3.4.0</uimafit-version>
@@ -150,7 +153,7 @@
     <maven.compiler.release>17</maven.compiler.release>
     <execution.environment>JavaSE-17</execution.environment>
 
-    <eclipseP2RepoId>org.eclipse.p2.202209</eclipseP2RepoId>
+    <eclipseP2RepoId>org.eclipse.p2.202309</eclipseP2RepoId>
     <dltkP2RepoId>org.eclipse.p2.201812</dltkP2RepoId>
 
     <api_check_oldVersion>3.3.0</api_check_oldVersion>
