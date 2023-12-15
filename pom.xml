@@ -32,9 +32,6 @@
   <name>Apache UIMA Ruta: ${project.artifactId}</name>
   <description>The top project for Apache UIMA Ruta</description>
   <url>${uimaWebsiteUrl}</url>
-  <properties>
-    <jiraVersion>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}ruta</jiraVersion>
-  </properties>
 
   <!-- Special inheritance note even though the <scm> element that follows is exactly the same as those
     in super poms, it cannot be inherited because there is some special code that computes the connection

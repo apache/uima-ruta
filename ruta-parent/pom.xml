@@ -157,6 +157,12 @@
     <dltkP2RepoId>org.eclipse.p2.201812</dltkP2RepoId>
 
     <api_check_oldVersion>3.3.0</api_check_oldVersion>
+
+    <!-- BEGIN PROFILE SETTINGS: generate-release-notes-->
+    <github-repository>uima-ruta</github-repository>
+    <git-branch>main</git-branch>
+    <previous-release-version>3.3.0</previous-release-version>
+    <!-- END PROFILE SETTINGS: generate-release-notes-->
   </properties>
 
   <dependencyManagement>
