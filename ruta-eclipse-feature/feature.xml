@@ -145,7 +145,7 @@ Apache UIMA is a trademark of the Apache Software Foundation in the United State
    </license>
 
    <url>
-      <discovery label="UIMA Eclipse Plugins update site" url="http://www.apache.org/dist/uima/eclipse-update-site/"/>
+      <discovery label="UIMA Eclipse Plugins update site" url="https://www.apache.org/dist/uima/eclipse-update-site-v3/"/>
    </url>
 
    <requires>
