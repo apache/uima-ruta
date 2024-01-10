@@ -29,4 +29,5 @@
       </description>
    </category-def>
    <repository-reference location="https://download.eclipse.org/releases/2018-12/" enabled="true" />
+   <repository-reference location="https://downloads.apache.org/uima/eclipse-update-site-v3/" enabled="true" />
 </site>
