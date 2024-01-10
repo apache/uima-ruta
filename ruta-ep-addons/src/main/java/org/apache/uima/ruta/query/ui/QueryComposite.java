@@ -85,7 +85,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -93,19 +92,19 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
-        ISelectionChangedListener {
+public class QueryComposite extends org.eclipse.swt.widgets.Composite
+        implements ISelectionChangedListener {
   protected ScriptSourceViewer viewer;
 
   private HashMap<String, Image> images;
 
   private Button dirButton;
 
-  private Text inputDirectoryText;
+  private Text dataLocationField;
 
-  private Label label1;
+  private Label dataLocationLabel;
 
-  private Label labelTypeSystem;
+  private Label typeSystemLabel;
 
   private Text typeSystemFileText;
 
@@ -119,7 +118,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
 
   private Label resultLabel;
 
-  private Label labelFileFilter;
+  private Label fileFilterLabel;
 
   private Text inputPatternText;
 
@@ -135,8 +134,8 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
     clipboard = new Clipboard(parent.getDisplay());
     initGUI();
 
-    ScrolledComposite sComp = new ScrolledComposite(parent, SWT.BORDER | SWT.V_SCROLL
-            | SWT.H_SCROLL);
+    ScrolledComposite sComp = new ScrolledComposite(parent,
+            SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
     this.setParent(sComp);
     sComp.setMinSize(this.getSize());
     sComp.setContent(this);
@@ -151,23 +150,24 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
 
       // first row
 
-      label1 = new Label(this, SWT.NONE);
+      dataLocationLabel = new Label(this, SWT.NONE);
       FormData label1LData = new FormData();
       label1LData.left = new FormAttachment(0, 1000, 12);
       label1LData.top = new FormAttachment(0, 1000, 10);
       label1LData.width = 70;
-      label1.setLayoutData(label1LData);
-      label1.setText("Query Data:");
+      dataLocationLabel.setLayoutData(label1LData);
+      dataLocationLabel.setText("Data location");
 
-      inputDirectoryText = new Text(this, SWT.SINGLE | SWT.BORDER);
+      dataLocationField = new Text(this, SWT.SINGLE | SWT.BORDER);
       FormData inputDirectoryTexLData = new FormData();
       inputDirectoryTexLData.width = 150;
-      inputDirectoryTexLData.left = new FormAttachment(label1, 10);
+      inputDirectoryTexLData.left = new FormAttachment(dataLocationLabel, 10);
       inputDirectoryTexLData.top = new FormAttachment(0, 1000, 10);
       inputDirectoryTexLData.right = new FormAttachment(1000, 1000, -65);
-      inputDirectoryText.setLayoutData(inputDirectoryTexLData);
-      inputDirectoryText.setText("");
-      inputDirectoryText.addModifyListener(new ModifyListener() {
+      dataLocationField.setLayoutData(inputDirectoryTexLData);
+      dataLocationField.setText("");
+      dataLocationField.addModifyListener(new ModifyListener() {
+        @Override
         public void modifyText(ModifyEvent e) {
           // without that listener, the text fields forget the
           // last change when leaving with tab! don't know why!
@@ -191,12 +191,12 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
         @Override
         public void widgetSelected(SelectionEvent event) {
           DirectoryDialog dlg = new DirectoryDialog(getShell());
-          dlg.setFilterPath(inputDirectoryText.getText());
-          dlg.setText("Input Directory");
+          dlg.setFilterPath(dataLocationField.getText());
+          dlg.setText("Data location");
           dlg.setMessage("Select a directory with input XMI files.");
           String dir = dlg.open();
           if (dir != null) {
-            inputDirectoryText.setText(dir);
+            dataLocationField.setText(dir);
           }
         }
       });
@@ -212,19 +212,19 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
 
       // next row
 
-      FormAttachment top2 = new FormAttachment(label1, 10);
-      labelFileFilter = new Label(this, SWT.NONE);
+      FormAttachment top2 = new FormAttachment(dataLocationLabel, 10);
+      fileFilterLabel = new Label(this, SWT.NONE);
       FormData label2LData = new FormData();
       label2LData.left = new FormAttachment(0, 1000, 12);
       label2LData.top = top2; // new FormAttachment(0, 1000, 34);
       label2LData.width = 70;
-      labelFileFilter.setLayoutData(label2LData);
-      labelFileFilter.setText("File Filter:");
+      fileFilterLabel.setLayoutData(label2LData);
+      fileFilterLabel.setText("File filter");
 
       inputPatternText = new Text(this, SWT.SINGLE | SWT.BORDER);
       FormData inputPatternTextData = new FormData();
       inputPatternTextData.width = 150;
-      inputPatternTextData.left = new FormAttachment(labelFileFilter, 10);
+      inputPatternTextData.left = new FormAttachment(fileFilterLabel, 10);
       inputPatternTextData.top = top2;
       inputPatternTextData.right = new FormAttachment(1000, 1000, -65);
       inputPatternText.setLayoutData(inputPatternTextData);
@@ -237,37 +237,29 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
               .setDescriptionText("PatternSyntaxException for this regular expression.");
       decoFileFilterPattern.setImage(imageError);
       decoFileFilterPattern.hide();
-      inputPatternText.addModifyListener(new ModifyListener() {
-        public void modifyText(ModifyEvent e) {
-          // without that listener, the text fields forget the
-          // last change when leaving with tab! don't know why!
-          // we also MUST call getText() otherwise the changes in
-          // the field are lost (what is this???!!)
-          Text t = (Text) e.widget;
-          decoFileFilterPattern.hide();
-        }
-      });
+      inputPatternText.addModifyListener(e -> decoFileFilterPattern.hide());
 
       // next row
 
-      FormAttachment top3 = new FormAttachment(labelFileFilter, 10);
-      labelTypeSystem = new Label(this, SWT.NONE);
+      FormAttachment top3 = new FormAttachment(fileFilterLabel, 10);
+      typeSystemLabel = new Label(this, SWT.NONE);
       FormData label3LData = new FormData();
       label3LData.width = 70;
       label3LData.left = new FormAttachment(0, 1000, 12);
       label3LData.top = top3;
-      labelTypeSystem.setLayoutData(label3LData);
-      labelTypeSystem.setText("Type System:");
+      typeSystemLabel.setLayoutData(label3LData);
+      typeSystemLabel.setText("Type system");
 
       typeSystemFileText = new Text(this, SWT.SINGLE | SWT.BORDER);
       FormData preFileTexLData = new FormData();
       preFileTexLData.width = 150;
-      preFileTexLData.left = new FormAttachment(labelTypeSystem, 10);
+      preFileTexLData.left = new FormAttachment(typeSystemLabel, 10);
       preFileTexLData.top = top3;
       preFileTexLData.right = new FormAttachment(1000, 1000, -65);
       typeSystemFileText.setLayoutData(preFileTexLData);
       typeSystemFileText.setText("");
       typeSystemFileText.addModifyListener(new ModifyListener() {
+        @Override
         public void modifyText(ModifyEvent e) {
           // without that listener, the text fields forget the
           // last change when leaving with tab! don't know why!
@@ -303,7 +295,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
 
       // next row: query rules
 
-      FormAttachment top4 = new FormAttachment(labelTypeSystem, 10);
+      FormAttachment top4 = new FormAttachment(typeSystemLabel, 10);
       Composite compositeQueryRules = new Composite(this, SWT.NULL);
       FormData compData = new FormData();
       compData.height = 100;
@@ -312,21 +304,22 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       compData.right = new FormAttachment(1000, 1000, -10);
       compositeQueryRules.setLayoutData(compData);
       compositeQueryRules.setLayout(new FillLayout());
-      IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager.getLanguageToolkit(RutaLanguageToolkit
-              .getDefault().getNatureId());
+      IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
+              .getLanguageToolkit(RutaLanguageToolkit.getDefault().getNatureId());
       final ScriptTextTools textTools = toolkit.getTextTools();
       IPreferenceStore store = toolkit.getCombinedPreferenceStore();
-      viewer = new ScriptSourceViewer(compositeQueryRules, null, null, false, SWT.H_SCROLL
-              | SWT.V_SCROLL | SWT.BORDER, store);
+      viewer = new ScriptSourceViewer(compositeQueryRules, null, null, false,
+              SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER, store);
 
-      ScriptSourceViewerConfiguration configuration = textTools.createSourceViewerConfiguraton(
-              store, (ITextEditor) null);
+      ScriptSourceViewerConfiguration configuration = textTools
+              .createSourceViewerConfiguraton(store, (ITextEditor) null);
       viewer.configure(configuration);
       setInformation("");
       compositeQueryRules.layout();
 
       viewer.addTextListener(new ITextListener() {
 
+        @Override
         public void textChanged(TextEvent arg0) {
           setRutaQuerySyntaxError(false);
         }
@@ -378,14 +371,15 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       composite2.setLayoutData(comp2Data);
       composite2.setLayout(new FillLayout());
 
-      resultViewer = new TableViewer(composite2, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER
-              | SWT.MULTI);
+      resultViewer = new TableViewer(composite2,
+              SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.MULTI);
       final QueryResultLabelProvider queryResultLabelProvider = new QueryResultLabelProvider();
       resultViewer.setLabelProvider(queryResultLabelProvider);
       resultViewer.setContentProvider(new QueryResultContentProvider());
       resultViewer.addSelectionChangedListener(this);
       resultViewer.getTable().addKeyListener(new KeyListener() {
 
+        @Override
         public void keyPressed(KeyEvent e) {
           if (((e.stateMask & SWT.CTRL) == SWT.CTRL) && (e.keyCode == 'c')) {
             String output = "";
@@ -402,10 +396,12 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
           }
         }
 
+        @Override
         public void keyReleased(KeyEvent arg0) {
         }
       });
       resultViewer.addDoubleClickListener(new IDoubleClickListener() {
+        @Override
         public void doubleClick(DoubleClickEvent event) {
           Object obj = event.getSelection();
           if (obj instanceof IStructuredSelection) {
@@ -431,7 +427,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       RutaAddonsPlugin.error(e);
     }
 
-    DropTarget dt = new DropTarget(inputDirectoryText, DND.DROP_DEFAULT | DND.DROP_MOVE);
+    DropTarget dt = new DropTarget(dataLocationField, DND.DROP_DEFAULT | DND.DROP_MOVE);
     dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
     dt.addDropListener(new DropTargetAdapter() {
       @Override
@@ -441,8 +437,9 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
         if (ft.isSupportedType(event.currentDataType)) {
           fileList = (String[]) event.data;
         }
-        if (fileList != null && fileList.length > 0)
-          inputDirectoryText.setText(fileList[0]);
+        if (fileList != null && fileList.length > 0) {
+          dataLocationField.setText(fileList[0]);
+        }
       }
     });
 
@@ -456,8 +453,9 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
         if (ft.isSupportedType(event.currentDataType)) {
           fileList = (String[]) event.data;
         }
-        if (fileList != null && fileList.length > 0)
+        if (fileList != null && fileList.length > 0) {
           typeSystemFileText.setText(fileList[0]);
+        }
       }
     });
 
@@ -469,7 +467,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
 
   public void saveState(IMemento memento) {
 
-    memento.createChild("inputDirectory", inputDirectoryText.getText());
+    memento.createChild("inputDirectory", dataLocationField.getText());
     memento.createChild("fileFilter", inputPatternText.getText());
     memento.createChild("typeSystemLocation", typeSystemFileText.getText());
     memento.createChild("query", viewer.getDocument().get());
@@ -477,8 +475,9 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
   }
 
   public void restoreState(IMemento memento) {
-    if (memento == null)
+    if (memento == null) {
       return;
+    }
 
     IMemento tsName = memento.getChild("typeSystemLocation");
     if (tsName != null) {
@@ -487,7 +486,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
 
     IMemento dir = memento.getChild("inputDirectory");
     if (dir != null) {
-      inputDirectoryText.setText(dir.getID());
+      dataLocationField.setText(dir.getID());
     }
 
     IMemento fileFilterMemento = memento.getChild("fileFilter");
@@ -539,7 +538,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
           project.open(null);
         }
         IFile extFile = project.getFile(path.lastSegment());
-        if(extFile.exists()) {
+        if (extFile.exists()) {
           extFile.delete(true, false, new NullProgressMonitor());
         }
         extFile.createLink(path, IResource.NONE, null);
@@ -548,7 +547,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
         RutaAddonsPlugin.error(e);
       }
     }
-    
+
     return file;
   }
 
@@ -558,8 +557,8 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       return;
     }
     IDocument doc = new Document(content);
-    IDLTKUILanguageToolkit uiToolkit = DLTKUILanguageManager.getLanguageToolkit(RutaLanguageToolkit
-            .getDefault().getNatureId());
+    IDLTKUILanguageToolkit uiToolkit = DLTKUILanguageManager
+            .getLanguageToolkit(RutaLanguageToolkit.getDefault().getNatureId());
     ScriptTextTools textTools = uiToolkit.getTextTools();
     if (textTools != null) {
       textTools.setupDocumentPartitioner(doc, uiToolkit.getPartitioningId());
@@ -613,7 +612,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
   }
 
   public String getDataDirectory() {
-    return inputDirectoryText.getText().trim();
+    return dataLocationField.getText().trim();
   }
 
   public String getFileFilter() {
@@ -649,17 +648,16 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
     return resultViewer;
   }
 
+  @Override
   public void selectionChanged(SelectionChangedEvent event) {
     if (event.getSelectionProvider().equals(resultViewer)) {
-      StructuredSelection selection = (StructuredSelection) event.getSelection();
-      QueryResult data = (QueryResult) selection.getFirstElement();
-      IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-      IEditorPart activeEditor = page.getActiveEditor();
-      if (activeEditor instanceof AnnotationEditor) {
-        AnnotationEditor ae = (AnnotationEditor) activeEditor;
+      var selection = (StructuredSelection) event.getSelection();
+      var data = (QueryResult) selection.getFirstElement();
+      var page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+      var activeEditor = page.getActiveEditor();
+      if (activeEditor instanceof AnnotationEditor ae) {
         IEditorInput editorInput = ae.getEditorInput();
-        if (editorInput instanceof FileEditorInput) {
-          FileEditorInput fei = (FileEditorInput) editorInput;
+        if (editorInput instanceof FileEditorInput fei) {
           IFile file = fei.getFile();
           if (data != null && file.getLocationURI().equals(data.getFile().toURI())) {
             int begin = data.getBegin();
@@ -672,7 +670,7 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
   }
 
   public void setInputDirectory(String absolutePath) {
-    inputDirectoryText.setText(absolutePath);
+    dataLocationField.setText(absolutePath);
   }
 
   public void setTypeSystem(String typeSystemLocation) {
@@ -686,5 +684,4 @@ public class QueryComposite extends org.eclipse.swt.widgets.Composite implements
       this.decoQueryRules.hide();
     }
   }
-
 }

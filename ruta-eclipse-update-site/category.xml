@@ -20,7 +20,7 @@
    ***************************************************************
    -->
 <site>
-   <feature url="features/org.apache.uima.ruta.feature_3.4.1.qualifier.jar" id="org.apache.uima.ruta.feature" version="3.4.1.qualifier">
+   <feature url="features/org.apache.uima.ruta.feature_3.4.0.qualifier.jar" id="org.apache.uima.ruta.feature" version="3.4.0.qualifier">
       <category name="apache-uima-ruta"/>
    </feature>
    <category-def name="apache-uima-ruta" label="Apache UIMA Ruta">
@@ -29,5 +29,5 @@
       </description>
    </category-def>
    <repository-reference location="https://download.eclipse.org/releases/2018-12/" enabled="true" />
-   <repository-reference location="https://www.apache.org/dist/uima/eclipse-update-site-v3/" enabled="true" />
+   <repository-reference location="https://downloads.apache.org/uima/eclipse-update-site-v3/" enabled="true" />
 </site>

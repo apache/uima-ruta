@@ -20,7 +20,7 @@
 <feature
       id="org.apache.uima.ruta.feature"
       label="UIMA Ruta Workbench"
-      version="3.4.1.qualifier"
+      version="3.4.0.qualifier"
       provider-name="Apache Software Foundation">
 
    <description url="http://uima.apache.org">
@@ -145,7 +145,7 @@ Apache UIMA is a trademark of the Apache Software Foundation in the United State
    </license>
 
    <url>
-      <discovery label="UIMA Eclipse Plugins update site" url="https://www.apache.org/dist/uima/eclipse-update-site-v3/"/>
+      <discovery label="UIMA Eclipse Plugins update site" url="https://downloads.apache.org/uima/eclipse-update-site-v3/"/>
    </url>
 
    <requires>

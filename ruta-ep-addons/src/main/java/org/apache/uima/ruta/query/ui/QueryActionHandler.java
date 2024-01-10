@@ -84,7 +84,6 @@ public class QueryActionHandler implements IHandler {
     private QueryComposite composite;
 
     QueryJobChangeAdapter(QueryComposite composite) {
-      super();
       this.composite = composite;
     }
 
@@ -92,6 +91,7 @@ public class QueryActionHandler implements IHandler {
     public void done(IJobChangeEvent event) {
       if (event.getResult().isOK()) {
         composite.getDisplay().asyncExec(new Runnable() {
+          @Override
           public void run() {
             composite.update();
           }
@@ -142,6 +142,7 @@ public class QueryActionHandler implements IHandler {
       queryView.showBusy(true);
       monitor.beginTask("Initializing analysis engine...", 1);
       queryComposite.getDisplay().asyncExec(new Runnable() {
+        @Override
         public void run() {
           queryComposite.setResult(null);
         }
@@ -150,8 +151,22 @@ public class QueryActionHandler implements IHandler {
       int files = 0;
       int found = 0;
 
-      if (monitor.isCanceled())
+      if (monitor.isCanceled()) {
         return Status.CANCEL_STATUS;
+      }
+
+      if (StringUtils.isBlank(dataLocation)) {
+        return Status.error("No data location specified.");
+      }
+
+      if (StringUtils.isBlank(typeSystemLocation)) {
+        return Status.error("No type system specified.");
+      }
+
+      File dir = new File(dataLocation);
+      if (!dir.exists() || !dir.isDirectory() || !dir.canRead()) {
+        return Status.error("Data location does not exist, is not a directory or cannot be read.");
+      }
 
       final List<QueryResult> result = new ArrayList<QueryResult>();
       String script = "PACKAGE query;\n\n";
@@ -160,8 +175,8 @@ public class QueryActionHandler implements IHandler {
       try {
         URL aedesc = RutaEngine.class.getResource("BasicEngine.xml");
         XMLInputSource inae = new XMLInputSource(aedesc);
-        IFile iFile = QueryComposite.getIFile(typeSystemLocation);
-        IProject project = iFile.getProject();
+        IFile typeSystemFile = QueryComposite.getIFile(typeSystemLocation);
+        IProject project = typeSystemFile.getProject();
         ClassLoader classLoader = RutaProjectUtils.getClassLoader(project);
         ResourceManager resMgr = new ResourceManager_impl(classLoader);
         ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(inae);
@@ -174,10 +189,11 @@ public class QueryActionHandler implements IHandler {
           Collection<TypeSystemDescription> tsds = new ArrayList<TypeSystemDescription>();
           tsds.add(basicTypeSystem);
           if (typeSystemLocation.endsWith(RutaEngine.SCRIPT_FILE_EXTENSION)) {
-            IPath scriptPath = iFile.getLocation();
+            IPath scriptPath = typeSystemFile.getLocation();
             IPath descriptorRootPath = RutaProjectUtils.getDescriptorRootPath(project);
             resMgr.setDataPath(descriptorRootPath.toPortableString());
-            IPath path = RutaProjectUtils.getTypeSystemDescriptorPath(scriptPath, project, classLoader);
+            IPath path = RutaProjectUtils.getTypeSystemDescriptorPath(scriptPath, project,
+                    classLoader);
             tsLocation = path.toPortableString();
           }
           File tsFile = new File(tsLocation);
@@ -261,7 +277,6 @@ public class QueryActionHandler implements IHandler {
           return Status.CANCEL_STATUS;
         }
 
-        File dir = new File(dataLocation);
         List<File> inputFiles = getFiles(dir, recursive);
         monitor.beginTask("Query in " + dir.getName() + "...", inputFiles.size());
 
@@ -280,21 +295,21 @@ public class QueryActionHandler implements IHandler {
           }
 
           cas.reset();
-          if (FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("xmi") ||
-                  FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("bcas") ||
-                  FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("scas") ||
-                  FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("xcas")) {
+          if (FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("xmi")
+                  || FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("bcas")
+                  || FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("scas")
+                  || FilenameUtils.getExtension(each.getName()).equalsIgnoreCase("xcas")) {
             CasIOUtils.load(each.toURI().toURL(), cas);
           } else {
             cas.setDocumentText(getText(each));
           }
 
-          Type matchedType = cas.getTypeSystem().getType(
-                  "org.apache.uima.ruta.type.DebugMatchedRuleMatch");
-          Type ruleApplyType = cas.getTypeSystem().getType(
-                  "org.apache.uima.ruta.type.DebugRuleApply");
-          Type blockApplyType = cas.getTypeSystem().getType(
-                  "org.apache.uima.ruta.type.DebugBlockApply");
+          Type matchedType = cas.getTypeSystem()
+                  .getType("org.apache.uima.ruta.type.DebugMatchedRuleMatch");
+          Type ruleApplyType = cas.getTypeSystem()
+                  .getType("org.apache.uima.ruta.type.DebugRuleApply");
+          Type blockApplyType = cas.getTypeSystem()
+                  .getType("org.apache.uima.ruta.type.DebugBlockApply");
 
           removeDebugAnnotations(cas, matchedType, ruleApplyType, blockApplyType);
 
@@ -315,8 +330,8 @@ public class QueryActionHandler implements IHandler {
               return Status.CANCEL_STATUS;
             }
             AnnotationFS fs = iterator.get();
-            int find = findRuleMatches(result, fs, each, queryComposite, matchedType,
-                    ruleApplyType, blockApplyType, innerApplyFeature, ruleApplyFeature);
+            int find = findRuleMatches(result, fs, each, queryComposite, matchedType, ruleApplyType,
+                    blockApplyType, innerApplyFeature, ruleApplyFeature);
             iterator.moveToNext();
             found += find;
             if (!foundOne && find > 0) {
@@ -327,6 +342,7 @@ public class QueryActionHandler implements IHandler {
             final int constFound = found;
             final int constFiles = files;
             queryComposite.getDisplay().syncExec(new Runnable() {
+              @Override
               public void run() {
                 queryComposite.setResult(result);
                 queryComposite.setResultInfo(constFound, constFiles);
@@ -343,6 +359,7 @@ public class QueryActionHandler implements IHandler {
       } catch (Exception e) {
         // report error in query view:
         queryComposite.getDisplay().syncExec(new Runnable() {
+          @Override
           public void run() {
             queryComposite.setRutaQuerySyntaxError(true);
           }
@@ -361,6 +378,7 @@ public class QueryActionHandler implements IHandler {
       }
       FileFilter fileFilter = new FileFilter() {
 
+        @Override
         public boolean accept(File pathname) {
           if (Pattern.matches(fileNameFilter, pathname.getName())) {
             return true;
@@ -374,6 +392,7 @@ public class QueryActionHandler implements IHandler {
       if (recusive) {
         for (File subdir : dir.listFiles(new FileFilter() {
 
+          @Override
           public boolean accept(File pathname) {
             return pathname.isDirectory();
           }
@@ -433,14 +452,17 @@ public class QueryActionHandler implements IHandler {
     }
   }
 
+  @Override
   public void addHandlerListener(IHandlerListener handlerListener) {
 
   }
 
+  @Override
   public void dispose() {
 
   }
 
+  @Override
   public Object execute(ExecutionEvent event) throws ExecutionException {
 
     QueryView queryView = (QueryView) HandlerUtil.getActivePart(event);
@@ -462,14 +484,17 @@ public class QueryActionHandler implements IHandler {
     return null;
   }
 
+  @Override
   public boolean isEnabled() {
     return true;
   }
 
+  @Override
   public boolean isHandled() {
     return true;
   }
 
+  @Override
   public void removeHandlerListener(IHandlerListener handlerListener) {
 
   }

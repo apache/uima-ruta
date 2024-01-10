@@ -85,7 +85,7 @@ import org.xml.sax.SAXException;
  * Generate descriptors from UIMA Ruta script files.
  * 
  */
-@Mojo(name = "generate", defaultPhase = GENERATE_RESOURCES, requiresDependencyResolution = TEST, requiresDependencyCollection = TEST)
+@Mojo(name = "generate", defaultPhase = GENERATE_RESOURCES, requiresDependencyResolution = TEST, requiresDependencyCollection = TEST, threadSafe = true)
 public class RutaGenerateDescriptorMojo extends AbstractMojo {
   private static final String RUTA_BUILD_VARS = "RUTA_BUILD_VARS";
 
@@ -448,8 +448,8 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     }
   }
 
-  public static URLClassLoader getClassloader(MavenProject project, Log aLog, String includeScopeThreshold)
-          throws MojoExecutionException {
+  public static URLClassLoader getClassloader(MavenProject project, Log aLog,
+          String includeScopeThreshold) throws MojoExecutionException {
 
     List<URL> urls = new ArrayList<URL>();
 
@@ -493,7 +493,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       throw new MojoExecutionException(
               "Unable to resolve dependencies: " + ExceptionUtils.getRootCauseMessage(e), e);
     }
-    
+
     ScopeArtifactFilter filter = new ScopeArtifactFilter(includeScopeThreshold);
     for (Artifact dep : (Set<Artifact>) project.getArtifacts()) {
       try {
@@ -503,15 +503,15 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
                   + ")");
           continue;
         }
-        
+
         if (dep.getFile() == null) {
           aLog.debug("Not generating classpath entry for unresolved artifact: " + dep.getGroupId()
-                  + ":" + dep.getArtifactId() + ":" + dep.getVersion()+ " (" + dep.getScope()
+                  + ":" + dep.getArtifactId() + ":" + dep.getVersion() + " (" + dep.getScope()
                   + ")");
           // Unresolved file because it is in the wrong scope (e.g. test?)
           continue;
         }
-                
+
         aLog.debug("Classpath entry: " + dep.getGroupId() + ":" + dep.getArtifactId() + ":"
                 + dep.getVersion() + " -> " + dep.getFile());
         urls.add(dep.getFile().toURI().toURL());
@@ -521,7 +521,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
                 + ExceptionUtils.getRootCauseMessage(e), e);
       }
     }
-    
+
     return new URLClassLoader(urls.toArray(new URL[] {}),
             RutaGenerateDescriptorMojo.class.getClassLoader());
   }
@@ -560,7 +560,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       // Xpp3DomWriter creates empty string with file writer, check before writing to file
       if (!StringUtils.isBlank(string)) {
         try (Writer os = new OutputStreamWriter(new FileOutputStream(projectFile), UTF_8)) {
-            os.write(string);
+          os.write(string);
         } catch (IOException e) {
           handleError("Failed to write .project file", e);
         }
@@ -600,9 +600,9 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     String string = sw.toString();
     // Xpp3DomWriter creates empty string with file writer, check before writing to file
     if (!StringUtils.isBlank(string)) {
-        try (Writer os = new OutputStreamWriter(new FileOutputStream(buildpathFile), UTF_8)) {
-            os.write(string);
-        } catch (IOException e) {
+      try (Writer os = new OutputStreamWriter(new FileOutputStream(buildpathFile), UTF_8)) {
+        os.write(string);
+      } catch (IOException e) {
         handleError("Failed to write .buildpath file", e);
       }
     }
