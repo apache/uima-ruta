@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>3.4.0</version>
+    <version>3.4.1-SNAPSHOT</version>
     <relativePath>ruta-parent/pom.xml</relativePath>
   </parent>
 
@@ -230,7 +230,7 @@
                     <!-- dir="${basedir}/example-projects/ExtensionsExample/" -->
                     <!-- includes=".project" -->
                     <!-- prefix="${project.artifactId}-${project.version}/example-projects/ExtensionsExample/" 
-                                 /> -->
+                                  /> -->
                     <!-- </zip> -->
                     <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
                       <zipfileset dir="${basedir}/example-projects/TextRulerExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/TextRulerExample/" />
@@ -241,7 +241,7 @@
                     <!-- <zipfileset dir="${basedir}/example-projects/GermanNovels/" -->
                     <!-- includes=".project" -->
                     <!-- prefix="${project.artifactId}-${project.version}/example-projects/GermanNovels/" 
-                                 /> -->
+                                  /> -->
                     <!-- </zip> -->
                     <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
                       <zipfileset dir="${basedir}/example-projects/Misc/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/Misc/" />
