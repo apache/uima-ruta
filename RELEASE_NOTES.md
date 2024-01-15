@@ -32,10 +32,15 @@ This is a feature and bugfix release.
 
 ## What's Changed
 * ⭐️ Issue #130: Improve support for feature assignments
+* ⭐️ Issue #152: Better error messages in query view
 * 🦟 Issue #139: Unexpected behavior of plus operator
-* 📘 No issue: Fix description of ADDRETAINTYPE
+* 🦟 Issue #151: Unable to use Ruta Query view in Ruta 3.4.0-RC-1
+* 🦟 Issue #155: UIMA Core plugins not found when installing Ruta
 * ⚙️ Issue #133: Update dependencies
+* ⚙️ Issue #157: Mark Maven Mojos as thread-safe
 * 📘 Issue #136: Convert documentation to Asciidoc
+* 📘 No issue: Fix description of ADDRETAINTYPE
+
 
 **Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.3.0...ruta-3.4.0
 
