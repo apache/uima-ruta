@@ -1,6 +1,6 @@
 [![Maven Central](https://img.shields.io/maven-central/v/org.apache.uima/ruta-core?style=for-the-badge)](https://search.maven.org/search?q=g:org.apache.uima%20a:ruta*)
 
-[![Build Status](https://ci-builds.apache.org/buildStatus/icon?job=UIMA%2Fuima-ruta%2Fmain&subject=main%20build)](https://ci-builds.apache.org/job/UIMA/job/uima-ruta/job/main/) [![Build Status](https://ci-builds.apache.org/buildStatus/icon?job=UIMA%2Fuima-ruta%2Fmain-v2&subject=main-v2%20build)](https://ci-builds.apache.org/job/UIMA/job/uima-ruta/job/main-v2/)
+[![Build Status](https://ci-builds.apache.org/buildStatus/icon?job=UIMA%2Fuima-ruta%2Fmain&subject=main%20build)](https://ci-builds.apache.org/job/UIMA/job/uima-ruta/job/main/) [![Build Status](https://ci-builds.apache.org/buildStatus/icon?job=UIMA%2Fuima-ruta%2Fmain&subject=main%20build)](https://ci-builds.apache.org/job/UIMA/job/uima-ruta/job/main/)
 
 What is Apache UIMA Ruta?
 -------------------------
@@ -75,7 +75,7 @@ The UIMA Ruta Workbench can be installed via Eclipse update site [https://downlo
 Building from the Source Distribution
 -------------------------------------
 
-We use Maven 3.6.3 and Java 11 or later for building; download this if needed, 
+We use Maven 3.8.1 and Java 17 or later for building; download this if needed, 
 and set the environment variable `MAVEN_OPTS` to `-Xmx800m`.
 
 Then do the build by going into the UIMA Ruta directory, and issuing the command
@@ -101,7 +101,7 @@ help, source code and feedback. If you are interested in contributing, please vi
 How to Report Issues
 --------------------
 
-The Apache UIMA project uses JIRA for issue tracking. Please report any issues you find at 
+The Apache UIMA project uses GitHub for issue tracking. Please report any issues you find at 
 [our issue tracker](https://github.com/apache/uima-ruta/issues).
 
 
@@ -109,10 +109,10 @@ Useful tips
 -----------
 
 This product was originally released as Apache UIMA TextMarker. The UIMA Ruta Workbench provides
-a command for updating old projects. Please right-click on a project and select "UIMA Ruta -> Update Project". 
+a command for updating old projects. Please right-click on a project and select **UIMA Ruta -> Update Project**. 
 
 The UIMA Ruta analysis engine requires type priorities for the correct execution of rules. 
-If a CAS is created using the CasCreationUtils, please provide the type priorities, e.g., by:
+If a CAS is created using the `CasCreationUtils`, please provide the type priorities, e.g., by:
 
     URL tpUrl = this.getClass().getResource("/org/apache/uima/ruta/engine/TypePriorities.xml");
     TypePriorities typePriorities = UIMAFramework.getXMLParser().parseTypePriorities(
@@ -120,7 +120,7 @@ If a CAS is created using the CasCreationUtils, please provide the type prioriti
     CAS cas = CasCreationUtils.createCas(descriptor, typePriorities, new FsIndexDescription[0]);
 
 Using the `jcasgen-maven-plugin` may cause problems if it creates duplicate classes for the 
-internal UIMA Ruta types (overwriting the implementation of RutaBasic). Depending on the location 
+internal UIMA Ruta types (overwriting the implementation of _RutaBasic_). Depending on the location 
 of the type system descriptors, the plugin should be configured to be limited on the project, 
 or the UIMA Ruta type system descriptors should explicitly be excluded:
 
