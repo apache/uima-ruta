@@ -181,11 +181,13 @@ public class ExpressionFactory {
     for (IRutaExpression each : expressions) {
       if (each instanceof IStringExpression) {
         stringExpression.add((IStringExpression) each);
-      } else {
-        System.out.println();
       }
     }
     return new ComposedStringExpression(stringExpression);
+  }
+
+  public IRutaExpression createGenericComposedExpression(List<IRutaExpression> list) {
+    return new GenericComposedExpression(list);
   }
 
   public AbstractStringExpression createReferenceStringExpression(Token var) {

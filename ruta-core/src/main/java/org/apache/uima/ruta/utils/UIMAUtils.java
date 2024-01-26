@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -33,7 +33,7 @@ public class UIMAUtils {
 
   public static FSArray<? extends FeatureStructure> toFSArray(JCas jCas,
           List<? extends FeatureStructure> fsList) {
-    FSArray<FeatureStructure> fsArray = new FSArray<FeatureStructure>(jCas, fsList.size());
+    FSArray<FeatureStructure> fsArray = new FSArray<>(jCas, fsList.size());
     fsArray.copyFromArray(fsList.toArray(new FeatureStructure[fsList.size()]), 0, 0, fsList.size());
     return fsArray;
   }
@@ -58,7 +58,7 @@ public class UIMAUtils {
 
   public static <T extends FeatureStructure> List<T> toList(FSArray<FeatureStructure> fsArray,
           Class<T> cls) {
-    List<T> list = new ArrayList<T>();
+    List<T> list = new ArrayList<>();
     if (fsArray == null) {
       return list;
     }
