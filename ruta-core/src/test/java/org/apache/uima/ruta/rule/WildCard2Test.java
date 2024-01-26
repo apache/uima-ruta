@@ -344,4 +344,24 @@ public class WildCard2Test {
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Is");
   }
 
+  @Test
+  public void testRightToLeft() throws Exception {
+    String document = "some Text with CAP";
+    String script = "";
+    script += "(ANY{-PARTOF(SW)-> T1} # CAP){->T2};\n";
+    script += "(ANY{-PARTOF(CW)-> T3} # CAP){->T4};\n";
+
+    CAS cas = RutaTestUtils.getCAS(document);
+    Ruta.apply(cas, script);
+
+    if (RutaTestUtils.DEBUG_MODE) {
+      RutaTestUtils.storeCas(cas, "testRightToLeft");
+    }
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "Text");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Text with CAP");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "with");
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "with CAP");
+  }
+
 }
