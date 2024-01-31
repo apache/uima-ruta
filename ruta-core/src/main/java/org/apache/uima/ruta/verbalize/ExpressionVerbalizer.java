@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,10 +20,13 @@
 package org.apache.uima.ruta.verbalize;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.ruta.expression.AnnotationTypeExpression;
+import org.apache.uima.ruta.expression.GenericComposedExpression;
 import org.apache.uima.ruta.expression.IRutaExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.NullExpression;
@@ -83,6 +86,8 @@ public class ExpressionVerbalizer {
   public String verbalize(IRutaExpression expression) {
     if (expression instanceof NullExpression) {
       return "null";
+    } else if (expression instanceof GenericComposedExpression) {
+      return verbalize((GenericComposedExpression) expression);
     } else if (expression instanceof GenericFeatureExpression) {
       return verbalize(((GenericFeatureExpression) expression).getFeatureExpression());
     } else if (expression instanceof AnnotationTypeExpression) {
@@ -336,4 +341,9 @@ public class ExpressionVerbalizer {
             + verbalize(expression.getArg());
   }
 
+  public String verbalize(GenericComposedExpression expression) {
+    GenericComposedExpression gce = expression;
+    List<IRutaExpression> expressions = gce.getExpressions();
+    return expressions.stream().map(e -> verbalize(e)).collect(Collectors.joining("+"));
+  }
 }
