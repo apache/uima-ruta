@@ -348,8 +348,8 @@ public class WildCard2Test {
   public void testRightToLeft() throws Exception {
     String document = "some Text with CAP";
     String script = "";
-    script += "(ANY{-PARTOF(SW)-> T1} # CAP){->T2};\n";
-    script += "(ANY{-PARTOF(CW)-> T3} # CAP){->T4};\n";
+    script += "(ANY{-PARTOF(SW)-> T1} # @CAP){->T2};\n";
+    script += "(ANY{-PARTOF(CW)-> T3} # @CAP){->T4};\n";
 
     CAS cas = RutaTestUtils.getCAS(document);
     Ruta.apply(cas, script);
