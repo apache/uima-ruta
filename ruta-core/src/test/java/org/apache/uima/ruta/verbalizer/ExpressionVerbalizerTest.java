@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -22,8 +22,10 @@ package org.apache.uima.ruta.verbalizer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.uima.ruta.expression.GenericComposedExpression;
 import org.apache.uima.ruta.expression.MatchReference;
 import org.apache.uima.ruta.expression.annotation.AnnotationLabelExpression;
 import org.apache.uima.ruta.expression.annotation.AnnotationVariableExpression;
@@ -67,49 +69,16 @@ public class ExpressionVerbalizerTest {
   @Test
   public void test() {
     RutaVerbalizer v = new RutaVerbalizer();
-    // List<TypeExpression> typeExprList = new ArrayList<TypeExpression>();
-    // List<StringExpression> stringExprList = new ArrayList<StringExpression>();
-    // List<RutaExpression> exprList = new ArrayList<RutaExpression>();
-    // List<INumberExpression> indexes = new ArrayList<INumberExpression>();
-
-    //
-    // // typeExprList.add(typeExpr1);
-    // // typeExprList.add(typeExpr2);
-    //
-    //
-    // StringExpression stringExpr = new SimpleStringExpression("string");
-    // stringExprList.add(stringExpr);
-    // // exprList.add(typeExpr1);
-    // WordTableExpression wordTableExpr = new ReferenceWordTableExpression(var);
-    // WordListExpression wordListExpr = new ReferenceWordListExpression(var);
-    // TypeListExpression typeListExpr = new SimpleTypeListExpression(typeExprList);
-    // StringListExpression stringListExpr = new SimpleStringListExpression(stringExprList);
-    // Map<StringExpression, RutaExpression> stringExprMap = new HashMap<StringExpression,
-    // RutaExpression>();
-    // Map<StringExpression, INumberExpression> stringExprNumExprMap = new HashMap<StringExpression,
-    // INumberExpression>();
-    // Map<StringExpression, TypeExpression> stringExprTypeExprMap = new HashMap<StringExpression,
-    // TypeExpression>();
-    // @SuppressWarnings("rawtypes")
-    // ListExpression listExpr = new SimpleTypeListExpression(typeExprList);
-    // @SuppressWarnings("rawtypes")
-    // List<ListExpression> listExprList = new ArrayList<ListExpression>();
-    // listExprList.add(listExpr);
-    // stringExprMap.put(stringExpr, stringExpr);
-    // // stringExprNumExprMap.put(stringExpr, numExpr1);
-    // // stringExprTypeExprMap.put(stringExpr, typeExpr1);
-    // // indexes.add(numExpr1);
-    // // indexes.add(numExpr2);
 
     String s = null;
     String var = "anyVar";
     ITypeExpression typeExpr1 = new SimpleTypeExpression("Type1");
     ITypeExpression typeExpr2 = new TypeVariableExpression("typeVar");
 
-    List<INumberExpression> numExprList1 = new ArrayList<INumberExpression>();
-    List<INumberExpression> numExprList2 = new ArrayList<INumberExpression>();
-    List<String> opList1 = new ArrayList<String>();
-    List<String> opList2 = new ArrayList<String>();
+    List<INumberExpression> numExprList1 = new ArrayList<>();
+    List<INumberExpression> numExprList2 = new ArrayList<>();
+    List<String> opList1 = new ArrayList<>();
+    List<String> opList2 = new ArrayList<>();
     INumberExpression numExpr1 = new SimpleNumberExpression(4);
     INumberExpression numExpr2 = new NumberVariableExpression("numVar");
     INumberExpression numExpr3 = new NumberVariableExpression("4.9");
@@ -171,7 +140,7 @@ public class ExpressionVerbalizerTest {
     s = v.verbalize(boolExpr11);
     assertThat(s).isEqualTo("Type1 != typeVar");
 
-    List<IStringExpression> stringExprList = new ArrayList<IStringExpression>();
+    List<IStringExpression> stringExprList = new ArrayList<>();
     AbstractStringExpression stringExpr1 = new SimpleStringExpression("string");
     AbstractStringExpression stringExpr2 = new StringVariableExpression(var);
     stringExprList.add(stringExpr1);
@@ -192,7 +161,7 @@ public class ExpressionVerbalizerTest {
     s = v.verbalize(sle2);
     assertThat(s).isEqualTo("anyVar");
 
-    List<IBooleanExpression> boolExprList = new ArrayList<IBooleanExpression>();
+    List<IBooleanExpression> boolExprList = new ArrayList<>();
     boolExprList.add(boolExpr1);
     boolExprList.add(boolExpr3);
     AbstractBooleanListExpression ble1 = new SimpleBooleanListExpression(boolExprList);
@@ -202,7 +171,7 @@ public class ExpressionVerbalizerTest {
     s = v.verbalize(ble2);
     assertThat(s).isEqualTo("anyVar");
 
-    List<INumberExpression> numExprList = new ArrayList<INumberExpression>();
+    List<INumberExpression> numExprList = new ArrayList<>();
     numExprList.add(numExpr1);
     numExprList.add(numExpr3);
     AbstractNumberListExpression nle1 = new SimpleNumberListExpression(numExprList);
@@ -212,7 +181,7 @@ public class ExpressionVerbalizerTest {
     s = v.verbalize(nle2);
     assertThat(s).isEqualTo("anyVar");
 
-    List<ITypeExpression> typeExprList = new ArrayList<ITypeExpression>();
+    List<ITypeExpression> typeExprList = new ArrayList<>();
     typeExprList.add(typeExpr1);
     typeExprList.add(typeExpr2);
     AbstractTypeListExpression tle1 = new SimpleTypeListExpression(typeExprList);
@@ -240,6 +209,24 @@ public class ExpressionVerbalizerTest {
     assertThat(v.verbalize(
             new GenericFeatureExpression(new FeatureMatchExpression(new MatchReference("abc.d"),
                     "==", new SimpleStringExpression("y"))))).isEqualTo("abc.d");
+    assertThat(v.verbalize(new GenericFeatureExpression(null))).isEqualTo("");
+  }
+
+  @Test
+  public void testGenericComposedExpression() {
+    RutaVerbalizer v = new RutaVerbalizer();
+    assertThat(v.verbalize(new GenericComposedExpression(
+            Arrays.asList(new SimpleStringExpression("a"), new SimpleStringExpression("b")))))
+                    .isEqualTo("\"a\"+\"b\"");
+    assertThat(v.verbalize(new GenericComposedExpression(
+            Arrays.asList(new SimpleNumberExpression(1), new SimpleNumberExpression(2)))))
+                    .isEqualTo("1+2");
+    assertThat(v.verbalize(new GenericComposedExpression(
+            Arrays.asList(new SimpleStringExpression("a"), new SimpleNumberExpression(2)))))
+                    .isEqualTo("\"a\"+2");
+    assertThat(v.verbalize(new GenericComposedExpression(
+            Arrays.asList(new SimpleFeatureExpression(new MatchReference("abc.d")),
+                    new AnnotationVariableExpression("l"))))).isEqualTo("abc.d+l");
     assertThat(v.verbalize(new GenericFeatureExpression(null))).isEqualTo("");
   }
 
