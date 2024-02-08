@@ -29,7 +29,7 @@
 
   <artifactId>ruta-parent</artifactId>
   <packaging>pom</packaging>
-  <version>3.4.1-SNAPSHOT</version>
+  <version>3.4.2-SNAPSHOT</version>
   <name>Apache UIMA Ruta: ${project.artifactId}</name>
   <url>${uimaWebsiteUrl}</url>
   <inceptionYear>2011</inceptionYear>
@@ -156,12 +156,12 @@
     <eclipseP2RepoId>org.eclipse.p2.202309</eclipseP2RepoId>
     <dltkP2RepoId>org.eclipse.p2.201812</dltkP2RepoId>
 
-    <api_check_oldVersion>3.3.0</api_check_oldVersion>
+    <api_check_oldVersion>3.4.0</api_check_oldVersion>
 
     <!-- BEGIN PROFILE SETTINGS: generate-release-notes-->
     <github-repository>uima-ruta</github-repository>
     <git-branch>main</git-branch>
-    <previous-release-version>3.3.0</previous-release-version>
+    <previous-release-version>3.4.0</previous-release-version>
     <!-- END PROFILE SETTINGS: generate-release-notes-->
   </properties>
 
