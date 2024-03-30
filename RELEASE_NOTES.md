@@ -19,7 +19,7 @@
 ***************************************************************
 -->
    
-# Apache UIMA Ruta (TM) v3.4.0
+# Apache UIMA Ruta (TM) v3.4.1
 
 Apache UIMA Ruta™ is a rule-based script language supported by Eclipse-based tooling.
 The language is designed to enable rapid development of text processing applications within Apache UIMA&#8482;. 
@@ -31,22 +31,14 @@ Ruta rule language and the Ruta Workbench integrate smoothly with Apache UIMA.
 This is a feature and bugfix release.
 
 ## What's Changed
-* ⭐️ Issue #130: Improve support for feature assignments
-* ⭐️ Issue #152: Better error messages in query view
-* 🦟 Issue #139: Unexpected behavior of plus operator
-* 🦟 Issue #151: Unable to use Ruta Query view in Ruta 3.4.0-RC-1
-* 🦟 Issue #155: UIMA Core plugins not found when installing Ruta
-* ⚙️ Issue #133: Update dependencies
-* ⚙️ Issue #157: Mark Maven Mojos as thread-safe
-* 📘 Issue #136: Convert documentation to Asciidoc
-* 📘 No issue: Fix description of ADDRETAINTYPE
+* 🦟 Issue #159: Assignment of composed number expression is broken
+* 🦟 Issue #161: Right to left wildcard matches too much
 
-
-**Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.3.0...ruta-3.4.0
+**Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.4.0...ruta-3.4.1
 
 Please use the [mailing lists](https://uima.apache.org/mail-lists.html) for feedback and the [issue tracker](https://github.com/apache/uima-ruta/issues) to report bugs.
 
-## Compatibility notes
+## Compatibility notes for v3.4.x
 * The modules `ruta-typesystem` and `ruta-basic-type` do no longer exist as separate modules. They have
   been merged into the `ruta-core` module.
 * Parts of the `ruta-core-ext` module have been merged into the `ruta-core` module as well. The merged
@@ -56,7 +48,7 @@ Please use the [mailing lists](https://uima.apache.org/mail-lists.html) for feed
 
 ## Supported Platforms
 
-UIMA Ruta 3.4.0 should be used in combination with
+UIMA Ruta 3.4.1 should be used in combination with
 
 - Java 17 or higher
 - UIMA Java SDK 3.5.0 or higher
