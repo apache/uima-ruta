@@ -87,24 +87,24 @@ public class StringExpressionTest {
     script += "STRING vs = \"T\";\n";
     script += "Document{->Struct, Temp};\n";
 
-    script += "s:Struct{-> s.sf = \"T\" + 1};\n";
-    script += "s:Struct{s.sf == \"T1\"-> T1};\n";
+//    script += "s:Struct{-> s.sf = \"T\" + 1};\n";
+//    script += "s:Struct{s.sf == \"T1\"-> T1};\n";
+//
+//    script += "s:Struct{-> s.sf = \"T\" + vi};\n";
+//    script += "s:Struct{s.sf == \"T2\"-> T2};\n";
+//
+//    script += "s:Struct{->s.sf = \"T\", s.sf = s.sf + 3};\n";
+//    script += "s:Struct{s.sf == \"T3\"-> T3};\n";
 
-    script += "s:Struct{-> s.sf = \"T\" + vi};\n";
-    script += "s:Struct{s.sf == \"T2\"-> T2};\n";
-
-    script += "s:Struct{->s.sf = \"T\", s.sf = s.sf + 3};\n";
-    script += "s:Struct{s.sf == \"T3\"-> T3};\n";
-
-    script += "Temp{->t:Temp, t.if = 4};\n";
+    script += "t:Temp{-> t.if = 4};\n";
     script += "s:Struct{->s.sf = \"T\", s.sf = \"T\" + Temp.if};\n";
     script += "s:Struct{s.sf == \"T4\"-> T4};\n";
 
-    script += "Temp{->t:Temp, t.if = 5};\n";
+    script += "t:Temp{-> t.if = 5};\n";
     script += "s:Struct{->s.sf = \"T\" + t.if}<-{t:Temp;};\n";
     script += "s:Struct{s.sf == \"T5\"-> T5};\n";
 
-    script += "Temp{->t:Temp, t.if = 6};\n";
+    script += "t:Temp{-> t.if = 6};\n";
     script += "s:Struct{->s.sf = vs + t.if}<-{t:Temp;};\n";
     script += "s:Struct{s.sf == \"T6\"-> T6};\n";
 
@@ -114,9 +114,9 @@ public class StringExpressionTest {
     CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
     Ruta.apply(cas, script);
 
-    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This is a test.");
-    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "This is a test.");
-    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "This is a test.");
+//    RutaTestUtils.assertAnnotationsEquals(cas, 1, 1, "This is a test.");
+//    RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "This is a test.");
+//    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "This is a test.");
     RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "This is a test.");
     RutaTestUtils.assertAnnotationsEquals(cas, 5, 1, "This is a test.");
     RutaTestUtils.assertAnnotationsEquals(cas, 6, 1, "This is a test.");

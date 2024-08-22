@@ -785,7 +785,7 @@ public class RutaStream {
 
   public List<AnnotationFS> getAnnotationsInWindow(AnnotationFS windowAnnotation, Type type) {
 
-    return getAnnotationsInWindow(type, windowAnnotation, false);
+    return getAnnotationsInWindow(type, windowAnnotation, true);
   }
 
   public Collection<RutaBasic> getAllBasicsInWindow(AnnotationFS windowAnnotation) {
@@ -1330,6 +1330,41 @@ public class RutaStream {
         AnnotationFS a = ate.getAnnotation(context, this);
         annotation.setFeatureValue(feature, a);
       }
+    } else if (value instanceof IAnnotationListExpression && !range.isPrimitive()) {
+      IAnnotationListExpression ale = (IAnnotationListExpression) value;
+      List<? extends FeatureStructure> list = null;
+
+      boolean rangeSubsumesAnnotation = cas.getTypeSystem().subsumes(cas.getAnnotationType(),
+              range);
+      if (range.isArray()) {
+        boolean componentSubsumesAnnotation = cas.getTypeSystem().subsumes(cas.getAnnotationType(),
+                range.getComponentType());
+        if (componentSubsumesAnnotation) {
+          list = ale.getAnnotationList(context, this);
+        } else {
+          list = ale.getFeatureStructureList(context, this);
+        }
+      } else {
+        if (rangeSubsumesAnnotation) {
+          list = ale.getAnnotationList(context, this);
+        } else {
+          list = ale.getFeatureStructureList(context, this);
+        }
+      }
+
+      if (list != null) {
+        if (range.isArray()) {
+          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(getJCas(), list));
+        } else {
+          if (list.isEmpty()) {
+            annotation.setFeatureValue(feature, null);
+          } else {
+            annotation.setFeatureValue(feature, list.get(0));
+          }
+        }
+      } else {
+        annotation.setFeatureValue(feature, null);
+      }
     } else if (value instanceof IAnnotationExpression && !range.isPrimitive()) {
       IAnnotationExpression ae = (IAnnotationExpression) value;
       boolean rangeSubsumesAnnotation = cas.getTypeSystem().subsumes(cas.getAnnotationType(),
@@ -1348,22 +1383,7 @@ public class RutaStream {
       } else {
         annotation.setFeatureValue(feature, a);
       }
-    } else if (value instanceof IAnnotationListExpression && !range.isPrimitive()) {
-      IAnnotationListExpression ale = (IAnnotationListExpression) value;
-      List<AnnotationFS> annotations = ale.getAnnotationList(context, this);
-      if (annotations != null) {
-        if (range.isArray()) {
-          annotation.setFeatureValue(feature, UIMAUtils.toFSArray(getJCas(), annotations));
-        } else {
-          if (annotations.isEmpty()) {
-            annotation.setFeatureValue(feature, null);
-          } else {
-            annotation.setFeatureValue(feature, annotations.get(0));
-          }
-        }
-      } else {
-        annotation.setFeatureValue(feature, null);
-      }
+
     } else if (value instanceof ITypeExpression && !range.isPrimitive()) {
       ITypeExpression typeExpr = (ITypeExpression) value;
       Type t = typeExpr.getType(context, this);

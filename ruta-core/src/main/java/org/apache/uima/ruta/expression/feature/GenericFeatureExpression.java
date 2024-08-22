@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -71,8 +71,8 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
 
   public GenericFeatureExpression(FeatureExpression fe) {
     super();
-    this.featureExpression = fe;
-    this.expressionFactory = new ExpressionFactory();
+    featureExpression = fe;
+    expressionFactory = new ExpressionFactory();
   }
 
   @Override
@@ -129,6 +129,15 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
       annotationExpression = expressionFactory.createAnnotationFeatureExpression(featureExpression);
     }
     return annotationExpression.getFeatureStructure(context, stream);
+  }
+
+  @Override
+  public List<FeatureStructure> getFeatureStructureList(MatchContext context, RutaStream stream) {
+    if (annotationListExpression == null) {
+      annotationListExpression = expressionFactory
+              .createAnnotationListFeatureExpression(featureExpression);
+    }
+    return annotationListExpression.getFeatureStructureList(context, stream);
   }
 
   @Override
@@ -192,7 +201,7 @@ public class GenericFeatureExpression extends ListExpression<Object> implements 
     if (!range.isArray()) {
       return Collections.emptyList();
     }
-    List<Object> result = new ArrayList<Object>();
+    List<Object> result = new ArrayList<>();
     if (StringUtils.equals(range.getName(), CAS.TYPE_NAME_FS_ARRAY)) {
       result.addAll(getAnnotationList(context, stream));
     } else if (StringUtils.equals(range.getName(), CAS.TYPE_NAME_BOOLEAN_ARRAY)) {

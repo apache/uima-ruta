@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -22,6 +22,7 @@ package org.apache.uima.ruta.expression.annotation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.block.RutaBlock;
@@ -47,6 +48,22 @@ public class AnnotationListVariableExpression extends AbstractAnnotationListExpr
       }
       if (each instanceof AnnotationFS) {
         result.add((AnnotationFS) each);
+      }
+    }
+    return result;
+  }
+
+  @Override
+  public List<FeatureStructure> getFeatureStructureList(MatchContext context, RutaStream stream) {
+    RutaBlock parent = context.getParent();
+    List<?> list = parent.getEnvironment().getVariableValue(var, List.class, stream);
+    List<FeatureStructure> result = new ArrayList<>();
+    for (Object each : list) {
+      if (each instanceof IAnnotationExpression) {
+        result.add(((IAnnotationExpression) each).getFeatureStructure(context, stream));
+      }
+      if (each instanceof FeatureStructure) {
+        result.add((FeatureStructure) each);
       }
     }
     return result;

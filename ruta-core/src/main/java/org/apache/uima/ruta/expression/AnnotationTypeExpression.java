@@ -162,6 +162,17 @@ public class AnnotationTypeExpression extends RutaExpression
   }
 
   @Override
+  public List<FeatureStructure> getFeatureStructureList(MatchContext context, RutaStream stream) {
+    if (annotationListExpression != null) {
+      return annotationListExpression.getFeatureStructureList(context, stream);
+    }
+    List<AnnotationFS> annotationList = getAnnotationList(context, stream);
+    List<FeatureStructure> result = new ArrayList<>();
+    result.addAll(annotationList);
+    return result;
+  }
+
+  @Override
   public Type getType(MatchContext context, RutaStream stream) {
     if (!initialized) {
       initialize(context, stream);
@@ -174,11 +185,10 @@ public class AnnotationTypeExpression extends RutaExpression
 
     if (typeExpression != null) {
       return typeExpression.getType(context, stream);
-    } else {
-      AnnotationFS annotation = getAnnotation(context, stream);
-      if (annotation != null) {
-        return annotation.getType();
-      }
+    }
+    AnnotationFS annotation = getAnnotation(context, stream);
+    if (annotation != null) {
+      return annotation.getType();
     }
     return null;
   }
@@ -209,17 +219,15 @@ public class AnnotationTypeExpression extends RutaExpression
       List<AnnotationFS> result = annotationListExpression.getAnnotationList(context, stream);
       if (result != null && featureExpression != null) {
         return new ArrayList<>(featureExpression.getAnnotations(result, true, context, stream));
-      } else {
-        return result;
       }
+      return result;
     } else if (annotationExpression != null) {
       AnnotationFS annotation = annotationExpression.getAnnotation(context, stream);
       List<AnnotationFS> result = asList(annotation);
       if (featureExpression != null) {
         return new ArrayList<>(featureExpression.getAnnotations(result, true, context, stream));
-      } else {
-        return result;
       }
+      return result;
     } else {
 
       List<Type> types = null;
