@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -35,6 +35,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.junit.jupiter.api.Test;
+
 public class AnnotationFeatureExpressionTest {
 
   @Test
@@ -49,18 +50,18 @@ public class AnnotationFeatureExpressionTest {
     script += "Struct.as{->T3} @PERIOD;";
     script += "Struct.as.a{->T4} @PERIOD;";
 
-    Map<String, String> typeMap = new TreeMap<String, String>();
+    Map<String, String> typeMap = new TreeMap<>();
     String typeName1 = "Struct";
     typeMap.put(typeName1, "uima.tcas.Annotation");
     String typeName2 = "Inner";
     typeMap.put(typeName2, "uima.tcas.Annotation");
 
-    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    Map<String, List<TestFeature>> featureMap = new TreeMap<>();
+    List<TestFeature> list = new ArrayList<>();
     featureMap.put(typeName1, list);
     String fn1 = "as";
     list.add(new TestFeature(fn1, "", "uima.cas.FSArray"));
-    list = new ArrayList<RutaTestUtils.TestFeature>();
+    list = new ArrayList<>();
     featureMap.put(typeName2, list);
     String fn2 = "a";
     list.add(new TestFeature(fn2, "", "uima.cas.FSArray"));
@@ -75,6 +76,36 @@ public class AnnotationFeatureExpressionTest {
   }
 
   @Test
+  public void testListAssignment() throws Exception {
+    String document = "Some text.";
+    String script = "";
+    script += "SW{-> Struct};";
+    script += "(# s:Struct #){-> s.as=ANY};";
+    script += "Struct.as{->T1};";
+    script += "(# s:Struct #){-> s.as=org.apache.uima.ruta.type.ANY};";
+    script += "Struct.as{->T2};";
+    script += "s:Struct{-> s.as=org.apache.uima.ruta.type.ANY};";
+    script += "Struct.as{->T3};";
+
+    Map<String, String> typeMap = new TreeMap<>();
+    String typeName1 = "Struct";
+    typeMap.put(typeName1, CAS.TYPE_NAME_ANNOTATION);
+
+    Map<String, List<TestFeature>> featureMap = new TreeMap<>();
+    List<TestFeature> list = new ArrayList<>();
+    featureMap.put(typeName1, list);
+    String fn1 = "as";
+    list.add(new TestFeature(fn1, "", CAS.TYPE_NAME_FS_ARRAY));
+
+    CAS cas = RutaTestUtils.getCAS(document, typeMap, featureMap);
+    Ruta.apply(cas, script);
+
+    RutaTestUtils.assertAnnotationsEquals(cas, 1, 3, "Some", "text", ".");
+    RutaTestUtils.assertAnnotationsEquals(cas, 2, 3, "Some", "text", ".");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 1, "text");
+  }
+
+  @Test
   public void testIndex() throws Exception {
     String document = "Some text.";
     String script = "";
@@ -85,18 +116,18 @@ public class AnnotationFeatureExpressionTest {
     script += "Struct.as[0].a{->T3};";
     script += "Struct.as[1].a{->T4};";
 
-    Map<String, String> typeMap = new TreeMap<String, String>();
+    Map<String, String> typeMap = new TreeMap<>();
     String typeName1 = "Struct";
     typeMap.put(typeName1, "uima.tcas.Annotation");
     String typeName2 = "Inner";
     typeMap.put(typeName2, "uima.tcas.Annotation");
 
-    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    Map<String, List<TestFeature>> featureMap = new TreeMap<>();
+    List<TestFeature> list = new ArrayList<>();
     featureMap.put(typeName1, list);
     String fn1 = "as";
     list.add(new TestFeature(fn1, "", "uima.cas.FSArray"));
-    list = new ArrayList<RutaTestUtils.TestFeature>();
+    list = new ArrayList<>();
     featureMap.put(typeName2, list);
     String fn2 = "a";
     list.add(new TestFeature(fn2, "", "uima.cas.FSArray"));
@@ -117,12 +148,12 @@ public class AnnotationFeatureExpressionTest {
     script += "W{-> CREATE(Struct, \"as\"={\"text\"})};\n";
     script += "Struct{CONTAINS(Struct.as, Struct.ct)-> T1};\n";
 
-    Map<String, String> typeMap = new TreeMap<String, String>();
+    Map<String, String> typeMap = new TreeMap<>();
     String typeName1 = "Struct";
     typeMap.put(typeName1, "uima.tcas.Annotation");
 
-    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    Map<String, List<TestFeature>> featureMap = new TreeMap<>();
+    List<TestFeature> list = new ArrayList<>();
     featureMap.put(typeName1, list);
     String fn1 = "as";
     list.add(new TestFeature(fn1, "", "uima.cas.StringArray"));
@@ -139,21 +170,21 @@ public class AnnotationFeatureExpressionTest {
 
     String document = "Some text.";
 
-    Map<String, String> typeMap = new TreeMap<String, String>();
+    Map<String, String> typeMap = new TreeMap<>();
     String typeName1 = "A1";
     typeMap.put(typeName1, "uima.tcas.Annotation");
     String typeName2 = "FS1";
     typeMap.put(typeName2, "uima.cas.TOP");
 
-    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    Map<String, List<TestFeature>> featureMap = new TreeMap<>();
+    List<TestFeature> list = new ArrayList<>();
     featureMap.put(typeName1, list);
     String fn1 = "fss";
     list.add(new TestFeature(fn1, "", "uima.cas.FSArray"));
     String fn2 = "fs";
     list.add(new TestFeature(fn2, "", "uima.cas.TOP"));
 
-    list = new ArrayList<RutaTestUtils.TestFeature>();
+    list = new ArrayList<>();
     featureMap.put(typeName2, list);
     String fn3 = "fss";
     list.add(new TestFeature(fn3, "", "uima.cas.FSArray"));
@@ -174,8 +205,7 @@ public class AnnotationFeatureExpressionTest {
     AnnotationFS a2 = cas.createAnnotation(type1, 5, 9);
     FeatureStructure fs1 = cas.createFS(type2);
     FeatureStructure fs2 = cas.createFS(type2);
-    FSArray<FeatureStructure> fsArray1 = FSCollectionFactory.createFSArray(cas.getJCas(),
-            new FeatureStructure[] { fs1, fs2 });
+    FSArray<FeatureStructure> fsArray1 = FSCollectionFactory.createFSArray(cas.getJCas(), fs1, fs2);
     fs1.setStringValue(type2s, "1");
     fs2.setStringValue(type2s, "2");
     fs1.setFeatureValue(type2fs, a2);
@@ -224,10 +254,10 @@ public class AnnotationFeatureExpressionTest {
     script += "Document{-> CREATE(Struct1, \"a\" = SW.begin == 8)};\n";
     script += "Struct1.a{-> T1};\n";
 
-    Map<String, String> complexTypes = new TreeMap<String, String>();
+    Map<String, String> complexTypes = new TreeMap<>();
     complexTypes.put("Struct1", "uima.tcas.Annotation");
-    Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    Map<String, List<TestFeature>> features = new TreeMap<>();
+    List<TestFeature> list = new ArrayList<>();
     features.put("Struct1", list);
     list.add(new TestFeature("a", "", "uima.tcas.Annotation"));
     list.add(new TestFeature("as", "", "uima.cas.FSArray"));
@@ -248,16 +278,16 @@ public class AnnotationFeatureExpressionTest {
     script += "Struct1.smallW{-> T1};\n";
     script += "Struct1.capitalW{-> T2};\n";
 
-    Map<String, String> complexTypes = new TreeMap<String, String>();
+    Map<String, String> complexTypes = new TreeMap<>();
     complexTypes.put("Struct1", "uima.tcas.Annotation");
     complexTypes.put("Word", "uima.tcas.Annotation");
-    Map<String, List<TestFeature>> features = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> struct1Features = new ArrayList<RutaTestUtils.TestFeature>();
+    Map<String, List<TestFeature>> features = new TreeMap<>();
+    List<TestFeature> struct1Features = new ArrayList<>();
     features.put("Struct1", struct1Features);
     struct1Features.add(new TestFeature("smallW", "", "uima.cas.FSArray"));
     struct1Features.add(new TestFeature("capitalW", "", "uima.cas.FSArray"));
 
-    List<TestFeature> wordFeatures = new ArrayList<RutaTestUtils.TestFeature>();
+    List<TestFeature> wordFeatures = new ArrayList<>();
     features.put("Word", wordFeatures);
     wordFeatures.add(new TestFeature("small", "", "uima.cas.Boolean"));
 
@@ -275,12 +305,12 @@ public class AnnotationFeatureExpressionTest {
     script += "W{-> CREATE(Struct)};\n";
     script += "Struct.a{PARTOF(CW)-> T1};\n";
 
-    Map<String, String> typeMap = new TreeMap<String, String>();
+    Map<String, String> typeMap = new TreeMap<>();
     String typeName1 = "Struct";
     typeMap.put(typeName1, "uima.tcas.Annotation");
 
-    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    Map<String, List<TestFeature>> featureMap = new TreeMap<>();
+    List<TestFeature> list = new ArrayList<>();
     featureMap.put(typeName1, list);
     String fn1 = "a";
     list.add(new TestFeature(fn1, "", "uima.tcas.Annotation"));
@@ -324,14 +354,14 @@ public class AnnotationFeatureExpressionTest {
     script += "Document{a != a2 -> T13};\n";
     script += "Document{as != as2 -> T14};\n";
 
-    Map<String, String> typeMap = new TreeMap<String, String>();
+    Map<String, String> typeMap = new TreeMap<>();
     String typeName1 = "Struct1";
     typeMap.put(typeName1, "uima.tcas.Annotation");
     String typeName2 = "Struct2";
     typeMap.put(typeName2, "uima.tcas.Annotation");
 
-    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    Map<String, List<TestFeature>> featureMap = new TreeMap<>();
+    List<TestFeature> list = new ArrayList<>();
     featureMap.put(typeName1, list);
     featureMap.put(typeName2, list);
     String fn1 = "a";

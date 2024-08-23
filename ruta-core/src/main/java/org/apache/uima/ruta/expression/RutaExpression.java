@@ -32,6 +32,7 @@ import org.apache.uima.ruta.expression.annotation.IAnnotationExpression;
 import org.apache.uima.ruta.expression.annotation.IAnnotationListExpression;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
 import org.apache.uima.ruta.expression.feature.SimpleFeatureExpression;
+import org.apache.uima.ruta.expression.type.ITypeExpression;
 import org.apache.uima.ruta.rule.MatchContext;
 
 public class RutaExpression extends RutaElement implements IRutaExpression {
@@ -45,10 +46,14 @@ public class RutaExpression extends RutaElement implements IRutaExpression {
               .getAnnotationExpression(context, stream);
       IAnnotationListExpression annotationListExpression = sfe.getMatchReference()
               .getAnnotationListExpression(context, stream);
+      ITypeExpression typeExpression = sfe.getMatchReference().getTypeExpression(context, stream);
       if (annotationExpression != null) {
         return asList(annotationExpression.getAnnotation(context, stream));
       } else if (annotationListExpression != null) {
         return annotationListExpression.getAnnotationList(context, stream);
+      } else if (typeExpression != null) {
+        Type type = typeExpression.getType(context, stream);
+        return stream.getAnnotationsByTypeInContext(type, context);
       }
     }
 

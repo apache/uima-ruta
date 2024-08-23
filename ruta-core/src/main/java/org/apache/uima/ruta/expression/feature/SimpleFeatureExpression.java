@@ -51,13 +51,13 @@ public class SimpleFeatureExpression extends FeatureExpression {
   @Override
   public Feature getFeature(MatchContext context, RutaStream stream) {
 
-    List<Feature> features = this.getFeatures(context, stream);
+    List<Feature> features = getFeatures(context, stream);
     if (features != null && !features.isEmpty()) {
       Feature feature = features.get(features.size() - 1);
       if (feature instanceof LazyFeature) {
         LazyFeature lazyFeature = (LazyFeature) feature;
         AnnotationFS annotation = context.getAnnotation();
-        List<AnnotationFS> targetAnnotation = this.getTargetAnnotation(annotation, this, context,
+        List<AnnotationFS> targetAnnotation = getTargetAnnotation(annotation, this, context,
                 stream);
         if (targetAnnotation != null && !targetAnnotation.isEmpty()) {
           annotation = targetAnnotation.get(0);
@@ -75,10 +75,10 @@ public class SimpleFeatureExpression extends FeatureExpression {
   @Override
   public List<Feature> getFeatures(MatchContext context, RutaStream stream) {
 
-    List<Feature> result = new ArrayList<Feature>();
-    Type type = this.getInitialType(context, stream);
+    List<Feature> result = new ArrayList<>();
+    Type type = getInitialType(context, stream);
     Feature feature = null;
-    for (String each : this.getFeatureStringList(context, stream)) {
+    for (String each : getFeatureStringList(context, stream)) {
       IndexedReference indexedReference = ParsingUtils.parseIndexedReference(each);
       if (indexedReference.index != -1) {
         Feature delegate = type.getFeatureByBaseName(indexedReference.reference);
@@ -125,10 +125,9 @@ public class SimpleFeatureExpression extends FeatureExpression {
   @Override
   public Type getInitialType(MatchContext context, RutaStream stream) {
 
-    ITypeExpression typeExpression = this.mr.getTypeExpression(context, stream);
-    IAnnotationExpression annotationExpression = this.mr.getAnnotationExpression(context, stream);
-    IAnnotationExpression annotationListExpression = this.mr.getAnnotationExpression(context,
-            stream);
+    ITypeExpression typeExpression = mr.getTypeExpression(context, stream);
+    IAnnotationExpression annotationExpression = mr.getAnnotationExpression(context, stream);
+    IAnnotationExpression annotationListExpression = mr.getAnnotationExpression(context, stream);
     if (typeExpression != null) {
       return typeExpression.getType(context, stream);
     } else if (annotationExpression != null) {
@@ -148,7 +147,7 @@ public class SimpleFeatureExpression extends FeatureExpression {
   @Override
   public List<String> getFeatureStringList(MatchContext context, RutaStream stream) {
 
-    return this.mr.getFeatureList();
+    return mr.getFeatureList();
   }
 
   @Override
@@ -156,15 +155,17 @@ public class SimpleFeatureExpression extends FeatureExpression {
           Collection<? extends FeatureStructure> featureStructures, boolean checkOnFeatureValue,
           MatchContext context, RutaStream stream) {
 
-    Collection<AnnotationFS> result = new ArrayList<>();
-    List<Feature> features = this.getFeatures(context, stream);
+    List<Feature> features = getFeatures(context, stream);
     if (features != null && !features.isEmpty()) {
+      Collection<AnnotationFS> result = new ArrayList<>();
       this.collectFeatureStructures(featureStructures, features, checkOnFeatureValue, true, result,
               stream, context);
+//      this.collectFeatureStructures(featureStructures, features, checkOnFeatureValue, false, result,
+//              stream, context);
+//      return filterAnnotations(result);
       return result;
-    } else {
-      return this.filterAnnotations(featureStructures);
     }
+    return filterAnnotations(featureStructures);
   }
 
   @Override
@@ -173,14 +174,13 @@ public class SimpleFeatureExpression extends FeatureExpression {
           MatchContext context, RutaStream stream) {
 
     Collection<FeatureStructure> result = new ArrayList<>();
-    List<Feature> features = this.getFeatures(context, stream);
+    List<Feature> features = getFeatures(context, stream);
     if (features != null && !features.isEmpty()) {
       this.collectFeatureStructures(featureStructures, features, checkOnFeatureValue, false, result,
               stream, context);
       return result;
-    } else {
-      return featureStructures;
     }
+    return featureStructures;
   }
 
   private <T> void collectFeatureStructures(
@@ -223,9 +223,8 @@ public class SimpleFeatureExpression extends FeatureExpression {
           throw new RuntimeException("Invalid feature! Feature '" + lazyFeature.getFeatureName()
                   + "' is not defined for type '" + featureStructure.getType() + "' in script "
                   + context.getParent().getName() + ".");
-        } else {
-          currentFeature = delegate;
         }
+        currentFeature = delegate;
       }
       tail = features.subList(1, features.size());
     }
@@ -312,13 +311,13 @@ public class SimpleFeatureExpression extends FeatureExpression {
 
   public MatchReference getMatchReference() {
 
-    return this.mr;
+    return mr;
   }
 
   @Override
   public String toString() {
 
-    return this.mr.getMatch();
+    return mr.getMatch();
   }
 
   private Collection<AnnotationFS> filterAnnotations(

@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -35,6 +35,7 @@ import org.apache.uima.ruta.engine.Ruta;
 import org.apache.uima.ruta.engine.RutaTestUtils;
 import org.apache.uima.ruta.engine.RutaTestUtils.TestFeature;
 import org.junit.jupiter.api.Test;
+
 public class FeatureStructureTest {
 
   @Test
@@ -42,21 +43,21 @@ public class FeatureStructureTest {
 
     String document = "Some text.";
 
-    Map<String, String> typeMap = new TreeMap<String, String>();
+    Map<String, String> typeMap = new TreeMap<>();
     String typeName1 = "A1";
     typeMap.put(typeName1, "uima.tcas.Annotation");
     String typeName2 = "FS1";
     typeMap.put(typeName2, "uima.cas.TOP");
 
-    Map<String, List<TestFeature>> featureMap = new TreeMap<String, List<TestFeature>>();
-    List<TestFeature> list = new ArrayList<RutaTestUtils.TestFeature>();
+    Map<String, List<TestFeature>> featureMap = new TreeMap<>();
+    List<TestFeature> list = new ArrayList<>();
     featureMap.put(typeName1, list);
     String fn1 = "fss";
     list.add(new TestFeature(fn1, "", "uima.cas.FSArray"));
     String fn2 = "fs";
     list.add(new TestFeature(fn2, "", "uima.cas.TOP"));
 
-    list = new ArrayList<RutaTestUtils.TestFeature>();
+    list = new ArrayList<>();
     featureMap.put(typeName2, list);
     String fn3 = "fss";
     list.add(new TestFeature(fn3, "", "uima.cas.FSArray"));
@@ -77,8 +78,7 @@ public class FeatureStructureTest {
     AnnotationFS a2 = cas.createAnnotation(type1, 5, 9);
     FeatureStructure fs1 = cas.createFS(type2);
     FeatureStructure fs2 = cas.createFS(type2);
-    FSArray<FeatureStructure> fsArray1 = FSCollectionFactory.createFSArray(cas.getJCas(),
-            new FeatureStructure[] { fs1, fs2 });
+    FSArray<FeatureStructure> fsArray1 = FSCollectionFactory.createFSArray(cas.getJCas(), fs1, fs2);
     fs1.setStringValue(type2s, "1");
     fs2.setStringValue(type2s, "2");
     fs1.setFeatureValue(type2fs, a2);
@@ -94,13 +94,17 @@ public class FeatureStructureTest {
     cas.addFsToIndexes(a2);
 
     StringBuilder script = new StringBuilder();
-    script.append("Document{-> A1, A1.fs = i.fs}<-{i:A1 PERIOD;};");
+    script.append("Document{-> A1, A1.fs = i.fs, A1.fss = i.fss}<-{i:A1 PERIOD;};");
     script.append("a:A1{IS(Document), a.fs.s == \"1\" -> T1};");
     script.append("a:A1{IS(Document), a.fs.s == \"2\" -> T2};");
+    script.append("a:A1{IS(Document), a.fss.s == \"5\" -> T3};");
+    script.append("a:A1{IS(Document), a.fss.s == \"2\" -> T4};");
     Ruta.apply(cas, script.toString());
 
     RutaTestUtils.assertAnnotationsEquals(cas, 1, 0);
     RutaTestUtils.assertAnnotationsEquals(cas, 2, 1, "Some text.");
+    RutaTestUtils.assertAnnotationsEquals(cas, 3, 0);
+    RutaTestUtils.assertAnnotationsEquals(cas, 4, 1, "Some text.");
 
   }
 

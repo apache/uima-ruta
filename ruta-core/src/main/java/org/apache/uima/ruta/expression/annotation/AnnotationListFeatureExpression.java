@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.ruta.RutaStream;
 import org.apache.uima.ruta.expression.feature.FeatureExpression;
@@ -47,7 +48,16 @@ public class AnnotationListFeatureExpression extends AbstractAnnotationListExpre
     List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
     Collection<? extends AnnotationFS> featureAnnotations = fe.getAnnotations(list, false, context,
             stream);
-    return new ArrayList<AnnotationFS>(featureAnnotations);
+    return new ArrayList<>(featureAnnotations);
+  }
+
+  @Override
+  public List<FeatureStructure> getFeatureStructureList(MatchContext context, RutaStream stream) {
+    AnnotationFS annotation = context.getAnnotation();
+    List<AnnotationFS> list = getTargetAnnotation(annotation, fe, context, stream);
+    Collection<? extends FeatureStructure> featureAnnotations = fe.getFeatureStructures(list, false,
+            context, stream);
+    return new ArrayList<>(featureAnnotations);
   }
 
   public FeatureExpression getFeatureExpression() {
