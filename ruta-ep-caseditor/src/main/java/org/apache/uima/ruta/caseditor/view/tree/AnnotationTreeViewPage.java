@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -75,7 +75,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -95,7 +94,7 @@ import org.eclipse.ui.part.Page;
 public class AnnotationTreeViewPage extends Page implements MouseListener, IDoubleClickListener,
         Listener, ISelectionListener, ICheckStateListener, IAnnotationEditorModifyListener {
 
-  public static enum ModifyAnnotationOperation {
+  public enum ModifyAnnotationOperation {
     WIDE_L, LOWER_L, WIDE_R, LOWER_R;
   }
 
@@ -151,10 +150,10 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   protected Text filterTypeTextField;
 
-  private Map<Type, Image> icons = new HashMap<Type, Image>();
+  private Map<Type, Image> icons = new HashMap<>();
 
   private Image rutaImage;
-  
+
   private Composite overlay;
 
   protected AnnotationEditor editor;
@@ -173,12 +172,12 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     super();
     this.useSelection = useSelection;
     this.editor = editor;
-    this.document = editor.getDocument();
+    document = editor.getDocument();
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.eclipse.ui.part.Page#init(org.eclipse.ui.part.IPageSite)
    */
   @Override
@@ -188,12 +187,21 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.eclipse.ui.part.Page#createControl(org.eclipse.swt.widgets.Composite)
    */
   @Override
   public void createControl(Composite parent) {
-    this.overlay = new Composite(parent, SWT.NONE);
+
+    if (overlay != null && !overlay.isDisposed()) {
+      overlay.dispose();
+    }
+    if (editor != null && styleListener != null) {
+      editor.getCasDocumentProvider().getTypeSystemPreferenceStore(editor.getEditorInput())
+              .removePropertyChangeListener(styleListener);
+      styleListener = null;
+    }
+    overlay = new Composite(parent, SWT.NONE);
 
     final Clipboard clipboard = new Clipboard(Display.getCurrent());
 
@@ -269,7 +277,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
       @Override
       public void keyPressed(KeyEvent e) {
-        
+
         int keyCode = e.keyCode;
         // backspace or delete: delete annotations
         if (keyCode == SWT.BS || keyCode == SWT.DEL) {
@@ -299,22 +307,22 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       }
 
       private Object[] getContents(TreeItem[] selection) {
-        
+
         List<String> list = new ArrayList<>();
         for (TreeItem item : selection) {
           Object data = item.getData();
-          if(data instanceof TypeTreeNode) {
+          if (data instanceof TypeTreeNode) {
             list.add(((TypeTreeNode) data).getType().getName());
-          } else if(data instanceof PrimitiveFeatureTreeNode) {
+          } else if (data instanceof PrimitiveFeatureTreeNode) {
             list.add(((PrimitiveFeatureTreeNode) data).getValue());
-          } else if(data instanceof AnnotationTreeNode) {
+          } else if (data instanceof AnnotationTreeNode) {
             list.add(((AnnotationTreeNode) data).getAnnotation().getCoveredText());
-          } else if(data instanceof ITreeNode) {
+          } else if (data instanceof ITreeNode) {
             list.add(((ITreeNode) data).getName());
           }
         }
-        
-        return new Object[]{StringUtils.join(list, "\n")};
+
+        return new Object[] { StringUtils.join(list, "\n") };
       }
 
     });
@@ -324,7 +332,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
             .addPropertyChangeListener(styleListener);
 
     rutaImage = RutaCasEditorPlugin.getImageDescriptor("/icons/views.png").createImage();
-    
+
     getSite().getPage().addSelectionListener(this);
     getSite().setSelectionProvider(treeView);
 
@@ -360,21 +368,21 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   /**
    * Unchecks all types of the typesystem so that they are not highlighted anymore.
-   * 
+   *
    */
   public void uncheckAll() {
-    editor.setShownAnnotationTypes(new LinkedList<Type>());
+    editor.setShownAnnotationTypes(new LinkedList<>());
     getTreeViewer().getTree().deselectAll();
   }
 
   /**
    * Checks all visible types of the tree to be highlighted.
-   * 
+   *
    */
   public void checkAllVisible() {
     TypeSystem ts = editor.getDocument().getCAS().getTypeSystem();
     Type documentAnnotationType = ts.getType(CAS.TYPE_NAME_DOCUMENT_ANNOTATION);
-    List<Type> selectedTypes = new LinkedList<Type>();
+    List<Type> selectedTypes = new LinkedList<>();
     for (TreeItem i : getTreeViewer().getTree().getItems()) {
       Object e = i.getData();
       if (e instanceof TypeTreeNode) {
@@ -390,15 +398,17 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.eclipse.ui.part.Page#dispose()
    */
   @Override
   public void dispose() {
+
     getSite().getPage().removeSelectionListener(this);
     editor.removeAnnotationListener(this);
     editor.getCasDocumentProvider().getTypeSystemPreferenceStore(editor.getEditorInput())
             .removePropertyChangeListener(styleListener);
+    getTreeViewer().getTree().dispose();
     overlay.dispose();
     Collection<Image> values = icons.values();
     for (Image image : values) {
@@ -410,7 +420,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.eclipse.ui.part.Page#getControl()
    */
   @Override
@@ -424,7 +434,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.eclipse.ui.part.Page#setFocus()
    */
   @Override
@@ -434,18 +444,18 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse
    * .jface.viewers.DoubleClickEvent)
    */
   @Override
   public void doubleClick(DoubleClickEvent event) {
-   
+
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt .events.MouseEvent)
    */
   @Override
@@ -498,7 +508,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
             "Are you sure you want to delete these items?")) {
 
       TreeItem[] items = treeView.getTree().getSelection();
-      HashSet<AnnotationFS> annots = new HashSet<AnnotationFS>();
+      HashSet<AnnotationFS> annots = new HashSet<>();
 
       for (TreeItem it : items) {
         if (it.getData() instanceof AnnotationTreeNode) {
@@ -521,7 +531,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events .MouseEvent)
    */
   @Override
@@ -533,11 +543,12 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       item.setText("Set Annotation Mode");
       item.setImage(rutaImage);
       item.addListener(SWT.Selection, new Listener() {
+        @Override
         public void handleEvent(Event e) {
           TreeItem item = treeView.getTree().getItem(new Point(mouseEvent.x, mouseEvent.y));
           if (item != null && item.getData() instanceof AbstractTreeNode) {
             Type type = ((AbstractTreeNode) item.getData()).getType();
-            if(type != null) {
+            if (type != null) {
               getTreeViewer().setGrayed(new TypeTreeNode(null, type), false);
               editor.setAnnotationMode(type);
             }
@@ -548,8 +559,9 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       menu.setVisible(true);
 
       while (!menu.isDisposed() && menu.isVisible()) {
-        if (!display.readAndDispatch())
+        if (!display.readAndDispatch()) {
           display.sleep();
+        }
       }
       menu.dispose();
     }
@@ -558,7 +570,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @seeorg.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events. MouseEvent)
    */
   @Override
@@ -592,7 +604,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
     Color bg = new Color(Display.getCurrent(), style.getColor().getRed(),
             style.getColor().getGreen(), style.getColor().getBlue());
 
-    PaletteData paletteData = new PaletteData(new RGB[] { bg.getRGB(), fg.getRGB() });
+    PaletteData paletteData = new PaletteData(bg.getRGB(), fg.getRGB());
     ImageData imageData = new ImageData(40, 40, 1, paletteData);
 
     Image image = new Image(Display.getCurrent(), imageData);
@@ -663,8 +675,9 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
 
   @Override
   public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-    if (!useSelection)
+    if (!useSelection) {
       return;
+    }
     if (selection instanceof StructuredSelection && part instanceof AnnotationEditor) {
       offset = editor.getCaretOffset();
       reloadTree();
@@ -734,7 +747,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
       type = ((AnnotationTreeNode) element).getType();
     }
     Type modeType = editor.getAnnotationMode();
-    if(!checked && modeType != null  && modeType.equals(type)) {
+    if (!checked && modeType != null && modeType.equals(type)) {
       // reset mode to uima.tcas.Annotation if deselected
       getTreeViewer().setGrayed(new TypeTreeNode(null, type), false);
       Type annotationType = editor.getDocument().getCAS().getAnnotationType();
@@ -757,7 +770,7 @@ public class AnnotationTreeViewPage extends Page implements MouseListener, IDoub
   }
 
   private List<TypeTreeNode> toNodes(Collection<Type> shownAnnotationTypes) {
-    List<TypeTreeNode> nodes = new ArrayList<TypeTreeNode>();
+    List<TypeTreeNode> nodes = new ArrayList<>();
     for (Type type : shownAnnotationTypes) {
       nodes.add(new TypeTreeNode(null, type));
     }
