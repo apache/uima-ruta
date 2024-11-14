@@ -18,24 +18,12 @@
  */
 package org.apache.uima.ruta.type.spi;
 
-import static org.apache.uima.util.TypeSystemUtil.loadTypeSystemDescriptionsFromClasspath;
+import org.apache.uima.spi.TypeSystemProvider_ImplBase;
 
-import java.util.ArrayList;
-import java.util.List;
+public class RutaTypeSystemDescriptionProvider extends TypeSystemProvider_ImplBase {
 
-import org.apache.uima.jcas.cas.TOP;
-import org.apache.uima.resource.metadata.TypeDescription;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.spi.JCasClassProvider;
-import org.apache.uima.spi.TypeSystemDescriptionProvider;
-
-public class RutaTypeSystemDescriptionProvider
-        implements TypeSystemDescriptionProvider, JCasClassProvider {
-
-  @Override
-  public List<TypeSystemDescription> listTypeSystemDescriptions() {
-
-    return loadTypeSystemDescriptionsFromClasspath(getClass(), //
+  public RutaTypeSystemDescriptionProvider() {
+    setTypeSystemLocations( //
             "/org/apache/uima/ruta/engine/BasicTypeSystem.xml", //
             "/org/apache/uima/ruta/engine/DefaultSeederTypeSystem.xml", //
             "/org/apache/uima/ruta/engine/HtmlTypeSystem.xml", //
@@ -43,26 +31,5 @@ public class RutaTypeSystemDescriptionProvider
             "/org/apache/uima/ruta/engine/RutaBasicTypeSystem.xml", //
             "/org/apache/uima/ruta/engine/RutaInternalTypeSystem.xml", //
             "/org/apache/uima/ruta/engine/SourceDocumentInformation.xml");
-  }
-
-  @SuppressWarnings("unchecked")
-@Override
-  public List<Class<? extends TOP>> listJCasClasses() {
-
-    List<Class<? extends TOP>> classes = new ArrayList<>();
-    ClassLoader cl = getClass().getClassLoader();
-
-    List<TypeSystemDescription> typeSystemDescriptions = listTypeSystemDescriptions();
-    for (TypeSystemDescription tsd : typeSystemDescriptions) {
-      for (TypeDescription td : tsd.getTypes()) {
-        try {
-          classes.add((Class<? extends TOP>) cl.loadClass(td.getName()));
-        } catch (ClassNotFoundException e) {
-          // This is acceptable - there may not be a JCas class
-        }
-      }
-    }
-
-    return classes;
   }
 }

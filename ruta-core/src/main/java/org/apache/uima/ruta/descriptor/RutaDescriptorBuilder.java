@@ -84,12 +84,13 @@ public class RutaDescriptorBuilder {
           throws InvalidXMLException, ResourceInitializationException, IOException,
           URISyntaxException {
 
-    TypeSystemDescription typeSystemDescription = uimaFactory.createTypeSystemDescription();
+    var typeSystemDescription = uimaFactory.createTypeSystemDescription();
 
     ResourceManager rm = UIMAFramework.newDefaultResourceManager();
     if (options.getClassLoader() != null) {
       rm = new ResourceManager_impl(options.getClassLoader());
     }
+
     if (enginePaths != null) {
       String dataPath = "";
       for (String string : enginePaths) {
@@ -97,12 +98,15 @@ public class RutaDescriptorBuilder {
       }
       rm.setDataPath(dataPath);
     }
-    Map<String, String> typeNameMap = new HashMap<>();
-    TypeSystemDescription initialTypeSystem = UIMAFramework.getXMLParser()
+
+    var typeNameMap = new HashMap<String, String>();
+    var initialTypeSystem = UIMAFramework.getXMLParser()
             .parseTypeSystemDescription(new XMLInputSource(defaultTypeSystem));
+
     CAS cas = CasCreationUtils.createCas(initialTypeSystem, null, new FsIndexDescription[0]);
     fillTypeNameMap(typeNameMap, cas.getTypeSystem());
     cas.release();
+
     List<TypeSystemDescription> toInclude = new ArrayList<>();
     List<Import> importList = new ArrayList<>();
     Import_impl import_impl = new Import_impl();
@@ -132,16 +136,18 @@ public class RutaDescriptorBuilder {
     }
     addImportIfValid(importList, import_impl);
 
-    RutaResourceLoader descriptorRutaResourceLoader = new RutaResourceLoader(enginePaths,
+    var descriptorRutaResourceLoader = new RutaResourceLoader(rm, enginePaths,
             options.getClassLoader());
 
     for (String eachName : desc.getImportedTypeSystems()) {
       Resource resource = descriptorRutaResourceLoader.getResourceWithDotNotation(eachName, ".xml");
+
       URL url = null;
       boolean include = false;
       if (resource != null) {
         url = resource.getURL();
       }
+
       if (url == null) {
         url = checkImportExistence(eachName, ".xml", options.getClassLoader());
         include = true;
@@ -150,6 +156,7 @@ public class RutaDescriptorBuilder {
                   "Build process can't find " + eachName + " in " + desc.getScriptName());
         }
       }
+
       TypeSystemDescription each = getTypeSystemDescriptor(url, rm);
       if (each != null) {
         fillTypeNameMap(typeNameMap, each);
