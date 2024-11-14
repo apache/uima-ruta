@@ -119,7 +119,6 @@
     
     <tycho-version>4.0.4</tycho-version>
 
-
     <uima-version>3.5.0</uima-version>
     <uimafit-version>3.5.0</uimafit-version>
     <spring-version>5.3.30</spring-version>
@@ -621,25 +620,6 @@
         </configuration>
       </plugin>
       
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-toolchains-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>toolchain</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <toolchains>
-            <jdk>
-              <version>${maven.compiler.target}</version>
-            </jdk>
-          </toolchains>
-        </configuration>
-      </plugin>
-
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
