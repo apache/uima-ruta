@@ -19,9 +19,15 @@
 
 package org.apache.uima.ruta.resource;
 
+import org.apache.uima.UIMAFramework;
+import org.apache.uima.UimaContextAdmin;
+import org.apache.uima.UimaContextHolder;
+import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.util.InvalidXMLException;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 /**
@@ -31,6 +37,8 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
  * found.
  */
 public class RutaResourceLoader implements ResourceLoader {
+
+  private final ResourceManager resMgr;
 
   private final ResourceLoader wrapped;
 
@@ -46,7 +54,8 @@ public class RutaResourceLoader implements ResourceLoader {
    * @param classLoader
    *          optional classloader for fallback resource loader
    */
-  public RutaResourceLoader(String[] paths, ClassLoader classLoader) {
+  public RutaResourceLoader(ResourceManager resMgr, String[] paths, ClassLoader classLoader) {
+    this.resMgr = resMgr;
     this.wrapped = new PathMatchingResourcePatternResolver(new ResourcePathResourceLoader(
             paths));
     if(classLoader == null) {
@@ -58,12 +67,16 @@ public class RutaResourceLoader implements ResourceLoader {
     this.fallback2 = new DefaultResourceLoader();
   }
 
+  public RutaResourceLoader(String[] paths, ClassLoader classLoader) {
+    this(null, paths, classLoader);
+  }
+
   /**
    * @param paths
    *          paths to search in priority.
    */
   public RutaResourceLoader(String[] paths) {
-    this(paths, null);
+    this(null, paths, null);
   }
 
 
@@ -84,7 +97,28 @@ public class RutaResourceLoader implements ResourceLoader {
 
   public Resource getResourceWithDotNotation(String location, String extension) {
     String path = location.replaceAll("[.]", "/") + extension;
-    return getResource(path);
+    var resource = getResource(path);
+
+    var rm = resMgr;
+    if (rm == null && UimaContextHolder.getContext() instanceof UimaContextAdmin ctxAdm) {
+      rm = ctxAdm.getResourceManager();
+    }
+
+    if (rm != null && !resource.exists()) {
+      try {
+        var descImport = UIMAFramework.getResourceSpecifierFactory().createImport();
+        descImport.setName(location);
+        var url = descImport.findAbsoluteUrl(rm);
+        if (url != null) {
+          return new UrlResource(url);
+        }
+      } catch (InvalidXMLException e) {
+        // Unable to resolve the resource through the resource manager - let's fall back to the
+        // non-existing resource from earlier
+      }
+    }
+
+    return resource;
   }
 
   @Override

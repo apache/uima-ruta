@@ -717,7 +717,7 @@ public class RutaEnvironment {
     RutaTable result = tables.get(table);
     if (result == null) {
       if (table.endsWith("csv") || table.endsWith("txt") || table.endsWith("tsv")) {
-        ResourceLoader resourceLoader = new RutaResourceLoader(getResourcePaths(),
+        var resourceLoader = new RutaResourceLoader(getResourceManager(), getResourcePaths(),
                 getResourceManager().getExtensionClassLoader());
         Resource resource = resourceLoader.getResource(table);
         if (resource.exists()) {

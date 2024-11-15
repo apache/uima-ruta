@@ -653,9 +653,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     initializeResourceManager();
     handleDataPath();
 
-    scriptRutaResourceLoader = new RutaResourceLoader(scriptPaths,
+    scriptRutaResourceLoader = new RutaResourceLoader(resourceManager, scriptPaths,
             resourceManager.getExtensionClassLoader());
-    descriptorRutaResourceLoader = new RutaResourceLoader(descriptorPaths,
+    descriptorRutaResourceLoader = new RutaResourceLoader(resourceManager, descriptorPaths,
             resourceManager.getExtensionClassLoader());
 
     if (!externalFactory.isInitialized()) {
