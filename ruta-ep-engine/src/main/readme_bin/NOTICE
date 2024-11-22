@@ -23,17 +23,17 @@ licensed under the MIT License.
 ################################################################################
 
 This product contains Apache Commons Collections
-Copyright 2001-2019 The Apache Software Foundation
+Copyright 2001-2024 The Apache Software Foundation
 
 ################################################################################
 
 This product contains Apache Commons IO
-Copyright 2002-2021 The Apache Software Foundation
+Copyright 2002-2024 The Apache Software Foundation
 
 ################################################################################
 
 This product contains Apache Commons Lang
-Copyright 2001-2021 The Apache Software Foundation
+Copyright 2001-2024 The Apache Software Foundation
 
 ################################################################################
 
@@ -60,8 +60,8 @@ Copyright 2014-2020 The Apache Software Foundation
 
 ################################################################################
 
-Spring Framework 5.3.30
-Copyright (c) 2002-2023 Pivotal, Inc.
+Spring Framework 6.1.15
+Copyright (c) 2002-2024 Pivotal, Inc.
 
 This product is licensed to you under the Apache License, Version 2.0
 (the "License"). You may not use this product except in compliance with
