@@ -18,94 +18,77 @@
  */
 package org.apache.uima.ruta.maven;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.codehaus.plexus.util.FileUtils.copyDirectoryStructure;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 
-import org.apache.maven.execution.DefaultMavenExecutionRequest;
-import org.apache.maven.execution.MavenExecutionRequest;
-import org.apache.maven.plugin.testing.AbstractMojoTestCase;
+import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.ProjectBuilder;
-import org.apache.maven.project.ProjectBuildingRequest;
-import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.apache.uima.UIMAFramework;
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.Type;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.util.XMLInputSource;
-import org.codehaus.plexus.util.FileUtils;
-import org.eclipse.aether.RepositorySystemSession;
-import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
 
-public class RutaGenerateDescriptorMojoTest extends AbstractMojoTestCase {
+public class RutaGenerateDescriptorMojoTest {
 
+  public @Rule MojoRule rule = new MojoRule();
+
+  @Test
   public void testSimple() throws Exception {
     MavenProject project = build("simple");
-    
-    File descDirectory = new File(project.getBasedir(), "target/generated-sources/ruta/descriptor");
-    File aeFile = new File(descDirectory, "SimpleEngine.xml");
-    Assert.assertTrue(aeFile.exists());
-    File tsFile = new File(descDirectory, "SimpleTypeSystem.xml");
-    Assert.assertTrue(tsFile.exists());
-    
-    AnalysisEngineDescription aed = UIMAFramework.getXMLParser().parseAnalysisEngineDescription(new XMLInputSource(aeFile));
-    AnalysisEngine ae = UIMAFramework.produceAnalysisEngine(aed);
-    
-    CAS cas = ae.newCAS();
+
+    var descDirectory = new File(project.getBasedir(), "target/generated-sources/ruta/descriptor");
+    var aeFile = new File(descDirectory, "SimpleEngine.xml");
+    assertThat(aeFile).exists();
+
+    var tsFile = new File(descDirectory, "SimpleTypeSystem.xml");
+    assertThat(tsFile).exists();
+
+    var aed = UIMAFramework.getXMLParser()
+            .parseAnalysisEngineDescription(new XMLInputSource(aeFile));
+    var ae = UIMAFramework.produceAnalysisEngine(aed);
+
+    var cas = ae.newCAS();
     cas.setDocumentText("This is a test.");
     ae.process(cas);
-    
-    Type type = cas.getTypeSystem().getType("Simple.MyType");
-    AnnotationIndex<AnnotationFS> ai = cas.getAnnotationIndex(type);
-    assertEquals(1, ai.size());
-    assertEquals("is", ai.iterator().next().getCoveredText());
-    
-    cas.release();
-    
+
+    assertThat(cas.<Annotation> select("Simple.MyType").asList()) //
+            .extracting(Annotation::getCoveredText) //
+            .containsExactly("is");
   }
 
-  
-  
   public MavenProject build(String projectName) throws Exception {
 
-    File projectSourceDirectory = getTestFile("src/test/resources/" + projectName);
-    File projectDirectory = getTestFile("target/project-" + projectName + "-test");
+    var projectSourceDirectory = new File("src/test/resources/" + projectName);
+    var projectDirectory = new File("target/project-" + projectName + "-test");
 
     // Stage project to target folder
-    FileUtils.copyDirectoryStructure(projectSourceDirectory, projectDirectory);
-    
-    File pomFile = new File(projectDirectory, "/pom.xml");
-    assertNotNull(pomFile);
-    assertTrue(pomFile.exists());
+    copyDirectoryStructure(projectSourceDirectory, projectDirectory);
 
     // create the MavenProject from the pom.xml file
-    RepositorySystemSession session = MavenRepositorySystemUtils.newSession();
-    MavenExecutionRequest executionRequest = new DefaultMavenExecutionRequest();
-    ProjectBuildingRequest buildingRequest = executionRequest.getProjectBuildingRequest();
-    buildingRequest.setRepositorySession(session);
-    ProjectBuilder projectBuilder = this.lookup(ProjectBuilder.class);
-    MavenProject project = projectBuilder.build(pomFile, buildingRequest).getProject();
+    var project = rule.readMavenProject(projectDirectory);
     assertNotNull(project);
 
     // copy resources
-    File resource = new File(projectDirectory, "src/main/resources");
+    var resource = new File(projectDirectory, "src/main/resources");
     if (resource.exists()) {
-      FileUtils.copyDirectoryStructure(resource, new File(project.getBuild().getOutputDirectory()));
+      copyDirectoryStructure(resource, new File(project.getBuild().getOutputDirectory()));
     }
-    
-    File ruta = new File(projectDirectory, "src/main/ruta");
+
+    var ruta = new File(projectDirectory, "src/main/ruta");
     if (ruta.exists()) {
-      FileUtils.copyDirectoryStructure(ruta, new File(project.getBuild().getOutputDirectory()));
+      copyDirectoryStructure(ruta, new File(project.getBuild().getOutputDirectory()));
     }
-    
+
     // load the Mojo
-    RutaGenerateDescriptorMojo generate = (RutaGenerateDescriptorMojo) this.lookupConfiguredMojo(project, "generate");
+    var generate = (RutaGenerateDescriptorMojo) rule.lookupConfiguredMojo(project, "generate");
     assertNotNull(generate);
 
     // set the MavenProject on the Mojo (AbstractMojoTestCase does not do this by default)
-    setVariableValueToObject(generate, "project", project);
+    rule.setVariableValueToObject(generate, "project", project);
 
     // execute the Mojo
     generate.execute();
