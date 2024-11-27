@@ -38,7 +38,7 @@ This is a feature and bugfix release.
 * ⚙️ Issue #176: Upgrade dependencies
 * ⭐️ Issue #177: Consider resource manager when loading type descriptions
 
-**Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.4.1...ruta-3.5.0
+**Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.4.1...rel/ruta-3.5.0
 
 Please use the [mailing lists](https://uima.apache.org/mail-lists.html) for feedback and the [issue tracker](https://github.com/apache/uima-ruta/issues) to report bugs.
 
