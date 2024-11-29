@@ -32,11 +32,13 @@ This is a feature and bugfix release.
 
 ## What's Changed
 
+* ⭐️ Issue #170: Type based annotation assignments should only add visible annotations
+* ⭐️ Issue #171: Support implicit FSArray assigments with FeatureStructures
+* ⭐️ Issue #177: Consider resource manager when loading type descriptions
 * 🦟 Issue #169: Annotation assignment not working correctly
 * 🦟 Issue #173: Potential memory leak in Annotation Browser View
 * ⚙️ Issue #179: Remove toolchains
 * ⚙️ Issue #176: Upgrade dependencies
-* ⭐️ Issue #177: Consider resource manager when loading type descriptions
 
 **Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.4.1...rel/ruta-3.5.0
 
