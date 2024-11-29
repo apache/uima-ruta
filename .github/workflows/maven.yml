@@ -1,0 +1,63 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main", "release/**" ]
+  pull_request:
+    branches: [ "main", "release/**" ]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        jdk: [17]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref || github.ref }}
+
+    - name: Set up JDK ${{ matrix.jdk }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.jdk }}
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Set up Maven version on Windows
+      if: runner.os == 'Windows'
+      run: |
+        echo "Downloading Maven for Windows..."
+        curl -fsSL https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip -o maven.zip
+        Expand-Archive -Path maven.zip -DestinationPath $Env:USERPROFILE
+        echo "Adding Maven to PATH..."
+        echo "$Env:USERPROFILE\\apache-maven-3.9.9\\bin" >> $Env:GITHUB_PATH
+
+    - name: Set up Maven version on Linux
+      if: runner.os == 'Linux'
+      run: |
+        echo "Downloading Maven..."
+        curl -fsSL https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz -o maven.tar.gz
+        tar -xzf maven.tar.gz
+        mv apache-maven-3.9.9 $HOME/maven
+        echo "Adding Maven to PATH..."
+        echo "$HOME/maven/bin" >> $GITHUB_PATH
+
+    - name: Verify Maven version
+      run: mvn --version
+
+    - name: Build with Maven
+      run: mvn --no-transfer-progress -B clean verify --file pom.xml
