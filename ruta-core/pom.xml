@@ -171,8 +171,7 @@
                   <exclude>src/main/resources/META-INF/org.apache.uima.fit/*.txt</exclude>
                   <exclude>input/**</exclude> <!-- temp test data -->
                   <exclude>TypeSystem.xml</exclude> <!-- temp test data -->
-                  <exclude>src/main/resources/META-INF/services/org.apache.uima.spi.JCasClassProvider</exclude>
-                  <exclude>src/main/resources/META-INF/services/org.apache.uima.spi.TypeSystemDescriptionProvider</exclude>
+                  <exclude>src/main/resources/META-INF/services/org.apache.uima.spi.TypeSystemProvider</exclude>
                 </excludes>
               </configuration>
             </execution>
@@ -243,8 +242,7 @@
               osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)";resolution:=optional
             </Require-Capability>
             <Provide-Capability>
-              osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.TypeSystemDescriptionProvider,
-              osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.JCasClassProvider
+              osgi.serviceloader;osgi.serviceloader=org.apache.uima.spi.TypeSystemProvider
             </Provide-Capability>
           </instructions>
         </configuration>
