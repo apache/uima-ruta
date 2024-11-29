@@ -37,10 +37,21 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Set up Maven version
+    - name: Set up Maven version on Windows
+      if: runner.os == 'Windows'
+      run: |
+        echo "Downloading Maven for Windows..."
+        curl -fsSL https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip -o maven.zip
+        Expand-Archive -Path maven.zip -DestinationPath $Env:USERPROFILE
+        echo "Setting Maven environment variables..."
+        echo "M2_HOME=$Env:USERPROFILE\\apache-maven-3.9.9" >> $Env:GITHUB_ENV
+        echo "PATH=$Env:M2_HOME\\bin;$Env:PATH" >> $Env:GITHUB_ENV
+  
+    - name: Set up Maven version on Linux
+      if: runner.os == 'Linux'
       run: |
         echo "Downloading Maven..."
-        curl -fsSL https://downloads.apache.org/maven/maven-3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz -o maven.tar.gz
+        curl -fsSL https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz -o maven.tar.gz
         tar -xzf maven.tar.gz
         sudo mv apache-maven-3.9.9 /opt/maven
         sudo ln -s /opt/maven/bin/mvn /usr/bin/mvn
