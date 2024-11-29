@@ -37,5 +37,16 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
+    - name: Set up Maven version
+      run: |
+        echo "Downloading Maven..."
+        curl -fsSL https://downloads.apache.org/maven/maven-3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz -o maven.tar.gz
+        tar -xzf maven.tar.gz
+        sudo mv apache-maven-3.9.9 /opt/maven
+        sudo ln -s /opt/maven/bin/mvn /usr/bin/mvn
+
+    - name: Verify Maven version
+      run: mvn --version
+
     - name: Build with Maven
-      run: mvn -X --no-transfer-progress -B clean verify --file pom.xml
+      run: mvn --no-transfer-progress -B clean verify --file pom.xml
