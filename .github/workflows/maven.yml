@@ -29,7 +29,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref || github.ref }}
-        
+
     - name: Set up JDK ${{ matrix.jdk }}
       uses: actions/setup-java@v4
       with:
@@ -46,15 +46,16 @@ jobs:
         echo "Setting Maven environment variables..."
         echo "M2_HOME=$Env:USERPROFILE\\apache-maven-3.9.9" >> $Env:GITHUB_ENV
         echo "PATH=$Env:M2_HOME\\bin;$Env:PATH" >> $Env:GITHUB_ENV
-  
+
     - name: Set up Maven version on Linux
       if: runner.os == 'Linux'
       run: |
         echo "Downloading Maven..."
         curl -fsSL https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz -o maven.tar.gz
         tar -xzf maven.tar.gz
-        sudo mv apache-maven-3.9.9 /opt/maven
-        sudo ln -s /opt/maven/bin/mvn /usr/bin/mvn
+        mv apache-maven-3.9.9 $HOME/maven
+        echo "Adding Maven to PATH..."
+        echo "$HOME/maven/bin" >> $GITHUB_PATH
 
     - name: Verify Maven version
       run: mvn --version
