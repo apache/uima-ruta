@@ -43,9 +43,8 @@ jobs:
         echo "Downloading Maven for Windows..."
         curl -fsSL https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip -o maven.zip
         Expand-Archive -Path maven.zip -DestinationPath $Env:USERPROFILE
-        echo "Setting Maven environment variables..."
-        echo "M2_HOME=$Env:USERPROFILE\\apache-maven-3.9.9" >> $Env:GITHUB_ENV
-        echo "PATH=$Env:M2_HOME\\bin;$Env:PATH" >> $Env:GITHUB_ENV
+        echo "Adding Maven to PATH..."
+        echo "$Env:USERPROFILE\\apache-maven-3.9.9\\bin" >> $Env:GITHUB_PATH
 
     - name: Set up Maven version on Linux
       if: runner.os == 'Linux'
