@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>ruta-parent</artifactId>
-    <version>3.5.1-SNAPSHOT</version>
+    <version>3.5.0</version>
     <relativePath>ruta-parent/pom.xml</relativePath>
   </parent>
 
@@ -41,7 +41,7 @@
     <connection>scm:git:https://github.com/apache/uima-ruta/</connection>
     <developerConnection>scm:git:https://github.com/apache/uima-ruta/</developerConnection>
     <url>https://github.com/apache/uima-ruta/</url>
-    <tag>HEAD</tag>
+    <tag>ruta-3.5.0</tag>
   </scm>
 
   <!-- dependencies used during assembly -->
@@ -230,7 +230,7 @@
                     <!-- dir="${basedir}/example-projects/ExtensionsExample/" -->
                     <!-- includes=".project" -->
                     <!-- prefix="${project.artifactId}-${project.version}/example-projects/ExtensionsExample/" 
-                                    /> -->
+                                     /> -->
                     <!-- </zip> -->
                     <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
                       <zipfileset dir="${basedir}/example-projects/TextRulerExample/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/TextRulerExample/" />
@@ -241,7 +241,7 @@
                     <!-- <zipfileset dir="${basedir}/example-projects/GermanNovels/" -->
                     <!-- includes=".project" -->
                     <!-- prefix="${project.artifactId}-${project.version}/example-projects/GermanNovels/" 
-                                    /> -->
+                                     /> -->
                     <!-- </zip> -->
                     <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" update="true">
                       <zipfileset dir="${basedir}/example-projects/Misc/" includes=".project" prefix="${project.artifactId}-${project.version}/example-projects/Misc/" />
