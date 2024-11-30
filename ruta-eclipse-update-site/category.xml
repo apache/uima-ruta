@@ -20,7 +20,7 @@
    ***************************************************************
    -->
 <site>
-   <feature url="features/org.apache.uima.ruta.feature_3.5.0.jar" id="org.apache.uima.ruta.feature" version="3.5.0">
+   <feature url="features/org.apache.uima.ruta.feature_3.5.1.qualifier.jar" id="org.apache.uima.ruta.feature" version="3.5.1.qualifier">
       <category name="apache-uima-ruta"/>
    </feature>
    <category-def name="apache-uima-ruta" label="Apache UIMA Ruta">
