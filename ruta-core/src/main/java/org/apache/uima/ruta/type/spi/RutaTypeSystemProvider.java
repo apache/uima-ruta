@@ -20,9 +20,9 @@ package org.apache.uima.ruta.type.spi;
 
 import org.apache.uima.spi.TypeSystemProvider_ImplBase;
 
-public class RutaTypeSystemDescriptionProvider extends TypeSystemProvider_ImplBase {
+public class RutaTypeSystemProvider extends TypeSystemProvider_ImplBase {
 
-  public RutaTypeSystemDescriptionProvider() {
+  public RutaTypeSystemProvider() {
     setTypeSystemLocations( //
             "/org/apache/uima/ruta/engine/BasicTypeSystem.xml", //
             "/org/apache/uima/ruta/engine/DefaultSeederTypeSystem.xml", //
