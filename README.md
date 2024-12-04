@@ -75,7 +75,7 @@ The UIMA Ruta Workbench can be installed via Eclipse update site [https://downlo
 Building from the Source Distribution
 -------------------------------------
 
-We use Maven 3.8.1 and Java 17 or later for building; download this if needed, 
+We use Maven 3.9.9 and Java 17 or later for building; download this if needed, 
 and set the environment variable `MAVEN_OPTS` to `-Xmx800m`.
 
 Then do the build by going into the UIMA Ruta directory, and issuing the command
