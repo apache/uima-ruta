@@ -19,7 +19,7 @@
 ***************************************************************
 -->
    
-# Apache UIMA Ruta (TM) v3.4.1
+# Apache UIMA Ruta (TM) v3.5.0
 
 Apache UIMA Ruta™ is a rule-based script language supported by Eclipse-based tooling.
 The language is designed to enable rapid development of text processing applications within Apache UIMA&#8482;. 
@@ -31,26 +31,23 @@ Ruta rule language and the Ruta Workbench integrate smoothly with Apache UIMA.
 This is a feature and bugfix release.
 
 ## What's Changed
-* 🦟 Issue #159: Assignment of composed number expression is broken
-* 🦟 Issue #161: Right to left wildcard matches too much
 
-**Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.4.0...ruta-3.4.1
+* ⭐️ Issue #170: Type based annotation assignments should only add visible annotations
+* ⭐️ Issue #171: Support implicit FSArray assigments with FeatureStructures
+* ⭐️ Issue #177: Consider resource manager when loading type descriptions
+* 🦟 Issue #169: Annotation assignment not working correctly
+* 🦟 Issue #173: Potential memory leak in Annotation Browser View
+* ⚙️ Issue #179: Remove toolchains
+* ⚙️ Issue #176: Upgrade dependencies
+
+**Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.4.1...rel/ruta-3.5.0
 
 Please use the [mailing lists](https://uima.apache.org/mail-lists.html) for feedback and the [issue tracker](https://github.com/apache/uima-ruta/issues) to report bugs.
 
-## Compatibility notes for v3.4.x
-* The modules `ruta-typesystem` and `ruta-basic-type` do no longer exist as separate modules. They have
-  been merged into the `ruta-core` module.
-* Parts of the `ruta-core-ext` module have been merged into the `ruta-core` module as well. The merged
-  extensions remain extensions and did not become part of the Ruta language. Check what remains in
-  the `ruta-core-ext` module and remove any dependencies on it if you do not need the extensions it
-  provides.
-
 ## Supported Platforms
 
-UIMA Ruta 3.4.1 should be used in combination with
+UIMA Ruta 3.5.0 should be used in combination with
 
 - Java 17 or higher
-- UIMA Java SDK 3.5.0 or higher
-- uimaFIT 3.5.0 or higher
-- Spring Framework 5.3.30 or higher
+- UIMA Java SDK / uimaFIT 3.6.0 or higher
+- Spring Framework 6.1.15 or higher
