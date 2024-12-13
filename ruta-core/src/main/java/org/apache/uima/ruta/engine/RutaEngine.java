@@ -21,6 +21,7 @@ package org.apache.uima.ruta.engine;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.joining;
+import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,7 +50,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.UimaContextAdmin;
 import org.apache.uima.analysis_component.AnalysisComponent;
 import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
@@ -59,11 +59,11 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
-import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.internal.ResourceManagerFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceManager;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.ruta.FilterManager;
 import org.apache.uima.ruta.ReindexUpdateMode;
 import org.apache.uima.ruta.RutaBasicUtils;
@@ -1094,8 +1094,9 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
     AnalysisEngine eachEngine = null;
     try {
       Class<? extends AnalysisComponent> uimafitClass = loadClass(eachUimafitEngine);
-      List<String> configurationData = script.getConfigurationData(eachUimafitEngine);
-      AnalysisEngineDescription aed = AnalysisEngineFactory.createEngineDescription(uimafitClass,
+      var configurationData = script.getConfigurationData(eachUimafitEngine);
+      // We pass a null type-system to avoid that uimaFIT does a TS scan itself (which can be slow)
+      var aed = createEngineDescription(uimafitClass, (TypeSystemDescription) null,
               configurationData.toArray());
       eachEngine = UIMAFramework.produceAnalysisEngine(aed, resourceManager, null);
     } catch (ClassNotFoundException | ResourceInitializationException e) {
@@ -1132,8 +1133,7 @@ public class RutaEngine extends JCasAnnotator_ImplBase {
             + classLoaderList + "]: " + errorList);
   }
 
-  private <T> Class<T> loadClass(String className)
-          throws ClassNotFoundException {
+  private <T> Class<T> loadClass(String className) throws ClassNotFoundException {
     ClassLoader extCl = resourceManager.getExtensionClassLoader();
     ClassLoader tccl = Thread.currentThread().getContextClassLoader();
     ClassLoader local = getClass().getClassLoader();
