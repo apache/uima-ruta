@@ -89,7 +89,7 @@
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>ruta-maven-plugin</artifactId>
-      <version>3.4.1</version>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 
@@ -100,23 +100,11 @@
 
     <module>ruta-maven-plugin</module>
     <module>ruta-maven-archetype</module>
-
-    <module>ruta-ep-parent</module>
-    <module>ruta-ep-engine</module>
-    <module>ruta-ep-ide</module>
-    <module>ruta-ep-ide-ui</module>
-    <module>ruta-ep-caseditor</module>
-    <module>ruta-ep-addons</module>
-    <module>ruta-ep-textruler</module>
-    <module>ruta-ep-core-ext</module>
-    <module>ruta-eclipse-feature</module>
-    <module>ruta-eclipse-update-site</module>
+    <module>example-projects/ruta-maven-example</module>
 
     <module>ruta-documentation</module>
-
-    <module>example-projects/ruta-ep-example-extensions</module>
-    <module>example-projects/ruta-maven-example</module>
   </modules>
+
   <build>
     <pluginManagement>
       <plugins>
@@ -160,6 +148,60 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>build-eclipse-plugins</id>
+      <activation>
+        <property>
+          <name>!disable-build-eclipse-plugins</name>
+        </property>
+      </activation>
+      <modules>
+        <module>ruta-ep-parent</module>
+        <module>ruta-ep-engine</module>
+        <module>ruta-ep-ide</module>
+        <module>ruta-ep-ide-ui</module>
+        <module>ruta-ep-caseditor</module>
+        <module>ruta-ep-addons</module>
+        <module>ruta-ep-textruler</module>
+        <module>ruta-ep-core-ext</module>
+        <module>ruta-eclipse-feature</module>
+        <module>ruta-eclipse-update-site</module>
+        <module>example-projects/ruta-ep-example-extensions</module>
+      </modules>
+        <!-- dependencies used during assembly -->
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.uima</groupId>
+          <artifactId>ruta-ep-addons</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.uima</groupId>
+          <artifactId>ruta-ep-caseditor</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.uima</groupId>
+          <artifactId>ruta-ep-engine</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.uima</groupId>
+          <artifactId>ruta-ep-ide</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.uima</groupId>
+          <artifactId>ruta-ep-textruler</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.uima</groupId>
+          <artifactId>ruta-ep-core-ext</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
     <profile>
       <id>apache-release-rc-auto-staging-config</id>
       <activation>
