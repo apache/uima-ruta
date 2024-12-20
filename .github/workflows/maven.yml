@@ -19,6 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        language: [ 'java' ]
         os: [ubuntu-latest, windows-latest]
         jdk: [17]
 
@@ -36,16 +37,25 @@ jobs:
         java-version: ${{ matrix.jdk }}
         distribution: 'temurin'
         cache: maven
+        server-id: apache.snapshots.https
+        server-username: NEXUS_USERNAME
+        server-password: NEXUS_PASSWORD
 
     - name: Set up Maven
       uses: stCarolas/setup-maven@v5
       with:
         maven-version: 3.9.9
 
-    - name: Build with Maven
-      run: mvn --no-transfer-progress -B clean verify --file pom.xml
+    - name: Set up cache date
+      run: echo "CACHE_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
-# Currently not allowed by INFRA
-#    - name: Publish Test Report
-#      uses: mikepenz/action-junit.report@v5
- 
+    - name: Build with Maven
+      run: mvn --show-version --batch-mode --no-transfer-progress clean verify
+      
+    - name: Upload to Nexus
+      if: matrix.os == 'ubuntu-latest'
+      env:
+        # `NEXUS_USERNAME` and `NEXUS_PASSWORD` are used in `~/.m2/settings.xml` created by `setup-java` action
+        NEXUS_USERNAME: ${{ secrets.NEXUS_USER }}
+        NEXUS_PASSWORD: ${{ secrets.NEXUS_PW }}
+      run: mvn --show-version --batch-mode --errors --no-transfer-progress -DskipTests deploy
