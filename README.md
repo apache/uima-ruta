@@ -89,6 +89,8 @@ change the command to
    
 For more details, please see [https://uima.apache.org/building-uima.html](https://uima.apache.org/building-uima.html).
 
+**Build options**
+* `-Ddisable-build-eclipse-plugins`: do not build the Eclipse plugins
 
 How to Get Involved
 -------------------
