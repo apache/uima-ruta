@@ -37,27 +37,14 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Set up Maven version on Windows
-      if: runner.os == 'Windows'
-      run: |
-        echo "Downloading Maven for Windows..."
-        curl -fsSL https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip -o maven.zip
-        Expand-Archive -Path maven.zip -DestinationPath $Env:USERPROFILE
-        echo "Adding Maven to PATH..."
-        echo "$Env:USERPROFILE\\apache-maven-3.9.9\\bin" >> $Env:GITHUB_PATH
-
-    - name: Set up Maven version on Linux
-      if: runner.os == 'Linux'
-      run: |
-        echo "Downloading Maven..."
-        curl -fsSL https://downloads.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz -o maven.tar.gz
-        tar -xzf maven.tar.gz
-        mv apache-maven-3.9.9 $HOME/maven
-        echo "Adding Maven to PATH..."
-        echo "$HOME/maven/bin" >> $GITHUB_PATH
-
-    - name: Verify Maven version
-      run: mvn --version
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v5
+      with:
+        maven-version: 3.9.9
 
     - name: Build with Maven
       run: mvn --no-transfer-progress -B clean verify --file pom.xml
+
+    - name: Publish Test Report
+      uses: mikepenz/action-junit.report@v5
+ 
