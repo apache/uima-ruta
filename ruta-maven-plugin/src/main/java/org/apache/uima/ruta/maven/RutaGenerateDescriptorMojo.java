@@ -592,8 +592,11 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
         path = split[1];
       }
       Path bpPath = Paths.get(path);
-      String relativePath = projectPath.relativize(bpPath).toString();
-      addBuildPathEntry(buildpathNode, type, relativePath);
+      String bp = path;
+      if (bpPath.isAbsolute()) {
+        bp = projectPath.relativize(bpPath).toString();
+      }
+      addBuildPathEntry(buildpathNode, type, bp);
     }
     Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
     buildpathentry.setAttribute("kind", "con");
