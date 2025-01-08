@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -34,6 +34,8 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,7 +85,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Generate descriptors from UIMA Ruta script files.
- * 
+ *
  */
 @Mojo(name = "generate", defaultPhase = GENERATE_RESOURCES, requiresDependencyResolution = TEST, requiresDependencyCollection = TEST, threadSafe = true)
 public class RutaGenerateDescriptorMojo extends AbstractMojo {
@@ -230,8 +232,8 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       buildContext.refresh(analysisEngineOutputDirectory);
     }
 
-    this.project.addCompileSourceRoot(this.typeSystemOutputDirectory.getPath());
-    this.project.addCompileSourceRoot(this.analysisEngineOutputDirectory.getPath());
+    project.addCompileSourceRoot(typeSystemOutputDirectory.getPath());
+    project.addCompileSourceRoot(analysisEngineOutputDirectory.getPath());
 
     String[] files = null;
     if (scriptFiles != null) {
@@ -255,7 +257,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       return;
     }
 
-    List<File> filesToBuild = new ArrayList<File>();
+    List<File> filesToBuild = new ArrayList<>();
     for (String each : files) {
       File file = new File(each);
 
@@ -314,7 +316,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
       maxBuildRetries = filesToBuild.size() * 3;
     }
 
-    Queue<RutaDescriptorInformation> toBuild = new LinkedList<RutaDescriptorInformation>();
+    Queue<RutaDescriptorInformation> toBuild = new LinkedList<>();
 
     for (File file : filesToBuild) {
       try {
@@ -393,7 +395,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   }
 
   private List<String> getExtensionsFromClasspath(ClassLoader classloader) {
-    List<String> result = new ArrayList<String>();
+    List<String> result = new ArrayList<>();
     ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(
             true);
     ResourceLoader resourceLoader = new DefaultResourceLoader(classloader);
@@ -451,7 +453,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
   public static URLClassLoader getClassloader(MavenProject project, Log aLog,
           String includeScopeThreshold) throws MojoExecutionException {
 
-    List<URL> urls = new ArrayList<URL>();
+    List<URL> urls = new ArrayList<>();
 
     for (String element : project.getCompileSourceRoots()) {
       try {
@@ -495,7 +497,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     }
 
     ScopeArtifactFilter filter = new ScopeArtifactFilter(includeScopeThreshold);
-    for (Artifact dep : (Set<Artifact>) project.getArtifacts()) {
+    for (Artifact dep : project.getArtifacts()) {
       try {
         if (!filter.include(dep)) {
           aLog.debug("Not generating classpath entry for out-of-scope artifact: " + dep.getGroupId()
@@ -571,6 +573,7 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
 
   private void addRutaBuildPath() throws MojoExecutionException {
     File projectDir = project.getFile().getParentFile();
+    Path projectPath = Paths.get(projectDir.toURI());
 
     if (buildPaths == null || buildPaths.length == 0) {
       return;
@@ -579,14 +582,18 @@ public class RutaGenerateDescriptorMojo extends AbstractMojo {
     File buildpathFile = new File(projectDir, ".buildpath");
     Xpp3Dom buildpathNode = new Xpp3Dom("buildpath");
     for (String eachBP : buildPaths) {
-      String[] split = eachBP.split(":");
+
+      String[] split = StringUtils.split(eachBP, ":", 2);
       String type = "script";
       String path = eachBP;
+
       if (split.length == 2) {
         type = split[0];
         path = split[1];
       }
-      addBuildPathEntry(buildpathNode, type, path);
+      Path bpPath = Paths.get(path);
+      String relativePath = projectPath.relativize(bpPath).toString();
+      addBuildPathEntry(buildpathNode, type, relativePath);
     }
     Xpp3Dom buildpathentry = new Xpp3Dom("buildpathentry");
     buildpathentry.setAttribute("kind", "con");
