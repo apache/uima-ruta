@@ -19,7 +19,7 @@
 ***************************************************************
 -->
    
-# Apache UIMA Ruta (TM) v3.5.0
+# Apache UIMA Ruta (TM) v3.5.1
 
 Apache UIMA Ruta™ is a rule-based script language supported by Eclipse-based tooling.
 The language is designed to enable rapid development of text processing applications within Apache UIMA&#8482;. 
@@ -32,22 +32,19 @@ This is a feature and bugfix release.
 
 ## What's Changed
 
-* ⭐️ Issue #170: Type based annotation assignments should only add visible annotations
-* ⭐️ Issue #171: Support implicit FSArray assigments with FeatureStructures
-* ⭐️ Issue #177: Consider resource manager when loading type descriptions
-* 🦟 Issue #169: Annotation assignment not working correctly
-* 🦟 Issue #173: Potential memory leak in Annotation Browser View
-* ⚙️ Issue #179: Remove toolchains
-* ⚙️ Issue #176: Upgrade dependencies
+* ⭐️ Issue #189: Avoid type system scanning when initializing uimaFIT annotators from a Ruta script
+* ⭐️ Issue #191: Add option to build without Eclipse plugins
+* 🦟 Issue #193: Build path problems after Maven project update
 
-**Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.4.1...rel/ruta-3.5.0
+
+**Full Changelog**: https://github.com/apache/uima-ruta/compare/rel/ruta-3.5.0...rel/3.5.1
 
 Please use the [mailing lists](https://uima.apache.org/mail-lists.html) for feedback and the [issue tracker](https://github.com/apache/uima-ruta/issues) to report bugs.
 
 ## Supported Platforms
 
-UIMA Ruta 3.5.0 should be used in combination with
+UIMA Ruta 3.5.1 should be used in combination with
 
 - Java 17 or higher
-- UIMA Java SDK / uimaFIT 3.6.0 or higher
-- Spring Framework 6.1.15 or higher
+- UIMA Java SDK / uimaFIT 3.6.1 or higher
+- Spring Framework 6.2.11 or higher
