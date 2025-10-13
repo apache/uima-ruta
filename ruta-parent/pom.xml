@@ -152,8 +152,8 @@
 
     <!-- BEGIN PROFILE SETTINGS: generate-release-notes-->
     <github-repository>uima-ruta</github-repository>
-    <git-branch>main</git-branch>
-    <previous-release-version>3.4.1</previous-release-version>
+    <git-branch>release/3.5.x</git-branch>
+    <previous-release-version>3.5.0</previous-release-version>
     <!-- END PROFILE SETTINGS: generate-release-notes-->
     
     <api_check_oldVersion>${previous-release-version}</api_check_oldVersion>
