@@ -23,8 +23,8 @@
   <version>1.0</version>
   <vendor/>
   <imports>
-    <import location="RutaInternalTypeSystem.xml"/>
-    <import location="RutaBasicTypeSystem.xml"/>
-    <import location="DefaultSeederTypeSystem.xml"/>
+    <import name="org.apache.uima.ruta.engine.RutaInternalTypeSystem"/>
+    <import name="org.apache.uima.ruta.engine.RutaBasicTypeSystem"/>
+    <import name="org.apache.uima.ruta.engine.DefaultSeederTypeSystem"/>
   </imports>
   </typeSystemDescription>
